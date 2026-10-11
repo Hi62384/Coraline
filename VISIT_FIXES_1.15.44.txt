@@ -1,0 +1,26 @@
+Visit fixes - 1.15.44
+
+- Visit gifts default to equal category chances. With all ten categories enabled,
+  each has a 10% chance, independently of item-pool size and old saved weights.
+  Zero-weight categories remain disabled; setting equal_category_chances=false
+  explicitly enables custom weighted selection. Progression/item quality is unchanged.
+  Independent rolls can still repeat; this is not a no-repeat rotation.
+- The repeat-visit quest watchdog no longer treats distance or a failed route to
+  the activity portal as a reason to teleport the player. Explicit /coraline guide
+  remains available. Actual void recovery uses the porch instead of the portal.
+- Caught dialogue still plays, followed by serious scolding only. Minor scolding
+  selections and saved minor queues are redirected to serious recordings.
+  Confiscation, relationship effects and encounter completion are preserved.
+- Missing estate coordinates now fail safely in portal placement/detection.
+
+Verification and limitations
+- All 97 server regressions passed in a fresh world (visit-fixes-fresh-tests.log).
+- Optimized release build, six optimizer tests, and release integrity checks passed.
+  363 sound events verified; no test classes or audio masters packaged.
+  JAR size 73,920,813 bytes (+973 bytes versus 1.15.43).
+- Distribution regression compares 100,000 selections with legacy weights to a
+  uniform selector with the same seed; all ten categories are checked.
+- Added/updated portal no-auto-teleport, explicit rescue, late-arrival and saved
+  minor-scolding migration regressions.
+- No live client playtest. This does not claim to complete the earlier backlog.
+- No new image/audio assets; existing source masters remain intact.

@@ -1,0 +1,281 @@
+{
+  "wybie_line_a": [
+    {
+      "start": 0.0,
+      "end": 5.0,
+      "text": "Oh, let me guess. You're from Texas or Utah. Someplace dried out and barren, right?"
+    },
+    {
+      "start": 5.0,
+      "end": 10.0,
+      "text": "I heard about water witching before, but it doesn't make sense. I mean, it's just an ordinary branch."
+    },
+    {
+      "start": 10.0,
+      "end": 12.0,
+      "text": "It's a dowsing rod."
+    },
+    {
+      "start": 12.0,
+      "end": 18.0,
+      "text": "Ow! And I don't like being stalked, not by psycho nerds or their cats!"
+    },
+    {
+      "start": 18.0,
+      "end": 22.0,
+      "text": "He's not really my cat. He's kind of feral. You know, wild."
+    },
+    {
+      "start": 22.0,
+      "end": 28.0,
+      "text": "Of course I do feed him every night, and sometimes he'll come in my window and bring me little dead things."
+    }
+  ],
+  "wybie_line_b": [
+    {
+      "start": 0.0,
+      "end": 1.2,
+      "text": "Hey, Jonesy."
+    },
+    {
+      "start": 1.2,
+      "end": 3.04,
+      "text": "Look what I found in grandma's trunk."
+    },
+    {
+      "start": 3.04,
+      "end": 4.7,
+      "text": "You look familiar."
+    },
+    {
+      "start": 4.7,
+      "end": 5.7,
+      "text": "White."
+    },
+    {
+      "start": 5.7,
+      "end": 6.72,
+      "text": "[Laughs]"
+    },
+    {
+      "start": 6.72,
+      "end": 14.0,
+      "text": "Well, great to meet a Michigan water witch."
+    },
+    {
+      "start": 14.0,
+      "end": 16.44,
+      "text": "But I'd wear gloves next time."
+    },
+    {
+      "start": 16.44,
+      "end": 19.34,
+      "text": "Cuz that dowsing rod of yours, uhm..."
+    },
+    {
+      "start": 19.34,
+      "end": 20.54,
+      "text": "It's poison oak."
+    }
+  ],
+  "wybie_line_c": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "You"
+    }
+  ],
+  "other_mother_intro": [
+    {
+      "start": 0.0,
+      "end": 2.5,
+      "text": "What are you doing here in the middle of the night?"
+    },
+    {
+      "start": 2.5,
+      "end": 5.0,
+      "text": "You're just in time for supper, dear."
+    },
+    {
+      "start": 8.0,
+      "end": 10.0,
+      "text": "You're not my mother."
+    },
+    {
+      "start": 10.0,
+      "end": 12.0,
+      "text": "My mother doesn't have..."
+    },
+    {
+      "start": 12.0,
+      "end": 15.0,
+      "text": "But...but...but...but...but...buttons?"
+    },
+    {
+      "start": 15.0,
+      "end": 17.0,
+      "text": "Do you like them?"
+    },
+    {
+      "start": 17.0,
+      "end": 19.0,
+      "text": "I'm your other mother, Silly."
+    },
+    {
+      "start": 19.0,
+      "end": 22.0,
+      "text": "Now go tell your other father that supper's ready."
+    },
+    {
+      "start": 24.0,
+      "end": 26.0,
+      "text": "What go on?"
+    },
+    {
+      "start": 26.0,
+      "end": 28.0,
+      "text": "He's in his study."
+    }
+  ],
+  "other_father_enter_scene": [
+    {
+      "start": 0.0,
+      "end": 5.0,
+      "text": "Hello?"
+    }
+  ],
+  "other_father_intro": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "Hello Coraline."
+    },
+    {
+      "start": 3.0,
+      "end": 5.0,
+      "text": "Wanna hear my new song?"
+    },
+    {
+      "start": 6.0,
+      "end": 8.0,
+      "text": "My father can't play piano."
+    },
+    {
+      "start": 8.0,
+      "end": 9.0,
+      "text": "No need to."
+    },
+    {
+      "start": 10.0,
+      "end": 12.0,
+      "text": "This piano plays me."
+    }
+  ],
+  "other_father_dinners_ready": [
+    {
+      "start": 0.0,
+      "end": 6.0,
+      "text": "I am sorry but she said to tell you the foods ready."
+    },
+    {
+      "start": 6.0,
+      "end": 9.0,
+      "text": "Mmm, who's starving? Raise your hand."
+    },
+    {
+      "start": 9.0,
+      "end": 11.0,
+      "text": "Whoa!"
+    }
+  ],
+  "other_father_golden_chicken_breast": [
+    {
+      "start": 0.0,
+      "end": 10.0,
+      "text": "We give our thanks and ask to bless our mother's golden chicken breast."
+    }
+  ],
+  "other_parents_waiting": [
+    {
+      "start": 0.0,
+      "end": 2.56,
+      "text": "We've been waiting for you, Coraline."
+    },
+    {
+      "start": 2.56,
+      "end": 5.5600000000000005,
+      "text": "Yep, wasn't the same here without you, kiddo."
+    }
+  ],
+  "other_mother_visit_again": [
+    {
+      "start": 0.0,
+      "end": 5.36,
+      "text": "It's time for bedtime, dear, but promise you'll visit us again every night."
+    },
+    {
+      "start": 5.36,
+      "end": 8.32,
+      "text": "And I'll have special treats ready for you."
+    }
+  ],
+  "other_mother_supper_0": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "Hungry aren't you?"
+    }
+  ],
+  "other_mother_supper_1": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "Well here comes the gravy train"
+    }
+  ],
+  "other_mother_supper_2": [
+    {
+      "start": 0.0,
+      "end": 4.0,
+      "text": "Another roll, sweet peas, corn on the cob."
+    }
+  ],
+  "see_you_soon": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "See you soon!"
+    }
+  ],
+  "other_father_song": [
+    {
+      "start": 0.0,
+      "end": 18.0,
+      "text": "Make it up a song about Coraline. She's a peach, she's a doll, she's a pal of mine. She's as cute as a button in the eyes of everyone who ever laid their eyes on Coraline."
+    },
+    {
+      "start": 18.0,
+      "end": 26.0,
+      "text": "When she comes around exploring home and I will never ever make it boring, our eyes will be on Coraline."
+    }
+  ],
+  "mom_death": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "AHHHHH!"
+    }
+  ],
+  "dad_death": [
+    {
+      "start": 0.0,
+      "end": 3.6,
+      "text": "No, no, no, no, no, no, no, no!"
+    },
+    {
+      "start": 3.6,
+      "end": 5.2,
+      "text": "GO!"
+    }
+  ]
+}

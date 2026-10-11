@@ -1,0 +1,316 @@
+{
+  "reference": "voicelines/othermother/Sample.wav",
+  "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+  "output": "voicelines/othermother",
+  "prefix": "line",
+  "resource_folder": "other_mother",
+  "generation_report": "visit_gifts_generation_report.json",
+  "validation_report": "visit_gifts_validation_report.json",
+  "transcript_review": "visit_gifts_transcript_review.json",
+  "states": {
+    "loot/weapons/before": {
+      "direction": "Maternal and excited to give this weapons present; gently expressive and theatrical with natural affectionate emphasis. Subtle manipulative warmth, never openly evil.",
+      "emotion": [
+        0.6,
+        0,
+        0,
+        0,
+        0.04,
+        0,
+        0.08,
+        0.3
+      ],
+      "temperature": 0.76,
+      "lines": [
+        "Oh, sweetheart, I noticed you've been getting yourself into all sorts of dangerous situations back home. So I thought I'd give you something to keep those nasty creatures away.",
+        "Your Other Father and I have been putting together a few little things for you. They're rather sharp, so do be careful. I'd hate for you to hurt those lovely fingers.",
+        "You know, darling, it worries me terribly when I think of you out there fighting those awful monsters. Here, I've made sure you'll have something much better to defend yourself with."
+      ]
+    },
+    "loot/weapons/after": {
+      "direction": "Warm, pleased, gently theatrical; affectionate with a subtle possessive undertone. Natural conversational inflection, no hostility.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.06,
+        0.62
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "There now. Doesn't that feel better? Nothing should be able to give you much trouble with something like that in your hands.",
+        "Oh, look at you! Quite the little warrior, aren't you? Just promise me you'll be careful. I'd be awfully upset if anything happened to you.",
+        "Much better than those dreadful old weapons you've been using, wouldn't you say? I do wish you'd let me take care of these things more often."
+      ]
+    },
+    "loot/armor/before": {
+      "direction": "Maternal and excited to give this armor present; gently expressive and theatrical with natural affectionate emphasis. Subtle manipulative warmth, never openly evil.",
+      "emotion": [
+        0.38,
+        0,
+        0.06,
+        0,
+        0.06,
+        0,
+        0,
+        0.65
+      ],
+      "temperature": 0.76,
+      "lines": [
+        "Come here, sweetheart. I've been thinking about how terribly exposed you are out there, running around without anything proper to protect you. I made you something.",
+        "I've noticed you've been coming home with an awful lot of bumps and bruises lately. Well, I simply couldn't stand the thought of that continuing.",
+        "Your Other Father thinks I've been fussing over you too much, but I don't care. A mother ought to make sure her little one is properly protected, don't you think?"
+      ]
+    },
+    "loot/armor/after": {
+      "direction": "Warm, pleased, gently theatrical; affectionate with a subtle possessive undertone. Natural conversational inflection, no hostility.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.06,
+        0.62
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, that suits you beautifully! And it's ever so much stronger than it looks. I wouldn't dream of letting you wear anything less.",
+        "There we are. All safe and sound. Now, I know it won't stop you getting into trouble, but at least I won't have to worry quite so much.",
+        "Just look at how perfectly it fits. I made every little piece especially for you, darling. Nobody else could have made something quite like it."
+      ]
+    },
+    "loot/tools/before": {
+      "direction": "Maternal and excited to give this tools present; gently expressive and theatrical with natural affectionate emphasis. Subtle manipulative warmth, never openly evil.",
+      "emotion": [
+        0.5,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.45
+      ],
+      "temperature": 0.76,
+      "lines": [
+        "Oh, darling, you do spend an awful lot of time digging and chopping and working yourself half to death. I thought perhaps I could make things a little easier.",
+        "I've been watching how hard you work on all those little projects of yours. It's terribly impressive, of course, but you really shouldn't have to struggle so much.",
+        "Your Other Father made a few things for you in his workshop. Well, I helped him with the important parts. I think you'll find them rather useful."
+      ]
+    },
+    "loot/tools/after": {
+      "direction": "Warm, pleased, gently theatrical; affectionate with a subtle possessive undertone. Natural conversational inflection, no hostility.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.06,
+        0.62
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "There! Now you can get twice as much done without all that dreadful effort. Isn't it wonderful when someone thinks ahead for you?",
+        "Oh, I knew you'd like those. They're so much nicer than the worn-out things you've been carrying around.",
+        "Just think of all the things you can make now, sweetheart. And whenever you need something better, you know exactly where to come."
+      ]
+    },
+    "loot/building_materials/before": {
+      "direction": "Maternal and excited to give this building materials present; gently expressive and theatrical with natural affectionate emphasis. Subtle manipulative warmth, never openly evil.",
+      "emotion": [
+        0.62,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.06,
+        0.32
+      ],
+      "temperature": 0.76,
+      "lines": [
+        "I've been thinking about that little house of yours. It's coming along nicely, but I thought it could use a few more beautiful things.",
+        "Oh, sweetheart, you shouldn't have to spend all day digging up stones and chopping down trees just to make yourself a lovely home. I've gathered a few things for you.",
+        "Your Other Father and I were talking about all those wonderful buildings you could make. So naturally, I went ahead and collected some materials for you."
+      ]
+    },
+    "loot/building_materials/after": {
+      "direction": "Warm, pleased, gently theatrical; affectionate with a subtle possessive undertone. Natural conversational inflection, no hostility.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.06,
+        0.62
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "There you are! Plenty to work with now. I can't wait to see what you build, darling. Perhaps something as pretty as our house.",
+        "Oh, imagine what you could make with all of that! A beautiful little cottage, perhaps? Though I suppose you've already got a perfectly lovely home here.",
+        "Take every last piece, sweetheart. There are plenty more where those came from. You really needn't spend so much time gathering things yourself."
+      ]
+    },
+    "loot/redstone/before": {
+      "direction": "Maternal and excited to give this redstone present; gently expressive and theatrical with natural affectionate emphasis. Subtle manipulative warmth, never openly evil.",
+      "emotion": [
+        0.45,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.16,
+        0.4
+      ],
+      "temperature": 0.76,
+      "lines": [
+        "I've noticed you like making those clever little contraptions of yours. All those wires and switches and moving parts. I thought I'd bring you a few things to experiment with.",
+        "Your Other Father has been tinkering away in his workshop again. He made the most marvelous little machines, and I thought you might enjoy having some of the pieces.",
+        "Oh, darling, why do everything by hand when you can have a machine do it for you? I've found some wonderful things that might save you an awful lot of trouble."
+      ]
+    },
+    "loot/redstone/after": {
+      "direction": "Warm, pleased, gently theatrical; affectionate with a subtle possessive undertone. Natural conversational inflection, no hostility.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.06,
+        0.62
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "There! Now you can make all sorts of clever little inventions. Just be sure they don't make too much noise, sweetheart.",
+        "I can already imagine the wonderful contraptions you'll build with those. Your Other Father will be so pleased to hear what you've come up with.",
+        "Isn't it lovely when things take care of themselves? No more running about pressing buttons and pulling levers all day. Though I must say, I've always been rather fond of buttons."
+      ]
+    },
+    "loot/clothing/before": {
+      "direction": "Maternal and excited to give this clothing present; gently expressive and theatrical with natural affectionate emphasis. Subtle manipulative warmth, never openly evil.",
+      "emotion": [
+        0.7,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.06,
+        0.3
+      ],
+      "temperature": 0.76,
+      "lines": [
+        "Oh, sweetheart, I've been meaning to say something about those clothes of yours. They're looking a little tired, don't you think? I've picked out something much nicer.",
+        "I was going through my sewing things earlier, and I simply couldn't resist making you a few new outfits. I think you'll look absolutely darling in them.",
+        "You know, I've always thought you deserved something a little more special to wear. Something made just for you, rather than those ordinary things everyone else has."
+      ]
+    },
+    "loot/clothing/after": {
+      "direction": "Warm, pleased, gently theatrical; affectionate with a subtle possessive undertone. Natural conversational inflection, no hostility.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.06,
+        0.62
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, just look at you! Absolutely precious. I knew those colors would suit you. A mother always knows these things.",
+        "There we are! Doesn't that feel lovely? I made sure every stitch was perfect. I wouldn't want my darling walking around in anything uncomfortable.",
+        "Oh, you look wonderful, sweetheart. You really ought to wear those more often. I'd love to see you looking so lovely every time you visit."
+      ]
+    },
+    "loot/music/before": {
+      "direction": "Maternal and excited to give this music present; gently expressive and theatrical with natural affectionate emphasis. Subtle manipulative warmth, never openly evil.",
+      "emotion": [
+        0.3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.04,
+        0.75
+      ],
+      "temperature": 0.76,
+      "lines": [
+        "Oh, darling, I've noticed how quiet things can get in that little world of yours. I thought perhaps you could use something beautiful to listen to.",
+        "Your Other Father has been playing the most wonderful music lately, and it gave me an idea. Why shouldn't you have a little music of your own?",
+        "I found some lovely old melodies tucked away, and I thought of you immediately. There's something about a familiar song that makes a place feel like home, don't you think?"
+      ]
+    },
+    "loot/music/after": {
+      "direction": "Warm, pleased, gently theatrical; affectionate with a subtle possessive undertone. Natural conversational inflection, no hostility.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.06,
+        0.62
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "There you are. Now you'll have something lovely to listen to whenever things get a little lonely. Just close your eyes and imagine you're back here with us.",
+        "Oh, I do hope you enjoy those. Your Other Father can be rather particular about music, but I think these are some of his very best.",
+        "Isn't that a pretty little tune? I thought you might like something to remind you of us when you're away. It's always nice to have a little reminder of home."
+      ]
+    },
+    "loot/mystery/before": {
+      "direction": "Maternal and excited to give this mystery present; gently expressive and theatrical with natural affectionate emphasis. Subtle manipulative warmth, never openly evil.",
+      "emotion": [
+        0.62,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.24,
+        0.2
+      ],
+      "temperature": 0.76,
+      "lines": [
+        "Oh, sweetheart, I've got a surprise for you today! No peeking now. I went through an awful lot of trouble to find something you'd never expect.",
+        "I've been keeping a little secret from you, darling. Nothing dreadful, of course! Just something special I've been saving for the right moment.",
+        "Now, I've got something rather interesting for you. I won't tell you what it is just yet. Where would the fun be in that?"
+      ]
+    },
+    "loot/mystery/after": {
+      "direction": "Warm, pleased, gently theatrical; affectionate with a subtle possessive undertone. Natural conversational inflection, no hostility.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.06,
+        0.62
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Surprise! Oh, I do love that look on your face. I knew you wouldn't be expecting something quite like that.",
+        "Well? What do you think, sweetheart? I had such a difficult time choosing, but something told me that one was meant for you.",
+        "Oh, isn't that exciting? You never quite know what you'll find when you visit me, do you? I suppose you'll just have to keep coming back to see what else I've got hidden away."
+      ]
+    }
+  }
+}

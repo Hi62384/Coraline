@@ -1,0 +1,34 @@
+Coraline 1.15.48
+
+Observed cause
+The running 1.15.47 client log recorded repeated integrated-server stalls,
+including 9-19 seconds behind. Six of eight live server-thread samples were
+inside RealmCopy.advance -> ServerChunkCache.getChunkFuture, which managed-
+blocks on the server thread while chunks load. This stalls entity movement,
+inventory interactions and tick-based dialogue even in singleplayer.
+
+Changes
+- Request chunk futures through the non-blocking main-thread entry point.
+  Poll completion on later ticks; do not access Minecraft worlds off-thread.
+- Hold temporary full-chunk tickets until copy completion; release on completion,
+  failure, cancellation, or stale-job replacement. Reduce background concurrency
+  from four source/target pairs to two. Preserve the 500-block map.
+- Apply actual playback completion clock correction to all Other Mother lines,
+  rather than only reconciliation proposals. Preserve recordings in full.
+- Door-bound mice retain running paths instead of rebuilding them periodically,
+  with bounded retries when a path ends.
+- Portals use their own clearance footprint, search a wider outdoor side area,
+  and fall back to Father's study rather than ending the visit.
+- Unowned decorative dolls in the Other World use varied existing parent textures,
+  not the local player's skin. Owned personal dolls keep their owner's skin.
+- Correct the spy doll display's half-block vertical offset. Repair existing
+  placements once queued structure construction finishes; do not destroy furniture.
+
+Verification
+- All 70 Secrets/Exploration GameTests passed: responsiveness-final-tests.log.
+- Earlier doll-only suite: all 67 tests passed.
+- An initial async test exposed expiring vanilla chunk tickets; the retained
+  ticket fix passed the final suite.
+- Release build output: responsiveness-release.log.
+- No post-update live-client FPS/TPS comparison or visual QA yet. Restart with
+  the new JAR to apply fixes; no world reset is required.

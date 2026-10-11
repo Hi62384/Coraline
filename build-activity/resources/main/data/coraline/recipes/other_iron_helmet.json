@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "MMM",
+    "M M"
+  ],
+  "key": {
+    "M": {
+      "item": "coraline:other_iron_ingot"
+    }
+  },
+  "result": {
+    "item": "coraline:other_iron_helmet"
+  }
+}

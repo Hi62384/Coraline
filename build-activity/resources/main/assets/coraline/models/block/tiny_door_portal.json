@@ -1,0 +1,283 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "wood": "coraline:block/tiny_door_frame",
+    "door": "coraline:block/tiny_door",
+    "bricks": "coraline:block/tiny_bricks",
+    "particle": "coraline:block/tiny_door_frame"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        11
+      ],
+      "to": [
+        1,
+        16,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#wood",
+          "uv": [
+            15,
+            0,
+            16,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#wood",
+          "uv": [
+            0,
+            0,
+            1,
+            16
+          ]
+        },
+        "west": {
+          "texture": "#wood",
+          "uv": [
+            11,
+            0,
+            14,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#wood",
+          "uv": [
+            2,
+            0,
+            5,
+            16
+          ]
+        },
+        "up": {
+          "texture": "#wood",
+          "uv": [
+            0,
+            11,
+            1,
+            14
+          ]
+        },
+        "down": {
+          "texture": "#wood",
+          "uv": [
+            0,
+            2,
+            1,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "from": [
+        15,
+        0,
+        11
+      ],
+      "to": [
+        16,
+        16,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#wood",
+          "uv": [
+            0,
+            0,
+            1,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#wood",
+          "uv": [
+            15,
+            0,
+            16,
+            16
+          ]
+        },
+        "west": {
+          "texture": "#wood",
+          "uv": [
+            11,
+            0,
+            14,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#wood",
+          "uv": [
+            2,
+            0,
+            5,
+            16
+          ]
+        },
+        "up": {
+          "texture": "#wood",
+          "uv": [
+            15,
+            11,
+            16,
+            14
+          ]
+        },
+        "down": {
+          "texture": "#wood",
+          "uv": [
+            15,
+            2,
+            16,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        15,
+        11
+      ],
+      "to": [
+        15,
+        16,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#wood",
+          "uv": [
+            1,
+            0,
+            15,
+            1
+          ]
+        },
+        "south": {
+          "texture": "#wood",
+          "uv": [
+            1,
+            0,
+            15,
+            1
+          ]
+        },
+        "west": {
+          "texture": "#wood",
+          "uv": [
+            11,
+            0,
+            14,
+            1
+          ]
+        },
+        "east": {
+          "texture": "#wood",
+          "uv": [
+            2,
+            0,
+            5,
+            1
+          ]
+        },
+        "up": {
+          "texture": "#wood",
+          "uv": [
+            1,
+            11,
+            15,
+            14
+          ]
+        },
+        "down": {
+          "texture": "#wood",
+          "uv": [
+            1,
+            2,
+            15,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        0,
+        0
+      ],
+      "to": [
+        3,
+        15,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#wood",
+          "uv": [
+            13,
+            1,
+            15,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#wood",
+          "uv": [
+            1,
+            1,
+            3,
+            16
+          ]
+        },
+        "west": {
+          "texture": "#door",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#door",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "up": {
+          "texture": "#wood",
+          "uv": [
+            1,
+            0,
+            3,
+            14
+          ]
+        },
+        "down": {
+          "texture": "#wood",
+          "uv": [
+            1,
+            2,
+            3,
+            16
+          ]
+        }
+      }
+    }
+  ]
+}

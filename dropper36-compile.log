@@ -1,0 +1,17 @@
+Java: 1.8.0_491, JVM: 25.491-b10 (Oracle Corporation), Arch: amd64
+C:\Users\User1\Documents\Downloads\Coraline\src\main\java\com\coraline\client\clothing\ClothingLight.java:74: error: 'var' is not allowed in a compound declaration
+                        var mid=p.relative(direction),next=p.relative(direction,2);
+                        ^
+1 error
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileJava'.
+> Compilation failed; see the compiler error output for details.
+
+* Try:
+> Run with --info option to get more log output.
+> Run with --scan to get full insights.
+
+BUILD FAILED in 15s

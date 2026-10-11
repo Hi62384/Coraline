@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "coraline:block/doll" },
+    "facing=east":  { "model": "coraline:block/doll", "y": 90 },
+    "facing=south": { "model": "coraline:block/doll", "y": 180 },
+    "facing=west":  { "model": "coraline:block/doll", "y": 270 }
+  }
+}

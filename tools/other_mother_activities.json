@@ -1,0 +1,507 @@
+{
+  "reference": "voicelines/othermother/Sample.wav",
+  "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+  "output": "voicelines/othermother",
+  "prefix": "proposal",
+  "resource_folder": "other_mother",
+  "generation_report": "activity_generation_report.json",
+  "validation_report": "activity_validation_report.json",
+  "states": {
+    "activities/other_village": {
+      "direction": "Warm, enthusiastic, motherly and excited to entertain; persuasive and inviting, never sinister or like a quest objective.",
+      "emotion": [
+        0.6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.28
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "I’ve made a little village for us to visit today. The villagers have been preparing all sorts of things for you, and they’re very excited to meet you.",
+        "How would you like to spend some time in a proper little village? There are shops, games, food, and plenty of villagers waiting to entertain you."
+      ]
+    },
+    "activities/other_woodland_mansion": {
+      "direction": "Warm, enthusiastic, motherly and excited to entertain; persuasive and inviting, never sinister or like a quest objective.",
+      "emotion": [
+        0.6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.28
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "I found the most marvelous mansion tucked away in the woods. I thought we could have a look around and see what its residents have prepared for you.",
+        "There’s a beautiful old mansion I’ve been saving for just the right occasion. It has so many rooms to explore, and I think you’ll enjoy what’s waiting inside."
+      ]
+    },
+    "activities/other_desert_temple": {
+      "direction": "Warm, enthusiastic, motherly and excited to entertain; persuasive and inviting, never sinister or like a quest objective.",
+      "emotion": [
+        0.6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.28
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "I thought we could go somewhere a little warmer today. There’s an ancient desert temple waiting for us, filled with puzzles and lovely little surprises.",
+        "I’ve prepared a desert adventure for you. There’s a temple buried out there with treasure hidden inside, if you’re clever enough to find it."
+      ]
+    },
+    "activities/magic_show": {
+      "direction": "Warm, enthusiastic, motherly and excited to entertain; persuasive and inviting, never sinister or like a quest objective.",
+      "emotion": [
+        0.6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.28
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Your Other Father and I have been practicing something special for you. Come see our magic show—I promise there are a few tricks you won’t be expecting.",
+        "I thought we could have a little magic today. We’ve prepared an entire show, and I may even let you take part in some of the tricks."
+      ]
+    },
+    "activities/dream_parkour": {
+      "direction": "Warm, enthusiastic, motherly and excited to entertain; persuasive and inviting, never sinister or like a quest objective.",
+      "emotion": [
+        0.6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.28
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "I’ve made you a wonderful little course in the sky. Don’t worry about falling—it’s much more fun when you stop being afraid of the ground.",
+        "How about something exciting? I’ve put together a dreamlike obstacle course with floating platforms, strange jumps, and a very nice prize at the end."
+      ]
+    },
+    "activities/grand_feast": {
+      "direction": "Warm, enthusiastic, motherly and excited to entertain; persuasive and inviting, never sinister or like a quest objective.",
+      "emotion": [
+        0.6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.28
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "I hope you saved your appetite, darling. We’ve prepared a feast with more food than you could possibly finish, and every bit of it is for you.",
+        "Tonight we’re doing something special. Your Other Father and I have made an enormous dinner, so come hungry and don’t be shy about having seconds."
+      ]
+    },
+    "activities/mice_circus": {
+      "direction": "Warm, enthusiastic, motherly and excited to entertain; persuasive and inviting, never sinister or like a quest objective.",
+      "emotion": [
+        0.6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.28
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "The mice have been rehearsing all day just for you. They’ve put together quite the little circus, and I think you’ll be impressed.",
+        "You simply have to see what the mice have prepared. Acrobatics, tricks, games—they’ve been ever so excited to perform for you."
+      ]
+    },
+    "activities/carnival": {
+      "direction": "Warm, enthusiastic, motherly and excited to entertain; persuasive and inviting, never sinister or like a quest objective.",
+      "emotion": [
+        0.6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.28
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "I’ve opened a whole carnival for you today. Games, rides, prizes, sweets—you can try everything you like.",
+        "How would you like a proper carnival? I’ve filled it with games and attractions, and there are some very good prizes if you play well."
+      ]
+    },
+    "activities/magic_garden": {
+      "direction": "Warm, enthusiastic, motherly and excited to entertain; persuasive and inviting, never sinister or like a quest objective.",
+      "emotion": [
+        0.6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.28
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "The garden is especially beautiful tonight. The flowers have been waiting for you, and I’ve arranged a few surprises among them.",
+        "I want to show you what I’ve done with the garden. It’s blooming like never before, and there’s much more out there than ordinary flowers."
+      ]
+    },
+    "activities/music_festival": {
+      "direction": "Warm, enthusiastic, motherly and excited to entertain; persuasive and inviting, never sinister or like a quest objective.",
+      "emotion": [
+        0.6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.28
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "I thought the world could use a little music tonight. I’ve arranged an entire festival for you, with performers from all over this little world.",
+        "We’re having a music festival today. Come listen, dance, play along if you like, and enjoy everything we’ve prepared."
+      ]
+    },
+    "activities/shopping_mall": {
+      "direction": "Warm, enthusiastic, motherly and excited to entertain; persuasive and inviting, never sinister or like a quest objective.",
+      "emotion": [
+        0.6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.28
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "I’ve prepared somewhere I think you’re going to love—a whole shopping mall. Go ahead and look around; there’s no need to worry about prices here.",
+        "How would you like to do some shopping? I’ve filled an entire mall with things I thought you might like, and today they’re all waiting for you."
+      ]
+    },
+    "activities/snowball_battle": {
+      "direction": "Warm, enthusiastic, motherly and excited to entertain; persuasive and inviting, never sinister or like a quest objective.",
+      "emotion": [
+        0.6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.28
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "I thought we could make a little mess today. There’s a snowball battle waiting for us, and your Other Father seems far too confident that he’ll win.",
+        "Come play in the snow with us. I’ve prepared a whole arena, plenty of snowballs, and a nice reward if you can beat everyone else."
+      ]
+    },
+    "activities/cake_making_contest": {
+      "direction": "Warm, enthusiastic, motherly and excited to entertain; persuasive and inviting, never sinister or like a quest objective.",
+      "emotion": [
+        0.6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.28
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "I’ve set everything out for a cake-making contest. Let’s see if you can make something prettier—and tastier—than your Other Father can.",
+        "How about we bake something together? We’re having a little cake contest, and of course you get to keep plenty of what you make."
+      ]
+    },
+    "activities/fishing_contest": {
+      "direction": "Warm, enthusiastic, motherly and excited to entertain; persuasive and inviting, never sinister or like a quest objective.",
+      "emotion": [
+        0.6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.28
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "The water is perfect tonight, so I thought we could have a fishing contest. There are some very unusual things swimming down there.",
+        "Your Other Father thinks he can catch more fish than you. I told him not to be so sure, so why don’t we settle it properly?"
+      ]
+    },
+    "activities/archery_contest": {
+      "direction": "Warm, enthusiastic, motherly and excited to entertain; persuasive and inviting, never sinister or like a quest objective.",
+      "emotion": [
+        0.6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.28
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "I’ve put together a little archery competition for you. There are moving targets, trick shots, and some rather nice prizes if your aim is good.",
+        "How steady is your hand, darling? I’ve prepared an archery course, and I’d love to see how many targets you can hit."
+      ]
+    },
+    "activities/ice_boat_race": {
+      "direction": "Warm, enthusiastic, motherly and excited to entertain; persuasive and inviting, never sinister or like a quest objective.",
+      "emotion": [
+        0.6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.28
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "I’ve frozen over a wonderful little course for us. Grab a boat and see how fast you can make it to the finish without spinning yourself around.",
+        "How would you like something fast today? I’ve prepared an ice track for boat racing, complete with shortcuts and a prize at the end."
+      ]
+    },
+    "activities/garden_maze": {
+      "direction": "Warm, enthusiastic, motherly and excited to entertain; persuasive and inviting, never sinister or like a quest objective.",
+      "emotion": [
+        0.6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.28
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "The garden has grown into quite the maze today. There are prizes hidden inside, if you can find your way through before getting completely turned around.",
+        "I’ve made you a garden maze. It has a few tricks, plenty of beautiful things to see, and something special waiting at the center."
+      ]
+    },
+    "activities/treasure_hunt": {
+      "direction": "Warm, enthusiastic, motherly and excited to entertain; persuasive and inviting, never sinister or like a quest objective.",
+      "emotion": [
+        0.6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.28
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "I’ve hidden a few things around the world for you. Follow the clues carefully, and each one should bring you a little closer to the real prize.",
+        "How about a treasure hunt? I’ve left clues all over the place, and I promise the reward at the end is worth looking for."
+      ]
+    },
+    "activities/other_mineshaft": {
+      "direction": "Warm, enthusiastic, motherly and excited to entertain; persuasive and inviting, never sinister or like a quest objective.",
+      "emotion": [
+        0.6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.28
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "I’ve prepared an underground adventure for you today. There’s an old mineshaft filled with minecarts, crystal tunnels, and plenty of treasure.",
+        "How would you like to go beneath the world for a while? I’ve made a much nicer mineshaft than those dreadful ones back home."
+      ]
+    },
+    "activities/other_ocean_monument": {
+      "direction": "Warm, enthusiastic, motherly and excited to entertain; persuasive and inviting, never sinister or like a quest objective.",
+      "emotion": [
+        0.6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.28
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "There’s something beautiful beneath the water today. I’ve prepared an ocean monument for you to explore, and you won’t even have to worry about drowning.",
+        "I thought we could visit somewhere a little unusual. There’s a palace beneath the ocean with games, treasure, and some very interesting guardians."
+      ]
+    },
+    "activities/other_nether_fortress": {
+      "direction": "Warm, enthusiastic, motherly and excited to entertain; persuasive and inviting, never sinister or like a quest objective.",
+      "emotion": [
+        0.6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.28
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "I’ve made the Nether much more pleasant for you. There’s a fortress waiting beyond the portal, without nearly as much fire and misery as the real thing.",
+        "How would you like a safer little trip through the Nether? I’ve prepared a fortress with challenges, treasure, and just enough danger to keep things exciting."
+      ]
+    },
+    "activities/other_end_city": {
+      "direction": "Warm, enthusiastic, motherly and excited to entertain; persuasive and inviting, never sinister or like a quest objective.",
+      "emotion": [
+        0.6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.28
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "I’ve built something very far away for you tonight—a city floating above the End. It’s much prettier than the real one, I assure you.",
+        "Come see my version of an End City. Floating islands, strange towers, beautiful views, and some very rare prizes if you make it to the top."
+      ]
+    },
+    "activity_wait/low_trust_low_suspicion": {
+      "prefix": "wait",
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "There’s no rush, sweetheart. The portal will be ready for the next five minutes, so you can head over now or take a little time to relax first. Just don’t wander too far—I wouldn’t want you getting lost before we’ve even started.",
+        "You’ve got five minutes before we begin. Go straight there if you’re excited, or enjoy yourself here for a little while first. Just stay reasonably close, darling. There’s no need to go exploring the whole world.",
+        "The activity will be waiting for you for five minutes, so take your time. Have something to eat, look around the house, whatever you like. Just don’t disappear somewhere far away when we’ve got something so much nicer planned."
+      ]
+    },
+    "activity_wait/mid_trust_mid_suspicion": {
+      "prefix": "wait",
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "You know how this works by now. You’ve got five minutes to reach the portal, so relax for a bit if you like, but don’t get distracted wandering around where you don’t need to be.",
+        "The portal will stay open for five minutes. You’re welcome to go now or enjoy a little free time first, but do try to stay nearby. You have a habit of becoming rather curious when you’re left alone.",
+        "Take a few minutes for yourself if you want, but be at the portal before the five minutes are up. And stay close this time, sweetheart. There’s plenty to enjoy without going searching for things."
+      ]
+    },
+    "activity_wait/high_trust_low_suspicion": {
+      "prefix": "wait",
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "You’ve got five minutes, darling. Take your time—you know I don’t mind you relaxing here. Just stay close and come when you’re ready. I know you wouldn’t want to miss something I made especially for you.",
+        "The portal will wait for you for five minutes. There’s no need to hurry; make yourself comfortable first if you like. Just don’t wander off too far. Everything worth seeing is right here with us.",
+        "Five minutes, sweetheart. Go whenever you’re ready, or stay here and enjoy yourself for a little while. I trust you know better than to go running off when we’ve already made such lovely plans together."
+      ]
+    },
+    "activity_wait/high_suspicion_low_trust": {
+      "prefix": "wait",
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "The portal will remain open for five minutes. You may go now or spend a little time here first, but stay close. I’d rather not have to wonder what you’re doing somewhere you shouldn’t be.",
+        "You have five minutes to get there. Relax if you must, but don’t use that as an excuse to wander off again. I’ve prepared something nice for you, and I expect you to behave long enough to enjoy it.",
+        "Five minutes, sweetheart. That should be more than enough time. You’re free to spend it however you like, provided I don’t find you poking around somewhere that has nothing to do with you."
+      ]
+    },
+    "activity_wait/high_trust_high_suspicion": {
+      "prefix": "wait",
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "You have five minutes, darling. Stay here and relax if you like, or head straight to the portal. Just try not to let that curiosity of yours carry you somewhere unfortunate before then.",
+        "The portal will wait for five minutes. I know you enjoy having a little time to yourself between our activities… though you do tend to find such interesting ways of spending it. Stay close.",
+        "Five minutes, sweetheart. Plenty of time to relax before we begin—as long as you remember what you’re here for. You’ve already discovered quite enough without going searching for more."
+      ]
+    }
+  }
+}

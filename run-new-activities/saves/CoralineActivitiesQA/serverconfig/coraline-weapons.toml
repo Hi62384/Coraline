@@ -1,0 +1,24 @@
+
+[vineSword]
+	#Range: 1 ~ 1200
+	poisonAndSlowTicks = 80
+
+[buttonMace]
+	#Range: 0.5 ~ 6.0
+	splashRadius = 2.5
+	#Range: 0.0 ~ 100.0
+	splashDamage = 5.0
+
+[midnightWand]
+	#Range: 0.0 ~ 100.0
+	projectileDamage = 5.0
+	#40 ticks = 2 seconds. The new key updates existing worlds that used the 50-tick default.
+	#Range: 1 ~ 2400
+	castCooldownTicksV2 = 40
+
+[threadWhip]
+	#Range: 0.0 ~ 3.0
+	pullStrength = 0.8
+	#Range: 1 ~ 2400
+	cooldownTicks = 20
+

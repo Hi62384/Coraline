@@ -1,0 +1,50 @@
+{
+  "reference_unchanged": true,
+  "checks": [
+    {
+      "file": "tutorial_01.wav",
+      "seconds": 19.06621315192744,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8169164657592773,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "While you're here, darling, you're free to go home whenever you like. You can crawl back through your little door or simply go to bed and we'll send you home ourselves. But I do have plenty planned for you, so try not to wander off on your own, especially not too far from the house. There's really nothing out there you need to be looking for.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "tutorial_02.wav",
+      "seconds": 16.105668934240363,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8118653893470764,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Of course, you don't have to stay any longer than you want. The little door will take you straight home, and if you get tired, you can always sleep here instead. But while you are staying with us, I'd much rather you enjoy what we've prepared than go wandering around by yourself. Some places are better left alone.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "tutorial_03.wav",
+      "seconds": 17.963265306122448,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8331341743469238,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Now remember, sweetheart, you can leave whenever you've had enough! Crawl back through your little door, or climb into bed, and we'll tuck you in before sending you home. Until then, stay close and enjoy yourself! I've gone through an awful lot of trouble for you, and I wouldn't want you spoiling the fun by poking around where you shouldn't.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "tutorial_04.wav",
+      "seconds": 14.468662131519274,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8388510346412659,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "You're never trapped here, darling. If you want to go home, your little door is right where you left it, and sleeping here will take you home too. But while you're visiting, behave yourself and don't run off exploring. Your other father and I have made more than enough for you to enjoy right here.",
+      "word_error_rate": 0.0
+    }
+  ],
+  "note": "ASR checks words, not acting. Human listening review is not replaced by these checks."
+}

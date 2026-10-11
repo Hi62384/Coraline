@@ -1,0 +1,28 @@
+# Client presentation only. Restart after changing; no gameplay or global video settings.
+enabled = true
+[sky]
+moonScale = 1.55
+starIntensity = 0.85
+twinkle = 0.09
+shootingStars = true
+auroraIntensity = 0.075
+[palette]
+# Decimal RGB colors. The biome's grass/leaves/water palette is datapack-configurable.
+zenith = 1056329
+horizon = 4545671
+haze = 4545671
+underwater = 1588576
+[light]
+moonlightStrength = 0.53
+lampWarmth = 0.10
+[fog]
+startFraction = 0.43
+distance = 180
+underwaterDistance = 44
+[nature]
+radius = 36
+columnsPerTick = 12
+maximumDecorations = 220
+flowerClusterDensity = 0.32
+maximumMotes = 100
+fireflyDensity = 0.7

@@ -1,0 +1,90 @@
+{
+  "mappings": {
+    "com/coraline/mixin/SpiderWebMovementMixin": {
+      "makeStuckInBlock": "Lnet/minecraft/world/entity/Entity;m_7601_(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/phys/Vec3;)V"
+    },
+    "com/coraline/mixin/ButtonEyesGlowMixin": {
+      "shouldEntityAppearGlowing": "Lnet/minecraft/client/Minecraft;m_91314_(Lnet/minecraft/world/entity/Entity;)Z"
+    },
+    "com/coraline/mixin/ClothingEntityLightMixin": {
+      "getPackedLightCoords": "Lnet/minecraft/client/renderer/entity/EntityRenderDispatcher;m_114394_(Lnet/minecraft/world/entity/Entity;F)I"
+    },
+    "com/coraline/mixin/ActivityGuardianPeacefulMixin": {
+      "shouldDespawnInPeaceful": "Lnet/minecraft/world/entity/monster/Monster;m_8028_()Z"
+    },
+    "com/coraline/mixin/ArtifactCrossbowChargeMixin": {
+      "getChargeDuration": "Lnet/minecraft/world/item/CrossbowItem;m_40939_(Lnet/minecraft/world/item/ItemStack;)I"
+    },
+    "com/coraline/mixin/ActivityMobEyesMixin": {
+      "render": "Lnet/minecraft/client/renderer/entity/layers/EyesLayer;m_6494_(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/Entity;FFFFFF)V"
+    },
+    "com/coraline/mixin/ClothingBlockLightMixin": {
+      "getLightColor(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)I": "Lnet/minecraft/client/renderer/LevelRenderer;m_109537_(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)I"
+    },
+    "com/coraline/mixin/RemoteBodyInputMixin": {
+      "continueAttack": "Lnet/minecraft/client/Minecraft;m_91386_(Z)V",
+      "handleKeybinds": "Lnet/minecraft/client/Minecraft;m_91279_()V"
+    },
+    "com/coraline/mixin/ActivityGuardianAccess": {
+      "setActiveAttackTarget": "m_32817_(I)V"
+    },
+    "com/coraline/mixin/ChunkFutureAccess": {
+      "getChunkFutureMainThread": "m_8456_(IILnet/minecraft/world/level/chunk/ChunkStatus;Z)Ljava/util/concurrent/CompletableFuture;"
+    },
+    "com/coraline/mixin/ClothingArmorValueMixin": {
+      "getArmorValue": "Lnet/minecraft/world/entity/LivingEntity;m_21230_()I"
+    },
+    "com/coraline/mixin/DreamMouseMixin": {
+      "turnPlayer": "Lnet/minecraft/client/MouseHandler;m_91523_()V",
+      "Lnet/minecraft/client/player/LocalPlayer;turn(DD)V": "Lnet/minecraft/client/player/LocalPlayer;m_19884_(DD)V"
+    },
+    "com/coraline/mixin/IceBoatCountdownMixin": {
+      "controlBoat": "Lnet/minecraft/world/entity/vehicle/Boat;m_38396_()V"
+    }
+  },
+  "data": {
+    "searge": {
+      "com/coraline/mixin/SpiderWebMovementMixin": {
+        "makeStuckInBlock": "Lnet/minecraft/world/entity/Entity;m_7601_(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/phys/Vec3;)V"
+      },
+      "com/coraline/mixin/ButtonEyesGlowMixin": {
+        "shouldEntityAppearGlowing": "Lnet/minecraft/client/Minecraft;m_91314_(Lnet/minecraft/world/entity/Entity;)Z"
+      },
+      "com/coraline/mixin/ClothingEntityLightMixin": {
+        "getPackedLightCoords": "Lnet/minecraft/client/renderer/entity/EntityRenderDispatcher;m_114394_(Lnet/minecraft/world/entity/Entity;F)I"
+      },
+      "com/coraline/mixin/ActivityGuardianPeacefulMixin": {
+        "shouldDespawnInPeaceful": "Lnet/minecraft/world/entity/monster/Monster;m_8028_()Z"
+      },
+      "com/coraline/mixin/ArtifactCrossbowChargeMixin": {
+        "getChargeDuration": "Lnet/minecraft/world/item/CrossbowItem;m_40939_(Lnet/minecraft/world/item/ItemStack;)I"
+      },
+      "com/coraline/mixin/ActivityMobEyesMixin": {
+        "render": "Lnet/minecraft/client/renderer/entity/layers/EyesLayer;m_6494_(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/Entity;FFFFFF)V"
+      },
+      "com/coraline/mixin/ClothingBlockLightMixin": {
+        "getLightColor(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)I": "Lnet/minecraft/client/renderer/LevelRenderer;m_109537_(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)I"
+      },
+      "com/coraline/mixin/RemoteBodyInputMixin": {
+        "continueAttack": "Lnet/minecraft/client/Minecraft;m_91386_(Z)V",
+        "handleKeybinds": "Lnet/minecraft/client/Minecraft;m_91279_()V"
+      },
+      "com/coraline/mixin/ActivityGuardianAccess": {
+        "setActiveAttackTarget": "m_32817_(I)V"
+      },
+      "com/coraline/mixin/ChunkFutureAccess": {
+        "getChunkFutureMainThread": "m_8456_(IILnet/minecraft/world/level/chunk/ChunkStatus;Z)Ljava/util/concurrent/CompletableFuture;"
+      },
+      "com/coraline/mixin/ClothingArmorValueMixin": {
+        "getArmorValue": "Lnet/minecraft/world/entity/LivingEntity;m_21230_()I"
+      },
+      "com/coraline/mixin/DreamMouseMixin": {
+        "turnPlayer": "Lnet/minecraft/client/MouseHandler;m_91523_()V",
+        "Lnet/minecraft/client/player/LocalPlayer;turn(DD)V": "Lnet/minecraft/client/player/LocalPlayer;m_19884_(DD)V"
+      },
+      "com/coraline/mixin/IceBoatCountdownMixin": {
+        "controlBoat": "Lnet/minecraft/world/entity/vehicle/Boat;m_38396_()V"
+      }
+    }
+  }
+}

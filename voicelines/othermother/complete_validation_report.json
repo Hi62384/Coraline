@@ -1,0 +1,171 @@
+{
+  "reference_unchanged": true,
+  "checks": [
+    {
+      "file": "activity_complete/low_trust_low_suspicion/complete_01.wav",
+      "seconds": 10.088072562358276,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7744642496109009,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Well, did you have fun, darling? I do hope you liked it. Your other father and I spent quite a while getting everything just right for you. And I think it turned out wonderfully.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "activity_complete/low_trust_low_suspicion/complete_02.wav",
+      "seconds": 11.205532879818595,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7718328833580017,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "So, what did you think? You certainly looked like you were enjoying yourself, and that was only one little thing. We have so many more wonderful ideas for the next time you visit.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "activity_complete/low_trust_low_suspicion/complete_03.wav",
+      "seconds": 9.418321995464852,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7584699392318726,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Wasn't that fun? I've been waiting to see what you'd think of it. It's so nice having someone here who can actually enjoy all the things we make.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "activity_complete/mid_trust_mid_suspicion/complete_01.wav",
+      "seconds": 10.242630385487528,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8403509259223938,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "That was fun, wasn't it? You seemed to be enjoying yourself when you weren't looking around for something else to investigate. You really are a curious little thing.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "activity_complete/mid_trust_mid_suspicion/complete_02.wav",
+      "seconds": 12.19310657596372,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8665090799331665,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Well, sweetheart, did that manage to keep your attention? I'm beginning to learn exactly what you enjoy. Although you still have a habit of getting distracted by things that weren't meant to be part of the fun.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "activity_complete/mid_trust_mid_suspicion/complete_03.wav",
+      "seconds": 11.105759637188209,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8508239984512329,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "I thought you'd like that one. You're becoming rather easy to read lately. Give you something exciting enough, and for a little while at least, you almost forget about all that snooping around.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "activity_complete/high_trust_low_suspicion/complete_01.wav",
+      "seconds": 9.244172335600908,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7697539329528809,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "I knew you'd enjoy that, darling. I'm getting very good at knowing exactly what makes you happy. It's almost as if I understand you better every time you come home.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "activity_complete/high_trust_low_suspicion/complete_02.wav",
+      "seconds": 10.367437641723356,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8346700668334961,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "See? I told you we'd have a wonderful time. You always seem so much happier here, where everything is made especially for you and nobody expects you to struggle for it.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "activity_complete/high_trust_low_suspicion/complete_03.wav",
+      "seconds": 10.335510204081633,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7841668128967285,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "That suited you perfectly sweetheart. Watching you enjoy yourself like that makes me wonder why you ever bother going back. You could have days like this whenever you wanted.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "activity_complete/high_suspicion_low_trust/complete_01.wav",
+      "seconds": 11.614603174603175,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8225704431533813,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Well, I hope you managed to enjoy yourself. We went through quite a lot of trouble arranging all of that for you. It would be a shame if you were too busy worrying about other things to appreciate it.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "activity_complete/high_suspicion_low_trust/complete_02.wav",
+      "seconds": 12.912925170068027,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.77362060546875,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Was that enjoyable enough for you, sweetheart? I keep giving you wonderful things to do, and yet you always seem to have half your attention somewhere else. I do wonder what you're looking for.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "activity_complete/high_suspicion_low_trust/complete_03.wav",
+      "seconds": 11.717097505668935,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8341621160507202,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "I hope you had fun! Everything here is meant to make you happy, after all. You might enjoy yourself a great deal more if you stop treating every little corner of this world like some mystery that needs solving.",
+      "word_error_rate": 0.02564102564102564
+    },
+    {
+      "file": "activity_complete/high_trust_high_suspicion/complete_01.wav",
+      "seconds": 12.413696145124717,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7121046781539917,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "That was fun, wasn't it, darling? You can spend as much time as you like wondering what's really going on here, but somehow you always manage to enjoy yourself anyway. Funny how that works.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "activity_complete/high_trust_high_suspicion/complete_02.wav",
+      "seconds": 11.600997732426304,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8096663355827332,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "You seem to have a wonderful time. Whatever doubts you may have about this place, they never seem quite strong enough to stop you from enjoying everything I give you. I think that says quite a lot.",
+      "word_error_rate": 0.02702702702702703
+    },
+    {
+      "file": "activity_complete/high_trust_high_suspicion/complete_03.wav",
+      "seconds": 13.772063492063491,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8279305100440979,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "I knew you'd like it. Sweetheart. You're such a curious thing. You question everything. Poke around where you shouldn't, and yet you keep coming back for more. Perhaps you like this world more than you're willing to admit.",
+      "word_error_rate": 0.0
+    }
+  ],
+  "note": "ASR checks words, not acting. Human listening review is not replaced by these checks."
+}

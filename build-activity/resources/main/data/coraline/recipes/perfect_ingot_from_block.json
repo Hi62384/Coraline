@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "coraline:perfect_block"
+    }
+  ],
+  "result": {
+    "item": "coraline:perfect_ingot",
+    "count": 9
+  }
+}

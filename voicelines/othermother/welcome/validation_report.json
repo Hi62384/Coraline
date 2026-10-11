@@ -1,0 +1,156 @@
+{
+  "reference_unchanged": true,
+  "checks": [
+    {
+      "file": "low_trust_low_suspicion/welcome_01.wav",
+      "seconds": 5.279002267573696,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7062009572982788,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "There you are! Come in, come in! We've been working all day to make everything perfect for you.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "low_trust_low_suspicion/welcome_02.wav",
+      "seconds": 6.28671201814059,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.6497204899787903,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, I'm so happy you came back. You haven't even seen half of the wonderful things we have planned yet.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "low_trust_low_suspicion/welcome_03.wav",
+      "seconds": 6.097142857142857,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.6886268258094788,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Welcome, darling. Don't just stand there. Come see what your other father and I made for you this time",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "mid_trust_mid_suspicion/welcome_01.wav",
+      "seconds": 7.247256235827664,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.841373085975647,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "You're back. Good. I was beginning to think I'd have to send someone looking for you.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "mid_trust_mid_suspicion/welcome_02.wav",
+      "seconds": 6.246802721088436,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8447366952896118,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "There you are, sweetheart. I've already got everything ready. So I hope you didn't come here just to wander around again.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "mid_trust_mid_suspicion/welcome_03.wav",
+      "seconds": 7.537505668934241,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.872208833694458,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "I wondered when you'd arrive. You've become quite comfortable here lately. And quite curious too.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "high_trust_low_suspicion/welcome_01.wav",
+      "seconds": 3.7642630385487528,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.6821678280830383,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Welcome home, darling. I left everything just the way you like it.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "high_trust_low_suspicion/welcome_02.wav",
+      "seconds": 6.748027210884354,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8447761535644531,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "There's my favorite little troublemaker. I knew you wouldn't stay away from home for very long.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "high_trust_low_suspicion/welcome_03.wav",
+      "seconds": 6.107120181405896,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.771858811378479,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "You don't need to knock any more sweetheart. This is your home too, whether you've realized it yet or not.",
+      "word_error_rate": 0.09523809523809523
+    },
+    {
+      "file": "high_suspicion_low_trust/welcome_01.wav",
+      "seconds": 5.618231292517007,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7895703911781311,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Well, you came back. I wasn't sure you would after your behavior last time.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "high_suspicion_low_trust/welcome_02.wav",
+      "seconds": 10.962448979591837,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8046285510063171,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Welcome, sweetheart. I do hope today you'll spend more time enjoying yourself and less time poking around where you shouldn't.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "high_suspicion_low_trust/welcome_03.wav",
+      "seconds": 10.277641723356009,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8075554370880127,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "There you are. Let's have a pleasant visit this time, shall we? I'd hate for there to be any more. Misunderstandings.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "high_trust_high_suspicion/welcome_01.wav",
+      "seconds": 7.061496598639456,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7996594905853271,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "There you are, darling. You keep coming back, even after everything you've seen. Isn't that interesting?",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "high_trust_high_suspicion/welcome_02.wav",
+      "seconds": 6.620317460317461,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7625999450683594,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Welcome home. You know so many of my little secrets now. And yet you still can't seem to stay away.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "high_trust_high_suspicion/welcome_03.wav",
+      "seconds": 8.192380952380953,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8205738067626953,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "I was expecting you. You've been terribly curious lately. But I suppose that doesn't matter if you've finally decided where you belong.",
+      "word_error_rate": 0.0
+    }
+  ],
+  "note": "ASR checks words, not acting. Human listening review is not replaced by these checks."
+}

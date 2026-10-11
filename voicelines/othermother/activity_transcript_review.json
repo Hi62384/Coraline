@@ -1,0 +1,56 @@
+[
+  {
+    "file": "activities/dream_parkour/proposal_02.wav",
+    "expected": "How about something exciting? I’ve put together a dreamlike obstacle course with floating platforms, strange jumps, and a very nice prize at the end.",
+    "first_transcription": "How about something exciting? I've put together a dream like obstacle course with floating platforms, strange jumps, and a very nice prize at the end.",
+    "beam_transcription": "How about something exciting? I've put together a dream-like obstacle course with floating platforms, strange jumps, and a very nice prize at the end.",
+    "beam_word_error_rate": 0.08
+  },
+  {
+    "file": "activities/cake_making_contest/proposal_01.wav",
+    "expected": "I’ve set everything out for a cake-making contest. Let’s see if you can make something prettier—and tastier—than your Other Father can.",
+    "first_transcription": "I've said everything out for a cake-making contest. Let's see if you can make something prettier. And tastier. And your other father can.",
+    "beam_transcription": "I've said everything out for a cake-making contest. Let's see if you can make something prettier. And tastier. And your other father can.",
+    "beam_word_error_rate": 0.07692307692307693,
+    "excerpt_split_seconds": 4.0,
+    "excerpt_transcriptions": [
+      "I've set everything out for a cake-making contest. Let's...",
+      "Let's see if you can make something prettier and tastier than your other father can."
+    ]
+  },
+  {
+    "file": "activities/archery_contest/proposal_01.wav",
+    "expected": "I’ve put together a little archery competition for you. There are moving targets, trick shots, and some rather nice prizes if your aim is good.",
+    "first_transcription": "I've put together a little archery competition for you. They're moving targets, trick shots, and some rather nice prizes if your aim is good.",
+    "beam_transcription": "I've put together a little archery competition for you. There are moving targets, trick shots, and some rather nice prizes if your aim is good.",
+    "beam_word_error_rate": 0.0
+  },
+  {
+    "file": "activities/other_mineshaft/proposal_01.wav",
+    "expected": "I’ve prepared an underground adventure for you today. There’s an old mineshaft filled with minecarts, crystal tunnels, and plenty of treasure.",
+    "first_transcription": "I've prepared an underground adventure for you today. There's an old mine shaft filled with mine carts, crystal tunnels, and plenty of treasure.",
+    "beam_transcription": "I've prepared an underground adventure for you today. There's an old mine shaft filled with mine carts, crystal tunnels, and plenty of treasure.",
+    "beam_word_error_rate": 0.17391304347826086
+  },
+  {
+    "file": "activities/other_mineshaft/proposal_02.wav",
+    "expected": "How would you like to go beneath the world for a while? I’ve made a much nicer mineshaft than those dreadful ones back home.",
+    "first_transcription": "How would you like to go beneath the world for a while? I've made a much nicer mine shaft than those dreadful ones back home.",
+    "beam_transcription": "How would you like to go beneath the world for a while? I've made a much nicer mine shaft than those dreadful ones back home.",
+    "beam_word_error_rate": 0.08
+  },
+  {
+    "file": "activity_wait/high_trust_low_suspicion/wait_03.wav",
+    "expected": "Five minutes, sweetheart. Go whenever you’re ready, or stay here and enjoy yourself for a little while. I trust you know better than to go running off when we’ve already made such lovely plans together.",
+    "first_transcription": "5 minutes! Sweetheart! Go whenever you're ready, or stay here and enjoy yourself for a little while. I trust you know better than to go running off when we've already made such lovely plans together.",
+    "beam_transcription": "5 minutes! Sweetheart! Go whenever you're ready, or stay here and enjoy yourself for a little while. I trust you know better than to go running off when we've already made such lovely plans together.",
+    "beam_word_error_rate": 0.02702702702702703
+  },
+  {
+    "file": "activity_wait/high_trust_high_suspicion/wait_03.wav",
+    "expected": "Five minutes, sweetheart. Plenty of time to relax before we begin—as long as you remember what you’re here for. You’ve already discovered quite enough without going searching for more.",
+    "first_transcription": "5 minutes, sweetheart. Plenty of time to relax before we begin, as long as you remember what you're here for. You've already discovered quite enough without going searching for more.",
+    "beam_transcription": "Five minutes, sweetheart. Plenty of time to relax before we begin, as long as you remember what you're here for. You've already discovered quite enough without going searching for more.",
+    "beam_word_error_rate": 0.0
+  }
+]

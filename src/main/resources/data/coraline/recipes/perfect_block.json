@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "MMM",
+    "MMM",
+    "MMM"
+  ],
+  "key": {
+    "M": {
+      "item": "coraline:perfect_ingot"
+    }
+  },
+  "result": {
+    "item": "coraline:perfect_block"
+  }
+}

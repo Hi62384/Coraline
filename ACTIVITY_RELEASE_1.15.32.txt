@@ -1,0 +1,13 @@
+Coraline 1.15.32 - Woodland Mansion witness eye correction
+
+Allay buttons now align with the actual head-local eye centres. The original
+tall white eye strips are covered with matching cyan skin sampled from the
+vanilla texture before drawing two separate round buttons.
+Evoker and Vindicator buttons now use the correct wider eye spacing and cover
+the complete vanilla eyes, rather than only the inner pupil area.
+Button UVs exclude transparent padding to avoid undersized flattened eyes.
+Existing animated head/root transforms remain in use. No new texture assets.
+
+Files: MansionWitnessEyes.java; gradle.properties.
+Validation: checked vanilla model geometry and texture pixels; Java compilation
+passed. This correction has not yet received an in-game visual inspection.

@@ -1,0 +1,19 @@
+Java: 1.8.0_491, JVM: 25.491-b10 (Oracle Corporation), Arch: amd64
+Note: SpongePowered MIXIN Annotation Processor Version=0.8.5
+Note: Supported obfuscation types: ObfuscationServiceMCP supports [searge,notch]
+Note: Loading searge mappings from C:\Users\User1\Documents\Downloads\Coraline\build-activity\generatedMappings\clothing.srg
+Note: Writing refmap to C:\Users\User1\Documents\Downloads\Coraline\build-activity\generated\mixin\coraline.refmap.json
+Note: Writing refmap to C:\Users\User1\Documents\Downloads\Coraline\build-activity\generated\mixin\coraline.refmap.json
+Note: Writing refmap to C:\Users\User1\Documents\Downloads\Coraline\build-activity\generated\mixin\coraline.refmap.json
+Note: Writing refmap to C:\Users\User1\Documents\Downloads\Coraline\build-activity\generated\mixin\coraline.refmap.json
+C:\Users\User1\Documents\Downloads\Coraline\src\main\java\com\coraline\client\ClientModEvents.java:69: warning: [removal] setRenderLayer(Block,RenderType) in ItemBlockRenderTypes has been deprecated and marked for removal
+        event.enqueueWork(()->net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(
+                                                                                ^
+C:\Users\User1\Documents\Downloads\Coraline\src\main\java\com\coraline\client\clothing\SculptedArmorModel.java:29: warning: [removal] ResourceLocation(String,String) in ResourceLocation has been deprecated and marked for removal
+        var resource=new ResourceLocation("coraline","sculpted/"+id+".json");
+                     ^
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: C:\Users\User1\Documents\Downloads\Coraline\src\main\java\com\coraline\client\ClientModEvents.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+2 warnings

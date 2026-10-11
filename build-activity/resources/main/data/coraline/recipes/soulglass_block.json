@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "MMM",
+    "MMM",
+    "MMM"
+  ],
+  "key": {
+    "M": {
+      "item": "coraline:soulglass"
+    }
+  },
+  "result": {
+    "item": "coraline:soulglass_block"
+  }
+}

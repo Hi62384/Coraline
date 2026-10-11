@@ -1,0 +1,7 @@
+WARNING:root:Coremltools is not installed. If you plan to use a CoreML Saved Model, reinstall basic-pitch with `pip install 'basic-pitch[coreml]'`
+WARNING:root:tflite-runtime is not installed. If you plan to use a TFLite Model, reinstall basic-pitch with `pip install 'basic-pitch tflite-runtime'` or `pip install 'basic-pitch[tf]'
+WARNING:root:Tensorflow is not installed. If you plan to use a TF Saved Model, reinstall basic-pitch with `pip install 'basic-pitch[tf]'`
+Minecraft 180.0 seconds; 332 prompts; 0 background attacks (disabled)
+Clark 180.0 seconds; 331 prompts; 0 background attacks (disabled)
+Sweden 180.0 seconds; 293 prompts; 0 background attacks (disabled)
+Subwoofer Lullaby 180.0 seconds; 318 prompts; 0 background attacks (disabled)

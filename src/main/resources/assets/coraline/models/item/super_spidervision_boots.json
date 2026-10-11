@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "coraline:item/super_spidervision_boots"
+  }
+}

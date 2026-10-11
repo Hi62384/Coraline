@@ -1,0 +1,101 @@
+Coraline 1.15.36 — dropper, lantern performance, and Festival follow-up
+
+Minecraft 1.20.1 / Forge; Java 17.
+Production JAR: build-activity/libs/coraline-1.15.36.jar
+Size: 66,861,858 bytes (66.86 MB / 63.76 MiB), slightly smaller than 1.15.35.
+SHA256: 139B2B8EB7D5C5B9FA6F7BFE99D7DA6C790EB0C8D1A06877FC2D3665A8FB4B16
+Replace the previous Coraline JAR; do not install two versions together.
+
+Nether Fortress
+- Five normal-gravity dropper courses use scattered horizontal beams, vertical
+  basalt posts, Nether brick fences, and increasingly dense obstacles. They no longer
+  consist of stacked solid floors with small holes.
+- Lava targets shrink through 11x11, 9x9, 7x7, 5x5, and 3x3. Missing the target
+  fails; lava inside the target advances the level. Blackstone is not the finish.
+- Swept player-body collision detects side impacts and batched movement packets.
+  Hidden gate-window checks no longer fail an otherwise obstacle-free fall.
+- Safe teleport handoff grace, normal air steering, fire protection, owner-only
+  scoring, rewards, portals, cleanup, and five-level lifecycle are reused.
+- Live-client autopilot completed five actual normal-gravity falls and all four
+  between-level handoffs without the old success-then-failure bug.
+
+Moonlit lantern
+- Removed per-tick full-volume lighting snapshots and full-volume diff scans.
+- Immutable emitter snapshots use cached coarse occlusion fields, including
+  intermediate wall checks, with fractional-position light sampling.
+- Empty chunk sections are not rebuilt. Block relighting is queued, deduplicated,
+  capped at two section requests per tick, and triggered by meaningful movement.
+- Held light still brightens the mine; no moving invisible world blocks returned.
+- Same-scene moving-player client measurements, 300 samples after warmup:
+  no lantern: average 112.93 FPS; lighting tick mean 0.0295 ms, max 0.0873 ms.
+  held lantern: average 111.42 FPS; lighting tick mean 0.0676 ms, max 0.3208 ms.
+  These are one local test, not guarantees for every computer or shader setup.
+
+Music Festival
+- Hard limit: 180 seconds of performance, after the existing three-second countdown.
+- Four rotating three-minute solo note-block arrangements: Minecraft, Clark,
+  Sweden, and Subwoofer Lullaby. Existing recordings/masters are not truncated.
+- Only a pressed note produces a musical note. No automatic backing/harmony layer
+  and no off-key sound for a note the player merely misses. Wrong presses still
+  produce off-key feedback. Crowd/score penalties for misses remain.
+- A single confident melodic voice replaces the previous polyphonic detection
+  layer. Sustained notes and short melodic repeats support the rising difficulty.
+- Falling-note travel time decreases from 30 to 12 ticks during the performance.
+- Notes per successive 45-second section:
+  Minecraft:        40 / 69 / 96 / 127
+  Clark:            37 / 69 / 93 / 132
+  Sweden:           22 / 65 / 79 / 127
+  Subwoofer Lullaby: 54 / 51 / 83 / 130
+- Minimum spacing is five ticks; no simultaneous impossible input bursts.
+- Existing rebindable keys, ownership, station lock, physical crowd, donation
+  pool, legitimate reward delivery, and activity cleanup are preserved.
+- Actual client check: 33 input presses, 33 performed harp sounds, and no original
+  background recording. Early/finale highway and stage screenshots inspected.
+- Limitation: these are automatically transcribed, simplified three-minute
+  arrangements, not note-perfect full-length reproductions of the recordings.
+  Exact musical fidelity and difficulty preferences still need player listening.
+
+Verification
+- All 121 combined GameTests passed. Includes 5,000 seeded normal-gravity route
+  simulations with actual obstacle checks, shrinking targets, collision failures,
+  landing/handoff regressions, chart caps/density, and existing activity/gift tests.
+- Production build passed; six asset optimizer regression tests passed.
+- Package verifier passed: 535 textures, 293 sound events, complete audio timings,
+  JSON/ZIP integrity, and preserved duration/channels for 23 resampled tracks.
+  Compared with the unoptimized 1.15.24 baseline: 175.05 MB -> 66.86 MB (61.8% smaller).
+- Package verification output: release36-package.log.
+- Largest compressed JAR entries remain existing activity music (1.5–2.2 MB each).
+- No GameTests, VisualCheck/RenderCheck classes, test templates, or transcription
+  tool environments were found in the production JAR.
+- Local client dropper and lantern checks: dropper36-client.log.
+- Local client Festival/stair/map/laser smoke check: festival36-client.log.
+- Regression output: release36-tests.log.
+- Build output: release36-build.log.
+- Screenshots: artwork/dropper36_level_1.png through dropper36_level_5.png;
+  artwork/lantern36_1.png and lantern36_2.png; revision35_music_early.png and
+  revision35_music_finale.png were refreshed by the existing development harness.
+- No new runtime artwork or music recordings added. Asset masters are preserved.
+- This release addresses the current dropper/lantern/Festival follow-ups; it does
+  not claim a new exhaustive in-game audit of every historical request in the chat.
+
+Files changed/created
+gradle.properties; build.gradle
+src/main/java/com/coraline/feast/FortressDropper.java
+src/main/java/com/coraline/feast/FortressActivity.java
+src/main/java/com/coraline/client/clothing/ClothingLight.java
+src/main/java/com/coraline/feast/FestivalChart.java
+src/main/java/com/coraline/feast/MusicFestivalActivity.java
+src/main/resources/assets/coraline/festival_charts.json
+tools/build_festival_charts.py
+src/activitytest/java/com/coraline/feast/FortressDropperGameTests.java
+src/activitytest/java/com/coraline/feast/ActivityRevisionGameTests.java
+src/activitytest/java/com/coraline/feast/ActivityFollowupGameTests.java
+src/activitytest/java/com/coraline/feast/ExpeditionGameTests.java
+src/activitytest/java/com/coraline/feast/NewActivitiesGameTests.java
+src/rendercheck/java/com/coraline/feast/DropperVisualCheck.java
+src/rendercheck/java/com/coraline/feast/FortressFallVisualCheck.java
+src/rendercheck/java/com/coraline/feast/ActivityRevisionVisualCheck.java
+src/rendercheck/java/com/coraline/feast/RevisionVisualCheck.java
+ACTIVITY_RELEASE_1.15.36.txt
+
+Development checks are excluded from the production JAR.

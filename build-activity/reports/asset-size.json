@@ -1,0 +1,4692 @@
+{
+  "before_bytes": 220356952,
+  "after_bytes": 107215067,
+  "saved_bytes": 113141885,
+  "estimated_packaged_bytes": 72022057,
+  "textures": [
+    {
+      "file": "assets/coraline/textures/block/bed_cloth.png",
+      "before": 118,
+      "after": 115,
+      "size": [
+        16,
+        16
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/block/bed_pillow.png",
+      "before": 110,
+      "after": 107,
+      "size": [
+        16,
+        16
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/block/moonstone_block.png",
+      "before": 39700,
+      "after": 39652,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/block/other_diamond_block.png",
+      "before": 44057,
+      "after": 44024,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/block/other_iron_block.png",
+      "before": 34693,
+      "after": 34646,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/block/parents_available.png",
+      "before": 205,
+      "after": 195,
+      "size": [
+        16,
+        16
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/block/perfect_block.png",
+      "before": 33785,
+      "after": 33689,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/block/perfect_farmland_top.png",
+      "before": 1609767,
+      "after": 327508,
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/block/soulglass_block.png",
+      "before": 37939,
+      "after": 37921,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/block/tiny_bricks.png",
+      "before": 202,
+      "after": 195,
+      "size": [
+        16,
+        16
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/block/tiny_door.png",
+      "before": 220,
+      "after": 208,
+      "size": [
+        16,
+        16
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/block/tunnel_fabric.png",
+      "before": 704618,
+      "after": 513944,
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/block/welcome_cake_side.png",
+      "before": 176099,
+      "after": 143413,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/block/welcome_cake_top.png",
+      "before": 188288,
+      "after": 153851,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/doll_button_eyes.png",
+      "before": 166,
+      "after": 161,
+      "size": [
+        32,
+        16
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/festival_cake_frosting_atlas.png",
+      "before": 1772534,
+      "after": 477213,
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/festival_cake_sponge_atlas.png",
+      "before": 1405216,
+      "after": 368084,
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_0.png",
+      "before": 3337,
+      "after": 3210,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_1.png",
+      "before": 3095,
+      "after": 2966,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_10.png",
+      "before": 3088,
+      "after": 2955,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_11.png",
+      "before": 2656,
+      "after": 2557,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_12.png",
+      "before": 3287,
+      "after": 3169,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_13.png",
+      "before": 3032,
+      "after": 2926,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_14.png",
+      "before": 3032,
+      "after": 2901,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_15.png",
+      "before": 2645,
+      "after": 2531,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_16.png",
+      "before": 3292,
+      "after": 3117,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_17.png",
+      "before": 3102,
+      "after": 2982,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_18.png",
+      "before": 3064,
+      "after": 2891,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_19.png",
+      "before": 2537,
+      "after": 2427,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_2.png",
+      "before": 3094,
+      "after": 2926,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_20.png",
+      "before": 3374,
+      "after": 3214,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_21.png",
+      "before": 3111,
+      "after": 3014,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_22.png",
+      "before": 2986,
+      "after": 2868,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_23.png",
+      "before": 2562,
+      "after": 2444,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_24.png",
+      "before": 3274,
+      "after": 3144,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_25.png",
+      "before": 3046,
+      "after": 2945,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_26.png",
+      "before": 3087,
+      "after": 2949,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_27.png",
+      "before": 2689,
+      "after": 2585,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_28.png",
+      "before": 3353,
+      "after": 3199,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_29.png",
+      "before": 3010,
+      "after": 2878,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_3.png",
+      "before": 2740,
+      "after": 2622,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_30.png",
+      "before": 3007,
+      "after": 2891,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_31.png",
+      "before": 2635,
+      "after": 2513,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_32.png",
+      "before": 3231,
+      "after": 3068,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_33.png",
+      "before": 3074,
+      "after": 2961,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_34.png",
+      "before": 3141,
+      "after": 3026,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_35.png",
+      "before": 2750,
+      "after": 2613,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_36.png",
+      "before": 3360,
+      "after": 3219,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_37.png",
+      "before": 3025,
+      "after": 2918,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_38.png",
+      "before": 2970,
+      "after": 2852,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_39.png",
+      "before": 2720,
+      "after": 2591,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_4.png",
+      "before": 3257,
+      "after": 3143,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_40.png",
+      "before": 3249,
+      "after": 3137,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_41.png",
+      "before": 3043,
+      "after": 2936,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_42.png",
+      "before": 3162,
+      "after": 3031,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_43.png",
+      "before": 2688,
+      "after": 2563,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_44.png",
+      "before": 3311,
+      "after": 3157,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_45.png",
+      "before": 3039,
+      "after": 2914,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_46.png",
+      "before": 2977,
+      "after": 2837,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_47.png",
+      "before": 2619,
+      "after": 2508,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_48.png",
+      "before": 3224,
+      "after": 3103,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_49.png",
+      "before": 3000,
+      "after": 2868,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_5.png",
+      "before": 3071,
+      "after": 2933,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_50.png",
+      "before": 3191,
+      "after": 3054,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_51.png",
+      "before": 2715,
+      "after": 2589,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_52.png",
+      "before": 3347,
+      "after": 3215,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_53.png",
+      "before": 3130,
+      "after": 3017,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_54.png",
+      "before": 3088,
+      "after": 2949,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_55.png",
+      "before": 2654,
+      "after": 2525,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_56.png",
+      "before": 3329,
+      "after": 3198,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_57.png",
+      "before": 3034,
+      "after": 2933,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_58.png",
+      "before": 3041,
+      "after": 2906,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_59.png",
+      "before": 2606,
+      "after": 2491,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_6.png",
+      "before": 3042,
+      "after": 2928,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_60.png",
+      "before": 3299,
+      "after": 3170,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_61.png",
+      "before": 3170,
+      "after": 3040,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_62.png",
+      "before": 2971,
+      "after": 2835,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_63.png",
+      "before": 2619,
+      "after": 2490,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_7.png",
+      "before": 2706,
+      "after": 2589,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_8.png",
+      "before": 3119,
+      "after": 2961,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/dad_9.png",
+      "before": 3024,
+      "after": 2923,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_0.png",
+      "before": 3403,
+      "after": 3254,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_1.png",
+      "before": 3283,
+      "after": 3129,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_10.png",
+      "before": 3107,
+      "after": 2966,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_11.png",
+      "before": 2742,
+      "after": 2608,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_12.png",
+      "before": 3409,
+      "after": 3278,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_13.png",
+      "before": 3182,
+      "after": 3068,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_14.png",
+      "before": 3129,
+      "after": 2990,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_15.png",
+      "before": 2785,
+      "after": 2642,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_16.png",
+      "before": 3347,
+      "after": 3202,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_17.png",
+      "before": 3232,
+      "after": 3084,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_18.png",
+      "before": 3192,
+      "after": 3042,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_19.png",
+      "before": 2717,
+      "after": 2586,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_2.png",
+      "before": 3189,
+      "after": 3064,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_20.png",
+      "before": 3356,
+      "after": 3166,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_21.png",
+      "before": 3165,
+      "after": 3019,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_22.png",
+      "before": 3103,
+      "after": 2954,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_23.png",
+      "before": 2784,
+      "after": 2650,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_24.png",
+      "before": 3300,
+      "after": 3167,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_25.png",
+      "before": 3075,
+      "after": 2971,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_26.png",
+      "before": 3212,
+      "after": 3080,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_27.png",
+      "before": 2790,
+      "after": 2640,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_28.png",
+      "before": 3403,
+      "after": 3258,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_29.png",
+      "before": 3197,
+      "after": 3049,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_3.png",
+      "before": 2735,
+      "after": 2616,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_30.png",
+      "before": 3188,
+      "after": 3055,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_31.png",
+      "before": 2785,
+      "after": 2636,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_32.png",
+      "before": 3355,
+      "after": 3201,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_33.png",
+      "before": 3222,
+      "after": 3093,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_34.png",
+      "before": 3299,
+      "after": 3145,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_35.png",
+      "before": 2782,
+      "after": 2642,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_36.png",
+      "before": 3548,
+      "after": 3387,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_37.png",
+      "before": 3268,
+      "after": 3104,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_38.png",
+      "before": 3084,
+      "after": 2953,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_39.png",
+      "before": 2655,
+      "after": 2517,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_4.png",
+      "before": 3438,
+      "after": 3309,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_40.png",
+      "before": 3405,
+      "after": 3251,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_41.png",
+      "before": 3174,
+      "after": 3057,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_42.png",
+      "before": 3160,
+      "after": 3005,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_43.png",
+      "before": 2648,
+      "after": 2556,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_44.png",
+      "before": 3423,
+      "after": 3253,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_45.png",
+      "before": 3088,
+      "after": 2965,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_46.png",
+      "before": 3015,
+      "after": 2874,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_47.png",
+      "before": 2660,
+      "after": 2543,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_48.png",
+      "before": 3356,
+      "after": 3200,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_49.png",
+      "before": 3134,
+      "after": 3013,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_5.png",
+      "before": 3201,
+      "after": 3062,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_50.png",
+      "before": 3199,
+      "after": 3041,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_51.png",
+      "before": 2788,
+      "after": 2605,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_52.png",
+      "before": 3421,
+      "after": 3258,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_53.png",
+      "before": 3142,
+      "after": 3021,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_54.png",
+      "before": 3049,
+      "after": 2928,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_55.png",
+      "before": 2743,
+      "after": 2622,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_56.png",
+      "before": 3363,
+      "after": 3218,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_57.png",
+      "before": 3201,
+      "after": 3097,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_58.png",
+      "before": 3220,
+      "after": 3093,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_59.png",
+      "before": 2803,
+      "after": 2677,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_6.png",
+      "before": 3143,
+      "after": 2994,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_60.png",
+      "before": 3352,
+      "after": 3190,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_61.png",
+      "before": 3151,
+      "after": 3006,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_62.png",
+      "before": 3063,
+      "after": 2889,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_63.png",
+      "before": 2788,
+      "after": 2671,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_7.png",
+      "before": 2707,
+      "after": 2572,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_8.png",
+      "before": 3401,
+      "after": 3292,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/parents/mom_9.png",
+      "before": 3177,
+      "after": 3033,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/entity/wybie_skin.png",
+      "before": 3694,
+      "after": 3631,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/bacon_and_eggs.png",
+      "before": 33292,
+      "after": 30951,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/beldam_sewing_needle.png",
+      "before": 476194,
+      "after": 33910,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/beldam_weave_boots.png",
+      "before": 2282668,
+      "after": 108143,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/beldam_weave_chestplate.png",
+      "before": 2447346,
+      "after": 125334,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/beldam_weave_helmet.png",
+      "before": 1954680,
+      "after": 93773,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/beldam_weave_leggings.png",
+      "before": 1776340,
+      "after": 83916,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/bottomless_candy_bag.png",
+      "before": 33953,
+      "after": 32164,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/builders_dream.png",
+      "before": 638789,
+      "after": 50511,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/button.png",
+      "before": 22486,
+      "after": 21063,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/button_mace.png",
+      "before": 18749,
+      "after": 17976,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/buttonguard_boots.png",
+      "before": 110101,
+      "after": 109859,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/buttonguard_chestplate.png",
+      "before": 112852,
+      "after": 112492,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/buttonguard_helmet.png",
+      "before": 107303,
+      "after": 106771,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/buttonguard_leggings.png",
+      "before": 82679,
+      "after": 82189,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/chocolate_milkshake.png",
+      "before": 4718,
+      "after": 4608,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/circus_jacket.png",
+      "before": 95909,
+      "after": 95820,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/cocoa_beetles.png",
+      "before": 30120,
+      "after": 29463,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/comfy_pajamas.png",
+      "before": 78092,
+      "after": 77566,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/comfy_silk_boots.png",
+      "before": 106529,
+      "after": 106027,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/comfy_silk_chestplate.png",
+      "before": 113509,
+      "after": 112997,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/comfy_silk_helmet.png",
+      "before": 100461,
+      "after": 99719,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/comfy_silk_leggings.png",
+      "before": 94239,
+      "after": 93509,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/corn_on_the_cob.png",
+      "before": 7539,
+      "after": 7223,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/cotton_candy.png",
+      "before": 25470,
+      "after": 21286,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/cotton_candy_1.png",
+      "before": 19118,
+      "after": 16126,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/cotton_candy_2.png",
+      "before": 14462,
+      "after": 12426,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/cupcakes.png",
+      "before": 32235,
+      "after": 27604,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/dads_slime.png",
+      "before": 4266,
+      "after": 4223,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/dream_staff.png",
+      "before": 456238,
+      "after": 33326,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/dreamstone.png",
+      "before": 808240,
+      "after": 63249,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/dreamweave_boots.png",
+      "before": 113614,
+      "after": 113189,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/dreamweave_chestplate.png",
+      "before": 116152,
+      "after": 115697,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/dreamweave_helmet.png",
+      "before": 107859,
+      "after": 107065,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/dreamweave_leggings.png",
+      "before": 80222,
+      "after": 79968,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/feather_boots.png",
+      "before": 93221,
+      "after": 92419,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/fruit_punch.png",
+      "before": 6708,
+      "after": 6327,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/garden_mantis_arm.png",
+      "before": 1053976,
+      "after": 72474,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/garden_overalls.png",
+      "before": 71457,
+      "after": 71064,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/garden_vines_boots.png",
+      "before": 97161,
+      "after": 96832,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/garden_vines_chestplate.png",
+      "before": 113560,
+      "after": 113057,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/garden_vines_helmet.png",
+      "before": 105870,
+      "after": 105172,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/garden_vines_leggings.png",
+      "before": 84616,
+      "after": 84166,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/golden_chicken_breast.png",
+      "before": 6257,
+      "after": 6176,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/hot_dog_in_bun.png",
+      "before": 30076,
+      "after": 25694,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/kiwi_milkshake.png",
+      "before": 4668,
+      "after": 4361,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/lemonade.png",
+      "before": 26613,
+      "after": 22690,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/lollipop.png",
+      "before": 24410,
+      "after": 21483,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/luck_boots.png",
+      "before": 2272247,
+      "after": 118727,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/luck_chestplate.png",
+      "before": 2620821,
+      "after": 135025,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/luck_helmet.png",
+      "before": 2165511,
+      "after": 97246,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/luck_leggings.png",
+      "before": 1759715,
+      "after": 93364,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/magic_umbrella.png",
+      "before": 554353,
+      "after": 39906,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/mango_milkshake.png",
+      "before": 4520,
+      "after": 4230,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/mashed_potatoes.png",
+      "before": 7010,
+      "after": 6425,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/midnight_boots.png",
+      "before": 85584,
+      "after": 85171,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/midnight_chestplate.png",
+      "before": 77779,
+      "after": 77517,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/midnight_cloak_boots.png",
+      "before": 94066,
+      "after": 93672,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/midnight_cloak_helmet.png",
+      "before": 95443,
+      "after": 94417,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/midnight_cloak_leggings.png",
+      "before": 74586,
+      "after": 73981,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/midnight_coat.png",
+      "before": 83124,
+      "after": 82896,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/midnight_crossbow.png",
+      "before": 871254,
+      "after": 60375,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/midnight_goggles.png",
+      "before": 61676,
+      "after": 61527,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/midnight_helmet.png",
+      "before": 85471,
+      "after": 84495,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/midnight_leggings.png",
+      "before": 60925,
+      "after": 60595,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/miners_boots.png",
+      "before": 2339970,
+      "after": 113009,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/miners_chestplate.png",
+      "before": 2623069,
+      "after": 134126,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/miners_helmet.png",
+      "before": 2086317,
+      "after": 104202,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/miners_leggings.png",
+      "before": 1850736,
+      "after": 98737,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/moonlit_lantern.png",
+      "before": 676738,
+      "after": 48535,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/moonstone.png",
+      "before": 30612,
+      "after": 24206,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/moonstone_axe.png",
+      "before": 641161,
+      "after": 45086,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/moonstone_boots.png",
+      "before": 2070222,
+      "after": 111855,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/moonstone_chestplate.png",
+      "before": 2444086,
+      "after": 138482,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/moonstone_helmet.png",
+      "before": 1772734,
+      "after": 99574,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/moonstone_hoe.png",
+      "before": 464023,
+      "after": 32362,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/moonstone_leggings.png",
+      "before": 1361768,
+      "after": 75598,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/moonstone_pickaxe.png",
+      "before": 582576,
+      "after": 39537,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/moonstone_shovel.png",
+      "before": 645489,
+      "after": 42390,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/muffin.png",
+      "before": 36323,
+      "after": 30086,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/mustard_ketchup_salsa_wrap.png",
+      "before": 6935,
+      "after": 6519,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/omelet.png",
+      "before": 29418,
+      "after": 26010,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/orange_juice.png",
+      "before": 29914,
+      "after": 24963,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_diamond.png",
+      "before": 21549,
+      "after": 18129,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_diamond_axe.png",
+      "before": 20282,
+      "after": 18010,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_diamond_boots.png",
+      "before": 1109104,
+      "after": 79027,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_diamond_chestplate.png",
+      "before": 1723197,
+      "after": 103826,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_diamond_helmet.png",
+      "before": 1029881,
+      "after": 67347,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_diamond_hoe.png",
+      "before": 12834,
+      "after": 11211,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_diamond_leggings.png",
+      "before": 1099614,
+      "after": 71626,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_diamond_pickaxe.png",
+      "before": 19024,
+      "after": 16920,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_diamond_shovel.png",
+      "before": 14260,
+      "after": 11927,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_diamond_sword.png",
+      "before": 15435,
+      "after": 13834,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_flint_and_steel.png",
+      "before": 724117,
+      "after": 56035,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_iron_axe.png",
+      "before": 19442,
+      "after": 18012,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_iron_boots.png",
+      "before": 1002275,
+      "after": 79824,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_iron_chestplate.png",
+      "before": 1569378,
+      "after": 96377,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_iron_helmet.png",
+      "before": 875688,
+      "after": 62349,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_iron_hoe.png",
+      "before": 13393,
+      "after": 12755,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_iron_ingot.png",
+      "before": 22203,
+      "after": 17974,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_iron_leggings.png",
+      "before": 1046181,
+      "after": 60686,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_iron_pickaxe.png",
+      "before": 18190,
+      "after": 17037,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_iron_shovel.png",
+      "before": 14704,
+      "after": 13728,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_iron_sword.png",
+      "before": 12815,
+      "after": 12763,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_world_void_boots.png",
+      "before": 1973316,
+      "after": 106770,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_world_void_chestplate.png",
+      "before": 2068114,
+      "after": 110969,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_world_void_helmet.png",
+      "before": 1504139,
+      "after": 78445,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/other_world_void_leggings.png",
+      "before": 1571889,
+      "after": 83559,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/panini.png",
+      "before": 33359,
+      "after": 30774,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/perfect_axe.png",
+      "before": 19822,
+      "after": 19461,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/perfect_boots.png",
+      "before": 1047933,
+      "after": 80844,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/perfect_chestplate.png",
+      "before": 1438864,
+      "after": 92268,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/perfect_crossbow.png",
+      "before": 943809,
+      "after": 75630,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/perfect_excavating_tool.png",
+      "before": 689318,
+      "after": 50654,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/perfect_helmet.png",
+      "before": 1144382,
+      "after": 85310,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/perfect_hoe.png",
+      "before": 13927,
+      "after": 13675,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/perfect_ingot.png",
+      "before": 64430,
+      "after": 64157,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/perfect_leggings.png",
+      "before": 1034786,
+      "after": 68280,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/perfect_pickaxe.png",
+      "before": 16273,
+      "after": 15886,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/perfect_roast_dinner.png",
+      "before": 30478,
+      "after": 28322,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/perfect_shovel.png",
+      "before": 16039,
+      "after": 15120,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/perfect_tree_cutter.png",
+      "before": 867415,
+      "after": 66556,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/pizza.png",
+      "before": 29774,
+      "after": 27275,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/popcorn.png",
+      "before": 30245,
+      "after": 25325,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/potent_beldam_weave_boots.png",
+      "before": 1596892,
+      "after": 94452,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/potent_beldam_weave_chestplate.png",
+      "before": 2432325,
+      "after": 123813,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/potent_beldam_weave_helmet.png",
+      "before": 1726913,
+      "after": 82647,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/potent_beldam_weave_leggings.png",
+      "before": 1774365,
+      "after": 85272,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/potent_other_flint_and_steel.png",
+      "before": 744733,
+      "after": 56652,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/raincoat.png",
+      "before": 1745,
+      "after": 1544,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/sausages.png",
+      "before": 6448,
+      "after": 6358,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/scrambled_eggs.png",
+      "before": 27248,
+      "after": 24454,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/silent_slippers.png",
+      "before": 86759,
+      "after": 85892,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/soul_capturer.png",
+      "before": 706329,
+      "after": 52037,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/soulbound_boots.png",
+      "before": 1921205,
+      "after": 100802,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/soulbound_chestplate.png",
+      "before": 2351458,
+      "after": 127847,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/soulbound_helmet.png",
+      "before": 2052788,
+      "after": 104465,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/soulbound_leggings.png",
+      "before": 1619576,
+      "after": 83673,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/soulbound_potent_beldam_weave_boots.png",
+      "before": 1691202,
+      "after": 89654,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/soulbound_potent_beldam_weave_chestplate.png",
+      "before": 2046516,
+      "after": 104862,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/soulbound_potent_beldam_weave_helmet.png",
+      "before": 1954957,
+      "after": 98762,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/soulbound_potent_beldam_weave_leggings.png",
+      "before": 1950504,
+      "after": 95921,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/soulglass.png",
+      "before": 44913,
+      "after": 44476,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/spidervision_boots.png",
+      "before": 2306465,
+      "after": 122460,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/spidervision_chestplate.png",
+      "before": 2693900,
+      "after": 142219,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/spidervision_helmet.png",
+      "before": 2217155,
+      "after": 111308,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/spidervision_leggings.png",
+      "before": 1659852,
+      "after": 88131,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/star_shirt.png",
+      "before": 96838,
+      "after": 96092,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/strawberry_milkshake.png",
+      "before": 4334,
+      "after": 4193,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/strawberry_pancakes.png",
+      "before": 7413,
+      "after": 7009,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/super_spidervision_boots.png",
+      "before": 2143809,
+      "after": 112047,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/super_spidervision_chestplate.png",
+      "before": 2674548,
+      "after": 144796,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/super_spidervision_helmet.png",
+      "before": 2218513,
+      "after": 115444,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/super_spidervision_leggings.png",
+      "before": 1828438,
+      "after": 99943,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/sweet_peas.png",
+      "before": 6851,
+      "after": 6232,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/sweet_strawberries.png",
+      "before": 33345,
+      "after": 28037,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/tiny_door.png",
+      "before": 226,
+      "after": 211,
+      "size": [
+        16,
+        16
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/top_hat.png",
+      "before": 90276,
+      "after": 89741,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/unbinding_button_eyes.png",
+      "before": 69706,
+      "after": 68967,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/item/void_heart.png",
+      "before": 408678,
+      "after": 31112,
+      "size": [
+        256,
+        253
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/beldam_weave_1.png",
+      "before": 1367,
+      "after": 1316,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/beldam_weave_2.png",
+      "before": 1344,
+      "after": 1294,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/buttonguard_1.png",
+      "before": 1397,
+      "after": 1365,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/buttonguard_2.png",
+      "before": 1412,
+      "after": 1370,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/circus_jacket.png",
+      "before": 1472,
+      "after": 1418,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/comfy_pajamas.png",
+      "before": 1370,
+      "after": 1313,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/comfy_silk_1.png",
+      "before": 1410,
+      "after": 1362,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/comfy_silk_2.png",
+      "before": 1387,
+      "after": 1341,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/dreamweave_1.png",
+      "before": 1438,
+      "after": 1387,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/dreamweave_2.png",
+      "before": 1431,
+      "after": 1388,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/feather_boots.png",
+      "before": 1530,
+      "after": 1459,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/garden_overalls.png",
+      "before": 1388,
+      "after": 1329,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/garden_vines_1.png",
+      "before": 1618,
+      "after": 1562,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/garden_vines_2.png",
+      "before": 1608,
+      "after": 1554,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/luck_1.png",
+      "before": 1459,
+      "after": 1417,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/luck_2.png",
+      "before": 1410,
+      "after": 1371,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/midnight_1.png",
+      "before": 1481,
+      "after": 1446,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/midnight_2.png",
+      "before": 1467,
+      "after": 1432,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/midnight_cloak_1.png",
+      "before": 1360,
+      "after": 1318,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/midnight_cloak_2.png",
+      "before": 1342,
+      "after": 1297,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/midnight_coat.png",
+      "before": 1383,
+      "after": 1322,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/midnight_goggles.png",
+      "before": 245,
+      "after": 224,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/miners_1.png",
+      "before": 1330,
+      "after": 1297,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/miners_2.png",
+      "before": 1326,
+      "after": 1297,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/moonstone_1.png",
+      "before": 1453,
+      "after": 1418,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/moonstone_2.png",
+      "before": 1429,
+      "after": 1386,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/other_diamond_1.png",
+      "before": 1321,
+      "after": 1269,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/other_diamond_2.png",
+      "before": 1296,
+      "after": 1255,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/other_iron_1.png",
+      "before": 1343,
+      "after": 1301,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/other_iron_2.png",
+      "before": 1324,
+      "after": 1279,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/other_world_void_1.png",
+      "before": 1435,
+      "after": 1391,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/other_world_void_2.png",
+      "before": 1421,
+      "after": 1381,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/perfect_1.png",
+      "before": 1406,
+      "after": 1345,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/perfect_2.png",
+      "before": 1368,
+      "after": 1311,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/potent_beldam_weave_1.png",
+      "before": 1443,
+      "after": 1387,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/potent_beldam_weave_2.png",
+      "before": 1424,
+      "after": 1372,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/raincoat.png",
+      "before": 1526,
+      "after": 1462,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/silent_slippers.png",
+      "before": 1326,
+      "after": 1252,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/soulbound_1.png",
+      "before": 1396,
+      "after": 1349,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/soulbound_2.png",
+      "before": 1370,
+      "after": 1326,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/soulbound_potent_beldam_weave_1.png",
+      "before": 1406,
+      "after": 1365,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/soulbound_potent_beldam_weave_2.png",
+      "before": 1415,
+      "after": 1377,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/spidervision_1.png",
+      "before": 1468,
+      "after": 1421,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/spidervision_2.png",
+      "before": 1399,
+      "after": 1355,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/star_shirt.png",
+      "before": 1373,
+      "after": 1322,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/super_spidervision_1.png",
+      "before": 1465,
+      "after": 1419,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/super_spidervision_2.png",
+      "before": 1416,
+      "after": 1371,
+      "size": [
+        64,
+        32
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/top_hat.png",
+      "before": 859,
+      "after": 810,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/armor/unbinding_button_eyes.png",
+      "before": 173,
+      "after": 151,
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/beldam_weave.png",
+      "before": 19648,
+      "after": 17798,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/buttonguard.png",
+      "before": 19802,
+      "after": 17864,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/comfy_silk.png",
+      "before": 21802,
+      "after": 19671,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/dreamweave.png",
+      "before": 19757,
+      "after": 17828,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/garden_vines.png",
+      "before": 19785,
+      "after": 17874,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/luck.png",
+      "before": 19661,
+      "after": 17801,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/midnight.png",
+      "before": 21604,
+      "after": 19730,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/midnight_cloak.png",
+      "before": 19707,
+      "after": 17790,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/miners.png",
+      "before": 21753,
+      "after": 19640,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/moonstone.png",
+      "before": 19676,
+      "after": 17836,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/other_diamond.png",
+      "before": 19811,
+      "after": 17818,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/other_iron.png",
+      "before": 19645,
+      "after": 17812,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/other_world_void.png",
+      "before": 19661,
+      "after": 17838,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_0.png",
+      "before": 1632,
+      "after": 984,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_1.png",
+      "before": 1604,
+      "after": 957,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_10.png",
+      "before": 1594,
+      "after": 943,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_11.png",
+      "before": 1653,
+      "after": 1009,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_12.png",
+      "before": 1641,
+      "after": 1001,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_13.png",
+      "before": 1589,
+      "after": 940,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_14.png",
+      "before": 1594,
+      "after": 943,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_15.png",
+      "before": 1686,
+      "after": 1032,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_16.png",
+      "before": 1593,
+      "after": 943,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_17.png",
+      "before": 1635,
+      "after": 985,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_18.png",
+      "before": 1595,
+      "after": 945,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_19.png",
+      "before": 1592,
+      "after": 942,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_2.png",
+      "before": 1594,
+      "after": 944,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_20.png",
+      "before": 1588,
+      "after": 940,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_21.png",
+      "before": 1625,
+      "after": 974,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_22.png",
+      "before": 1593,
+      "after": 943,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_23.png",
+      "before": 1594,
+      "after": 944,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_24.png",
+      "before": 1704,
+      "after": 1063,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_25.png",
+      "before": 1759,
+      "after": 1115,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_26.png",
+      "before": 1591,
+      "after": 941,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_27.png",
+      "before": 1613,
+      "after": 972,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_28.png",
+      "before": 1592,
+      "after": 942,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_29.png",
+      "before": 1595,
+      "after": 945,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_3.png",
+      "before": 1650,
+      "after": 1008,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_30.png",
+      "before": 1591,
+      "after": 941,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_31.png",
+      "before": 1594,
+      "after": 943,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_32.png",
+      "before": 1592,
+      "after": 942,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_33.png",
+      "before": 1593,
+      "after": 944,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_34.png",
+      "before": 1706,
+      "after": 1065,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_35.png",
+      "before": 1596,
+      "after": 946,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_36.png",
+      "before": 1594,
+      "after": 945,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_37.png",
+      "before": 1594,
+      "after": 944,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_38.png",
+      "before": 1649,
+      "after": 1000,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_39.png",
+      "before": 1622,
+      "after": 979,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_4.png",
+      "before": 1625,
+      "after": 983,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_40.png",
+      "before": 1788,
+      "after": 1142,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_41.png",
+      "before": 1703,
+      "after": 1062,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_42.png",
+      "before": 1593,
+      "after": 943,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_43.png",
+      "before": 1592,
+      "after": 942,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_44.png",
+      "before": 1590,
+      "after": 941,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_45.png",
+      "before": 1592,
+      "after": 942,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_46.png",
+      "before": 1593,
+      "after": 943,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_47.png",
+      "before": 1593,
+      "after": 943,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_48.png",
+      "before": 1592,
+      "after": 943,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_49.png",
+      "before": 1590,
+      "after": 940,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_5.png",
+      "before": 1592,
+      "after": 942,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_50.png",
+      "before": 1635,
+      "after": 985,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_51.png",
+      "before": 1758,
+      "after": 1115,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_52.png",
+      "before": 1591,
+      "after": 941,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_53.png",
+      "before": 1665,
+      "after": 1014,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_54.png",
+      "before": 1649,
+      "after": 995,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_55.png",
+      "before": 1591,
+      "after": 941,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_56.png",
+      "before": 1590,
+      "after": 941,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_57.png",
+      "before": 1596,
+      "after": 946,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_58.png",
+      "before": 1620,
+      "after": 971,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_59.png",
+      "before": 1637,
+      "after": 988,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_6.png",
+      "before": 1593,
+      "after": 943,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_60.png",
+      "before": 1594,
+      "after": 944,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_61.png",
+      "before": 1647,
+      "after": 998,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_62.png",
+      "before": 1711,
+      "after": 1072,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_63.png",
+      "before": 1641,
+      "after": 995,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_7.png",
+      "before": 1594,
+      "after": 944,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_8.png",
+      "before": 1593,
+      "after": 943,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/dad_9.png",
+      "before": 1631,
+      "after": 983,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_0.png",
+      "before": 1593,
+      "after": 943,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_1.png",
+      "before": 1665,
+      "after": 1022,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_10.png",
+      "before": 1651,
+      "after": 1005,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_11.png",
+      "before": 1656,
+      "after": 1005,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_12.png",
+      "before": 1593,
+      "after": 943,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_13.png",
+      "before": 1704,
+      "after": 1062,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_14.png",
+      "before": 1592,
+      "after": 942,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_15.png",
+      "before": 1623,
+      "after": 974,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_16.png",
+      "before": 1625,
+      "after": 977,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_17.png",
+      "before": 1665,
+      "after": 1022,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_18.png",
+      "before": 1593,
+      "after": 943,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_19.png",
+      "before": 1627,
+      "after": 979,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_2.png",
+      "before": 1593,
+      "after": 943,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_20.png",
+      "before": 1619,
+      "after": 970,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_21.png",
+      "before": 1611,
+      "after": 966,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_22.png",
+      "before": 1595,
+      "after": 945,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_23.png",
+      "before": 1593,
+      "after": 942,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_24.png",
+      "before": 1739,
+      "after": 1092,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_25.png",
+      "before": 1593,
+      "after": 944,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_26.png",
+      "before": 1646,
+      "after": 994,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_27.png",
+      "before": 1591,
+      "after": 941,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_28.png",
+      "before": 1592,
+      "after": 941,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_29.png",
+      "before": 1632,
+      "after": 984,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_3.png",
+      "before": 1595,
+      "after": 945,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_30.png",
+      "before": 1652,
+      "after": 1007,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_31.png",
+      "before": 1593,
+      "after": 942,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_32.png",
+      "before": 1592,
+      "after": 942,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_33.png",
+      "before": 1588,
+      "after": 938,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_34.png",
+      "before": 1669,
+      "after": 1025,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_35.png",
+      "before": 1707,
+      "after": 1066,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_36.png",
+      "before": 1592,
+      "after": 943,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_37.png",
+      "before": 1594,
+      "after": 944,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_38.png",
+      "before": 1602,
+      "after": 952,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_39.png",
+      "before": 1706,
+      "after": 1065,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_4.png",
+      "before": 1621,
+      "after": 971,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_40.png",
+      "before": 1629,
+      "after": 981,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_41.png",
+      "before": 1593,
+      "after": 943,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_42.png",
+      "before": 1639,
+      "after": 994,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_43.png",
+      "before": 1592,
+      "after": 943,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_44.png",
+      "before": 1592,
+      "after": 942,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_45.png",
+      "before": 1703,
+      "after": 1062,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_46.png",
+      "before": 1593,
+      "after": 942,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_47.png",
+      "before": 1705,
+      "after": 1065,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_48.png",
+      "before": 1593,
+      "after": 943,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_49.png",
+      "before": 1592,
+      "after": 942,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_5.png",
+      "before": 1671,
+      "after": 1023,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_50.png",
+      "before": 1623,
+      "after": 973,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_51.png",
+      "before": 1620,
+      "after": 975,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_52.png",
+      "before": 1623,
+      "after": 978,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_53.png",
+      "before": 1591,
+      "after": 941,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_54.png",
+      "before": 1596,
+      "after": 946,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_55.png",
+      "before": 1593,
+      "after": 943,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_56.png",
+      "before": 1659,
+      "after": 1012,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_57.png",
+      "before": 1591,
+      "after": 941,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_58.png",
+      "before": 1689,
+      "after": 1036,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_59.png",
+      "before": 1594,
+      "after": 945,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_6.png",
+      "before": 1639,
+      "after": 988,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_60.png",
+      "before": 1594,
+      "after": 944,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_61.png",
+      "before": 1595,
+      "after": 945,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_62.png",
+      "before": 1594,
+      "after": 944,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_63.png",
+      "before": 1595,
+      "after": 945,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_7.png",
+      "before": 1667,
+      "after": 1018,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_8.png",
+      "before": 1661,
+      "after": 1010,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/parents/mom_9.png",
+      "before": 1616,
+      "after": 963,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/perfect.png",
+      "before": 19705,
+      "after": 17806,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/potent_beldam_weave.png",
+      "before": 19720,
+      "after": 17799,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/soulbound.png",
+      "before": 21815,
+      "after": 20028,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/soulbound_potent_beldam_weave.png",
+      "before": 21902,
+      "after": 20010,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/spidervision.png",
+      "before": 19792,
+      "after": 17940,
+      "size": [
+        256,
+        128
+      ]
+    },
+    {
+      "file": "assets/coraline/textures/models/wardrobe/super_spidervision.png",
+      "before": 19654,
+      "after": 17781,
+      "size": [
+        256,
+        128
+      ]
+    }
+  ],
+  "duplicate_sounds": [
+    {
+      "file": "parents/momneglect3",
+      "shared_with": "parents/angryparent",
+      "bytes": 72124
+    },
+    {
+      "file": "visit/ambient_race",
+      "shared_with": "visit/ambient_archery",
+      "bytes": 1177761
+    }
+  ],
+  "resampled_sounds": [
+    {
+      "file": "visit/ambient_archery",
+      "before": 1521666,
+      "after": 1177761,
+      "source_rate": 192000,
+      "runtime_rate": 48000
+    },
+    {
+      "file": "visit/ambient_carnival",
+      "before": 2973422,
+      "after": 2258085,
+      "source_rate": 192000,
+      "runtime_rate": 48000
+    },
+    {
+      "file": "visit/ambient_circus",
+      "before": 1781027,
+      "after": 1412819,
+      "source_rate": 192000,
+      "runtime_rate": 48000
+    },
+    {
+      "file": "visit/ambient_dream",
+      "before": 1722726,
+      "after": 1320054,
+      "source_rate": 192000,
+      "runtime_rate": 48000
+    },
+    {
+      "file": "visit/ambient_feast",
+      "before": 2012240,
+      "after": 1556998,
+      "source_rate": 192000,
+      "runtime_rate": 48000
+    },
+    {
+      "file": "visit/ambient_garden",
+      "before": 2124206,
+      "after": 1690343,
+      "source_rate": 192000,
+      "runtime_rate": 48000
+    },
+    {
+      "file": "visit/ambient_race",
+      "before": 1521666,
+      "after": 1177761,
+      "source_rate": 192000,
+      "runtime_rate": 48000
+    },
+    {
+      "file": "visit/ambient_theatre",
+      "before": 1988956,
+      "after": 1556898,
+      "source_rate": 192000,
+      "runtime_rate": 48000
+    },
+    {
+      "file": "visit/ambient_village",
+      "before": 2705936,
+      "after": 2049517,
+      "source_rate": 192000,
+      "runtime_rate": 48000
+    },
+    {
+      "file": "visit/cake_baking",
+      "before": 2081936,
+      "after": 1570243,
+      "source_rate": 192000,
+      "runtime_rate": 48000
+    },
+    {
+      "file": "visit/magic_garden_hop_on",
+      "before": 62616,
+      "after": 55468,
+      "source_rate": 192000,
+      "runtime_rate": 48000
+    },
+    {
+      "file": "visit/magic_garden_mother_said",
+      "before": 179419,
+      "after": 146121,
+      "source_rate": 192000,
+      "runtime_rate": 48000
+    },
+    {
+      "file": "visit/other_father_dinners_ready",
+      "before": 144100,
+      "after": 113830,
+      "source_rate": 192000,
+      "runtime_rate": 48000
+    },
+    {
+      "file": "visit/other_father_enter_scene",
+      "before": 68793,
+      "after": 55544,
+      "source_rate": 192000,
+      "runtime_rate": 48000
+    },
+    {
+      "file": "visit/other_father_golden_chicken_breast",
+      "before": 136299,
+      "after": 105740,
+      "source_rate": 192000,
+      "runtime_rate": 48000
+    },
+    {
+      "file": "visit/other_father_intro",
+      "before": 176792,
+      "after": 144208,
+      "source_rate": 192000,
+      "runtime_rate": 48000
+    },
+    {
+      "file": "visit/other_mother_intro",
+      "before": 436889,
+      "after": 335537,
+      "source_rate": 192000,
+      "runtime_rate": 48000
+    },
+    {
+      "file": "visit/other_mother_supper_0",
+      "before": 25760,
+      "after": 20739,
+      "source_rate": 192000,
+      "runtime_rate": 48000
+    },
+    {
+      "file": "visit/other_mother_supper_1",
+      "before": 69022,
+      "after": 53210,
+      "source_rate": 192000,
+      "runtime_rate": 48000
+    },
+    {
+      "file": "visit/other_mother_supper_2",
+      "before": 57781,
+      "after": 44362,
+      "source_rate": 192000,
+      "runtime_rate": 48000
+    },
+    {
+      "file": "visit/other_mother_visit_again",
+      "before": 95143,
+      "after": 71635,
+      "source_rate": 192000,
+      "runtime_rate": 48000
+    },
+    {
+      "file": "visit/other_parents_waiting",
+      "before": 73619,
+      "after": 58691,
+      "source_rate": 192000,
+      "runtime_rate": 48000
+    },
+    {
+      "file": "visit/see_you_soon",
+      "before": 42173,
+      "after": 32678,
+      "source_rate": 192000,
+      "runtime_rate": 48000
+    }
+  ]
+}

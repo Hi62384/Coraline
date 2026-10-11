@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PP",
+    "PN",
+    "BB"
+  ],
+  "key": {
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "N": {
+      "item": "minecraft:iron_nugget"
+    },
+    "B": {
+      "item": "minecraft:brick"
+    }
+  },
+  "result": {
+    "item": "coraline:tiny_door"
+  }
+}

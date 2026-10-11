@@ -1,0 +1,3 @@
+Validated 535 textures, 353 sound events, JSON and ZIP integrity; only verified duplicate audio and retired held-light bookkeeping removed.
+Full duration/channels preserved for 23 resampled tracks.
+JAR: 175.05 MB -> 71.58 MB (59.1% smaller)

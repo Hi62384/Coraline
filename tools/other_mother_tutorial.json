@@ -1,0 +1,21 @@
+{
+  "reference": "voicelines/othermother/Sample.wav",
+  "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+  "output": "voicelines/othermother/tutorial",
+  "prefix": "tutorial",
+  "resource_folder": "other_mother/tutorial",
+  "sound_prefix": "other_mother_tutorial",
+  "states": {
+    "": {
+      "direction": "Warm, elegant, affectionate and reassuring; a caring mother setting house rules, not a game tutorial. Reassure genuinely about leaving and nurture around the bed. Become subtly firmer and possessive about wandering, never angry, villainous or threatening. Keep a pleasant inviting facade throughout. Punctuation controls conversational pauses; the model uses the existing affectionate/calm profile rather than exaggerated acting.",
+      "emotion": [0.38, 0, 0, 0, 0, 0, 0, 0.68],
+      "temperature": 0.72,
+      "lines": [
+        "While you’re here, darling, you’re free to go home whenever you like. You can crawl back through your little door, or simply go to bed and we’ll send you home ourselves. But I do have plenty planned for you, so try not to wander off on your own. Especially not too far from the house. There’s really nothing out there you need to be looking for.",
+        "Of course, you don’t have to stay any longer than you want. The little door will take you straight home, and if you get tired, you can always sleep here instead. But while you are staying with us, I’d much rather you enjoy what we’ve prepared than go wandering around by yourself. Some places are better left alone.",
+        "Now remember, sweetheart, you can leave whenever you’ve had enough. Crawl back through your little door, or climb into bed and we’ll tuck you in before sending you home. Until then, stay close and enjoy yourself. I’ve gone through an awful lot of trouble for you, and I wouldn’t want you spoiling the fun by poking around where you shouldn’t.",
+        "You’re never trapped here, darling. If you want to go home, your little door is right where you left it, and sleeping here will take you home too. But while you’re visiting, behave yourself and don’t run off exploring. Your Other Father and I have made more than enough for you to enjoy right here."
+      ]
+    }
+  }
+}

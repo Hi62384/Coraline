@@ -1,0 +1,33 @@
+#Range: 100 ~ 12000
+feastTicks = 1200
+#Pause between supper dialogue recordings; supper extends if needed to finish them.
+#Range: 20 ~ 600
+supperDialogueGapTicks = 100
+#Range: 100 ~ 2400
+servingRefillMinimumTicks = 300
+#Range: 0 ~ 2400
+servingRefillRandomExtraTicks = 200
+#Range: 20 ~ 1200
+cakeRevealTicks = 60
+#Range: 4.0 ~ 12.0
+pianoSceneRadius = 6.0
+#Range: 10 ~ 80
+pianoStagingMinimumDistance = 40
+#Range: 18 ~ 100
+pianoStagingMaximumDistance = 72
+#Range: 20 ~ 1200
+startupRetryTicks = 100
+#Range: 40 ~ 1200
+supperSeatStallRecoveryTicks = 200
+#Maximum walk to supper before safe seat recovery; capped at 20 seconds.
+#Range: 100 ~ 400
+supperSeatMaximumTravelTicks = 400
+#Range: 64 ~ 2048
+placementSearchAttempts = 512
+#Range: 2 ~ 48
+placementVerticalRange = 16
+#Range: 0.0 ~ 1.0
+musicVolume = 0.65
+#Range: 0.0 ~ 2.0
+voiceVolume = 1.0
+

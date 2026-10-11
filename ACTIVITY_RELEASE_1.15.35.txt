@@ -1,0 +1,169 @@
+Coraline 1.15.35 — visit gifts and activity follow-ups
+
+Verified production JAR: build-activity/libs/coraline-1.15.35.jar
+Minecraft 1.20.1 / Forge; Java 17.
+Size: 66,868,127 bytes (66.87 MB / 63.77 MiB).
+SHA256: 4DF722C09D0997FBEA75486038C42960E89555DD2AB2E197590F10A192836582
+Replace the previous Coraline JAR; do not keep two versions installed.
+
+
+1. Categories and rewards
+The existing repeat-visit system now has Food, Treasure, Weapons, Armor, Tools,
+Building Materials, Redstone & Machinery, Clothing, Music, and Mystery Gifts.
+Food and Treasure retain their original generators, random-call order, quantities,
+voice pools, platter/box interactions, and inventory-remainder behavior.
+
+Weapons: iron swords, bows/crossbows with ammunition; later Needle Rapier,
+Vine Sword, Thread Whip, Other Iron Sword, diamond sword, trident, Moonblade,
+Button Mace, Midnight Wand, Spidervision Sword, and gated rare Perfect Sword.
+Armor: iron/chainmail pieces; later Other Iron, Dreamweave, diamond, and rare
+material-gated Moonstone, Other Diamond, or Perfect pieces. Not clothing duplicates.
+Tools: iron mining tools, fishing rods, shears, brushes; later Other Iron/diamond
+tools and gated rare Moonstone, Other Diamond, or Perfect tools.
+Building: coherent cottage, quartz, garden, and cherry/color palettes, with
+5–6 stacks; main materials come in 32/48/64-block bundles by progression.
+Redstone: automation, railway, and secret-door bundles containing actual usable
+redstone, hoppers, observers, pistons, repeaters, comparators, rails, minecarts,
+droppers, switches, and sensors.
+Clothing: actual wearable raincoat, pajamas, overalls, top hat; later Midnight Coat,
+Star Shirt, Circus Jacket, Silent Slippers, Feather Boots, and Midnight Goggles.
+Music: registered playable vanilla discs plus a jukebox or note blocks/bell;
+Otherside is an occasional late gift. No fake unregistered music items.
+Mystery: a surprise bundle drawn from those useful categories, sometimes with
+food/emeralds or a rare late diamond extra; not a guaranteed jackpot.
+
+2. Selection and balancing
+Default configurable weights: Food 15, Treasure 15, Weapons 10, Armor 10,
+Tools 10, Building 10, Redstone 10, Clothing 8, Music 7, Mystery 5.
+Forge COMMON config: coraline-visit-gifts.toml. Zero disables a category; if all
+weights are zero, Food/Treasure is the safe fallback. All categories have a valid
+early pool. Visit tiers are before visit 4, visits 4–8, and visits 9 onward.
+Rare Moonstone/Other Diamond/Perfect equipment also needs prior material/gear
+via the existing inventory-based material/gear rule. Perfect food does not unlock Perfect equipment. Enchants are modest.
+Mystery quality is 70% basic, 25% at most middle-tier, 5% current-tier, with the
+same material gates. Reward generators reject empty/oversized/temporary loan items.
+
+3. Voice generation
+48 new masters: eight categories × BEFORE/AFTER × three variants each.
+The exact supplied dialogue strings are stored in tools/other_mother_visit_gifts.json.
+Existing local IndexTTS2 checkout/model was reused (commit
+d9e41aac89fd00b3d71497fddb287b7f24613712), with Sample.wav as its sole voice reference.
+Reference SHA256: 154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe.
+CPU reference encoder and FP16 CUDA synthesis on the existing 6 GB RTX 3060;
+category-specific affectionate/theatrical emotion vectors, warm AFTER delivery,
+native speech timing, silence handles, and peak-safe constant gain. No substituted
+speaker or regenerated Food/Treasure voices. Mono 22050 Hz PCM16 WAV masters are
+outside packaged resources. The existing importer exports streamed Vorbis quality 5.
+Objective checks: WAV shape, duration, non-silence/clipping, FFmpeg decode,
+CAMPPlus reference-speaker similarity, Whisper base.en transcription, independent
+beam-search review. Several lines were regenerated to repair ambiguous/missing words.
+All final 48 pass; five ASR differences are contractions only (e.g. it's / it is).
+Subjective acting quality is not certified by automated speech recognition.
+
+4. Registration and visit flow
+New master paths: voicelines/othermother/loot/<category>/<before|after>/line_01..03.wav.
+Runtime: assets/coraline/sounds/visit/other_mother/loot/<category>/<moment>/line_01..03.ogg.
+Event IDs: other_mother_loot_<category>_<moment>_01..03.
+The existing sounds/subtitle/timing tables are merged, not replaced; normal resource
+processing rebuilds complete durations from packaged files.
+Welcome by existing trust/suspicion state → saved BEFORE variant → physical gift →
+saved AFTER variant → optional existing extra → existing tutorial/proposal/warning →
+full five-minute relaxation → unchanged activity portal/lifecycle.
+Category and both variants are committed once on entry. Reward ledger/prepared flag
+and opening deadline survive save/load. New gifts use the existing ribboned GIFT
+model, reveal for 1.5 seconds, then award. Mystery does not sync contents while closed.
+Food/Treasure keep their old interactions. New-category overflow drops at the owner,
+preserves ownership, and retains the ledger remainder if spawning the drop fails.
+The Mother stands beside new gift displays rather than approaching through them.
+Client gift transitions wait for actual previous sound completion; abort clears queues.
+
+5. Multiplayer and recovery
+Owner/generation/door/range checks are reused. Helpers cannot open, claim, or pick
+up owner-tagged gift overflow, even when vanilla's item-owner timeout would relax.
+Saved category/voices/contents do not reroll on reconnect. A current voice may replay
+after reconnect, but no new gift is generated or duplicated. Existing abort/reset
+policy remains; missing audio does not create an endless reward timer.
+Activity Food/Treasure prize themes are stored separately for the eight new categories
+so adding visit categories does not unintentionally alter activity reward balancing.
+
+6. Requested activity follow-ups
+Fortress: safe next-level boarding position, teleport-acknowledgment grace period,
+cleared crossing state, and actual solid support checks instead of stale onGround
+alone. Normal falling/steering remain; lava clears the level, not an obstacle loss.
+Mineshaft: descending shafts moved beside rooms; landing connectors preserve both
+stair treads/headroom and the lower floor's corridor junction, including a sole exit.
+Enclosed side bridges and capped shaft ends prevent walking past the last tread
+into the void. Failure causes are also retained for diagnosing interrupted runs.
+Map stair markers reflect the new shaft locations; mine size is unchanged.
+Moonlit Lantern: removed the two-updates-per-second throttle. Held sources use
+fractional positions, light recalculates each movement tick, occlusion flood fields
+are cached separately, and only changed render sections are rebuilt. The old moving
+invisible-block light layer is removed; legacy portable blocks clean themselves up.
+Held lighting is render-only and no longer modifies block light or mob-spawn rules;
+placed lanterns remain normal light-emitting blocks. Custom mine lamp repulsion remains.
+End City: arena-wide shuffled tile positions plus fresh beam angles each cue;
+client rendering and damage use matching rotated geometry with precise SAT collision.
+Existing increasing level speeds and visible warning interval are retained.
+Festival: complete note-block transcriptions of Minecraft, Clark, Sweden, and
+Subwoofer Lullaby, choosing a different track on the next visit. No original recording
+plays in the background. Quiet synthesized chord notes fill melody gaps; prompted
+melody notes play on input, and wrong/missed melody notes are detuned. 293–318 playable
+notes and 585–915 chord attacks per song. Scroll approach decreases smoothly from
+30 to 16 ticks and spacing tightens from roughly 12 to 6 ticks, without simultaneous
+four-button bursts. Natural rests/fades remain instead of inserting unrelated notes.
+Basic Pitch ONNX transcription is development-only; model/venv/cache are not shipped.
+Primary tool documentation: https://github.com/spotify/basic-pitch
+Three tiny harp registers derived from the installed vanilla sample total ~24 KB.
+These are simplified note-block arrangements, not exact studio-recording recreations.
+
+7. Created files
+VisitGiftConfig.java, VisitGiftPools.java, VisitGiftOwnership.java.
+tools/other_mother_visit_gifts.json; 48 WAV/OGG masters/exports; generation,
+validation, and transcript-review reports; tools/build_festival_instrument.py.
+Development-only VisitGiftGameTests.java, VisitGiftVisualCheck.java,
+FortressFallVisualCheck.java, ActivityRevisionVisualCheck.java, and this report.
+
+8. Modified files
+CoralineMod.java; OtherMotherDialogue.java; OtherMotherLoop.java;
+OtherMotherLoopState.java; LoopProps.java; ActivityTokens.java; VisitAudioClient.java;
+DesertTempleActivity.java/OceanMonumentActivity.java (prize-theme compatibility only).
+FortressActivity.java; MineMaze.java; MineMapScreen.java; ClothingLight.java;
+MoonlitSources.java; UtilityEffects.java; MoonlitLanternBlock.java; MineshaftActivity.java;
+EndCityChallenge.java; EndCityActivity.java; EndCityHud.java;
+FestivalChart.java; FestivalClient.java; MusicFestivalActivity.java; ModSounds.java;
+festival_charts.json; sounds.json; timing/subtitle resources; build.gradle;
+gradle.properties; tools/build_festival_charts.py; tools/check_welcome_audio.py; tools/verify_optimized_jar.py;
+gift/welcome/activity regression sources. Existing asset masters remain intact.
+
+9. Verification and limitations
+44 gift/welcome GameTests passed: all categories/voice choices, original pool
+equivalence, weighted selection, progression gates, saved reveal, full inventory,
+helper protection, once-only rewards, continuation and the five-minute window.
+Six optimizer regression tests passed.
+Real client: both Mystery/Clothing presents were opened/rewarded through normal
+interaction packets and their visit flows reached the normal proposal/window.
+All 48 new recordings completed actual streamed playback without overlap/truncation.
+Five normal-gravity fortress descents and four real teleport handoffs passed.
+Final combined suite: all 119 required GameTests passed (44 gift/welcome + 75
+activity/item regressions), including stair treads/sole-branch access/end caps,
+legacy light cleanup/no held-world-block mutation, full laser coverage/variable angles,
+score/scroll progression, and fortress lava/reset/collision handling.
+Additional client check passed: 31 rhythm inputs, 97 note sounds, no original backing
+recording; ordinary walking down the capped stairs with lantern held, right-click
+floor map, and rotated beam rendering. Screenshots are in artwork/revision35_*.png.
+No shader-pack compatibility or sustained FPS benchmark was performed; the score is
+an automated simplified note-block transcription, so subjective musical fidelity
+and visual smoothness still benefit from normal in-game feedback.
+Clean production build and normal processResources succeeded.
+Package verifier passed: 535 textures, 293 sound events, complete sound-file timing
+metadata, referenced audio, JSON/ZIP integrity, and full duration/channels for 23
+resampled tracks. Only verified duplicate audio and the obsolete physical-held-light
+bookkeeping class were removed against the baseline; no feature assets deleted.
+No GameTests/VisualCheck/RenderCheck classes or development model/venv files are
+packaged. Largest entries remain existing full-length music, not new icons/models.
+Assets are 65.16 MB compressed estimate; release JAR is 66.87 MB, vs 175.05 MB
+unoptimized baseline (61.8% smaller) and 63.85 MB previous 1.15.34.
+Verification logs: release35-combined-tests-2.log, visit-gifts-client-2.log,
+activity-revision-client-6.log, release35-build.log, release35-package-verification.log.
+No Blender changes were needed: existing physical gift assets are reused.
+No claim is made that this release re-tests every historical report in the chat.

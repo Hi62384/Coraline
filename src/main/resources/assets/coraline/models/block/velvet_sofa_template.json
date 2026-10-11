@@ -1,0 +1,10 @@
+{"parent":"minecraft:block/block","textures":{"particle":"#fabric"},"elements":[
+ {"from":[1,0,2],"to":[3,3,5],"faces":{"north":{"texture":"#wood"},"south":{"texture":"#wood"},"east":{"texture":"#wood"},"west":{"texture":"#wood"},"up":{"texture":"#wood"},"down":{"texture":"#wood"}}},
+ {"from":[13,0,2],"to":[15,3,5],"faces":{"north":{"texture":"#wood"},"south":{"texture":"#wood"},"east":{"texture":"#wood"},"west":{"texture":"#wood"},"up":{"texture":"#wood"},"down":{"texture":"#wood"}}},
+ {"from":[1,0,12],"to":[3,3,15],"faces":{"north":{"texture":"#wood"},"south":{"texture":"#wood"},"east":{"texture":"#wood"},"west":{"texture":"#wood"},"up":{"texture":"#wood"},"down":{"texture":"#wood"}}},
+ {"from":[13,0,12],"to":[15,3,15],"faces":{"north":{"texture":"#wood"},"south":{"texture":"#wood"},"east":{"texture":"#wood"},"west":{"texture":"#wood"},"up":{"texture":"#wood"},"down":{"texture":"#wood"}}},
+ {"from":[0,3,0],"to":[16,5,16],"faces":{"north":{"texture":"#wood"},"south":{"texture":"#wood"},"east":{"texture":"#wood"},"west":{"texture":"#wood"},"up":{"texture":"#wood"},"down":{"texture":"#wood"}}},
+ {"from":[0,5,0],"to":[16,8,13],"faces":{"north":{"texture":"#fabric"},"south":{"texture":"#fabric"},"east":{"texture":"#fabric"},"west":{"texture":"#fabric"},"up":{"texture":"#cushion"},"down":{"texture":"#fabric"}}},
+ {"from":[0,7,12],"to":[16,15,16],"faces":{"north":{"texture":"#cushion"},"south":{"texture":"#fabric"},"east":{"texture":"#fabric"},"west":{"texture":"#fabric"},"up":{"texture":"#cushion"},"down":{"texture":"#fabric"}}},
+ {"from":[0,8,11],"to":[16,9,12],"faces":{"north":{"texture":"#trim"},"south":{"texture":"#trim"},"east":{"texture":"#trim"},"west":{"texture":"#trim"},"up":{"texture":"#trim"},"down":{"texture":"#trim"}}}
+]}

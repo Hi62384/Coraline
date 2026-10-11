@@ -1,0 +1,248 @@
+{
+  "reference_unchanged": true,
+  "checks": [
+    {
+      "file": "loot/food/before/line_01.wav",
+      "seconds": 6.137052154195011,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.6062216758728027,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "You must be starving after coming all this way! So I made a few things I thought you might like.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "loot/food/before/line_02.wav",
+      "seconds": 6.83546485260771,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7835630178451538,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "I've been cooking all evening, and I may have gotten a little carried away, but that just means there's plenty for you.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "loot/food/before/line_03.wav",
+      "seconds": 6.685804988662132,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7894662022590637,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Before we do anything else, you need something proper to eat. I made all of this, especially for you.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "loot/food/after/line_01.wav",
+      "seconds": 5.957460317460318,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.758912980556488,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Go on, take as much as you like. You never have to worry about going hungry while you're here.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "loot/food/after/line_02.wav",
+      "seconds": 5.343219954648526,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8194116353988647,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "There, that should keep you happy for a while. And if you want more, you only have to ask.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "loot/food/after/line_03.wav",
+      "seconds": 5.041360544217687,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8511546850204468,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "I knew you'd like it. Everything tastes better when somebody actually takes the time to make it for you.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "loot/treasure/before/line_01.wav",
+      "seconds": 5.298956916099773,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.827867329120636,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "I noticed how hard you work for everything back home, so I thought I'd save you the trouble this time.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "loot/treasure/before/line_02.wav",
+      "seconds": 7.254512471655329,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8382030725479126,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "I found a few little things I thought you deserved. They're much too nice to leave sitting around collecting dust.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "loot/treasure/before/line_03.wav",
+      "seconds": 6.83546485260771,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8028634190559387,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "You spend so much time searching for things like these. Here, you don't have to search at all.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "loot/treasure/after/line_01.wav",
+      "seconds": 4.750204081632653,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8780120611190796,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Keep it, all of it. There's plenty more where that came from.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "loot/treasure/after/line_02.wav",
+      "seconds": 7.386575963718821,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7177953720092773,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "See how easy things can be here? No digging, no fighting, no wasting your time.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "loot/treasure/after/line_03.wav",
+      "seconds": 4.750204081632653,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7831548452377319,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Much nicer than spending all day underground looking for scraps, isn't it?",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "state_extra/low_trust_low_suspicion/line_01.wav",
+      "seconds": 4.271292517006803,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.6289212107658386,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "I'm still learning what you like, but I think I'm getting pretty good at it.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "state_extra/low_trust_low_suspicion/line_02.wav",
+      "seconds": 6.782857142857143,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7744104862213135,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "You'll have to tell me what you want next time. I do love a challenge.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "state_extra/mid_trust_mid_suspicion/line_01.wav",
+      "seconds": 4.112562358276644,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.852266788482666,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "You've certainly developed quite an appetite for the things we have here.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "state_extra/mid_trust_mid_suspicion/line_02.wav",
+      "seconds": 5.145850340136055,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7742645144462585,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "You're getting more comfortable every time you visit. More curious too.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "state_extra/high_trust_low_suspicion/line_01.wav",
+      "seconds": 4.611791383219955,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7263815402984619,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "I hardly even need to ask what you want anymore. I know you much too well.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "state_extra/high_trust_low_suspicion/line_02.wav",
+      "seconds": 3.6127891156462586,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7883734703063965,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "You see? I always know exactly what will make you happy.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "state_extra/high_suspicion_low_trust/line_01.wav",
+      "seconds": 4.727891156462585,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7356723546981812,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "I thought perhaps giving you something nice might help you? Relax a little.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "state_extra/high_suspicion_low_trust/line_02.wav",
+      "seconds": 7.4540589569161,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8156636357307434,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "You really should spend more time enjoying what I give you and less time worrying about things that don't concern you.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "state_extra/high_trust_high_suspicion/line_01.wav",
+      "seconds": 7.026666666666666,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8156890869140625,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "You may not trust everything about this place, but you certainly seem to enjoy what it gives you.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "state_extra/high_trust_high_suspicion/line_02.wav",
+      "seconds": 5.259047619047619,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7650322914123535,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "For someone with so many questions, you never seem to have trouble accepting my gifts.",
+      "word_error_rate": 0.0
+    }
+  ],
+  "note": "ASR checks words, not acting. Human listening review is not replaced by these checks."
+}

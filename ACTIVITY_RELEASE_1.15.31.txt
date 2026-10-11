@@ -1,0 +1,85 @@
+CORALINE 1.15.31 — ACTIVITY REVISIONS
+Minecraft 1.20.1 / Forge 47.4.x / Java 17
+
+IMPLEMENTED
+Shopping Mall: 24 categorized stores, eight offers per shop per visit, larger
+whitelisted rotating catalogues, additional food vendors, rear food court, and
+48 independently routed button-eyed shoppers across two floors. Paged shop UI.
+
+Other Father: activity hosts use activity ownership instead of retired house
+parent lifecycle/generation. Persistent visible hosts are created in loaded chunks.
+
+Snowball Battle: recovery now respects the whole arena, upper areas and bridges.
+Removed timed player relocation. Faster, gravity-compensated NPC throws and
+stronger pressure on passive players. Winner's prize moved to a ground-level counter.
+
+Treasure Hunt: default exit, shuffled landmark seal gardens, and generated clues
+combining petal colours and lamp-count puzzles rather than naming destinations.
+
+Mice Circus: bookie turns toward his backed mouse while watching the race.
+
+Woodland Mansion: enclosed upper stair landing; persistent/recoverable witnesses,
+including Peaceful-mode illagers; model-attached button eyes on allays and illagers.
+Clues explicitly describe the jackpot room. Journal has rules and scrollable clues.
+
+Signs: shared bright contrasting sign text, including Carnival sign writers.
+
+Nether Fortress: five normal-gravity descents; responsive steering; 7/9/11/13/15
+obstacle bands with narrowing openings and varied paths. Reward requires all five.
+
+Mineshaft: seeded connected four-depth maze with 420 rooms, branching tunnels,
+loops and walkable stair connections. No lit rail spine. 20-minute deadline and
+five expedition hearts. Loaned Moonlit Lantern and mining pick are restored safely.
+Return through the entry portal to keep the bag; timeout, defeat or interruption
+loses it. Successful extraction queues rewards until after transport, so overflow
+drops outside the erased activity. Deeper strata have better ores and more threats.
+Button-eyed Stitched Miners pursue; Thread Skitters pounce; Shard Watchers telegraph
+aimed strikes; Deep Stalkers blink. Actor count is capped; normal player health is
+not used. Lanterns repel nearby threats intermittently, not continuously.
+The existing finalized mining introduction is retained; its old automatic-payout
+wording predates this extraction rule. The start title, timer and entrance sign
+explicitly require returning to the portal to keep the haul.
+Moonlit Lantern night mode now recognizes the fixed-night Other World dimensions.
+
+End City: earned chorus teleports replace random/pity rolls. Traverse shuffled
+glowing-rune circuits and return to the central gold pad to teleport. Telegraphs
+warn of damaging energy beams. Five-minute deadline and three activity hearts;
+timeout or lost hearts opens a safe failure exit without treasure.
+
+Desert Temple: separated row sweeps and rejection of nonconsecutive touching tiles
+prevent tangled gold clusters. Original five sizes and route-length progression
+remain. 50,000 generated routes passed clean-path validation.
+
+TESTING / BUILD
+Production build passed; reobfuscated Forge JAR contains no GameTests or visual
+check harness classes. JAR size: 63,807,026 bytes (63.81 MB), 63.5% smaller than
+the unoptimized 1.15.24 baseline. Source masters were preserved.
+66 required server regression tests passed. Subsequent small threat/lantern/UI
+and Allay-transform adjustments were compiled and included in client/build checks,
+but the full server suite was not rerun after those final adjustments.
+Real-client revision smoke check passed: mining/extraction, mall shopping UI,
+Mansion witnesses/journal, End City start/failure exit and temple entry.
+Six asset-optimizer tests passed. Final JAR validation passed for 535 textures,
+242 sound events, JSON/ZIP integrity and full duration/channel preservation of
+23 resampled recordings. No exhaustive human balance or multiplayer session run.
+SHA-256: 9EAB0E2218CDB8B2FC388629AC80109FF12AA59C5C18E015855A2F66E67455D4
+
+SCOPE AND LIMITATIONS
+This release includes the preceding fixes already in 1.15.30 and the revisions
+above. Automated server checks do not prove subjective balance or exhaustive
+multiplayer/graphics compatibility. No new Blender or raster/audio assets were
+needed; existing optimized assets are reused. Source audio/art masters are intact.
+
+PRIMARY FILES CHANGED/ADDED
+feast: MallStock, MallScenery, ShoppingMallActivity, ActivityScenery,
+SnowballBattleActivity, SnowBattleScenery, TreasureRoute, TreasureScenery,
+TreasureHuntActivity, MiceCircusActivity, MansionActivity, MansionPuzzle,
+ActivityBlocks, CarnivalActivity, FortressActivity, MineshaftActivity,
+MineMaze (new), MineThreats (new), ExpeditionActivities, ActivityWorld,
+NewActivitySafety, EndCityActivity, EndCityCourse, EndCityChallenge (new), TemplePath.
+client: MallScreen, ExpeditionClient, ClientModEvents,
+renderer/MansionWitnessEyes (new), clothing/ClothingLight.
+parents/ParentEntity; mixin/ActivityGuardianPeacefulMixin;
+clothing/ClothingEffects and UtilityEffects; block/MoonlitLanternBlock.
+build.gradle, gradle.properties; activity regression tests and opt-in client QA.
+All Java paths above are relative to src/main/java/com/coraline/.

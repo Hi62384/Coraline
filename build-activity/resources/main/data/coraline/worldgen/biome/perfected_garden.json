@@ -1,0 +1,17 @@
+{
+  "has_precipitation": true,
+  "temperature": 0.5,
+  "downfall": 0.8,
+  "effects": {
+    "sky_color": 1056329,
+    "fog_color": 4545671,
+    "water_color": 4227245,
+    "water_fog_color": 1588576,
+    "grass_color": 7844694,
+    "foliage_color": 5614918,
+    "mood_sound": {"block_search_extent":8,"offset":2.0,"sound":"minecraft:ambient.cave","tick_delay":6000},
+    "music": {"max_delay":24000,"min_delay":12000,"replace_current_music":false,"sound":"minecraft:music.overworld.cherry_grove"}
+  },
+  "spawners": {}, "spawn_costs": {}, "carvers": {},
+  "features": []
+}

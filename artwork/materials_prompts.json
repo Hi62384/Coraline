@@ -1,0 +1,93 @@
+{
+  "mode": "built-in image_gen",
+  "jobs": [
+    {
+      "name": "other_diamond_helmet",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory equipment icon. One helmet of enchanted other diamond. brilliant turquoise diamond facets with deep cobalt edges and fine silver settings. Unworn three-quarter front view. Rich polished detailed pixel art, crisp square pixels, bold readable silhouette. Centered filling 80% square. Only the named equipment piece, no body, no person, no extra equipment, no words, no frame, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "other_diamond_chestplate",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory equipment icon. One chestplate of enchanted other diamond. brilliant turquoise diamond facets with deep cobalt edges and fine silver settings. Unworn three-quarter front view. Rich polished detailed pixel art, crisp square pixels, bold readable silhouette. Centered filling 80% square. Only the named equipment piece, no body, no person, no extra equipment, no words, no frame, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "other_diamond_leggings",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory equipment icon. One pair of armor trousers of enchanted other diamond. brilliant turquoise diamond facets with deep cobalt edges and fine silver settings. Unworn three-quarter front view. Rich polished detailed pixel art, crisp square pixels, bold readable silhouette. Centered filling 80% square. Only the named equipment piece, no body, no person, no extra equipment, no words, no frame, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "other_diamond_boots",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory equipment icon. One pair of armored boots of enchanted other diamond. brilliant turquoise diamond facets with deep cobalt edges and fine silver settings. Unworn three-quarter front view. Rich polished detailed pixel art, crisp square pixels, bold readable silhouette. Centered filling 80% square. Only the named equipment piece, no body, no person, no extra equipment, no words, no frame, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "other_diamond_sword",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory equipment icon. One sword of enchanted other diamond. brilliant turquoise diamond facets with deep cobalt edges and fine silver settings. Elegant dark wood grip and detailed metal fittings. Diagonal Minecraft tool silhouette. Rich polished detailed pixel art, crisp square pixels, bold readable silhouette. Centered filling 80% square. Only the named equipment piece, no body, no person, no extra equipment, no words, no frame, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "other_diamond_pickaxe",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory equipment icon. One pickaxe of enchanted other diamond. brilliant turquoise diamond facets with deep cobalt edges and fine silver settings. Elegant dark wood grip and detailed metal fittings. Diagonal Minecraft tool silhouette. Rich polished detailed pixel art, crisp square pixels, bold readable silhouette. Centered filling 80% square. Only the named equipment piece, no body, no person, no extra equipment, no words, no frame, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "other_diamond_axe",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory equipment icon. One axe of enchanted other diamond. brilliant turquoise diamond facets with deep cobalt edges and fine silver settings. Elegant dark wood grip and detailed metal fittings. Diagonal Minecraft tool silhouette. Rich polished detailed pixel art, crisp square pixels, bold readable silhouette. Centered filling 80% square. Only the named equipment piece, no body, no person, no extra equipment, no words, no frame, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "other_diamond_shovel",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory equipment icon. One shovel of enchanted other diamond. brilliant turquoise diamond facets with deep cobalt edges and fine silver settings. Elegant dark wood grip and detailed metal fittings. Diagonal Minecraft tool silhouette. Rich polished detailed pixel art, crisp square pixels, bold readable silhouette. Centered filling 80% square. Only the named equipment piece, no body, no person, no extra equipment, no words, no frame, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "other_diamond_hoe",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory equipment icon. One hoe of enchanted other diamond. brilliant turquoise diamond facets with deep cobalt edges and fine silver settings. Elegant dark wood grip and detailed metal fittings. Diagonal Minecraft tool silhouette. Rich polished detailed pixel art, crisp square pixels, bold readable silhouette. Centered filling 80% square. Only the named equipment piece, no body, no person, no extra equipment, no words, no frame, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "other_iron_helmet",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory equipment icon. One helmet of enchanted other iron. lustrous blue-gray polished iron with engraved silver edges and dark burgundy accents. Unworn three-quarter front view. Rich polished detailed pixel art, crisp square pixels, bold readable silhouette. Centered filling 80% square. Only the named equipment piece, no body, no person, no extra equipment, no words, no frame, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "other_iron_chestplate",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory equipment icon. One chestplate of enchanted other iron. lustrous blue-gray polished iron with engraved silver edges and dark burgundy accents. Unworn three-quarter front view. Rich polished detailed pixel art, crisp square pixels, bold readable silhouette. Centered filling 80% square. Only the named equipment piece, no body, no person, no extra equipment, no words, no frame, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "other_iron_leggings",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory equipment icon. One pair of armor trousers of enchanted other iron. lustrous blue-gray polished iron with engraved silver edges and dark burgundy accents. Unworn three-quarter front view. Rich polished detailed pixel art, crisp square pixels, bold readable silhouette. Centered filling 80% square. Only the named equipment piece, no body, no person, no extra equipment, no words, no frame, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "other_iron_boots",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory equipment icon. One pair of armored boots of enchanted other iron. lustrous blue-gray polished iron with engraved silver edges and dark burgundy accents. Unworn three-quarter front view. Rich polished detailed pixel art, crisp square pixels, bold readable silhouette. Centered filling 80% square. Only the named equipment piece, no body, no person, no extra equipment, no words, no frame, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "other_iron_sword",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory equipment icon. One sword of enchanted other iron. lustrous blue-gray polished iron with engraved silver edges and dark burgundy accents. Elegant dark wood grip and detailed metal fittings. Diagonal Minecraft tool silhouette. Rich polished detailed pixel art, crisp square pixels, bold readable silhouette. Centered filling 80% square. Only the named equipment piece, no body, no person, no extra equipment, no words, no frame, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "other_iron_pickaxe",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory equipment icon. One pickaxe of enchanted other iron. lustrous blue-gray polished iron with engraved silver edges and dark burgundy accents. Elegant dark wood grip and detailed metal fittings. Diagonal Minecraft tool silhouette. Rich polished detailed pixel art, crisp square pixels, bold readable silhouette. Centered filling 80% square. Only the named equipment piece, no body, no person, no extra equipment, no words, no frame, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "other_iron_axe",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory equipment icon. One axe of enchanted other iron. lustrous blue-gray polished iron with engraved silver edges and dark burgundy accents. Elegant dark wood grip and detailed metal fittings. Diagonal Minecraft tool silhouette. Rich polished detailed pixel art, crisp square pixels, bold readable silhouette. Centered filling 80% square. Only the named equipment piece, no body, no person, no extra equipment, no words, no frame, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "other_iron_shovel",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory equipment icon. One shovel of enchanted other iron. lustrous blue-gray polished iron with engraved silver edges and dark burgundy accents. Elegant dark wood grip and detailed metal fittings. Diagonal Minecraft tool silhouette. Rich polished detailed pixel art, crisp square pixels, bold readable silhouette. Centered filling 80% square. Only the named equipment piece, no body, no person, no extra equipment, no words, no frame, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "other_iron_hoe",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory equipment icon. One hoe of enchanted other iron. lustrous blue-gray polished iron with engraved silver edges and dark burgundy accents. Elegant dark wood grip and detailed metal fittings. Diagonal Minecraft tool silhouette. Rich polished detailed pixel art, crisp square pixels, bold readable silhouette. Centered filling 80% square. Only the named equipment piece, no body, no person, no extra equipment, no words, no frame, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "other_diamond",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft material inventory icon. a single brilliant turquoise diamond gem with deep cobalt facets and an enchanting pale blue inner glint. Beautiful polished detailed pixel art, crisp square pixels and rich shading, three-quarter view centered 80% square. Only named material, no labels no frame no shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "other_iron_ingot",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft material inventory icon. one polished blue-gray iron ingot with bright silver edges and a subtle curved stamped groove. Beautiful polished detailed pixel art, crisp square pixels and rich shading, three-quarter view centered 80% square. Only named material, no labels no frame no shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "button",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft material inventory icon. a single elegant dark charcoal four-hole sewing button with ivory stitches and a polished bevel. Beautiful polished detailed pixel art, crisp square pixels and rich shading, three-quarter view centered 80% square. Only named material, no labels no frame no shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "moonstone",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft material inventory icon. a single rounded faceted luminous pearly moonstone gemstone with pale cyan and silver iridescence. Beautiful polished detailed pixel art, crisp square pixels and rich shading, three-quarter view centered 80% square. Only named material, no labels no frame no shadow. Genuine transparent alpha background."
+    }
+  ]
+}

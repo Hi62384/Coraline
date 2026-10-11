@@ -1,0 +1,49 @@
+{
+  "angry_parent": [
+    "parent_voice_angryparent"
+  ],
+  "mom_neglect": [
+    "parent_voice_momneglect0",
+    "parent_voice_momneglect1",
+    "parent_voice_momneglect10",
+    "parent_voice_momneglect2",
+    "parent_voice_momneglect3",
+    "parent_voice_momneglect4",
+    "parent_voice_momneglect5",
+    "parent_voice_momneglect6",
+    "parent_voice_momneglect7",
+    "parent_voice_momneglect8",
+    "parent_voice_momneglect9"
+  ],
+  "mom_task": [
+    "parent_voice_momtask0",
+    "parent_voice_momtask1",
+    "parent_voice_momtask2",
+    "parent_voice_momtask3"
+  ],
+  "mom_death": [
+    "parent_voice_momdeath"
+  ],
+  "dad_neglect": [
+    "parent_voice_dadneglect0",
+    "parent_voice_dadneglect1",
+    "parent_voice_dadneglect2",
+    "parent_voice_dadneglect3"
+  ],
+  "dad_neglect_rain": [
+    "parent_voice_dadneglect0",
+    "parent_voice_dadneglect1",
+    "parent_voice_dadneglect2",
+    "parent_voice_dadneglect3",
+    "parent_voice_dadneglectduringrain0"
+  ],
+  "dad_task": [
+    "parent_voice_dadtask0",
+    "parent_voice_dadtask1",
+    "parent_voice_dadtask2",
+    "parent_voice_dadtask3"
+  ],
+  "dad_death": [
+    "parent_voice_daddeath"
+  ]
+}

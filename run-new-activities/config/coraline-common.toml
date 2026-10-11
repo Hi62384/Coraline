@@ -1,0 +1,177 @@
+
+[parents]
+	naturalSpawning = true
+	#Range: 20 ~ 72000
+	spawnCheckTicks = 1200
+	#Range: 0.0 ~ 1.0
+	spawnChancePerPlayer = 0.035
+	#Range: 0 ~ 64
+	maximumNearbyPairs = 2
+	#Range: 8 ~ 128
+	minimumSpawnDistance = 24
+	#Range: 8 ~ 160
+	maximumSpawnDistance = 48
+	#Range: 1.0 ~ 1000.0
+	health = 24.0
+	#Range: 20 ~ 72000
+	healIntervalTicks = 200
+	#Range: 0.0 ~ 100.0
+	healAmount = 1.0
+	#Range: 0.1 ~ 3.0
+	followSpeed = 1.15
+	#Range: 2 ~ 48
+	homeRadius = 10
+	#Range: 8.0 ~ 128.0
+	followTeleportDistance = 24.0
+	#Range: 1 ~ 120
+	busyMinimumMinutes = 5
+	#Range: 1 ~ 120
+	busyMaximumMinutes = 8
+	#Range: 1 ~ 120
+	availableMinimumMinutes = 3
+	#Range: 1 ~ 120
+	availableMaximumMinutes = 4
+	#Range: 0 ~ 1200
+	bedInteractionCooldownTicks = 60
+	#Range: 100 ~ 72000
+	taskIntervalTicks = 2400
+	#Range: 0.0 ~ 0.95
+	taskIntervalVariation = 0.5
+	#Range: 0.1 ~ 2.0
+	taskWalkSpeed = 1.15
+	#Range: 1 ~ 64
+	foodPerDelivery = 3
+	#Range: 0.0 ~ 1.0
+	groceryWrapChance = 0.25
+	#Range: 1 ~ 64
+	resourcesPerDelivery = 8
+	#Range: 0.0 ~ 1.0
+	goodArmorChance = 0.03
+	#Range: 0.0 ~ 1.0
+	dinnerSlimeChance = 0.8
+	#Range: 2 ~ 16
+	gardenRadius = 6
+	#Range: 1 ~ 256
+	maximumGardenPlots = 48
+	allowGardenBlockChanges = true
+	#Range: 100 ~ 72000
+	voiceIntervalTicks = 2400
+	#Range: 100 ~ 72000
+	dialogueIntervalTicks = 1200
+	#Range: 0 ~ 36000
+	dialogueVariationTicks = 200
+	#Mother's delay after her death voice starts, in ticks (20 = 1 second).
+	#Range: 20 ~ 200
+	momDeathAfterVoiceTicks = 20
+	#Father's delay after his death voice starts, in ticks (80 = 4 seconds).
+	#Range: 80 ~ 200
+	dadDeathAfterVoiceTicks = 80
+	#Range: 0 ~ 36000
+	voiceIntervalVariationTicks = 600
+	#Range: 0.0 ~ 4.0
+	voiceVolume = 1.0
+	#Range: 20 ~ 1200
+	interactionVoiceCooldownTicks = 60
+
+[food]
+	#Range: 0 ~ 20
+	slimeNutrition = 2
+
+[wybie]
+	#Range: 0.4 ~ 1.0
+	visualScale = 0.72
+	#Range: 0 ~ 72000
+	poisonTicks = 240
+	#Range: 0.0 ~ 100.0
+	impactDamage = 4.0
+	#Range: 0.2 ~ 2.0
+	approachSpeed = 1.1
+	#Range: 0.2 ~ 2.0
+	departureSpeed = 1.15
+	#Range: 4 ~ 40
+	repathTicks = 10
+	#Range: 100 ~ 2400
+	approachTimeoutTicks = 400
+
+[rod]
+	#Range: 0.0 ~ 1.0
+	leafDropChance = 0.005
+	#Range: 20 ~ 72000
+	cooldownTicks = 1400
+
+[doll]
+	#Range: 20 ~ 72000
+	returnMinimumTicks = 600
+	#Range: 20 ~ 72000
+	returnMaximumTicks = 1800
+	#Range: 100 ~ 72000
+	moveCheckTicks = 1200
+	#Range: 20 ~ 1200
+	moveRetryTicks = 100
+	#Range: 0.0 ~ 1.0
+	moveChance = 0.25
+	#Range: 1 ~ 8
+	moveRadius = 4
+	#Range: 2 ~ 48
+	bedRadius = 12
+	#Range: 1 ~ 16
+	bedVerticalRange = 4
+	#Range: 100 ~ 72000
+	containerOrMissingRecallTicks = 1200
+	#Range: 20 ~ 72000
+	invalidPlacementRecallTicks = 100
+	#Range: 1 ~ 1200
+	recallSkyDelayTicks = 40
+	#Range: 100 ~ 72000
+	doorDropCheckTicks = 1200
+	#Range: 0.0 ~ 1.0
+	doorDropChance = 0.08
+	#Range: 20 ~ 72000
+	creativeMissingConfirmationTicks = 100
+
+[otherWorld]
+	#Range: 0.0 ~ 1.0
+	nightChance = 0.3
+	#Range: 32 ~ 300
+	islandRadius = 300
+	#Range: 32 ~ 300
+	snapshotRadius = 300
+	#Range: 8 ~ 128
+	surfaceDepth = 16
+	#Range: 16 ~ 160
+	undergroundHomeRadius = 64
+	#Range: 8 ~ 128
+	undergroundHomeDepth = 32
+	#Range: 2 ~ 48
+	bedActivationRange = 12
+	#Range: 1 ~ 12
+	mouseCount = 5
+	#Range: 3 ~ 16
+	mouseSpawnRadius = 8
+	#Range: 1 ~ 16
+	mouseGroundSearchHeight = 8
+	#Range: 0 ~ 20
+	readyParticleCount = 1
+	#Range: 0 ~ 40
+	eligibleGrayParticleCount = 6
+	#Range: 0 ~ 40
+	activeParticleCount = 12
+	#Range: 1 ~ 4
+	copyChunksPerTick = 1
+	#Range: 0.0 ~ 0.25
+	gardenDecorationChance = 0.025
+	#Range: 100 ~ 72000
+	missingDoorConfirmationTicks = 1200
+	#Range: 0.1 ~ 2.0
+	mouseChaseSpeed = 0.7
+	#Range: 1 ~ 100
+	mouseSeenConfirmationTicks = 8
+	#Range: 3 ~ 40
+	mouseSeenRange = 12
+	#Range: 0 ~ 1200
+	mouseIntroDelayTicks = 100
+	#Range: 0.0 ~ 2.0
+	sceneVolume = 1.0
+	#Range: 0.0 ~ 1.0
+	tunnelHumVolume = 0.7
+

@@ -1,0 +1,73 @@
+{
+  "mode": "built-in image_gen",
+  "jobs": [
+    {
+      "name": "omelet",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft food inventory icon. a fluffy golden folded omelet sprinkled with herbs. Extremely delicious and colorful, polished detailed pixel art, crisp square pixels, clear silhouette, rich appetizing shading. Three-quarter view centered filling 80% of square canvas. One isolated food item only. No text, no labels, no border, no ground, no cast shadow. Genuine transparent alpha background. Match high-quality Minecraft mod inventory art, not a photo."
+    },
+    {
+      "name": "bacon_and_eggs",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft food inventory icon. crispy bacon strips with two sunny-side-up eggs on a small cream plate. Extremely delicious and colorful, polished detailed pixel art, crisp square pixels, clear silhouette, rich appetizing shading. Three-quarter view centered filling 80% of square canvas. One isolated food item only. No text, no labels, no border, no ground, no cast shadow. Genuine transparent alpha background. Match high-quality Minecraft mod inventory art, not a photo."
+    },
+    {
+      "name": "cotton_candy",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft food inventory icon. a full fluffy pink and pale-blue cotton candy cloud on a white paper stick. Extremely delicious and colorful, polished detailed pixel art, crisp square pixels, clear silhouette, rich appetizing shading. Three-quarter view centered filling 80% of square canvas. One isolated food item only. No text, no labels, no border, no ground, no cast shadow. Genuine transparent alpha background. Match high-quality Minecraft mod inventory art, not a photo."
+    },
+    {
+      "name": "popcorn",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft food inventory icon. a red and cream striped open paper carton heaped with buttery golden popcorn. Extremely delicious and colorful, polished detailed pixel art, crisp square pixels, clear silhouette, rich appetizing shading. Three-quarter view centered filling 80% of square canvas. One isolated food item only. No text, no labels, no border, no ground, no cast shadow. Genuine transparent alpha background. Match high-quality Minecraft mod inventory art, not a photo."
+    },
+    {
+      "name": "sweet_strawberries",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft food inventory icon. three juicy ripe red strawberries with fresh green tops. Extremely delicious and colorful, polished detailed pixel art, crisp square pixels, clear silhouette, rich appetizing shading. Three-quarter view centered filling 80% of square canvas. One isolated food item only. No text, no labels, no border, no ground, no cast shadow. Genuine transparent alpha background. Match high-quality Minecraft mod inventory art, not a photo."
+    },
+    {
+      "name": "scrambled_eggs",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft food inventory icon. fluffy golden scrambled eggs with chives on a small cream plate. Extremely delicious and colorful, polished detailed pixel art, crisp square pixels, clear silhouette, rich appetizing shading. Three-quarter view centered filling 80% of square canvas. One isolated food item only. No text, no labels, no border, no ground, no cast shadow. Genuine transparent alpha background. Match high-quality Minecraft mod inventory art, not a photo."
+    },
+    {
+      "name": "muffin",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft food inventory icon. a plump golden blueberry muffin in a brown paper case. Extremely delicious and colorful, polished detailed pixel art, crisp square pixels, clear silhouette, rich appetizing shading. Three-quarter view centered filling 80% of square canvas. One isolated food item only. No text, no labels, no border, no ground, no cast shadow. Genuine transparent alpha background. Match high-quality Minecraft mod inventory art, not a photo."
+    },
+    {
+      "name": "pizza",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft food inventory icon. an appetizing triangular pizza slice with molten cheese pepperoni tomato and basil. Extremely delicious and colorful, polished detailed pixel art, crisp square pixels, clear silhouette, rich appetizing shading. Three-quarter view centered filling 80% of square canvas. One isolated food item only. No text, no labels, no border, no ground, no cast shadow. Genuine transparent alpha background. Match high-quality Minecraft mod inventory art, not a photo."
+    },
+    {
+      "name": "cupcakes",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft food inventory icon. two little cupcakes with pink and vanilla swirled icing and colorful sprinkles. Extremely delicious and colorful, polished detailed pixel art, crisp square pixels, clear silhouette, rich appetizing shading. Three-quarter view centered filling 80% of square canvas. One isolated food item only. No text, no labels, no border, no ground, no cast shadow. Genuine transparent alpha background. Match high-quality Minecraft mod inventory art, not a photo."
+    },
+    {
+      "name": "lemonade",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft food inventory icon. a clear glass of pale golden lemonade with ice and lemon slice. Extremely delicious and colorful, polished detailed pixel art, crisp square pixels, clear silhouette, rich appetizing shading. Three-quarter view centered filling 80% of square canvas. One isolated food item only. No text, no labels, no border, no ground, no cast shadow. Genuine transparent alpha background. Match high-quality Minecraft mod inventory art, not a photo."
+    },
+    {
+      "name": "orange_juice",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft food inventory icon. a clear glass of rich orange juice with a fresh orange wedge. Extremely delicious and colorful, polished detailed pixel art, crisp square pixels, clear silhouette, rich appetizing shading. Three-quarter view centered filling 80% of square canvas. One isolated food item only. No text, no labels, no border, no ground, no cast shadow. Genuine transparent alpha background. Match high-quality Minecraft mod inventory art, not a photo."
+    },
+    {
+      "name": "hot_dog_in_bun",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft food inventory icon. a grilled sausage in a soft golden split bun with mustard and ketchup zigzags. Extremely delicious and colorful, polished detailed pixel art, crisp square pixels, clear silhouette, rich appetizing shading. Three-quarter view centered filling 80% of square canvas. One isolated food item only. No text, no labels, no border, no ground, no cast shadow. Genuine transparent alpha background. Match high-quality Minecraft mod inventory art, not a photo."
+    },
+    {
+      "name": "panini",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft food inventory icon. a diagonally cut grilled panini sandwich with crisp grill marks melted cheese and colorful filling. Extremely delicious and colorful, polished detailed pixel art, crisp square pixels, clear silhouette, rich appetizing shading. Three-quarter view centered filling 80% of square canvas. One isolated food item only. No text, no labels, no border, no ground, no cast shadow. Genuine transparent alpha background. Match high-quality Minecraft mod inventory art, not a photo."
+    },
+    {
+      "name": "cocoa_beetles",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft food inventory icon. three whimsical edible chocolate beetle candies, glossy dark cocoa shells with gold cocoa dust. Extremely delicious and colorful, polished detailed pixel art, crisp square pixels, clear silhouette, rich appetizing shading. Three-quarter view centered filling 80% of square canvas. One isolated food item only. No text, no labels, no border, no ground, no cast shadow. Genuine transparent alpha background. Match high-quality Minecraft mod inventory art, not a photo."
+    },
+    {
+      "name": "lollipop",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft food inventory icon. a round pink turquoise and cream spiral lollipop on a white stick. Extremely delicious and colorful, polished detailed pixel art, crisp square pixels, clear silhouette, rich appetizing shading. Three-quarter view centered filling 80% of square canvas. One isolated food item only. No text, no labels, no border, no ground, no cast shadow. Genuine transparent alpha background. Match high-quality Minecraft mod inventory art, not a photo."
+    },
+    {
+      "name": "perfect_roast_dinner",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft food inventory icon. a generous cream platter with succulent roast meat slices glazed potatoes carrots peas and rich gravy. Extremely delicious and colorful, polished detailed pixel art, crisp square pixels, clear silhouette, rich appetizing shading. Three-quarter view centered filling 80% of square canvas. One isolated food item only. No text, no labels, no border, no ground, no cast shadow. Genuine transparent alpha background. Match high-quality Minecraft mod inventory art, not a photo."
+    },
+    {
+      "name": "bottomless_candy_bag",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft food inventory icon. a beautiful small purple velvet candy bag with gold drawstrings overflowing with jewel-bright wrapped sweets. Extremely delicious and colorful, polished detailed pixel art, crisp square pixels, clear silhouette, rich appetizing shading. Three-quarter view centered filling 80% of square canvas. One isolated food item only. No text, no labels, no border, no ground, no cast shadow. Genuine transparent alpha background. Match high-quality Minecraft mod inventory art, not a photo."
+    }
+  ]
+}

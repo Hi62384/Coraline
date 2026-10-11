@@ -1,0 +1,6 @@
+The Other Father activity introductions are synthetic voice-cloned audio generated
+locally with IndexTTS2 from the project's synthetic Otherfathersample.wav reference.
+No human voice recording is used as the reference for these clips.
+
+IndexTTS2: https://github.com/index-tts/index-tts
+The accompanying model-use license is INDEXTTS_AUDIO_LICENSE.txt.

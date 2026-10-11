@@ -1,0 +1,88 @@
+Coraline 1.15.34 — activity follow-up
+
+Production artifact
+build-activity/libs/coraline-1.15.34.jar
+63,849,699 bytes (63.85 MB; only 10,939 bytes above 1.15.33)
+SHA256: 80009A9C71586D00575910EBFF02CFAF50F65962D7EDD404FB0CF3F047F5B1BE
+Clean production build passed, including six asset-optimizer regression tests.
+Packaged verification passed: 535 textures, 242 sound events, JSON/ZIP integrity,
+23 resampled recordings with full durations/channels preserved, and no test or
+visual-check classes/templates. 63.5% smaller than the old 175.05 MB baseline.
+
+Changes
+- Other Father introductions: the camera faces the host throughout the intro.
+  Listen to dialogue dismisses the menu without skipping the audio or starting
+  the activity early. Skip retains the existing owner/generation validation.
+- Nether Fortress: removed the false failure for downward movement exceeding
+  four blocks between server observations. Gate checks interpolate each crossing
+  position and accept multiple crossed gates in a movement update. All five
+  lava landings advance/complete normally; solid obstacles still fail. Signs,
+  HUD and failure messages explicitly describe lava as the safe finish.
+- Mineshaft: size unchanged (420 rooms over four floors). Borrowed shovel deals
+  exactly 3 health damage, with a half-second cooldown, reach/visibility checks,
+  owner and visit validation. Ordinary tools cannot damage protected actors.
+  Defeated actors disappear without farmable drops.
+- Mineshaft map: borrowed map opens the current floor layout, live position,
+  facing marker, stairs, and the entrance exit on floor one. It automatically
+  changes floor based on height. The timer continues while the map is open.
+  Original inventory contents are preserved and restored on exit/abort.
+- End City: lasers sweep all rows, then all columns, including boundary tiles.
+  Levels 1–5 use intervals of 40, 32, 25, 19, and 14 ticks respectively.
+  Client warnings/rendering and server damage share the same geometry/timing.
+- Music Festival: approach time reduced from 50 to 28 ticks. Charts have
+  269/201/231/234 prompts for Minecraft/Clark/Sweden/Subwoofer Lullaby, versus
+  153/88/131/125 previously. Minimum spacing remains 10 ticks, with one key
+  required at a time and the existing generous timing window.
+  Each successful input plays up to three note-block voices. Mistakes detune
+  the lead voice. No original song recording is played in the background.
+  Full track durations and non-repeating visit selection remain intact.
+
+Verification
+- All 74 activity GameTests passed on a fresh test world.
+- Actual Minecraft client smoke check passed for intro menu, Listen behavior,
+  host-facing camera, normal map item use, floor 1/floor 4 position display,
+  festival HUD, audible note events, and absence of a backing recording.
+- Screenshots: artwork/update_intro_menu.png, update_intro_listen.png,
+  update_mine_map.png, update_mine_deep_map.png, update_festival_notes.png.
+- Logs: build-activity/final-tests-1.15.34.log,
+  build-activity/final-client-1.15.34.log, build-activity/release-1.15.34.log.
+
+Scope / limitations
+- Festival music is a simplified, algorithmically transcribed note-block
+  arrangement, not a studio-accurate recreation. No complete human listening
+  review of all four arrangements was performed.
+- Tests cover fortress rule/landing regressions; no full manual five-level
+  playthrough or multi-client multiplayer playtest was performed this update.
+- Start fresh activity visits after updating so borrowed equipment and visit
+  state are initialized consistently.
+- No extra recordings or textures were added; new items reuse vanilla icons.
+
+Primary files changed
+src/main/java/com/coraline/client/ActivityIntroClient.java
+src/main/java/com/coraline/client/MineMapScreen.java
+src/main/java/com/coraline/client/FestivalClient.java
+src/main/java/com/coraline/client/StoryMusicGuard.java
+src/main/java/com/coraline/feast/FortressActivity.java
+src/main/java/com/coraline/feast/MineshaftActivity.java
+src/main/java/com/coraline/feast/MineThreats.java
+src/main/java/com/coraline/feast/ExpeditionNetwork.java
+src/main/java/com/coraline/feast/NewActivitySafety.java
+src/main/java/com/coraline/feast/EndCityChallenge.java
+src/main/java/com/coraline/feast/EndCityActivity.java
+src/main/java/com/coraline/feast/FestivalChart.java
+src/main/java/com/coraline/feast/MusicFestivalActivity.java
+src/main/java/com/coraline/item/ExpeditionItem.java
+src/main/java/com/coraline/registry/ModItems.java
+src/main/java/com/coraline/otherworld/RealmProtection.java
+src/main/resources/assets/coraline/festival_charts.json
+src/main/resources/assets/coraline/models/item/activity_mining_shovel.json
+src/main/resources/assets/coraline/models/item/activity_mine_map.json
+src/main/resources/assets/coraline/lang/en_us.json
+tools/build_festival_charts.py
+src/activitytest/java/com/coraline/feast/ActivityFollowupGameTests.java
+src/activitytest/java/com/coraline/feast/NewActivitiesGameTests.java
+src/rendercheck/java/com/coraline/feast/IntroFortressVisualCheck.java
+src/rendercheck/java/com/coraline/feast/RevisionVisualCheck.java
+build.gradle
+gradle.properties
+Removed obsolete recording player: client/FestivalTrackSound.java.

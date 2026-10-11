@@ -1,0 +1,107 @@
+
+[midnight]
+	#World ticks, inclusive; wraparound windows are supported.
+	#Range: 0 ~ 23999
+	start = 17000
+	#Range: 0 ~ 23999
+	end = 19000
+	#Range: 0.0 ~ 3.0
+	speedBonus = 0.25
+	#Additional upward velocity; vanilla jump is 0.42.
+	#Range: 0.0 ~ 1.0
+	jumpBonus = 0.09
+	#Skylit surfaces only; does not grant Night Vision or illuminate caves.
+	#Range: 0 ~ 15
+	nightVisibility = 9
+
+[raincoat]
+	#Range: 0.0 ~ 3.0
+	speedBonus = 0.65
+
+[pajamas]
+	#Range: 20 ~ 72000
+	healIntervalTicks = 100
+	#Range: 0.0 ~ 20.0
+	healthPerInterval = 1.0
+
+[overalls]
+	#Health points per nutrition point consumed. Two health points = one heart.
+	#Range: 0.0 ~ 5.0
+	healthPerNutrition = 0.5
+
+[circus]
+	#Range: 0.0 ~ 1.0
+	jumpBonus = 0.2
+
+[slippers]
+	#Natural target detection multiplier; does not erase retaliation or existing targets.
+	#Range: 0.05 ~ 1.0
+	detectionMultiplier = 0.5
+
+[featherBoots]
+	#Range: 0.03 ~ 0.5
+	maximumFallSpeed = 0.125
+
+[starShirt]
+	#Client-side moving light; never places blocks or changes mob spawning.
+	#Range: 1 ~ 15
+	lightLevel = 10
+
+[sets]
+
+	[sets.dreamweave]
+		#Range: 0.0 ~ 1.0
+		speedPerPiece = 0.1
+
+	[sets.midnight]
+		#Range: 0.0 ~ 2.0
+		jumpBonus = 0.5
+
+	[sets.buttonguard]
+		#Range: 0.0 ~ 1.0
+		reflectionPerPiece = 0.1
+
+	[sets.midnightCloak]
+		#Range: 0.01 ~ 1.0
+		nightDetectionMultiplier = 0.2
+
+	[sets.luck]
+		#Range: 0 ~ 10
+		extraLootingLevels = 2
+
+	[sets.gardenVines]
+		#Range: 0.0 ~ 1.0
+		retaliationChance = 0.5
+		#Range: 1 ~ 1200
+		effectTicks = 80
+
+	[sets.miners]
+		#Multiplies ordinary block drops, including placed blocks. Never duplicates block entities or tagged items.
+		#Range: 1 ~ 8
+		dropMultiplier = 2
+
+	[sets.soulbound]
+		#Range: 0.0 ~ 20.0
+		healthOnHit = 1.0
+		#Range: 0.0 ~ 40.0
+		healthOnKill = 6.0
+
+	[sets.spidervision]
+		#Range: 0.0 ~ 1.0
+		webChance = 0.3
+		#Range: 0 ~ 1200
+		webCooldownTicks = 100
+		#Range: 20 ~ 12000
+		webLifetimeTicks = 200
+		#Range: 0.25 ~ 1.0
+		webMovementMultiplier = 0.85
+
+	[sets.superSpidervision]
+		#Range: 0.01 ~ 0.4
+		climbSpeed = 0.1
+
+[buttonEyes]
+	#Zero highlights all client-loaded mobs; an optional positive value caps range. Does not reveal unloaded chunks.
+	#Range: 0 ~ 1024
+	highlightRange = 0
+

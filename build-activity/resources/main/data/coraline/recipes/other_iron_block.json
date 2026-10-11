@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "MMM",
+    "MMM",
+    "MMM"
+  ],
+  "key": {
+    "M": {
+      "item": "coraline:other_iron_ingot"
+    }
+  },
+  "result": {
+    "item": "coraline:other_iron_block"
+  }
+}

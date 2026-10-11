@@ -1,0 +1,124 @@
+
+[omelet]
+	#Food points; two points = one drumstick. Per bite for multi-use foods.
+	#Range: 0 ~ 40
+	nutrition = 7
+	#Range: 0.0 ~ 3.0
+	saturationMultiplier = 0.6
+
+[bacon_and_eggs]
+	#Food points; two points = one drumstick. Per bite for multi-use foods.
+	#Range: 0 ~ 40
+	nutrition = 9
+	#Range: 0.0 ~ 3.0
+	saturationMultiplier = 0.7
+
+[sweet_strawberries]
+	#Food points; two points = one drumstick. Per bite for multi-use foods.
+	#Range: 0 ~ 40
+	nutrition = 3
+	#Range: 0.0 ~ 3.0
+	saturationMultiplier = 0.3
+
+[scrambled_eggs]
+	#Food points; two points = one drumstick. Per bite for multi-use foods.
+	#Range: 0 ~ 40
+	nutrition = 5
+	#Range: 0.0 ~ 3.0
+	saturationMultiplier = 0.5
+
+[muffin]
+	#Food points; two points = one drumstick. Per bite for multi-use foods.
+	#Range: 0 ~ 40
+	nutrition = 5
+	#Range: 0.0 ~ 3.0
+	saturationMultiplier = 0.4
+
+[pizza]
+	#Food points; two points = one drumstick. Per bite for multi-use foods.
+	#Range: 0 ~ 40
+	nutrition = 8
+	#Range: 0.0 ~ 3.0
+	saturationMultiplier = 0.65
+
+[cupcakes]
+	#Food points; two points = one drumstick. Per bite for multi-use foods.
+	#Range: 0 ~ 40
+	nutrition = 5
+	#Range: 0.0 ~ 3.0
+	saturationMultiplier = 0.3
+
+[lemonade]
+	#Food points; two points = one drumstick. Per bite for multi-use foods.
+	#Range: 0 ~ 40
+	nutrition = 3
+	#Range: 0.0 ~ 3.0
+	saturationMultiplier = 0.15
+
+[orange_juice]
+	#Food points; two points = one drumstick. Per bite for multi-use foods.
+	#Range: 0 ~ 40
+	nutrition = 4
+	#Range: 0.0 ~ 3.0
+	saturationMultiplier = 0.25
+
+[hot_dog_in_bun]
+	#Food points; two points = one drumstick. Per bite for multi-use foods.
+	#Range: 0 ~ 40
+	nutrition = 8
+	#Range: 0.0 ~ 3.0
+	saturationMultiplier = 0.6
+
+[panini]
+	#Food points; two points = one drumstick. Per bite for multi-use foods.
+	#Range: 0 ~ 40
+	nutrition = 8
+	#Range: 0.0 ~ 3.0
+	saturationMultiplier = 0.7
+
+[cocoa_beetles]
+	#Food points; two points = one drumstick. Per bite for multi-use foods.
+	#Range: 0 ~ 40
+	nutrition = 3
+	#Range: 0.0 ~ 3.0
+	saturationMultiplier = 0.3
+
+[lollipop]
+	#Food points; two points = one drumstick. Per bite for multi-use foods.
+	#Range: 0 ~ 40
+	nutrition = 2
+	#Range: 0.0 ~ 3.0
+	saturationMultiplier = 0.1
+
+[perfect_roast_dinner]
+	#Food points; two points = one drumstick. Per bite for multi-use foods.
+	#Range: 0 ~ 40
+	nutrition = 16
+	#Range: 0.0 ~ 3.0
+	saturationMultiplier = 1.0
+
+[cotton_candy]
+	#Food points; two points = one drumstick. Per bite for multi-use foods.
+	#Range: 0 ~ 40
+	nutrition = 2
+	#Range: 0.0 ~ 3.0
+	saturationMultiplier = 0.1
+
+[bottomless_candy_bag]
+	#Food points; two points = one drumstick. Per bite for multi-use foods.
+	#Range: 0 ~ 40
+	nutrition = 2
+	#Range: 0.0 ~ 3.0
+	saturationMultiplier = 0.01
+
+[popcorn]
+	#Food points; two points = one drumstick. Per bite for multi-use foods.
+	#Range: 0 ~ 40
+	nutrition = 1
+	#Range: 0.0 ~ 3.0
+	saturationMultiplier = 0.05
+	#Range: 1 ~ 256
+	servings = 32
+	#Range: 2 ~ 100
+	ticksBetweenBites = 10
+

@@ -1,0 +1,8 @@
+{"parent":"minecraft:block/block","textures":{"particle":"minecraft:block/quartz_block_bottom","top":"minecraft:block/quartz_block_bottom","frame":"minecraft:block/dark_oak_planks","leg":"minecraft:block/yellow_concrete"},"elements":[
+ {"from":[1,0,1],"to":[3,10,3],"faces":{"north":{"texture":"#leg"},"south":{"texture":"#leg"},"east":{"texture":"#leg"},"west":{"texture":"#leg"},"up":{"texture":"#leg"}}},
+ {"from":[13,0,1],"to":[15,10,3],"faces":{"north":{"texture":"#leg"},"south":{"texture":"#leg"},"east":{"texture":"#leg"},"west":{"texture":"#leg"},"up":{"texture":"#leg"}}},
+ {"from":[1,0,13],"to":[3,10,15],"faces":{"north":{"texture":"#leg"},"south":{"texture":"#leg"},"east":{"texture":"#leg"},"west":{"texture":"#leg"},"up":{"texture":"#leg"}}},
+ {"from":[13,0,13],"to":[15,10,15],"faces":{"north":{"texture":"#leg"},"south":{"texture":"#leg"},"east":{"texture":"#leg"},"west":{"texture":"#leg"},"up":{"texture":"#leg"}}},
+ {"from":[0,8,0],"to":[16,10,16],"faces":{"north":{"texture":"#frame"},"south":{"texture":"#frame"},"east":{"texture":"#frame"},"west":{"texture":"#frame"},"up":{"texture":"#frame"},"down":{"texture":"#frame"}}},
+ {"from":[1,10,1],"to":[15,11,15],"faces":{"north":{"texture":"#top"},"south":{"texture":"#top"},"east":{"texture":"#top"},"west":{"texture":"#top"},"up":{"texture":"#top"},"down":{"texture":"#top"}}}
+]}

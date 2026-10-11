@@ -1,0 +1,15 @@
+WARNING:root:Coremltools is not installed. If you plan to use a CoreML Saved Model, reinstall basic-pitch with `pip install 'basic-pitch[coreml]'`
+WARNING:root:tflite-runtime is not installed. If you plan to use a TFLite Model, reinstall basic-pitch with `pip install 'basic-pitch tflite-runtime'` or `pip install 'basic-pitch[tf]'
+WARNING:root:Tensorflow is not installed. If you plan to use a TF Saved Model, reinstall basic-pitch with `pip install 'basic-pitch[tf]'`
+Transcribing Minecraft
+Predicting MIDI for C:\Users\User1\Documents\Downloads\Coraline\.voice-tools\festival-scores\calm1.wav...
+Minecraft 260.55 seconds; 318 prompts; 613 chord attacks
+Transcribing Clark
+Predicting MIDI for C:\Users\User1\Documents\Downloads\Coraline\.voice-tools\festival-scores\calm2.wav...
+Clark 201.6 seconds; 293 prompts; 661 chord attacks
+Transcribing Sweden
+Predicting MIDI for C:\Users\User1\Documents\Downloads\Coraline\.voice-tools\festival-scores\calm3.wav...
+Sweden 229.75 seconds; 295 prompts; 585 chord attacks
+Transcribing Subwoofer Lullaby
+Predicting MIDI for C:\Users\User1\Documents\Downloads\Coraline\.voice-tools\festival-scores\hal1.wav...
+Subwoofer Lullaby 209.2 seconds; 317 prompts; 915 chord attacks

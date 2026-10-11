@@ -1,0 +1,105 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.8/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :
+Java: 1.8.0_491, JVM: 25.491-b10 (Oracle Corporation), Arch: amd64
+
+> Task :cleanCompileJava
+> Task :cleanProcessResources
+> Task :downloadMcpConfig
+> Task :extractSrg UP-TO-DATE
+> Task :createMcpToSrg UP-TO-DATE
+> Task :clothingSrgMappings UP-TO-DATE
+
+> Task :compileJava
+Note: SpongePowered MIXIN Annotation Processor Version=0.8.5
+Note: Supported obfuscation types: ObfuscationServiceMCP supports [searge,notch]
+Note: Loading searge mappings from C:\Users\User1\Documents\Downloads\Coraline\build-activity\generatedMappings\clothing.srg
+Note: Writing refmap to C:\Users\User1\Documents\Downloads\Coraline\build-activity\generated\mixin\coraline.refmap.json
+Note: Writing refmap to C:\Users\User1\Documents\Downloads\Coraline\build-activity\generated\mixin\coraline.refmap.json
+Note: Writing refmap to C:\Users\User1\Documents\Downloads\Coraline\build-activity\generated\mixin\coraline.refmap.json
+Note: Writing refmap to C:\Users\User1\Documents\Downloads\Coraline\build-activity\generated\mixin\coraline.refmap.json
+C:\Users\User1\Documents\Downloads\Coraline\src\main\java\com\coraline\client\ClientModEvents.java:69: warning: [removal] setRenderLayer(Block,RenderType) in ItemBlockRenderTypes has been deprecated and marked for removal
+        event.enqueueWork(()->net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(
+                                                                                ^
+C:\Users\User1\Documents\Downloads\Coraline\src\main\java\com\coraline\client\clothing\SculptedArmorModel.java:29: warning: [removal] ResourceLocation(String,String) in ResourceLocation has been deprecated and marked for removal
+        var resource=new ResourceLocation("coraline","sculpted/"+id+".json");
+                     ^
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: C:\Users\User1\Documents\Downloads\Coraline\src\main\java\com\coraline\client\ClientModEvents.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+2 warnings
+
+> Task :importParentVoices
+Parent voice assets: angry_parent=1, mom_neglect=11, mom_task=4, mom_death=1, dad_neglect=4, dad_neglect_rain=5, dad_task=4, dad_death=1, mom_chat=11, dad_chat=4
+
+> Task :importGameAudio
+Scene audio lengths (ticks): {'mice_intro': 465, 'mice_chase': 173, 'door_portal_open': 155, 'tunnel_enter': 375}
+
+> Task :importVisitAudio
+First-visit audio ticks: {'other_mother_intro': 686, 'other_father_enter_scene': 112, 'other_father_intro': 286, 'other_father_song': 543, 'other_father_dinners_ready': 282, 'other_father_golden_chicken_breast': 262, 'other_parents_waiting': 114, 'other_mother_visit_again': 164, 'mysterious_supper': 1714, 'magic_garden_fly': 609, 'coraline_garden': 1922, 'cake_baking': 1948, 'magic_garden_hop_on': 61, 'magic_garden_mother_said': 182, 'ambient_carnival': 2812, 'ambient_theatre': 1952, 'ambient_circus': 1640, 'ambient_race': 1400, 'ambient_archery': 1400, 'ambient_garden': 1922, 'ambient_feast': 1714, 'ambient_dream': 1642, 'ambient_village': 2590, 'other_mother_supper_0': 38, 'other_mother_supper_1': 110, 'other_mother_supper_2': 86, 'see_you_soon': 68, 'circus_race': 1640, 'other_mother_welcome_low_trust_low_suspicion_01': 106, 'other_mother_welcome_low_trust_low_suspicion_02': 126, 'other_mother_welcome_low_trust_low_suspicion_03': 122, 'other_mother_welcome_mid_trust_mid_suspicion_01': 145, 'other_mother_welcome_mid_trust_mid_suspicion_02': 125, 'other_mother_welcome_mid_trust_mid_suspicion_03': 151, 'other_mother_welcome_high_trust_low_suspicion_01': 76, 'other_mother_welcome_high_trust_low_suspicion_02': 135, 'other_mother_welcome_high_trust_low_suspicion_03': 123, 'other_mother_welcome_high_suspicion_low_trust_01': 113, 'other_mother_welcome_high_suspicion_low_trust_02': 220, 'other_mother_welcome_high_suspicion_low_trust_03': 206, 'other_mother_welcome_high_trust_high_suspicion_01': 142, 'other_mother_welcome_high_trust_high_suspicion_02': 133, 'other_mother_welcome_high_trust_high_suspicion_03': 164, 'other_mother_loot_food_before_01': 123, 'other_mother_loot_food_before_02': 137, 'other_mother_loot_food_before_03': 134, 'other_mother_loot_food_after_01': 120, 'other_mother_loot_food_after_02': 107, 'other_mother_loot_food_after_03': 101, 'other_mother_loot_treasure_before_01': 106, 'other_mother_loot_treasure_before_02': 146, 'other_mother_loot_treasure_before_03': 137, 'other_mother_loot_treasure_after_01': 96, 'other_mother_loot_treasure_after_02': 148, 'other_mother_loot_treasure_after_03': 96, 'other_mother_state_extra_low_trust_low_suspicion_01': 86, 'other_mother_state_extra_low_trust_low_suspicion_02': 136, 'other_mother_state_extra_mid_trust_mid_suspicion_01': 83, 'other_mother_state_extra_mid_trust_mid_suspicion_02': 103, 'other_mother_state_extra_high_trust_low_suspicion_01': 93, 'other_mother_state_extra_high_trust_low_suspicion_02': 73, 'other_mother_state_extra_high_suspicion_low_trust_01': 95, 'other_mother_state_extra_high_suspicion_low_trust_02': 150, 'other_mother_state_extra_high_trust_high_suspicion_01': 141, 'other_mother_state_extra_high_trust_high_suspicion_02': 106, 'other_mother_tutorial_01': 382, 'other_mother_tutorial_02': 323, 'other_mother_tutorial_03': 360, 'other_mother_tutorial_04': 290, 'other_mother_activities_other_village_01': 152, 'other_mother_activities_other_village_02': 178, 'other_mother_activities_other_woodland_mansion_01': 174, 'other_mother_activities_other_woodland_mansion_02': 167, 'other_mother_activities_other_desert_temple_01': 196, 'other_mother_activities_other_desert_temple_02': 164, 'other_mother_activities_magic_show_01': 218, 'other_mother_activities_magic_show_02': 160, 'other_mother_activities_dream_parkour_01': 184, 'other_mother_activities_dream_parkour_02': 210, 'other_mother_activities_grand_feast_01': 141, 'other_mother_activities_grand_feast_02': 205, 'other_mother_activities_mice_circus_01': 159, 'other_mother_activities_mice_circus_02': 141, 'other_mother_activities_carnival_01': 123, 'other_mother_activities_carnival_02': 187, 'other_mother_activities_magic_garden_01': 168, 'other_mother_activities_magic_garden_02': 158, 'other_mother_activities_music_festival_01': 184, 'other_mother_activities_music_festival_02': 143, 'other_mother_activities_shopping_mall_01': 184, 'other_mother_activities_shopping_mall_02': 158, 'other_mother_activities_snowball_battle_01': 210, 'other_mother_activities_snowball_battle_02': 177, 'other_mother_activities_cake_making_contest_01': 191, 'other_mother_activities_cake_making_contest_02': 148, 'other_mother_activities_fishing_contest_01': 160, 'other_mother_activities_fishing_contest_02': 159, 'other_mother_activities_archery_contest_01': 190, 'other_mother_activities_archery_contest_02': 153, 'other_mother_activities_ice_boat_race_01': 132, 'other_mother_activities_ice_boat_race_02': 149, 'other_mother_activities_garden_maze_01': 161, 'other_mother_activities_garden_maze_02': 148, 'other_mother_activities_treasure_hunt_01': 149, 'other_mother_activities_treasure_hunt_02': 144, 'other_mother_activities_other_mineshaft_01': 174, 'other_mother_activities_other_mineshaft_02': 152, 'other_mother_activities_other_ocean_monument_01': 167, 'other_mother_activities_other_ocean_monument_02': 185, 'other_mother_activities_other_nether_fortress_01': 184, 'other_mother_activities_other_nether_fortress_02': 200, 'other_mother_activities_other_end_city_01': 193, 'other_mother_activities_other_end_city_02': 215, 'other_mother_activity_wait_low_trust_low_suspicion_01': 308, 'other_mother_activity_wait_low_trust_low_suspicion_02': 265, 'other_mother_activity_wait_low_trust_low_suspicion_03': 278, 'other_mother_activity_wait_mid_trust_mid_suspicion_01': 206, 'other_mother_activity_wait_mid_trust_mid_suspicion_02': 237, 'other_mother_activity_wait_mid_trust_mid_suspicion_03': 267, 'other_mother_activity_wait_high_trust_low_suspicion_01': 228, 'other_mother_activity_wait_high_trust_low_suspicion_02': 250, 'other_mother_activity_wait_high_trust_low_suspicion_03': 230, 'other_mother_activity_wait_high_suspicion_low_trust_01': 226, 'other_mother_activity_wait_high_suspicion_low_trust_02': 244, 'other_mother_activity_wait_high_suspicion_low_trust_03': 260, 'other_mother_activity_wait_high_trust_high_suspicion_01': 227, 'other_mother_activity_wait_high_trust_high_suspicion_02': 243, 'other_mother_activity_wait_high_trust_high_suspicion_03': 205, 'other_mother_activity_arrival_low_trust_low_suspicion_on_time_01': 138, 'other_mother_activity_arrival_low_trust_low_suspicion_on_time_02': 137, 'other_mother_activity_arrival_low_trust_low_suspicion_on_time_03': 133, 'other_mother_activity_arrival_low_trust_low_suspicion_late_01': 146, 'other_mother_activity_arrival_low_trust_low_suspicion_late_02': 153, 'other_mother_activity_arrival_low_trust_low_suspicion_late_03': 146, 'other_mother_activity_arrival_mid_trust_mid_suspicion_on_time_01': 120, 'other_mother_activity_arrival_mid_trust_mid_suspicion_on_time_02': 142, 'other_mother_activity_arrival_mid_trust_mid_suspicion_on_time_03': 155, 'other_mother_activity_arrival_mid_trust_mid_suspicion_late_01': 146, 'other_mother_activity_arrival_mid_trust_mid_suspicion_late_02': 124, 'other_mother_activity_arrival_mid_trust_mid_suspicion_late_03': 145, 'other_mother_activity_arrival_high_trust_low_suspicion_on_time_01': 121, 'other_mother_activity_arrival_high_trust_low_suspicion_on_time_02': 146, 'other_mother_activity_arrival_high_trust_low_suspicion_on_time_03': 132, 'other_mother_activity_arrival_high_trust_low_suspicion_late_01': 176, 'other_mother_activity_arrival_high_trust_low_suspicion_late_02': 141, 'other_mother_activity_arrival_high_trust_low_suspicion_late_03': 160, 'other_mother_activity_arrival_high_suspicion_low_trust_on_time_01': 155, 'other_mother_activity_arrival_high_suspicion_low_trust_on_time_02': 152, 'other_mother_activity_arrival_high_suspicion_low_trust_on_time_03': 130, 'other_mother_activity_arrival_high_suspicion_low_trust_late_01': 120, 'other_mother_activity_arrival_high_suspicion_low_trust_late_02': 140, 'other_mother_activity_arrival_high_suspicion_low_trust_late_03': 149, 'other_mother_activity_arrival_high_trust_high_suspicion_on_time_01': 164, 'other_mother_activity_arrival_high_trust_high_suspicion_on_time_02': 180, 'other_mother_activity_arrival_high_trust_high_suspicion_on_time_03': 163, 'other_mother_activity_arrival_high_trust_high_suspicion_late_01': 139, 'other_mother_activity_arrival_high_trust_high_suspicion_late_02': 146, 'other_mother_activity_arrival_high_trust_high_suspicion_late_03': 123, 'other_mother_activity_complete_low_trust_low_suspicion_01': 202, 'other_mother_activity_complete_low_trust_low_suspicion_02': 225, 'other_mother_activity_complete_low_trust_low_suspicion_03': 189, 'other_mother_activity_complete_mid_trust_mid_suspicion_01': 205, 'other_mother_activity_complete_mid_trust_mid_suspicion_02': 244, 'other_mother_activity_complete_mid_trust_mid_suspicion_03': 223, 'other_mother_activity_complete_high_trust_low_suspicion_01': 185, 'other_mother_activity_complete_high_trust_low_suspicion_02': 208, 'other_mother_activity_complete_high_trust_low_suspicion_03': 207, 'other_mother_activity_complete_high_suspicion_low_trust_01': 233, 'other_mother_activity_complete_high_suspicion_low_trust_02': 259, 'other_mother_activity_complete_high_suspicion_low_trust_03': 235, 'other_mother_activity_complete_high_trust_high_suspicion_01': 249, 'other_mother_activity_complete_high_trust_high_suspicion_02': 233, 'other_mother_activity_complete_high_trust_high_suspicion_03': 276, 'other_father_activity_other_village_intro': 340, 'other_father_activity_other_woodland_mansion_intro': 400, 'other_father_activity_other_desert_temple_intro': 440, 'other_father_activity_magic_show_intro': 555, 'other_father_activity_dream_parkour_intro': 281, 'other_father_activity_grand_feast_intro': 406, 'other_father_activity_mice_circus_intro': 323, 'other_father_activity_carnival_intro': 355, 'other_father_activity_magic_garden_intro': 210, 'other_father_activity_music_festival_intro': 426, 'other_father_activity_shopping_mall_intro': 423, 'other_father_activity_snowball_battle_intro': 337, 'other_father_activity_cake_making_contest_intro': 404, 'other_father_activity_fishing_contest_intro': 421, 'other_father_activity_archery_contest_intro': 330, 'other_father_activity_ice_boat_race_intro': 327, 'other_father_activity_garden_maze_intro': 295, 'other_father_activity_treasure_hunt_intro': 357, 'other_father_activity_other_mineshaft_intro': 352, 'other_father_activity_other_ocean_monument_intro': 338, 'other_father_activity_other_nether_fortress_intro': 330, 'other_father_activity_other_end_city_intro': 368, 'other_mother_loot_weapons_before_01': 187, 'other_mother_loot_weapons_before_02': 170, 'other_mother_loot_weapons_before_03': 224, 'other_mother_loot_weapons_after_01': 151, 'other_mother_loot_weapons_after_02': 163, 'other_mother_loot_weapons_after_03': 160, 'other_mother_loot_armor_before_01': 201, 'other_mother_loot_armor_before_02': 187, 'other_mother_loot_armor_before_03': 187, 'other_mother_loot_armor_after_01': 158, 'other_mother_loot_armor_after_02': 171, 'other_mother_loot_armor_after_03': 158, 'other_mother_loot_tools_before_01': 188, 'other_mother_loot_tools_before_02': 167, 'other_mother_loot_tools_before_03': 172, 'other_mother_loot_tools_after_01': 192, 'other_mother_loot_tools_after_02': 114, 'other_mother_loot_tools_after_03': 130, 'other_mother_loot_building_materials_before_01': 135, 'other_mother_loot_building_materials_before_02': 169, 'other_mother_loot_building_materials_before_03': 220, 'other_mother_loot_building_materials_after_01': 161, 'other_mother_loot_building_materials_after_02': 200, 'other_mother_loot_building_materials_after_03': 186, 'other_mother_loot_redstone_before_01': 200, 'other_mother_loot_redstone_before_02': 175, 'other_mother_loot_redstone_before_03': 160, 'other_mother_loot_redstone_after_01': 149, 'other_mother_loot_redstone_after_02': 185, 'other_mother_loot_redstone_after_03': 206, 'other_mother_loot_clothing_before_01': 179, 'other_mother_loot_clothing_before_02': 169, 'other_mother_loot_clothing_before_03': 182, 'other_mother_loot_clothing_after_01': 146, 'other_mother_loot_clothing_after_02': 201, 'other_mother_loot_clothing_after_03': 178, 'other_mother_loot_music_before_01': 168, 'other_mother_loot_music_before_02': 179, 'other_mother_loot_music_before_03': 186, 'other_mother_loot_music_after_01': 184, 'other_mother_loot_music_after_02': 160, 'other_mother_loot_music_after_03': 177, 'other_mother_loot_mystery_before_01': 200, 'other_mother_loot_mystery_before_02': 163, 'other_mother_loot_mystery_before_03': 144, 'other_mother_loot_mystery_after_01': 182, 'other_mother_loot_mystery_after_02': 133, 'other_mother_loot_mystery_after_03': 203, 'other_mother_secrets_ordinary_low_low_01': 258, 'other_mother_secrets_ordinary_low_low_02': 238, 'other_mother_secrets_ordinary_mid_mid_01': 192, 'other_mother_secrets_ordinary_mid_mid_02': 194, 'other_mother_secrets_ordinary_high_low_01': 222, 'other_mother_secrets_ordinary_high_low_02': 224, 'other_mother_secrets_ordinary_low_high_01': 204, 'other_mother_secrets_ordinary_low_high_02': 214, 'other_mother_secrets_ordinary_high_high_01': 197, 'other_mother_secrets_ordinary_high_high_02': 243, 'other_mother_secrets_secret_low_low_01': 228, 'other_mother_secrets_secret_low_low_02': 275, 'other_mother_secrets_secret_mid_mid_01': 192, 'other_mother_secrets_secret_mid_mid_02': 223, 'other_mother_secrets_secret_high_low_01': 195, 'other_mother_secrets_secret_high_low_02': 270, 'other_mother_secrets_secret_low_high_01': 214, 'other_mother_secrets_secret_low_high_02': 227, 'other_mother_secrets_secret_high_high_01': 188, 'other_mother_secrets_secret_high_high_02': 271, 'other_mother_secrets_item_low_low_01': 222, 'other_mother_secrets_item_low_low_02': 174, 'other_mother_secrets_item_mid_mid_01': 263, 'other_mother_secrets_item_mid_mid_02': 230, 'other_mother_secrets_item_high_low_01': 204, 'other_mother_secrets_item_high_low_02': 248, 'other_mother_secrets_item_low_high_01': 171, 'other_mother_secrets_item_low_high_02': 213, 'other_mother_secrets_item_high_high_01': 191, 'other_mother_secrets_item_high_high_02': 247, 'other_mother_secrets_offer_low_low_01': 179, 'other_mother_secrets_offer_low_low_02': 203, 'other_mother_secrets_offer_mid_mid_01': 214, 'other_mother_secrets_offer_mid_mid_02': 210, 'other_mother_secrets_offer_high_low_01': 189, 'other_mother_secrets_offer_high_low_02': 230, 'other_mother_secrets_offer_low_high_01': 203, 'other_mother_secrets_offer_low_high_02': 226, 'other_mother_secrets_offer_high_high_01': 221, 'other_mother_secrets_offer_high_high_02': 216, 'other_mother_secrets_accept_low_low_01': 221, 'other_mother_secrets_accept_low_low_02': 210, 'other_mother_secrets_accept_mid_mid_01': 233, 'other_mother_secrets_accept_mid_mid_02': 251, 'other_mother_secrets_accept_high_low_01': 244, 'other_mother_secrets_accept_high_low_02': 215, 'other_mother_secrets_accept_low_high_01': 203, 'other_mother_secrets_accept_low_high_02': 200, 'other_mother_secrets_accept_high_high_01': 215, 'other_mother_secrets_accept_high_high_02': 213, 'other_mother_secrets_reject_low_low_01': 214, 'other_mother_secrets_reject_low_low_02': 215, 'other_mother_secrets_reject_mid_mid_01': 206, 'other_mother_secrets_reject_mid_mid_02': 249, 'other_mother_secrets_reject_high_low_01': 201, 'other_mother_secrets_reject_high_low_02': 238, 'other_mother_secrets_reject_low_high_01': 211, 'other_mother_secrets_reject_low_high_02': 306, 'other_mother_secrets_reject_high_high_01': 245, 'other_mother_secrets_reject_high_high_02': 238, 'other_mother_scolding_minor_low_low_01': 584, 'other_mother_scolding_minor_mid_mid_01': 539, 'other_mother_scolding_minor_high_low_01': 579, 'other_mother_scolding_minor_low_high_01': 661, 'other_mother_scolding_minor_high_high_01': 651, 'other_mother_scolding_serious_low_low_01': 619, 'other_mother_scolding_serious_mid_mid_01': 687, 'other_mother_scolding_serious_high_low_01': 754, 'other_mother_scolding_serious_low_high_01': 846, 'other_mother_scolding_serious_high_high_01': 814}
+
+> Task :importWelcomeAudio
+Imported and decoded 15 scripted voice clips.
+
+> Task :importLootAudio
+Imported and decoded 22 scripted voice clips.
+
+> Task :importVisitGiftAudio
+Imported and decoded 48 scripted voice clips.
+
+> Task :importTutorialAudio
+Imported and decoded 4 scripted voice clips.
+
+> Task :importActivityAudio
+Imported and decoded 59 scripted voice clips.
+
+> Task :importArrivalAudio
+Imported and decoded 30 scripted voice clips.
+
+> Task :importActivityCompleteAudio
+Imported and decoded 15 scripted voice clips.
+
+> Task :importOtherFatherActivityIntros
+Imported and decoded 22 scripted voice clips.
+
+> Task :importSecretsAudio
+Imported and decoded 60 scripted voice clips.
+
+> Task :importScoldingAudio
+Imported and decoded 10 scripted voice clips.
+
+> Task :buildStorySubtitles
+Built subtitles for 299 story recordings.
+
+> Task :processResources
+Validated 363 packaged audio durations.
+Runtime assets: 210.1 -> 102.2 MiB; 501 optimized PNGs, 2 shared recordings, 23 high-rate recordings exported at 48 kHz. Originals preserved.
+ASSET BUDGET WARNING: packaged resources exceed 64 MiB; inspect C:\Users\User1\Documents\Downloads\Coraline\build-activity\reports\asset-size.json
+
+> Task :classes
+> Task :jar
+> Task :reobfJar
+> Task :jarJar SKIPPED
+> Task :reobfJarJar SKIPPED
+> Task :assemble
+> Task :compileTestJava NO-SOURCE
+> Task :processTestResources NO-SOURCE
+> Task :testClasses UP-TO-DATE
+> Task :test NO-SOURCE
+
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.782s
+> Task :testRuntimeAssetOptimization
+Validated 2 packaged audio durations.
+
+OK
+
+> Task :validateModelJson
+> Task :check
+> Task :build
+
+BUILD SUCCESSFUL in 3m 26s
+26 actionable tasks: 23 executed, 3 up-to-date

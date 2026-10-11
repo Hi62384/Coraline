@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "coraline:soulglass_block"
+    }
+  ],
+  "result": {
+    "item": "coraline:soulglass",
+    "count": 9
+  }
+}

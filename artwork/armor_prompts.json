@@ -1,0 +1,153 @@
+{
+  "mode": "built-in image_gen",
+  "jobs": [
+    {
+      "name": "dreamweave_helmet",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one helmet for the dreamweave armor set: pearl blue enchanted silk, silver filigree, tiny silver stars. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "dreamweave_chestplate",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one chest armor garment with sleeves for the dreamweave armor set: pearl blue enchanted silk, silver filigree, tiny silver stars. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "dreamweave_leggings",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one pair of armored trousers for the dreamweave armor set: pearl blue enchanted silk, silver filigree, tiny silver stars. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "dreamweave_boots",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw matching pair of boots for the dreamweave armor set: pearl blue enchanted silk, silver filigree, tiny silver stars. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "comfy_silk_helmet",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one helmet for the comfy silk armor set: ivory silk with rose-gold embroidery and elegant burgundy piping. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "comfy_silk_chestplate",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one chest armor garment with sleeves for the comfy silk armor set: ivory silk with rose-gold embroidery and elegant burgundy piping. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "comfy_silk_leggings",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one pair of armored trousers for the comfy silk armor set: ivory silk with rose-gold embroidery and elegant burgundy piping. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "comfy_silk_boots",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw matching pair of boots for the comfy silk armor set: ivory silk with rose-gold embroidery and elegant burgundy piping. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "midnight_helmet",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one helmet for the midnight armor set: deep navy blue with silver crescent-moon accents and layered indigo trim. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "midnight_chestplate",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one chest armor garment with sleeves for the midnight armor set: deep navy blue with silver crescent-moon accents and layered indigo trim. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "midnight_leggings",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one pair of armored trousers for the midnight armor set: deep navy blue with silver crescent-moon accents and layered indigo trim. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "midnight_boots",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw matching pair of boots for the midnight armor set: deep navy blue with silver crescent-moon accents and layered indigo trim. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "buttonguard_helmet",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one helmet for the buttonguard armor set: bronze reinforced teal fabric, prominent black four-hole buttons and brass edging. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "buttonguard_chestplate",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one chest armor garment with sleeves for the buttonguard armor set: bronze reinforced teal fabric, prominent black four-hole buttons and brass edging. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "buttonguard_leggings",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one pair of armored trousers for the buttonguard armor set: bronze reinforced teal fabric, prominent black four-hole buttons and brass edging. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "buttonguard_boots",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw matching pair of boots for the buttonguard armor set: bronze reinforced teal fabric, prominent black four-hole buttons and brass edging. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "midnight_cloak_helmet",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw a cloth hood for the midnight cloak armor set: charcoal and dark indigo soft cloth with midnight blue trim, stealthy elegant hooded design. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "midnight_cloak_chestplate",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one chest armor garment with sleeves for the midnight cloak armor set: charcoal and dark indigo soft cloth with midnight blue trim, stealthy elegant hooded design. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "midnight_cloak_leggings",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one pair of armored trousers for the midnight cloak armor set: charcoal and dark indigo soft cloth with midnight blue trim, stealthy elegant hooded design. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "midnight_cloak_boots",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw matching pair of boots for the midnight cloak armor set: charcoal and dark indigo soft cloth with midnight blue trim, stealthy elegant hooded design. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "luck_helmet",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one helmet for the luck armor set: emerald green with polished gold trim and lucky clover embroidery. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "luck_chestplate",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one chest armor garment with sleeves for the luck armor set: emerald green with polished gold trim and lucky clover embroidery. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "luck_leggings",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one pair of armored trousers for the luck armor set: emerald green with polished gold trim and lucky clover embroidery. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "luck_boots",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw matching pair of boots for the luck armor set: emerald green with polished gold trim and lucky clover embroidery. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "garden_vines_helmet",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one helmet for the garden vines armor set: forest green armor with winding leafy vines, tiny pink blossoms and copper edging. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "garden_vines_chestplate",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one chest armor garment with sleeves for the garden vines armor set: forest green armor with winding leafy vines, tiny pink blossoms and copper edging. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "garden_vines_leggings",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one pair of armored trousers for the garden vines armor set: forest green armor with winding leafy vines, tiny pink blossoms and copper edging. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "garden_vines_boots",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw matching pair of boots for the garden vines armor set: forest green armor with winding leafy vines, tiny pink blossoms and copper edging. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "moonstone_helmet",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one helmet for the moonstone armor set: luminous pearly moonstone plates with cool blue facets and silver settings. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "moonstone_chestplate",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one chest armor garment with sleeves for the moonstone armor set: luminous pearly moonstone plates with cool blue facets and silver settings. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "moonstone_leggings",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one pair of armored trousers for the moonstone armor set: luminous pearly moonstone plates with cool blue facets and silver settings. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "moonstone_boots",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw matching pair of boots for the moonstone armor set: luminous pearly moonstone plates with cool blue facets and silver settings. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "miners_helmet",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one helmet for the miners armor set: warm brown leather, copper reinforcement, dark slate trim and practical brass buckles. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "miners_chestplate",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one chest armor garment with sleeves for the miners armor set: warm brown leather, copper reinforcement, dark slate trim and practical brass buckles. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "miners_leggings",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw one pair of armored trousers for the miners armor set: warm brown leather, copper reinforcement, dark slate trim and practical brass buckles. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "miners_boots",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. Draw matching pair of boots for the miners armor set: warm brown leather, copper reinforcement, dark slate trim and practical brass buckles. Beautiful polished detailed pixel-art, crisp square pixels, readable silhouette at small inventory size. Three-quarter front view centered filling 80% of a square canvas. Only this equipment piece, unworn, no person, no body, no other items, no words, no border, no ground or cast shadow. Actual transparent alpha background. Restrained highlights, deep material shading, handcrafted Coraline-inspired magical clothing."
+    },
+    {
+      "name": "midnight_goggles",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. One pair of beautiful midnight night-vision goggles, deep indigo leather strap, polished silver rims, luminous pale-blue glass lenses with tiny crescent reflections. Polished detailed pixel-art, crisp square pixels, readable silhouette. Three-quarter front view centered fills 80% of square canvas. No wearer, no words, no shadow, genuine transparent alpha background."
+    }
+  ]
+}

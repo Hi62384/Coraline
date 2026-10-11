@@ -1,0 +1,9 @@
+[
+  {
+    "file": "activity_arrival/high_suspicion_low_trust/on_time/arrival_01.wav",
+    "expected": "There you are. Right on time, too. I’m glad to see you managed to follow the plan for once.",
+    "first_transcription": "There you are. Right on time too. I'm glad to see you manage to follow the plan for once.",
+    "beam_transcription": "There you are right on time to I'm glad to see you managed to follow the plan for once",
+    "beam_word_error_rate": 0.05
+  }
+]

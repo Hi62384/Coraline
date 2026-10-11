@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "MMM",
+    "M M",
+    "M M"
+  ],
+  "key": {
+    "M": {
+      "item": "coraline:other_diamond"
+    }
+  },
+  "result": {
+    "item": "coraline:other_diamond_leggings"
+  }
+}

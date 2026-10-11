@@ -1,0 +1,5 @@
+{"textures":{"frame":"minecraft:block/iron_block","glass":"coraline:block/moonstone_block","particle":"coraline:block/moonstone_block"},"elements":[
+{"from":[4,0,4],"to":[12,2,12],"faces":{"north":{"texture":"#frame"},"south":{"texture":"#frame"},"east":{"texture":"#frame"},"west":{"texture":"#frame"},"up":{"texture":"#frame"},"down":{"texture":"#frame"}}},
+{"from":[5,2,5],"to":[11,10,11],"faces":{"north":{"texture":"#glass"},"south":{"texture":"#glass"},"east":{"texture":"#glass"},"west":{"texture":"#glass"},"up":{"texture":"#glass"},"down":{"texture":"#glass"}}},
+{"from":[4,10,4],"to":[12,12,12],"faces":{"north":{"texture":"#frame"},"south":{"texture":"#frame"},"east":{"texture":"#frame"},"west":{"texture":"#frame"},"up":{"texture":"#frame"},"down":{"texture":"#frame"}}}
+]}

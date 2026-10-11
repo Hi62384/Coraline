@@ -1,0 +1,24 @@
+
+#Relative visit-present weights. Zero disables a category. All zero falls back to Food and Treasure.
+[weights]
+	#Range: 0 ~ 10000
+	food = 15
+	#Range: 0 ~ 10000
+	treasure = 15
+	#Range: 0 ~ 10000
+	weapons = 10
+	#Range: 0 ~ 10000
+	armor = 10
+	#Range: 0 ~ 10000
+	tools = 10
+	#Range: 0 ~ 10000
+	building_materials = 10
+	#Range: 0 ~ 10000
+	redstone = 10
+	#Range: 0 ~ 10000
+	clothing = 8
+	#Range: 0 ~ 10000
+	music = 7
+	#Range: 0 ~ 10000
+	mystery = 5
+

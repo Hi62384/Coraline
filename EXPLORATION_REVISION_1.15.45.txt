@@ -1,0 +1,35 @@
+Coraline 1.15.45 — exploration, portals and pursuit
+
+Changes
+- Activity portals use side lawns, about 20 blocks beyond the outer house footprint. Front-approach sites are rejected, including saved portal positions.
+- During caught/scolding conversations Mother approaches to roughly 1–1.5 blocks and faces the player's eyes. Safe NPC repositioning handles blocked approaches; the existing four-block player conversation area remains.
+- The Other World radius is now 500 blocks. Re-entering an existing completed realm expands the outer terrain while preserving the old disk, including mixed boundary chunks. Copy work remains asynchronous and budgeted.
+- Structure capacity increased from 48 to 96, with a 24-site quota per tier. Generation favors underrepresented tiers and extends highest-tier sites into the expanded outer region. Actual placement still requires safe natural terrain.
+- Newly generated structures have broken roofs, cobwebs, cracked/mossy masonry, rubble, dead vegetation and soul lighting. Gameplay entrances, clue nodes and ground-floor access protections remain intact.
+- Other Iron, Other Diamond, Moonstone and Soulglass ore blocks generate in small surface deposits at least 60 blocks beyond the estate. Soulglass occurs only 180+ blocks out and has a 0.2% chance per eligible deposit. Persisted sampling prevents regeneration while walking back and forth.
+- Normal pickaxe mining/drop processing: stone tier for Other Iron, iron tier for Other Diamond/Moonstone, diamond tier for Soulglass. Silk Touch works; Fortune applies except to Soulglass. Existing material assets are reused, with no new image/audio payload.
+- Corrected shared custom-tool requirement tags that incorrectly excluded vanilla pickaxes.
+- Searching/chasing Mother uses a forward 120-degree vision cone and line of sight. Seeing the player starts pursuit, not immediate capture. Capture requires bounding-box contact; after losing sight she pursues the last visible position for four seconds, then resumes search.
+- Direct chases no longer use teleport recovery. Spy reports send Mother to investigate instead of teleporting her beside the player.
+
+Installation and limits
+- Replace the old mod JAR and restart Minecraft. Leave/re-enter the Other World to expand an already-created realm.
+- Outer terrain and structures build gradually. A fresh visit gives the fully updated structure distribution/ruined styles; already-built structures are not demolished mid-visit.
+- Safe-terrain checks can yield fewer than 96 structures on ocean-heavy or very mountainous source terrain.
+- Live client visuals, collision feel and performance have not been manually playtested.
+
+Verification
+- All 58 Secrets/Exploration GameTests passed in a fresh test world (exploration-revision-verified-tests.log).
+- Includes portal exclusion geometry, persisted expansion, actual mixed-boundary copying, ore rarity/tool tiers/normal loot, close-up facing, contact capture, 80-tick last-seen memory and spy-report non-teleporting.
+- Release log: exploration-revision-release.log.
+- Optimized release build and six asset-optimizer tests passed. Packaged verification passed for 363 sound events and four charts, with no test classes or audio masters.
+- JAR size: 73,938,467 bytes (17,654 bytes larger than 1.15.44). Largest entries remain existing music files.
+
+Changed source groups
+- feast/LoopProps.java: side-lawn portal placement and saved-position migration.
+- secrets/Reconciliation.java, MotherSearch.java, MotherInterrupts.java, SecretSpies.java: close conversations and pursuit arbitration.
+- otherworld/RealmData.java, RealmCopy.java, OtherWorld.java: saved-world expansion and preservation.
+- secrets/SecretWorld.java, SecretScenery.java, WildOres.java: density, ruins and deposits.
+- registry/ModBlocks.java, ModItems.java; clothing/OtherMaterials.java; otherworld/RealmProtection.java: real ore blocks/items and normal pickaxe access.
+- Ore models, blockstates, loot tables, tool tags and English names; no new bitmap/audio assets.
+- activitytest/secrets/ExplorationRevisionGameTests.java and gradle.properties.

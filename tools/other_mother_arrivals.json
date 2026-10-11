@@ -1,0 +1,202 @@
+{
+  "reference": "voicelines/othermother/Sample.wav",
+  "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+  "output": "voicelines/othermother",
+  "prefix": "arrival",
+  "resource_folder": "other_mother",
+  "generation_report": "arrival_generation_report.json",
+  "validation_report": "arrival_validation_report.json",
+  "transcript_review": "arrival_transcript_review.json",
+  "states": {
+    "activity_arrival/low_trust_low_suspicion/on_time": {
+      "direction": "cheerful; excited; warm; encouraging; genuinely pleased that the player participated",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "There you are, darling! Right on time. I’m so glad you decided to come—this should be wonderful.",
+        "Oh, good, you made it! I was hoping you’d come along. Everything’s ready, so let’s go have some fun.",
+        "There you are! Perfect timing, sweetheart. Come on, I’ve been looking forward to showing you this."
+      ]
+    },
+    "activity_arrival/low_trust_low_suspicion/late": {
+      "direction": "still warm; mild disappointment; more parental than threatening; she wants the player to feel slightly guilty",
+      "emotion": [
+        0.25,
+        0,
+        0.08,
+        0,
+        0,
+        0.08,
+        0,
+        0.62
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, there you are. I was starting to wonder if you’d gotten yourself lost somewhere. Never mind—you’re here now.",
+        "You certainly took your time, sweetheart. I was beginning to think you might miss everything we prepared for you.",
+        "There you are at last! Try not to keep us waiting quite so long next time, darling. We’ve gone to an awful lot of trouble."
+      ]
+    },
+    "activity_arrival/mid_trust_mid_suspicion/on_time": {
+      "direction": "familiar; approving; slightly authoritative; subtle references to the player's curiosity",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Good, you’re here. I knew you wouldn’t let a little wandering make you miss everything we had planned.",
+        "There you are, sweetheart. Nicely done. You can be very dependable when you want to be.",
+        "Right on time. I’m glad to see you remembered what we had planned instead of getting distracted again."
+      ]
+    },
+    "activity_arrival/mid_trust_mid_suspicion/late": {
+      "direction": "noticeably less pleased; probing; passive-aggressive; suspicious without being openly hostile",
+      "emotion": [
+        0.06,
+        0.16,
+        0,
+        0,
+        0.03,
+        0,
+        0,
+        0.65
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "There you are. I was beginning to wonder what could possibly have been more interesting than what we planned.",
+        "You’re late, sweetheart. I hope whatever distracted you was worth keeping everyone waiting.",
+        "I was expecting you sooner. You do have an unfortunate habit of losing track of time when you’re left to yourself."
+      ]
+    },
+    "activity_arrival/high_trust_low_suspicion/on_time": {
+      "direction": "deeply affectionate; proud; confident; subtly possessive; treats participation like proof the player belongs there",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "There’s my darling. I knew you’d be here. You’d never miss something we prepared especially for you.",
+        "Right on time, sweetheart. I knew I could count on you. Now come along—we’re going to have such a lovely time.",
+        "There you are. I hardly needed to wonder whether you’d come anymore. You always know where you belong."
+      ]
+    },
+    "activity_arrival/high_trust_low_suspicion/late": {
+      "direction": "affectionate disappointment; possessive; guilt-inducing; she isn't very suspicious yet; she mostly interprets lateness as the player neglecting her",
+      "emotion": [
+        0.2,
+        0,
+        0.1,
+        0,
+        0,
+        0.1,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "There you are, darling. You had me wondering for a moment. I know you wouldn’t really choose wandering around over spending time with us.",
+        "You’re a little late, sweetheart. I was beginning to miss you. Try not to disappear on me like that again.",
+        "I knew you’d come eventually. Still, there’s no reason to keep your family waiting when we’ve made all of this for you."
+      ]
+    },
+    "activity_arrival/high_suspicion_low_trust/on_time": {
+      "direction": "restrained; controlling; forced sweetness; clearly monitoring the player; satisfaction that the player complied",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "There you are. Right on time, too. I’m glad to see you managed to follow the plan for once.",
+        "Good. You came straight here. Perhaps today we can simply enjoy ourselves without any unnecessary detours.",
+        "Right on time, sweetheart. See how much easier things are when you simply do what’s expected of you?"
+      ]
+    },
+    "activity_arrival/high_suspicion_low_trust/late": {
+      "direction": "cold underneath forced politeness; clearly suspicious; controlled irritation; final words should carry subtle menace; DO NOT make her scream or enter monster mode",
+      "emotion": [
+        0,
+        0.38,
+        0,
+        0,
+        0.08,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "There you are. Late again. I suppose I shouldn’t ask what was so important that you kept us waiting.",
+        "You certainly took your time. I do hope you weren’t somewhere I specifically asked you not to be.",
+        "Five minutes should have been more than enough, sweetheart. Whatever you’ve been doing, we’ll discuss it later."
+      ]
+    },
+    "activity_arrival/high_trust_high_suspicion/on_time": {
+      "direction": "affectionate; knowing; amused; subtly unsettling; she knows the player is suspicious but also knows they're tempted",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "There you are, darling. Still curious about all my little secrets, and yet somehow you never miss the fun, do you?",
+        "Right on time. For someone who asks so many questions, you’re remarkably good at coming back when there’s something waiting for you.",
+        "I knew you’d be here, sweetheart. Whatever else you may think about this place, you never seem quite ready to turn away from it."
+      ]
+    },
+    "activity_arrival/high_trust_high_suspicion/late": {
+      "direction": "calm; deeply knowing; affectionate but unnerving; not openly angry; implication that she may know exactly what the player was doing",
+      "emotion": [
+        0.12,
+        0.08,
+        0,
+        0,
+        0.04,
+        0,
+        0,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "There you are at last. I can only imagine what caught your attention this time… though I have a few guesses.",
+        "Late again, darling. You always seem to find something interesting when nobody is watching you, don’t you?",
+        "I wondered how long you’d keep me waiting. You’re awfully curious for someone who keeps choosing to come back."
+      ]
+    }
+  }
+}

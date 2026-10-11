@@ -1,0 +1,147 @@
+OTHER MOTHER SECRETS VOICES — 1.15.40
+
+1. GENERATED FILES
+60 new recordings: six events, five existing relationship states, two variants per pair.
+Four initial takes were individually replaced after transcription review. Rejected
+takes are preserved in .voice-tools/secrets-rejected, outside packaged resources.
+
+2. SYNTHESIS PIPELINE
+Reused the project's local IndexTTS2 voice-cloning pipeline through
+tools/generate_other_mother_welcome.py and tools/other_mother_secrets.json.
+The sole voice reference remains voicelines/othermother/Sample.wav.
+SHA-256: 154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe
+State-specific emotion vectors and sampling settings preserve the existing voice
+identity while varying maternal warmth, disappointment, irritation and menace.
+
+3. OUTPUT PATHS
+WAV masters: voicelines/othermother/secrets/{ordinary_area,secret_area,
+restricted_item,blackmail_offer,blackmail_accepted,blackmail_rejected}/
+Each folder contains low_low_1/2.wav, mid_mid_1/2.wav, high_low_1/2.wav,
+low_high_1/2.wav and high_high_1/2.wav.
+Runtime OGGs: src/main/resources/assets/coraline/sounds/visit/other_mother/
+secrets/{ordinary,secret,item,offer,accept,reject}/{state}/line_01/02.ogg.
+The 60 recordings total 661.19 seconds. WAV masters are not bundled in the JAR.
+
+4. SOUND REGISTRATION
+60 new streamed sound events: other_mother_secrets_{event}_{state}_01/02.
+All 30 two-variation pools join the existing OtherMotherDialogue registry.
+The importer merges sounds.json and visit_audio_lengths.json; subtitle generation
+uses the exact supplied scripts. Existing unrelated voicelines remain intact.
+The normal resource build now imports these recordings automatically.
+
+5. GAMEPLAY HANDLERS
+MotherSearch.catchPlayer selects the appropriate confrontation before applying
+the existing relationship changes. Inventory inspection requires proximity and
+line of sight; genuine owner-bound evidence determines restricted-item discovery.
+Confirmed evidence is recorded in the existing permanent exposed-secret set.
+Secret-area classification uses generated room metadata, including nearby entrances.
+One encounter latch prevents repeated penalties/dialogue while Mother remains nearby.
+After sustained separation, a later encounter may trigger a fresh confrontation.
+
+6. BLACKMAIL FLOW
+Validate owner/item/interaction -> capture relationship state -> queue offer voice
+-> wait for recording duration and playback acknowledgement -> roll outcome once.
+Acceptance opens the existing reward picker. Only successful inventory insertion
+or owner-bound overflow spawn commits consumption/consequences and queues acceptance.
+A failed spawn retains the reward choice, receipt and capability for retry.
+Closing the picker is recoverable: right-click Mother to reopen the same reward
+selection without creating a new offer or rolling the outcome again.
+Rejection consumes the capability once, applies the existing penalty once, records
+source-secret exposure and queues rejection. Both outcomes expose source secrets.
+Right-click spam cannot create overlapping offers. Saved transaction state survives
+ordinary save/reload. A bounded missing-playback fallback prevents a missing sound
+acknowledgement from permanently blocking resolution.
+
+7. CONFRONTATION PRIORITY
+Actually discovered restricted items > metadata-classified secret area > ordinary
+restricted area. Exactly one confrontation is selected, not all three in sequence.
+Dialogue code does not apply a second copy of the gameplay penalties.
+
+8. RELATIONSHIP STATE / RANDOMIZATION
+Uses OtherMotherLoopState.classify with the existing five states and thresholds.
+The state captured at encounter/offer start is retained through that transaction's
+outcome, even if relationship values subsequently change. Future encounters use
+updated values. Existing last-variation tracking prevents immediate repetition.
+
+9. DEBUG CONTROLS
+Secrets Debugger -> Voice tab (operator-only).
+Choose event, state, and Random/1/2, then Play voice (no penalties).
+Actual event (real consequences) exercises the gameplay pathway separately.
+Forced blackmail outcomes still require a genuine owned blackmail item. Actual
+confrontations classify the current location/evidence rather than forging evidence.
+Audio and state changes remain targeted to the storyline owner.
+
+10. SOURCE / RESOURCE CHANGES
+New runtime class:
+  src/main/java/com/coraline/secrets/SecretDialogue.java
+Updated runtime classes under src/main/java/com/coraline:
+  secrets/SecretsState.java, SecretTransactions.java, MotherSearch.java,
+    SecretSpies.java, SecretsRuntime.java, SecretsNetwork.java
+  feast/OtherMotherDialogue.java, OtherMotherLoop.java, VisitAudio.java
+  client/VisitAudioClient.java, SecretJournalScreen.java
+  otherworld/RealmProtection.java
+Audio tooling:
+  tools/prepare_secrets_voice_manifest.py, other_mother_secrets.json,
+    verify_secrets_voice.py, import_welcome_audio.py, check_welcome_audio.py,
+    review_voice_transcripts.py, build_story_subtitles.py
+Build/resources:
+  build.gradle, gradle.properties, META-INF/WELCOME_AUDIO_NOTICE.txt,
+  sounds.json, visit_audio_lengths.json, story_subtitles.json, 60 runtime OGGs.
+Tests:
+  src/activitytest/java/com/coraline/secrets/SecretDialogueGameTests.java
+  src/activitytest/java/com/coraline/secrets/SecretsGameTests.java
+  src/gametest/java/com/coraline/welcome/WelcomeAudioGameTests.java
+  src/rendercheck/java/com/coraline/secrets/SecretsAudioCheck.java
+  src/rendercheck/java/com/coraline/client/DollRenderCheck.java
+
+11. AUDIO QUALITY CHECKS
+All final WAVs decode as mono 22050 Hz PCM16. Generation checks reject invalid
+duration, silence and clipping; leading/trailing silence is trimmed with handles,
+not by cutting spoken endings. Active loudness is normalized consistently with the
+existing pipeline. No time-stretching is used. Runtime Vorbis exports preserve
+duration; source/runtime differences must be under 0.05 seconds.
+Every final recording underwent Whisper transcription and CAMPPlus comparison with
+the unchanged reference. Nonexact transcripts received a second beam-search decode.
+Checks also verify all 60 registrations, exact subtitle text, and duration metadata.
+Reports: voicelines/othermother/secrets/generation_report.json,
+validation_report.json and transcript_review.json.
+
+12. RUNTIME / BUILD RESULTS
+All 151 required Minecraft server GameTests passed on the final runtime code,
+including 28 Secrets tests. Coverage includes state/pool mapping, encounter priority,
+through-wall rejection, once-per-encounter effects, offer ordering, duplicate calls,
+saved transaction state, failed overflow-spawn retry and reward-picker recovery.
+All 60 recordings played through the actual Minecraft sound engine, with active
+playback-duration checks: SECRETS40_AUDIO_PASSED in secrets40-client-audio.log.
+The live client also completed offer -> actual reward button click -> acceptance,
+and offer -> rejection, waiting for real playback acknowledgements throughout:
+SECRETS40_FLOW_PASSED in secrets40-client-flow.log.
+The Voice debugger and reward picker were inspected in harness screenshots:
+artwork/secrets40_voice.png and artwork/secrets40_reward.png.
+All six asset-optimizer regression tests passed.
+Production build passed through normal processResources/asset optimization.
+Release: build-activity/libs/coraline-1.15.40.jar
+Size: 71,583,536 bytes (71.58 MB), versus 66,981,148 bytes for 1.15.39.
+SHA-256: 02A624BECC2DC750D5EA9F933CA3F968064F3B475E7A3FB35D22F34700644DBA
+Package verification passed: 535 textures, 353 sound events, JSON/ZIP integrity,
+complete referenced assets/timings, 60 new runtime recordings, correct version,
+and no GameTests, render/audio QA classes or empty test structure in the release.
+All 23 high-rate music exports retain full duration and channel count. The JAR is
+59.1% smaller than the prior unoptimized 1.15.24 baseline (175.05 MB).
+The 64 MiB compressed-resource warning was reviewed. Largest entries remain existing
+full-length music (carnival 2.22 MB compressed, village 2.02 MB, garden 1.67 MB).
+No requested content was deleted to meet a size target. The new 60 runtime OGGs
+total 4,615,616 uncompressed bytes and account for most of the release size increase.
+Logs: secrets40-all-tests-release.log, secrets40-client-audio.log,
+secrets40-client-flow.log, release40-build.log and release40-package.log.
+
+13. LIMITATIONS
+All 60 requested recordings are generated, registered and integrated; no requested
+event/state pair is left as a text placeholder.
+Automated transcription/speaker checks do not prove subjective acting quality or
+replace a human listening review of every line. Some spoken contractions expand
+naturally (for example, "here's" becomes "here is").
+Owner isolation is covered by server tests; no two-human-client multiplayer session
+has been performed. No destructive process-kill/power-loss fault injection has been
+performed. Reward receipts guard ordinary retries/replays, but cross-file player/
+world saves are not claimed to be atomic against arbitrary power loss.

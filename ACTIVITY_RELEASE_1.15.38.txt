@@ -1,0 +1,54 @@
+Coraline 1.15.38 — easier, less repetitive Fortress dropper
+
+Production JAR: build-activity/libs/coraline-1.15.38.jar
+Size: 66,863,938 bytes (66.86 MB / 63.77 MiB).
+SHA256: 46AFD295270DAEFB2C4D6F08B594C1097E1643C6E6B057CA041116B3638A944F
+Replace the previous Coraline JAR, then start a fresh Fortress activity visit.
+An already-running older activity can still contain the previous block layout.
+
+Geometry and difficulty
+- Removed the mirrored shaft-spanning beam pairs and their close secondary ribs.
+- Each obstacle group independently chooses a broken bridge, stepped diagonal
+  fragment, small layered rock island, or short hanging pillar.
+- Positions, orientations, lengths and heights vary. Repeated group-origin
+  columns are rejected instead of laying every layer out as another frame.
+- A broad clear steering area accounts for body size and approach lag.
+- Landing blockers are split into independently height-offset fragments spread
+  through depth; they no longer form a dense aligned curtain above the lava.
+- Lava targets are now 13x13, 11x11, 9x9, 7x7, and 5x5 (previously 11 to 3).
+- Five levels still increase obstacle-group density and shrink the lava target.
+- Normal falling/air steering, solid-impact failure, safe level handoffs, activity
+  ownership, existing intro/skip flow, rewards and cleanup are unchanged.
+- The reduced mineshaft mobs, Festival fixes, and lantern optimizations from the
+  previous releases are retained.
+
+Verification and limits
+- Regression checks include 1,000 seeds for each of five levels and reject
+  straight-down winning lava columns and shaft-spanning obstacle beams.
+- Steering simulations cover both full input and 85% input response, checking
+  actual swept body collision through the lava landing, not just waypoint reach.
+- Human playtesting is still needed to judge subjective difficulty and readability.
+- No new textures, models, audio files or runtime dependencies were added.
+- All 79 activity GameTests passed in the final fresh-world run, including
+  10,000 full/reduced-input steering-and-landing simulations and 5,000 generated
+  courses checked for straight-down winning columns.
+- Final test evidence: dropper38-tests-final.log.
+- Live-client check cleared all five levels with normal falling and movement,
+  including all four between-level teleport handoffs: dropper38-client.log.
+- Rendered first/final-level screenshots were inspected; screenshot files:
+  artwork/dropper38_level_1.png through dropper38_level_5.png.
+- Production build and all six asset optimizer tests passed: release38-build.log.
+- Package verification passed for 535 textures, 293 sound events, complete timing
+  metadata, JSON/ZIP integrity and preserved recording durations/channels:
+  release38-package.log.
+- No development test/visual-check classes, test templates or transcription
+  environments were found in the production JAR. Largest compressed entries are
+  still existing activity music, approximately 1.7–2.2 MB each.
+
+Changed files
+gradle.properties
+src/main/java/com/coraline/feast/FortressDropper.java
+src/activitytest/java/com/coraline/feast/FortressDropperGameTests.java
+src/activitytest/java/com/coraline/feast/ActivityRevisionGameTests.java
+src/rendercheck/java/com/coraline/feast/DropperVisualCheck.java
+ACTIVITY_RELEASE_1.15.38.txt

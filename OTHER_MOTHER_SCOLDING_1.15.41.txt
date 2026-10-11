@@ -1,0 +1,148 @@
+OTHER MOTHER SCOLDING AND RECONCILIATION — 1.15.41
+Build/QA status: release built and verified. See section 13 for QA limitations.
+JAR: build-activity/libs/coraline-1.15.41.jar
+Size: 73,896,194 bytes (73.90 MB).
+SHA256: 88c7eb31a50a012a75c0d924fff94da864f767fed8add548142aa8a358e4715e
+
+1. NEW RECORDINGS
+Ten new recordings: MINOR and SERIOUS for each of the existing five relationship
+states. The supplied ten scripts are preserved in the manifest and subtitles.
+Total speech: 336.48 seconds; individual recordings: 26.92–42.28 seconds.
+
+2. FILE LOCATIONS
+Masters: voicelines/othermother/scolding/minor/ and serious/
+Each contains low_low.wav, mid_mid.wav, high_low.wav, low_high.wav, high_high.wav.
+Runtime: src/main/resources/assets/coraline/sounds/visit/other_mother/scolding/
+Sound IDs: other_mother_scolding_{minor|serious}_{state}_01.
+Generation and validation reports are in voicelines/othermother/scolding/.
+
+3. VOICE GENERATION
+Existing local IndexTTS2 engine and the unchanged Sample.wav reference.
+Reference SHA256: 154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe
+Each script has a firmer opening and a softer forgiveness segment, using the
+existing state-specific emotional profiles. No placeholder speech, model weights,
+source WAV masters, or accelerated/truncated speech are packaged in the JAR.
+Generated-audio license and notice are included.
+
+4. EVENT MAPPING
+Ordinary catch and porch bell -> MINOR.
+Secret area, restricted item, accepted blackmail, rejected blackmail -> SERIOUS.
+The relationship state is captured before confrontation penalties. The next
+proposal uses the updated relationship, without changing the scold personality.
+Bell reconciliation does not invent an inappropriate wandering-catch opener.
+
+5. SEQUENCING
+One owner-scoped Reconciliation controller extends the existing SecretDialogue
+queue. Opening/outcome -> scold -> safe return -> existing proposal -> existing
+five-minute warning -> portal. Recorded durations and client completion signals
+gate transitions, with a bounded recovery fallback if an acknowledgement is lost.
+Duplicate catches are blocked while the conversation is active. Accepted blackmail
+does not begin its outcome/scold until the selected reward is actually delivered.
+
+6. RETURN HOME AND CONTROL
+During confrontation the player stays near a captured anchor; camera angles remain
+free. The bell brings Mother back with bounded pathfinding recovery. After the
+scold, distant/unsafe players move to a collision-checked supported location near
+the porch/door. Already-nearby players are not unnecessarily teleported. Failure
+to find a safe return releases the conversation and uses the existing safe exit.
+Logout suspends the presentation; rejoin resumes the full scold without reapplying
+consequences. Death, departure and forced phase changes release the constraint.
+
+7. NEXT ACTIVITY
+Uses OtherMotherLoop's existing activity selection and lifecycle, preferring a
+different activity. It does not replay welcome dialogue, create visit gifts,
+increment visits, or erase earned rewards, exposure, counter-attributes or
+blackmail transactions. All existing activities remain in the existing scheduler.
+
+8. PORTAL CYCLE
+The previous portal/window and pending search timer are removed. After proposal
+and warning playback, the existing portal receives a new 6,000-tick (five-minute)
+attendance window. Ignoring it invokes the existing missed-activity/search flow.
+
+9. STORY OVERRIDES
+Suspicion 1.0, SCRIPTED_TRAP and departure from the eligible visit phases prevent
+normal reconciliation scheduling. A threshold confrontation also removes an old
+activity window, and a threshold reached during proposal cancels that proposal.
+IMPORTANT: this repository has no completed trapping/boss/button-eye/soul-trapped
+story state machine to invoke. These are protective guards, not an implementation
+of those missing storylines.
+
+10. DEBUG CONTROLS
+Secrets Debugger -> Scold tab: category, five-state selector, audio-only preview,
+ordinary/secret/item/bell event buttons, accepted/rejected blackmail tests and
+force-next-proposal. Shows conversation stage and proposal-pending status.
+Operator-only; requests and changes are scoped to the sending player's storyline.
+Blackmail tests require a genuine owned Blackmail Item and use the real reward UI.
+Secret-area testing requires a generated secret room. Catch classification still
+prioritizes carried restricted evidence; do not carry it for an ordinary test.
+
+11. SOURCE CHANGES
+New: src/main/java/com/coraline/secrets/Reconciliation.java
+Updated Secrets: SecretDialogue.java, MotherSearch.java, SecretTransactions.java,
+SecretsRuntime.java, SecretsNetwork.java.
+Updated lifecycle/audio: feast/OtherMotherLoop.java, OtherMotherDialogue.java,
+VisitAudio.java; client/VisitAudioClient.java, SecretJournalScreen.java.
+Tools: prepare_scolding_voice_manifest.py, other_mother_scolding.json,
+verify_scolding_voice.py, verify_scolding_release.py;
+generate_other_mother_welcome.py, check_welcome_audio.py.
+Build/resource integration: build.gradle, gradle.properties, sounds.json,
+visit_audio_lengths.json, story_subtitles.json, WELCOME_AUDIO_NOTICE.txt and the
+ten new runtime OGGs.
+Tests: ReconciliationGameTests.java, SecretDialogueGameTests.java,
+WelcomeAudioGameTests.java; live ScoldingAudioCheck.java and DollRenderCheck guard.
+Test-only sources are excluded from release builds.
+
+12. TESTS AND RELEASE
+All 162 required Minecraft server GameTests passed on the final runtime code.
+This includes 39 Secrets/reconciliation tests and existing activity, gift and
+dialogue regressions. Coverage includes playback duration/acknowledgement gates,
+captured states, both blackmail outcomes, transaction retries, portal sequencing,
+movement/camera isolation, safe return, persistence, disconnect/resume,
+threshold/trap overrides, duplicate prevention and two consecutive missed cycles.
+The suite found and prompted a fix for the shared selector's assumption that
+every dialogue pool has multiple recordings. Single-recording pools now work;
+no-immediate-repeat behavior is unchanged for pools with multiple recordings.
+
+Actual Minecraft client QA played all ten streamed scolds to full completion and
+exercised all six event flows through their owner-matched physical portal and
+fresh attendance timer. Acceptance used the actual reward-selection UI. The bell
+returned Mother without a wandering opener; remote secret/item catches returned
+the player home. Consequences and gifts were checked for unwanted changes.
+Live QA logs: scolding41-live.log and scolding41-live-remaining.log. The second
+run resumed after correcting a fixture that incorrectly tried to issue a secret
+already present in its journal. All six flows have a FLOW_PASSED result.
+Scold-tab screenshot inspected: artwork/scolding41_debug.png.
+Final regression log: scolding41-all-tests-final.log.
+
+Production build succeeded with normal processResources/asset optimization.
+The production JAR passed ZIP/JSON integrity, 535 texture checks, 363 sound-event
+references/timings, all ten scolding resources and exact captions. All previous
+sound events remain. The 23 resampled music tracks retain their full lengths and
+channel counts. No test classes, live QA harnesses, empty test structure, WAV/MP3
+masters or voice-model weights are packaged.
+The six optimizer tests also passed during the final release build.
+
+Size: 71,583,536 bytes (1.15.40) -> 73,896,194 bytes (1.15.41), +2.31 MB.
+Still 57.8% smaller than the 175.05 MB unoptimized 1.15.24 baseline.
+The ten streamed OGGs total 2,302,368 bytes before JAR compression. Largest ZIP
+entries remain existing music: carnival (2.22 MB compressed), village (2.02 MB),
+garden ambience (1.67 MB), Coraline garden (1.63 MB), cake baking (1.55 MB).
+The 64 MiB asset-review warning was reviewed; no features or speech were removed
+to meet an arbitrary cap. Full size/hash/entry report:
+build-activity/reports/scolding-release.json.
+Release build log: scolding41-release-build.log.
+All ten source recordings already passed decoding, peak/clipping checks,
+reference-speaker comparison and automated transcription. Speaker cosine range:
+0.773–0.872; maximum ASR word error rate: 3.1%; no review flags.
+Six runtime-asset optimizer regression tests passed.
+The source/runtime verifier checked all ten OGGs, decoding, full duration,
+generation hashes, exact captions, registrations and timing metadata. The prior
+60-recording verifier also passed unchanged.
+
+13. LIMITATIONS
+Automated transcription/speaker checks and in-game playback checks do not replace
+human judgment of acting, emotional naturalness or reference-voice resemblance.
+Real two-client multiplayer was not manually exercised; owner-isolation tests use
+separate server-side player identities. The missing major-story implementations
+are noted in section 9. This change does not claim to resolve the unrelated older
+activity requests in the conversation.

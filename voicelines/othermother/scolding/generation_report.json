@@ -1,0 +1,550 @@
+{
+  "engine": "IndexTTS2",
+  "engine_commit": "d9e41aac89fd00b3d71497fddb287b7f24613712",
+  "reference": "voicelines/othermother/Sample.wav",
+  "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+  "reference_limit_seconds": 15,
+  "lines": {
+    "minor/low_low/low_low.wav": {
+      "seconds": 29.17469387755102,
+      "sample_rate": 22050,
+      "channels": 1,
+      "format": "PCM_16",
+      "gain_db": -5.166579806753941e-05,
+      "peak_dbfs": -1.4999483342019322,
+      "trimmed_start_seconds": 0.0,
+      "trimmed_end_seconds": 0.12353741496598758,
+      "sha256": "c5e23f3e8df9654ea08786f300bb0ac3e6bc7f141446620f4aa27fca55247818",
+      "text": "Now, sweetheart, I really must say, that wasn't very nice of you. Your Other Father and I have gone through an awful lot of trouble to make everything wonderful for you, and it isn't very respectful to go wandering off without a word. A mother does worry about these things, you know. But I suppose there's no sense dwelling on it. You're here now, and that's what matters. So, let's put this little misunderstanding behind us, shall we? I've still got something rather lovely planned for you.",
+      "direction": "Sweet, maternal, forgiving and persuasive; gentle theatrical conversation. Begin disappointed and controlling; soften deliberately into reluctant forgiveness.",
+      "emotion": [
+        0.3614457831325301,
+        0.08433734939759037,
+        0.07710843373493977,
+        0.0,
+        0.0,
+        0.0,
+        0.03313253012048193,
+        0.2439759036144578
+      ],
+      "seed": 17410,
+      "attempt": 1,
+      "inference_seconds": 159.75,
+      "segments": [
+        {
+          "text": "Now, sweetheart, I really must say, that wasn't very nice of you. Your Other Father and I have gone through an awful lot of trouble to make everything wonderful for you, and it isn't very respectful to go wandering off without a word. A mother does worry about these things, you know.",
+          "emotion": [
+            0.4,
+            0.1,
+            0.08,
+            0,
+            0,
+            0,
+            0.05,
+            0.45
+          ]
+        },
+        {
+          "text": "But I suppose there's no sense dwelling on it. You're here now, and that's what matters. So, let's put this little misunderstanding behind us, shall we? I've still got something rather lovely planned for you.",
+          "emotion": [
+            0.48000000000000004,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.05,
+            0.45
+          ]
+        }
+      ]
+    },
+    "minor/mid_mid/mid_mid.wav": {
+      "seconds": 26.92326530612245,
+      "sample_rate": 22050,
+      "channels": 1,
+      "format": "PCM_16",
+      "gain_db": 0.0002633770788844945,
+      "peak_dbfs": -1.5002633770788845,
+      "trimmed_start_seconds": 0.0,
+      "trimmed_end_seconds": 0.0,
+      "sha256": "f9e6ce52946daa1bf06f354a51e728a2cb142e0f48eb56c2a61fba2473dac987",
+      "text": "Oh, darling, I really don't know what to do with you sometimes. You know perfectly well that I expect you to listen when I ask you to stay nearby. It's terribly disrespectful to have your own mother running all over the place looking for you, especially after everything she's done to make you happy. But I'm not going to spend our whole lovely visit arguing about it. We'll forget this happened, provided you behave yourself from now on. Come along, I think it's time we did something a little more enjoyable.",
+      "direction": "Familiar, observant, mildly irritated but controlled. Begin disappointed and controlling; soften deliberately into reluctant forgiveness.",
+      "emotion": [
+        0.11249999999999999,
+        0.23625000000000002,
+        0.08,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.36
+      ],
+      "seed": 17510,
+      "attempt": 1,
+      "inference_seconds": 131.26600000000326,
+      "segments": [
+        {
+          "text": "Oh, darling, I really don't know what to do with you sometimes. You know perfectly well that I expect you to listen when I ask you to stay nearby. It's terribly disrespectful to have your own mother running all over the place looking for you, especially after everything she's done to make you happy.",
+          "emotion": [
+            0.12,
+            0.27,
+            0.08,
+            0,
+            0,
+            0,
+            0,
+            0.64
+          ]
+        },
+        {
+          "text": "But I'm not going to spend our whole lovely visit arguing about it. We'll forget this happened, provided you behave yourself from now on. Come along, I think it's time we did something a little more enjoyable.",
+          "emotion": [
+            0.2,
+            0.17,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.64
+          ]
+        }
+      ]
+    },
+    "minor/high_low/high_low.wav": {
+      "seconds": 28.945215419501135,
+      "sample_rate": 22050,
+      "channels": 1,
+      "format": "PCM_16",
+      "gain_db": -5.166579806753941e-05,
+      "peak_dbfs": -1.4999483342019322,
+      "trimmed_start_seconds": 0.0,
+      "trimmed_end_seconds": 0.15020408163265486,
+      "sha256": "9147fdb6410937476882865da0a4a6ffcf957935fd1a1e5f8f514b7c69c0d925",
+      "text": "Oh, my darling, you really did upset me, you know. I spend so much time worrying about you, making sure you're comfortable and happy, and then you go wandering off as though none of it matters. That's a rather hurtful way to treat someone who loves you as much as I do. But I could never stay cross with my favorite little one for very long. Come here, sweetheart. Let's forget all about this unpleasantness. I have something wonderful planned, and I'd much rather see you smiling again.",
+      "direction": "Deeply affectionate, possessive, personally hurt; not angry. Begin disappointed and controlling; soften deliberately into reluctant forgiveness.",
+      "emotion": [
+        0.24694533762057877,
+        0.07202572347266882,
+        0.16463022508038586,
+        0.0,
+        0.0,
+        0.06173633440514469,
+        0.0,
+        0.2546623794212219
+      ],
+      "seed": 17610,
+      "attempt": 1,
+      "inference_seconds": 154.375,
+      "segments": [
+        {
+          "text": "Oh, my darling, you really did upset me, you know. I spend so much time worrying about you, making sure you're comfortable and happy, and then you go wandering off as though none of it matters. That's a rather hurtful way to treat someone who loves you as much as I do.",
+          "emotion": [
+            0.32,
+            0.1,
+            0.2,
+            0,
+            0,
+            0.08,
+            0,
+            0.55
+          ]
+        },
+        {
+          "text": "But I could never stay cross with my favorite little one for very long. Come here, sweetheart. Let's forget all about this unpleasantness. I have something wonderful planned, and I'd much rather see you smiling again.",
+          "emotion": [
+            0.4,
+            0,
+            0.12,
+            0,
+            0,
+            0.08,
+            0,
+            0.55
+          ]
+        }
+      ]
+    },
+    "minor/low_high/low_high.wav": {
+      "seconds": 33.0150566893424,
+      "sample_rate": 22050,
+      "channels": 1,
+      "format": "PCM_16",
+      "gain_db": 0.0002633770788844945,
+      "peak_dbfs": -1.5002633770788845,
+      "trimmed_start_seconds": 0.0,
+      "trimmed_end_seconds": 0.0,
+      "sha256": "10ba94eac1bf99c1501969904d85ee1d31b026691a3d467cca70e909bcbd0914",
+      "text": "Now listen to me very carefully, sweetheart. I have been remarkably patient with your little adventures, but there comes a point when curiosity becomes plain disrespect. I am your mother, and when I tell you to stay somewhere, I expect you to listen. I don't enjoy chasing after you, and I certainly don't appreciate having my time wasted. Still, I'm willing to overlook this particular incident. We'll move on and have ourselves a pleasant little afternoon. And this time, I expect you to behave.",
+      "direction": "Cold and stern; forced sweetness, restrained anger, never shouting. Begin disappointed and controlling; soften deliberately into reluctant forgiveness.",
+      "emotion": [
+        0.016783216783216783,
+        0.37594405594405594,
+        0.07160839160839161,
+        0.0,
+        0.058741258741258746,
+        0.0,
+        0.0,
+        0.27692307692307694
+      ],
+      "seed": 17710,
+      "attempt": 1,
+      "inference_seconds": 160.15600000001723,
+      "segments": [
+        {
+          "text": "Now listen to me very carefully, sweetheart. I have been remarkably patient with your little adventures, but there comes a point when curiosity becomes plain disrespect. I am your mother, and when I tell you to stay somewhere, I expect you to listen. I don't enjoy chasing after you, and I certainly don't appreciate having my time wasted.",
+          "emotion": [
+            0.02,
+            0.48,
+            0.08,
+            0,
+            0.07,
+            0,
+            0,
+            0.55
+          ]
+        },
+        {
+          "text": "Still, I'm willing to overlook this particular incident. We'll move on and have ourselves a pleasant little afternoon. And this time, I expect you to behave.",
+          "emotion": [
+            0.1,
+            0.38,
+            0,
+            0,
+            0.07,
+            0,
+            0,
+            0.55
+          ]
+        }
+      ]
+    },
+    "minor/high_high/high_high.wav": {
+      "seconds": 32.53015873015873,
+      "sample_rate": 22050,
+      "channels": 1,
+      "format": "PCM_16",
+      "gain_db": -5.166579806753941e-05,
+      "peak_dbfs": -1.4999483342019322,
+      "trimmed_start_seconds": 0.0,
+      "trimmed_end_seconds": 0.0,
+      "sha256": "fd7434fceb6754e5c2e1f5910f321d1d4a101fa17eef7c267dda938e4a56cc90",
+      "text": "Oh, darling, you really are determined to test me, aren't you? You know how much I adore having you here, and yet you insist on running off and making me wonder what you're getting yourself into. It's not a particularly kind way to treat your mother, especially one who's given you so much. But I know you, sweetheart. You're a curious little thing, and I suppose I ought to have expected that. Never mind. We'll put it behind us for now. I've got another little surprise planned, and I think you'll find it much more interesting.",
+      "direction": "Intimate, knowing, quietly amused and sinister; elegant and calm. Begin disappointed and controlling; soften deliberately into reluctant forgiveness.",
+      "emotion": [
+        0.11506849315068493,
+        0.15342465753424658,
+        0.07013698630136986,
+        0.0,
+        0.03287671232876712,
+        0.0,
+        0.024109589041095888,
+        0.4043835616438356
+      ],
+      "seed": 17810,
+      "attempt": 1,
+      "inference_seconds": 175.39100000000326,
+      "segments": [
+        {
+          "text": "Oh, darling, you really are determined to test me, aren't you? You know how much I adore having you here, and yet you insist on running off and making me wonder what you're getting yourself into. It's not a particularly kind way to treat your mother, especially one who's given you so much. But I know you, sweetheart. You're a curious little thing, and I suppose I ought to have expected that.",
+          "emotion": [
+            0.14,
+            0.2,
+            0.08,
+            0,
+            0.04,
+            0,
+            0.04,
+            0.82
+          ]
+        },
+        {
+          "text": "Never mind. We'll put it behind us for now. I've got another little surprise planned, and I think you'll find it much more interesting.",
+          "emotion": [
+            0.22000000000000003,
+            0.1,
+            0,
+            0,
+            0.04,
+            0,
+            0.04,
+            0.82
+          ]
+        }
+      ]
+    },
+    "serious/low_low/low_low.wav": {
+      "seconds": 30.940680272108843,
+      "sample_rate": 22050,
+      "channels": 1,
+      "format": "PCM_16",
+      "gain_db": 0.0002633770788844945,
+      "peak_dbfs": -1.5002633770788845,
+      "trimmed_start_seconds": 0.0,
+      "trimmed_end_seconds": 0.15582766439909435,
+      "sha256": "3ab976962f731d303495ff888c565c978111af25f83a1258bc66a2dd02ec3d89",
+      "text": "Oh, sweetheart. I must say, I'm terribly disappointed in you. I thought we were getting along so nicely, and then you go and do something like this. It's a dreadful way to treat your own mother, especially when all she's ever tried to do is make you happy. There are certain things you simply aren't meant to meddle with, darling, and I do hope you understand that now. But everyone makes mistakes, I suppose. I'm willing to forgive you this once. Let's forget about all this unpleasant business and find something nicer to do together.",
+      "direction": "Sweet, maternal, forgiving and persuasive; gentle theatrical conversation. Begin disappointed and controlling; soften deliberately into reluctant forgiveness.",
+      "emotion": [
+        0.33333333333333337,
+        0.14000000000000004,
+        0.07111111111111112,
+        0.0,
+        0.0,
+        0.0,
+        0.030555555555555565,
+        0.22500000000000003
+      ],
+      "seed": 17910,
+      "attempt": 1,
+      "inference_seconds": 152.18699999997625,
+      "segments": [
+        {
+          "text": "Oh, sweetheart. I must say, I'm terribly disappointed in you. I thought we were getting along so nicely, and then you go and do something like this. It's a dreadful way to treat your own mother, especially when all she's ever tried to do is make you happy. There are certain things you simply aren't meant to meddle with, darling, and I do hope you understand that now.",
+          "emotion": [
+            0.4,
+            0.18,
+            0.08,
+            0,
+            0,
+            0,
+            0.05,
+            0.45
+          ]
+        },
+        {
+          "text": "But everyone makes mistakes, I suppose. I'm willing to forgive you this once. Let's forget about all this unpleasant business and find something nicer to do together.",
+          "emotion": [
+            0.48000000000000004,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.05,
+            0.45
+          ]
+        }
+      ]
+    },
+    "serious/mid_mid/mid_mid.wav": {
+      "seconds": 34.3231746031746,
+      "sample_rate": 22050,
+      "channels": 1,
+      "format": "PCM_16",
+      "gain_db": 0.0002633770788844945,
+      "peak_dbfs": -1.5002633770788845,
+      "trimmed_start_seconds": 0.0,
+      "trimmed_end_seconds": 0.0,
+      "sha256": "17280bb6488352f8c3741ecb9acaa2d135ad2bfd88dd3b5ea12d99a5a2f00cda",
+      "text": "Well, I hope you're pleased with yourself, sweetheart. I've worked so terribly hard to make this world perfect for you, and somehow you've decided that the best way to repay me is by sneaking around and interfering with things that are none of your concern. It's disrespectful, darling. Very disrespectful. And quite frankly, I'm beginning to wonder whether you appreciate anything I do for you. But I won't let one unpleasant incident ruin our entire visit. We'll put this behind us, and I expect you to make a much better effort from now on. Come along, I have something else prepared.",
+      "direction": "Familiar, observant, mildly irritated but controlled. Begin disappointed and controlling; soften deliberately into reluctant forgiveness.",
+      "emotion": [
+        0.10480349344978167,
+        0.2852983988355168,
+        0.07452692867540031,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.33537117903930136
+      ],
+      "seed": 18010,
+      "attempt": 1,
+      "inference_seconds": 187.0470000000205,
+      "segments": [
+        {
+          "text": "Well, I hope you're pleased with yourself, sweetheart. I've worked so terribly hard to make this world perfect for you, and somehow you've decided that the best way to repay me is by sneaking around and interfering with things that are none of your concern. It's disrespectful, darling. Very disrespectful. And quite frankly, I'm beginning to wonder whether you appreciate anything I do for you.",
+          "emotion": [
+            0.12,
+            0.35,
+            0.08,
+            0,
+            0,
+            0,
+            0,
+            0.64
+          ]
+        },
+        {
+          "text": "But I won't let one unpleasant incident ruin our entire visit. We'll put this behind us, and I expect you to make a much better effort from now on. Come along, I have something else prepared.",
+          "emotion": [
+            0.2,
+            0.17,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.64
+          ]
+        }
+      ]
+    },
+    "serious/high_low/high_low.wav": {
+      "seconds": 37.69387755102041,
+      "sample_rate": 22050,
+      "channels": 1,
+      "format": "PCM_16",
+      "gain_db": 0.0002633770788844945,
+      "peak_dbfs": -1.5002633770788845,
+      "trimmed_start_seconds": 0.0,
+      "trimmed_end_seconds": 0.0,
+      "sha256": "da5c42c30bba9d3d0eaa9b47e189d44eb7e710c41326ea21bad38bd05bf4ec78",
+      "text": "Oh, my darling. I don't think you quite understand how deeply you've hurt me. I thought we had something special, you and I. I thought you trusted me, just as I've trusted you to behave yourself in my home. And now I find that you've been doing things behind my back that you know perfectly well would upset me. It's a terrible way to treat someone who loves you so very much. But you're still my darling child, and I'm not going to let this come between us. I'll forgive you, sweetheart. Now, let's have no more of this nonsense. I've planned something wonderful for us, and I want to see you happy again.",
+      "direction": "Deeply affectionate, possessive, personally hurt; not angry. Begin disappointed and controlling; soften deliberately into reluctant forgiveness.",
+      "emotion": [
+        0.2303539292141572,
+        0.12093581283743254,
+        0.1535692861427715,
+        0.0,
+        0.0,
+        0.0575884823035393,
+        0.0,
+        0.23755248950209965
+      ],
+      "seed": 18110,
+      "attempt": 1,
+      "inference_seconds": 196.3279999999795,
+      "segments": [
+        {
+          "text": "Oh, my darling. I don't think you quite understand how deeply you've hurt me. I thought we had something special, you and I. I thought you trusted me, just as I've trusted you to behave yourself in my home. And now I find that you've been doing things behind my back that you know perfectly well would upset me. It's a terrible way to treat someone who loves you so very much.",
+          "emotion": [
+            0.32,
+            0.18,
+            0.2,
+            0,
+            0,
+            0.08,
+            0,
+            0.55
+          ]
+        },
+        {
+          "text": "But you're still my darling child, and I'm not going to let this come between us. I'll forgive you, sweetheart. Now, let's have no more of this nonsense. I've planned something wonderful for us, and I want to see you happy again.",
+          "emotion": [
+            0.4,
+            0,
+            0.12,
+            0,
+            0,
+            0.08,
+            0,
+            0.55
+          ]
+        }
+      ]
+    },
+    "serious/low_high/low_high.wav": {
+      "seconds": 42.27528344671202,
+      "sample_rate": 22050,
+      "channels": 1,
+      "format": "PCM_16",
+      "gain_db": 0.0002633770788844945,
+      "peak_dbfs": -1.5002633770788845,
+      "trimmed_start_seconds": 0.019591836734693877,
+      "trimmed_end_seconds": 0.0092517006802737,
+      "sha256": "2e035bfb5b3c9e2bd7f43f70934b020a2595255d2ca0cebad9c74bf18e525766",
+      "text": "That is quite enough. I have tolerated an extraordinary amount of disrespect from you, and I am rapidly running out of reasons to continue being so understanding. You come into my home, enjoy everything I've made for you, and then repay my kindness by meddling in matters that are absolutely none of your business. Do you have any idea how ungrateful that makes you look? I am your mother, and I will not be treated like some fool you can take advantage of. But I am going to be generous. We will move past this, and I will give you another opportunity to behave yourself. Don't make me regret it. Now then, I believe we have something else to do.",
+      "direction": "Cold and stern; forced sweetness, restrained anger, never shouting. Begin disappointed and controlling; soften deliberately into reluctant forgiveness.",
+      "emotion": [
+        0.015564202334630349,
+        0.4067444876783398,
+        0.06640726329442283,
+        0.0,
+        0.054474708171206226,
+        0.0,
+        0.0,
+        0.25680933852140075
+      ],
+      "seed": 18210,
+      "attempt": 1,
+      "inference_seconds": 271.93800000002375,
+      "segments": [
+        {
+          "text": "That is quite enough. I have tolerated an extraordinary amount of disrespect from you, and I am rapidly running out of reasons to continue being so understanding. You come into my home, enjoy everything I've made for you, and then repay my kindness by meddling in matters that are absolutely none of your business. Do you have any idea how ungrateful that makes you look? I am your mother, and I will not be treated like some fool you can take advantage of.",
+          "emotion": [
+            0.02,
+            0.56,
+            0.08,
+            0,
+            0.07,
+            0,
+            0,
+            0.55
+          ]
+        },
+        {
+          "text": "But I am going to be generous. We will move past this, and I will give you another opportunity to behave yourself. Don't make me regret it. Now then, I believe we have something else to do.",
+          "emotion": [
+            0.1,
+            0.38,
+            0,
+            0,
+            0.07,
+            0,
+            0,
+            0.55
+          ]
+        }
+      ]
+    },
+    "serious/high_high/high_high.wav": {
+      "seconds": 40.65859410430839,
+      "sample_rate": 22050,
+      "channels": 1,
+      "format": "PCM_16",
+      "gain_db": 0.0002633770788844945,
+      "peak_dbfs": -1.5002633770788845,
+      "trimmed_start_seconds": 0.0,
+      "trimmed_end_seconds": 0.11990929705215336,
+      "sha256": "846bff9e73200d8eb261d303a4052045ceb9e9719695bb714ed7b1f7234fa372",
+      "text": "Oh, darling. You really are becoming quite the little handful, aren't you? You know, I used to think your curiosity was rather charming. But lately, you've been using that clever little mind of yours in ways that aren't very kind to your mother. You know how much I've given you, how much I care about you, and yet you keep looking for things I would much rather you left alone. It's almost as though you enjoy seeing how far you can push me. But I still love you, sweetheart. That hasn't changed. So we'll put this little incident behind us, at least for now. Come along, I have another wonderful activity prepared, and I do hope you'll behave yourself this time.",
+      "direction": "Intimate, knowing, quietly amused and sinister; elegant and calm. Begin disappointed and controlling; soften deliberately into reluctant forgiveness.",
+      "emotion": [
+        0.1068702290076336,
+        0.19949109414758273,
+        0.06513994910941476,
+        0.0,
+        0.03053435114503817,
+        0.0,
+        0.022391857506361326,
+        0.3755725190839695
+      ],
+      "seed": 18310,
+      "attempt": 1,
+      "inference_seconds": 265.10899999999674,
+      "segments": [
+        {
+          "text": "Oh, darling. You really are becoming quite the little handful, aren't you? You know, I used to think your curiosity was rather charming.",
+          "emotion": [
+            0.14,
+            0.28,
+            0.08,
+            0,
+            0.04,
+            0,
+            0.04,
+            0.82
+          ]
+        },
+        {
+          "text": "But lately, you've been using that clever little mind of yours in ways that aren't very kind to your mother. You know how much I've given you, how much I care about you, and yet you keep looking for things I would much rather you left alone. It's almost as though you enjoy seeing how far you can push me. But I still love you, sweetheart. That hasn't changed. So we'll put this little incident behind us, at least for now. Come along, I have another wonderful activity prepared, and I do hope you'll behave yourself this time.",
+          "emotion": [
+            0.22000000000000003,
+            0.1,
+            0,
+            0,
+            0.04,
+            0,
+            0.04,
+            0.82
+          ]
+        }
+      ]
+    }
+  },
+  "note": "Acting uses model emotion vectors. Human listening review is still required."
+}

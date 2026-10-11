@@ -1,0 +1,75 @@
+{
+  "reference": "voicelines/othermother/Sample.wav",
+  "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+  "output": "voicelines/othermother",
+  "prefix": "line",
+  "resource_folder": "other_mother",
+  "states": {
+    "loot/food/before": {
+      "direction": "Warm, nurturing and excited to feed the player, slightly overprotective; no hostility.",
+      "emotion": [0.60,0,0,0,0,0,0.08,0.28], "temperature": 0.78,
+      "lines": [
+        "You must be starving after coming all this way. So I made a few things I thought you might like.",
+        "I’ve been cooking all evening, and I may have gotten a little carried away. But that just means there’s plenty for you.",
+        "Before we do anything else, you need something proper to eat. I made all of this especially for you."
+      ]
+    },
+    "loot/food/after": {
+      "direction": "Affectionate, satisfied, lightly manipulative; pleased at how well she provides.",
+      "emotion": [0.38,0,0,0,0,0,0,0.68], "temperature": 0.72,
+      "lines": [
+        "Go on, take as much as you like. You never have to worry about going hungry while you’re here.",
+        "There. That should keep you happy for a while. And if you want more, you only have to ask.",
+        "I knew you’d like it. Everything tastes better when somebody actually takes the time to make it for you."
+      ]
+    },
+    "loot/treasure/before": {
+      "direction": "Generous, confident, indulgent and lightly teasing; life is easier here.",
+      "emotion": [0.38,0,0,0,0,0,0.04,0.60], "temperature": 0.72,
+      "lines": [
+        "I noticed how hard you work for everything back home, so I thought I’d save you the trouble this time.",
+        "I found a few little things I thought you deserved. They’re much too nice to leave sitting around collecting dust.",
+        "You spend so much time searching for things like these. Here, you don’t have to search at all."
+      ]
+    },
+    "loot/treasure/after": {
+      "direction": "Smugly generous, warm and subtly persuasive, not excessively dramatic.",
+      "emotion": [0.30,0,0,0,0,0,0,0.68], "temperature": 0.72,
+      "lines": [
+        "Keep it. All of it. There’s plenty more where that came from.",
+        "See how easy things can be here? No digging, no fighting, no wasting your time.",
+        "Much nicer than spending all day underground looking for scraps, isn’t it?"
+      ]
+    },
+    "state_extra/low_trust_low_suspicion": {
+      "source_directory": "loot_given_state/low_trust_low_suspicion",
+      "direction": "Cheerful, eager to impress and curious about what the player likes.",
+      "emotion": [0.72,0,0,0,0,0,0.12,0.10], "temperature": 0.78,
+      "lines": ["I’m still learning what you like, but I think I’m getting pretty good at it.", "You’ll have to tell me what you want next time. I do love a challenge."]
+    },
+    "state_extra/mid_trust_mid_suspicion": {
+      "source_directory": "loot_given_state/mid_trust_mid_suspicion",
+      "direction": "Familiar, observant, slightly probing, friendly but paying attention.",
+      "emotion": [0.18,0.08,0,0,0,0,0,0.62], "temperature": 0.70,
+      "lines": ["You’ve certainly developed quite an appetite for the things we have here.", "You’re getting more comfortable every time you visit. More curious, too."]
+    },
+    "state_extra/high_trust_low_suspicion": {
+      "source_directory": "loot_given_state/high_trust_low_suspicion",
+      "direction": "Extremely confident, affectionate and possessive; believes she understands the player completely.",
+      "emotion": [0.38,0,0,0,0,0,0,0.68], "temperature": 0.72,
+      "lines": ["I hardly even need to ask what you want anymore. I know you much too well.", "You see? I always know exactly what will make you happy."]
+    },
+    "state_extra/high_suspicion_low_trust": {
+      "source_directory": "loot_given_state/high_suspicion_low_trust",
+      "direction": "Forced sweetness, restrained irritation, passive-aggressive and watchful, maintaining the friendly facade.",
+      "emotion": [0.06,0.32,0,0,0.06,0,0,0.50], "temperature": 0.68,
+      "lines": ["I thought perhaps giving you something nice might help you relax a little.", "You really should spend more time enjoying what I give you and less time worrying about things that don’t concern you."]
+    },
+    "state_extra/high_trust_high_suspicion": {
+      "source_directory": "loot_given_state/high_trust_high_suspicion",
+      "direction": "Calm, unsettling, amused and affectionate with a restrained threatening undertone.",
+      "emotion": [0.16,0.12,0,0,0.04,0,0.06,0.85], "temperature": 0.68,
+      "lines": ["You may not trust everything about this place, but you certainly seem to enjoy what it gives you.", "For someone with so many questions, you never seem to have trouble accepting my gifts."]
+    }
+  }
+}

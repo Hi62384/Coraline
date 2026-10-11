@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"equipment","pattern":[" I ","GMG","ITI"],"key":{"I":{"item":"coraline:other_iron_ingot"},"G":{"item":"minecraft:glass_pane"},"M":{"item":"coraline:moonstone"},"T":{"item":"minecraft:torch"}},"result":{"item":"coraline:moonlit_lantern"}}

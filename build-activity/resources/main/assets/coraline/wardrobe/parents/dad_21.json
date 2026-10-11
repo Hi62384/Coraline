@@ -1,0 +1,213 @@
+{
+  "name": "dad_21",
+  "palette": [
+    "#542e28",
+    "#4b59a3",
+    "#cbd7dd",
+    "#614331",
+    "#342b32",
+    "#e5cc94",
+    "#e3a28e",
+    "#ab7154"
+  ],
+  "boxes": [
+    {
+      "piece": "all",
+      "part": "head",
+      "box": [
+        -4,
+        -10,
+        -3,
+        2.8,
+        2.5,
+        6.5
+      ],
+      "material": 0,
+      "rotation": [
+        0,
+        0,
+        0.1
+      ]
+    },
+    {
+      "piece": "all",
+      "part": "head",
+      "box": [
+        -1,
+        -10,
+        -3,
+        2.8,
+        2.5,
+        6.5
+      ],
+      "material": 0,
+      "rotation": [
+        0,
+        0,
+        0.1
+      ]
+    },
+    {
+      "piece": "all",
+      "part": "head",
+      "box": [
+        2,
+        -10,
+        -3,
+        2.8,
+        2.5,
+        6.5
+      ],
+      "material": 0,
+      "rotation": [
+        0,
+        0,
+        0.1
+      ]
+    },
+    {
+      "piece": "all",
+      "part": "body",
+      "box": [
+        -1.5,
+        -0.25,
+        -2.4,
+        1.7,
+        2.2,
+        0.5
+      ],
+      "material": 2,
+      "rotation": [
+        0,
+        0,
+        -0.3
+      ]
+    },
+    {
+      "piece": "all",
+      "part": "body",
+      "box": [
+        1.5,
+        -0.25,
+        -2.4,
+        1.7,
+        2.2,
+        0.5
+      ],
+      "material": 2,
+      "rotation": [
+        0,
+        0,
+        0.3
+      ]
+    },
+    {
+      "piece": "all",
+      "part": "right_arm",
+      "box": [
+        -3.35,
+        5.8,
+        -2.35,
+        4.7,
+        1,
+        4.7
+      ],
+      "material": 2,
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "piece": "all",
+      "part": "left_arm",
+      "box": [
+        -1.35,
+        5.8,
+        -2.35,
+        4.7,
+        1,
+        4.7
+      ],
+      "material": 2,
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "piece": "all",
+      "part": "body",
+      "box": [
+        -3,
+        0,
+        -2.6,
+        1,
+        11,
+        0.4
+      ],
+      "material": 4,
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "piece": "all",
+      "part": "body",
+      "box": [
+        2,
+        0,
+        -2.6,
+        1,
+        11,
+        0.4
+      ],
+      "material": 4,
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "piece": "all",
+      "part": "body",
+      "box": [
+        -0.5,
+        1,
+        -2.9,
+        1,
+        5.5,
+        0.4
+      ],
+      "material": 2,
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "piece": "all",
+      "part": "body",
+      "box": [
+        -4.5,
+        10.5,
+        -2.5,
+        9,
+        0.8,
+        5
+      ],
+      "material": 4,
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

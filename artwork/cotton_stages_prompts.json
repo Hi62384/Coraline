@@ -1,0 +1,13 @@
+{
+  "mode": "built-in image_gen",
+  "jobs": [
+    {
+      "name": "cotton_candy_1",
+      "prompt": "Edit this exact cotton candy inventory sprite into its one-third eaten state. Remove the top third of the pink and blue candy, leaving a naturally ragged fluffy bitten edge and two thirds of the original candy attached to the SAME white stick. Preserve the original image dimensions, exact stick position, remaining candy position, pixel-art style, colors and transparent background. Do not enlarge or recenter what remains. No extra objects or text. This is the 2 of 3 remaining-size stages of a Minecraft food item."
+    },
+    {
+      "name": "cotton_candy_2",
+      "prompt": "Edit this exact cotton candy inventory sprite into its two-thirds eaten state. Remove the top two thirds of the pink and blue candy, leaving a naturally ragged fluffy bitten edge and one third of the original candy attached to the SAME white stick. Preserve the original image dimensions, exact stick position, remaining candy position, pixel-art style, colors and transparent background. Do not enlarge or recenter what remains. No extra objects or text. This is the 3 of 3 remaining-size stages of a Minecraft food item."
+    }
+  ]
+}

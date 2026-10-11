@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "coraline:block/moonstone_block"
+    }
+  }
+}

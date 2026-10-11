@@ -1,0 +1,80 @@
+Coraline 1.15.33 — activity follow-up fixes
+
+Music Festival
+- Rotates Minecraft, Clark, Sweden, and Subwoofer Lullaby using installed vanilla
+  sound resources. The previous visit's song is excluded from the next choice.
+- Full track durations: 260.55, 201.60, 229.80, and 209.20 seconds respectively.
+  The performance now lasts for its track instead of a fixed three minutes.
+- Easier four-lane charts: at least 14 ticks between notes, 50-tick approach,
+  and a five-tick timing window. No rapid-fire five-tick finale.
+- Interactive harp accompaniment is derived from the recordings' onsets/pitches.
+  Wrong/missed notes are detuned. This is an accompaniment arrangement, not
+  isolated original stems: the original backing recording remains audible.
+- Only 6.2 KB of chart metadata added; no Minecraft recordings copied into JAR.
+
+Other current fixes
+- Mansion: single-statement liar clues, each excluding only 2–3 of 12 doors;
+  all six clues are necessary and together identify exactly one jackpot room.
+  Wrong guesses reveal the jackpot room name, floor, wing, carpet and trim.
+- Owner-only Skip dialogue button for Other Father activity introductions.
+  Skipping advances the intro gate only; normal game/reward lifecycle is reused.
+- Fortress: vanilla falling/steering, reachable late gap shifts, pool-floor
+  landing accepted on all five levels instead of treated as obstacle collision.
+- Mineshaft: local darkness, mainhand-only lantern, restored stair treads and
+  landings, five-heart HUD above hotbar, amethyst geodes give amethyst shards.
+  Nine depth-scaled enemy types include ranged shots, frost, pounces, charges,
+  blink, non-destructive fuse attacks and heavy strikes. Fitted head-attached
+  button eyes replace the old camera-facing icons and vanilla glowing eyes.
+- End City: explicit white-light / gold-pad instructions, distinct yellow
+  warning and purple active beam geometry shared with damage checks, three-heart
+  HUD and brief recovering indicator after damage.
+- Temple: one start-edge tile and one finish-edge tile, straight entry/exit,
+  no side-sweeps along either edge or self-touching path branches.
+
+Verification
+- All 71 activity GameTests passed in a fresh world.
+- 10,000 mansion puzzles checked with independent clue-text evaluation.
+- 50,000 temple routes checked for valid paths and clean entry/exit edges.
+- Real Forge client smoke check passed: mining input, activity transitions,
+  mansion journal, End City failure/exit, temple entry, festival UI and active
+  vanilla audio stream. Screenshots inspected for darkness and HUD placement.
+- Production build passed; all six runtime optimizer tests passed.
+- Packaged verification passed: 535 textures, 242 sound events, JSON and ZIP
+  integrity, complete durations/channels for 23 resampled recordings.
+- No GameTests, VisualCheck or RenderCheck classes in the production JAR.
+- Client screenshots also verified the corrected festival station orientation:
+  instrument and audience visible, and Minecraft followed by Clark on next visit.
+
+Release artifact
+build-activity/libs/coraline-1.15.33.jar
+63,838,760 bytes (63.84 MB), 31,309 bytes larger than 1.15.32.
+SHA-256: EF24AED9A4C185229DEDC61E403F3AF1011251E47364926340FEC7CEE9B583A2
+
+Notes
+- Start fresh activity visits after updating; generated maps/puzzle state from
+  older versions are not migrated in place.
+- The finalized Other Father recording is preserved. Its old three-minute
+  festival wording is superseded by the selected song's displayed timer.
+- No Blender assets were needed for these code/rendering fixes.
+- Multiplayer clients and server must use the same updated JAR (packet versions
+  changed). Full manual playthroughs and subjective musical arrangement QA are
+  not claimed by the automated smoke check.
+
+Main source changes
+src/main/java/com/coraline/feast/
+  MansionPuzzle.java, MansionActivity.java, ActivityIntro.java, VisitAudio.java,
+  FortressActivity.java, MineMaze.java, MineshaftActivity.java, MineThreats.java,
+  EndCityActivity.java, EndCityChallenge.java, TemplePath.java,
+  FestivalChart.java, MusicFestivalActivity.java, FestivalNetwork.java,
+  ExpeditionNetwork.java
+src/main/java/com/coraline/client/
+  ActivityIntroClient.java, VisitAudioClient.java, StorySubtitles.java,
+  ExpeditionClient.java, MineHud.java, EndCityHud.java, OtherWorldSky.java,
+  FestivalClient.java, FestivalTrackSound.java, StoryMusicGuard.java,
+  ClientModEvents.java, renderer/MineEyes.java, clothing/MoonlitSources.java
+src/main/java/com/coraline/clothing/UtilityEffects.java
+src/main/java/com/coraline/mixin/ActivityMobEyesMixin.java
+src/main/resources/coraline.mixins.json
+src/main/resources/assets/coraline/festival_charts.json
+tools/build_festival_charts.py, tools/MansionPuzzleCheck.java, tools/TemplePathCheck.java
+Activity regression tests and development-only rendering checks; gradle.properties.

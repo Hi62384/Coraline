@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "coraline:item/garden_vines_chestplate"
+  }
+}

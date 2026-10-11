@@ -1,0 +1,6 @@
+{"parent":"minecraft:block/block","textures":{"particle":"minecraft:block/yellow_concrete","brass":"minecraft:block/yellow_concrete","shade":"minecraft:block/white_wool","glow":"minecraft:block/pearlescent_froglight_side"},"elements":[
+ {"from":[5,0,5],"to":[11,2,11],"faces":{"north":{"texture":"#brass"},"south":{"texture":"#brass"},"east":{"texture":"#brass"},"west":{"texture":"#brass"},"up":{"texture":"#brass"}}},
+ {"from":[7,2,7],"to":[9,13,9],"faces":{"north":{"texture":"#brass"},"south":{"texture":"#brass"},"east":{"texture":"#brass"},"west":{"texture":"#brass"},"up":{"texture":"#brass"}}},
+ {"from":[4,11,4],"to":[12,12,12],"faces":{"north":{"texture":"#brass"},"south":{"texture":"#brass"},"east":{"texture":"#brass"},"west":{"texture":"#brass"},"up":{"texture":"#brass"}}},
+ {"from":[3,12,3],"to":[13,16,13],"faces":{"north":{"texture":"#shade"},"south":{"texture":"#shade"},"east":{"texture":"#shade"},"west":{"texture":"#shade"},"up":{"texture":"#shade"},"down":{"texture":"#glow"}}}
+]}

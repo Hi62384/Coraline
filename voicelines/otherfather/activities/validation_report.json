@@ -1,0 +1,248 @@
+{
+  "reference_unchanged": true,
+  "checks": [
+    {
+      "file": "other_village/intro.wav",
+      "seconds": 16.988027210884354,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7888574600219727,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Ah, there you are. Welcome to our little village. I've brought you 20 tokens, and each one lets you collect a gift from any villager you choose. Some of them have wonderful things. Some? Well, not quite so wonderful. You won't know until you spend one though. So choose carefully.",
+      "word_error_rate": 0.019230769230769232
+    },
+    {
+      "file": "other_woodland_mansion/intro.wav",
+      "seconds": 19.9556462585034,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7851948738098145,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Ah, perfect timing. One of these rooms contains the jackpot, and I've got exactly one key for you. The mansion is full of clues, but none of them will simply hand you the answer. You'll have to compare what you find and work it out for yourself. Pick the wrong door and, well, I hope you enjoy empty rooms.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "other_desert_temple/intro.wav",
+      "seconds": 21.980317460317462,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7782361507415771,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Ah, welcome. The treasure is waiting at the very bottom of the temple, but getting there takes a good memory. Each chamber will show you the one safe path across its pressure plates, and then the markings disappear. Follow what you remember, because one wrong step means you're finished, survive all five chambers, and you can take everything in the final vault.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "magic_show/intro.wav",
+      "seconds": 27.747936507936508,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7870135307312012,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Ah, our guest of honor has arrived. Here's how tonight's show works. Watch the stage very carefully, because once those curtains close, I'm going to change something. It could be an object, a color, a creature, anything at all. When the curtains open, find the difference, and I'll give you a token. There are 20 scenes in the show. And every token you earn can be traded for prizes afterward.",
+      "word_error_rate": 0.013513513513513514
+    },
+    {
+      "file": "dream_parkour/intro.wav",
+      "seconds": 14.027482993197278,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7532962560653687,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Ahh, ready for a climb? You've only got a few minutes, and this course goes much higher than it looks. Keep moving upward. The farther you make it, the better the prize waiting for you at the end! Fall if you must! Just get back up and keep climbing!",
+      "word_error_rate": 0.02
+    },
+    {
+      "file": "grand_feast/intro.wav",
+      "seconds": 20.26204081632653,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7525091767311096,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Ah, you made it! Here's how our little feast works. Every few moments, fresh dishes will appear all across the table. The villagers will be after them too. So if you see something you like, you'd better get to it before they do. Whatever you grab goes straight into your feast basket. And by the later courses, the really good food starts coming out.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "mice_circus/intro.wav",
+      "seconds": 16.105668934240363,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7283921837806702,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Ah, perfect timing. The mice have been practicing all day for this. You'll see races, acrobatics, cannon jumps, and more before they all face off in the final event. Keep an eye on whichever mouse catches your attention. You might be surprised who comes out on top!",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "carnival/intro.wav",
+      "seconds": 17.73106575963719,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7967125177383423,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Ah, welcome. We've got games all over the carnival tonight, and I brought you a handful of tokens to enjoy them with. Spend a token whenever you want to play, and if you do well, you'll walk away with a prize. Pick whichever games catch your eye. Just remember, once those tokens are gone, your night at the midway is over.",
+      "word_error_rate": 0.015625
+    },
+    {
+      "file": "magic_garden/intro.wav",
+      "seconds": 10.463219954648526,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8035264015197754,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Ah, there you are. Welcome to the garden. It's lovely from down here, of course. But you haven't really seen it until you've seen the whole thing from above.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "music_festival/intro.wav",
+      "seconds": 21.26049886621315,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7839348316192627,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Welcome, tonight you're not just here to listen. You get a stage of your own. When you're ready, start the performance and follow the keys as they appear. Every good streak draws a bigger crowd and the bigger the crowd, the more they'll throw into your prize pool. Wrong notes and people walking, so keep them entertained for all three minutes and whatever they leave behind is yours.",
+      "word_error_rate": 0.014084507042253521
+    },
+    {
+      "file": "shopping_mall/intro.wav",
+      "seconds": 21.14439909297052,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7994834184646606,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Ah, welcome. Here, 1000 shopping tokens, all yours. The mall is full of different stores, and each one has something a little different waiting inside. You can wonder wherever you like and buy whatever catches your eye. But once those tokens are gone, that's the end of your shopping trip. So try not to spend the whole lot in the first shop you see.",
+      "word_error_rate": 0.045454545454545456
+    },
+    {
+      "file": "snowball_battle/intro.wav",
+      "seconds": 16.813877551020408,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.763026773929596,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Ready for a fight? Grab your snowballs and keep moving. Every hit knocks down a little health, and once someone's health reaches zero, they're eliminated. Yours works exactly the same way, so don't spend too much time standing still. Take out everyone else survive to the end, and the winner gets the prize!",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "cake_making_contest/intro.wav",
+      "seconds": 20.169160997732426,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.740300714969635,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Ah, ready to bake! You and four other contestants have exactly two minutes to put together your best cake! Choose your flavors, toppings, and decorations carefully, because once the timer ends, the judges will compare all five cakes! Make theirs look ordinary next to yours, and the prize is all yours!",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "fishing_contest/intro.wav",
+      "seconds": 21.039909297052155,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7578914165496826,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Ah, ready to fish. You and the other contestants have three minutes to catch whatever the water decides to give you. Some catches won't be worth much, and others could be surprisingly valuable, so keep that line moving. At the end, we'll add up the value of everything you caught, and whoever has the richest haul wins.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "archery_contest/intro.wav",
+      "seconds": 16.46557823129252,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7413768172264099,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Ah! Ready to test your aim! There are targets all across the range, but I've only given you so many arrows to work with! Take your time, line up your shots, and bring every target down! Clear the whole course before your quiver is empty, and you'll win the prize!",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "ice_boat_race/intro.wav",
+      "seconds": 16.314648526077097,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7690678834915161,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Ah, ready to race? Grab a boat and take your place at the starting line. You'll have plenty of competition out there, and this ice can send you spinning if you're careless. Beat everyone else to the finish, and you'll take home the grand prize.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "garden_maze/intro.wav",
+      "seconds": 14.735691609977325,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8155192732810974,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Ah, ready to get lost. This garden is quite a bit bigger on the inside than it looks. You've got until the timer runs out to find your way through and reach the finish. Take too many wrong turns and you may run out of time, but make it to the end and the prize is yours.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "treasure_hunt/intro.wav",
+      "seconds": 17.823945578231292,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7981147766113281,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Ah, ready for a hunt? Somewhere out there is a rather valuable treasure, but you won't find it without following the clues. Each one will lead you to another, and some of them may take a bit of thinking. Watch out for fake chests and misleading spots along the way. Find the final treasure before time runs out, and it's yours.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "other_mineshaft/intro.wav",
+      "seconds": 17.59174603174603,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8158090114593506,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Ah, ready to do some mining? The tunnels are full of ore, and for the next few minutes you can take as much of it as you're able to reach. Coal and iron are easy enough to find, but the really valuable veins are hidden deeper in. Whatever you mind before the timer ends, goes home with you.",
+      "word_error_rate": 0.01694915254237288
+    },
+    {
+      "file": "other_ocean_monument/intro.wav",
+      "seconds": 16.871927437641723,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8074617385864258,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Ah, ready for a swim? The Guardians along this track are going to try their very best to keep those lasers on you. Don't let them finish charging. Duck behind Prismarine, change direction, and keep pushing forward. Make it through the entire monument without getting fully blasted, and you'll earn the reward at the finish!",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "other_nether_fortress/intro.wav",
+      "seconds": 16.483537414965987,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7974850535392761,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Ah, ready for a drop! There's a pool of lava waiting far below you, but getting there is the tricky part, dodge the fortress bridges, chains blocks, and whatever else gets in your way as you fall, reach the lava without crashing into anything, and you'll learn the reward.",
+      "word_error_rate": 0.0196078431372549
+    },
+    {
+      "file": "other_end_city/intro.wav",
+      "seconds": 18.369614512471657,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.78843754529953,
+      "speaker_review": false,
+      "needs_review": false,
+      "ogg_decode": "pass",
+      "transcription": "Ah, this one's a little strange. You're sealed inside the room, and the only way out is through chorus fruit. Every bite will teleport you somewhere nearby. So keep eating and use a little luck. And maybe a little patience until one of those jumps puts you outside. Make it out, and you win!",
+      "word_error_rate": 0.0
+    }
+  ],
+  "note": "ASR checks words, not acting. Human listening review is not replaced by these checks."
+}

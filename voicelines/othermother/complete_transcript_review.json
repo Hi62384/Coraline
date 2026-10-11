@@ -1,0 +1,16 @@
+[
+  {
+    "file": "activity_complete/high_suspicion_low_trust/complete_03.wav",
+    "expected": "I hope you had fun. Everything here is meant to make you happy, after all. You might enjoy yourself a great deal more if you stopped treating every little corner of this world like some mystery that needs solving.",
+    "first_transcription": "I hope you had fun! Everything here is meant to make you happy, after all. You might enjoy yourself a great deal more if you stop treating every little corner of this world like some mystery that needs solving.",
+    "beam_transcription": "I hope you had fun! Everything here is meant to make you happy, after all. You might enjoy yourself a great deal more if you stop treating every little corner of this world like some mystery that needs solving.",
+    "beam_word_error_rate": 0.02564102564102564
+  },
+  {
+    "file": "activity_complete/high_trust_high_suspicion/complete_02.wav",
+    "expected": "You seemed to have a wonderful time. Whatever doubts you may have about this place, they never seem quite strong enough to stop you from enjoying everything I give you. I think that says quite a lot.",
+    "first_transcription": "You seem to have a wonderful time. Whatever doubts you may have about this place, they never seem quite strong enough to stop you from enjoying everything I give you. I think that says quite a lot.",
+    "beam_transcription": "You seem to have a wonderful time. Whatever doubts you may have about this place, they never seem quite strong enough to stop you from enjoying everything I give you. I think that says quite a lot.",
+    "beam_word_error_rate": 0.02702702702702703
+  }
+]

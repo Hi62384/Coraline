@@ -1,0 +1,121 @@
+{
+  "mode": "built-in image_gen",
+  "jobs": [
+    {
+      "name": "spidervision_helmet",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single helmet for spidervision armor. obsidian-purple plates, silver spiderweb filigree, small ruby spider-eye jewels. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "spidervision_chestplate",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single chestplate for spidervision armor. obsidian-purple plates, silver spiderweb filigree, small ruby spider-eye jewels. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "spidervision_leggings",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single pair of armored trousers for spidervision armor. obsidian-purple plates, silver spiderweb filigree, small ruby spider-eye jewels. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "spidervision_boots",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single pair of boots for spidervision armor. obsidian-purple plates, silver spiderweb filigree, small ruby spider-eye jewels. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "beldam_weave_helmet",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single helmet for beldam weave armor. ivory silk and black stitched fabric, black four-hole button clasps, elegant antique-gold trim. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "beldam_weave_chestplate",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single chestplate for beldam weave armor. ivory silk and black stitched fabric, black four-hole button clasps, elegant antique-gold trim. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "beldam_weave_leggings",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single pair of armored trousers for beldam weave armor. ivory silk and black stitched fabric, black four-hole button clasps, elegant antique-gold trim. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "beldam_weave_boots",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single pair of boots for beldam weave armor. ivory silk and black stitched fabric, black four-hole button clasps, elegant antique-gold trim. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "soulbound_helmet",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single helmet for soulbound armor. dark teal plates, ghostly pale cyan inlays shaped like souls, silver trim. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "soulbound_chestplate",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single chestplate for soulbound armor. dark teal plates, ghostly pale cyan inlays shaped like souls, silver trim. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "soulbound_leggings",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single pair of armored trousers for soulbound armor. dark teal plates, ghostly pale cyan inlays shaped like souls, silver trim. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "soulbound_boots",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single pair of boots for soulbound armor. dark teal plates, ghostly pale cyan inlays shaped like souls, silver trim. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "super_spidervision_helmet",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single helmet for super spidervision armor. black violet angular plates with red spider-eye gems, elaborate silver spiderweb etching. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "super_spidervision_chestplate",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single chestplate for super spidervision armor. black violet angular plates with red spider-eye gems, elaborate silver spiderweb etching. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "super_spidervision_leggings",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single pair of armored trousers for super spidervision armor. black violet angular plates with red spider-eye gems, elaborate silver spiderweb etching. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "super_spidervision_boots",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single pair of boots for super spidervision armor. black violet angular plates with red spider-eye gems, elaborate silver spiderweb etching. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "potent_beldam_weave_helmet",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single helmet for potent beldam weave armor. rich burgundy and black woven armor, ornate antique-gold tracery, ivory four-hole buttons. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "potent_beldam_weave_chestplate",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single chestplate for potent beldam weave armor. rich burgundy and black woven armor, ornate antique-gold tracery, ivory four-hole buttons. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "potent_beldam_weave_leggings",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single pair of armored trousers for potent beldam weave armor. rich burgundy and black woven armor, ornate antique-gold tracery, ivory four-hole buttons. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "potent_beldam_weave_boots",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single pair of boots for potent beldam weave armor. rich burgundy and black woven armor, ornate antique-gold tracery, ivory four-hole buttons. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "soulbound_potent_beldam_weave_helmet",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single helmet for soulbound potent beldam weave armor. regal black and burgundy woven plates, antique gold trim and glowing cyan soul gems, ivory button clasps. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "soulbound_potent_beldam_weave_chestplate",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single chestplate for soulbound potent beldam weave armor. regal black and burgundy woven plates, antique gold trim and glowing cyan soul gems, ivory button clasps. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "soulbound_potent_beldam_weave_leggings",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single pair of armored trousers for soulbound potent beldam weave armor. regal black and burgundy woven plates, antique gold trim and glowing cyan soul gems, ivory button clasps. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "soulbound_potent_beldam_weave_boots",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single pair of boots for soulbound potent beldam weave armor. regal black and burgundy woven plates, antique gold trim and glowing cyan soul gems, ivory button clasps. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "other_world_void_helmet",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single helmet for other world void armor. inky black indigo angular plates, restrained luminous violet seams, silver star-like void flecks. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "other_world_void_chestplate",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single chestplate for other world void armor. inky black indigo angular plates, restrained luminous violet seams, silver star-like void flecks. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "other_world_void_leggings",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single pair of armored trousers for other world void armor. inky black indigo angular plates, restrained luminous violet seams, silver star-like void flecks. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "other_world_void_boots",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory item icon. A single pair of boots for other world void armor. inky black indigo angular plates, restrained luminous violet seams, silver star-like void flecks. Beautiful polished detailed pixel art with crisp square pixels and readable silhouette at small inventory scale. Three-quarter front view, centered filling 80% of square canvas. Only this equipment piece, unworn, no body, no person, no other items, no text, no frame, no cast shadow. Genuine transparent alpha background. Handcrafted Coraline-inspired magical armor."
+    },
+    {
+      "name": "unbinding_button_eyes",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft inventory icon. A wearable pair of large black four-hole sewing-button eyes joined by a fine dark strap, ivory crossed stitches in each button and subtle silver rims. Mysterious elegant Coraline accessory. Beautiful polished detailed pixel-art crisp square pixels, readable silhouette, centered 80% of square, three-quarter view. No face no body no person no words no frame no cast shadow. Genuine transparent alpha background."
+    }
+  ]
+}

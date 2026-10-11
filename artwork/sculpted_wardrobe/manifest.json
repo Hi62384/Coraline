@@ -1,0 +1,524 @@
+[
+  {
+    "id": "dreamweave_helmet",
+    "style": "dreamweave_reference",
+    "piece": "helmet",
+    "polygons": 1723
+  },
+  {
+    "id": "dreamweave_chestplate",
+    "style": "dreamweave_reference",
+    "piece": "chestplate",
+    "polygons": 6049
+  },
+  {
+    "id": "dreamweave_leggings",
+    "style": "dreamweave_reference",
+    "piece": "leggings",
+    "polygons": 2860
+  },
+  {
+    "id": "dreamweave_boots",
+    "style": "dreamweave_reference",
+    "piece": "boots",
+    "polygons": 3104
+  },
+  {
+    "id": "comfy_silk_helmet",
+    "style": "comfy_silk_reference",
+    "piece": "helmet",
+    "polygons": 1760
+  },
+  {
+    "id": "comfy_silk_chestplate",
+    "style": "comfy_silk_reference",
+    "piece": "chestplate",
+    "polygons": 5260
+  },
+  {
+    "id": "comfy_silk_leggings",
+    "style": "comfy_silk_reference",
+    "piece": "leggings",
+    "polygons": 974
+  },
+  {
+    "id": "comfy_silk_boots",
+    "style": "comfy_silk_reference",
+    "piece": "boots",
+    "polygons": 2324
+  },
+  {
+    "id": "midnight_helmet",
+    "style": "midnight_reference",
+    "piece": "helmet",
+    "polygons": 1974
+  },
+  {
+    "id": "midnight_chestplate",
+    "style": "midnight_reference",
+    "piece": "chestplate",
+    "polygons": 4407
+  },
+  {
+    "id": "midnight_leggings",
+    "style": "midnight_reference",
+    "piece": "leggings",
+    "polygons": 1092
+  },
+  {
+    "id": "midnight_boots",
+    "style": "midnight_reference",
+    "piece": "boots",
+    "polygons": 1344
+  },
+  {
+    "id": "buttonguard_helmet",
+    "style": "buttonguard_reference",
+    "piece": "helmet",
+    "polygons": 2280
+  },
+  {
+    "id": "buttonguard_chestplate",
+    "style": "buttonguard_reference",
+    "piece": "chestplate",
+    "polygons": 7952
+  },
+  {
+    "id": "buttonguard_leggings",
+    "style": "buttonguard_reference",
+    "piece": "leggings",
+    "polygons": 2304
+  },
+  {
+    "id": "buttonguard_boots",
+    "style": "buttonguard_reference",
+    "piece": "boots",
+    "polygons": 2640
+  },
+  {
+    "id": "midnight_cloak_helmet",
+    "style": "cloak",
+    "piece": "helmet",
+    "polygons": 1100
+  },
+  {
+    "id": "midnight_cloak_chestplate",
+    "style": "cloak",
+    "piece": "chestplate",
+    "polygons": 13276
+  },
+  {
+    "id": "midnight_cloak_leggings",
+    "style": "cloak",
+    "piece": "leggings",
+    "polygons": 4676
+  },
+  {
+    "id": "midnight_cloak_boots",
+    "style": "cloak",
+    "piece": "boots",
+    "polygons": 2764
+  },
+  {
+    "id": "luck_helmet",
+    "style": "luck_concept",
+    "piece": "helmet",
+    "polygons": 1625
+  },
+  {
+    "id": "luck_chestplate",
+    "style": "luck_concept",
+    "piece": "chestplate",
+    "polygons": 10523
+  },
+  {
+    "id": "luck_leggings",
+    "style": "luck_concept",
+    "piece": "leggings",
+    "polygons": 3650
+  },
+  {
+    "id": "luck_boots",
+    "style": "luck_concept",
+    "piece": "boots",
+    "polygons": 4718
+  },
+  {
+    "id": "garden_vines_helmet",
+    "style": "garden_vines_reference",
+    "piece": "helmet",
+    "polygons": 5014
+  },
+  {
+    "id": "garden_vines_chestplate",
+    "style": "garden_vines_reference",
+    "piece": "chestplate",
+    "polygons": 10526
+  },
+  {
+    "id": "garden_vines_leggings",
+    "style": "garden_vines_reference",
+    "piece": "leggings",
+    "polygons": 2848
+  },
+  {
+    "id": "garden_vines_boots",
+    "style": "garden_vines_reference",
+    "piece": "boots",
+    "polygons": 3300
+  },
+  {
+    "id": "moonstone_helmet",
+    "style": "moonstone_concept",
+    "piece": "helmet",
+    "polygons": 1172
+  },
+  {
+    "id": "moonstone_chestplate",
+    "style": "moonstone_concept",
+    "piece": "chestplate",
+    "polygons": 4690
+  },
+  {
+    "id": "moonstone_leggings",
+    "style": "moonstone_concept",
+    "piece": "leggings",
+    "polygons": 2380
+  },
+  {
+    "id": "moonstone_boots",
+    "style": "moonstone_concept",
+    "piece": "boots",
+    "polygons": 3236
+  },
+  {
+    "id": "miners_helmet",
+    "style": "miners_concept",
+    "piece": "helmet",
+    "polygons": 2951
+  },
+  {
+    "id": "miners_chestplate",
+    "style": "miners_concept",
+    "piece": "chestplate",
+    "polygons": 7350
+  },
+  {
+    "id": "miners_leggings",
+    "style": "miners_concept",
+    "piece": "leggings",
+    "polygons": 4456
+  },
+  {
+    "id": "miners_boots",
+    "style": "miners_concept",
+    "piece": "boots",
+    "polygons": 4468
+  },
+  {
+    "id": "spidervision_helmet",
+    "style": "spidervision_concept",
+    "piece": "helmet",
+    "polygons": 2508
+  },
+  {
+    "id": "spidervision_chestplate",
+    "style": "spidervision_concept",
+    "piece": "chestplate",
+    "polygons": 8568
+  },
+  {
+    "id": "spidervision_leggings",
+    "style": "spidervision_concept",
+    "piece": "leggings",
+    "polygons": 5012
+  },
+  {
+    "id": "spidervision_boots",
+    "style": "spidervision_concept",
+    "piece": "boots",
+    "polygons": 5408
+  },
+  {
+    "id": "beldam_weave_helmet",
+    "style": "beldam_weave_concept",
+    "piece": "helmet",
+    "polygons": 3130
+  },
+  {
+    "id": "beldam_weave_chestplate",
+    "style": "beldam_weave_concept",
+    "piece": "chestplate",
+    "polygons": 8800
+  },
+  {
+    "id": "beldam_weave_leggings",
+    "style": "beldam_weave_concept",
+    "piece": "leggings",
+    "polygons": 3176
+  },
+  {
+    "id": "beldam_weave_boots",
+    "style": "beldam_weave_concept",
+    "piece": "boots",
+    "polygons": 3154
+  },
+  {
+    "id": "soulbound_helmet",
+    "style": "soulbound_concept",
+    "piece": "helmet",
+    "polygons": 2374
+  },
+  {
+    "id": "soulbound_chestplate",
+    "style": "soulbound_concept",
+    "piece": "chestplate",
+    "polygons": 8894
+  },
+  {
+    "id": "soulbound_leggings",
+    "style": "soulbound_concept",
+    "piece": "leggings",
+    "polygons": 4880
+  },
+  {
+    "id": "soulbound_boots",
+    "style": "soulbound_concept",
+    "piece": "boots",
+    "polygons": 4312
+  },
+  {
+    "id": "super_spidervision_helmet",
+    "style": "super_spidervision_concept",
+    "piece": "helmet",
+    "polygons": 4200
+  },
+  {
+    "id": "super_spidervision_chestplate",
+    "style": "super_spidervision_concept",
+    "piece": "chestplate",
+    "polygons": 11608
+  },
+  {
+    "id": "super_spidervision_leggings",
+    "style": "super_spidervision_concept",
+    "piece": "leggings",
+    "polygons": 7544
+  },
+  {
+    "id": "super_spidervision_boots",
+    "style": "super_spidervision_concept",
+    "piece": "boots",
+    "polygons": 6512
+  },
+  {
+    "id": "potent_beldam_weave_helmet",
+    "style": "potent_beldam_weave_concept",
+    "piece": "helmet",
+    "polygons": 4928
+  },
+  {
+    "id": "potent_beldam_weave_chestplate",
+    "style": "potent_beldam_weave_concept",
+    "piece": "chestplate",
+    "polygons": 15292
+  },
+  {
+    "id": "potent_beldam_weave_leggings",
+    "style": "potent_beldam_weave_concept",
+    "piece": "leggings",
+    "polygons": 4148
+  },
+  {
+    "id": "potent_beldam_weave_boots",
+    "style": "potent_beldam_weave_concept",
+    "piece": "boots",
+    "polygons": 4726
+  },
+  {
+    "id": "soulbound_potent_beldam_weave_helmet",
+    "style": "soulbound_potent_beldam_weave_concept",
+    "piece": "helmet",
+    "polygons": 6032
+  },
+  {
+    "id": "soulbound_potent_beldam_weave_chestplate",
+    "style": "soulbound_potent_beldam_weave_concept",
+    "piece": "chestplate",
+    "polygons": 19664
+  },
+  {
+    "id": "soulbound_potent_beldam_weave_leggings",
+    "style": "soulbound_potent_beldam_weave_concept",
+    "piece": "leggings",
+    "polygons": 7124
+  },
+  {
+    "id": "soulbound_potent_beldam_weave_boots",
+    "style": "soulbound_potent_beldam_weave_concept",
+    "piece": "boots",
+    "polygons": 6478
+  },
+  {
+    "id": "other_world_void_helmet",
+    "style": "other_world_void_concept",
+    "piece": "helmet",
+    "polygons": 2978
+  },
+  {
+    "id": "other_world_void_chestplate",
+    "style": "other_world_void_concept",
+    "piece": "chestplate",
+    "polygons": 13474
+  },
+  {
+    "id": "other_world_void_leggings",
+    "style": "other_world_void_concept",
+    "piece": "leggings",
+    "polygons": 5996
+  },
+  {
+    "id": "other_world_void_boots",
+    "style": "other_world_void_concept",
+    "piece": "boots",
+    "polygons": 4600
+  },
+  {
+    "id": "other_diamond_helmet",
+    "style": "other_diamond_concept",
+    "piece": "helmet",
+    "polygons": 2048
+  },
+  {
+    "id": "other_diamond_chestplate",
+    "style": "other_diamond_concept",
+    "piece": "chestplate",
+    "polygons": 6786
+  },
+  {
+    "id": "other_diamond_leggings",
+    "style": "other_diamond_concept",
+    "piece": "leggings",
+    "polygons": 3952
+  },
+  {
+    "id": "other_diamond_boots",
+    "style": "other_diamond_concept",
+    "piece": "boots",
+    "polygons": 4628
+  },
+  {
+    "id": "other_iron_helmet",
+    "style": "other_iron_concept",
+    "piece": "helmet",
+    "polygons": 2834
+  },
+  {
+    "id": "other_iron_chestplate",
+    "style": "other_iron_concept",
+    "piece": "chestplate",
+    "polygons": 8562
+  },
+  {
+    "id": "other_iron_leggings",
+    "style": "other_iron_concept",
+    "piece": "leggings",
+    "polygons": 3952
+  },
+  {
+    "id": "other_iron_boots",
+    "style": "other_iron_concept",
+    "piece": "boots",
+    "polygons": 4628
+  },
+  {
+    "id": "perfect_helmet",
+    "style": "perfect_concept",
+    "piece": "helmet",
+    "polygons": 2730
+  },
+  {
+    "id": "perfect_chestplate",
+    "style": "perfect_concept",
+    "piece": "chestplate",
+    "polygons": 8456
+  },
+  {
+    "id": "perfect_leggings",
+    "style": "perfect_concept",
+    "piece": "leggings",
+    "polygons": 4352
+  },
+  {
+    "id": "perfect_boots",
+    "style": "perfect_concept",
+    "piece": "boots",
+    "polygons": 4792
+  },
+  {
+    "id": "midnight_coat",
+    "style": "midnight_coat",
+    "piece": "chestplate",
+    "polygons": 12124
+  },
+  {
+    "id": "star_shirt",
+    "style": "star_shirt",
+    "piece": "chestplate",
+    "polygons": 8756
+  },
+  {
+    "id": "raincoat",
+    "style": "raincoat_utility",
+    "piece": "chestplate",
+    "polygons": 7916
+  },
+  {
+    "id": "comfy_pajamas",
+    "style": "sleep",
+    "piece": "chestplate",
+    "polygons": 16060
+  },
+  {
+    "id": "garden_overalls",
+    "style": "garden_overalls",
+    "piece": "chestplate",
+    "polygons": 14083
+  },
+  {
+    "id": "circus_jacket",
+    "style": "circus_jacket",
+    "piece": "chestplate",
+    "polygons": 16320
+  },
+  {
+    "id": "silent_slippers",
+    "style": "silent_slippers",
+    "piece": "boots",
+    "polygons": 2880
+  },
+  {
+    "id": "feather_boots",
+    "style": "feather_boots",
+    "piece": "boots",
+    "polygons": 3036
+  },
+  {
+    "id": "top_hat",
+    "style": "top_hat",
+    "piece": "helmet",
+    "polygons": 1108
+  },
+  {
+    "id": "midnight_goggles",
+    "style": "midnight_goggles",
+    "piece": "helmet",
+    "polygons": 1914
+  },
+  {
+    "id": "unbinding_button_eyes",
+    "style": "unbinding_button_eyes",
+    "piece": "helmet",
+    "polygons": 1392
+  }
+]

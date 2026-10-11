@@ -1,0 +1,41 @@
+{
+  "mode": "built-in image_gen",
+  "prompts": [
+    {
+      "name": "midnight_coat",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft mod inventory equipment icon. One isolated wearable item, no person, no mannequin, no lettering, no frame, no scenery, no ground shadow. Genuinely transparent background. Square canvas. Beautiful polished crisp pixel art, coherent 64x64 sprite aesthetic enlarged cleanly; deliberate pixel clusters, dark clean contour, rich fabric shading, bright readable highlights, iconic silhouette readable at 32 pixels. Item fills 85% of canvas with padding. Front three-quarter view. An elegant long midnight-blue coat, indigo lining, silver crescent clasp, tiny silver star embroidery, high collar and tailored lapels, silver buttons. Magical nocturnal clothing."
+    },
+    {
+      "name": "star_shirt",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft mod inventory equipment icon. One isolated wearable item, no person, no mannequin, no lettering, no frame, no scenery, no ground shadow. Genuinely transparent background. Square canvas. Beautiful polished crisp pixel art, coherent 64x64 sprite aesthetic enlarged cleanly; deliberate pixel clusters, dark clean contour, rich fabric shading, bright readable highlights, iconic silhouette readable at 32 pixels. Item fills 85% of canvas with padding. Front three-quarter view. A deep cobalt blue short-sleeved shirt with one large luminous pale-gold five-point star emblem on the chest, small embroidered stars, gold collar trim. Warm luminous accents, no glow outside silhouette."
+    },
+    {
+      "name": "raincoat",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft mod inventory equipment icon. One isolated wearable item, no person, no mannequin, no lettering, no frame, no scenery, no ground shadow. Genuinely transparent background. Square canvas. Beautiful polished crisp pixel art, coherent 64x64 sprite aesthetic enlarged cleanly; deliberate pixel clusters, dark clean contour, rich fabric shading, bright readable highlights, iconic silhouette readable at 32 pixels. Item fills 85% of canvas with padding. Front three-quarter view. A cheerful golden yellow hooded raincoat, warm amber folds, orange lining, silver toggles and two flap pockets, a glossy waterproof finish. Coraline-inspired charming rainwear."
+    },
+    {
+      "name": "comfy_pajamas",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft mod inventory equipment icon. One isolated wearable item, no person, no mannequin, no lettering, no frame, no scenery, no ground shadow. Genuinely transparent background. Square canvas. Beautiful polished crisp pixel art, coherent 64x64 sprite aesthetic enlarged cleanly; deliberate pixel clusters, dark clean contour, rich fabric shading, bright readable highlights, iconic silhouette readable at 32 pixels. Item fills 85% of canvas with padding. Front three-quarter view. A cozy matching lilac pajama outfit: long-sleeved button shirt and folded matching pants together as one inventory icon, pale cream piping and tiny moon print, soft fabric folds."
+    },
+    {
+      "name": "garden_overalls",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft mod inventory equipment icon. One isolated wearable item, no person, no mannequin, no lettering, no frame, no scenery, no ground shadow. Genuinely transparent background. Square canvas. Beautiful polished crisp pixel art, coherent 64x64 sprite aesthetic enlarged cleanly; deliberate pixel clusters, dark clean contour, rich fabric shading, bright readable highlights, iconic silhouette readable at 32 pixels. Item fills 85% of canvas with padding. Front three-quarter view. A pair of forest-green gardening bib overalls over a rolled-sleeve ivory shirt, brass strap buckles, stitched knee patches, large bib pocket with embroidered little leaf, sturdy charming rural clothing."
+    },
+    {
+      "name": "circus_jacket",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft mod inventory equipment icon. One isolated wearable item, no person, no mannequin, no lettering, no frame, no scenery, no ground shadow. Genuinely transparent background. Square canvas. Beautiful polished crisp pixel art, coherent 64x64 sprite aesthetic enlarged cleanly; deliberate pixel clusters, dark clean contour, rich fabric shading, bright readable highlights, iconic silhouette readable at 32 pixels. Item fills 85% of canvas with padding. Front three-quarter view. A luxurious scarlet circus ringmaster tailcoat, golden braid fastenings and epaulettes, ivory lapels, dark red lining, sharply tailored sleeves, theatrical elegant clothing."
+    },
+    {
+      "name": "silent_slippers",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft mod inventory equipment icon. One isolated wearable item, no person, no mannequin, no lettering, no frame, no scenery, no ground shadow. Genuinely transparent background. Square canvas. Beautiful polished crisp pixel art, coherent 64x64 sprite aesthetic enlarged cleanly; deliberate pixel clusters, dark clean contour, rich fabric shading, bright readable highlights, iconic silhouette readable at 32 pixels. Item fills 85% of canvas with padding. Front three-quarter view. A matching pair of plush dark plum slippers with charcoal soft soles, lavender stitched trim, tiny stitched crescent motifs, quiet cozy footwear. Two slippers together as one icon."
+    },
+    {
+      "name": "feather_boots",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft mod inventory equipment icon. One isolated wearable item, no person, no mannequin, no lettering, no frame, no scenery, no ground shadow. Genuinely transparent background. Square canvas. Beautiful polished crisp pixel art, coherent 64x64 sprite aesthetic enlarged cleanly; deliberate pixel clusters, dark clean contour, rich fabric shading, bright readable highlights, iconic silhouette readable at 32 pixels. Item fills 85% of canvas with padding. Front three-quarter view. A matching pair of cream leather ankle boots with pale sky-blue cuffs, gold fasteners and small elegant white feather wings on their outer sides, light airy magical footwear."
+    },
+    {
+      "name": "top_hat",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft mod inventory equipment icon. One isolated wearable item, no person, no mannequin, no lettering, no frame, no scenery, no ground shadow. Genuinely transparent background. Square canvas. Beautiful polished crisp pixel art, coherent 64x64 sprite aesthetic enlarged cleanly; deliberate pixel clusters, dark clean contour, rich fabric shading, bright readable highlights, iconic silhouette readable at 32 pixels. Item fills 85% of canvas with padding. Front three-quarter view. An elegant tall charcoal-black silk top hat, subtly blue satin highlights, broad crisp brim, burgundy ribbon with small golden buckle, refined theatrical formal hat."
+    }
+  ]
+}

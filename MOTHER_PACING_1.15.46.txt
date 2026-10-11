@@ -1,0 +1,28 @@
+Coraline 1.15.46 — Other Mother movement and dialogue pacing
+
+Movement
+- Let the normal head/look controller run while a scripted parent is walking.
+- Synchronize parent movement every two ticks instead of the default three.
+- Close-up conversations no longer force body yaw against the walking controller.
+- Deduplicate conversation approach updates and use separate stop/resume distances to avoid shuffling around the player.
+- Nearby NPC repositioning now requires a genuinely stalled approach; it no longer happens every two seconds while she is making progress.
+- Portal/present waiting positions use a reachable stopping tolerance and a normal 1.2 walking multiplier, avoiding repeated tiny approach corrections.
+
+Dialogue
+- Cancelling an interrupted recording also releases its old welcomeAfter cooldown.
+- Missing completion acknowledgement has a one-second grace rather than ten seconds.
+- Inter-line padding reduced from ten ticks to two.
+- Completed recordings can reconcile a lagging server tick clock using the recording's full real-time duration. Premature acknowledgements cannot skip that duration.
+- Existing client-side consecutive-line queue remains intact to avoid overwriting an audible recording.
+- No source audio edits, truncation or added media assets.
+
+Verification logs
+- All 61 Secrets/Exploration regression tests passed.
+- Release build, six optimizer tests and model validation passed.
+- Packaged verification: 363 sound events, four charts, no test classes/audio masters.
+- JAR: 73,939,461 bytes; 994 bytes larger than 1.15.45. Largest assets remain existing music.
+- mother-pacing-tests.log
+- mother-pacing-release.log
+
+Limitations
+- Live client movement/audio pacing has not been manually playtested. These changes do not guarantee smooth play on an otherwise overloaded server.

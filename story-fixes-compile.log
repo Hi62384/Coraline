@@ -1,0 +1,28 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.8/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :
+Java: 17.0.18, JVM: 17.0.18+8 (Eclipse Adoptium), Arch: amd64
+
+> Task :downloadMcpConfig
+> Task :extractSrg UP-TO-DATE
+> Task :createMcpToSrg UP-TO-DATE
+> Task :clothingSrgMappings
+
+> Task :compileJava
+Note: SpongePowered MIXIN Annotation Processor Version=0.8.5
+Note: Supported obfuscation types: ObfuscationServiceMCP supports [searge,notch]
+Note: Loading searge mappings from C:\Users\User1\Documents\Downloads\Coraline\build\generatedMappings\clothing.srg
+Note: Writing refmap to C:\Users\User1\Documents\Downloads\Coraline\build\generated\mixin\coraline.refmap.json
+Note: Writing refmap to C:\Users\User1\Documents\Downloads\Coraline\build\generated\mixin\coraline.refmap.json
+Note: Writing refmap to C:\Users\User1\Documents\Downloads\Coraline\build\generated\mixin\coraline.refmap.json
+Note: Writing refmap to C:\Users\User1\Documents\Downloads\Coraline\build\generated\mixin\coraline.refmap.json
+C:\Users\User1\Documents\Downloads\Coraline\src\main\java\com\coraline\client\clothing\SculptedArmorModel.java:29: warning: [removal] ResourceLocation(String,String) in ResourceLocation has been deprecated and marked for removal
+        var resource=new ResourceLocation("coraline","sculpted/"+id+".json");
+                     ^
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+1 warning
+
+BUILD SUCCESSFUL in 23s
+5 actionable tasks: 3 executed, 2 up-to-date

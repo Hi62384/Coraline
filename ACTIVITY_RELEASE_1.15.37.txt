@@ -1,0 +1,72 @@
+Coraline 1.15.37 — staggered dropper and quieter mineshaft
+
+Production JAR: build-activity/libs/coraline-1.15.37.jar
+Size: 66,863,195 bytes (66.86 MB / 63.77 MiB).
+SHA256: BC6D56A80887A8534637BF7FD8C33E6814F5F08220C11ADD7DBAEC2FFF4F59E6
+Replace the old Coraline JAR; don't install both versions.
+Start a fresh Fortress activity visit so its structure regenerates. An already
+running activity from the old version can still contain the old block layout.
+
+Dropper correction
+- Replaced the one-block random walk that preserved aligned openings with a
+  normal-air-control sweep across the shaft and a reversal toward the lava.
+- Seeded orientation, direction, bend timing and height variation change layouts.
+- Higher levels also change the secondary steering axis.
+- Beam openings account for player-body clearance and steering lag.
+- A staggered broken furnace bridge blocks every straight vertical approach to
+  the lava footprint. It is on the opposite side from the mid-fall steering route.
+- Five levels, increasing obstacle density, and shrinking 11/9/7/5/3-block lava
+  pools remain. No slow falling, forced horizontal propulsion or hidden gate tests.
+- Normal-gravity live-client QA cleared all five levels and four teleport handoffs.
+- New regression checks reject every straight-down winning column for 1,000 seeds
+  across all five levels. Reachability checks follow actual swept collisions all
+  the way to a safe lava landing, rather than just reaching intermediate waypoints.
+
+Mineshaft population
+- Enemy caps from uppermost to deepest floor: 2 / 3 / 4 / 6 (formerly 4 / 6 / 8 / 10).
+- Spawn attempt intervals: 18 / 14 / 10 / 7 seconds (formerly 6 / 4.75 / 3.5 / 2.25).
+- Ascending reduces an accumulated enemy crowd to the current floor's cap,
+  removing the farthest surplus actors. Nearby remaining enemies retain behavior.
+- Existing enemy variety, abilities, health, loot, maze size, lantern, map, reward
+  ownership and exit flow are unchanged.
+
+Scope and limitations
+- This release addresses the aligned dropper and excessive mineshaft spawns.
+- All 1.15.36 Festival and lantern performance changes are retained.
+- Dropper client screenshots: artwork/dropper37_level_1.png through level_5.png.
+- Difficulty was verified with a normal-input automated client; human playtesting
+  is still the final judge of how challenging the courses feel.
+- No new audio recordings, textures, or model assets were added.
+
+Verification
+- All 79 activity GameTests passed, including the new floor cap/ascending check.
+- The 5,000 steering simulations check actual obstacle collisions through landing.
+- Every lava tile's vertical landing line is blocked in 5,000 generated courses.
+- Live-client evidence: dropper37-client-final.log.
+- Activity regression evidence: dropper37-activity-tests-final.log.
+- All 44 gift/welcome/lifecycle GameTests passed in a separate fresh-world run:
+  release37-gift-tests.log. Total: 123 passing GameTests across both final suites.
+- Earlier iteration logs contain corrected failures; the two final-suite logs
+  above are the release regression results.
+- Production build and all six asset optimizer regressions passed.
+- No GameTests/VisualCheck/RenderCheck classes, test templates or development
+  transcription environments were found in the production JAR.
+- Largest compressed entries remain the existing carnival/village/garden music,
+  roughly 1.7–2.2 MB each. No features/assets were removed to achieve this size.
+- Build evidence: release37-build.log.
+- Package verification passed: 535 textures, 293 sound events, complete timing
+  metadata, JSON/ZIP integrity, and preserved duration/channels on 23 resampled
+  recordings. Evidence: release37-package.log.
+
+Changed files
+gradle.properties; build.gradle
+src/main/java/com/coraline/feast/FortressActivity.java
+src/main/java/com/coraline/feast/FortressDropper.java
+src/main/java/com/coraline/feast/MineThreats.java
+src/activitytest/java/com/coraline/feast/FortressDropperGameTests.java
+src/activitytest/java/com/coraline/feast/ActivityRevisionGameTests.java
+src/activitytest/java/com/coraline/feast/ExpeditionGameTests.java
+src/activitytest/java/com/coraline/feast/MineSpawnGameTests.java
+src/rendercheck/java/com/coraline/feast/FortressFallVisualCheck.java
+src/rendercheck/java/com/coraline/feast/DropperVisualCheck.java
+ACTIVITY_RELEASE_1.15.37.txt

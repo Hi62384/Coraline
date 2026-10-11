@@ -1,0 +1,116 @@
+CORALINE 1.15.30 — SHOPPING MALL, SNOWBALL BATTLE, TREASURE HUNT
+Minecraft 1.20.1 / Forge 47.4.x / Java 17
+
+SHOPPING MALL
+Two-floor mall with 16 themed stores, a skylit atrium, contained fountain,
+chandeliers, balconies, a rear staircase, kiosks, food-court seating,
+merchandise displays, attendants and lightweight wandering shoppers.
+Each visit starts with 1,000 activity-only Shopping Tokens. There is no timer.
+Each store offers a fixed core product plus rotating stock, chosen once per visit.
+The catalogue includes food, clothing, garden supplies, toys, furniture supplies,
+books, tools, weapons, jewellery, premium equipment, treasure and potions.
+Rare material products require prior ownership; story-critical items are excluded.
+Prices range from 10 to 950 tokens. Expensive purchases require confirmation.
+The browse/buy/cancel screen shows quantity, price, remaining stock and balance.
+Purchases enter a persistent shopping bag and are delivered once after exit.
+Full-inventory overflow drops at the destination. Unspent Shopping Tokens expire.
+An exit is available after Father's existing introduction, even with no purchases.
+
+SNOWBALL BATTLE
+Winter arena with four snow forts, ice pond, bridge, raised overlooks, trees,
+snowdrifts, flags, cabin-front stalls, seated spectators and a gold prize podium.
+Owner versus six individually named and coloured NPC opponents, free-for-all.
+Each contestant has five activity hit points. Normal player health is not used.
+Father's existing introduction finishes before a protected three-second countdown.
+The temporary pouch throws unlimited physical snowballs with a 12-tick cooldown.
+NPCs have distinct ranges, movement and firing styles, fight each other, and
+limit early concentration on the owner. Low-health retreat is distance-limited.
+Occluded opponents are pursued around cover instead of being ignored indefinitely.
+Eliminated NPCs leave combat. Last player standing claims one top-tier prize.
+Loss opens the exit without a winner's reward. Late rallies and a five-minute
+draw fail-safe prevent indefinite matches. Borrowed equipment, flight abilities
+and remaining pre-existing effect durations are restored on completion/abort.
+
+TREASURE HUNT
+Five-minute exploration challenge starting after the existing Father introduction.
+Six unique destinations per run: five collected clue seals, then a hidden vault.
+Twelve authored landmarks include a crescent fountain, ruby bridge, lantern oak,
+golden gazebo, clock tower, mushroom grove, greenhouse, ruined watchtower,
+wishing well, chess garden, golden orchard and emerald-roofed cottage.
+Connected paths, flower ribbons, hedges, arches, lit trees and underground vaults
+frame the landmarks. Fountains/streams have physical containment.
+Short authored clues use names, riddles, visual features, counting and relationships.
+The first clue is explicit; the final clue identifies a sealed cellar.
+No coordinates or destination waypoints. A temporary Treasure Note rereads the
+current clue in a non-pausing parchment UI; a bossbar shows time and clue number.
+Future clue objects cannot skip the chain. Decoy chests do not overwrite the clue.
+Three possible vault destinations stay reward-locked until all five seals are found.
+Claiming the treasure before timeout grants the existing top-tier reward once.
+Timeout grants no jackpot, restores the borrowed item and opens a safe exit.
+
+SHARED SYSTEMS AND ACCESS
+All three extend the existing ActivityWorld / OtherMotherLoop lifecycle through
+ExpeditionActivities. They reuse ownership, portals, finalized Father recordings,
+protected structures, temporary item restoration, NPCs, rewards and safe cleanup.
+They are in the normal activity rotation and have Creative debug items:
+  Shopping Mall Activity Debug   (coraline:mall_activity_debug)
+  Snowball Battle Activity Debug (coraline:snowball_activity_debug)
+  Treasure Hunt Activity Debug   (coraline:treasure_activity_debug)
+Debug entry retains the existing first-visit completion / bound-door requirements.
+Helpers cannot spend the owner's budget, advance clues, fire owner snowballs or
+claim the owner's prizes. Combat spectators are kept outside the playing area.
+Existing project music is reused: ambient_feast, ambient_race and ambient_garden.
+Purchase chimes, clue sounds, countdown cues, throws, impacts and result sounds
+provide feedback without giant chat tutorials. No new audio masters were added.
+
+VERIFICATION
+53 server GameTests passed, including the existing regression suite and new tests
+for stock variation, progression gates, budget, ownership, confirmations, packet
+replay, shopping-bag persistence, overflow, accessibility, countdown/cooldown,
+five-hit elimination, winner/loser rewards, 1,000 treasure routes, clue order,
+helper rejection, duplicate claims, timeout, temporary items and exit readiness.
+Final server log: run-tests-1791348993869/logs/latest.log
+Automated real-client checks exercised all three activities. Shop UI and checkout,
+clue cards, physical clue handlers, cellar descent, vault claim and exits passed.
+A further snowball run used client use/movement inputs and real projectile hits,
+eliminated all six NPCs in about 95 seconds with three snow hit points remaining,
+preserved normal hearts, and successfully claimed the prize and exited.
+Client log: run-new-activities/logs/latest.log
+Visual snapshots: artwork/mall_*.png, artwork/hunt_*.png, artwork/snow_*.png
+
+NEW GAMEPLAY / UI FILES
+src/main/java/com/coraline/feast/ShoppingMallActivity.java
+src/main/java/com/coraline/feast/MallScenery.java
+src/main/java/com/coraline/feast/MallStock.java
+src/main/java/com/coraline/client/MallScreen.java
+src/main/java/com/coraline/feast/SnowballBattleActivity.java
+src/main/java/com/coraline/feast/SnowBattleScenery.java
+src/main/java/com/coraline/feast/TreasureHuntActivity.java
+src/main/java/com/coraline/feast/TreasureRoute.java
+src/main/java/com/coraline/feast/TreasureScenery.java
+src/main/java/com/coraline/client/TreasureNoteScreen.java
+Five item-model JSONs: mall_activity_debug, snowball_activity_debug,
+snowball_pouch, treasure_activity_debug, treasure_note.
+
+INTEGRATION FILES MODIFIED
+ActivityWorld, OtherMotherActivities, ExpeditionActivities, ExpeditionNetwork,
+ActivitySoundscape, LoopProps, NewActivitySafety, ExpeditionItem, ModItems,
+RealmProtection, OtherWorld, FishingContestNpcRenderer, en_us.json,
+build.gradle and gradle.properties.
+Opt-in tests: MallBattleGameTests, TreasureHuntGameTests, MallBattleHuntVisualCheck.
+Tests and client QA code are excluded from the production JAR.
+
+LIMITATIONS
+Blender MCP could not connect to the running Blender service. No Blender assets
+were created; these environments use authored Minecraft geometry and existing
+custom prop/NPC systems. No new raster textures or music tracks were required.
+Live two-person multiplayer and every GUI resolution have not been exhaustively
+tested; ownership rejection was covered by automated server tests.
+Snowball match length varies with skill and AI; the observed winning automated
+run was faster than the suggested two-to-four-minute typical target.
+Production build succeeded: build-activity/libs/coraline-1.15.30.jar.
+Final size: 63,775,231 bytes (63.78 MB), 63.6% smaller than the 1.15.24 baseline.
+All 6 optimizer regression tests passed. Final verification validated 535 textures,
+242 sound events, JSON and ZIP integrity, and preserved duration/channels for all
+23 resampled tracks. All three activities and their UI classes are packaged;
+test and visual-QA classes are absent from the production JAR.

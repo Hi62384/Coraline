@@ -1,0 +1,4 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {"layer0": "coraline:item/mustard_ketchup_salsa_wrap"}
+}

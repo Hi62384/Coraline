@@ -1,0 +1,208 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "facing": "north",
+        "part": "0"
+      },
+      "apply": {
+        "model": "coraline:block/parents_bed_0",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "part": "1"
+      },
+      "apply": {
+        "model": "coraline:block/parents_bed_1",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "part": "2"
+      },
+      "apply": {
+        "model": "coraline:block/parents_bed_2",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "part": "3"
+      },
+      "apply": {
+        "model": "coraline:block/parents_bed_3",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "part": "2",
+        "available": "true"
+      },
+      "apply": {
+        "model": "coraline:block/parents_bed_available",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "part": "0"
+      },
+      "apply": {
+        "model": "coraline:block/parents_bed_0",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "part": "1"
+      },
+      "apply": {
+        "model": "coraline:block/parents_bed_1",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "part": "2"
+      },
+      "apply": {
+        "model": "coraline:block/parents_bed_2",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "part": "3"
+      },
+      "apply": {
+        "model": "coraline:block/parents_bed_3",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "part": "2",
+        "available": "true"
+      },
+      "apply": {
+        "model": "coraline:block/parents_bed_available",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "part": "0"
+      },
+      "apply": {
+        "model": "coraline:block/parents_bed_0",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "part": "1"
+      },
+      "apply": {
+        "model": "coraline:block/parents_bed_1",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "part": "2"
+      },
+      "apply": {
+        "model": "coraline:block/parents_bed_2",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "part": "3"
+      },
+      "apply": {
+        "model": "coraline:block/parents_bed_3",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "part": "2",
+        "available": "true"
+      },
+      "apply": {
+        "model": "coraline:block/parents_bed_available",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "part": "0"
+      },
+      "apply": {
+        "model": "coraline:block/parents_bed_0",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "part": "1"
+      },
+      "apply": {
+        "model": "coraline:block/parents_bed_1",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "part": "2"
+      },
+      "apply": {
+        "model": "coraline:block/parents_bed_2",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "part": "3"
+      },
+      "apply": {
+        "model": "coraline:block/parents_bed_3",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "part": "2",
+        "available": "true"
+      },
+      "apply": {
+        "model": "coraline:block/parents_bed_available",
+        "y": 270
+      }
+    }
+  ]
+}

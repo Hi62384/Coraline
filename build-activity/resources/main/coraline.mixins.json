@@ -1,0 +1,10 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.coraline.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "coraline.refmap.json",
+  "mixins": ["ChunkFutureAccess", "ClothingArmorValueMixin", "SpiderWebMovementMixin", "ArtifactCrossbowChargeMixin", "IceBoatCountdownMixin", "ActivityGuardianAccess", "ActivityGuardianPeacefulMixin"],
+  "client": ["ClothingBlockLightMixin", "ClothingEntityLightMixin", "ButtonEyesGlowMixin", "ActivityMobEyesMixin", "DreamMouseMixin", "RemoteBodyInputMixin"],
+  "injectors": {"defaultRequire": 1}
+}

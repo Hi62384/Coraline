@@ -1,0 +1,73 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.8/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :
+Java: 17.0.18, JVM: 17.0.18+8 (Eclipse Adoptium), Arch: amd64
+
+> Task :clean
+> Task :downloadMcpConfig
+> Task :extractSrg
+> Task :createMcpToSrg
+> Task :clothingSrgMappings
+
+> Task :compileJava
+Note: SpongePowered MIXIN Annotation Processor Version=0.8.5
+Note: Supported obfuscation types: ObfuscationServiceMCP supports [searge,notch]
+Note: Loading searge mappings from C:\Users\User1\Documents\Downloads\Coraline\build\generatedMappings\clothing.srg
+Note: Writing refmap to C:\Users\User1\Documents\Downloads\Coraline\build\generated\mixin\coraline.refmap.json
+Note: Writing refmap to C:\Users\User1\Documents\Downloads\Coraline\build\generated\mixin\coraline.refmap.json
+Note: Writing refmap to C:\Users\User1\Documents\Downloads\Coraline\build\generated\mixin\coraline.refmap.json
+Note: Writing refmap to C:\Users\User1\Documents\Downloads\Coraline\build\generated\mixin\coraline.refmap.json
+C:\Users\User1\Documents\Downloads\Coraline\src\main\java\com\coraline\client\clothing\SculptedArmorModel.java:29: warning: [removal] ResourceLocation(String,String) in ResourceLocation has been deprecated and marked for removal
+        var resource=new ResourceLocation("coraline","sculpted/"+id+".json");
+                     ^
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+1 warning
+
+> Task :importParentVoices
+Parent voice assets: angry_parent=1, mom_neglect=11, mom_task=4, mom_death=1, dad_neglect=4, dad_neglect_rain=5, dad_task=4, dad_death=1, mom_chat=11, dad_chat=4
+
+> Task :importGameAudio
+Scene audio lengths (ticks): {'mice_intro': 465, 'mice_chase': 173, 'door_portal_open': 155, 'tunnel_enter': 375}
+
+> Task :importVisitAudio
+First-visit audio ticks: {'other_mother_intro': 686, 'other_father_enter_scene': 112, 'other_father_intro': 286, 'other_father_song': 543, 'other_father_dinners_ready': 282, 'other_father_golden_chicken_breast': 262, 'other_parents_waiting': 114, 'other_mother_visit_again': 164, 'mysterious_supper': 1714, 'other_mother_supper_0': 38, 'other_mother_supper_1': 110, 'other_mother_supper_2': 86, 'see_you_soon': 68}
+
+> Task :importWelcomeAudio
+Imported and decoded 15 Other Mother clips.
+
+> Task :importLootAudio
+Imported and decoded 22 Other Mother clips.
+
+> Task :importTutorialAudio
+Imported and decoded 4 Other Mother clips.
+
+> Task :importActivityAudio
+Imported and decoded 59 Other Mother clips.
+
+> Task :importArrivalAudio
+Imported and decoded 30 Other Mother clips.
+
+> Task :importActivityCompleteAudio
+Imported and decoded 15 Other Mother clips.
+
+> Task :buildStorySubtitles
+Built subtitles for 159 story recordings.
+
+> Task :processResources
+> Task :classes
+> Task :jar
+> Task :reobfJar
+> Task :jarJar SKIPPED
+> Task :reobfJarJar SKIPPED
+> Task :assemble
+> Task :compileTestJava NO-SOURCE
+> Task :processTestResources NO-SOURCE
+> Task :testClasses UP-TO-DATE
+> Task :test NO-SOURCE
+> Task :check UP-TO-DATE
+> Task :build
+
+BUILD SUCCESSFUL in 1m 7s
+19 actionable tasks: 19 executed

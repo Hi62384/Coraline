@@ -1,0 +1,28 @@
+Coraline 1.15.47
+
+Changes
+- Secret dialogue can continue when the registered Mother is unloaded; bell-return dialogue no longer waits for proximity or teleports her to advance a line.
+- Forbidden-area sightings interrupt current activity speech and start direct pursuit. Existing contact catch and four-second lost-sight memory remain. Nearby forbidden-item encounters outside forbidden areas retain their existing behavior.
+- Ordinary-area caught dialogue completes without a second serious-scolding recording. Serious secret/item encounters retain serious-scolding recordings.
+- activity_wait is limited to the first activity proposal in a fresh visit, not subsequent activity/reconciliation cycles.
+- Portal placement moved ten blocks farther sideways: 55-63 blocks from the house origin, roughly thirty beyond the outer house footprint. Existing invalid portal positions are reselected by the existing lifecycle.
+- Normal walking keeps useful paths instead of constantly rebuilding them, restores AI/gravity, checks movement every five ticks, and uses a 1.35 walking multiplier.
+- New secret structures capped at 40 (10 per tier), with 64-block minimum center spacing instead of 28. Tier-distance progression preserved. Existing built structures are not deleted.
+
+Verification
+- All 65 Secrets/Exploration regression tests passed: mother-flow-final-tests.log.
+- No live Minecraft client visual/audio/play-feel verification was performed.
+- Release build and packaged asset checks are recorded in mother-flow-release.log and the handoff response.
+
+Files changed
+src/main/java/com/coraline/secrets/Reconciliation.java
+src/main/java/com/coraline/secrets/MotherInterrupts.java
+src/main/java/com/coraline/secrets/MotherSearch.java
+src/main/java/com/coraline/secrets/SecretWorld.java
+src/main/java/com/coraline/feast/OtherMotherDialogue.java
+src/main/java/com/coraline/feast/OtherMotherLoop.java
+src/main/java/com/coraline/feast/LoopProps.java
+src/activitytest/java/com/coraline/secrets/MotherPacingGameTests.java
+src/activitytest/java/com/coraline/secrets/ReconciliationGameTests.java
+src/activitytest/java/com/coraline/secrets/ExplorationRevisionGameTests.java
+gradle.properties

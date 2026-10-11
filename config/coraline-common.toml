@@ -1,0 +1,94 @@
+# Copy into your Minecraft instance's config folder, or edit the file Forge generates there.
+# 20 ticks = 1 second at normal server speed. Probabilities range from 0.0 to 1.0.
+[parents]
+naturalSpawning = true
+spawnCheckTicks = 1200
+spawnChancePerPlayer = 0.035
+maximumNearbyPairs = 2
+minimumSpawnDistance = 24
+maximumSpawnDistance = 48
+health = 24.0
+healIntervalTicks = 200
+healAmount = 1.0
+followSpeed = 1.15
+homeRadius = 10
+followTeleportDistance = 24.0
+busyMinimumMinutes = 5
+busyMaximumMinutes = 8
+availableMinimumMinutes = 3
+availableMaximumMinutes = 4
+bedInteractionCooldownTicks = 60
+taskIntervalTicks = 2400
+taskIntervalVariation = 0.5
+taskWalkSpeed = 1.15
+foodPerDelivery = 3
+groceryWrapChance = 0.25
+resourcesPerDelivery = 8
+goodArmorChance = 0.03
+dinnerSlimeChance = 0.8
+gardenRadius = 6
+maximumGardenPlots = 48
+allowGardenBlockChanges = true
+voiceIntervalTicks = 2400
+voiceIntervalVariationTicks = 600
+dialogueIntervalTicks = 1200
+dialogueVariationTicks = 200
+deathAfterVoiceTicks = 40
+voiceVolume = 1.0
+interactionVoiceCooldownTicks = 60
+
+[food]
+slimeNutrition = 2
+
+[wybie]
+visualScale = 0.72
+poisonTicks = 240
+impactDamage = 4.0
+approachSpeed = 1.1
+departureSpeed = 1.15
+repathTicks = 10
+approachTimeoutTicks = 400
+
+[rod]
+leafDropChance = 0.005
+cooldownTicks = 1400
+
+[doll]
+returnMinimumTicks = 600
+returnMaximumTicks = 1800
+moveCheckTicks = 1200
+moveRetryTicks = 100
+moveChance = 0.25
+moveRadius = 4
+bedRadius = 12
+bedVerticalRange = 4
+containerOrMissingRecallTicks = 1200
+invalidPlacementRecallTicks = 100
+recallSkyDelayTicks = 40
+doorDropCheckTicks = 1200
+doorDropChance = 0.08
+creativeMissingConfirmationTicks = 100
+
+[otherWorld]
+nightChance = 0.30
+islandRadius = 224
+snapshotRadius = 160
+surfaceDepth = 16
+undergroundHomeRadius = 64
+undergroundHomeDepth = 32
+bedActivationRange = 12
+mouseCount = 5
+mouseSpawnRadius = 8
+mouseGroundSearchHeight = 8
+readyParticleCount = 1
+eligibleGrayParticleCount = 6
+activeParticleCount = 12
+copyChunksPerTick = 1
+gardenDecorationChance = 0.025
+missingDoorConfirmationTicks = 1200
+mouseChaseSpeed = 0.7
+mouseSeenConfirmationTicks = 8
+mouseSeenRange = 12
+mouseIntroDelayTicks = 100
+sceneVolume = 1.0
+tunnelHumVolume = 0.7

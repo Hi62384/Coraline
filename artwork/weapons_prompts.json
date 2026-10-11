@@ -1,0 +1,69 @@
+{
+  "mode": "built-in image_gen",
+  "jobs": [
+    {
+      "name": "needle_rapier",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft equipment inventory icon. a slender polished silver sewing-needle rapier with an elegant gold loop guard and burgundy grip. Beautiful polished detailed pixel art, crisp square pixels and rich material shading, clear readable silhouette. Three-quarter front view centered filling 80% of square canvas. Only the named item, no other equipment, no person, no body, no words, no border, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "moonblade",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft equipment inventory icon. an elegant silver sword with a crescent-shaped guard, pale blue moonstone gem, navy grip and moonlit blade. Beautiful polished detailed pixel art, crisp square pixels and rich material shading, clear readable silhouette. Three-quarter front view centered filling 80% of square canvas. Only the named item, no other equipment, no person, no body, no words, no border, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "vine_sword",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft equipment inventory icon. a silver sword wrapped in lush green vines with tiny pink blossoms and copper fittings. Beautiful polished detailed pixel art, crisp square pixels and rich material shading, clear readable silhouette. Three-quarter front view centered filling 80% of square canvas. Only the named item, no other equipment, no person, no body, no words, no border, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "button_mace",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft equipment inventory icon. a heavy dark bronze mace with a large rounded four-hole button head and dark burgundy handle. Beautiful polished detailed pixel art, crisp square pixels and rich material shading, clear readable silhouette. Three-quarter front view centered filling 80% of square canvas. Only the named item, no other equipment, no person, no body, no words, no border, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "midnight_wand",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft equipment inventory icon. a slender indigo wand with silver filigree and a glowing pale-blue crescent crystal tip. Beautiful polished detailed pixel art, crisp square pixels and rich material shading, clear readable silhouette. Three-quarter front view centered filling 80% of square canvas. Only the named item, no other equipment, no person, no body, no words, no border, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "spidervision_sword",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft equipment inventory icon. an obsidian violet sword with silver spiderweb etching, ruby spider-eye gems and black grip. Beautiful polished detailed pixel art, crisp square pixels and rich material shading, clear readable silhouette. Three-quarter front view centered filling 80% of square canvas. Only the named item, no other equipment, no person, no body, no words, no border, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "thread_whip",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft equipment inventory icon. a coiled silver-white braided magical thread whip, burgundy leather handle and gold spool-like grip, clearly a flexible whip. Beautiful polished detailed pixel art, crisp square pixels and rich material shading, clear readable silhouette. Three-quarter front view centered filling 80% of square canvas. Only the named item, no other equipment, no person, no body, no words, no border, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "perfect_sword",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft equipment inventory icon. one sword made of radiant ivory-white enchanted metal with elaborate gold trim, small turquoise gems and rich crimson accents; unnaturally flawless and regal, diagonal readable Minecraft tool silhouette with dark wood grip. Beautiful polished detailed pixel art, crisp square pixels and rich material shading, clear readable silhouette. Three-quarter front view centered filling 80% of square canvas. Only the named item, no other equipment, no person, no body, no words, no border, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "perfect_pickaxe",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft equipment inventory icon. one pickaxe made of radiant ivory-white enchanted metal with elaborate gold trim, small turquoise gems and rich crimson accents; unnaturally flawless and regal, diagonal readable Minecraft tool silhouette with dark wood grip. Beautiful polished detailed pixel art, crisp square pixels and rich material shading, clear readable silhouette. Three-quarter front view centered filling 80% of square canvas. Only the named item, no other equipment, no person, no body, no words, no border, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "perfect_axe",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft equipment inventory icon. one axe made of radiant ivory-white enchanted metal with elaborate gold trim, small turquoise gems and rich crimson accents; unnaturally flawless and regal, diagonal readable Minecraft tool silhouette with dark wood grip. Beautiful polished detailed pixel art, crisp square pixels and rich material shading, clear readable silhouette. Three-quarter front view centered filling 80% of square canvas. Only the named item, no other equipment, no person, no body, no words, no border, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "perfect_shovel",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft equipment inventory icon. one shovel made of radiant ivory-white enchanted metal with elaborate gold trim, small turquoise gems and rich crimson accents; unnaturally flawless and regal, diagonal readable Minecraft tool silhouette with dark wood grip. Beautiful polished detailed pixel art, crisp square pixels and rich material shading, clear readable silhouette. Three-quarter front view centered filling 80% of square canvas. Only the named item, no other equipment, no person, no body, no words, no border, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "perfect_hoe",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft equipment inventory icon. one hoe made of radiant ivory-white enchanted metal with elaborate gold trim, small turquoise gems and rich crimson accents; unnaturally flawless and regal, diagonal readable Minecraft tool silhouette with dark wood grip. Beautiful polished detailed pixel art, crisp square pixels and rich material shading, clear readable silhouette. Three-quarter front view centered filling 80% of square canvas. Only the named item, no other equipment, no person, no body, no words, no border, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "perfect_helmet",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft equipment inventory icon. one helmet made of radiant ivory-white enchanted metal with elaborate gold trim, small turquoise gems and rich crimson accents; unnaturally flawless and regal, unworn, no body. Beautiful polished detailed pixel art, crisp square pixels and rich material shading, clear readable silhouette. Three-quarter front view centered filling 80% of square canvas. Only the named item, no other equipment, no person, no body, no words, no border, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "perfect_chestplate",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft equipment inventory icon. one chestplate made of radiant ivory-white enchanted metal with elaborate gold trim, small turquoise gems and rich crimson accents; unnaturally flawless and regal, unworn, no body. Beautiful polished detailed pixel art, crisp square pixels and rich material shading, clear readable silhouette. Three-quarter front view centered filling 80% of square canvas. Only the named item, no other equipment, no person, no body, no words, no border, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "perfect_leggings",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft equipment inventory icon. one pair of armored trousers made of radiant ivory-white enchanted metal with elaborate gold trim, small turquoise gems and rich crimson accents; unnaturally flawless and regal, unworn, no body. Beautiful polished detailed pixel art, crisp square pixels and rich material shading, clear readable silhouette. Three-quarter front view centered filling 80% of square canvas. Only the named item, no other equipment, no person, no body, no words, no border, no cast shadow. Genuine transparent alpha background."
+    },
+    {
+      "name": "perfect_boots",
+      "prompt": "Use case: stylized-concept. Asset type: Minecraft equipment inventory icon. one pair of boots made of radiant ivory-white enchanted metal with elaborate gold trim, small turquoise gems and rich crimson accents; unnaturally flawless and regal, unworn, no body. Beautiful polished detailed pixel art, crisp square pixels and rich material shading, clear readable silhouette. Three-quarter front view centered filling 80% of square canvas. Only the named item, no other equipment, no person, no body, no words, no border, no cast shadow. Genuine transparent alpha background."
+    }
+  ]
+}

@@ -1,0 +1,5357 @@
+{
+  "wybie_line_a": {
+    "speaker": "Wybie",
+    "cues": [
+      {
+        "start": 0.0,
+        "end": 5.0,
+        "text": "Oh, let me guess. You're from Texas or Utah. Someplace dried out and barren, right?"
+      },
+      {
+        "start": 5.0,
+        "end": 9.2,
+        "text": "I heard about water witching before, but it doesn't make sense. I mean, it's just an"
+      },
+      {
+        "start": 9.2,
+        "end": 10.0,
+        "text": "ordinary branch."
+      },
+      {
+        "start": 10.0,
+        "end": 12.0,
+        "text": "It's a dowsing rod."
+      },
+      {
+        "start": 12.0,
+        "end": 18.0,
+        "text": "Ow! And I don't like being stalked, not by psycho nerds or their cats!"
+      },
+      {
+        "start": 18.0,
+        "end": 22.0,
+        "text": "He's not really my cat. He's kind of feral. You know, wild."
+      },
+      {
+        "start": 22.0,
+        "end": 26.755,
+        "text": "Of course I do feed him every night, and sometimes he'll come in my window and bring"
+      },
+      {
+        "start": 26.755,
+        "end": 28.0,
+        "text": "me little dead things."
+      }
+    ]
+  },
+  "wybie_line_b": {
+    "speaker": "Wybie",
+    "cues": [
+      {
+        "start": 0.0,
+        "end": 1.2,
+        "text": "Hey, Jonesy."
+      },
+      {
+        "start": 1.2,
+        "end": 3.04,
+        "text": "Look what I found in grandma's trunk."
+      },
+      {
+        "start": 3.04,
+        "end": 4.7,
+        "text": "You look familiar."
+      },
+      {
+        "start": 4.7,
+        "end": 5.7,
+        "text": "White."
+      },
+      {
+        "start": 5.7,
+        "end": 6.72,
+        "text": "[Laughs]"
+      },
+      {
+        "start": 6.72,
+        "end": 14.0,
+        "text": "Well, great to meet a Michigan water witch."
+      },
+      {
+        "start": 14.0,
+        "end": 16.44,
+        "text": "But I'd wear gloves next time."
+      },
+      {
+        "start": 16.44,
+        "end": 19.34,
+        "text": "Cuz that dowsing rod of yours, uhm..."
+      },
+      {
+        "start": 19.34,
+        "end": 20.54,
+        "text": "It's poison oak."
+      }
+    ]
+  },
+  "wybie_line_c": {
+    "speaker": "Wybie",
+    "cues": [
+      {
+        "start": 0.0,
+        "end": 2.0,
+        "text": "You"
+      }
+    ]
+  },
+  "other_mother_intro": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0.0,
+        "end": 2.5,
+        "text": "What are you doing here in the middle of the night?"
+      },
+      {
+        "start": 2.5,
+        "end": 5.0,
+        "text": "You're just in time for supper, dear."
+      },
+      {
+        "start": 8.0,
+        "end": 10.0,
+        "text": "You're not my mother."
+      },
+      {
+        "start": 10.0,
+        "end": 12.0,
+        "text": "My mother doesn't have..."
+      },
+      {
+        "start": 12.0,
+        "end": 15.0,
+        "text": "But...but...but...but...but...buttons?"
+      },
+      {
+        "start": 15.0,
+        "end": 17.0,
+        "text": "Do you like them?"
+      },
+      {
+        "start": 17.0,
+        "end": 19.0,
+        "text": "I'm your other mother, Silly."
+      },
+      {
+        "start": 19.0,
+        "end": 22.0,
+        "text": "Now go tell your other father that supper's ready."
+      },
+      {
+        "start": 24.0,
+        "end": 26.0,
+        "text": "What go on?"
+      },
+      {
+        "start": 26.0,
+        "end": 28.0,
+        "text": "He's in his study."
+      }
+    ]
+  },
+  "other_father_enter_scene": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0.0,
+        "end": 5.0,
+        "text": "Hello?"
+      }
+    ]
+  },
+  "other_father_intro": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0.0,
+        "end": 2.0,
+        "text": "Hello Coraline."
+      },
+      {
+        "start": 3.0,
+        "end": 5.0,
+        "text": "Wanna hear my new song?"
+      },
+      {
+        "start": 6.0,
+        "end": 8.0,
+        "text": "My father can't play piano."
+      },
+      {
+        "start": 8.0,
+        "end": 9.0,
+        "text": "No need to."
+      },
+      {
+        "start": 10.0,
+        "end": 12.0,
+        "text": "This piano plays me."
+      }
+    ]
+  },
+  "other_father_dinners_ready": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0.0,
+        "end": 6.0,
+        "text": "I am sorry but she said to tell you the foods ready."
+      },
+      {
+        "start": 6.0,
+        "end": 9.0,
+        "text": "Mmm, who's starving? Raise your hand."
+      },
+      {
+        "start": 9.0,
+        "end": 11.0,
+        "text": "Whoa!"
+      }
+    ]
+  },
+  "other_father_golden_chicken_breast": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0.0,
+        "end": 10.0,
+        "text": "We give our thanks and ask to bless our mother's golden chicken breast."
+      }
+    ]
+  },
+  "other_parents_waiting": {
+    "speaker": "Other Parents",
+    "cues": [
+      {
+        "start": 0.0,
+        "end": 2.56,
+        "text": "We've been waiting for you, Coraline."
+      },
+      {
+        "start": 2.56,
+        "end": 5.56,
+        "text": "Yep, wasn't the same here without you, kiddo."
+      }
+    ]
+  },
+  "other_mother_visit_again": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0.0,
+        "end": 5.36,
+        "text": "It's time for bedtime, dear, but promise you'll visit us again every night."
+      },
+      {
+        "start": 5.36,
+        "end": 8.32,
+        "text": "And I'll have special treats ready for you."
+      }
+    ]
+  },
+  "other_mother_supper_0": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0.0,
+        "end": 2.0,
+        "text": "Hungry aren't you?"
+      }
+    ]
+  },
+  "other_mother_supper_1": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0.0,
+        "end": 2.0,
+        "text": "Well here comes the gravy train"
+      }
+    ]
+  },
+  "other_mother_supper_2": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0.0,
+        "end": 4.0,
+        "text": "Another roll, sweet peas, corn on the cob."
+      }
+    ]
+  },
+  "see_you_soon": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0.0,
+        "end": 2.0,
+        "text": "See you soon!"
+      }
+    ]
+  },
+  "other_mother_activities_other_village_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.234,
+        "text": "I’ve made a little village for us to visit today. The villagers have been preparing"
+      },
+      {
+        "start": 4.234,
+        "end": 7.6,
+        "text": "all sorts of things for you, and they’re very excited to meet you."
+      }
+    ]
+  },
+  "other_mother_activities_other_village_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.068,
+        "text": "How would you like to spend some time in a proper little village? There are shops,"
+      },
+      {
+        "start": 5.068,
+        "end": 8.9,
+        "text": "games, food, and plenty of villagers waiting to entertain you."
+      }
+    ]
+  },
+  "other_mother_activities_other_woodland_mansion_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.971,
+        "text": "I found the most marvelous mansion tucked away in the woods. I thought we could have"
+      },
+      {
+        "start": 4.971,
+        "end": 8.7,
+        "text": "a look around and see what its residents have prepared for you."
+      }
+    ]
+  },
+  "other_mother_activities_other_woodland_mansion_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.468,
+        "text": "There’s a beautiful old mansion I’ve been saving for just the right occasion. It has"
+      },
+      {
+        "start": 4.468,
+        "end": 8.35,
+        "text": "so many rooms to explore, and I think you’ll enjoy what’s waiting inside."
+      }
+    ]
+  },
+  "other_mother_activities_other_desert_temple_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.192,
+        "text": "I thought we could go somewhere a little warmer today. There’s an ancient desert"
+      },
+      {
+        "start": 5.192,
+        "end": 9.8,
+        "text": "temple waiting for us, filled with puzzles and lovely little surprises."
+      }
+    ]
+  },
+  "other_mother_activities_other_desert_temple_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.719,
+        "text": "I’ve prepared a desert adventure for you. There’s a temple buried out there with"
+      },
+      {
+        "start": 4.719,
+        "end": 8.2,
+        "text": "treasure hidden inside, if you’re clever enough to find it."
+      }
+    ]
+  },
+  "other_mother_activities_magic_show_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 6.064,
+        "text": "Your Other Father and I have been practicing something special for you. Come see our"
+      },
+      {
+        "start": 6.064,
+        "end": 10.9,
+        "text": "magic show—I promise there are a few tricks you won’t be expecting."
+      }
+    ]
+  },
+  "other_mother_activities_magic_show_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.008,
+        "text": "I thought we could have a little magic today. We’ve prepared an entire show, and I"
+      },
+      {
+        "start": 5.008,
+        "end": 8.0,
+        "text": "may even let you take part in some of the tricks."
+      }
+    ]
+  },
+  "other_mother_activities_dream_parkour_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.507,
+        "text": "I’ve made you a wonderful little course in the sky. Don’t worry about falling—it’s"
+      },
+      {
+        "start": 5.507,
+        "end": 9.2,
+        "text": "much more fun when you stop being afraid of the ground."
+      }
+    ]
+  },
+  "other_mother_activities_dream_parkour_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.676,
+        "text": "How about something exciting? I’ve put together a dreamlike obstacle course with"
+      },
+      {
+        "start": 5.676,
+        "end": 10.5,
+        "text": "floating platforms, strange jumps, and a very nice prize at the end."
+      }
+    ]
+  },
+  "other_mother_activities_grand_feast_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.15,
+        "text": "I hope you saved your appetite, darling. We’ve prepared a feast with more food than"
+      },
+      {
+        "start": 4.15,
+        "end": 7.05,
+        "text": "you could possibly finish, and every bit of it is for you."
+      }
+    ]
+  },
+  "other_mother_activities_grand_feast_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.938,
+        "text": "Tonight we’re doing something special. Your Other Father and I have made an enormous"
+      },
+      {
+        "start": 5.938,
+        "end": 10.25,
+        "text": "dinner, so come hungry and don’t be shy about having seconds."
+      }
+    ]
+  },
+  "other_mother_activities_mice_circus_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.053,
+        "text": "The mice have been rehearsing all day just for you. They’ve put together quite the"
+      },
+      {
+        "start": 5.053,
+        "end": 7.95,
+        "text": "little circus, and I think you’ll be impressed."
+      }
+    ]
+  },
+  "other_mother_activities_mice_circus_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.794,
+        "text": "You simply have to see what the mice have prepared. Acrobatics, tricks, games—they’ve"
+      },
+      {
+        "start": 4.794,
+        "end": 7.05,
+        "text": "been ever so excited to perform for you."
+      }
+    ]
+  },
+  "other_mother_activities_carnival_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.967,
+        "text": "I’ve opened a whole carnival for you today. Games, rides, prizes, sweets—you can try"
+      },
+      {
+        "start": 4.967,
+        "end": 6.15,
+        "text": "everything you like."
+      }
+    ]
+  },
+  "other_mother_activities_carnival_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.905,
+        "text": "How would you like a proper carnival? I’ve filled it with games and attractions, and"
+      },
+      {
+        "start": 5.905,
+        "end": 9.35,
+        "text": "there are some very good prizes if you play well."
+      }
+    ]
+  },
+  "other_mother_activities_magic_garden_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.424,
+        "text": "The garden is especially beautiful tonight. The flowers have been waiting for you,"
+      },
+      {
+        "start": 5.424,
+        "end": 8.4,
+        "text": "and I’ve arranged a few surprises among them."
+      }
+    ]
+  },
+  "other_mother_activities_magic_garden_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.786,
+        "text": "I want to show you what I’ve done with the garden. It’s blooming like never before,"
+      },
+      {
+        "start": 4.786,
+        "end": 7.9,
+        "text": "and there’s much more out there than ordinary flowers."
+      }
+    ]
+  },
+  "other_mother_activities_music_festival_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.954,
+        "text": "I thought the world could use a little music tonight. I’ve arranged an entire"
+      },
+      {
+        "start": 4.954,
+        "end": 9.2,
+        "text": "festival for you, with performers from all over this little world."
+      }
+    ]
+  },
+  "other_mother_activities_music_festival_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.178,
+        "text": "We’re having a music festival today. Come listen, dance, play along if you like, and"
+      },
+      {
+        "start": 5.178,
+        "end": 7.15,
+        "text": "enjoy everything we’ve prepared."
+      }
+    ]
+  },
+  "other_mother_activities_shopping_mall_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.367,
+        "text": "I’ve prepared somewhere I think you’re going to love—a whole shopping mall. Go ahead"
+      },
+      {
+        "start": 5.367,
+        "end": 9.2,
+        "text": "and look around; there’s no need to worry about prices here."
+      }
+    ]
+  },
+  "other_mother_activities_shopping_mall_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.451,
+        "text": "How would you like to do some shopping? I’ve filled an entire mall with things I"
+      },
+      {
+        "start": 4.451,
+        "end": 7.9,
+        "text": "thought you might like, and today they’re all waiting for you."
+      }
+    ]
+  },
+  "other_mother_activities_snowball_battle_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.857,
+        "text": "I thought we could make a little mess today. There’s a snowball battle waiting for"
+      },
+      {
+        "start": 5.857,
+        "end": 10.5,
+        "text": "us, and your Other Father seems far too confident that he’ll win."
+      }
+    ]
+  },
+  "other_mother_activities_snowball_battle_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.808,
+        "text": "Come play in the snow with us. I’ve prepared a whole arena, plenty of snowballs, and"
+      },
+      {
+        "start": 5.808,
+        "end": 8.85,
+        "text": "a nice reward if you can beat everyone else."
+      }
+    ]
+  },
+  "other_mother_activities_cake_making_contest_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.416,
+        "text": "I’ve set everything out for a cake-making contest. Let’s see if you can make"
+      },
+      {
+        "start": 5.416,
+        "end": 9.55,
+        "text": "something prettier—and tastier—than your Other Father can."
+      }
+    ]
+  },
+  "other_mother_activities_cake_making_contest_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.661,
+        "text": "How about we bake something together? We’re having a little cake contest, and of"
+      },
+      {
+        "start": 4.661,
+        "end": 7.4,
+        "text": "course you get to keep plenty of what you make."
+      }
+    ]
+  },
+  "other_mother_activities_fishing_contest_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.231,
+        "text": "The water is perfect tonight, so I thought we could have a fishing contest. There are"
+      },
+      {
+        "start": 5.231,
+        "end": 8.0,
+        "text": "some very unusual things swimming down there."
+      }
+    ]
+  },
+  "other_mother_activities_fishing_contest_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.278,
+        "text": "Your Other Father thinks he can catch more fish than you. I told him not to be so"
+      },
+      {
+        "start": 5.278,
+        "end": 7.95,
+        "text": "sure, so why don’t we settle it properly?"
+      }
+    ]
+  },
+  "other_mother_activities_archery_contest_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.419,
+        "text": "I’ve put together a little archery competition for you. There are moving targets,"
+      },
+      {
+        "start": 5.419,
+        "end": 9.5,
+        "text": "trick shots, and some rather nice prizes if your aim is good."
+      }
+    ]
+  },
+  "other_mother_activities_archery_contest_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.455,
+        "text": "How steady is your hand, darling? I’ve prepared an archery course, and I’d love to"
+      },
+      {
+        "start": 5.455,
+        "end": 7.65,
+        "text": "see how many targets you can hit."
+      }
+    ]
+  },
+  "other_mother_activities_ice_boat_race_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 3.858,
+        "text": "I’ve frozen over a wonderful little course for us. Grab a boat and see how fast you"
+      },
+      {
+        "start": 3.858,
+        "end": 6.6,
+        "text": "can make it to the finish without spinning yourself around."
+      }
+    ]
+  },
+  "other_mother_activities_ice_boat_race_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.777,
+        "text": "How would you like something fast today? I’ve prepared an ice track for boat racing,"
+      },
+      {
+        "start": 4.777,
+        "end": 7.45,
+        "text": "complete with shortcuts and a prize at the end."
+      }
+    ]
+  },
+  "other_mother_activities_garden_maze_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.343,
+        "text": "The garden has grown into quite the maze today. There are prizes hidden inside, if"
+      },
+      {
+        "start": 4.343,
+        "end": 8.05,
+        "text": "you can find your way through before getting completely turned around."
+      }
+    ]
+  },
+  "other_mother_activities_garden_maze_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.856,
+        "text": "I’ve made you a garden maze. It has a few tricks, plenty of beautiful things to see,"
+      },
+      {
+        "start": 4.856,
+        "end": 7.4,
+        "text": "and something special waiting at the center."
+      }
+    ]
+  },
+  "other_mother_activities_treasure_hunt_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.302,
+        "text": "I’ve hidden a few things around the world for you. Follow the clues carefully, and"
+      },
+      {
+        "start": 4.302,
+        "end": 7.45,
+        "text": "each one should bring you a little closer to the real prize."
+      }
+    ]
+  },
+  "other_mother_activities_treasure_hunt_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.84,
+        "text": "How about a treasure hunt? I’ve left clues all over the place, and I promise the"
+      },
+      {
+        "start": 4.84,
+        "end": 7.2,
+        "text": "reward at the end is worth looking for."
+      }
+    ]
+  },
+  "other_mother_activities_other_mineshaft_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.245,
+        "text": "I’ve prepared an underground adventure for you today. There’s an old mineshaft filled"
+      },
+      {
+        "start": 5.245,
+        "end": 8.7,
+        "text": "with minecarts, crystal tunnels, and plenty of treasure."
+      }
+    ]
+  },
+  "other_mother_activities_other_mineshaft_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.82,
+        "text": "How would you like to go beneath the world for a while? I’ve made a much nicer"
+      },
+      {
+        "start": 4.82,
+        "end": 7.6,
+        "text": "mineshaft than those dreadful ones back home."
+      }
+    ]
+  },
+  "other_mother_activities_other_ocean_monument_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.614,
+        "text": "There’s something beautiful beneath the water today. I’ve prepared an ocean monument"
+      },
+      {
+        "start": 4.614,
+        "end": 8.35,
+        "text": "for you to explore, and you won’t even have to worry about drowning."
+      }
+    ]
+  },
+  "other_mother_activities_other_ocean_monument_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.167,
+        "text": "I thought we could visit somewhere a little unusual. There’s a palace beneath the"
+      },
+      {
+        "start": 5.167,
+        "end": 9.25,
+        "text": "ocean with games, treasure, and some very interesting guardians."
+      }
+    ]
+  },
+  "other_mother_activities_other_nether_fortress_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.996,
+        "text": "I’ve made the Nether much more pleasant for you. There’s a fortress waiting beyond"
+      },
+      {
+        "start": 4.996,
+        "end": 9.2,
+        "text": "the portal, without nearly as much fire and misery as the real thing."
+      }
+    ]
+  },
+  "other_mother_activities_other_nether_fortress_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.287,
+        "text": "How would you like a safer little trip through the Nether? I’ve prepared a fortress"
+      },
+      {
+        "start": 5.287,
+        "end": 10.0,
+        "text": "with challenges, treasure, and just enough danger to keep things exciting."
+      }
+    ]
+  },
+  "other_mother_activities_other_end_city_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.922,
+        "text": "I’ve built something very far away for you tonight—a city floating above the End."
+      },
+      {
+        "start": 5.922,
+        "end": 9.65,
+        "text": "It’s much prettier than the real one, I assure you."
+      }
+    ]
+  },
+  "other_mother_activities_other_end_city_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 6.154,
+        "text": "Come see my version of an End City. Floating islands, strange towers, beautiful"
+      },
+      {
+        "start": 6.154,
+        "end": 10.75,
+        "text": "views, and some very rare prizes if you make it to the top."
+      }
+    ]
+  },
+  "other_mother_activity_wait_low_trust_low_suspicion_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.631,
+        "text": "There’s no rush, sweetheart. The portal will be ready for the next five minutes, so"
+      },
+      {
+        "start": 5.631,
+        "end": 11.126,
+        "text": "you can head over now or take a little time to relax first. Just don’t wander too"
+      },
+      {
+        "start": 11.126,
+        "end": 15.4,
+        "text": "far—I wouldn’t want you getting lost before we’ve even started."
+      }
+    ]
+  },
+  "other_mother_activity_wait_low_trust_low_suspicion_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.048,
+        "text": "You’ve got five minutes before we begin. Go straight there if you’re excited, or"
+      },
+      {
+        "start": 5.048,
+        "end": 10.221,
+        "text": "enjoy yourself here for a little while first. Just stay reasonably close, darling."
+      },
+      {
+        "start": 10.221,
+        "end": 13.25,
+        "text": "There’s no need to go exploring the whole world."
+      }
+    ]
+  },
+  "other_mother_activity_wait_low_trust_low_suspicion_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.84,
+        "text": "The activity will be waiting for you for five minutes, so take your time. Have"
+      },
+      {
+        "start": 4.84,
+        "end": 9.804,
+        "text": "something to eat, look around the house, whatever you like. Just don’t disappear"
+      },
+      {
+        "start": 9.804,
+        "end": 13.9,
+        "text": "somewhere far away when we’ve got something so much nicer planned."
+      }
+    ]
+  },
+  "other_mother_activity_wait_mid_trust_mid_suspicion_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.974,
+        "text": "You know how this works by now. You’ve got five minutes to reach the portal, so relax"
+      },
+      {
+        "start": 4.974,
+        "end": 9.949,
+        "text": "for a bit if you like, but don’t get distracted wandering around where you don’t need"
+      },
+      {
+        "start": 9.949,
+        "end": 10.3,
+        "text": "to be."
+      }
+    ]
+  },
+  "other_mother_activity_wait_mid_trust_mid_suspicion_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.776,
+        "text": "The portal will stay open for five minutes. You’re welcome to go now or enjoy a"
+      },
+      {
+        "start": 4.776,
+        "end": 9.553,
+        "text": "little free time first, but do try to stay nearby. You have a habit of becoming"
+      },
+      {
+        "start": 9.553,
+        "end": 11.85,
+        "text": "rather curious when you’re left alone."
+      }
+    ]
+  },
+  "other_mother_activity_wait_mid_trust_mid_suspicion_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.603,
+        "text": "Take a few minutes for yourself if you want, but be at the portal before the five"
+      },
+      {
+        "start": 5.603,
+        "end": 11.482,
+        "text": "minutes are up. And stay close this time, sweetheart. There’s plenty to enjoy without"
+      },
+      {
+        "start": 11.482,
+        "end": 13.35,
+        "text": "going searching for things."
+      }
+    ]
+  },
+  "other_mother_activity_wait_high_trust_low_suspicion_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.707,
+        "text": "You’ve got five minutes, darling. Take your time—you know I don’t mind you relaxing"
+      },
+      {
+        "start": 4.707,
+        "end": 9.358,
+        "text": "here. Just stay close and come when you’re ready. I know you wouldn’t want to miss"
+      },
+      {
+        "start": 9.358,
+        "end": 11.4,
+        "text": "something I made especially for you."
+      }
+    ]
+  },
+  "other_mother_activity_wait_high_trust_low_suspicion_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.987,
+        "text": "The portal will wait for you for five minutes. There’s no need to hurry; make"
+      },
+      {
+        "start": 4.987,
+        "end": 10.233,
+        "text": "yourself comfortable first if you like. Just don’t wander off too far. Everything"
+      },
+      {
+        "start": 10.233,
+        "end": 12.5,
+        "text": "worth seeing is right here with us."
+      }
+    ]
+  },
+  "other_mother_activity_wait_high_trust_low_suspicion_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.772,
+        "text": "Five minutes, sweetheart. Go whenever you’re ready, or stay here and enjoy yourself"
+      },
+      {
+        "start": 4.772,
+        "end": 9.66,
+        "text": "for a little while. I trust you know better than to go running off when we’ve already"
+      },
+      {
+        "start": 9.66,
+        "end": 11.5,
+        "text": "made such lovely plans together."
+      }
+    ]
+  },
+  "other_mother_activity_wait_high_suspicion_low_trust_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.07,
+        "text": "The portal will remain open for five minutes. You may go now or spend a little time"
+      },
+      {
+        "start": 5.07,
+        "end": 10.262,
+        "text": "here first, but stay close. I’d rather not have to wonder what you’re doing somewhere"
+      },
+      {
+        "start": 10.262,
+        "end": 11.3,
+        "text": "you shouldn’t be."
+      }
+    ]
+  },
+  "other_mother_activity_wait_high_suspicion_low_trust_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.943,
+        "text": "You have five minutes to get there. Relax if you must, but don’t use that as an"
+      },
+      {
+        "start": 4.943,
+        "end": 10.261,
+        "text": "excuse to wander off again. I’ve prepared something nice for you, and I expect you to"
+      },
+      {
+        "start": 10.261,
+        "end": 12.2,
+        "text": "behave long enough to enjoy it."
+      }
+    ]
+  },
+  "other_mother_activity_wait_high_suspicion_low_trust_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.871,
+        "text": "Five minutes, sweetheart. That should be more than enough time. You’re free to spend"
+      },
+      {
+        "start": 5.871,
+        "end": 11.392,
+        "text": "it however you like, provided I don’t find you poking around somewhere that has"
+      },
+      {
+        "start": 11.392,
+        "end": 13.0,
+        "text": "nothing to do with you."
+      }
+    ]
+  },
+  "other_mother_activity_wait_high_trust_high_suspicion_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.21,
+        "text": "You have five minutes, darling. Stay here and relax if you like, or head straight to"
+      },
+      {
+        "start": 5.21,
+        "end": 9.861,
+        "text": "the portal. Just try not to let that curiosity of yours carry you somewhere"
+      },
+      {
+        "start": 9.861,
+        "end": 11.35,
+        "text": "unfortunate before then."
+      }
+    ]
+  },
+  "other_mother_activity_wait_high_trust_high_suspicion_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.133,
+        "text": "The portal will wait for five minutes. I know you enjoy having a little time to"
+      },
+      {
+        "start": 5.133,
+        "end": 10.591,
+        "text": "yourself between our activities… though you do tend to find such interesting ways of"
+      },
+      {
+        "start": 10.591,
+        "end": 12.15,
+        "text": "spending it. Stay close."
+      }
+    ]
+  },
+  "other_mother_activity_wait_high_trust_high_suspicion_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.505,
+        "text": "Five minutes, sweetheart. Plenty of time to relax before we begin—as long as you"
+      },
+      {
+        "start": 4.505,
+        "end": 9.18,
+        "text": "remember what you’re here for. You’ve already discovered quite enough without going"
+      },
+      {
+        "start": 9.18,
+        "end": 10.25,
+        "text": "searching for more."
+      }
+    ]
+  },
+  "other_mother_activity_complete_low_trust_low_suspicion_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.591,
+        "text": "Well? Did you have fun, darling? I do hope you liked it. Your Other Father and I"
+      },
+      {
+        "start": 4.591,
+        "end": 9.411,
+        "text": "spent quite a while getting everything just right for you, and I think it turned out"
+      },
+      {
+        "start": 9.411,
+        "end": 10.1,
+        "text": "wonderfully."
+      }
+    ]
+  },
+  "other_mother_activity_complete_low_trust_low_suspicion_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.178,
+        "text": "So, what did you think? You certainly looked like you were enjoying yourself. And"
+      },
+      {
+        "start": 5.178,
+        "end": 10.611,
+        "text": "that was only one little thing—we have so many more wonderful ideas for the next time"
+      },
+      {
+        "start": 10.611,
+        "end": 11.25,
+        "text": "you visit."
+      }
+    ]
+  },
+  "other_mother_activity_complete_low_trust_low_suspicion_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.578,
+        "text": "Wasn’t that fun? I’ve been waiting to see what you’d think of it. It’s so nice having"
+      },
+      {
+        "start": 5.578,
+        "end": 9.45,
+        "text": "someone here who can actually enjoy all the things we make."
+      }
+    ]
+  },
+  "other_mother_activity_complete_mid_trust_mid_suspicion_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.25,
+        "text": "That was fun, wasn’t it? You seemed to be enjoying yourself when you weren’t looking"
+      },
+      {
+        "start": 5.25,
+        "end": 10.25,
+        "text": "around for something else to investigate. You really are a curious little thing."
+      }
+    ]
+  },
+  "other_mother_activity_complete_mid_trust_mid_suspicion_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.692,
+        "text": "Well, sweetheart? Did that manage to keep your attention? I’m beginning to learn"
+      },
+      {
+        "start": 4.692,
+        "end": 9.385,
+        "text": "exactly what you enjoy, although you still have a habit of getting distracted by"
+      },
+      {
+        "start": 9.385,
+        "end": 12.2,
+        "text": "things that weren’t meant to be part of the fun."
+      }
+    ]
+  },
+  "other_mother_activity_complete_mid_trust_mid_suspicion_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.845,
+        "text": "I thought you’d like that one. You’re becoming rather easy to read lately. Give you"
+      },
+      {
+        "start": 4.845,
+        "end": 9.691,
+        "text": "something exciting enough and, for a little while at least, you almost forget about"
+      },
+      {
+        "start": 9.691,
+        "end": 11.15,
+        "text": "all that snooping around."
+      }
+    ]
+  },
+  "other_mother_activity_complete_high_trust_low_suspicion_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.824,
+        "text": "I knew you’d enjoy that, darling. I’m getting very good at knowing exactly what makes"
+      },
+      {
+        "start": 4.824,
+        "end": 9.25,
+        "text": "you happy. It’s almost as if I understand you better every time you come home."
+      }
+    ]
+  },
+  "other_mother_activity_complete_high_trust_low_suspicion_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.075,
+        "text": "See? I told you we’d have a wonderful time. You always seem so much happier here,"
+      },
+      {
+        "start": 5.075,
+        "end": 10.212,
+        "text": "where everything is made especially for you and nobody expects you to struggle for"
+      },
+      {
+        "start": 10.212,
+        "end": 10.4,
+        "text": "it."
+      }
+    ]
+  },
+  "other_mother_activity_complete_high_trust_low_suspicion_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.085,
+        "text": "That suited you perfectly, sweetheart. Watching you enjoy yourself like that makes me"
+      },
+      {
+        "start": 5.085,
+        "end": 9.931,
+        "text": "wonder why you ever bother going back. You could have days like this whenever you"
+      },
+      {
+        "start": 9.931,
+        "end": 10.35,
+        "text": "wanted."
+      }
+    ]
+  },
+  "other_mother_activity_complete_high_suspicion_low_trust_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.825,
+        "text": "Well? I hope you managed to enjoy yourself. We went through quite a lot of trouble"
+      },
+      {
+        "start": 4.825,
+        "end": 9.532,
+        "text": "arranging all of that for you. It would be a shame if you were too busy worrying"
+      },
+      {
+        "start": 9.532,
+        "end": 11.65,
+        "text": "about other things to appreciate it."
+      }
+    ]
+  },
+  "other_mother_activity_complete_high_suspicion_low_trust_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.695,
+        "text": "Was that enjoyable enough for you, sweetheart? I keep giving you wonderful things to"
+      },
+      {
+        "start": 5.695,
+        "end": 11.323,
+        "text": "do, and yet you always seem to have half your attention somewhere else. I do wonder"
+      },
+      {
+        "start": 11.323,
+        "end": 12.95,
+        "text": "what you’re looking for."
+      }
+    ]
+  },
+  "other_mother_activity_complete_high_suspicion_low_trust_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.678,
+        "text": "I hope you had fun. Everything here is meant to make you happy, after all. You might"
+      },
+      {
+        "start": 4.678,
+        "end": 9.355,
+        "text": "enjoy yourself a great deal more if you stopped treating every little corner of this"
+      },
+      {
+        "start": 9.355,
+        "end": 11.75,
+        "text": "world like some mystery that needs solving."
+      }
+    ]
+  },
+  "other_mother_activity_complete_high_trust_high_suspicion_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.459,
+        "text": "That was fun, wasn’t it, darling? You can spend as much time as you like wondering"
+      },
+      {
+        "start": 5.459,
+        "end": 11.052,
+        "text": "what’s really going on here, but somehow you always manage to enjoy yourself anyway."
+      },
+      {
+        "start": 11.052,
+        "end": 12.45,
+        "text": "Funny how that works."
+      }
+    ]
+  },
+  "other_mother_activity_complete_high_trust_high_suspicion_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.908,
+        "text": "You seemed to have a wonderful time. Whatever doubts you may have about this place,"
+      },
+      {
+        "start": 4.908,
+        "end": 9.876,
+        "text": "they never seem quite strong enough to stop you from enjoying everything I give you."
+      },
+      {
+        "start": 9.876,
+        "end": 11.65,
+        "text": "I think that says quite a lot."
+      }
+    ]
+  },
+  "other_mother_activity_complete_high_trust_high_suspicion_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.663,
+        "text": "I knew you’d like it, sweetheart. You’re such a curious thing—you question"
+      },
+      {
+        "start": 4.663,
+        "end": 9.893,
+        "text": "everything, poke around where you shouldn’t, and yet you keep coming back for more."
+      },
+      {
+        "start": 9.893,
+        "end": 13.8,
+        "text": "Perhaps you like this world more than you’re willing to admit."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_low_trust_low_suspicion_on_time_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 6.174,
+        "text": "There you are, darling! Right on time. I’m so glad you decided to come—this should be"
+      },
+      {
+        "start": 6.174,
+        "end": 6.9,
+        "text": "wonderful."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_low_trust_low_suspicion_on_time_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.881,
+        "text": "Oh, good, you made it! I was hoping you’d come along. Everything’s ready, so let’s go"
+      },
+      {
+        "start": 5.881,
+        "end": 6.85,
+        "text": "have some fun."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_low_trust_low_suspicion_on_time_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.485,
+        "text": "There you are! Perfect timing, sweetheart. Come on, I’ve been looking forward to"
+      },
+      {
+        "start": 5.485,
+        "end": 6.65,
+        "text": "showing you this."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_low_trust_low_suspicion_late_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.524,
+        "text": "Oh, there you are. I was starting to wonder if you’d gotten yourself lost somewhere."
+      },
+      {
+        "start": 5.524,
+        "end": 7.3,
+        "text": "Never mind—you’re here now."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_low_trust_low_suspicion_late_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.533,
+        "text": "You certainly took your time, sweetheart. I was beginning to think you might miss"
+      },
+      {
+        "start": 5.533,
+        "end": 7.65,
+        "text": "everything we prepared for you."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_low_trust_low_suspicion_late_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.007,
+        "text": "There you are at last! Try not to keep us waiting quite so long next time, darling."
+      },
+      {
+        "start": 5.007,
+        "end": 7.3,
+        "text": "We’ve gone to an awful lot of trouble."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_mid_trust_mid_suspicion_on_time_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.455,
+        "text": "Good, you’re here. I knew you wouldn’t let a little wandering make you miss"
+      },
+      {
+        "start": 4.455,
+        "end": 6.0,
+        "text": "everything we had planned."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_mid_trust_mid_suspicion_on_time_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 6.852,
+        "text": "There you are, sweetheart. Nicely done. You can be very dependable when you want to"
+      },
+      {
+        "start": 6.852,
+        "end": 7.1,
+        "text": "be."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_mid_trust_mid_suspicion_on_time_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 6.446,
+        "text": "Right on time. I’m glad to see you remembered what we had planned instead of getting"
+      },
+      {
+        "start": 6.446,
+        "end": 7.75,
+        "text": "distracted again."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_mid_trust_mid_suspicion_late_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.069,
+        "text": "There you are. I was beginning to wonder what could possibly have been more"
+      },
+      {
+        "start": 5.069,
+        "end": 7.3,
+        "text": "interesting than what we planned."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_mid_trust_mid_suspicion_late_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.649,
+        "text": "You’re late, sweetheart. I hope whatever distracted you was worth keeping everyone"
+      },
+      {
+        "start": 5.649,
+        "end": 6.2,
+        "text": "waiting."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_mid_trust_mid_suspicion_late_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.389,
+        "text": "I was expecting you sooner. You do have an unfortunate habit of losing track of time"
+      },
+      {
+        "start": 5.389,
+        "end": 7.25,
+        "text": "when you’re left to yourself."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_high_trust_low_suspicion_on_time_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.889,
+        "text": "There’s my darling. I knew you’d be here. You’d never miss something we prepared"
+      },
+      {
+        "start": 4.889,
+        "end": 6.05,
+        "text": "especially for you."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_high_trust_low_suspicion_on_time_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.693,
+        "text": "Right on time, sweetheart. I knew I could count on you. Now come along—we’re going to"
+      },
+      {
+        "start": 5.693,
+        "end": 7.3,
+        "text": "have such a lovely time."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_high_trust_low_suspicion_on_time_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.489,
+        "text": "There you are. I hardly needed to wonder whether you’d come anymore. You always know"
+      },
+      {
+        "start": 5.489,
+        "end": 6.6,
+        "text": "where you belong."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_high_trust_low_suspicion_late_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.5,
+        "text": "There you are, darling. You had me wondering for a moment. I know you wouldn’t really"
+      },
+      {
+        "start": 5.5,
+        "end": 8.8,
+        "text": "choose wandering around over spending time with us."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_high_trust_low_suspicion_late_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.573,
+        "text": "You’re a little late, sweetheart. I was beginning to miss you. Try not to disappear"
+      },
+      {
+        "start": 5.573,
+        "end": 7.05,
+        "text": "on me like that again."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_high_trust_low_suspicion_late_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.559,
+        "text": "I knew you’d come eventually. Still, there’s no reason to keep your family waiting"
+      },
+      {
+        "start": 5.559,
+        "end": 8.0,
+        "text": "when we’ve made all of this for you."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_high_suspicion_low_trust_on_time_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 7.319,
+        "text": "There you are. Right on time, too. I’m glad to see you managed to follow the plan for"
+      },
+      {
+        "start": 7.319,
+        "end": 7.75,
+        "text": "once."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_high_suspicion_low_trust_on_time_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 6.152,
+        "text": "Good. You came straight here. Perhaps today we can simply enjoy ourselves without any"
+      },
+      {
+        "start": 6.152,
+        "end": 7.6,
+        "text": "unnecessary detours."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_high_suspicion_low_trust_on_time_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.449,
+        "text": "Right on time, sweetheart. See how much easier things are when you simply do what’s"
+      },
+      {
+        "start": 5.449,
+        "end": 6.5,
+        "text": "expected of you?"
+      }
+    ]
+  },
+  "other_mother_activity_arrival_high_suspicion_low_trust_late_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.03,
+        "text": "There you are. Late again. I suppose I shouldn’t ask what was so important that you"
+      },
+      {
+        "start": 5.03,
+        "end": 6.0,
+        "text": "kept us waiting."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_high_suspicion_low_trust_late_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.979,
+        "text": "You certainly took your time. I do hope you weren’t somewhere I specifically asked"
+      },
+      {
+        "start": 5.979,
+        "end": 7.0,
+        "text": "you not to be."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_high_suspicion_low_trust_late_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.418,
+        "text": "Five minutes should have been more than enough, sweetheart. Whatever you’ve been"
+      },
+      {
+        "start": 5.418,
+        "end": 7.45,
+        "text": "doing, we’ll discuss it later."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_high_trust_high_suspicion_on_time_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.95,
+        "text": "There you are, darling. Still curious about all my little secrets, and yet somehow"
+      },
+      {
+        "start": 5.95,
+        "end": 8.2,
+        "text": "you never miss the fun, do you?"
+      }
+    ]
+  },
+  "other_mother_activity_arrival_high_trust_high_suspicion_on_time_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.496,
+        "text": "Right on time. For someone who asks so many questions, you’re remarkably good at"
+      },
+      {
+        "start": 5.496,
+        "end": 9.0,
+        "text": "coming back when there’s something waiting for you."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_high_trust_high_suspicion_on_time_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.326,
+        "text": "I knew you’d be here, sweetheart. Whatever else you may think about this place, you"
+      },
+      {
+        "start": 5.326,
+        "end": 8.15,
+        "text": "never seem quite ready to turn away from it."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_high_trust_high_suspicion_late_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.131,
+        "text": "There you are at last. I can only imagine what caught your attention this time…"
+      },
+      {
+        "start": 5.131,
+        "end": 6.95,
+        "text": "though I have a few guesses."
+      }
+    ]
+  },
+  "other_mother_activity_arrival_high_trust_high_suspicion_late_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.631,
+        "text": "Late again, darling. You always seem to find something interesting when nobody is"
+      },
+      {
+        "start": 5.631,
+        "end": 7.3,
+        "text": "watching you, don’t you?"
+      }
+    ]
+  },
+  "other_mother_activity_arrival_high_trust_high_suspicion_late_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.57,
+        "text": "I wondered how long you’d keep me waiting. You’re awfully curious for someone who"
+      },
+      {
+        "start": 4.57,
+        "end": 6.15,
+        "text": "keeps choosing to come back."
+      }
+    ]
+  },
+  "other_mother_loot_food_before_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.438,
+        "text": "You must be starving after coming all this way. So I made a few things I thought you"
+      },
+      {
+        "start": 5.438,
+        "end": 6.15,
+        "text": "might like."
+      }
+    ]
+  },
+  "other_mother_loot_food_before_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.876,
+        "text": "I’ve been cooking all evening, and I may have gotten a little carried away. But that"
+      },
+      {
+        "start": 4.876,
+        "end": 6.85,
+        "text": "just means there’s plenty for you."
+      }
+    ]
+  },
+  "other_mother_loot_food_before_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.414,
+        "text": "Before we do anything else, you need something proper to eat. I made all of this"
+      },
+      {
+        "start": 5.414,
+        "end": 6.7,
+        "text": "especially for you."
+      }
+    ]
+  },
+  "other_mother_loot_food_after_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.226,
+        "text": "Go on, take as much as you like. You never have to worry about going hungry while"
+      },
+      {
+        "start": 5.226,
+        "end": 6.0,
+        "text": "you’re here."
+      }
+    ]
+  },
+  "other_mother_loot_food_after_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.11,
+        "text": "There. That should keep you happy for a while. And if you want more, you only have to"
+      },
+      {
+        "start": 5.11,
+        "end": 5.35,
+        "text": "ask."
+      }
+    ]
+  },
+  "other_mother_loot_food_after_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.118,
+        "text": "I knew you’d like it. Everything tastes better when somebody actually takes the time"
+      },
+      {
+        "start": 4.118,
+        "end": 5.05,
+        "text": "to make it for you."
+      }
+    ]
+  },
+  "other_mother_loot_treasure_before_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.355,
+        "text": "I noticed how hard you work for everything back home, so I thought I’d save you the"
+      },
+      {
+        "start": 4.355,
+        "end": 5.3,
+        "text": "trouble this time."
+      }
+    ]
+  },
+  "other_mother_loot_treasure_before_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.297,
+        "text": "I found a few little things I thought you deserved. They’re much too nice to leave"
+      },
+      {
+        "start": 5.297,
+        "end": 7.3,
+        "text": "sitting around collecting dust."
+      }
+    ]
+  },
+  "other_mother_loot_treasure_before_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.819,
+        "text": "You spend so much time searching for things like these. Here, you don’t have to"
+      },
+      {
+        "start": 5.819,
+        "end": 6.85,
+        "text": "search at all."
+      }
+    ]
+  },
+  "other_mother_loot_treasure_after_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.8,
+        "text": "Keep it. All of it. There’s plenty more where that came from."
+      }
+    ]
+  },
+  "other_mother_loot_treasure_after_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 7.4,
+        "text": "See how easy things can be here? No digging, no fighting, no wasting your time."
+      }
+    ]
+  },
+  "other_mother_loot_treasure_after_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.8,
+        "text": "Much nicer than spending all day underground looking for scraps, isn’t it?"
+      }
+    ]
+  },
+  "other_mother_state_extra_low_trust_low_suspicion_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.3,
+        "text": "I’m still learning what you like, but I think I’m getting pretty good at it."
+      }
+    ]
+  },
+  "other_mother_state_extra_low_trust_low_suspicion_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 6.8,
+        "text": "You’ll have to tell me what you want next time. I do love a challenge."
+      }
+    ]
+  },
+  "other_mother_state_extra_mid_trust_mid_suspicion_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.15,
+        "text": "You’ve certainly developed quite an appetite for the things we have here."
+      }
+    ]
+  },
+  "other_mother_state_extra_mid_trust_mid_suspicion_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.15,
+        "text": "You’re getting more comfortable every time you visit. More curious, too."
+      }
+    ]
+  },
+  "other_mother_state_extra_high_trust_low_suspicion_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.65,
+        "text": "I hardly even need to ask what you want anymore. I know you much too well."
+      }
+    ]
+  },
+  "other_mother_state_extra_high_trust_low_suspicion_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 3.65,
+        "text": "You see? I always know exactly what will make you happy."
+      }
+    ]
+  },
+  "other_mother_state_extra_high_suspicion_low_trust_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.75,
+        "text": "I thought perhaps giving you something nice might help you relax a little."
+      }
+    ]
+  },
+  "other_mother_state_extra_high_suspicion_low_trust_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.192,
+        "text": "You really should spend more time enjoying what I give you and less time worrying"
+      },
+      {
+        "start": 5.192,
+        "end": 7.5,
+        "text": "about things that don’t concern you."
+      }
+    ]
+  },
+  "other_mother_state_extra_high_trust_high_suspicion_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 6.095,
+        "text": "You may not trust everything about this place, but you certainly seem to enjoy what"
+      },
+      {
+        "start": 6.095,
+        "end": 7.05,
+        "text": "it gives you."
+      }
+    ]
+  },
+  "other_mother_state_extra_high_trust_high_suspicion_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.926,
+        "text": "For someone with so many questions, you never seem to have trouble accepting my"
+      },
+      {
+        "start": 4.926,
+        "end": 5.3,
+        "text": "gifts."
+      }
+    ]
+  },
+  "other_mother_scolding_minor_low_low_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.966,
+        "text": "Now, sweetheart, I really must say, that wasn't very nice of you. Your Other Father"
+      },
+      {
+        "start": 4.966,
+        "end": 10.052,
+        "text": "and I have gone through an awful lot of trouble to make everything wonderful for you,"
+      },
+      {
+        "start": 10.052,
+        "end": 15.079,
+        "text": "and it isn't very respectful to go wandering off without a word. A mother does worry"
+      },
+      {
+        "start": 15.079,
+        "end": 20.045,
+        "text": "about these things, you know. But I suppose there's no sense dwelling on it. You're"
+      },
+      {
+        "start": 20.045,
+        "end": 25.071,
+        "text": "here now, and that's what matters. So, let's put this little misunderstanding behind"
+      },
+      {
+        "start": 25.071,
+        "end": 29.2,
+        "text": "us, shall we? I've still got something rather lovely planned for you."
+      }
+    ]
+  },
+  "other_mother_scolding_minor_mid_mid_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.385,
+        "text": "Oh, darling, I really don't know what to do with you sometimes. You know perfectly"
+      },
+      {
+        "start": 4.385,
+        "end": 8.502,
+        "text": "well that I expect you to listen when I ask you to stay nearby. It's terribly"
+      },
+      {
+        "start": 8.502,
+        "end": 12.833,
+        "text": "disrespectful to have your own mother running all over the place looking for you,"
+      },
+      {
+        "start": 12.833,
+        "end": 17.325,
+        "text": "especially after everything she's done to make you happy. But I'm not going to spend"
+      },
+      {
+        "start": 17.325,
+        "end": 21.656,
+        "text": "our whole lovely visit arguing about it. We'll forget this happened, provided you"
+      },
+      {
+        "start": 21.656,
+        "end": 26.148,
+        "text": "behave yourself from now on. Come along, I think it's time we did something a little"
+      },
+      {
+        "start": 26.148,
+        "end": 26.95,
+        "text": "more enjoyable."
+      }
+    ]
+  },
+  "other_mother_scolding_minor_high_low_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.805,
+        "text": "Oh, my darling, you really did upset me, you know. I spend so much time worrying"
+      },
+      {
+        "start": 4.805,
+        "end": 9.91,
+        "text": "about you, making sure you're comfortable and happy, and then you go wandering off as"
+      },
+      {
+        "start": 9.91,
+        "end": 15.016,
+        "text": "though none of it matters. That's a rather hurtful way to treat someone who loves you"
+      },
+      {
+        "start": 15.016,
+        "end": 19.941,
+        "text": "as much as I do. But I could never stay cross with my favorite little one for very"
+      },
+      {
+        "start": 19.941,
+        "end": 24.686,
+        "text": "long. Come here, sweetheart. Let's forget all about this unpleasantness. I have"
+      },
+      {
+        "start": 24.686,
+        "end": 28.95,
+        "text": "something wonderful planned, and I'd much rather see you smiling again."
+      }
+    ]
+  },
+  "other_mother_scolding_minor_low_high_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.71,
+        "text": "Now listen to me very carefully, sweetheart. I have been remarkably patient with your"
+      },
+      {
+        "start": 5.71,
+        "end": 11.42,
+        "text": "little adventures, but there comes a point when curiosity becomes plain disrespect. I"
+      },
+      {
+        "start": 11.42,
+        "end": 16.794,
+        "text": "am your mother, and when I tell you to stay somewhere, I expect you to listen. I"
+      },
+      {
+        "start": 16.794,
+        "end": 22.033,
+        "text": "don't enjoy chasing after you, and I certainly don't appreciate having my time"
+      },
+      {
+        "start": 22.033,
+        "end": 27.542,
+        "text": "wasted. Still, I'm willing to overlook this particular incident. We'll move on and"
+      },
+      {
+        "start": 27.542,
+        "end": 33.05,
+        "text": "have ourselves a pleasant little afternoon. And this time, I expect you to behave."
+      }
+    ]
+  },
+  "other_mother_scolding_minor_high_high_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.094,
+        "text": "Oh, darling, you really are determined to test me, aren't you? You know how much I"
+      },
+      {
+        "start": 5.094,
+        "end": 10.187,
+        "text": "adore having you here, and yet you insist on running off and making me wonder what"
+      },
+      {
+        "start": 10.187,
+        "end": 15.405,
+        "text": "you're getting yourself into. It's not a particularly kind way to treat your mother,"
+      },
+      {
+        "start": 15.405,
+        "end": 20.623,
+        "text": "especially one who's given you so much. But I know you, sweetheart. You're a curious"
+      },
+      {
+        "start": 20.623,
+        "end": 25.779,
+        "text": "little thing, and I suppose I ought to have expected that. Never mind. We'll put it"
+      },
+      {
+        "start": 25.779,
+        "end": 30.997,
+        "text": "behind us for now. I've got another little surprise planned, and I think you'll find"
+      },
+      {
+        "start": 30.997,
+        "end": 32.55,
+        "text": "it much more interesting."
+      }
+    ]
+  },
+  "other_mother_scolding_serious_low_low_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.613,
+        "text": "Oh, sweetheart. I must say, I'm terribly disappointed in you. I thought we were"
+      },
+      {
+        "start": 4.613,
+        "end": 9.519,
+        "text": "getting along so nicely, and then you go and do something like this. It's a dreadful"
+      },
+      {
+        "start": 9.519,
+        "end": 14.424,
+        "text": "way to treat your own mother, especially when all she's ever tried to do is make you"
+      },
+      {
+        "start": 14.424,
+        "end": 19.329,
+        "text": "happy. There are certain things you simply aren't meant to meddle with, darling, and"
+      },
+      {
+        "start": 19.329,
+        "end": 23.884,
+        "text": "I do hope you understand that now. But everyone makes mistakes, I suppose. I'm"
+      },
+      {
+        "start": 23.884,
+        "end": 28.848,
+        "text": "willing to forgive you this once. Let's forget about all this unpleasant business and"
+      },
+      {
+        "start": 28.848,
+        "end": 30.95,
+        "text": "find something nicer to do together."
+      }
+    ]
+  },
+  "other_mother_scolding_serious_mid_mid_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.907,
+        "text": "Well, I hope you're pleased with yourself, sweetheart. I've worked so terribly hard"
+      },
+      {
+        "start": 4.907,
+        "end": 9.814,
+        "text": "to make this world perfect for you, and somehow you've decided that the best way to"
+      },
+      {
+        "start": 9.814,
+        "end": 14.544,
+        "text": "repay me is by sneaking around and interfering with things that are none of your"
+      },
+      {
+        "start": 14.544,
+        "end": 19.274,
+        "text": "concern. It's disrespectful, darling. Very disrespectful. And quite frankly, I'm"
+      },
+      {
+        "start": 19.274,
+        "end": 24.299,
+        "text": "beginning to wonder whether you appreciate anything I do for you. But I won't let one"
+      },
+      {
+        "start": 24.299,
+        "end": 29.325,
+        "text": "unpleasant incident ruin our entire visit. We'll put this behind us, and I expect you"
+      },
+      {
+        "start": 29.325,
+        "end": 34.35,
+        "text": "to make a much better effort from now on. Come along, I have something else prepared."
+      }
+    ]
+  },
+  "other_mother_scolding_serious_high_low_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.972,
+        "text": "Oh, my darling. I don't think you quite understand how deeply you've hurt me. I"
+      },
+      {
+        "start": 4.972,
+        "end": 10.196,
+        "text": "thought we had something special, you and I. I thought you trusted me, just as I've"
+      },
+      {
+        "start": 10.196,
+        "end": 15.231,
+        "text": "trusted you to behave yourself in my home. And now I find that you've been doing"
+      },
+      {
+        "start": 15.231,
+        "end": 20.392,
+        "text": "things behind my back that you know perfectly well would upset me. It's a terrible"
+      },
+      {
+        "start": 20.392,
+        "end": 25.616,
+        "text": "way to treat someone who loves you so very much. But you're still my darling child,"
+      },
+      {
+        "start": 25.616,
+        "end": 30.714,
+        "text": "and I'm not going to let this come between us. I'll forgive you, sweetheart. Now,"
+      },
+      {
+        "start": 30.714,
+        "end": 35.938,
+        "text": "let's have no more of this nonsense. I've planned something wonderful for us, and I"
+      },
+      {
+        "start": 35.938,
+        "end": 37.7,
+        "text": "want to see you happy again."
+      }
+    ]
+  },
+  "other_mother_scolding_serious_low_high_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.354,
+        "text": "That is quite enough. I have tolerated an extraordinary amount of disrespect from"
+      },
+      {
+        "start": 5.354,
+        "end": 10.905,
+        "text": "you, and I am rapidly running out of reasons to continue being so understanding. You"
+      },
+      {
+        "start": 10.905,
+        "end": 16.457,
+        "text": "come into my home, enjoy everything I've made for you, and then repay my kindness by"
+      },
+      {
+        "start": 16.457,
+        "end": 21.943,
+        "text": "meddling in matters that are absolutely none of your business. Do you have any idea"
+      },
+      {
+        "start": 21.943,
+        "end": 27.495,
+        "text": "how ungrateful that makes you look? I am your mother, and I will not be treated like"
+      },
+      {
+        "start": 27.495,
+        "end": 33.113,
+        "text": "some fool you can take advantage of. But I am going to be generous. We will move past"
+      },
+      {
+        "start": 33.113,
+        "end": 38.334,
+        "text": "this, and I will give you another opportunity to behave yourself. Don't make me"
+      },
+      {
+        "start": 38.334,
+        "end": 42.3,
+        "text": "regret it. Now then, I believe we have something else to do."
+      }
+    ]
+  },
+  "other_mother_scolding_serious_high_high_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.204,
+        "text": "Oh, darling. You really are becoming quite the little handful, aren't you? You know,"
+      },
+      {
+        "start": 5.204,
+        "end": 10.221,
+        "text": "I used to think your curiosity was rather charming. But lately, you've been using"
+      },
+      {
+        "start": 10.221,
+        "end": 15.301,
+        "text": "that clever little mind of yours in ways that aren't very kind to your mother. You"
+      },
+      {
+        "start": 15.301,
+        "end": 20.567,
+        "text": "know how much I've given you, how much I care about you, and yet you keep looking for"
+      },
+      {
+        "start": 20.567,
+        "end": 25.832,
+        "text": "things I would much rather you left alone. It's almost as though you enjoy seeing how"
+      },
+      {
+        "start": 25.832,
+        "end": 31.036,
+        "text": "far you can push me. But I still love you, sweetheart. That hasn't changed. So we'll"
+      },
+      {
+        "start": 31.036,
+        "end": 35.992,
+        "text": "put this little incident behind us, at least for now. Come along, I have another"
+      },
+      {
+        "start": 35.992,
+        "end": 40.7,
+        "text": "wonderful activity prepared, and I do hope you'll behave yourself this time."
+      }
+    ]
+  },
+  "other_mother_secrets_ordinary_low_low_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.017,
+        "text": "Oh, there you are, sweetheart! I've been wondering where you've wandered off to. You"
+      },
+      {
+        "start": 5.017,
+        "end": 10.093,
+        "text": "really shouldn't go exploring all by yourself, you know. Come along now, there's much"
+      },
+      {
+        "start": 10.093,
+        "end": 12.9,
+        "text": "nicer things waiting for you back at the house."
+      }
+    ]
+  },
+  "other_mother_secrets_ordinary_low_low_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.179,
+        "text": "Darling! What on earth are you doing all the way out here? I hope you haven't gotten"
+      },
+      {
+        "start": 5.179,
+        "end": 10.112,
+        "text": "yourself lost. Why don't we head back together? I'd hate for you to miss all the"
+      },
+      {
+        "start": 10.112,
+        "end": 11.9,
+        "text": "lovely things we've prepared."
+      }
+    ]
+  },
+  "other_mother_secrets_ordinary_mid_mid_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.15,
+        "text": "There you are. I've been looking absolutely everywhere for you. You do understand"
+      },
+      {
+        "start": 5.15,
+        "end": 9.6,
+        "text": "that when I ask you to stay nearby, I expect you to listen, don't you?"
+      }
+    ]
+  },
+  "other_mother_secrets_ordinary_mid_mid_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.03,
+        "text": "Oh, sweetheart, not again. I thought we'd already talked about wandering off without"
+      },
+      {
+        "start": 5.03,
+        "end": 9.7,
+        "text": "telling anyone. You really do have a troublesome little habit of disappearing."
+      }
+    ]
+  },
+  "other_mother_secrets_ordinary_high_low_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.007,
+        "text": "Oh, darling, you gave me such a fright! I was beginning to think something dreadful"
+      },
+      {
+        "start": 5.007,
+        "end": 10.135,
+        "text": "had happened to you. You know how much I worry about you. Please don't go running off"
+      },
+      {
+        "start": 10.135,
+        "end": 11.1,
+        "text": "like that again."
+      }
+    ]
+  },
+  "other_mother_secrets_ordinary_high_low_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.657,
+        "text": "There you are, my love! Why would you wander all the way out here when you have"
+      },
+      {
+        "start": 4.657,
+        "end": 9.608,
+        "text": "everything you could possibly want waiting at home? You don't need to go looking for"
+      },
+      {
+        "start": 9.608,
+        "end": 11.2,
+        "text": "anything else. You have me."
+      }
+    ]
+  },
+  "other_mother_secrets_ordinary_low_high_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.828,
+        "text": "Well, well. Look what I've found. You certainly do enjoy going places you're not"
+      },
+      {
+        "start": 4.828,
+        "end": 9.959,
+        "text": "supposed to, don't you? I'm beginning to wonder whether you listen to a single word I"
+      },
+      {
+        "start": 9.959,
+        "end": 10.2,
+        "text": "say."
+      }
+    ]
+  },
+  "other_mother_secrets_ordinary_low_high_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.221,
+        "text": "There you are. I've had quite enough of this wandering around. When I tell you to"
+      },
+      {
+        "start": 5.221,
+        "end": 9.991,
+        "text": "stay somewhere, I expect you to stay there. Is that really so difficult to"
+      },
+      {
+        "start": 9.991,
+        "end": 10.7,
+        "text": "understand?"
+      }
+    ]
+  },
+  "other_mother_secrets_ordinary_high_high_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.319,
+        "text": "Oh, darling. Always wandering, always searching. And yet you always find your way"
+      },
+      {
+        "start": 5.319,
+        "end": 9.85,
+        "text": "back to me, don't you? It's almost as though you can't help yourself."
+      }
+    ]
+  },
+  "other_mother_secrets_ordinary_high_high_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.385,
+        "text": "There you are, sweetheart. You know, it's rather funny. You seem determined to"
+      },
+      {
+        "start": 5.385,
+        "end": 11.045,
+        "text": "explore every little corner of my world, but somehow you never seem quite ready to"
+      },
+      {
+        "start": 11.045,
+        "end": 12.15,
+        "text": "leave it behind."
+      }
+    ]
+  },
+  "other_mother_secrets_secret_low_low_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.745,
+        "text": "Oh! Sweetheart, how did you get in here? This isn't somewhere you ought to be"
+      },
+      {
+        "start": 4.745,
+        "end": 9.613,
+        "text": "playing. There are some rather delicate things in here, and I'd hate for you to"
+      },
+      {
+        "start": 9.613,
+        "end": 11.4,
+        "text": "accidentally break something."
+      }
+    ]
+  },
+  "other_mother_secrets_secret_low_low_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 6.457,
+        "text": "Oh, darling, you've wandered into quite the wrong place. I'm sure you didn't mean any"
+      },
+      {
+        "start": 6.457,
+        "end": 12.535,
+        "text": "harm, but some rooms are locked for very good reasons. Come along, let's get you"
+      },
+      {
+        "start": 12.535,
+        "end": 13.75,
+        "text": "somewhere nicer."
+      }
+    ]
+  },
+  "other_mother_secrets_secret_mid_mid_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.947,
+        "text": "Now, just what do you think you're doing in here? I don't remember inviting you into"
+      },
+      {
+        "start": 4.947,
+        "end": 9.6,
+        "text": "this part of the house. You've been getting awfully curious lately, sweetheart."
+      }
+    ]
+  },
+  "other_mother_secrets_secret_mid_mid_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.236,
+        "text": "Well, this is an interesting place to find you. There are plenty of lovely things for"
+      },
+      {
+        "start": 5.236,
+        "end": 10.288,
+        "text": "you to explore, and somehow you've managed to find the one place I didn't want you"
+      },
+      {
+        "start": 10.288,
+        "end": 11.15,
+        "text": "poking around."
+      }
+    ]
+  },
+  "other_mother_secrets_secret_high_low_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.709,
+        "text": "Oh, my darling, why would you come in here? You know I'd give you anything you wanted"
+      },
+      {
+        "start": 4.709,
+        "end": 9.307,
+        "text": "if you simply asked. There's no need to go looking through things that aren't meant"
+      },
+      {
+        "start": 9.307,
+        "end": 9.75,
+        "text": "for you."
+      }
+    ]
+  },
+  "other_mother_secrets_secret_high_low_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 6.231,
+        "text": "Sweetheart, I'm rather disappointed. I thought we trusted each other. I've given you"
+      },
+      {
+        "start": 6.231,
+        "end": 12.387,
+        "text": "such a wonderful home, and now I find you sneaking around behind my back. That does"
+      },
+      {
+        "start": 12.387,
+        "end": 13.5,
+        "text": "hurt, you know."
+      }
+    ]
+  },
+  "other_mother_secrets_secret_low_high_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.793,
+        "text": "Well. Isn't this interesting. You've gone to an awful lot of trouble to get somewhere"
+      },
+      {
+        "start": 5.793,
+        "end": 10.7,
+        "text": "you were never supposed to see. I think you had better explain yourself."
+      }
+    ]
+  },
+  "other_mother_secrets_secret_low_high_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.778,
+        "text": "Oh, you really have been busy, haven't you? Did you honestly think I wouldn't notice"
+      },
+      {
+        "start": 5.778,
+        "end": 11.35,
+        "text": "you sneaking around in here? You've been testing my patience for quite some time."
+      }
+    ]
+  },
+  "other_mother_secrets_secret_high_high_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.195,
+        "text": "Oh, darling. You really do know more than you let on, don't you? I wondered how long"
+      },
+      {
+        "start": 5.195,
+        "end": 9.4,
+        "text": "it would take before your curiosity brought you somewhere like this."
+      }
+    ]
+  },
+  "other_mother_secrets_secret_high_high_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.817,
+        "text": "There you are, sweetheart. I suppose I shouldn't be surprised anymore. You know so"
+      },
+      {
+        "start": 5.817,
+        "end": 11.635,
+        "text": "many things I never intended you to learn, and yet here you are, still looking for"
+      },
+      {
+        "start": 11.635,
+        "end": 13.55,
+        "text": "more. How very interesting."
+      }
+    ]
+  },
+  "other_mother_secrets_item_low_low_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.797,
+        "text": "Oh, sweetheart, where did you find that? That doesn't look like one of your little"
+      },
+      {
+        "start": 5.797,
+        "end": 11.1,
+        "text": "toys. Why don't you give it to me? I'm sure it was only a misunderstanding."
+      }
+    ]
+  },
+  "other_mother_secrets_item_low_low_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.402,
+        "text": "Darling, whatever have you got there? Oh, that really isn't something you ought to be"
+      },
+      {
+        "start": 4.402,
+        "end": 8.7,
+        "text": "carrying around. Come now, let me have a look. I'm sure we can straighten this out."
+      }
+    ]
+  },
+  "other_mother_secrets_item_mid_mid_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 6.499,
+        "text": "Now, where exactly did you get that? I don't recall giving it to you, and I certainly"
+      },
+      {
+        "start": 6.499,
+        "end": 12.844,
+        "text": "don't remember saying you could take it. You've been rather busy exploring, haven't"
+      },
+      {
+        "start": 12.844,
+        "end": 13.15,
+        "text": "you?"
+      }
+    ]
+  },
+  "other_mother_secrets_item_mid_mid_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 6.192,
+        "text": "Oh, sweetheart. I recognize that. And I know perfectly well it wasn't meant to leave"
+      },
+      {
+        "start": 6.192,
+        "end": 11.5,
+        "text": "where I put it. Would you care to explain how it ended up in your hands?"
+      }
+    ]
+  },
+  "other_mother_secrets_item_high_low_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.131,
+        "text": "Oh, darling, you could have asked me if you wanted something! You really didn't need"
+      },
+      {
+        "start": 5.131,
+        "end": 10.2,
+        "text": "to sneak around taking things. I thought we understood each other better than that."
+      }
+    ]
+  },
+  "other_mother_secrets_item_high_low_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.856,
+        "text": "Sweetheart, I'm sure there's a perfectly innocent explanation for why you're carrying"
+      },
+      {
+        "start": 5.856,
+        "end": 11.711,
+        "text": "that. There must be. You wouldn't deliberately hide something from your Other Mother,"
+      },
+      {
+        "start": 11.711,
+        "end": 12.4,
+        "text": "would you?"
+      }
+    ]
+  },
+  "other_mother_secrets_item_low_high_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.17,
+        "text": "Give me that. Now. You've been taking things that don't belong to you, and I'm"
+      },
+      {
+        "start": 5.17,
+        "end": 8.55,
+        "text": "growing very tired of pretending I haven't noticed."
+      }
+    ]
+  },
+  "other_mother_secrets_item_low_high_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.048,
+        "text": "Well, that explains quite a lot. Sneaking into places, disappearing for hours, and"
+      },
+      {
+        "start": 5.048,
+        "end": 10.158,
+        "text": "now carrying things you've no business touching. Just how much have you been taking"
+      },
+      {
+        "start": 10.158,
+        "end": 10.65,
+        "text": "from me?"
+      }
+    ]
+  },
+  "other_mother_secrets_item_high_high_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.571,
+        "text": "Oh, darling. You always were a clever little thing. I suppose I should have expected"
+      },
+      {
+        "start": 5.571,
+        "end": 9.55,
+        "text": "you'd eventually start collecting my secrets like souvenirs."
+      }
+    ]
+  },
+  "other_mother_secrets_item_high_high_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.952,
+        "text": "Sweetheart, look at what you've brought me. Or rather, what you've taken from me."
+      },
+      {
+        "start": 4.952,
+        "end": 10.088,
+        "text": "It's funny, isn't it? You keep gathering all these little secrets, as though knowing"
+      },
+      {
+        "start": 10.088,
+        "end": 12.35,
+        "text": "them will somehow make you less mine."
+      }
+    ]
+  },
+  "other_mother_secrets_offer_low_low_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.583,
+        "text": "Oh? What's all this, sweetheart? You've brought me something rather unusual. Now, why"
+      },
+      {
+        "start": 4.583,
+        "end": 8.95,
+        "text": "don't you tell me what it is you're hoping to get out of this little arrangement?"
+      }
+    ]
+  },
+  "other_mother_secrets_offer_low_low_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.654,
+        "text": "My goodness, darling! That's quite a thing to come asking me with. I didn't realize"
+      },
+      {
+        "start": 5.654,
+        "end": 10.15,
+        "text": "you knew about any of this. Well, let's hear what you have to say."
+      }
+    ]
+  },
+  "other_mother_secrets_offer_mid_mid_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 6.019,
+        "text": "Oh, I see. So that's what you've been spending your time doing. Collecting little"
+      },
+      {
+        "start": 6.019,
+        "end": 10.7,
+        "text": "things to bargain with. Well, go on, sweetheart. I'm listening."
+      }
+    ]
+  },
+  "other_mother_secrets_offer_mid_mid_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.696,
+        "text": "How very interesting. I wondered what you were doing with all that information. And"
+      },
+      {
+        "start": 5.696,
+        "end": 10.5,
+        "text": "now you intend to use it against me? Let's see what you're asking for."
+      }
+    ]
+  },
+  "other_mother_secrets_offer_high_low_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.514,
+        "text": "Oh, darling, surely we don't need to play these sorts of games. If you want"
+      },
+      {
+        "start": 4.514,
+        "end": 9.45,
+        "text": "something, you know you can always ask me. Must you really make it into a bargain?"
+      }
+    ]
+  },
+  "other_mother_secrets_offer_high_low_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.75,
+        "text": "Sweetheart, what a strange thing to bring to your own mother. Have I ever given you"
+      },
+      {
+        "start": 5.75,
+        "end": 11.5,
+        "text": "reason to think you need to threaten me to get something nice? Well, let's hear it."
+      }
+    ]
+  },
+  "other_mother_secrets_offer_low_high_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.17,
+        "text": "You have some nerve. Coming to me with my own secrets and expecting me to give you"
+      },
+      {
+        "start": 5.17,
+        "end": 10.15,
+        "text": "something for keeping quiet. Go on, then. Tell me what you think they're worth."
+      }
+    ]
+  },
+  "other_mother_secrets_offer_low_high_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 6.403,
+        "text": "Oh, so that's your little plan. Sneak around my world, steal my secrets, and then try"
+      },
+      {
+        "start": 6.403,
+        "end": 11.3,
+        "text": "to bargain with me. How terribly clever. Let's hear your demands."
+      }
+    ]
+  },
+  "other_mother_secrets_offer_high_high_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.492,
+        "text": "Oh, darling. I knew you were collecting secrets, but I didn't expect you to be quite"
+      },
+      {
+        "start": 5.492,
+        "end": 11.05,
+        "text": "so bold about using them. You've become a very interesting little child, haven't you?"
+      }
+    ]
+  },
+  "other_mother_secrets_offer_high_high_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.532,
+        "text": "Well, sweetheart, here we are. You know something I would rather you didn't, and now"
+      },
+      {
+        "start": 5.532,
+        "end": 10.8,
+        "text": "you want something in return. I suppose we both know how this little game works."
+      }
+    ]
+  },
+  "other_mother_secrets_accept_low_low_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.736,
+        "text": "Well, alright, sweetheart. If it means that much to you, I suppose we can make an"
+      },
+      {
+        "start": 4.736,
+        "end": 9.413,
+        "text": "arrangement. Here, take what you've asked for. But let's keep this little matter"
+      },
+      {
+        "start": 9.413,
+        "end": 11.05,
+        "text": "between ourselves, shall we?"
+      }
+    ]
+  },
+  "other_mother_secrets_accept_low_low_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.548,
+        "text": "Oh, very well, darling. You've certainly made your point. Here's what you wanted."
+      },
+      {
+        "start": 4.548,
+        "end": 8.984,
+        "text": "Now, I'd much rather we went back to enjoying ourselves instead of making these"
+      },
+      {
+        "start": 8.984,
+        "end": 10.5,
+        "text": "unpleasant little bargains."
+      }
+    ]
+  },
+  "other_mother_secrets_accept_mid_mid_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 6.124,
+        "text": "Fine. You've got yourself a deal. Here's what you asked for, sweetheart. But don't"
+      },
+      {
+        "start": 6.124,
+        "end": 11.65,
+        "text": "imagine I'm especially pleased about the way you've gone about getting it."
+      }
+    ]
+  },
+  "other_mother_secrets_accept_mid_mid_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.717,
+        "text": "Very well. I'll give you what you want. You've been rather clever about this, I'll"
+      },
+      {
+        "start": 5.717,
+        "end": 11.644,
+        "text": "admit. Though I do hope you understand that cleverness isn't always the same thing as"
+      },
+      {
+        "start": 11.644,
+        "end": 12.55,
+        "text": "good manners."
+      }
+    ]
+  },
+  "other_mother_secrets_accept_high_low_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 6.138,
+        "text": "Oh, darling, you didn't have to do all this. You know how much I love giving you"
+      },
+      {
+        "start": 6.138,
+        "end": 12.2,
+        "text": "things. Here, take it. I just wish you hadn't felt the need to bargain with me."
+      }
+    ]
+  },
+  "other_mother_secrets_accept_high_low_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.218,
+        "text": "Very well, sweetheart. You can have what you've asked for. But it makes me terribly"
+      },
+      {
+        "start": 5.218,
+        "end": 10.499,
+        "text": "sad that you'd rather threaten your Other Mother than simply trust her to look after"
+      },
+      {
+        "start": 10.499,
+        "end": 10.75,
+        "text": "you."
+      }
+    ]
+  },
+  "other_mother_secrets_accept_low_high_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.884,
+        "text": "Fine. Take it. You've got what you wanted. But I strongly suggest you think very"
+      },
+      {
+        "start": 5.884,
+        "end": 10.15,
+        "text": "carefully before trying something like this with me again."
+      }
+    ]
+  },
+  "other_mother_secrets_accept_low_high_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 6.202,
+        "text": "There. Satisfied? You've made your little bargain, and I've kept my end of it. I"
+      },
+      {
+        "start": 6.202,
+        "end": 10.0,
+        "text": "wouldn't mistake that for weakness if I were you."
+      }
+    ]
+  },
+  "other_mother_secrets_accept_high_high_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.144,
+        "text": "Oh, darling, you really are becoming quite troublesome. Clever, certainly, but"
+      },
+      {
+        "start": 5.144,
+        "end": 10.75,
+        "text": "troublesome. Here's your reward. I suppose you've earned it in your own peculiar way."
+      }
+    ]
+  },
+  "other_mother_secrets_accept_high_high_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.889,
+        "text": "Very well, sweetheart. You win this little round. Take what you've asked for. Though"
+      },
+      {
+        "start": 4.889,
+        "end": 9.602,
+        "text": "I do wonder how many more secrets you intend to collect before you finally decide"
+      },
+      {
+        "start": 9.602,
+        "end": 10.65,
+        "text": "you've had enough."
+      }
+    ]
+  },
+  "other_mother_secrets_reject_low_low_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.107,
+        "text": "Oh, sweetheart, no. I'm afraid we simply can't do that. I'm rather disappointed that"
+      },
+      {
+        "start": 5.107,
+        "end": 10.274,
+        "text": "you've tried to turn this into some sort of bargain. That's not how families ought to"
+      },
+      {
+        "start": 10.274,
+        "end": 10.7,
+        "text": "behave."
+      }
+    ]
+  },
+  "other_mother_secrets_reject_low_low_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.686,
+        "text": "Darling, I don't think you quite understand what you're asking. I'm not going to give"
+      },
+      {
+        "start": 4.686,
+        "end": 9.262,
+        "text": "you something just because you've found a few things you weren't supposed to. Let's"
+      },
+      {
+        "start": 9.262,
+        "end": 10.75,
+        "text": "forget this unpleasantness."
+      }
+    ]
+  },
+  "other_mother_secrets_reject_mid_mid_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.76,
+        "text": "No, sweetheart. Absolutely not. You've already caused quite enough trouble collecting"
+      },
+      {
+        "start": 5.76,
+        "end": 10.3,
+        "text": "all this information. I'm certainly not going to reward you for it."
+      }
+    ]
+  },
+  "other_mother_secrets_reject_mid_mid_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.947,
+        "text": "Oh, I don't think so. You've been testing my patience lately, and this is a"
+      },
+      {
+        "start": 5.947,
+        "end": 12.45,
+        "text": "particularly poor way of trying to get what you want. I'm afraid the answer is no."
+      }
+    ]
+  },
+  "other_mother_secrets_reject_high_low_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.241,
+        "text": "Oh, darling, please don't do this. I love you very much, but I won't let you use that"
+      },
+      {
+        "start": 5.241,
+        "end": 10.05,
+        "text": "against me. Put these dreadful ideas aside, and we can forget the whole thing."
+      }
+    ]
+  },
+  "other_mother_secrets_reject_high_low_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.704,
+        "text": "Sweetheart, I'm hurt. Truly. After everything I've done to make you happy, you've"
+      },
+      {
+        "start": 5.704,
+        "end": 11.618,
+        "text": "decided to threaten me? No, my love. I'm afraid I cannot give you what you're asking"
+      },
+      {
+        "start": 11.618,
+        "end": 11.9,
+        "text": "for."
+      }
+    ]
+  },
+  "other_mother_secrets_reject_low_high_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.341,
+        "text": "No. And I suggest you stop speaking before you make things considerably worse for"
+      },
+      {
+        "start": 5.341,
+        "end": 10.55,
+        "text": "yourself. You have absolutely no idea how much patience I've already shown you."
+      }
+    ]
+  },
+  "other_mother_secrets_reject_low_high_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 6.248,
+        "text": "How dare you. You come into my world, steal my secrets, and think you can make"
+      },
+      {
+        "start": 6.248,
+        "end": 12.657,
+        "text": "demands of me? No. You will get nothing, and we are going to have a very serious"
+      },
+      {
+        "start": 12.657,
+        "end": 15.3,
+        "text": "conversation about your behavior."
+      }
+    ]
+  },
+  "other_mother_secrets_reject_high_high_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.279,
+        "text": "Oh, darling. I was wondering when you'd finally push your luck too far. You've"
+      },
+      {
+        "start": 5.279,
+        "end": 11.032,
+        "text": "learned so much about me, haven't you? But knowing my secrets doesn't mean you get to"
+      },
+      {
+        "start": 11.032,
+        "end": 12.25,
+        "text": "make my decisions."
+      }
+    ]
+  },
+  "other_mother_secrets_reject_high_high_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.403,
+        "text": "No, sweetheart. Not this time. You may know things I wish you didn't, but don't"
+      },
+      {
+        "start": 5.403,
+        "end": 11.079,
+        "text": "confuse that with having power over me. I think you've forgotten whose world you're"
+      },
+      {
+        "start": 11.079,
+        "end": 11.9,
+        "text": "standing in."
+      }
+    ]
+  },
+  "other_mother_tutorial_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.649,
+        "text": "While you’re here, darling, you’re free to go home whenever you like. You can crawl"
+      },
+      {
+        "start": 4.649,
+        "end": 9.41,
+        "text": "back through your little door, or simply go to bed and we’ll send you home ourselves."
+      },
+      {
+        "start": 9.41,
+        "end": 13.611,
+        "text": "But I do have plenty planned for you, so try not to wander off on your own."
+      },
+      {
+        "start": 13.611,
+        "end": 18.26,
+        "text": "Especially not too far from the house. There’s really nothing out there you need to"
+      },
+      {
+        "start": 18.26,
+        "end": 19.1,
+        "text": "be looking for."
+      }
+    ]
+  },
+  "other_mother_tutorial_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.4,
+        "text": "Of course, you don’t have to stay any longer than you want. The little door will take"
+      },
+      {
+        "start": 4.4,
+        "end": 8.8,
+        "text": "you straight home, and if you get tired, you can always sleep here instead. But while"
+      },
+      {
+        "start": 8.8,
+        "end": 12.837,
+        "text": "you are staying with us, I’d much rather you enjoy what we’ve prepared than go"
+      },
+      {
+        "start": 12.837,
+        "end": 16.15,
+        "text": "wandering around by yourself. Some places are better left alone."
+      }
+    ]
+  },
+  "other_mother_tutorial_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.154,
+        "text": "Now remember, sweetheart, you can leave whenever you’ve had enough. Crawl back"
+      },
+      {
+        "start": 4.154,
+        "end": 8.627,
+        "text": "through your little door, or climb into bed and we’ll tuck you in before sending you"
+      },
+      {
+        "start": 8.627,
+        "end": 12.994,
+        "text": "home. Until then, stay close and enjoy yourself. I’ve gone through an awful lot of"
+      },
+      {
+        "start": 12.994,
+        "end": 17.467,
+        "text": "trouble for you, and I wouldn’t want you spoiling the fun by poking around where you"
+      },
+      {
+        "start": 17.467,
+        "end": 18.0,
+        "text": "shouldn’t."
+      }
+    ]
+  },
+  "other_mother_tutorial_04": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.178,
+        "text": "You’re never trapped here, darling. If you want to go home, your little door is right"
+      },
+      {
+        "start": 4.178,
+        "end": 7.963,
+        "text": "where you left it, and sleeping here will take you home too. But while you’re"
+      },
+      {
+        "start": 7.963,
+        "end": 12.042,
+        "text": "visiting, behave yourself and don’t run off exploring. Your Other Father and I have"
+      },
+      {
+        "start": 12.042,
+        "end": 14.5,
+        "text": "made more than enough for you to enjoy right here."
+      }
+    ]
+  },
+  "other_mother_loot_weapons_before_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.406,
+        "text": "Oh, sweetheart, I noticed you've been getting yourself into all sorts of dangerous"
+      },
+      {
+        "start": 4.406,
+        "end": 8.544,
+        "text": "situations back home. So I thought I'd give you something to keep those nasty"
+      },
+      {
+        "start": 8.544,
+        "end": 9.35,
+        "text": "creatures away."
+      }
+    ]
+  },
+  "other_mother_loot_weapons_before_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.095,
+        "text": "Your Other Father and I have been putting together a few little things for you."
+      },
+      {
+        "start": 4.095,
+        "end": 8.085,
+        "text": "They're rather sharp, so do be careful. I'd hate for you to hurt those lovely"
+      },
+      {
+        "start": 8.085,
+        "end": 8.5,
+        "text": "fingers."
+      }
+    ]
+  },
+  "other_mother_loot_weapons_before_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.978,
+        "text": "You know, darling, it worries me terribly when I think of you out there fighting"
+      },
+      {
+        "start": 4.978,
+        "end": 9.893,
+        "text": "those awful monsters. Here, I've made sure you'll have something much better to"
+      },
+      {
+        "start": 9.893,
+        "end": 11.2,
+        "text": "defend yourself with."
+      }
+    ]
+  },
+  "other_mother_loot_weapons_after_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.156,
+        "text": "There now. Doesn't that feel better? Nothing should be able to give you much trouble"
+      },
+      {
+        "start": 5.156,
+        "end": 7.55,
+        "text": "with something like that in your hands."
+      }
+    ]
+  },
+  "other_mother_loot_weapons_after_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.725,
+        "text": "Oh, look at you! Quite the little warrior, aren't you? Just promise me you'll be"
+      },
+      {
+        "start": 4.725,
+        "end": 8.15,
+        "text": "careful. I'd be awfully upset if anything happened to you."
+      }
+    ]
+  },
+  "other_mother_loot_weapons_after_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.857,
+        "text": "Much better than those dreadful old weapons you've been using, wouldn't you say? I do"
+      },
+      {
+        "start": 4.857,
+        "end": 8.0,
+        "text": "wish you'd let me take care of these things more often."
+      }
+    ]
+  },
+  "other_mother_loot_armor_before_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.933,
+        "text": "Come here, sweetheart. I've been thinking about how terribly exposed you are out"
+      },
+      {
+        "start": 4.933,
+        "end": 10.05,
+        "text": "there, running around without anything proper to protect you. I made you something."
+      }
+    ]
+  },
+  "other_mother_loot_armor_before_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.389,
+        "text": "I've noticed you've been coming home with an awful lot of bumps and bruises lately."
+      },
+      {
+        "start": 5.389,
+        "end": 9.35,
+        "text": "Well, I simply couldn't stand the thought of that continuing."
+      }
+    ]
+  },
+  "other_mother_loot_armor_before_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.704,
+        "text": "Your Other Father thinks I've been fussing over you too much, but I don't care. A"
+      },
+      {
+        "start": 4.704,
+        "end": 9.35,
+        "text": "mother ought to make sure her little one is properly protected, don't you think?"
+      }
+    ]
+  },
+  "other_mother_loot_armor_after_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.876,
+        "text": "Oh, that suits you beautifully! And it's ever so much stronger than it looks. I"
+      },
+      {
+        "start": 4.876,
+        "end": 7.9,
+        "text": "wouldn't dream of letting you wear anything less."
+      }
+    ]
+  },
+  "other_mother_loot_armor_after_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.424,
+        "text": "There we are. All safe and sound. Now, I know it won't stop you getting into trouble,"
+      },
+      {
+        "start": 5.424,
+        "end": 8.55,
+        "text": "but at least I won't have to worry quite so much."
+      }
+    ]
+  },
+  "other_mother_loot_armor_after_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.506,
+        "text": "Just look at how perfectly it fits. I made every little piece especially for you,"
+      },
+      {
+        "start": 4.506,
+        "end": 7.9,
+        "text": "darling. Nobody else could have made something quite like it."
+      }
+    ]
+  },
+  "other_mother_loot_tools_before_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.73,
+        "text": "Oh, darling, you do spend an awful lot of time digging and chopping and working"
+      },
+      {
+        "start": 4.73,
+        "end": 9.4,
+        "text": "yourself half to death. I thought perhaps I could make things a little easier."
+      }
+    ]
+  },
+  "other_mother_loot_tools_before_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.123,
+        "text": "I've been watching how hard you work on all those little projects of yours. It's"
+      },
+      {
+        "start": 4.123,
+        "end": 8.35,
+        "text": "terribly impressive, of course, but you really shouldn't have to struggle so much."
+      }
+    ]
+  },
+  "other_mother_loot_tools_before_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.017,
+        "text": "Your Other Father made a few things for you in his workshop. Well, I helped him with"
+      },
+      {
+        "start": 5.017,
+        "end": 8.6,
+        "text": "the important parts. I think you'll find them rather useful."
+      }
+    ]
+  },
+  "other_mother_loot_tools_after_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 6.3,
+        "text": "There! Now you can get twice as much done without all that dreadful effort. Isn't it"
+      },
+      {
+        "start": 6.3,
+        "end": 9.6,
+        "text": "wonderful when someone thinks ahead for you?"
+      }
+    ]
+  },
+  "other_mother_loot_tools_after_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.538,
+        "text": "Oh, I knew you'd like those. They're so much nicer than the worn-out things you've"
+      },
+      {
+        "start": 4.538,
+        "end": 5.7,
+        "text": "been carrying around."
+      }
+    ]
+  },
+  "other_mother_loot_tools_after_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.031,
+        "text": "Just think of all the things you can make now, sweetheart. And whenever you need"
+      },
+      {
+        "start": 4.031,
+        "end": 6.5,
+        "text": "something better, you know exactly where to come."
+      }
+    ]
+  },
+  "other_mother_loot_building_materials_before_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.263,
+        "text": "I've been thinking about that little house of yours. It's coming along nicely, but I"
+      },
+      {
+        "start": 4.263,
+        "end": 6.75,
+        "text": "thought it could use a few more beautiful things."
+      }
+    ]
+  },
+  "other_mother_loot_building_materials_before_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.199,
+        "text": "Oh, sweetheart, you shouldn't have to spend all day digging up stones and chopping"
+      },
+      {
+        "start": 4.199,
+        "end": 8.45,
+        "text": "down trees just to make yourself a lovely home. I've gathered a few things for you."
+      }
+    ]
+  },
+  "other_mother_loot_building_materials_before_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.934,
+        "text": "Your Other Father and I were talking about all those wonderful buildings you could"
+      },
+      {
+        "start": 5.934,
+        "end": 11.0,
+        "text": "make. So naturally, I went ahead and collected some materials for you."
+      }
+    ]
+  },
+  "other_mother_loot_building_materials_after_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.41,
+        "text": "There you are! Plenty to work with now. I can't wait to see what you build, darling."
+      },
+      {
+        "start": 5.41,
+        "end": 8.05,
+        "text": "Perhaps something as pretty as our house."
+      }
+    ]
+  },
+  "other_mother_loot_building_materials_after_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.099,
+        "text": "Oh, imagine what you could make with all of that! A beautiful little cottage,"
+      },
+      {
+        "start": 5.099,
+        "end": 10.0,
+        "text": "perhaps? Though I suppose you've already got a perfectly lovely home here."
+      }
+    ]
+  },
+  "other_mother_loot_building_materials_after_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.398,
+        "text": "Take every last piece, sweetheart. There are plenty more where those came from. You"
+      },
+      {
+        "start": 5.398,
+        "end": 9.3,
+        "text": "really needn't spend so much time gathering things yourself."
+      }
+    ]
+  },
+  "other_mother_loot_redstone_before_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.682,
+        "text": "I've noticed you like making those clever little contraptions of yours. All those"
+      },
+      {
+        "start": 4.682,
+        "end": 9.075,
+        "text": "wires and switches and moving parts. I thought I'd bring you a few things to"
+      },
+      {
+        "start": 9.075,
+        "end": 10.0,
+        "text": "experiment with."
+      }
+    ]
+  },
+  "other_mother_loot_redstone_before_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.322,
+        "text": "Your Other Father has been tinkering away in his workshop again. He made the most"
+      },
+      {
+        "start": 4.322,
+        "end": 8.75,
+        "text": "marvelous little machines, and I thought you might enjoy having some of the pieces."
+      }
+    ]
+  },
+  "other_mother_loot_redstone_before_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.101,
+        "text": "Oh, darling, why do everything by hand when you can have a machine do it for you?"
+      },
+      {
+        "start": 4.101,
+        "end": 8.0,
+        "text": "I've found some wonderful things that might save you an awful lot of trouble."
+      }
+    ]
+  },
+  "other_mother_loot_redstone_after_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.051,
+        "text": "There! Now you can make all sorts of clever little inventions. Just be sure they"
+      },
+      {
+        "start": 5.051,
+        "end": 7.45,
+        "text": "don't make too much noise, sweetheart."
+      }
+    ]
+  },
+  "other_mother_loot_redstone_after_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.434,
+        "text": "I can already imagine the wonderful contraptions you'll build with those. Your Other"
+      },
+      {
+        "start": 5.434,
+        "end": 9.25,
+        "text": "Father will be so pleased to hear what you've come up with."
+      }
+    ]
+  },
+  "other_mother_loot_redstone_after_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.83,
+        "text": "Isn't it lovely when things take care of themselves? No more running about pressing"
+      },
+      {
+        "start": 4.83,
+        "end": 9.66,
+        "text": "buttons and pulling levers all day. Though I must say, I've always been rather fond"
+      },
+      {
+        "start": 9.66,
+        "end": 10.3,
+        "text": "of buttons."
+      }
+    ]
+  },
+  "other_mother_loot_clothing_before_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.339,
+        "text": "Oh, sweetheart, I've been meaning to say something about those clothes of yours."
+      },
+      {
+        "start": 4.339,
+        "end": 8.625,
+        "text": "They're looking a little tired, don't you think? I've picked out something much"
+      },
+      {
+        "start": 8.625,
+        "end": 8.95,
+        "text": "nicer."
+      }
+    ]
+  },
+  "other_mother_loot_clothing_before_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.757,
+        "text": "I was going through my sewing things earlier, and I simply couldn't resist making you"
+      },
+      {
+        "start": 4.757,
+        "end": 8.45,
+        "text": "a few new outfits. I think you'll look absolutely darling in them."
+      }
+    ]
+  },
+  "other_mother_loot_clothing_before_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.605,
+        "text": "You know, I've always thought you deserved something a little more special to wear."
+      },
+      {
+        "start": 4.605,
+        "end": 9.1,
+        "text": "Something made just for you, rather than those ordinary things everyone else has."
+      }
+    ]
+  },
+  "other_mother_loot_clothing_after_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.168,
+        "text": "Oh, just look at you! Absolutely precious. I knew those colors would suit you. A"
+      },
+      {
+        "start": 5.168,
+        "end": 7.3,
+        "text": "mother always knows these things."
+      }
+    ]
+  },
+  "other_mother_loot_clothing_after_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.476,
+        "text": "There we are! Doesn't that feel lovely? I made sure every stitch was perfect. I"
+      },
+      {
+        "start": 5.476,
+        "end": 10.05,
+        "text": "wouldn't want my darling walking around in anything uncomfortable."
+      }
+    ]
+  },
+  "other_mother_loot_clothing_after_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.327,
+        "text": "Oh, you look wonderful, sweetheart. You really ought to wear those more often. I'd"
+      },
+      {
+        "start": 5.327,
+        "end": 8.9,
+        "text": "love to see you looking so lovely every time you visit."
+      }
+    ]
+  },
+  "other_mother_loot_music_before_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.775,
+        "text": "Oh, darling, I've noticed how quiet things can get in that little world of yours. I"
+      },
+      {
+        "start": 4.775,
+        "end": 8.4,
+        "text": "thought perhaps you could use something beautiful to listen to."
+      }
+    ]
+  },
+  "other_mother_loot_music_before_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.395,
+        "text": "Your Other Father has been playing the most wonderful music lately, and it gave me an"
+      },
+      {
+        "start": 5.395,
+        "end": 8.95,
+        "text": "idea. Why shouldn't you have a little music of your own?"
+      }
+    ]
+  },
+  "other_mother_loot_music_before_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.347,
+        "text": "I found some lovely old melodies tucked away, and I thought of you immediately."
+      },
+      {
+        "start": 4.347,
+        "end": 8.97,
+        "text": "There's something about a familiar song that makes a place feel like home, don't you"
+      },
+      {
+        "start": 8.97,
+        "end": 9.3,
+        "text": "think?"
+      }
+    ]
+  },
+  "other_mother_loot_music_after_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.867,
+        "text": "There you are. Now you'll have something lovely to listen to whenever things get a"
+      },
+      {
+        "start": 4.867,
+        "end": 9.2,
+        "text": "little lonely. Just close your eyes and imagine you're back here with us."
+      }
+    ]
+  },
+  "other_mother_loot_music_after_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.862,
+        "text": "Oh, I do hope you enjoy those. Your Other Father can be rather particular about"
+      },
+      {
+        "start": 4.862,
+        "end": 8.0,
+        "text": "music, but I think these are some of his very best."
+      }
+    ]
+  },
+  "other_mother_loot_music_after_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.765,
+        "text": "Isn't that a pretty little tune? I thought you might like something to remind you of"
+      },
+      {
+        "start": 4.765,
+        "end": 8.85,
+        "text": "us when you're away. It's always nice to have a little reminder of home."
+      }
+    ]
+  },
+  "other_mother_loot_mystery_before_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.915,
+        "text": "Oh, sweetheart, I've got a surprise for you today! No peeking now. I went through an"
+      },
+      {
+        "start": 5.915,
+        "end": 10.0,
+        "text": "awful lot of trouble to find something you'd never expect."
+      }
+    ]
+  },
+  "other_mother_loot_mystery_before_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.649,
+        "text": "I've been keeping a little secret from you, darling. Nothing dreadful, of course!"
+      },
+      {
+        "start": 4.649,
+        "end": 8.15,
+        "text": "Just something special I've been saving for the right moment."
+      }
+    ]
+  },
+  "other_mother_loot_mystery_before_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.04,
+        "text": "Now, I've got something rather interesting for you. I won't tell you what it is just"
+      },
+      {
+        "start": 5.04,
+        "end": 7.2,
+        "text": "yet. Where would the fun be in that?"
+      }
+    ]
+  },
+  "other_mother_loot_mystery_after_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 6.868,
+        "text": "Surprise! Oh, I do love that look on your face. I knew you wouldn't be expecting"
+      },
+      {
+        "start": 6.868,
+        "end": 9.1,
+        "text": "something quite like that."
+      }
+    ]
+  },
+  "other_mother_loot_mystery_after_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.217,
+        "text": "Well? What do you think, sweetheart? I had such a difficult time choosing, but"
+      },
+      {
+        "start": 4.217,
+        "end": 6.65,
+        "text": "something told me that one was meant for you."
+      }
+    ]
+  },
+  "other_mother_loot_mystery_after_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.928,
+        "text": "Oh, isn't that exciting? You never quite know what you'll find when you visit me, do"
+      },
+      {
+        "start": 4.928,
+        "end": 9.857,
+        "text": "you? I suppose you'll just have to keep coming back to see what else I've got hidden"
+      },
+      {
+        "start": 9.857,
+        "end": 10.15,
+        "text": "away."
+      }
+    ]
+  },
+  "other_mother_welcome_low_trust_low_suspicion_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.398,
+        "text": "There you are! Come in, come in. We’ve been working all day to make everything"
+      },
+      {
+        "start": 4.398,
+        "end": 5.3,
+        "text": "perfect for you."
+      }
+    ]
+  },
+  "other_mother_welcome_low_trust_low_suspicion_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.25,
+        "text": "Oh, I’m so happy you came back. You haven’t even seen half of the wonderful things we"
+      },
+      {
+        "start": 5.25,
+        "end": 6.3,
+        "text": "have planned yet."
+      }
+    ]
+  },
+  "other_mother_welcome_low_trust_low_suspicion_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.024,
+        "text": "Welcome, darling! Don’t just stand there. Come see what your Other Father and I made"
+      },
+      {
+        "start": 5.024,
+        "end": 6.1,
+        "text": "for you this time."
+      }
+    ]
+  },
+  "other_mother_welcome_mid_trust_mid_suspicion_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 7.25,
+        "text": "You’re back. Good. I was beginning to think I’d have to send someone looking for you."
+      }
+    ]
+  },
+  "other_mother_welcome_mid_trust_mid_suspicion_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.271,
+        "text": "There you are, sweetheart. I’ve already got everything ready, so I hope you didn’t"
+      },
+      {
+        "start": 4.271,
+        "end": 6.25,
+        "text": "come here just to wander around again."
+      }
+    ]
+  },
+  "other_mother_welcome_mid_trust_mid_suspicion_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 6.538,
+        "text": "I wondered when you’d arrive. You’ve become quite comfortable here lately… and quite"
+      },
+      {
+        "start": 6.538,
+        "end": 7.55,
+        "text": "curious, too."
+      }
+    ]
+  },
+  "other_mother_welcome_high_trust_low_suspicion_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 3.8,
+        "text": "Welcome home, darling. I left everything just the way you like it."
+      }
+    ]
+  },
+  "other_mother_welcome_high_trust_low_suspicion_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 6.032,
+        "text": "There’s my favorite little troublemaker. I knew you wouldn’t stay away from home for"
+      },
+      {
+        "start": 6.032,
+        "end": 6.75,
+        "text": "very long."
+      }
+    ]
+  },
+  "other_mother_welcome_high_trust_low_suspicion_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.803,
+        "text": "You don’t need to knock anymore, sweetheart. This is your home too, whether you’ve"
+      },
+      {
+        "start": 4.803,
+        "end": 6.15,
+        "text": "realized it yet or not."
+      }
+    ]
+  },
+  "other_mother_welcome_high_suspicion_low_trust_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.65,
+        "text": "Well… you came back. I wasn’t sure you would after your behavior last time."
+      }
+    ]
+  },
+  "other_mother_welcome_high_suspicion_low_trust_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 7.128,
+        "text": "Welcome, sweetheart. I do hope today you’ll spend more time enjoying yourself and"
+      },
+      {
+        "start": 7.128,
+        "end": 11.0,
+        "text": "less time poking around where you shouldn’t."
+      }
+    ]
+  },
+  "other_mother_welcome_high_suspicion_low_trust_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 7.547,
+        "text": "There you are. Let’s have a pleasant visit this time, shall we? I’d hate for there to"
+      },
+      {
+        "start": 7.547,
+        "end": 10.3,
+        "text": "be any more… misunderstandings."
+      }
+    ]
+  },
+  "other_mother_welcome_high_trust_high_suspicion_01": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.515,
+        "text": "There you are, darling. You keep coming back, even after everything you’ve seen."
+      },
+      {
+        "start": 5.515,
+        "end": 7.1,
+        "text": "Isn’t that interesting?"
+      }
+    ]
+  },
+  "other_mother_welcome_high_trust_high_suspicion_02": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.768,
+        "text": "Welcome home. You know so many of my little secrets now, and yet you still can’t seem"
+      },
+      {
+        "start": 5.768,
+        "end": 6.65,
+        "text": "to stay away."
+      }
+    ]
+  },
+  "other_mother_welcome_high_trust_high_suspicion_03": {
+    "speaker": "Other Mother",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.14,
+        "text": "I was expecting you. You’ve been terribly curious lately… but I suppose that doesn’t"
+      },
+      {
+        "start": 5.14,
+        "end": 8.2,
+        "text": "matter if you’ve finally decided where you belong."
+      }
+    ]
+  },
+  "other_father_activity_other_village_intro": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.088,
+        "text": "Ah, there you are! Welcome to our little village. I’ve brought you twenty tokens, and"
+      },
+      {
+        "start": 5.088,
+        "end": 9.877,
+        "text": "each one lets you collect a gift from any villager you choose. Some of them have"
+      },
+      {
+        "start": 9.877,
+        "end": 14.665,
+        "text": "wonderful things, some... well, not quite so wonderful. You won’t know until you"
+      },
+      {
+        "start": 14.665,
+        "end": 17.0,
+        "text": "spend one, though, so choose carefully."
+      }
+    ]
+  },
+  "other_father_activity_other_woodland_mansion_intro": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.592,
+        "text": "Ah, perfect timing. One of these rooms contains the jackpot, and I’ve got exactly one"
+      },
+      {
+        "start": 5.592,
+        "end": 11.118,
+        "text": "key for you. The mansion is full of clues, but none of them will simply hand you the"
+      },
+      {
+        "start": 11.118,
+        "end": 16.513,
+        "text": "answer—you’ll have to compare what you find and work it out for yourself. Pick the"
+      },
+      {
+        "start": 16.513,
+        "end": 20.0,
+        "text": "wrong door and, well... I hope you enjoy empty rooms."
+      }
+    ]
+  },
+  "other_father_activity_other_desert_temple_intro": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.053,
+        "text": "Ah, welcome! The treasure is waiting at the very bottom of the temple, but getting"
+      },
+      {
+        "start": 5.053,
+        "end": 10.106,
+        "text": "there takes a good memory. Each chamber will show you the one safe path across its"
+      },
+      {
+        "start": 10.106,
+        "end": 15.221,
+        "text": "pressure plates, and then the markings disappear. Follow what you remember, because"
+      },
+      {
+        "start": 15.221,
+        "end": 20.151,
+        "text": "one wrong step means you’re finished. Survive all five chambers and you can take"
+      },
+      {
+        "start": 20.151,
+        "end": 22.0,
+        "text": "everything in the final vault."
+      }
+    ]
+  },
+  "other_father_activity_magic_show_intro": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.962,
+        "text": "Ah, our guest of honor has arrived! Here’s how tonight’s show works: watch the stage"
+      },
+      {
+        "start": 5.962,
+        "end": 11.923,
+        "text": "very carefully, because once those curtains close, I’m going to change something. It"
+      },
+      {
+        "start": 11.923,
+        "end": 17.956,
+        "text": "could be an object, a color, a creature—anything at all. When the curtains open, find"
+      },
+      {
+        "start": 17.956,
+        "end": 23.776,
+        "text": "the difference and I’ll give you a token. There are twenty scenes in the show, and"
+      },
+      {
+        "start": 23.776,
+        "end": 27.75,
+        "text": "every token you earn can be traded for prizes afterward."
+      }
+    ]
+  },
+  "other_father_activity_dream_parkour_intro": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.53,
+        "text": "Ah, ready for a climb? You’ve only got a few minutes, and this course goes much"
+      },
+      {
+        "start": 4.53,
+        "end": 9.118,
+        "text": "higher than it looks. Keep moving upward—the farther you make it, the better the"
+      },
+      {
+        "start": 9.118,
+        "end": 13.534,
+        "text": "prize waiting for you at the end. Fall if you must, just get back up and keep"
+      },
+      {
+        "start": 13.534,
+        "end": 14.05,
+        "text": "climbing."
+      }
+    ]
+  },
+  "other_father_activity_grand_feast_intro": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.87,
+        "text": "Ah, you made it! Here’s how our little feast works: every few moments, fresh dishes"
+      },
+      {
+        "start": 4.87,
+        "end": 9.857,
+        "text": "will appear all across the table. The villagers will be after them too, so if you see"
+      },
+      {
+        "start": 9.857,
+        "end": 14.609,
+        "text": "something you like, you’d better get to it before they do. Whatever you grab goes"
+      },
+      {
+        "start": 14.609,
+        "end": 19.244,
+        "text": "straight into your feast basket, and by the later courses, the really good food"
+      },
+      {
+        "start": 19.244,
+        "end": 20.3,
+        "text": "starts coming out."
+      }
+    ]
+  },
+  "other_father_activity_mice_circus_intro": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.26,
+        "text": "Ah, perfect timing! The mice have been practicing all day for this. You’ll see races,"
+      },
+      {
+        "start": 5.26,
+        "end": 10.457,
+        "text": "acrobatics, cannon jumps, and more before they all face off in the final event. Keep"
+      },
+      {
+        "start": 10.457,
+        "end": 15.717,
+        "text": "an eye on whichever mouse catches your attention—you might be surprised who comes out"
+      },
+      {
+        "start": 15.717,
+        "end": 16.15,
+        "text": "on top."
+      }
+    ]
+  },
+  "other_father_activity_carnival_intro": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.52,
+        "text": "Ah, welcome! We’ve got games all over the carnival tonight, and I’ve brought you a"
+      },
+      {
+        "start": 4.52,
+        "end": 9.206,
+        "text": "handful of tokens to enjoy them with. Spend a token whenever you want to play, and if"
+      },
+      {
+        "start": 9.206,
+        "end": 13.836,
+        "text": "you do well, you’ll walk away with a prize. Pick whichever games catch your eye—just"
+      },
+      {
+        "start": 13.836,
+        "end": 17.75,
+        "text": "remember, once those tokens are gone, your night at the midway is over."
+      }
+    ]
+  },
+  "other_father_activity_magic_garden_intro": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.654,
+        "text": "Ah, there you are! Welcome to the garden. It’s lovely from down here, of course, but"
+      },
+      {
+        "start": 5.654,
+        "end": 10.5,
+        "text": "you haven’t really seen it until you’ve seen the whole thing from above."
+      }
+    ]
+  },
+  "other_father_activity_music_festival_intro": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.528,
+        "text": "Welcome! Tonight you’re not just here to listen—you get a stage of your own. When"
+      },
+      {
+        "start": 4.528,
+        "end": 9.113,
+        "text": "you’re ready, start the performance and follow the keys as they appear. Every good"
+      },
+      {
+        "start": 9.113,
+        "end": 13.697,
+        "text": "streak draws a bigger crowd, and the bigger the crowd, the more they’ll throw into"
+      },
+      {
+        "start": 13.697,
+        "end": 18.281,
+        "text": "your prize pool. Wrong notes send people walking, so keep them entertained for all"
+      },
+      {
+        "start": 18.281,
+        "end": 21.3,
+        "text": "three minutes and whatever they leave behind is yours."
+      }
+    ]
+  },
+  "other_father_activity_shopping_mall_intro": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.673,
+        "text": "Ah, welcome! Here—one thousand shopping tokens, all yours. The mall is full of"
+      },
+      {
+        "start": 4.673,
+        "end": 9.646,
+        "text": "different stores, and each one has something a little different waiting inside. You"
+      },
+      {
+        "start": 9.646,
+        "end": 14.739,
+        "text": "can wander wherever you like and buy whatever catches your eye, but once those tokens"
+      },
+      {
+        "start": 14.739,
+        "end": 19.772,
+        "text": "are gone, that’s the end of your shopping trip. So try not to spend the whole lot in"
+      },
+      {
+        "start": 19.772,
+        "end": 21.15,
+        "text": "the first shop you see."
+      }
+    ]
+  },
+  "other_father_activity_snowball_battle_intro": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.364,
+        "text": "Ready for a fight? Grab your snowballs and keep moving. Every hit knocks down a"
+      },
+      {
+        "start": 4.364,
+        "end": 8.784,
+        "text": "little health, and once someone’s health reaches zero, they’re eliminated. Yours"
+      },
+      {
+        "start": 8.784,
+        "end": 13.259,
+        "text": "works exactly the same way, so don’t spend too much time standing still. Take out"
+      },
+      {
+        "start": 13.259,
+        "end": 16.85,
+        "text": "everyone else, survive to the end, and the winner gets the prize."
+      }
+    ]
+  },
+  "other_father_activity_cake_making_contest_intro": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.472,
+        "text": "Ah, ready to bake? You and four other contestants have exactly two minutes to put"
+      },
+      {
+        "start": 5.472,
+        "end": 11.012,
+        "text": "together your best cake. Choose your flavors, toppings, and decorations carefully,"
+      },
+      {
+        "start": 11.012,
+        "end": 16.755,
+        "text": "because once the timer ends, the judges will compare all five cakes. Make theirs look"
+      },
+      {
+        "start": 16.755,
+        "end": 20.2,
+        "text": "ordinary next to yours, and the prize is all yours."
+      }
+    ]
+  },
+  "other_father_activity_fishing_contest_intro": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.662,
+        "text": "Ah, ready to fish? You and the other contestants have three minutes to catch whatever"
+      },
+      {
+        "start": 5.662,
+        "end": 11.258,
+        "text": "the water decides to give you. Some catches won’t be worth much, and others could be"
+      },
+      {
+        "start": 11.258,
+        "end": 16.787,
+        "text": "surprisingly valuable, so keep that line moving. At the end, we’ll add up the value"
+      },
+      {
+        "start": 16.787,
+        "end": 21.05,
+        "text": "of everything you caught, and whoever has the richest haul wins."
+      }
+    ]
+  },
+  "other_father_activity_archery_contest_intro": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.14,
+        "text": "Ah, ready to test your aim? There are targets all across the range, but I’ve only"
+      },
+      {
+        "start": 5.14,
+        "end": 10.471,
+        "text": "given you so many arrows to work with. Take your time, line up your shots, and bring"
+      },
+      {
+        "start": 10.471,
+        "end": 15.865,
+        "text": "every target down. Clear the whole course before your quiver is empty, and you’ll win"
+      },
+      {
+        "start": 15.865,
+        "end": 16.5,
+        "text": "the prize."
+      }
+    ]
+  },
+  "other_father_activity_ice_boat_race_intro": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.699,
+        "text": "Ah, ready to race? Grab a boat and take your place at the starting line. You’ll have"
+      },
+      {
+        "start": 5.699,
+        "end": 10.923,
+        "text": "plenty of competition out there, and this ice can send you spinning if you’re"
+      },
+      {
+        "start": 10.923,
+        "end": 16.35,
+        "text": "careless. Beat everyone else to the finish and you’ll take home the grand prize."
+      }
+    ]
+  },
+  "other_father_activity_garden_maze_intro": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.696,
+        "text": "Ah, ready to get lost? This garden is quite a bit bigger on the inside than it looks."
+      },
+      {
+        "start": 4.696,
+        "end": 9.226,
+        "text": "You’ve got until the timer runs out to find your way through and reach the finish."
+      },
+      {
+        "start": 9.226,
+        "end": 13.921,
+        "text": "Take too many wrong turns and you may run out of time, but make it to the end and the"
+      },
+      {
+        "start": 13.921,
+        "end": 14.75,
+        "text": "prize is yours."
+      }
+    ]
+  },
+  "other_father_activity_treasure_hunt_intro": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.407,
+        "text": "Ah, ready for a hunt? Somewhere out there is a rather valuable treasure, but you"
+      },
+      {
+        "start": 4.407,
+        "end": 8.87,
+        "text": "won’t find it without following the clues. Each one will lead you to another, and"
+      },
+      {
+        "start": 8.87,
+        "end": 13.332,
+        "text": "some of them may take a bit of thinking. Watch out for fake chests and misleading"
+      },
+      {
+        "start": 13.332,
+        "end": 17.85,
+        "text": "spots along the way. Find the final treasure before time runs out, and it’s yours."
+      }
+    ]
+  },
+  "other_father_activity_other_mineshaft_intro": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.8,
+        "text": "Ah, ready to do some mining? The tunnels are full of ore, and for the next few"
+      },
+      {
+        "start": 4.8,
+        "end": 9.846,
+        "text": "minutes you can take as much of it as you’re able to reach. Coal and iron are easy"
+      },
+      {
+        "start": 9.846,
+        "end": 15.077,
+        "text": "enough to find, but the really valuable veins are hidden deeper in. Whatever you mine"
+      },
+      {
+        "start": 15.077,
+        "end": 17.6,
+        "text": "before the timer ends goes home with you."
+      }
+    ]
+  },
+  "other_father_activity_other_ocean_monument_intro": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.503,
+        "text": "Ah, ready for a swim? The Guardians along this track are going to try their very best"
+      },
+      {
+        "start": 4.503,
+        "end": 8.9,
+        "text": "to keep those lasers on you. Don’t let them finish charging—duck behind prismarine,"
+      },
+      {
+        "start": 8.9,
+        "end": 13.086,
+        "text": "change direction, and keep pushing forward. Make it through the entire monument"
+      },
+      {
+        "start": 13.086,
+        "end": 16.9,
+        "text": "without getting fully blasted, and you’ll earn the reward at the finish."
+      }
+    ]
+  },
+  "other_father_activity_other_nether_fortress_intro": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.214,
+        "text": "Ah, ready for a drop? There’s a pool of lava waiting far below you, but getting there"
+      },
+      {
+        "start": 5.214,
+        "end": 10.182,
+        "text": "is the tricky part. Dodge the fortress bridges, chains, blocks, and whatever else"
+      },
+      {
+        "start": 10.182,
+        "end": 15.089,
+        "text": "gets in your way as you fall. Reach the lava without crashing into anything, and"
+      },
+      {
+        "start": 15.089,
+        "end": 16.5,
+        "text": "you’ll earn the reward."
+      }
+    ]
+  },
+  "other_father_activity_other_end_city_intro": {
+    "speaker": "Other Father",
+    "cues": [
+      {
+        "start": 0,
+        "end": 5.404,
+        "text": "Ah, this one’s a little strange. You’re sealed inside the room, and the only way out"
+      },
+      {
+        "start": 5.404,
+        "end": 10.487,
+        "text": "is through Chorus Fruit. Every bite will teleport you somewhere nearby, so keep"
+      },
+      {
+        "start": 10.487,
+        "end": 15.698,
+        "text": "eating and use a little luck—and maybe a little patience—until one of those jumps"
+      },
+      {
+        "start": 15.698,
+        "end": 18.4,
+        "text": "puts you outside. Make it out and you win."
+      }
+    ]
+  }
+}

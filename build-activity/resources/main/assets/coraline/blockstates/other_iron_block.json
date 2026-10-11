@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "coraline:block/other_iron_block"
+    }
+  }
+}

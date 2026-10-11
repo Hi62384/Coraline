@@ -1,0 +1,11 @@
+The Other Mother welcome, loot, state-extra, tutorial, activity proposal, activity warning, activity arrival, activity completion, secrets confrontation, blackmail and scolding clips are synthetic voice-cloned audio generated locally
+with IndexTTS2 from the project's supplied Sample.wav. They are not original
+recordings by the reference speaker. No model weights are included in this JAR.
+
+IndexTTS2: https://github.com/index-tts/index-tts
+The accompanying model-use license is INDEXTTS_AUDIO_LICENSE.txt.
+
+Any modifications made to the original model in this Derivative Work are not
+endorsed, warranted, or guaranteed by the original right-holder of the original
+model, and the original right-holder disclaims all liability related to this
+Derivative Work.
