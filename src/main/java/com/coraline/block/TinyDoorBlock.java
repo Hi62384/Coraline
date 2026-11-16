@@ -23,7 +23,7 @@ public final class TinyDoorBlock extends BaseEntityBlock implements LiquidBlockC
                 door.refreshStoryPassageBlock();
                 if(world.getGameTime()%20==0){
                     door.extinguishRetiredPostgame();
-                    if(s.getValue(PORTAL)&&s.getValue(OPEN)&&door.doorId!=null&&(!door.passageBuilt||door.passageVersion<3))com.coraline.otherworld.TunnelPassage.ensure(sl,door);
+                    if(s.getValue(PORTAL)&&s.getValue(OPEN)&&door.doorId!=null&&(!door.passageBuilt||door.passageVersion<4))com.coraline.otherworld.TunnelPassage.ensure(sl,door);
                     else if((!s.getValue(PORTAL)||!s.getValue(OPEN))&&door.passageBuilt&&!com.coraline.otherworld.TunnelPassage.occupied(sl,door))com.coraline.otherworld.TunnelPassage.restore(sl,door);
                 }
                 if(com.coraline.otherworld.OtherWorld.isOther(level))return;

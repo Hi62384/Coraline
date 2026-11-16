@@ -50,9 +50,13 @@ public final class BeldamFinale {
         var hand=RescueProps.ensure(p,s,"SeveredHand",RescueProps.HAND,0,Vec3.atBottomCenterOf(d.pos).add(0,.2,1));
         if(hand==null)return "The original Hand could not be staged; retry the checkpoint before the farewell.";
         hand.frame(1,0,1);
+        var sealed=door.setValue(TinyDoorBlock.OPEN,false).setValue(TinyDoorBlock.PORTAL,false);
+        // setBlock returns false when the door is already in the requested state.
+        // That is a successful checkpoint, not a reason to abandon the epilogue.
+        if(!door.equals(sealed))p.serverLevel().setBlock(d.pos,sealed,3);
+        if(!p.serverLevel().getBlockState(d.pos).equals(sealed))return "The Little Door could not be sealed; retry the checkpoint.";
         var n=RescueChapter.data(s);n.putBoolean("Started",true);n.putBoolean("DebugFinalFightSkipped",true);n.putBoolean("KeyRecovered",true);n.putBoolean("CrawlReachedOverworld",true);n.putBoolean("PermanentlySealed",true);n.putBoolean("BangingDone",true);n.remove("Recover");
         n.putBoolean("HandSevered",true);
-        if(!p.serverLevel().setBlock(d.pos,door.setValue(TinyDoorBlock.OPEN,false).setValue(TinyDoorBlock.PORTAL,false),3))return "The Little Door could not be sealed; retry the checkpoint.";
         rescue.putBoolean("DoorLocked",true);d.activeUntil=0;DoorData.get(p.server).setDirty();
         if(!RescueEpilogue.begin(p,s)){RescueChapter.go(p,s,BANGING);n.putInt("Ticks",120);}
         OtherMotherLoop.changed(p);p.server.overworld().getDataStorage().save();return "Final boss completed. The Little Door exit and reunion dialogue is starting.";

@@ -22,7 +22,7 @@ public final class TunnelPassage {
     public static boolean contains(Player player,DoorBlockEntity door){var pos=door.getBlockPos();var facing=door.getBlockState().getValue(TinyDoorBlock.FACING);double along=depth(player,pos,facing),side=Math.abs((player.getX()-pos.getX()-.5)*facing.getStepZ()-(player.getZ()-pos.getZ()-.5)*facing.getStepX());return along>=0&&along<=3.5&&side<.7&&Math.abs(player.getY()-pos.getY())<.6;}
     public static boolean ensure(ServerLevel level,DoorBlockEntity door){
         if(door.doorId==null)return false;
-        if(door.passageBuilt&&door.passageVersion>=3)return true;
+        if(door.passageBuilt&&door.passageVersion>=4)return true;
         // Undo only our journalled old lining, never arbitrary nearby fabric or
         // player edits. Existing open doors migrate as well as new placements.
         if(door.passageBuilt)restore(level,door);
@@ -37,10 +37,10 @@ public final class TunnelPassage {
             var original=level.getBlockState(pos);var entry=new CompoundTag();entry.putLong("Pos",pos.asLong());entry.put("Original",NbtUtils.writeBlockState(original));
             // A real, sealed crawl passage. Its journal restores every replaced
             // block when the door closes, including terrain behind the entrance.
-            var state=(side==0&&y==0&&d<4?Blocks.AIR:door.storyDecayed?Blocks.MOSSY_STONE_BRICKS:ModBlocks.TUNNEL_FABRIC.get()).defaultBlockState();
+            var state=side==0&&y==0&&d<4?Blocks.AIR.defaultBlockState():ModBlocks.TUNNEL_FABRIC.get().defaultBlockState().setValue(ModBlocks.TUNNEL_LINED,true);
             entry.put("Placed",NbtUtils.writeBlockState(state));originals.add(entry);
         }
-        door.passageOriginals=originals;door.passageBuilt=true;door.passageVersion=3;door.setChanged();
+        door.passageOriginals=originals;door.passageBuilt=true;door.passageVersion=4;door.setChanged();
         for(var value:originals){var n=(CompoundTag)value;level.setBlock(BlockPos.of(n.getLong("Pos")),NbtUtils.readBlockState(level.holderLookup(net.minecraft.core.registries.Registries.BLOCK),n.getCompound("Placed")),2|16);}
         level.sendBlockUpdated(origin,door.getBlockState(),door.getBlockState(),3);return true;
     }

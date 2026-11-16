@@ -18,7 +18,7 @@ import net.minecraftforge.registries.*;
 /** Lightweight synchronized stage furniture; audience rows have no mob AI. */
 public final class CinematicPropEntity extends Entity {
     public static final int BUTTON_GIFT=11,PIANO_HAND=12;
-    public static final int TAFFY_BOWL=28;
+    public static final int TAFFY_BOWL=78;
     public static final int STUNT_CARRIER=29;
     public static final int OCEAN_SET=30;
     public static final int PARENT_MIRROR=31,PARENT_DOLLS=32,RESCUE_MEAL=33,RESCUE_POT=34;

@@ -7,7 +7,9 @@ public final class TunnelRenderer implements BlockEntityRenderer<TunnelCoreEntit
     public TunnelRenderer(BlockEntityRendererProvider.Context context){}
     @Override public boolean shouldRenderOffScreen(TunnelCoreEntity entity){return true;}
     @Override public void render(TunnelCoreEntity entity,float partial,PoseStack pose,MultiBufferSource buffers,int light,int overlay){
-        // The tunnel is lined by actual blocks; its core only lights the path.
+        float time=entity.getLevel()==null?0:entity.getLevel().getGameTime()+partial;
+        if(com.coraline.client.FirstEscapeClient.decayedTunnel())renderWebbedSegment(pose,buffers,-8,144);
+        else renderFabric(pose,buffers,time);
     }
     public static void renderFabric(PoseStack pose,MultiBufferSource buffers,float time){
         renderSegment(pose,buffers,time,-8,144);
@@ -30,6 +32,19 @@ public final class TunnelRenderer implements BlockEntityRenderer<TunnelCoreEntit
             deadVertex(v,pose,DeadTunnelGeometry.wall(ring,side));deadVertex(v,pose,DeadTunnelGeometry.wall(ring,side+1));
             deadVertex(v,pose,DeadTunnelGeometry.wall(ring+1,side+1));deadVertex(v,pose,DeadTunnelGeometry.wall(ring+1,side));
         }
+    }
+    public static void renderWebbedSegment(PoseStack pose,MultiBufferSource buffers,int first,int last){
+        var fabric=buffers.getBuffer(RenderType.entityCutoutNoCull(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("minecraft","textures/block/moss_block.png")));
+        for(int ring=first;ring<last;ring++)for(int side=0;side<48;side++){
+            webVertex(fabric,pose,DeadTunnelGeometry.wall(ring,side));webVertex(fabric,pose,DeadTunnelGeometry.wall(ring,side+1));
+            webVertex(fabric,pose,DeadTunnelGeometry.wall(ring+1,side+1));webVertex(fabric,pose,DeadTunnelGeometry.wall(ring+1,side));
+        }
+        var web=buffers.getBuffer(RenderType.entityCutoutNoCull(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("minecraft","textures/block/cobweb.png")));
+        for(var quad:DeadTunnelGeometry.WEBS){if(quad[0].z()<first*.125||quad[0].z()>last*.125)continue;for(var corner:quad)webVertex(web,pose,corner);}
+    }
+    private static void webVertex(VertexConsumer v,PoseStack p,PortalAperture.Vertex a){
+        v.vertex(p.last().pose(),(float)a.x()+.5F,(float)a.y()+1.5F,(float)a.z()).color(a.shade()*.35F,a.shade()*.55F,a.shade()*.30F,1F)
+            .uv(a.u(),a.v()).overlayCoords(net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY).uv2(15728880).normal(p.last().normal(),0,1,0).endVertex();
     }
     private static void deadVertex(VertexConsumer v,PoseStack p,PortalAperture.Vertex a){
         v.vertex(p.last().pose(),(float)a.x()+.5F,(float)a.y()+1.5F,(float)a.z()).color(a.shade(),a.shade(),a.shade(),1F)

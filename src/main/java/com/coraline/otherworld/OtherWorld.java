@@ -171,7 +171,7 @@ public final class OtherWorld {
         var story=com.coraline.feast.OtherMotherLoop.scene(player);
         if(!isOther(player.level())&&(story==null||!com.coraline.feast.FirstEscapeStory.data(story).getBoolean("Complete"))&&!com.coraline.parents.ParentsBedSafety.validPlaced(player.server,player.getUUID())){player.displayClientMessage(net.minecraft.network.chat.Component.literal("Place your parents' bed before visiting the Other World."),true);return;}
         if(com.coraline.feast.StoryTunnel.enter(player,block))return;
-        if(com.coraline.feast.FirstEscapeStory.engaged(com.coraline.feast.OtherMotherLoop.scene(player)))return;
+        if(com.coraline.feast.FirstEscapeStory.engaged(story)&&!com.coraline.feast.FirstEscapeStory.data(story).getBoolean("Complete"))return;
         var tag=player.getPersistentData();long now=player.server.overworld().getGameTime();
         if(now<tag.getLong("CoralinePortalCooldown")||block.doorId==null||tag.getBoolean("CoralineInTunnel"))return;
         var d=DoorData.get(player.server).doors.get(block.doorId);if(d==null)return;
@@ -271,8 +271,8 @@ public final class OtherWorld {
                     state.is(ModBlocks.TINY_DOOR.get()))level.setBlock(old,Blocks.AIR.defaultBlockState(),2);
             }
         holdTunnel(level,r);
-        // Visible fabric blocks form the crawl shell in the world itself.
-        var lining=ModBlocks.TUNNEL_FABRIC.get().defaultBlockState();
+        // The collision shell stays physical; the original curved mesh supplies its visible lining.
+        var lining=ModBlocks.TUNNEL_FABRIC.get().defaultBlockState().setValue(ModBlocks.TUNNEL_LINED,true);
         for(int z=-1;z<=18;z++)for(int x=-1;x<=1;x++)for(int y=-1;y<=1;y++){
             boolean wall=x!=0||y!=0||z==-1||z==18;
             level.setBlock(p.offset(x,y,z),wall?lining:Blocks.AIR.defaultBlockState(),2);
@@ -360,7 +360,8 @@ public final class OtherWorld {
     }
     @SubscribeEvent public static void playerTick(TickEvent.PlayerTickEvent event){if(event.player instanceof net.minecraft.server.level.ServerPlayer coopPlayer&&com.coraline.multiplayer.StoryCoop.directorBlocked(coopPlayer))return;
         if(event.phase!=TickEvent.Phase.END||!(event.player instanceof ServerPlayer player))return;
-        if(com.coraline.feast.FirstEscapeStory.engaged(com.coraline.feast.OtherMotherLoop.scene(player)))return;
+        var story=com.coraline.feast.OtherMotherLoop.scene(player);
+        if(com.coraline.feast.FirstEscapeStory.engaged(story)&&!com.coraline.feast.FirstEscapeStory.data(story).getBoolean("Complete"))return;
         TunnelPassage.tick(player);
         var tag=player.getPersistentData();
         if(tag.hasUUID("CoralineWaitingDoor")){
@@ -381,7 +382,7 @@ public final class OtherWorld {
             if(player.tickCount%20==0){
                 holdTunnel(player.serverLevel(),r);
                 var ceiling=player.serverLevel().getBlockState(p.above());
-                if(ceiling.is(ModBlocks.TUNNEL_FABRIC.get())&&ceiling.getValue(ModBlocks.TUNNEL_LINED))buildTunnel(player.serverLevel(),r);
+                if(ceiling.is(ModBlocks.TUNNEL_FABRIC.get())&&!ceiling.getValue(ModBlocks.TUNNEL_LINED))buildTunnel(player.serverLevel(),r);
             }
             if(tag.getBoolean("CoralineSeamlessTunnel")&&player.getZ()<p.getZ()+1.7&&player.server.overworld().getGameTime()>=tag.getLong("CoralinePortalCooldown")){leave(player,false,true);return;}
             if(player.getZ()<p.getZ()-.35&&tunnelDoorOpen(player.serverLevel(),p.offset(0,0,-1))&&player.server.overworld().getGameTime()>=tag.getLong("CoralinePortalCooldown")){leave(player,false);return;}
@@ -401,11 +402,6 @@ public final class OtherWorld {
             boolean welcomeReady=staged||r.ready&&player.server.overworld().getGameTime()-tag.getLong("CoralineTunnelStartedAt")>=160;
             if(r.ready&&!welcomeReady&&player.tickCount%100==0)
                 player.displayClientMessage(Component.literal("The welcome is still being prepared. Stay by the far door."),true);
-            if(r.ready&&welcomeReady){
-                var end=p.offset(0,0,17);var endState=player.serverLevel().getBlockState(end);
-                if(endState.is(ModBlocks.TINY_DOOR.get())&&!endState.getValue(TinyDoorBlock.OPEN))
-                    player.serverLevel().setBlock(end,endState.setValue(TinyDoorBlock.OPEN,true),3);
-            }
             if(r.ready&&welcomeReady&&player.getZ()>p.getZ()+(tag.getBoolean("CoralineSeamlessTunnel")?15.3:16.35)&&(!back||tag.getBoolean("CoralineSeamlessTunnel"))){
                 boolean seamless=tag.getBoolean("CoralineSeamlessTunnel");
                 if(seamless&&player.serverLevel().getBlockEntity(r.doorPos) instanceof DoorBlockEntity entrance&&TunnelPassage.ensure(player.serverLevel(),entrance))arrivePassage(player,player.serverLevel(),r.doorPos,true);
