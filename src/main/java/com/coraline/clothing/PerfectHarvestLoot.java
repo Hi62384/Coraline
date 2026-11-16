@@ -23,7 +23,7 @@ public final class PerfectHarvestLoot extends LootModifier {
     @Override protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> loot,LootContext context){
         BlockState state=context.getParamOrNull(LootContextParams.BLOCK_STATE);
         if(state==null||!(state.getBlock() instanceof CropBlock crop)||!crop.isMaxAge(state))return loot;
-        if(!(context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof Player player)||!player.getMainHandItem().is(OtherMaterials.TOOLS.get("perfect_hoe").get()))return loot;
+        if(!(context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof Player player)||!PerfectPower.powered(player)||!player.getMainHandItem().is(OtherMaterials.TOOLS.get("perfect_hoe").get()))return loot;
         var result=new ObjectArrayList<ItemStack>();
         for(var stack:loot){
             result.add(stack);

@@ -13,17 +13,20 @@ import net.minecraft.world.level.levelgen.Heightmap;
 
 /** Builds the deliberately perfected home over the copied landscape. */
 public final class OtherWorldEstate {
-    public static final int VERSION=6;
+    public static final int VERSION=10;
     private static final Map<ServerLevel,Map<UUID,Map<BlockPos,BlockState>>> temporaryWhite=new WeakHashMap<>();
-    private static final int HALF_X=20,MIN_Z=-14,MAX_Z=16;
+    private static final int HALF_X=33,MIN_Z=-43,MAX_Z=41;
     private OtherWorldEstate(){}
     /** Horizontal distance from the complete landscaped estate, not its center. */
     public static double outsideDistance(BlockPos house,BlockPos at){
-        double x=Math.max(0,Math.abs(at.getX()-house.getX())-43);
-        double z=Math.max(0,Math.max(house.getZ()-20-at.getZ(),at.getZ()-house.getZ()-87));
+        double x=Math.max(0,Math.max(house.getX()-90-at.getX(),at.getX()-house.getX()-50));
+        double z=Math.max(0,Math.max(house.getZ()-155-at.getZ(),at.getZ()-house.getZ()-87));
         return Math.hypot(x,z);
     }
-    public static boolean outsideHouse(BlockPos house,BlockPos at){return Math.abs(at.getX()-house.getX())>27||at.getZ()<house.getZ()-21||at.getZ()>house.getZ()+27;}
+    public static boolean outsideHouse(BlockPos house,BlockPos at){return Math.abs(at.getX()-house.getX())>34||at.getZ()<house.getZ()-44||at.getZ()>house.getZ()+42;}
+    /** Existing imported garden's clear promenade (blueprint 53,6,42), not the unrelated activity arena. */
+    public static BlockPos rescueGarden(BlockPos house){return house.offset(-14,3,-87);}
+    public static int decayRescueGarden(ServerLevel level,BlockPos house,int cursor,int budget,java.util.function.BiConsumer<BlockPos,BlockState> place){return RosewoodGarden.decay(level,house,cursor,Math.min(256,Math.max(1,budget)),place);}
 
     public static void build(ServerLevel source,ServerLevel level,DoorData.Door door,RealmData.Realm realm){
         build(source,level,door,realm,chooseSite(source,door.pos));
@@ -32,35 +35,19 @@ public final class OtherWorldEstate {
         // The entire house must clear the terrain, not merely its center column.
         // RealmCopy preserves world Y and only offsets X/Z.
         int ground=lowestSafeFloor(source,sourceCenter);
-        int base=Math.max(level.getMinBuildHeight()+16,Math.min(level.getMaxBuildHeight()-38,ground));
+        int base=Math.max(level.getMinBuildHeight()+16,Math.min(level.getMaxBuildHeight()-42,ground+1));
         BlockPos center=new BlockPos(sourceCenter.getX()+realm.dx,base,sourceCenter.getZ()+realm.dz);
-        realm.house=center;realm.porch=center.offset(0,1,22);realm.piano=center.offset(-11,1,-7);realm.table=center.offset(10,1,0);
+        var previous=realm.house;
+        realm.house=center;
 
         BlockPos old=door.pos.offset(realm.dx,0,realm.dz);
-        if(!old.equals(center.offset(-HALF_X+1,1,8))&&level.getBlockState(old).is(ModBlocks.TINY_DOOR.get())){
+        if(!old.equals(center.offset(-19,1,-3))&&level.getBlockState(old).is(ModBlocks.TINY_DOOR.get())){
             level.removeBlockEntity(old);level.setBlock(old,Blocks.AIR.defaultBlockState(),3);
         }
-        prepareFoundation(source,level,center,realm.dx,realm.dz);
-        shell(level,center);
-        rooms(level,center);
-        roof(level,center);
-        OtherWorldInterior.decorate(level,center);
-        garden(source,level,center,realm.dx,realm.dz,realm.radius);
-        finishSideStairs(source,level,center,realm.dx,realm.dz);
+        RosewoodHouse.build(source,level,center,door,realm,previous);
+        RosewoodGarden.build(source,level,center,realm);
 
-        // Bring the tiny door forward to the room-facing surface of its alcove.
-        realm.doorPos=center.offset(-HALF_X+1,1,8);
-        var doorState=ModBlocks.TINY_DOOR.get().defaultBlockState().setValue(TinyDoorBlock.FACING,Direction.EAST).setValue(TinyDoorBlock.PORTAL,true).setValue(TinyDoorBlock.OPEN,true);
-        level.setBlock(realm.doorPos,doorState,3);
-        // A standing player needs a two-block-high approach, not merely an
-        // interactable portal at floor level. Decoration used to refill this cap.
-        for(BlockPos passage:new BlockPos[]{realm.doorPos.above(),realm.doorPos.east(),realm.doorPos.east().above()})
-            level.setBlock(passage,Blocks.AIR.defaultBlockState(),3);
-        if(level.getBlockEntity(realm.doorPos) instanceof DoorBlockEntity block){block.doorId=door.id;block.setChanged();}
-
-        realm.bed=center.offset(11,9,-7);
-        BlockState foot=Blocks.BLUE_BED.defaultBlockState().setValue(BedBlock.FACING,Direction.SOUTH).setValue(BedBlock.PART,BedPart.FOOT);
-        level.setBlock(realm.bed,foot,3);level.setBlock(realm.bed.south(),foot.setValue(BedBlock.PART,BedPart.HEAD),3);
+        // The importer supplies the portal, upstairs bed and story prop locations.
         realm.estateVersion=VERSION;
     }
 
@@ -70,7 +57,7 @@ public final class OtherWorldEstate {
             int min=Integer.MAX_VALUE,max=Integer.MIN_VALUE;
             // Sample the full footprint, including its corners. A flat center in a
             // hillside was previously chosen and buried half of the house.
-            for(int x:new int[]{-20,-10,0,10,20})for(int z:new int[]{-14,-7,0,8,16}){
+            for(int x:new int[]{-33,-16,0,16,31})for(int z:new int[]{-43,-21,0,21,41}){
                 int y=naturalSurface(level,door.getX()+ox+x,door.getZ()+oz+z);
                 min=Math.min(min,y);max=Math.max(max,y);
             }
@@ -79,12 +66,13 @@ public final class OtherWorldEstate {
         }return best;
     }
     private static int lowestSafeFloor(ServerLevel source,BlockPos center){
-        int highest=source.getMinBuildHeight()+16;
-        for(int x=-HALF_X;x<=HALF_X;x++)for(int z=MIN_Z;z<=MAX_Z;z++)
-            highest=Math.max(highest,naturalSurface(source,center.getX()+x,center.getZ()+z));
-        return highest;
+        var heights=new ArrayList<Integer>();
+        // The former maximum across the entire garden raised the house to the
+        // tallest nearby hillside. Use the central building's median instead.
+        for(int x=-20;x<=20;x+=4)for(int z=-29;z<=27;z+=4)heights.add(naturalSurface(source,center.getX()+x,center.getZ()+z));
+        Collections.sort(heights);return heights.get(heights.size()/2);
     }
-    private static int naturalSurface(ServerLevel level,int x,int z){
+    static int naturalSurface(ServerLevel level,int x,int z){
         int top=level.getHeight(Heightmap.Types.WORLD_SURFACE,x,z);
         for(int y=Math.min(level.getMaxBuildHeight()-2,top);y>level.getMinBuildHeight()+4;y--){
             var p=new BlockPos(x,y,z);var s=level.getBlockState(p);
@@ -242,8 +230,9 @@ public final class OtherWorldEstate {
     private static void kitchenCounter(ServerLevel l,BlockPos c,int x,int z){
         l.setBlock(c.offset(x,1,z),Blocks.BIRCH_PLANKS.defaultBlockState(),2);
     }
-    public static BlockPos studyDoor(BlockPos house){return house.offset(-11,1,-2);}
-    public static BlockPos atticDoor(BlockPos house){return house.offset(21,16,7);}
+    public static BlockPos studyDoor(BlockPos house){return RosewoodHouse.at(house,31,6,54);}
+    public static BlockPos atticDoor(BlockPos house){return RosewoodHouse.at(house,9,24,65);}
+    public static boolean insideStudy(BlockPos house,BlockPos at){var min=RosewoodHouse.at(house,11,6,53);var max=RosewoodHouse.at(house,30,13,67);return at.getX()>=min.getX()&&at.getX()<=max.getX()&&at.getZ()>=min.getZ()&&at.getZ()<=max.getZ()&&at.getY()>=min.getY()&&at.getY()<=max.getY();}
     private static void placeStudyDoor(ServerLevel l,BlockPos house,boolean open){
         BlockPos p=studyDoor(house);
         BlockState state=Blocks.DARK_OAK_DOOR.defaultBlockState().setValue(DoorBlock.FACING,Direction.SOUTH)
@@ -256,10 +245,10 @@ public final class OtherWorldEstate {
     public static void lockStudy(ServerLevel l,BlockPos house,boolean locked){
         if(house==null)return;
         BlockPos p=studyDoor(house);
-        if(!l.getBlockState(p).is(Blocks.DARK_OAK_DOOR))return;
+        if(!(l.getBlockState(p).getBlock() instanceof DoorBlock))return;
         for(BlockPos half:new BlockPos[]{p,p.above()}){
             BlockState state=l.getBlockState(half);
-            if(state.is(Blocks.DARK_OAK_DOOR)&&state.getValue(DoorBlock.OPEN)==locked)
+            if(state.getBlock() instanceof DoorBlock&&state.getValue(DoorBlock.OPEN)==locked)
                 l.setBlock(half,state.setValue(DoorBlock.OPEN,!locked),3);
         }
     }

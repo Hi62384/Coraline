@@ -1,0 +1,326 @@
+{
+  "source": "artwork/otherworld_house/Rosewood_House_Complete_v3.blueprint.json:design.rooms",
+  "coordinate_transform": "HouseCabinets.at; same compact-house transform as RosewoodHouse",
+  "runtime_repair_notes": [
+    "Basement and attic internal staircases are closed; public stair_area is the actual first-to-second-floor L-stair.",
+    "Locked storage/private secret-area metadata still overrides public-room envelopes.",
+    "Regions are envelopes, not navigable cells; server collision and reachability checks are required."
+  ],
+  "rooms": [
+    {
+      "id": "entrance_hall",
+      "label": "Main hallway + end mirror",
+      "min": [
+        32,
+        6,
+        13
+      ],
+      "max": [
+        35,
+        13,
+        56
+      ],
+      "floorBlockY": 5
+    },
+    {
+      "id": "stair_area",
+      "label": "Main staircase hall",
+      "min": [
+        14,
+        6,
+        21
+      ],
+      "max": [
+        30,
+        22,
+        31
+      ],
+      "floorBlockY": 5
+    },
+    {
+      "id": "little_door_room",
+      "label": "Enlarged little door sitting room",
+      "min": [
+        14,
+        6,
+        33
+      ],
+      "max": [
+        30,
+        13,
+        51
+      ],
+      "floorBlockY": 5
+    },
+    {
+      "id": "furnace_room",
+      "label": "Furnace / boiler cupboard",
+      "min": [
+        28,
+        6,
+        32
+      ],
+      "max": [
+        30,
+        13,
+        35
+      ],
+      "floorBlockY": 5
+    },
+    {
+      "id": "dads_study",
+      "label": "Dad's enlarged study and music room",
+      "min": [
+        11,
+        6,
+        53
+      ],
+      "max": [
+        30,
+        13,
+        67
+      ],
+      "floorBlockY": 5
+    },
+    {
+      "id": "kitchen",
+      "label": "Enlarged kitchen",
+      "min": [
+        37,
+        6,
+        53
+      ],
+      "max": [
+        50,
+        13,
+        67
+      ],
+      "floorBlockY": 5
+    },
+    {
+      "id": "supper_room",
+      "label": "Supper room",
+      "min": [
+        37,
+        6,
+        21
+      ],
+      "max": [
+        50,
+        13,
+        51
+      ],
+      "floorBlockY": 5
+    },
+    {
+      "id": "glass_room",
+      "label": "Glass conservatory",
+      "min": [
+        52,
+        6,
+        20
+      ],
+      "max": [
+        58,
+        12,
+        50
+      ],
+      "floorBlockY": 5
+    },
+    {
+      "id": "front_west_room",
+      "label": "Front room / cloakroom library",
+      "min": [
+        14,
+        6,
+        13
+      ],
+      "max": [
+        30,
+        13,
+        19
+      ],
+      "floorBlockY": 5
+    },
+    {
+      "id": "front_turret_room",
+      "label": "Front room / turret reading parlour",
+      "min": [
+        37,
+        6,
+        9
+      ],
+      "max": [
+        55,
+        13,
+        19
+      ],
+      "floorBlockY": 5
+    },
+    {
+      "id": "second_gallery",
+      "label": "Paneled upper hallway and landing",
+      "min": [
+        32,
+        15,
+        13
+      ],
+      "max": [
+        35,
+        22,
+        67
+      ],
+      "floorBlockY": 14
+    },
+    {
+      "id": "upper_stair_landing",
+      "label": "Guarded L-stair arrival and reading landing",
+      "min": [
+        14,
+        15,
+        22
+      ],
+      "max": [
+        30,
+        22,
+        35
+      ],
+      "floorBlockY": 14
+    },
+    {
+      "id": "upstairs_library",
+      "label": "Upper front library and exterior balcony vestibule",
+      "min": [
+        14,
+        15,
+        13
+      ],
+      "max": [
+        30,
+        22,
+        21
+      ],
+      "floorBlockY": 14
+    },
+    {
+      "id": "child_bedroom",
+      "label": "Blue bedroom with writing desk, wardrobe and reading nook",
+      "min": [
+        37,
+        15,
+        13
+      ],
+      "max": [
+        50,
+        22,
+        31
+      ],
+      "floorBlockY": 14
+    },
+    {
+      "id": "west_guest_bedroom",
+      "label": "Second bedroom and writing desk",
+      "min": [
+        14,
+        15,
+        37
+      ],
+      "max": [
+        30,
+        22,
+        47
+      ],
+      "floorBlockY": 14
+    },
+    {
+      "id": "parents_bedroom",
+      "label": "Parents bedroom with cream paneling and private bathroom",
+      "min": [
+        14,
+        15,
+        49
+      ],
+      "max": [
+        30,
+        22,
+        57
+      ],
+      "floorBlockY": 14
+    },
+    {
+      "id": "parents_bath",
+      "label": "Private tiled bathroom",
+      "min": [
+        14,
+        15,
+        59
+      ],
+      "max": [
+        22,
+        22,
+        67
+      ],
+      "floorBlockY": 14
+    },
+    {
+      "id": "parents_dressing",
+      "label": "Dressing room, wardrobe and luggage storage",
+      "min": [
+        24,
+        15,
+        59
+      ],
+      "max": [
+        30,
+        22,
+        67
+      ],
+      "floorBlockY": 14
+    },
+    {
+      "id": "east_guest_suite",
+      "label": "Guest suite with sitting corner",
+      "min": [
+        37,
+        15,
+        49
+      ],
+      "max": [
+        50,
+        22,
+        67
+      ],
+      "floorBlockY": 14
+    },
+    {
+      "id": "shared_bath_laundry",
+      "label": "Shared bath, washstand and laundry",
+      "min": [
+        43,
+        15,
+        33
+      ],
+      "max": [
+        50,
+        22,
+        47
+      ],
+      "floorBlockY": 14
+    },
+    {
+      "id": "attic_stair_room",
+      "label": "Upper lounge (former attic stair, closed by runtime repair)",
+      "min": [
+        37,
+        15,
+        33
+      ],
+      "max": [
+        41,
+        22,
+        47
+      ],
+      "floorBlockY": 14
+    }
+  ]
+}

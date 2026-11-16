@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "coraline:spidervision_sword",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:midnight_wand",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:unbinding_button_eyes",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

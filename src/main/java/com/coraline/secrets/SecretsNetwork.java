@@ -15,26 +15,41 @@ public final class SecretsNetwork {
     private record Session(UUID nonce,boolean debug,boolean journal,long expires){}
     private static final Map<UUID,Session> SESSIONS=new HashMap<>();
     private static final Map<UUID,Long> LAST=new HashMap<>();
-    private static final SimpleChannel CHANNEL=NetworkRegistry.newSimpleChannel(ResourceLocation.fromNamespaceAndPath("coraline","secrets"),()->"1","1"::equals,"1"::equals);
+    private static final Map<UUID,UUID> COOP_INSPECTION=new HashMap<>();
+    // Version 2 adds the visible shifting target for tier-4 site locks. Older
+    // clients would show the wrong band, so require matching screen semantics.
+    private static final SimpleChannel CHANNEL=NetworkRegistry.newSimpleChannel(ResourceLocation.fromNamespaceAndPath("coraline","secrets"),()->"2","2"::equals,"2"::equals);
     public static void register(){
         CHANNEL.messageBuilder(Snapshot.class,0,NetworkDirection.PLAY_TO_CLIENT).encoder((m,b)->b.writeNbt(m.data)).decoder(b->new Snapshot(b.readNbt())).consumerMainThread((m,c)->DistExecutor.unsafeRunWhenOn(Dist.CLIENT,()->()->com.coraline.client.SecretJournalScreen.receive(m.data))).add();
-        CHANNEL.messageBuilder(Request.class,1,NetworkDirection.PLAY_TO_SERVER).encoder((m,b)->{b.writeUUID(m.nonce);b.writeUtf(m.action,48);b.writeUtf(m.value,4096);}).decoder(b->new Request(b.readUUID(),b.readUtf(48),b.readUtf(4096))).consumerMainThread((m,c)->{var p=c.get().getSender();if(p!=null)request(p,m);}).add();
+        CHANNEL.messageBuilder(Request.class,1,NetworkDirection.PLAY_TO_SERVER).encoder((m,b)->{b.writeUUID(m.nonce);b.writeUtf(m.action,48);b.writeUtf(m.value,4096);}).decoder(b->new Request(b.readUUID(),b.readUtf(48),b.readUtf(4096))).consumerMainThread((m,c)->{var p=c.get().getSender();if(p!=null){if(com.coraline.multiplayer.StoryCoop.guest(p)){
+            if(m.action.equals("ghost_victim")){com.coraline.feast.GhostVictimDirector.request(p,m.nonce,m.value);return;}
+            if(m.action.equals("visit_choice")){com.coraline.feast.GhostVictimDirector.choice(p,m.nonce,m.value);return;}
+            if(!m.action.equals("delivery_release"))return;
+        }if(m.action.equals("delivery_release"))SpecialDelivery.released(p,m.nonce);else if(m.action.equals("visit_choice")){if(!com.coraline.feast.GhostVictimDirector.choice(p,m.nonce,m.value)&&!PlayerParty.choice(p,m.nonce,m.value)&&!PartyConversations.choice(p,m.nonce,m.value)&&!FamilyGameNight.choice(p,m.nonce,m.value)&&!FamilyOuting.choice(p,m.nonce,m.value)&&!com.coraline.feast.FamilyDinner.choice(p,m.nonce,m.value))com.coraline.feast.VisitEvents.choose(p,m.nonce,m.value);}else request(p,m);}}).add();
     }
-    public static void send(ServerPlayer p,CompoundTag n){CHANNEL.send(PacketDistributor.PLAYER.with(()->p),new Snapshot(n));}
+    public static void send(ServerPlayer p,CompoundTag n){
+        boolean shared=n.getBoolean("BlackIsTraditional")||n.getBoolean("FirstEscape")||n.getBoolean("AcceptedButtonEyes")||n.getBoolean("RescueChapter");
+        var audience=shared?com.coraline.multiplayer.StorySessionData.get(p.server).audience(p):java.util.List.of(p);
+        for(var recipient:audience){var frame=com.coraline.multiplayer.StorySessionData.get(p.server).frame(recipient.getUUID());if(shared&&frame!=null)com.coraline.multiplayer.StoryGroupNetwork.send(recipient,frame,com.coraline.multiplayer.StoryCoop.cinematic(p,OtherMotherLoop.scene(p)),com.coraline.multiplayer.StorySessionData.get(p.server).participants(p.server,p.getUUID(),true).stream().map(ServerPlayer::getUUID).toList());CHANNEL.send(PacketDistributor.PLAYER.with(()->recipient),new Snapshot(n));}
+    }
     public static void request(UUID nonce,String action,String value){CHANNEL.sendToServer(new Request(nonce,action,value));}
-    public static void open(ServerPlayer p,boolean debug,boolean journal){if(debug&&!p.hasPermissions(2))return;var s=SecretTransactions.state(p);if(s==null){p.displayClientMessage(net.minecraft.network.chat.Component.literal("Begin an Other World storyline before using the Secrets Debugger."),true);return;}if(!debug&&!SecretsRuntime.active(p))return;if(journal&&!SecretsRuntime.atJournal(p))return;var session=new Session(UUID.randomUUID(),debug,journal,OtherMotherLoop.now(p)+12000);SESSIONS.put(p.getUUID(),session);refresh(p,session);}
+    public static void open(ServerPlayer p,boolean debug,boolean journal){if(com.coraline.multiplayer.StoryCoop.guest(p))return;if(debug&&!p.hasPermissions(2))return;var s=SecretTransactions.state(p);if(s==null){p.displayClientMessage(net.minecraft.network.chat.Component.literal("Begin an Other World storyline before using the Secrets Debugger."),true);return;}if(!debug&&!SecretsRuntime.active(p))return;if(journal&&!SecretsRuntime.atJournal(p))return;var session=new Session(UUID.randomUUID(),debug,journal,OtherMotherLoop.now(p)+12000);SESSIONS.put(p.getUUID(),session);refresh(p,session);}
     private static void refresh(ServerPlayer p,Session session){var s=SecretTransactions.state(p);var n=new CompoundTag();n.putUUID("Nonce",session.nonce);n.putBoolean("Debug",session.debug);n.putBoolean("AtJournal",session.journal&&SecretsRuntime.atJournal(p));n.put("Journal",SecretsState.strings(s.journal));n.putIntArray("Attributes",SecretRegistry.totals(s.journal));n.putInt("Hiding",s.hiding);n.putInt("Reward",s.pendingReward);n.put("Abilities",SecretsState.strings(SecretRegistry.abilities(s.journal)));n.putLong("Player",p.blockPosition().asLong());
         var carry=new ArrayList<String>();for(int i=0;i<p.getInventory().getContainerSize();i++){String id=SecretTransactions.evidence(p,p.getInventory().getItem(i));if(!id.isEmpty())carry.add(id);}n.put("Carried",SecretsState.strings(carry));
         if(s.value(3)>=66||session.debug){n.put("Rooms",s.world.getList("Rooms",10).copy());if(s.value(3)>=100||session.debug){var mother=MotherSearch.mother(p);if(mother!=null)n.putLong("Mother",mother.blockPosition().asLong());}}
-        if(session.debug){var scene=OtherMotherLoop.scene(p);n.putFloat("Trust",scene.loop.trust);n.putFloat("Suspicion",scene.loop.suspicion);n.put("Exposed",SecretsState.strings(s.exposed));n.put("Suspected",SecretsState.strings(s.suspected));n.putString("Conversation",Reconciliation.stage(p));n.putBoolean("ProposalPending",scene.loop.phase==OtherMotherLoopState.Phase.PROPOSAL||scene.loop.phase==OtherMotherLoopState.Phase.WARNING);n.putString("Search",s.search.name());n.putLong("Target",s.target.asLong());n.putLong("Pending",s.pendingTicks);n.putDouble("Inspection",s.inspectionProgress);n.putDouble("Sight",30*(1-.5*s.effective(2))*(1-s.soulWeakening()));for(int i=0;i<6;i++){n.putDouble("Counter"+i,s.counter(i));n.putDouble("Override"+i,s.overrides[i]);n.putDouble("Effective"+i,s.effective(i));}}
+        if(session.debug){n.put("Multiplayer",com.coraline.multiplayer.StorySessionData.get(p.server).debugView(p.server,COOP_INSPECTION.getOrDefault(p.getUUID(),p.getUUID())));var scene=OtherMotherLoop.scene(p);n.putFloat("Trust",scene.loop.trust);n.putFloat("Suspicion",scene.loop.suspicion);n.put("Exposed",SecretsState.strings(s.exposed));n.put("Suspected",SecretsState.strings(s.suspected));n.putString("Conversation",Reconciliation.stage(p));n.putBoolean("ProposalPending",scene.loop.phase==OtherMotherLoopState.Phase.PROPOSAL||scene.loop.phase==OtherMotherLoopState.Phase.WARNING);n.putString("Search",s.search.name());n.putLong("Target",s.target.asLong());n.putLong("Pending",s.pendingTicks);n.putDouble("Inspection",s.inspectionProgress);n.putDouble("Sight",30*(1-.5*s.effective(2))*(1-s.soulWeakening()));for(int i=0;i<6;i++){n.putDouble("Counter"+i,s.counter(i));n.putDouble("Override"+i,s.overrides[i]);n.putDouble("Effective"+i,s.effective(i));}}
         send(p,n);
     }
-    private static void request(ServerPlayer p,Request r){if(r.action.equals("pin")){SecretLocks.pin(p,r.nonce);return;}var session=SESSIONS.get(p.getUUID());if(session==null||!session.nonce.equals(r.nonce)||OtherMotherLoop.now(p)>session.expires||session.debug&&!p.hasPermissions(2))return;var s=SecretTransactions.state(p);if(s==null)return;long now=OtherMotherLoop.now(p);if(now-LAST.getOrDefault(p.getUUID(),-10L)<2)return;LAST.put(p.getUUID(),now);
+    private static void request(ServerPlayer p,Request r){if(r.action.equals("ghost_victim")){com.coraline.feast.GhostVictimDirector.request(p,r.nonce,r.value);return;}if(r.action.equals("rescue_action")){com.coraline.feast.RescueChapter.input(p,r.nonce,r.value);return;}if(r.action.equals("escape_choice")){FirstEscapeStory.choice(p,r.nonce,r.value);return;}if(r.action.equals("traditional_choice")){BlackIsTraditional.choice(p,r.nonce,r.value);return;}if(r.action.equals("pin")){SecretLocks.pin(p,r.nonce);return;}var session=SESSIONS.get(p.getUUID());if(session==null||!session.nonce.equals(r.nonce)||OtherMotherLoop.now(p)>session.expires||session.debug&&!p.hasPermissions(2))return;var s=SecretTransactions.state(p);if(s==null)return;long now=OtherMotherLoop.now(p);if(now-LAST.getOrDefault(p.getUUID(),-10L)<2)return;LAST.put(p.getUUID(),now);
         boolean journal=session.journal&&SecretsRuntime.atJournal(p);var ids=new LinkedHashSet<String>();for(String id:r.value.split(","))if(SecretRegistry.ALL.containsKey(id))ids.add(id);
         switch(r.action){
             case "refresh"->{}
+            case "coop_control"->{if(session.debug&&p.hasPermissions(2)){var request=r.value.split("\\|",2);String result=com.coraline.multiplayer.MultiplayerDebug.run(p,request[0],request.length>1?request[1]:"");p.sendSystemMessage(net.minecraft.network.chat.Component.literal(result.length()>6000?result.substring(0,6000)+"…":result));}}
+            case "coop_inspect"->{if(session.debug&&p.hasPermissions(2)){try{COOP_INSPECTION.put(p.getUUID(),r.value.isBlank()?p.getUUID():UUID.fromString(r.value));}catch(IllegalArgumentException invalid){p.sendSystemMessage(net.minecraft.network.chat.Component.literal("Enter a player UUID."));}}}
+            case "coop_allow","coop_kick"->{if(session.debug&&p.hasPermissions(2)){try{var scene=OtherMotherLoop.scene(p);var data=com.coraline.multiplayer.StorySessionData.get(p.server);if(scene!=null&&p.getUUID().equals(scene.owner)&&data.observe(p,scene))data.permit(p,UUID.fromString(r.value),r.action.equals("coop_allow"));}catch(IllegalArgumentException invalid){p.sendSystemMessage(net.minecraft.network.chat.Component.literal("Enter a player UUID."));}}}
+            case "tycoon_open"->{if(session.debug&&p.hasPermissions(2)){com.coraline.tycoon.TycoonNetwork.open(p,"debug",null);return;}}
             case "move_journal"->{if(journal){JournalPlacement.begin(p);return;}}
-            case "deposit"->{if(journal)for(String id:ids)SecretTransactions.deposit(p,id);}
+            case "deposit"->{p.displayClientMessage(net.minecraft.network.chat.Component.literal("Hold the journal and a secret in opposite hands, then right-click the journal."),true);}
             case "delete"->{if(journal)for(String id:ids)SecretTransactions.delete(p,id);}
             case "blackmail"->{if(journal)SecretTransactions.makeBlackmail(p,ids);}
             case "reward"->{if(SecretsRuntime.active(p))try{SecretTransactions.reward(p,Integer.parseInt(r.value));}catch(NumberFormatException ignored){}}
@@ -44,6 +59,18 @@ public final class SecretsNetwork {
         SecretTransactions.dirty(p);refresh(p,session);
     }
     private static void debug(ServerPlayer p,String action,String value,Set<String> ids){var s=SecretTransactions.state(p);try{switch(action){
+        case "accepted_button_eyes"->p.sendSystemMessage(net.minecraft.network.chat.Component.literal(com.coraline.feast.AcceptedButtonEyes.debug(p,value)));
+        case "ghost_victim_debug"->p.sendSystemMessage(net.minecraft.network.chat.Component.literal(com.coraline.feast.GhostVictimDebug.run(p,value)));
+        case "story_rebirth"->p.sendSystemMessage(net.minecraft.network.chat.Component.literal(com.coraline.rebirth.StoryRebirth.debug(p,value)));
+        case "visit_event"->com.coraline.feast.VisitEvents.debug(p,value);
+        case "outing_event"->FamilyOuting.debug(p,value);
+        case "game_night_event"->FamilyGameNight.debug(p,value);
+        case "delivery_event"->SpecialDelivery.debug(p,value);
+        case "house_party_event"->HouseParty.debug(p,value);
+        case "mother_away_event"->MotherGoesOut.debug(p,value);
+        case "player_party_event"->PlayerParty.debug(p,value);
+        case "theatre_event"->TheatreVisit.debug(p,value);
+        case "mouse_circus_event"->MouseCircusVisit.debug(p,value);
         case "scold_preview"->{var parts=value.split(",");if(parts.length==2)Reconciliation.preview(p,Integer.parseInt(parts[0]),Integer.parseInt(parts[1]));}
         case "scold_event"->Reconciliation.debugEvent(p,Integer.parseInt(value));
         case "voice_preview"->{var parts=value.split(",");if(parts.length==3)SecretDialogue.preview(p,Integer.parseInt(parts[0]),Integer.parseInt(parts[1]),Integer.parseInt(parts[2]));}
@@ -61,7 +88,7 @@ public final class SecretsNetwork {
         case "forget"->{s.exposed.clear();s.suspected.clear();}
         case "override"->{var values=value.split(",");if(values.length!=8)return;double[] v=new double[8];for(int i=0;i<8;i++){v[i]=Double.parseDouble(values[i]);if(!Double.isFinite(v[i])||v[i]<0||v[i]>1)return;}OtherMotherLoop.relationship(p,(float)v[0],(float)v[1]);for(int i=0;i<6;i++)s.overrides[i]=v[i+2];}
         case "natural"->Arrays.fill(s.overrides,-1);
-        case "hide"->s.hiding=Math.max(0,Math.min(5,Integer.parseInt(value)));
+        case "hide"->s.hiding=Math.max(0,Math.min(SecretWorld.HIDING.length-1,Integer.parseInt(value)));
         case "inspect"->{if(SecretsRuntime.active(p))SecretsRuntime.inspect(p,Integer.parseInt(value));}
         case "discover"->SecretTransactions.discoverJournal(p);
         case "inspection_time"->{double progress=Double.parseDouble(value);if(Double.isFinite(progress))s.inspectionProgress=Math.max(0,Math.min(1,progress));}

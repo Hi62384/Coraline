@@ -1,0 +1,288 @@
+{
+  "reference": "voicelines/othermother/Sample.wav",
+  "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+  "emotion_order": [
+    "happy",
+    "angry",
+    "sad",
+    "afraid",
+    "disgusted",
+    "melancholic",
+    "surprised",
+    "calm"
+  ],
+  "states": {
+    "invitation/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, I have a little favor to ask you! There's a lovely package I need delivered to someone across the way. I've made a proper path for you, so just follow it straight to their house. And don't go opening the present, darling. It's meant to be a surprise!",
+        "Darling, would you mind making a delivery for me? I've wrapped something rather special, and I need you to take it to a friend of mine. Just follow the pathway, don't wander off exploring, and please don't peek inside. I'm trusting you with this, sweetheart!"
+      ]
+    },
+    "invitation/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Now, sweetheart, I've got an important little delivery for you. You'll find the recipient's house at the end of the pathway I've prepared. Stay on the path, don't go wandering through the wilderness, and whatever you do, don't open the package. I'd be very disappointed if you did.",
+        "I need you to deliver something for me, darling. It's already wrapped and ready. Just follow the pathway to the house and come straight back when you're finished. No exploring, no little detours, and absolutely no looking inside the package. Understood?"
+      ]
+    },
+    "invitation/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, I have something very important for you to do! I need this beautiful little package delivered, and I couldn't think of anyone I'd trust more than you. Just follow the path to the house, sweetheart, and don't peek inside. I know you'll make me proud.",
+        "Sweetheart, I'm going to trust you with a very special present. It needs to reach a friend of mine, and I've arranged a lovely pathway to their house. Promise me you'll stay on it and leave the wrapping alone. Some surprises are meant for other people, after all."
+      ]
+    },
+    "invitation/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "I have a delivery for you, sweetheart. Take this package to the house at the end of the pathway and come straight back. Do not wander off, do not investigate anything along the way, and do not open it. I expect you to follow those instructions precisely.",
+        "Here's a little responsibility for you. Perhaps it will give you something useful to do. Follow the path, deliver the package, and return to me. And don't even think about opening it, darling. I will be very unhappy if you betray my trust."
+      ]
+    },
+    "invitation/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, I've got a rather special little task for you. I need this package delivered, and I know how clever and curious you can be. But do try to resist that curiosity for once. Stay on the path, don't go exploring, and leave the wrapping exactly as it is.",
+        "Sweetheart, I have a very important package that needs delivering. I'm trusting you with it because you're such a capable little thing. Just remember, darling, there's no need to investigate every mystery you come across. Some packages are much better left unopened."
+      ]
+    },
+    "completion/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, there you are, sweetheart! Welcome back! I hope everything went smoothly. Wasn't that a lovely little adventure? I'm so pleased you could help me.",
+        "Darling, you're back! How wonderful. I do appreciate you taking care of that little errand for me. Now, I think I've got something else rather nice planned for us."
+      ]
+    },
+    "completion/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Ah, there you are. I trust everything went as planned? Good. It's always nice when I can rely on you to take care of something important.",
+        "Welcome back, sweetheart. I hope you didn't have too much trouble finding the house. Now then, that's one little errand out of the way. Let's see what else we might do."
+      ]
+    },
+    "completion/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, you're back! I knew I could count on you. You've been such a wonderful little helper today. Come here, sweetheart. I'm terribly proud of you.",
+        "There's my favorite little helper! I hope you enjoyed your journey, sweetheart. It's lovely knowing I have someone as clever and dependable as you to look after things for me."
+      ]
+    },
+    "completion/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Well, you're back. I trust you followed my instructions and didn't get distracted along the way. Very good. Now let's put this little errand behind us.",
+        "There you are. I hope everything went exactly as I asked, sweetheart. I do appreciate it when you manage to follow instructions. Now then, let's move on."
+      ]
+    },
+    "completion/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, you've returned! I do hope you enjoyed your little trip. I know how tempting it can be to wander off and investigate things, but it's nice to know I can still count on you.",
+        "Welcome home, sweetheart. You've been away on quite the little adventure, haven't you? Well, I'm glad you're back. I think it's time we found something else wonderful to do together."
+      ]
+    },
+    "caught_opening/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart... you opened it? But I specifically asked you not to! That package wasn't meant for you, darling. I trusted you to deliver it safely, and now you've gone and spoiled the surprise.",
+        "Darling, I can't believe what I'm seeing. You actually opened the package! I thought I could trust you with one little responsibility. Oh, sweetheart, I'm terribly disappointed."
+      ]
+    },
+    "caught_opening/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Well, that explains quite a lot. You opened the package, didn't you? After I very clearly told you not to. I must say, sweetheart, you've developed a rather unpleasant habit of doing precisely what I ask you not to.",
+        "Oh, darling, I wondered what you'd been getting up to. And now I find you've opened something that wasn't meant for you. You really do have an extraordinary talent for testing my patience."
+      ]
+    },
+    "caught_opening/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling... why would you do this to me? I trusted you with something important. I thought you understood how much that meant. You've hurt me terribly, sweetheart.",
+        "Sweetheart, I gave you that package because I thought I could trust you. I never imagined you'd open it behind my back. Oh, my love, I don't know what hurts more: what you've done, or that you thought you needed to hide it from me."
+      ]
+    },
+    "caught_opening/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "You opened it. Of course you did. I give you one simple instruction, and you immediately decide it doesn't apply to you. I am growing very tired of your disobedience.",
+        "How dare you. That package was entrusted to you, and you had absolutely no right to look inside. You've been taking advantage of my patience for far too long, sweetheart."
+      ]
+    },
+    "caught_opening/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling. I knew you'd be tempted. I really did. But I thought perhaps, just this once, you might decide to trust me instead of giving in to that endless curiosity of yours.",
+        "Well, sweetheart, here we are again. Another little secret you've decided simply must belong to you. You know, it's rather remarkable how much you claim to enjoy being here, while constantly doing things you know will hurt me."
+      ]
+    }
+  },
+  "output": "voicelines/othermother/events/special_delivery",
+  "prefix": "line"
+}

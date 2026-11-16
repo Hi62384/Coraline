@@ -1,0 +1,360 @@
+{
+  "reference": "voicelines/otherfather/otherfathersample.wav",
+  "reference_sha256": "fd15d075b3704f9661ef3ce3a60961394d8ce980a194aefada5bcf9baaacafa5",
+  "emotion_order": [
+    "happy",
+    "angry",
+    "sad",
+    "afraid",
+    "disgusted",
+    "melancholic",
+    "surprised",
+    "calm"
+  ],
+  "states": {
+    "father_study_root": {
+      "direction": "Warm, absent-minded and gently hesitant; never openly defiant.",
+      "emotion": [
+        0.25,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.04,
+        0.6
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, there you are! Lovely day for a little music, isn't it?"
+      ],
+      "filename": "father_study_root.wav",
+      "source_directory": ""
+    },
+    "father_study_music": {
+      "direction": "Warm, absent-minded and gently hesitant; never openly defiant.",
+      "emotion": [
+        0.25,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.04,
+        0.6
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "An old melody. Funny how a tune can find its way home."
+      ],
+      "filename": "father_study_music.wav",
+      "source_directory": ""
+    },
+    "father_study_melody": {
+      "direction": "Warm, absent-minded and gently hesitant; never openly defiant.",
+      "emotion": [
+        0.25,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.04,
+        0.6
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, here and there. Some things are older than they look."
+      ],
+      "filename": "father_study_melody.wav",
+      "source_directory": ""
+    },
+    "father_study_questions": {
+      "direction": "Warm, absent-minded and gently hesitant; never openly defiant.",
+      "emotion": [
+        0.25,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.04,
+        0.6
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Of course, kiddo. What is it?"
+      ],
+      "filename": "father_study_questions.wav",
+      "source_directory": ""
+    },
+    "father_study_house": {
+      "direction": "Warm, absent-minded and gently hesitant; never openly defiant.",
+      "emotion": [
+        0.25,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.04,
+        0.6
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Mother does like everything in its proper place. Even the little drawers have their arrangements."
+      ],
+      "filename": "father_study_house.wav",
+      "source_directory": ""
+    },
+    "father_study_marks": {
+      "direction": "Warm, absent-minded and gently hesitant; never openly defiant.",
+      "emotion": [
+        0.25,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.04,
+        0.6
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Just a little pattern she uses. Once you've seen it, it's difficult not to notice it everywhere."
+      ],
+      "filename": "father_study_marks.wav",
+      "source_directory": ""
+    },
+    "father_study_watchers": {
+      "direction": "Warm, absent-minded and gently hesitant; never openly defiant.",
+      "emotion": [
+        0.25,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.04,
+        0.6
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Mother is fond of those dolls. Always placing them where they can see everything."
+      ],
+      "filename": "father_study_watchers.wav",
+      "source_directory": ""
+    },
+    "father_study_blind": {
+      "direction": "Warm, absent-minded and gently hesitant; never openly defiant.",
+      "emotion": [
+        0.25,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.04,
+        0.6
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh! Not everything, of course. They have to face the right way. Walls get in the way, too."
+      ],
+      "filename": "father_study_blind.wav",
+      "source_directory": ""
+    },
+    "father_study_machines": {
+      "direction": "Warm, absent-minded and gently hesitant; never openly defiant.",
+      "emotion": [
+        0.25,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.04,
+        0.6
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Mother has clever machines working behind the scenes."
+      ],
+      "filename": "father_study_machines.wav",
+      "source_directory": ""
+    },
+    "father_study_gifts": {
+      "direction": "Warm, absent-minded and gently hesitant; never openly defiant.",
+      "emotion": [
+        0.25,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.04,
+        0.6
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "They make sure the presents and surprises arrive where they ought to. Quite an arrangement, really."
+      ],
+      "filename": "father_study_gifts.wav",
+      "source_directory": ""
+    },
+    "father_study_workshop": {
+      "direction": "Warm, absent-minded and gently hesitant; never openly defiant.",
+      "emotion": [
+        0.25,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.04,
+        0.6
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "I like making things. Especially when they make someone smile."
+      ],
+      "filename": "father_study_workshop.wav",
+      "source_directory": ""
+    },
+    "father_study_world": {
+      "direction": "Warm, absent-minded and gently hesitant; never openly defiant.",
+      "emotion": [
+        0.25,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.04,
+        0.6
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "The garden is lovely. Beyond it? Some places have been forgotten for a very long time."
+      ],
+      "filename": "father_study_world.wav",
+      "source_directory": ""
+    },
+    "father_study_trees": {
+      "direction": "Warm, absent-minded and gently hesitant; never openly defiant.",
+      "emotion": [
+        0.25,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.04,
+        0.6
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "You'd be surprised how empty some of those perfect trees are inside."
+      ],
+      "filename": "father_study_trees.wav",
+      "source_directory": ""
+    },
+    "father_study_family": {
+      "direction": "Warm, absent-minded and gently hesitant; never openly defiant.",
+      "emotion": [
+        0.25,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.04,
+        0.6
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Mother does like things perfect. Best not to disturb her arrangements."
+      ],
+      "filename": "father_study_family.wav",
+      "source_directory": ""
+    },
+    "father_study_kindness": {
+      "direction": "Warm, absent-minded and gently hesitant; never openly defiant.",
+      "emotion": [
+        0.25,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.04,
+        0.6
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "A kind word. A quiet evening. A family sitting down together."
+      ],
+      "filename": "father_study_kindness.wav",
+      "source_directory": ""
+    },
+    "father_study_wybie": {
+      "direction": "Warm, absent-minded and gently hesitant; never openly defiant.",
+      "emotion": [
+        0.25,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.04,
+        0.6
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "A helpful fellow. Sometimes quiet is how someone stays out of trouble."
+      ],
+      "filename": "father_study_wybie.wav",
+      "source_directory": ""
+    },
+    "father_study_hesitate": {
+      "direction": "Warm, absent-minded and gently hesitant; never openly defiant.",
+      "emotion": [
+        0.25,
+        0,
+        0,
+        0.08,
+        0,
+        0,
+        0.04,
+        0.6
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "I don't think she'd want me discussing that. Best not to worry yourself."
+      ],
+      "filename": "father_study_hesitate.wav",
+      "source_directory": ""
+    },
+    "father_study_uncomfortable": {
+      "direction": "Warm, absent-minded and gently hesitant; never openly defiant.",
+      "emotion": [
+        0.25,
+        0,
+        0,
+        0.08,
+        0,
+        0,
+        0.04,
+        0.6
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, I really must get back to my music now, kiddo."
+      ],
+      "filename": "father_study_uncomfortable.wav",
+      "source_directory": ""
+    }
+  },
+  "output": "voicelines/otherfather/events/study",
+  "prefix": "study"
+}

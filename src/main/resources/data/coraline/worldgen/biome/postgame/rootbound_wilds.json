@@ -1,0 +1,36 @@
+{
+  "has_precipitation": true,
+  "temperature": 0.95,
+  "downfall": 0.9,
+  "effects": {
+    "fog_color": 7244146,
+    "sky_color": 9480849,
+    "water_color": 6523571,
+    "water_fog_color": 3426157
+  },
+  "spawners": {
+    "monster": [
+      {
+        "type": "coraline:threadcrawler",
+        "weight": 8,
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "coraline:stitched_hound",
+        "weight": 8,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "coraline:rootbound_horror",
+        "weight": 5,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ]
+  },
+  "spawn_costs": {},
+  "carvers": {},
+  "features": []
+}

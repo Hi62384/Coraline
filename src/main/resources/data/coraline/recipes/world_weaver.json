@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","pattern":["ISI","S H","ISI"],"key":{"I":{"item":"minecraft:iron_ingot"},"S":{"item":"minecraft:string"},"H":{"item":"coraline:void_heart"}},"result":{"item":"coraline:world_weaver"}}

@@ -1,0 +1,205 @@
+{
+  "missing_parents_tea_a": {
+    "source": "voicelines/story/MissingParentsSpinkAndForcible/A.wav",
+    "source_sha256": "e6d4d501cca75d9318e3d6beaa56f27699517fb3aff04b90c813edd550cc11b1",
+    "ogg_sha256": "a6c9259937ea6b73cd33cf74d3466a5bffb9f6e35082628fd74bf19c0076e31a",
+    "seconds": 8.173417,
+    "ticks": 164
+  },
+  "missing_parents_tea_b": {
+    "source": "voicelines/story/MissingParentsSpinkAndForcible/B.wav",
+    "source_sha256": "de7aac56acc1c434ec7d3ac798a9ecb4efc904df9403be062aa6b4f8f8fdb4b3",
+    "ogg_sha256": "351a1102f078a61a20307df3bc0daa32f115085d0a346eff9d9250c79bf739b5",
+    "seconds": 11.250083,
+    "ticks": 226
+  },
+  "missing_parents_tea_c": {
+    "source": "voicelines/story/MissingParentsSpinkAndForcible/C.wav",
+    "source_sha256": "707d8ff7fc98727bc1cc145063888054dc286a9bc444cbe21516bb317d16c5b8",
+    "ogg_sha256": "17fda36d141c77c20e1d1ef16c98b2deefde4a9e2e0797d0c6cfa43dbd77cd35",
+    "seconds": 9.032583,
+    "ticks": 181
+  },
+  "missing_parents_tea_d": {
+    "source": "voicelines/story/MissingParentsSpinkAndForcible/D.wav",
+    "source_sha256": "0270d19349290d27ae51ecd24f7c571723321357858db2918eee5d2496fc36e8",
+    "ogg_sha256": "717806e4003c62d6e9d11d4c410f966f15576d123c51854d5c5570923ae658d8",
+    "seconds": 2.647083,
+    "ticks": 53
+  },
+  "missing_parents_tea_e": {
+    "source": "voicelines/story/MissingParentsSpinkAndForcible/E.wav",
+    "source_sha256": "67d208ce0ffc96deaeed1b89b38a79bcfbec5d8fc9c0b584665646605b091220",
+    "ogg_sha256": "fece2868166cc3bcb7b17eced82259940a8a9766fdac4cfd6f218dfb63ba1103",
+    "seconds": 2.519375,
+    "ticks": 51
+  },
+  "missing_parents_tea_f": {
+    "source": "voicelines/story/MissingParentsSpinkAndForcible/F.wav",
+    "source_sha256": "bce4fbdc4f942cb0e9d79da462e86893aa26592000f7a26c0a2e24b4917a3357",
+    "ogg_sha256": "1374fa559282ffbd2b063053c6b1a9ff7c030caa849f31f9013bd5ea624cce2c",
+    "seconds": 8.382417,
+    "ticks": 168
+  },
+  "missing_parents_tea_g": {
+    "source": "voicelines/story/MissingParentsSpinkAndForcible/G.wav",
+    "source_sha256": "3c902954aa3b7c2eb6cbde604570692f909045a147e3f15b3f88cb87ab057e94",
+    "ogg_sha256": "fa9fa44ae5cf26fd21e3670495d2e4be0f36536718e311eddca456e4dd22ead8",
+    "seconds": 2.542583,
+    "ticks": 51
+  },
+  "missing_parents_tea_h": {
+    "source": "voicelines/story/MissingParentsSpinkAndForcible/H.wav",
+    "source_sha256": "c63543086abfae8a74598e161e7af9d50f4437105a9f6267752942e2b51acbea",
+    "ogg_sha256": "78123b94d8a089f1bb9720f9f29cc4a7114e51ffc3328a45ea97d0d2c977ee32",
+    "seconds": 1.9505,
+    "ticks": 40
+  },
+  "missing_parents_tea_i": {
+    "source": "voicelines/story/MissingParentsSpinkAndForcible/I.wav",
+    "source_sha256": "3a43d4b827e35d9adb44d1650c96f39ab7f5c9b94fdd6145e0227cdc0f98d742",
+    "ogg_sha256": "74fb5715fceba2c6dbb6b7920d92de3e6488578d972cae9db7fc8ba42aa5b1b0",
+    "seconds": 19.249333,
+    "ticks": 385
+  },
+  "missing_parents_cat_a": {
+    "source": "voicelines/story/MissingParentsCat/A.wav",
+    "source_sha256": "ee71993f5bcb97b0b4b951fa266697566c8c9d2f8c8dc1936e639a99f9953dbb",
+    "ogg_sha256": "f00e09d3b89c9398bfb3e346a39a274d1be6c49e36e6af41b2294ac33f14118b",
+    "seconds": 3.8545,
+    "ticks": 78
+  },
+  "missing_parents_cat_b": {
+    "source": "voicelines/story/MissingParentsCat/B.wav",
+    "source_sha256": "ef8cfe77fd7023cb43ccb1bfede699723165ab59dc3f5251e6363185c4d4cfa8",
+    "ogg_sha256": "ff3009727a9423ef7b0bae6a491ff8a6fcc536d0ec10c6abf705cd6f57391fa4",
+    "seconds": 2.322,
+    "ticks": 47
+  },
+  "missing_parents_cat_c": {
+    "source": "voicelines/story/MissingParentsCat/C.wav",
+    "source_sha256": "7b7e27845d55ae7d5e95db81b7a819c53ed6b31ad6a1122615cb6408a6d2f1d1",
+    "ogg_sha256": "16d7a3986b5aae4bdffb37f18615051d46a4f413f404afed1b6b1519bd517e5e",
+    "seconds": 5.491542,
+    "ticks": 110
+  },
+  "missing_parents_cat_d": {
+    "source": "voicelines/story/MissingParentsCat/D.wav",
+    "source_sha256": "b219847eecf8bc66019765e6166ff71a5bd81e024ec562c472e8786d8cf8258f",
+    "ogg_sha256": "3c01dedf21f2e7e86123131dd48e48ec682c6abbfbe0d047ed8d0e52cf586406",
+    "seconds": 6.083625,
+    "ticks": 122
+  },
+  "missing_parents_cat_e": {
+    "source": "voicelines/story/MissingParentsCat/E.wav",
+    "source_sha256": "75f6fc775ffb6f829810adb85e489c6cb8b585bdbecae963a860f3eb915ff018",
+    "ogg_sha256": "27f8e1a97800414a265957c74562a1bf486dbd1d168850c94558256e0afa63fe",
+    "seconds": 9.044167,
+    "ticks": 181
+  },
+  "missing_parents_cat_f": {
+    "source": "voicelines/story/MissingParentsCat/F.wav",
+    "source_sha256": "5dd7ef81f940a8c7d4b5c66e32b744acb9c5bc1906b2b05d58b03e1edbb2d370",
+    "ogg_sha256": "11f1d33f9944ac01d2ff39e3f131d0649d062c4946dc2ec5815a811d32057326",
+    "seconds": 8.475292,
+    "ticks": 170
+  },
+  "parent_rescue_a": {
+    "source": "voicelines/story/EnterOtherWorldParentRescue/A.wav",
+    "source_sha256": "c4ff623dc1aaff549298e0c6829be03649291068d840a921a81167c26bbdcf61",
+    "ogg_sha256": "0f69da9ac248d26bb41c00f2c578329d74828423855dd40effdd58ae7ad4526f",
+    "seconds": 16.834458,
+    "ticks": 337
+  },
+  "parent_rescue_b": {
+    "source": "voicelines/story/EnterOtherWorldParentRescue/B.wav",
+    "source_sha256": "337a13f49a17b178f6e40bedbea04e5e37b9b2d3f174d3451733376534e95c08",
+    "ogg_sha256": "3415a851eedcbf793825dddced50a241611da9917c3a0043a7484f6554f25628",
+    "seconds": 6.629292,
+    "ticks": 133
+  },
+  "parent_rescue_c": {
+    "source": "voicelines/story/EnterOtherWorldParentRescue/C.wav",
+    "source_sha256": "49c7b0d0ad4fe2d95a9664a31a8a57c879ff6f60ca10f1a0eb3cc000fab1b074",
+    "ogg_sha256": "be8a9e85bff850a52cb3fb2d3b89303f30f8450581659bcd8263494229d524ef",
+    "seconds": 8.405625,
+    "ticks": 169
+  },
+  "parent_rescue_d": {
+    "source": "voicelines/story/EnterOtherWorldParentRescue/D.wav",
+    "source_sha256": "f40a17cec6c55193a806c64a9f03cf4c5c2f4921edd35420fdde5033230e7222",
+    "ogg_sha256": "03a3a9f6932f52b7f5021b2fad695d1116e0ccdf6622330ee9000ea60f70ba26",
+    "seconds": 16.172708,
+    "ticks": 324
+  },
+  "parent_rescue_e": {
+    "source": "voicelines/story/EnterOtherWorldParentRescue/E.wav",
+    "source_sha256": "39c9dc772ab35d5198c5e0918a7364e16298b33204b0d948e762c26bd10769e0",
+    "ogg_sha256": "f62f2caf380dcc315d55c02f9ecf07b73ac1a3b0b130f78addbd997a5856603e",
+    "seconds": 1.92725,
+    "ticks": 39
+  },
+  "parent_rescue_f": {
+    "source": "voicelines/story/EnterOtherWorldParentRescue/F.wav",
+    "source_sha256": "85ddb4b8a5c38a19ebc59baaf63c542de9c3eecba2e99d65920a3e8ca3fe5711",
+    "ogg_sha256": "523154c259715a0c7973449d93f39fec77a76c507c50318c26282da194976bda",
+    "seconds": 2.739958,
+    "ticks": 55
+  },
+  "parent_rescue_g": {
+    "source": "voicelines/story/EnterOtherWorldParentRescue/G.wav",
+    "source_sha256": "a2154a43aa5ed7079bcaff9cb3f0ea23e54587f28111097ff8ffbf4c55f2a7fb",
+    "ogg_sha256": "3ef4a6c00ea043e1eea1e4c0265bf441acaa115117abbb121d8bca1256803481",
+    "seconds": 9.090625,
+    "ticks": 182
+  },
+  "parent_rescue_h": {
+    "source": "voicelines/story/EnterOtherWorldParentRescue/H.wav",
+    "source_sha256": "035110024a510512a694d75887ff440dbb3b9e488d5c8a8278a3c1efd885cd68",
+    "ogg_sha256": "1b70d99c83fab5f5dd03f62a5afdb0b6e61856e751f0afe2f10ab0961e6e45f6",
+    "seconds": 10.379333,
+    "ticks": 208
+  },
+  "parent_rescue_i": {
+    "source": "voicelines/story/EnterOtherWorldParentRescue/I.wav",
+    "source_sha256": "8a4d56fd8bc196e67f71a3819d3facf009e658ad3b80955449f3d0d20cdc5cc5",
+    "ogg_sha256": "ca24cea3e78ee495ea0d66d4e1c74d21fb03eebb8ced3fbc23bfac1ac9599df1",
+    "seconds": 4.876208,
+    "ticks": 98
+  },
+  "parent_rescue_j": {
+    "source": "voicelines/story/EnterOtherWorldParentRescue/J.wav",
+    "source_sha256": "4e72bd6449f1c87eaede2bbb105637b3a5f56e1d0a8795b2d667deea0c5a56d7",
+    "ogg_sha256": "7dec0846b29733bb697695c47c7785fb0591c212dcc0e7a874622d83b5b3e41a",
+    "seconds": 6.141667,
+    "ticks": 123
+  },
+  "parent_rescue_k": {
+    "source": "voicelines/story/EnterOtherWorldParentRescue/K.wav",
+    "source_sha256": "8068f6bfe770ef26c23cd7721cb4a8fdace88111d6a10b50d8f353af794e6f46",
+    "ogg_sha256": "f0f34749b80681ccd09d537fc185edb64bcdb81f94e25c090a3f497e28fc32e2",
+    "seconds": 12.492333,
+    "ticks": 250
+  },
+  "parent_rescue_l": {
+    "source": "voicelines/story/EnterOtherWorldParentRescue/L.wav",
+    "source_sha256": "c3e8cd9a2c0c742ceacde9199ff17a9dbddd13efd4b357f78db426eddbbcfc5b",
+    "ogg_sha256": "049bf30e5c0a3f9881bdc6c21faef25731a894f05d814a80268276b5e80fdbfb",
+    "seconds": 36.049,
+    "ticks": 721
+  },
+  "parent_rescue_m": {
+    "source": "voicelines/story/EnterOtherWorldParentRescue/M.wav",
+    "source_sha256": "86e10bcd81f5e3b9c85fad2f30507e8c1d8e02eeebf51bc1a968748cd9af55e1",
+    "ogg_sha256": "e5d5491c593f04c019301146601ed272c3d685ba8af6aa4e9172e6e4a3b133d7",
+    "seconds": 9.018292,
+    "ticks": 181
+  },
+  "parent_rescue_n": {
+    "source": "voicelines/story/EnterOtherWorldParentRescue/N.wav",
+    "source_sha256": "c3fefc1f79b8ff3ed4a8cedaf8c8cdd936b35263eebf4cad6664f8ae9a18d000",
+    "ogg_sha256": "572b5288b14f6e35b45e76e4c722c0023111725c3b5c99ef2613c81f3bb36272",
+    "seconds": 7.502708,
+    "ticks": 151
+  }
+}

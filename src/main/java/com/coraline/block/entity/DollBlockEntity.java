@@ -23,6 +23,7 @@ public final class DollBlockEntity extends BlockEntity {
     public boolean moving;
     public static void serverTick(net.minecraft.world.level.Level level,BlockPos pos,BlockState state,DollBlockEntity doll){
         if(!(level instanceof net.minecraft.server.level.ServerLevel sl)||doll.ownerId==null)return;
+        if(level.getGameTime()%20==0&&com.coraline.doll.DollBondData.get(sl.getServer()).destroyedAfterBeldam(doll.ownerId)){doll.moving=true;level.removeBlock(pos,false);return;}
         if(com.coraline.otherworld.OtherWorld.isOther(level))return;
         if(level.getGameTime()%20==0){
             var data=com.coraline.doll.DollBondData.get(sl.getServer());var stack=doll.createDollStack();

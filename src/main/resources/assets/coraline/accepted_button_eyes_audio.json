@@ -1,0 +1,17 @@
+{
+  "mirror_prison_e_accepted": {
+    "source": "voicelines/story/MirrorPrison/accepted_E.wav",
+    "source_sha256": "d07ea45d26fa00ea3abb8fdd37a97a8025436464918b87333ee727b12e6008bd",
+    "ogg_sha256": "5b975d88b663fd83786d9d35ade06a62cbadddad4adcebb459330c8a0c6e1208",
+    "seconds": 17.796458,
+    "ticks": 356,
+    "derived_from": "voicelines/story/MirrorPrison/E.wav",
+    "parent_source_sha256": "57ecee57158602a9ef13de7259315d888904cd1681c9b52a166d0c22fb7cf231",
+    "source_frame_start": 511560,
+    "source_frame_end": 1296384,
+    "source_rate": 44100,
+    "pcm_range_sha256": "a62bfefed6f27fa554fced7dd079d04d75a68c07902265eee502b73ee90e5b08",
+    "offset_seconds": 11.6,
+    "transform": "exact PCM suffix; no generated speech"
+  }
+}

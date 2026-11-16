@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "open=false": {
+      "model": "coraline:block/infinite_thread_binding"
+    },
+    "open=true": {
+      "model": "coraline:block/infinite_thread_binding_cut"
+    }
+  }
+}

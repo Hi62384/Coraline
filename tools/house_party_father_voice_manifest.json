@@ -1,0 +1,209 @@
+{
+  "reference": "voicelines/otherfather/otherfathersample.wav",
+  "reference_sha256": "fd15d075b3704f9661ef3ce3a60961394d8ce980a194aefada5bcf9baaacafa5",
+  "emotion_order": [
+    "happy",
+    "angry",
+    "sad",
+    "afraid",
+    "disgusted",
+    "melancholic",
+    "surprised",
+    "calm"
+  ],
+  "states": {
+    "father_house_party_greeting_1": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, there you are! Quite the party we've got going, eh? Your Other Mother has invited half the neighborhood, by the look of things. Come on in and enjoy yourself!"
+      ],
+      "filename": "father_house_party_greeting_1.wav",
+      "source_directory": ""
+    },
+    "father_house_party_greeting_2": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, wonderful! Everyone's arriving, and the house is looking absolutely splendid. I do hope you've brought your appetite, kiddo. Your Other Mother has been cooking all day!"
+      ],
+      "filename": "father_house_party_greeting_2.wav",
+      "source_directory": ""
+    },
+    "father_house_party_social_1": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, isn't it lovely having so many friends around? Though I must admit, I can hardly remember everyone's names. Don't tell your Other Mother I said that!"
+      ],
+      "filename": "father_house_party_social_1.wav",
+      "source_directory": ""
+    },
+    "father_house_party_social_2": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "I've been having the most interesting conversations this evening! Well, I think they were interesting. There was rather a lot going on."
+      ],
+      "filename": "father_house_party_social_2.wav",
+      "source_directory": ""
+    },
+    "father_house_party_game_1": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, you're playing a game? Splendid! I might join you in a moment. Just don't let anyone convince you they're unbeatable. I've heard that one before!"
+      ],
+      "filename": "father_house_party_game_1.wav",
+      "source_directory": ""
+    },
+    "father_house_party_game_2": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, a little friendly competition! Nothing like a good board game to bring people together. Though I do hope nobody gets too competitive."
+      ],
+      "filename": "father_house_party_game_2.wav",
+      "source_directory": ""
+    },
+    "father_house_party_feast_1": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, dinner at last! Would you look at all that food? Your Other Mother has really outdone herself this time. I don't know where we're going to put it all!"
+      ],
+      "filename": "father_house_party_feast_1.wav",
+      "source_directory": ""
+    },
+    "father_house_party_feast_2": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Mmm! This is marvelous! I was beginning to think we'd never get to eat. Though I suppose that's what happens when you invite the whole neighborhood!"
+      ],
+      "filename": "father_house_party_feast_2.wav",
+      "source_directory": ""
+    },
+    "father_house_party_finish_1": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Well, that was quite the evening! Wonderful company, lovely food, and a few good laughs. We really ought to do this again sometime!"
+      ],
+      "filename": "father_house_party_finish_1.wav",
+      "source_directory": ""
+    },
+    "father_house_party_finish_2": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, what a splendid party! I don't think I've talked that much in ages. I may need a nice quiet evening at the piano after all this!"
+      ],
+      "filename": "father_house_party_finish_2.wav",
+      "source_directory": ""
+    }
+  },
+  "output": "voicelines/otherfather/events/house_party",
+  "prefix": "father",
+  "event_directory": "house_party"
+}

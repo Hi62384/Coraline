@@ -1,0 +1,468 @@
+{
+  "reference": "voicelines/othermother/Sample.wav",
+  "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+  "emotion_order": [
+    "happy",
+    "angry",
+    "sad",
+    "afraid",
+    "disgusted",
+    "melancholic",
+    "surprised",
+    "calm"
+  ],
+  "states": {
+    "invitation/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, I've made us a lovely dinner! Your Other Father and I are just getting everything ready. Why don't you finish up what you're doing and join us at the table in the next five minutes? I've made something especially nice for you.",
+        "Darling, it's almost time for supper! I've been working away in the kitchen, and everything smells absolutely wonderful. You've got five minutes to come to the dining room, so don't wander too far. Your Other Father and I will be waiting."
+      ]
+    },
+    "invitation/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Now then, sweetheart, dinner will be ready in five minutes. I'd like you to come straight to the table when you're finished with whatever you're doing. Your Other Father and I have been looking forward to sitting down together.",
+        "Oh, darling, I've got dinner nearly ready. You have five minutes to make your way to the dining room. Do try to arrive on time, won't you? It's much nicer when the whole family can eat together."
+      ]
+    },
+    "invitation/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, I've made your supper! Come join us at the table in the next five minutes, won't you? I've prepared all sorts of lovely things, and it simply wouldn't be the same without my favorite little one sitting beside me.",
+        "Sweetheart, dinner's almost ready, and I've made sure there's plenty of everything you like. Your Other Father is terribly excited to have us all together. Come to the dining room within five minutes, my love. I'll be waiting for you."
+      ]
+    },
+    "invitation/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Dinner will be ready in five minutes, sweetheart. I expect you at the table when I call you. We've had quite enough wandering about for one day, so do make an effort to be on time.",
+        "Now, I've prepared a proper family supper, and I'd like us all to enjoy it together. You have five minutes to come to the dining room. I trust you won't give me another reason to come looking for you."
+      ]
+    },
+    "invitation/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, I've made us something wonderful for dinner. I know how easily you get distracted by all those interesting little things you find, but do come to the table within five minutes. I'd so hate for you to miss it.",
+        "Sweetheart, it's time we spent a little while together as a family. Dinner will be ready in five minutes, and I do expect to see you there. Whatever little adventure you're having can wait, can't it?"
+      ]
+    },
+    "ontime/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, there you are! Right on time, too. How lovely! Come sit down, sweetheart. I've been dying for you to try what I've made.",
+        "Welcome, darling! Everything's ready, and you've arrived at just the right moment. Come along and take your seat. I think you're going to love this."
+      ]
+    },
+    "ontime/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Ah, good, you're here. Right on time, just as I hoped. Come sit down, sweetheart. Let's have ourselves a pleasant little dinner.",
+        "There you are, darling. I'm glad you remembered to come when I asked. Your plate's waiting, so go on and make yourself comfortable."
+      ]
+    },
+    "ontime/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling! I knew you'd come straight to dinner. There's nothing quite like having the whole family together, is there? Come sit beside me.",
+        "There's my sweetheart! Right on time, of course. I've saved you the nicest portion, and I can't wait to see what you think of it."
+      ]
+    },
+    "ontime/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Good. You managed to arrive when I asked. How refreshing. Now take your seat, sweetheart, and let's try to have one quiet meal together.",
+        "Well, at least you're on time. That's a good start, darling. Sit down, and let's hope the rest of this evening is equally pleasant."
+      ]
+    },
+    "ontime/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, there you are. Right on time, too. See? We can have such lovely moments together when you aren't getting distracted by all those little mysteries of yours.",
+        "My sweetheart! I was wondering whether your curiosity would keep you away again, but here you are. Come sit down. I've made something very special for us."
+      ]
+    },
+    "late/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, there you are, sweetheart! We were beginning to wonder where you'd gotten to. Come sit down before everything gets cold. There's still plenty for you.",
+        "Darling! You're a little late, but never mind. I've kept your dinner nice and warm. Come along, let's not waste any more time."
+      ]
+    },
+    "late/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Well, there you are. Dinner's been ready for quite some time, sweetheart. I do wish you'd paid a little more attention to the clock. Sit down, please.",
+        "Oh, darling, we were beginning to think you'd forgotten all about us. It's rather rude to keep everyone waiting, you know. But you're here now, so take your seat."
+      ]
+    },
+    "late/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my love, where have you been? I was beginning to worry. I know you enjoy your little adventures, but your Other Father and I have been waiting for you. Come sit down.",
+        "Sweetheart, you've kept us waiting! I was almost tempted to come looking for you myself. Never mind, darling. Your dinner's still warm, and I've saved you a lovely portion."
+      ]
+    },
+    "late/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "How considerate of you to finally join us. We've been waiting, sweetheart, and I don't particularly enjoy having my time wasted. Sit down.",
+        "Well, look who decided to appear. Dinner was ready when I said it would be. I do hope whatever kept you away was worth making your entire family wait."
+      ]
+    },
+    "late/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, you really do lose track of time when you're off exploring, don't you? We've been waiting for you. Come sit down before I start wondering what you've been getting up to.",
+        "There you are, sweetheart. I was beginning to think you'd found something more interesting than your own family. But I suppose nothing could keep you away from us forever, could it?"
+      ]
+    },
+    "search/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Sweetheart? Dinner's been waiting for an awfully long time now. Where have you gone? Come along, darling, I'm going to have to come find you!",
+        "Darling! Your Other Father and I have been waiting and waiting. I hope you haven't gotten yourself lost. I'm coming to look for you, sweetheart!"
+      ]
+    },
+    "search/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Alright, sweetheart, that's quite long enough. I've given you plenty of time to come to dinner. If you won't come when I ask, I suppose I'll have to find you myself.",
+        "Where have you disappeared to this time? Dinner's been ready for ages, and my patience is wearing rather thin. I'm coming to find you, darling!"
+      ]
+    },
+    "search/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, where are you? I'm beginning to worry terribly! Your dinner's getting cold, and I can't bear not knowing where you've gone. I'm coming to look for you!",
+        "Sweetheart! Please come back to the house. I've been waiting for you, and I'm getting awfully concerned. Never mind, my love, I'll find you."
+      ]
+    },
+    "search/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "That is quite enough. I told you dinner was ready, and I have waited more than long enough. I'm coming to find you now, and you had better have a very good explanation.",
+        "Where are you hiding, sweetheart? You seem determined to make this difficult. Well, I'm finished waiting. I'll find you myself."
+      ]
+    },
+    "search/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, you've done it again. I prepare the loveliest dinner for us, and you disappear somewhere without a word. I wonder what could possibly be keeping you so occupied. Well, let's find out, shall we?",
+        "Sweetheart, I know how much you love your little adventures, but you've kept your mother waiting far too long. I think it's time I came to collect you. Wherever you've wandered off to."
+      ]
+    },
+    "finish/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, wasn't that lovely? I do enjoy having us all together at the table. I hope you liked everything, sweetheart. Now, I think we ought to find something else fun to do.",
+        "There we are! A proper family dinner, just as it should be. I'm so glad you could join us, darling. I've still got plenty of wonderful things planned for you."
+      ]
+    },
+    "finish/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Well, that was nice, wasn't it? It's always good when we can sit down and enjoy ourselves without any interruptions. Now then, sweetheart, let's see what else we might do.",
+        "There, all finished. I do hope you enjoyed your dinner. It's nice having the family together, darling. Perhaps we should find ourselves another little activity."
+      ]
+    },
+    "finish/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, I wish every evening could be just like this. All of us together, enjoying a lovely meal. Doesn't it feel wonderful to be home? Now, let's have a little more fun.",
+        "Wasn't that perfect, sweetheart? Seeing you sitting here with us makes me happier than you could imagine. Come along, my love. I've got something else wonderful in mind."
+      ]
+    },
+    "finish/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Well, at least we've managed to have a reasonably pleasant dinner. I do hope you'll remember how much nicer things are when everyone behaves themselves. Now, let's move along.",
+        "There. Dinner's finished, and I think we've all had quite enough sitting around. Perhaps our next activity will give you something more productive to occupy yourself with."
+      ]
+    },
+    "finish/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, isn't it lovely how we can always come together like this? Whatever little secrets and adventures occupy your mind, you still find your way back to our table. Now, let's see what else I've planned.",
+        "There we are, sweetheart. Another lovely family dinner. I do wish moments like these could last forever. But never mind, I've got plenty more surprises waiting for you."
+      ]
+    }
+  },
+  "output": "voicelines/othermother/events/family_dinner",
+  "prefix": "line"
+}

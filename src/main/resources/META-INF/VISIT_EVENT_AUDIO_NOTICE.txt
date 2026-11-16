@@ -1,0 +1,19 @@
+The Other Mother and Other Father visit-event recordings (exploration, study,
+dinner, outings, game night, deliveries, parties, Mother Goes Out, Wybie's
+adventure, theatre and mouse circus) are synthetic voice-cloned
+audio generated locally with IndexTTS2 from the project's supplied Other Mother
+Sample.wav and Other Father otherfathersample.wav references. They are not
+original recordings by the reference speakers. No model weights are included.
+
+Supplied original story recordings are retained separately, not presented as
+newly synthesized performances. Subtitle drafts were transcribed locally and
+source-checked; uncertain speech is explicitly marked rather than invented.
+Automated checks are not a claim of human acting or listening review.
+
+IndexTTS2: https://github.com/index-tts/index-tts
+The accompanying model-use license is INDEXTTS_AUDIO_LICENSE.txt.
+
+Any modifications made to the original model in this Derivative Work are not
+endorsed, warranted, or guaranteed by the original right-holder of the original
+model, and the original right-holder disclaims all liability related to this
+Derivative Work.

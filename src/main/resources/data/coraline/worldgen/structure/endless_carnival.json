@@ -1,0 +1,11 @@
+{
+  "type": "coraline:endless_carnival",
+  "biomes": [
+    "coraline:postgame/candy_wonderland",
+    "coraline:postgame/stitched_meadows",
+    "coraline:postgame/paperwood_forest"
+  ],
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "none"
+}

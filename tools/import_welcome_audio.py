@@ -1,3 +1,4 @@
+from audio_manifest_io import write_json_if_changed
 """Import checked PCM masters as streamed Ogg/Vorbis for Minecraft 1.20.1."""
 import hashlib
 import json
@@ -7,6 +8,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import wave
+from voice_recording_proof import validate as validate_voice, legacy_recordings
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / 'src/main/resources/assets/coraline'
@@ -23,6 +25,11 @@ def output_filename(profile, index, prefix):
 def main():
     sample = ROOT / MANIFEST['reference']
     assert hashlib.sha256(sample.read_bytes()).hexdigest() == MANIFEST['reference_sha256'], 'Reference changed'
+    manifest_file=os.environ.get('CORALINE_VOICE_MANIFEST','tools/other_mother_welcome.json')
+    # A WAV checksum alone does not prove that its script or quality check is
+    # current. Fail before editing any runtime mapping if either has drifted.
+    quality_cache={}
+    for record in legacy_recordings(ROOT,[manifest_file]).values():validate_voice(ROOT,record,quality_cache)
     sounds = json.loads((ASSETS/'sounds.json').read_text())
     lengths = json.loads((ASSETS/'visit_audio_lengths.json').read_text())
     report = json.loads((SOURCE/MANIFEST.get('generation_report', 'generation_report.json')).read_text(encoding='utf-8'))
@@ -55,8 +62,8 @@ def main():
             asset_path = '/'.join(part for part in (FOLDER, relative_asset) if part)
             sounds[name] = {'sounds': [{'name': f'coraline:visit/{asset_path}', 'stream': True}]}
             lengths[name] = math.ceil(seconds * 20)
-    (ASSETS/'sounds.json').write_text(json.dumps(sounds, indent=2)+'\n')
-    (ASSETS/'visit_audio_lengths.json').write_text(json.dumps(lengths, indent=2)+'\n')
+    write_json_if_changed(ASSETS/'sounds.json',sounds)
+    write_json_if_changed(ASSETS/'visit_audio_lengths.json',lengths)
     # Distribute the model's required notice with its generated outputs, not model weights.
     bundled_license = ROOT/'src/main/resources/META-INF/INDEXTTS_AUDIO_LICENSE.txt'
     if not bundled_license.exists():

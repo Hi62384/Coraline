@@ -23,7 +23,10 @@ with zipfile.ZipFile(jar_path) as jar, zipfile.ZipFile(baseline) as old:
     # Keep the asset-removal check strict; only this obsolete bookkeeping class
     # may additionally disappear relative to releases using physical held lights.
     obsolete_classes = {'com/coraline/clothing/UtilityEffects$Glow.class'}
-    assert removed-obsolete_classes == {'assets/coraline/sounds/'+name+'.ogg' for name in aliases}, removed
+    # A previous optimized release has already retired these byte-identical
+    # aliases. Only expect removals that actually existed in that baseline.
+    expected_alias_removals = {'assets/coraline/sounds/'+name+'.ogg' for name in aliases} & set(old.namelist())
+    assert removed-obsolete_classes == expected_alias_removals, removed
     assert not any(name.endswith('GameTests.class') for name in names)
     originals = json.loads((source/'sounds.json').read_text())
     events = json.loads(jar.read('assets/coraline/sounds.json'))
@@ -78,5 +81,6 @@ for name, canonical in aliases.items():
     assert pcm_key(source/'sounds'/(name+'.ogg')) == pcm_key(source/'sounds'/(canonical+'.ogg')), name
 print(f'Validated {count} textures, {len(events)} sound events, JSON and ZIP integrity; only verified duplicate audio and retired held-light bookkeeping removed.')
 print(f'Full duration/channels preserved for {len(report["resampled_sounds"])} resampled tracks.')
+change=(jar_path.stat().st_size/baseline.stat().st_size-1)*100
 print(f'JAR: {baseline.stat().st_size/1e6:.2f} MB -> {jar_path.stat().st_size/1e6:.2f} MB '
-      f'({(1-jar_path.stat().st_size/baseline.stat().st_size)*100:.1f}% smaller)')
+      f'({abs(change):.1f}% {"larger" if change>0 else "smaller"})')

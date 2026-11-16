@@ -80,14 +80,21 @@ public final class FortressActivity {
         ActivityScenery.title(p,"LEVEL "+level+" CLEARED","Level "+(level+1)+" / 5 — "+FortressDropper.pool(n.getLong("Seed"),level).size()+"×"+FortressDropper.pool(n.getLong("Seed"),level).size()+" lava target.");
         p.playNotifySound(SoundEvents.PLAYER_LEVELUP,SoundSource.PLAYERS,.6F,1.1F);OtherMotherLoop.changed(p);
     }
-    static void begin(ServerPlayer p,VisitData.Scene s){var n=state(s);n.putBoolean("MayFly",p.getAbilities().mayfly);n.putBoolean("Flying",p.getAbilities().flying);n.putBoolean("AbilitiesStored",true);n.putLong("EffectsAt",OtherMotherLoop.now(p));
+    static void begin(ServerPlayer p,VisitData.Scene s){
+        if(com.coraline.multiplayer.StorySessionData.get(p.server).groupActivity(s)){
+            state(s).putInt("FortressLevel",0);state(s).putInt("Phase",1);
+            for(var member:CooperativeActivities.playing(p,s))com.coraline.multiplayer.ActivityPlayerState.capture(member,s);return;
+        }
+        var n=state(s);n.putBoolean("MayFly",p.getAbilities().mayfly);n.putBoolean("Flying",p.getAbilities().flying);n.putBoolean("AbilitiesStored",true);n.putLong("EffectsAt",OtherMotherLoop.now(p));
         for(var effect:new MobEffect[]{MobEffects.SLOW_FALLING,MobEffects.LEVITATION})if(p.hasEffect(effect))n.put(effect==MobEffects.SLOW_FALLING?"Slow":"Levitation",p.getEffect(effect).save(new CompoundTag()));
         if(p.hasEffect(MobEffects.FIRE_RESISTANCE))n.put("Fire",p.getEffect(MobEffects.FIRE_RESISTANCE).save(new CompoundTag()));
         p.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE,2000,0,false,false));
         n.putInt("FortressLevel",0);n.putBoolean("FortressBoarded",true);ActivityScenery.title(p,"LEVEL 1 / 5","Dodge obstacles. Land in lava.");
     }
     static void restrict(ServerPlayer p){p.stopFallFlying();p.removeEffect(MobEffects.SLOW_FALLING);p.removeEffect(MobEffects.LEVITATION);if(p.getAbilities().mayfly||p.getAbilities().flying){p.getAbilities().mayfly=false;p.getAbilities().flying=false;p.onUpdateAbilities();}}
-    static void tick(ServerPlayer p,VisitData.Scene s,BlockPos c){var n=state(s);int phase=n.getInt("Phase");
+    static void tick(ServerPlayer p,VisitData.Scene s,BlockPos c){
+        if(com.coraline.multiplayer.StorySessionData.get(p.server).groupActivity(s)){tickGroup(p,s,c);return;}
+        var n=state(s);int phase=n.getInt("Phase");
         if(phase>=3){boolean landed=n.getBoolean("Landed");if(!landed&&p.getY()<c.getY()-3||landed&&(p.getY()<c.getY()-279||p.getX()<c.getX()+19||p.getX()>c.getX()+38||Math.abs(p.getZ()-c.getZ())>12))ActivityScenery.teleport(p,Vec3.atBottomCenterOf(exitPos(c,s).north(4)));if(phase==3)ensurePrize(p,s,c);return;}
         restrict(p);if(!p.hasEffect(MobEffects.FIRE_RESISTANCE)||p.getEffect(MobEffects.FIRE_RESISTANCE).getDuration()<40)p.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE,200,0,false,false));var local=p.position().subtract(Vec3.atLowerCornerOf(c));
         if(phase==1){
@@ -124,6 +131,57 @@ public final class FortressActivity {
         if(local.y<=-278){if(!FortressDropper.pool(n.getLong("Seed"),n.getInt("FortressLevel")).contains(local.x,local.z)){n.putString("Failure","You missed the lava target. The blackstone floor is not safe.");fail(p,s,c);return;}if(n.getInt("FortressLevel")<LEVELS-1){nextLevel(p,s,c);return;}n.putInt("Phase",3);n.putBoolean("Landed",true);restore(p,s);ExpeditionNetwork.mode(p,0);ActivityScenery.teleport(p,Vec3.atBottomCenterOf(c.offset(28,-278,3)));ActivityScenery.title(p,"PERFECT LANDING","All five descents cleared. The vault is yours.");p.playNotifySound(SoundEvents.GENERIC_EXTINGUISH_FIRE,SoundSource.PLAYERS,.8F,.6F);OtherMotherLoop.changed(p);ensurePrize(p,s,c);return;}
         if(p.tickCount%10==0)p.displayClientMessage(Component.literal("Level "+(n.getInt("FortressLevel")+1)+" / 5 • "+passed+" / "+gates.size()+" depth markers • Aim for the small LAVA target"),true);
     }
+    private static void tickGroup(ServerPlayer director,VisitData.Scene scene,BlockPos center){
+        var shared=state(scene);int phase=shared.getInt("Phase"),level=shared.getInt("FortressLevel");
+        if(phase>=3){if(phase==3)ensurePrize(director,scene,center);return;}
+        var data=com.coraline.multiplayer.StorySessionData.get(director.server);
+        for(var player:CooperativeActivities.playing(director,scene)){
+            if(!com.coraline.multiplayer.ActivityPlayerState.capture(player,scene))continue;
+            var progress=data.activityProgress(player,scene,"fortress_player");if(progress==null)continue;
+            if(!progress.contains("Level")||progress.getInt("Level")!=level){
+                for(String key:java.util.Set.copyOf(progress.getAllKeys()))progress.remove(key);
+                progress.putInt("Level",level);progress.putInt("Phase",1);progress.putLong("ReadyAt",OtherMotherLoop.now(player)+20);
+                ActivityScenery.teleport(player,Vec3.atBottomCenterOf(center.south(4)));player.setOnGround(false);
+            }
+            restrict(player);player.fallDistance=0;player.clearFire();
+            if(!player.hasEffect(MobEffects.FIRE_RESISTANCE)||player.getEffect(MobEffects.FIRE_RESISTANCE).getDuration()<40)player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE,220,0,false,false,false));
+            var local=player.position().subtract(Vec3.atLowerCornerOf(center));long now=OtherMotherLoop.now(player);
+            if(progress.getInt("Phase")==1){
+                if(now<progress.getLong("ReadyAt")){if(local.y<-.2)ActivityScenery.teleport(player,Vec3.atBottomCenterOf(center.south(4)));continue;}
+                if(local.y>=-.5){if(Math.abs(local.x)>9||Math.abs(local.z)>12)ActivityScenery.teleport(player,Vec3.atBottomCenterOf(center.south(4)));continue;}
+                progress.putInt("Phase",2);progress.putLong("DropAt",now);progress.putDouble("PreviousX",local.x);progress.putDouble("PreviousY",0);progress.putDouble("PreviousZ",local.z);shared.putInt("Phase",2);
+            }
+            ExpeditionNetwork.mode(player,1);
+            var previous=new Vec3(progress.getDouble("PreviousX"),progress.getDouble("PreviousY"),progress.getDouble("PreviousZ"));
+            String failure="";
+            if(Math.abs(local.x)>17||Math.abs(local.z)>17||local.y>2)failure="You left the falling course.";
+            else if(now-progress.getLong("DropAt")>1600)failure="The descent timed out.";
+            else if(local.y-previous.y>2)failure="The descent was interrupted.";
+            else if(FortressDropper.hit(FortressDropper.obstacles(shared.getLong("Seed"),level),previous,local))failure="You struck an obstacle.";
+            else if(player.onGround()&&local.y< -3&&local.y> -278&&!player.serverLevel().noCollision(player,player.getBoundingBox().move(0,-.08,0)))failure="You landed on an obstacle.";
+            else if(local.y<=-278&&!FortressDropper.pool(shared.getLong("Seed"),level).contains(local.x,local.z))failure="You missed the lava target.";
+            if(!failure.isEmpty()){
+                if(CooperativeActivities.failed(player,scene)){com.coraline.multiplayer.ActivityPlayerState.restore(player);ExpeditionNetwork.mode(player,0);ActivityScenery.title(player,"FORTRESS TRAP",failure+" Watch the remaining players.");}
+                continue;
+            }
+            progress.putDouble("PreviousX",local.x);progress.putDouble("PreviousY",local.y);progress.putDouble("PreviousZ",local.z);
+            if(local.y<=-278){
+                if(level<LEVELS-1){
+                    box(director.serverLevel(),center,-17,-277,-17,17,-3,17,net.minecraft.world.level.block.Blocks.AIR);
+                    shared.putInt("FortressLevel",level+1);shared.putInt("Phase",1);
+                    buildGates(director.serverLevel(),center,shared.getLong("Seed"),level+1);buildPool(director.serverLevel(),center,shared.getLong("Seed"),level+1);
+                    for(var member:CooperativeActivities.playing(director,scene)){ActivityScenery.teleport(member,Vec3.atBottomCenterOf(center.south(4)));ExpeditionNetwork.mode(member,0);}
+                }else{
+                    shared.putInt("Phase",3);shared.putBoolean("Landed",true);
+                    for(var member:data.participants(director.server,scene.owner,true)){com.coraline.multiplayer.ActivityPlayerState.restore(member);ExpeditionNetwork.mode(member,0);if(!member.isSpectator())ActivityScenery.teleport(member,Vec3.atBottomCenterOf(center.offset(28,-278,3)));}
+                    ensurePrize(director,scene,center);
+                }
+                OtherMotherLoop.changed(director);return;
+            }
+            if(player.tickCount%20==0)player.displayClientMessage(Component.literal("Level "+(level+1)+" / "+LEVELS+" — land in the lava target"),true);
+        }
+        OtherMotherLoop.changed(director);
+    }
     /** Count every crossed plane at its interpolated crossing position, not
      * the later packet position. Negative result identifies the blocked gate. */
     static int crossedGates(List<Gate> gates,int passed,Vec3 from,Vec3 to){
@@ -140,7 +198,7 @@ public final class FortressActivity {
         return passed;
     }
     static void fail(ServerPlayer p,VisitData.Scene s,BlockPos c){state(s).putInt("Phase",5);restore(p,s);ExpeditionNetwork.mode(p,0);ActivityScenery.teleport(p,Vec3.atBottomCenterOf(c));ActivityScenery.title(p,"FORTRESS TRAP",state(s).getString("Failure").isEmpty()?"Dodge every obstacle, then land in lava.":state(s).getString("Failure"));p.playNotifySound(SoundEvents.GENERIC_EXPLODE,SoundSource.PLAYERS,.45F,.6F);OtherMotherLoop.changed(p);ActivityWorld.ensureExit(p,s);}
-    static void restore(ServerPlayer p,VisitData.Scene s){var n=state(s);if(!n.getBoolean("AbilitiesStored"))return;n.putBoolean("AbilitiesStored",false);p.getAbilities().mayfly=n.getBoolean("MayFly");p.getAbilities().flying=n.getBoolean("Flying");p.onUpdateAbilities();
+    static void restore(ServerPlayer p,VisitData.Scene s){com.coraline.multiplayer.ActivityPlayerState.restore(p);var n=state(s);if(!p.getUUID().equals(s.owner))return;if(!n.getBoolean("AbilitiesStored"))return;n.putBoolean("AbilitiesStored",false);p.getAbilities().mayfly=n.getBoolean("MayFly");p.getAbilities().flying=n.getBoolean("Flying");p.onUpdateAbilities();
         p.removeEffect(MobEffects.FIRE_RESISTANCE);
         int elapsed=(int)Math.max(0,OtherMotherLoop.now(p)-n.getLong("EffectsAt"));for(String key:new String[]{"Slow","Levitation","Fire"})if(n.contains(key,10)){var e=MobEffectInstance.load(n.getCompound(key));n.remove(key);if(e!=null&&(e.isInfiniteDuration()||e.getDuration()>elapsed))p.addEffect(new MobEffectInstance(e.getEffect(),e.isInfiniteDuration()?-1:e.getDuration()-elapsed,e.getAmplifier(),e.isAmbient(),e.isVisible(),e.showIcon()));}
     }

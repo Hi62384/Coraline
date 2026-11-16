@@ -6,6 +6,11 @@ import net.minecraft.world.phys.Vec3;
 /** Walk to an assigned chair, recovering only when the walk stalls or takes too long. */
 final class SupperSeating {
     private static final String KEY="CoralineSupperApproach";
+    static Vec3 position(net.minecraft.core.BlockPos table,int slot){
+        var base=Vec3.atBottomCenterOf(table);
+        return base.add(slot==0?0:slot==1?-.9:slot==2?.9:slot%2==1?-2.25:2.25,0,slot<3?(slot==0?-5.05:5.05):((slot-3)/2-1)*2.6);
+    }
+    static float facing(int slot){return slot==0?0:slot<3?180:slot%2==1?-90:90;}
 
     static void approach(ParentEntity parent,ScenePropEntity chair){
         if(parent.getVehicle()==chair){parent.getNavigation().stop();parent.getPersistentData().remove(KEY);return;}

@@ -1,0 +1,240 @@
+{
+  "asr_report": "build-character-cast/original-transcription/comparison-turbo.json",
+  "asr_report_sha256": "9d538e7f126affb0bae90eec04269ebe0f6047076a2e5f5b2f862124be9ec309",
+  "reviewed_track_count": 198,
+  "review": "Machine-assisted editorial review of all 198 local ASR drafts and available prior comparison drafts. Earlier149draft entries were verified unchanged against the preserved reviewed snapshot. Proper names and clear phonetic errors corrected; uncertain/nonverbal recognition is explicitly labelled rather than inventing dialogue. Intentional Caroline/Coraline misnaming is retained. No human listening or word-perfect transcription is claimed.",
+  "whole_track_captions": {
+    "theatre_b": "[unclear speech]",
+    "theatre_c": "[nonverbal sounds]",
+    "theatre_d": "[unclear speech]",
+    "theatre_f": "The beauty of the world. The paragon of animals.",
+    "missing_parents_tea_d": "Miriam, get... Yes, that's right.",
+    "missing_parents_tea_f": "[nonverbal sounds]",
+    "missing_parents_tea_g": "[nonverbal sounds]",
+    "missing_parents_cat_c": "[struggling]",
+    "parent_rescue_f": "Only one key.",
+    "parent_rescue_h": "[humming]",
+    "cocoa_beetles_g": "[nonverbal sounds]",
+    "first_escape_a": "[nonverbal sounds]",
+    "first_escape_f": "[nonverbal sounds]",
+    "missing_parents_f": "[shouting]",
+    "rescue_mantis_take": "Take it!",
+    "rescue_mantis_gone": "[nonverbal sounds]",
+    "rescue_theatre_grab": "Thief! Give it back! [voices shouting]",
+    "finale_e": "This!",
+    "finale_f": "[nonverbal sounds]",
+    "finale_i": "[nonverbal sounds]",
+    "finale_n": "[screaming]",
+    "finale_p": "[nonverbal sounds]",
+    "theatre_opening_a": "[nonverbal sounds]",
+    "theatre_opening_b": "[nonverbal sounds]",
+    "theatre_opening_e": "[nonverbal sounds]",
+    "theatre_opening_i": "[unclear singing]",
+    "theatre_opening_j": "[unclear singing]",
+    "theatre_opening_l": "[unclear singing]",
+    "theatre_opening_m": "[unclear singing]",
+    "theatre_opening_n": "[nonverbal sounds]",
+    "crawling_hand_a": "[nonverbal sounds]",
+    "crawling_hand_b": "[nonverbal sounds]",
+    "crawling_hand_c": "[nonverbal sounds]",
+    "crawling_hand_d": "[screaming]",
+    "crawling_hand_e": "No!",
+    "black_is_traditional_e": "Pink... or...",
+    "black_is_traditional_n": "[lullaby]",
+    "black_is_traditional_s": "[nonverbal sounds]",
+    "wybie_line_c": "[unclear speech]",
+    "wybie_visit_g": "[shouting] No!",
+    "wybie_visit_h": "[laughter]",
+    "wybie_visit_i": "[indistinct vocalisation]",
+    "wybie_visit_k": "[unclear speech]",
+    "bobinsky_visit_h": "Hey, Caroline! [unclear speech]"
+  },
+  "replacements": {
+    "wybie_adventure_intro": [
+      [
+        "why were you born",
+        "Why-Were-You-Born"
+      ]
+    ],
+    "theatre_e": [
+      [
+        "piece of work is mine",
+        "piece of work is man"
+      ]
+    ],
+    "theatre_meet_parents": [
+      [
+        "Speaking forcible",
+        "Spink and Forcible"
+      ]
+    ],
+    "mouse_circus_intro": [
+      [
+        "jumping mouse-seal culture",
+        "jumping mouse circus"
+      ]
+    ],
+    "mouse_circus_end": [
+      [
+        "До свидания",
+        "Do svidaniya"
+      ]
+    ],
+    "missing_parents_tea_a": [
+      [
+        "Caroline",
+        "Coraline"
+      ]
+    ],
+    "mirror_prison_c": [
+      [
+        "bell-down",
+        "Beldam"
+      ]
+    ],
+    "mirror_prison_e": [
+      [
+        "win my life",
+        "win my love"
+      ],
+      [
+        "hid in them",
+        "hidden them"
+      ]
+    ],
+    "first_escape_c": [
+      [
+        "feels perfect",
+        "feels better"
+      ]
+    ],
+    "missing_parents_b": [
+      [
+        "Huck Finn Jr.",
+        "Huck Finn Junior"
+      ]
+    ],
+    "missing_parents_d": [
+      [
+        "couldn't find the dog",
+        "couldn't find the doll"
+      ]
+    ],
+    "missing_parents_e": [
+      [
+        "I am not listening to me",
+        "You are not listening to me"
+      ]
+    ],
+    "rescue_clothes": [
+      [
+        "Oh, Wybie, Evil Witch",
+        "[unclear] Evil witch"
+      ]
+    ],
+    "rescue_bobinsky_e": [
+      [
+        "Zygda",
+        "Vsegda"
+      ]
+    ],
+    "farewell_c": [
+      [
+        "Beldum",
+        "Beldam"
+      ],
+      [
+        "Thou aren't alive",
+        "Thou art alive"
+      ]
+    ],
+    "theatre_opening_d": [
+      [
+        "low-legged women",
+        "bow-legged women"
+      ]
+    ],
+    "theatre_opening_f": [
+      [
+        "A big Gotham Sea, which",
+        "A big-bottomed sea witch"
+      ]
+    ],
+    "crawling_hand_f": [
+      [
+        "caused you crazy",
+        "called you crazy"
+      ]
+    ],
+    "black_is_traditional_m": [
+      [
+        "huggy face",
+        "hug your face"
+      ],
+      [
+        "Loper",
+        "[unclear]"
+      ]
+    ],
+    "black_is_traditional_p": [
+      [
+        "Oh, be swell",
+        "All will be swell"
+      ]
+    ],
+    "black_is_traditional_q": [
+      [
+        "other lighty",
+        "Other Wybie"
+      ]
+    ],
+    "wybie_line_a": [
+      [
+        "in Bairn",
+        "and barren"
+      ],
+      [
+        "a more near a bridge",
+        "an ordinary branch"
+      ],
+      [
+        "dowsing ride",
+        "dowsing rod"
+      ]
+    ],
+    "wybie_visit_b": [
+      [
+        "Old as his house",
+        "Old as this house"
+      ],
+      [
+        "ring coat",
+        "raincoat"
+      ]
+    ],
+    "wybie_visit_j": [
+      [
+        "Grandma killed me",
+        "Grandma'd kill me"
+      ]
+    ],
+    "bobinsky_visit_f": [
+      [
+        "have beat",
+        "have beet"
+      ]
+    ],
+    "tea_visit_a": [
+      [
+        "sis, you're",
+        "cease your"
+      ]
+    ],
+    "magic_garden_mother_said": [
+      [
+        "or she knows",
+        "[unclear] she knows"
+      ]
+    ]
+  }
+}

@@ -46,6 +46,7 @@ public final class OtherMotherDialogue {
         for (var state : OtherMotherWelcome.State.values()) pools.add(OtherMotherActivityComplete.pool(state));
         pools.addAll(com.coraline.secrets.SecretDialogue.pools());
         pools.addAll(com.coraline.secrets.Reconciliation.pools());
+        pools.addAll(VisitEvents.pools());
         return List.copyOf(pools);
     }
     public static String choose(Pool pool, String previous, RandomSource random) {

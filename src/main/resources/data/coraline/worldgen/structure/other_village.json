@@ -1,0 +1,11 @@
+{
+  "type": "coraline:other_village",
+  "biomes": [
+    "coraline:postgame/stitched_meadows",
+    "coraline:postgame/buttonwood_forest",
+    "coraline:postgame/forgotten_gardens"
+  ],
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "none"
+}

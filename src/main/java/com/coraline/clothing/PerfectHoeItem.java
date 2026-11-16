@@ -12,6 +12,7 @@ public final class PerfectHoeItem extends HoeItem {
     public PerfectHoeItem(){super(OtherMaterials.PERFECT,-3,0,new Item.Properties());}
     @Override public InteractionResult useOn(UseOnContext context){
         var level=context.getLevel();var pos=context.getClickedPos();
+        if(context.getPlayer()==null||!PerfectPower.powered(context.getPlayer()))return super.useOn(context);
         if(level.getBlockState(pos).is(Blocks.FARMLAND)){
             if(!level.isClientSide)level.setBlock(pos,ModBlocks.PERFECT_FARMLAND.get().defaultBlockState().setValue(FarmBlock.MOISTURE,level.getBlockState(pos).getValue(FarmBlock.MOISTURE)),3);
             return InteractionResult.sidedSuccess(level.isClientSide);

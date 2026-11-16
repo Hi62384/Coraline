@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "DPD",
+    "PLP",
+    "MPM"
+  ],
+  "key": {
+    "D": {
+      "item": "coraline:other_diamond"
+    },
+    "L": {
+      "item": "minecraft:lava_bucket"
+    },
+    "M": {
+      "item": "coraline:moonstone"
+    },
+    "P": {
+      "item": "coraline:perfect_ingot"
+    }
+  },
+  "result": {
+    "item": "coraline:bottomless_lava_bucket",
+    "count": 1
+  }
+}

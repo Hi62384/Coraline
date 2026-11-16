@@ -2,6 +2,7 @@ package com.coraline.clothing;
 import net.minecraftforge.common.ForgeConfigSpec;
 public final class WeaponConfig {
     private static final ForgeConfigSpec.Builder B=new ForgeConfigSpec.Builder();
+    public static final ForgeConfigSpec.IntValue RAPIER_INTERVAL=B.comment("Minimum ticks between successful full Needle Rapier strikes. Only that player's previous ordinary melee hurt window may be advanced; immunity and other attackers remain unchanged.").defineInRange("needleRapier.minimumStrikeTicks",7,5,20);
     public static final ForgeConfigSpec.IntValue VINE_TICKS=B.defineInRange("vineSword.poisonAndSlowTicks",80,1,1200);
     public static final ForgeConfigSpec.DoubleValue MACE_RADIUS=B.defineInRange("buttonMace.splashRadius",2.5,.5,6);
     public static final ForgeConfigSpec.DoubleValue MACE_DAMAGE=B.defineInRange("buttonMace.splashDamage",14.0,0,100);

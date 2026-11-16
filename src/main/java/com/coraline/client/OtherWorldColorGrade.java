@@ -17,9 +17,10 @@ public final class OtherWorldColorGrade {
     public static void reset(){if(chain!=null)chain.close();chain=null;failed=false;strength=whiteout=-1;}
     @SubscribeEvent public static void render(RenderLevelStageEvent event){
         if(event.getStage()!=RenderLevelStageEvent.Stage.AFTER_LEVEL)return;
-        if(!OtherWorldAtmosphere.active()){if(chain!=null)reset();return;}
-        var mc=Minecraft.getInstance();var target=mc.getMainRenderTarget();double desired=OtherWorldVisualConfig.SATURATION.get();
-        float fade=OtherWorldWhiteout.amount(event.getPartialTick());
+        if(!OtherWorldVisualConfig.ENABLED.get()||!OtherWorldAtmosphere.active()&&!VisitEventClient.showVenue()){if(chain!=null)reset();return;}
+        var mc=Minecraft.getInstance();var target=mc.getMainRenderTarget();double vivid=OtherWorldVisualConfig.SATURATION.get();double desired=ParentRescueClient.colorOverride()?1+(vivid-1)*ParentRescueClient.colorBlend(event.getPartialTick()):vivid;
+        if(AcceptedButtonEyesClient.house())desired*=1-AcceptedButtonEyesClient.stage()*.16;
+        float fade=VisitEventClient.showVenue()?0:OtherWorldWhiteout.amount(event.getPartialTick());
         if((desired==1&&fade<=.001F)||failed)return;
         try{
             if(chain==null){chain=new PostChain(mc.getTextureManager(),mc.getResourceManager(),target,ResourceLocation.fromNamespaceAndPath("coraline","shaders/post/otherworld_color.json"));colorPass=chain.addPass("coraline:otherworld_color",target,chain.getTempTarget("swap"));chain.addPass("blit",chain.getTempTarget("swap"),target);width=height=-1;}

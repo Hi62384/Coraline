@@ -1,0 +1,11 @@
+{
+  "type": "coraline:dimensional_seam",
+  "biomes": [
+    "coraline:postgame/white_rift_wastes",
+    "coraline:postgame/pale_wasteland",
+    "coraline:postgame/threadbound_mountains"
+  ],
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "none"
+}

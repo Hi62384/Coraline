@@ -1,1 +1,24 @@
-{"type":"minecraft:crafting_shaped","pattern":["DMD","SBS"," I "],"key":{"D":{"item":"coraline:other_diamond"},"M":{"item":"coraline:moonstone"},"S":{"item":"minecraft:string"},"B":{"item":"minecraft:bow"},"I":{"item":"minecraft:tripwire_hook"}},"result":{"item":"coraline:midnight_crossbow"}}
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "IMI",
+    "SIS",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "item": "coraline:other_iron_ingot"
+    },
+    "M": {
+      "item": "coraline:moonstone"
+    },
+    "S": {
+      "item": "minecraft:string"
+    }
+  },
+  "result": {
+    "item": "coraline:midnight_crossbow",
+    "count": 1
+  }
+}

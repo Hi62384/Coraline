@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "stage=0": {
+      "model": "coraline:block/boundary_defense_beacon_0"
+    },
+    "stage=1": {
+      "model": "coraline:block/boundary_defense_beacon_1"
+    },
+    "stage=2": {
+      "model": "coraline:block/boundary_defense_beacon_2"
+    },
+    "stage=3": {
+      "model": "coraline:block/boundary_defense_beacon_3"
+    }
+  }
+}

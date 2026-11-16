@@ -1,0 +1,11 @@
+{
+  "type": "coraline:mirror_tower",
+  "biomes": [
+    "coraline:postgame/porcelain_plains",
+    "coraline:postgame/stitched_coast",
+    "coraline:postgame/threadbound_mountains"
+  ],
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "none"
+}

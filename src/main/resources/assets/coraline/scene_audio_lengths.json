@@ -2,5 +2,18 @@
   "mice_intro": 465,
   "mice_chase": 173,
   "door_portal_open": 155,
-  "tunnel_enter": 375
+  "tunnel_enter": 375,
+  "first_escape_music": 1400,
+  "missing_parents_music": 2218,
+  "ghost_victim_talk": 8,
+  "other_father_boss_music": 2860,
+  "he_pulled_a_long_face_music": 3383,
+  "the_cat_music": 2002,
+  "parents_rescue_arrival_music": 1171,
+  "other_mother_game_proposal_music": 1725,
+  "spink_and_forcible_boss_music": 2536,
+  "accepted_little_me_music": 480,
+  "garden_ghost_eye_music": 320,
+  "theatre_ghost_eye_music": 214,
+  "circus_ghost_eye_music": 885
 }

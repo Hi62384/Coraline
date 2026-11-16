@@ -10,6 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.*;
 import net.minecraft.world.level.block.state.*;
@@ -34,12 +35,13 @@ public final class ParentsBedBlock extends BaseEntityBlock {
         return level.isClientSide?null:createTickerHelper(type,com.coraline.registry.ModBlockEntities.PARENTS_BED.get(),ParentsBedEntity::serverTick);
     }
     @Override public RenderShape getRenderShape(BlockState s){return RenderShape.MODEL;}
+    @Override public PushReaction getPistonPushReaction(BlockState state){return PushReaction.BLOCK;}
     @Override public VoxelShape getShape(BlockState s,BlockGetter l,BlockPos p,CollisionContext c){return box(0,0,0,16,10,16);}
     @Override public void setPlacedBy(Level l,BlockPos p,BlockState s,LivingEntity player,ItemStack stack){
         if(!(l instanceof ServerLevel sl)||!(l.getBlockEntity(p) instanceof ParentsBedEntity be))return;
         var tag=stack.getTagElement("BlockEntityTag");if(tag==null||!tag.hasUUID("Family"))return;
         be.familyId=tag.getUUID("Family");be.setChanged();var f=be.family();if(f==null)return;
-        f.bed=p;f.homeDim=l.dimension().location().toString();f.chest=p;
+        f.bedCustody.putLong("LastPlaced",p.asLong());f.bed=p;f.homeDim=l.dimension().location().toString();f.chest=p;
         for(int part=1;part<4;part++)l.setBlock(partPos(p,s.getValue(FACING),part),s.setValue(PART,part),3);
         f.momDelivery=f.dadDelivery=l.getGameTime()+CoralineConfig.TASK_INTERVAL.get();FamilyData.get(sl.getServer()).setDirty();
     }

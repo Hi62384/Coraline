@@ -7,14 +7,15 @@ import net.minecraft.server.level.ServerPlayer;
 /** Priority arbitration before the ordinary visit scheduler advances. */
 public final class MotherInterrupts {
     private static boolean eligible(ServerPlayer p){
-        var scene=OtherMotherLoop.active(p);if(scene==null||!OtherWorld.isOther(p.level())||p.getPersistentData().getBoolean("CoralineInTunnel"))return false;
+        if(CatEncounter.active(p)||BlackIsTraditional.active(p))return false;
+        var scene=OtherMotherLoop.active(p);if(scene==null||AcceptedButtonEyes.active(scene)||FamilyGameNight.seated(p,scene)||!OtherWorld.isOther(p.level())||p.getPersistentData().getBoolean("CoralineInTunnel"))return false;
         // active() requires completion of the first-visit scene, protecting its gift.
         return scene.loop.phase!=OtherMotherLoopState.Phase.ACTIVITY&&scene.loop.secrets.search!=SecretsState.Search.SCRIPTED_TRAP;
     }
-    static void interrupt(ServerPlayer p){
+    public static void interrupt(ServerPlayer p){
         var s=SecretTransactions.state(p);Reconciliation.cancel(p);VisitAudio.stopVoice(p);
         var scene=OtherMotherLoop.scene(p);if(scene!=null)scene.welcomeAfter=OtherMotherLoop.now(p);
-        for(String key:new String[]{"Queue","Playing","Pool","Until","Finished","ReconciledProposal","LoopVoice","LoopFinished"})s.dialogue.remove(key);
+        for(String key:new String[]{"Queue","QueuePool","Playing","PlayingPool","Pool","Until","Finished","ContactPreludeFollowupPool","ContactPreludeFollowupEvent","ContactPreludeFollowupState","ReconciledProposal","LoopVoice","LoopFinished"})s.dialogue.remove(key);
         // Withdraw an undecided offer without consuming its item. Already earned
         // rewards retain their receipt/offer metadata and can be claimed afterward.
         if(s.pendingReward<0)for(String key:new String[]{"Offer","OfferSpoken","Decided","Forced","TransactionState"})s.dialogue.remove(key);
@@ -36,13 +37,11 @@ public final class MotherInterrupts {
         // interruption hook must never convert a distant sighting into a catch.
         if(s.searching())return false;
         if(r==null||r.house==null||m==null||s.world.getBoolean("CaughtEncounter")||s.world.getLong("CatchUntil")>OtherMotherLoop.now(p)||s.invisibleUntil>OtherMotherLoop.now(p)||p.isInvisible()||!m.hasLineOfSight(p))return false;
-        boolean evidence=false;for(int i=0;i<p.getInventory().getContainerSize();i++){var item=p.getInventory().getItem(i);if(!SecretTransactions.evidence(p,item).isEmpty()||item.is(SecretsItems.KEY.get())&&SecretTransactions.owned(p,item)){evidence=true;break;}}
-        boolean wandering=(OtherWorldEstate.outsideDistance(r.house,p.blockPosition())>=40||SecretDialogue.secretArea(s,p.blockPosition()))&&m.distanceToSqr(p)<=96*96;
+        boolean evidence=false;for(var item:java.util.List.of(p.getMainHandItem(),p.getOffhandItem()))if(!SecretTransactions.evidence(p,item).isEmpty()||HouseCabinets.forbiddenKey(p,item)||item.is(SecretsItems.JOURNAL.get())&&SecretTransactions.owned(p,item)){evidence=true;break;}
+        boolean wandering=(!com.coraline.feast.VisitEvents.authorized(p)&&OtherWorldEstate.outsideDistance(r.house,p.blockPosition())>=40||SecretDialogue.secretArea(p,p.blockPosition()))&&m.distanceToSqr(p)<=96*96;
         if(!wandering&&!(evidence&&m.distanceToSqr(p)<=30*30))return false;
-        if(wandering){
-            if(!MotherSearch.visible(m,p,96))return false;
-            MotherSearch.startChase(p);
-        }else MotherSearch.catchSeenPlayer(p);
+        if(!MotherSearch.visible(m,p,wandering?96:30))return false;
+        MotherSearch.forbiddenAction(p,evidence?SecretDialogue.Event.RESTRICTED_ITEM_CAUGHT:SecretDialogue.Event.SECRET_AREA_CAUGHT);
         return true;
     }
     private MotherInterrupts(){}

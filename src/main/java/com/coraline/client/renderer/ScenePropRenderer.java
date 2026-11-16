@@ -31,11 +31,54 @@ public final class ScenePropRenderer extends EntityRenderer<ScenePropEntity> {
         }
     }
     @Override public void render(ScenePropEntity e,float yaw,float partial,PoseStack pose,MultiBufferSource buffers,int light){
+        if(e.kind()==ScenePropEntity.CHAIR&&e.visualSlot()>=10000)return;
+        if(e.kind()==ScenePropEntity.DINNER_JUG){
+            var b=buffers.getBuffer(RenderType.entityCutoutNoCull(ResourceLocation.fromNamespaceAndPath("minecraft","textures/block/white_concrete.png")));
+            FirstEscapePresentation.sphere(pose,b,light,0,.27,0,.24,.27,.24,0xCBA65E,1);
+            FirstEscapePresentation.sphere(pose,b,light,0,.50,0,.13,.13,.13,0xF4DDB0,1);
+            box(pose,buffers,light,Blocks.DARK_OAK_PLANKS,-.10F,.59F,-.10F,.20F,.035F,.20F);
+            box(pose,buffers,light,Blocks.YELLOW_TERRACOTTA,-.09F,.47F,-.30F,.18F,.10F,.24F);
+            for(float y:new float[]{.18F,.40F})box(pose,buffers,light,Blocks.WHITE_TERRACOTTA,.18F,y,-.04F,.20F,.055F,.08F);
+            box(pose,buffers,light,Blocks.WHITE_TERRACOTTA,.33F,.18F,-.04F,.055F,.27F,.08F);
+            return;
+        }
+        if(e.kind()==ScenePropEntity.PARTY_BALL){var b=buffers.getBuffer(RenderType.entityCutoutNoCull(ResourceLocation.fromNamespaceAndPath("minecraft","textures/block/white_concrete.png")));FirstEscapePresentation.sphere(pose,b,light,0,.25,0,.25,.25,.25,0xDF3E56,1);return;}
+        if(e.kind()==ScenePropEntity.PARTY_GOAL){for(float z:new float[]{-2,2})box(pose,buffers,light,Blocks.YELLOW_WOOL,-.06F,0,z-.06F,.12F,1.1F,.12F);box(pose,buffers,light,Blocks.WHITE_WOOL,-.06F,1.1F,-2,.12F,.12F,4);return;}
+        if(PartyDecorationRenderer.render(e,partial,pose,buffers,light)){super.render(e,yaw,partial,pose,buffers,light);return;}
         var client=Minecraft.getInstance();
         if(e.kind()==ScenePropEntity.CARNIVAL_GONDOLA&&client.options.getCameraType().isFirstPerson()&&client.player!=null&&client.player.getVehicle()==e)return;
         boolean mantisCockpit=e.kind()==ScenePropEntity.GARDEN_MANTIS&&client.options.getCameraType().isFirstPerson()&&client.player!=null&&client.player.getVehicle()==e;
         pose.pushPose();
         switch(e.kind()){
+            case ScenePropEntity.GAME_BOARD->tabletop(e,partial,pose,buffers,light);
+            case ScenePropEntity.GAME_SHELF->{
+                pose.mulPose(Axis.YP.rotationDegrees(-e.getYRot()));
+                for(int i=0;i<4;i++){box(pose,buffers,light,Blocks.DARK_OAK_PLANKS,-.9F,i*.55F,-.3F,1.8F,.09F,.6F);for(int j=0;j<3;j++){box(pose,buffers,light,new Block[]{Blocks.BLUE_TERRACOTTA,Blocks.PINK_TERRACOTTA,Blocks.GREEN_TERRACOTTA}[j],-.8F+j*.55F,i*.55F+.1F,-.24F,.48F,.32F,.45F);box(pose,buffers,light,Blocks.GOLD_BLOCK,-.65F+j*.55F,i*.55F+.2F,-.255F,.18F,.03F,.03F);}}
+                for(float x:new float[]{-.95F,.87F})box(pose,buffers,light,Blocks.DARK_OAK_PLANKS,x,0,-.3F,.08F,2.1F,.6F);
+            }
+            case ScenePropEntity.OUTING_SCENERY->outingScenery(e,pose,buffers,light);
+            case ScenePropEntity.PICNIC_BASKET->{
+                box(pose,buffers,light,Blocks.BAMBOO_PLANKS,-.5F,0,-.32F,1,.07F,.64F);
+                for(float z:new float[]{-.32F,.26F})box(pose,buffers,light,Blocks.BAMBOO_PLANKS,-.5F,.07F,z,1,.35F,.06F);
+                for(float x:new float[]{-.5F,.44F})box(pose,buffers,light,Blocks.BAMBOO_PLANKS,x,.07F,-.26F,.06F,.35F,.52F);
+                for(int i=0;i<7;i++)box(pose,buffers,light,Blocks.STRIPPED_OAK_WOOD,-.49F+i*.15F,.03F,-.335F,.045F,.34F,.67F);
+                for(float x:new float[]{-.45F,.37F})box(pose,buffers,light,Blocks.DARK_OAK_PLANKS,x,.42F,-.05F,.08F,.38F,.1F);
+                box(pose,buffers,light,Blocks.DARK_OAK_PLANKS,-.45F,.76F,-.05F,.9F,.08F,.1F);
+                pose.pushPose();pose.translate(0,.42,-.32);pose.mulPose(Axis.XP.rotationDegrees(e.mode()>0?-Math.min(95,e.modeAge()*4):0));box(pose,buffers,light,Blocks.BAMBOO_PLANKS,-.5F,0,0,1,.055F,.64F);pose.popPose();
+                if(e.mode()>0){box(pose,buffers,light,Blocks.WHITE_WOOL,-.36F,.09F,-.2F,.72F,.03F,.4F);}
+            }
+            case ScenePropEntity.OUTING_TELESCOPE->{
+                for(int i=0;i<3;i++){pose.pushPose();pose.mulPose(Axis.YP.rotationDegrees(i*120));pose.mulPose(Axis.ZP.rotationDegrees(22));box(pose,buffers,light,Blocks.DARK_OAK_PLANKS,-.05F,0,-.05F,.1F,1.05F,.1F);pose.popPose();}
+                box(pose,buffers,light,Blocks.COPPER_BLOCK,-.15F,.92F,-.15F,.3F,.18F,.3F);pose.pushPose();pose.translate(0,1.1,0);pose.mulPose(Axis.XP.rotationDegrees(-35));box(pose,buffers,light,Blocks.COPPER_BLOCK,-.15F,-.15F,-.7F,.3F,.3F,1.4F);box(pose,buffers,light,Blocks.GOLD_BLOCK,-.19F,-.19F,.6F,.38F,.38F,.14F);box(pose,buffers,15728880,Blocks.LIGHT_BLUE_STAINED_GLASS,-.145F,-.145F,.742F,.29F,.29F,.025F);box(pose,buffers,light,Blocks.BLACK_CONCRETE,-.09F,-.09F,-.79F,.18F,.18F,.1F);pose.popPose();
+            }
+            case ScenePropEntity.OUTING_TACKLE->{box(pose,buffers,light,Blocks.SPRUCE_PLANKS,-.5F,0,-.35F,1,.45F,.7F);box(pose,buffers,light,Blocks.IRON_BLOCK,-.52F,.42F,-.37F,1.04F,.05F,.74F);box(pose,buffers,light,Blocks.IRON_BLOCK,-.14F,.48F,-.025F,.28F,.15F,.05F);food(e,pose,buffers,light,false);}
+            case ScenePropEntity.OUTING_LANDMARK->{switch(e.visualSlot()>=100?2:Math.floorMod(e.visualSlot(),4)){
+                case 0->{box(pose,buffers,light,Blocks.MOSSY_STONE_BRICKS,-.4F,0,-.4F,.8F,.22F,.8F);box(pose,buffers,light,Blocks.CHISELED_STONE_BRICKS,-.2F,.22F,-.2F,.4F,.7F,.4F);box(pose,buffers,15728880,Blocks.AMETHYST_BLOCK,-.12F,.92F,-.12F,.24F,.25F,.24F);}
+                case 1->{for(float x:new float[]{-.7F,.55F})box(pose,buffers,light,Blocks.SPRUCE_LOG,x,0,-.3F,.15F,.4F,.6F);box(pose,buffers,light,Blocks.SPRUCE_PLANKS,-.8F,.4F,-.35F,1.6F,.12F,.7F);box(pose,buffers,light,Blocks.SPRUCE_PLANKS,-.8F,.52F,.2F,1.6F,.5F,.1F);}
+                case 2->{for(int i=0;i<(e.visualSlot()>=100&&e.mode()>0?0:5);i++)box(pose,buffers,light,i%2==0?Blocks.ALLIUM:Blocks.BLUE_ORCHID,-.5F+i*.25F,0,(i%2)*.2F,.5F,.65F,.5F);}
+                default->{box(pose,buffers,light,Blocks.MOSS_BLOCK,-.55F,0,-.45F,1.1F,.08F,.9F);for(int i=0;i<3;i++){box(pose,buffers,light,Blocks.MUSHROOM_STEM,-.45F+i*.4F,.08F,0,.12F,.2F+i*.08F,.12F);box(pose,buffers,light,i%2==0?Blocks.RED_MUSHROOM_BLOCK:Blocks.BROWN_MUSHROOM_BLOCK,-.57F+i*.4F,.26F+i*.08F,-.1F,.35F,.12F,.35F);}}
+            }}
+            case ScenePropEntity.OUTING_BOBBER->{if(e.mode()==0){fishingLine(e,partial,pose,buffers);box(pose,buffers,light,Blocks.WHITE_CONCRETE,-.06F,0,-.06F,.12F,.10F,.12F);box(pose,buffers,light,Blocks.RED_CONCRETE,-.06F,.10F,-.06F,.12F,.07F,.12F);}}
             case ScenePropEntity.FESTIVAL_CONSOLE->{
                 box(pose,buffers,light,Blocks.DARK_OAK_PLANKS,-1.5F,.78F,-.5F,3,.16F,1);
                 for(float x:new float[]{-1.35F,1.15F})box(pose,buffers,light,Blocks.GOLD_BLOCK,x,0,-.4F,.18F,.78F,.8F);
@@ -73,7 +116,7 @@ public final class ScenePropRenderer extends EntityRenderer<ScenePropEntity> {
                 }
             }
             case ScenePropEntity.CARNIVAL_PEG->{
-                Block glass=e.slot==1?Blocks.CYAN_STAINED_GLASS:e.slot==0?Blocks.ORANGE_STAINED_GLASS:Blocks.MAGENTA_STAINED_GLASS;
+                Block glass=e.visualSlot()==1?Blocks.CYAN_STAINED_GLASS:e.visualSlot()==0?Blocks.ORANGE_STAINED_GLASS:Blocks.MAGENTA_STAINED_GLASS;
                 box(pose,buffers,light,Blocks.GOLD_BLOCK,-.21F,0,-.21F,.42F,.07F,.42F);
                 box(pose,buffers,light,glass,-.16F,.07F,-.16F,.32F,.47F,.32F);
                 box(pose,buffers,light,Blocks.WHITE_STAINED_GLASS,-.13F,.16F,-.169F,.07F,.27F,.018F);
@@ -116,7 +159,7 @@ public final class ScenePropRenderer extends EntityRenderer<ScenePropEntity> {
             case ScenePropEntity.CARNIVAL_MOUNT->{
                 boolean rider=client.options.getCameraType().isFirstPerson()&&client.player!=null&&client.player.getVehicle()==e;
                 pose.mulPose(Axis.YP.rotationDegrees(180-e.getYRot()));
-                int creature=Math.floorMod(e.slot-71,4);
+                int creature=Math.floorMod(e.visualSlot()-71,4);
                 Block body=switch(creature){case 0->Blocks.WHITE_TERRACOTTA;case 1->Blocks.PINK_TERRACOTTA;
                     case 2->Blocks.CYAN_TERRACOTTA;default->Blocks.ORANGE_TERRACOTTA;};
                 if(!rider)box(pose,buffers,light,Blocks.GOLD_BLOCK,-.035F,-.05F,-.035F,.07F,4.8F,.07F);
@@ -177,9 +220,9 @@ public final class ScenePropRenderer extends EntityRenderer<ScenePropEntity> {
                 box(pose,buffers,15728880,Blocks.SEA_LANTERN,position,1.1F,-.27F,.18F,.35F,.15F);
             }
             case ScenePropEntity.CARNIVAL_BALLOON->{
-                Block color=switch(Math.floorMod(e.slot,6)){case 0->Blocks.RED_CONCRETE;case 1->Blocks.YELLOW_CONCRETE;
+                Block color=switch(Math.floorMod(e.visualSlot(),6)){case 0->Blocks.RED_CONCRETE;case 1->Blocks.YELLOW_CONCRETE;
                     case 2->Blocks.CYAN_CONCRETE;case 3->Blocks.LIME_CONCRETE;case 4->Blocks.MAGENTA_CONCRETE;default->Blocks.ORANGE_CONCRETE;};
-                float bob=(float)Math.sin((e.tickCount+partial)*.10F+e.slot)*.055F;
+                float bob=(float)Math.sin((e.tickCount+partial)*.10F+e.visualSlot())*.055F;
                 box(pose,buffers,light,Blocks.LIGHT_GRAY_CONCRETE,-.012F,.02F,-.012F,.024F,.38F,.024F);
                 box(pose,buffers,light,color,-.06F,.38F+bob,-.06F,.12F,.09F,.12F);
                 box(pose,buffers,light,color,-.22F,.46F+bob,-.20F,.44F,.15F,.40F);
@@ -188,7 +231,7 @@ public final class ScenePropRenderer extends EntityRenderer<ScenePropEntity> {
                 box(pose,buffers,15728880,Blocks.WHITE_STAINED_GLASS,-.18F,.78F+bob,-.254F,.11F,.13F,.02F);
             }
             case ScenePropEntity.CARNIVAL_DUCK->{
-                float bob=(float)Math.sin((e.tickCount+partial)*.15F+e.slot)*.035F;
+                float bob=(float)Math.sin((e.tickCount+partial)*.15F+e.visualSlot())*.035F;
                 pose.translate(0,bob,0);
                 box(pose,buffers,light,Blocks.YELLOW_CONCRETE,-.27F,.15F,-.34F,.54F,.32F,.68F);
                 box(pose,buffers,light,Blocks.YELLOW_CONCRETE,-.19F,.37F,-.32F,.38F,.28F,.33F);
@@ -384,14 +427,15 @@ public final class ScenePropRenderer extends EntityRenderer<ScenePropEntity> {
             }
             case ScenePropEntity.PIANO->piano(e,partial,pose,buffers,light);
             case ScenePropEntity.TABLE->{
-                box(pose,buffers,light,Blocks.DARK_OAK_PLANKS,-1.8F,.7F,-1.3F,3.6F,.16F,2.6F);
-                box(pose,buffers,light,Blocks.SMOOTH_SANDSTONE,-1.77F,.86F,-1.27F,3.54F,.02F,2.54F);
-                for(float x:new float[]{-1.77F,1.74F})box(pose,buffers,light,Blocks.SMOOTH_SANDSTONE,x,.55F,-1.27F,.03F,.32F,2.54F);
-                box(pose,buffers,light,Blocks.GREEN_TERRACOTTA,-.27F,.884F,-1.22F,.54F,.008F,2.44F);
-                for(float x:new float[]{-1.65F,1.45F})for(float z:new float[]{-1.15F,.95F})box(pose,buffers,light,Blocks.DARK_OAK_LOG,x,0,z,.18F,.72F,.18F);
-                for(float z:new float[]{-1.2F,1.17F})box(pose,buffers,light,Blocks.GOLD_BLOCK,-1.7F,.883F,z,3.4F,.01F,.025F);
+                float depth=e.longDining()?4.5F*Math.max(1,e.targetScale()):1.3F;
+                box(pose,buffers,light,Blocks.DARK_OAK_PLANKS,-1.8F,.7F,-depth,3.6F,.16F,depth*2);
+                box(pose,buffers,light,Blocks.SMOOTH_SANDSTONE,-1.77F,.86F,-depth+.03F,3.54F,.02F,depth*2-.06F);
+                for(float x:new float[]{-1.77F,1.74F})box(pose,buffers,light,Blocks.SMOOTH_SANDSTONE,x,.55F,-depth+.03F,.03F,.32F,depth*2-.06F);
+                box(pose,buffers,light,Blocks.GREEN_TERRACOTTA,-.27F,.884F,-depth+.08F,.54F,.008F,depth*2-.16F);
+                for(float x:new float[]{-1.65F,1.45F})for(float z:new float[]{-depth+.15F,depth-.35F})box(pose,buffers,light,Blocks.DARK_OAK_LOG,x,0,z,.18F,.72F,.18F);
+                for(float z:new float[]{-depth+.1F,depth-.13F})box(pose,buffers,light,Blocks.GOLD_BLOCK,-1.7F,.883F,z,3.4F,.01F,.025F);
                 for(int setting=0;setting<3;setting++){
-                    float x=setting==0?0:setting==1?-.85F:.85F,z=setting==0?-.94F:.94F;
+                    float x=setting==0?0:setting==1?-.85F:.85F,z=setting==0?-(depth-.36F):depth-.36F;
                     box(pose,buffers,light,Blocks.IRON_BLOCK,x-.33F,.895F,z-.16F,.025F,.018F,.32F);
                     box(pose,buffers,light,Blocks.IRON_BLOCK,x+.3F,.895F,z-.16F,.025F,.018F,.32F);
                     box(pose,buffers,light,Blocks.WHITE_WOOL,x-.21F,.925F,z-.14F,.15F,.015F,.26F);
@@ -523,7 +567,7 @@ public final class ScenePropRenderer extends EntityRenderer<ScenePropEntity> {
         }
     }
     private static void cakeWorkpiece(ScenePropEntity e,PoseStack pose,MultiBufferSource buffers,int light){
-        int mode=e.mode();if(mode==10){if(e.slot==2)CakeMesh.stand(pose,buffers,light);return;}
+        int mode=e.mode();if(mode==10){if(e.visualSlot()==2)CakeMesh.stand(pose,buffers,light);return;}
         var d=e.cakeData();Block batter=sponge(d.getInt("Base"));
         if(mode<=2){
             box(pose,buffers,light,Blocks.IRON_BLOCK,-.34F,0,-.34F,.68F,.09F,.68F);
@@ -604,6 +648,81 @@ public final class ScenePropRenderer extends EntityRenderer<ScenePropEntity> {
             Minecraft.getInstance().getItemRenderer().renderStatic(e.food(i),ItemDisplayContext.FIXED,light,OverlayTexture.NO_OVERLAY,pose,buffers,e.level(),e.getId()+i);pose.popPose();
         }
     }
+    private static Block gameColor(int who){return new Block[]{Blocks.RED_TERRACOTTA,Blocks.BLUE_TERRACOTTA,Blocks.YELLOW_TERRACOTTA,Blocks.GREEN_TERRACOTTA}[Math.floorMod(who,4)];}
+    private static void buttonPiece(PoseStack pose,MultiBufferSource buffers,int light,Block color,float x,float y,float z,float r){
+        // A twelve-sided button puck with real holes, rather than a wool cube.
+        for(int side=0;side<12;side++){pose.pushPose();pose.translate(x,y,z);pose.mulPose(Axis.YP.rotationDegrees(side*30));box(pose,buffers,light,color,-r*.26F,0,-r,r*.52F,.025F,r);pose.popPose();}
+        for(float dx:new float[]{-.025F,.017F})for(float dz:new float[]{-.025F,.017F})box(pose,buffers,light,Blocks.BLACK_CONCRETE,x+dx,y+.026F,z+dz,.01F,.002F,.01F);
+    }
+    private static void tabletop(ScenePropEntity e,float partial,PoseStack pose,MultiBufferSource buffers,int light){
+        var n=com.coraline.client.WorldTabletop.visible(e,e.cakeData());if(!n.contains("Game"))return;var game=com.coraline.feast.TabletopGames.Game.valueOf(n.getString("Game"));
+        com.coraline.client.WorldTabletop.render(e,pose,buffers,light);
+        box(pose,buffers,light,Blocks.DARK_OAK_PLANKS,-.95F,0,-.8F,1.9F,.045F,1.6F);box(pose,buffers,light,Blocks.GOLD_BLOCK,-.95F,.045F,-.8F,1.9F,.01F,.02F);
+        switch(game){
+            case BUTTON_CARDS->{
+                for(int i=0;i<6;i++)box(pose,buffers,light,Blocks.BLUE_TERRACOTTA,-.45F,.05F+i*.012F,-.15F,.32F,.01F,.45F);
+                float deal=n.contains("LastActor")?Math.min(1,(n.getInt("TurnTicks")+partial)/20F):1;float angle=n.getInt("LastActor")*(float)Math.PI/2;
+                float cx=.05F+(float)Math.sin(angle)*(1-deal)*.6F,cz=-.15F-(float)Math.cos(angle)*(1-deal)*.5F;
+                box(pose,buffers,light,Blocks.WHITE_TERRACOTTA,cx-.01F,.059F,cz-.01F,.34F,.02F,.47F);box(pose,buffers,light,gameColor(n.getInt("Color")),cx,.06F,cz,.32F,.02F,.45F);cardMark(pose,buffers,light,n.getInt("Top")%8,cx+.11F,.081F,cz+.15F,.032F);
+                int[] hand=n.getIntArray("Hand0");for(int i=0;i<Math.min(8,hand.length);i++){float hx=-.75F+i*.19F;box(pose,buffers,light,gameColor(hand[i]/8),hx,.08F,-.67F,.16F,.014F,.26F);cardMark(pose,buffers,light,hand[i]%8,hx+.05F,.095F,-.59F,.019F);}
+                for(int seat=1;seat<4;seat++)for(int i=0;i<Math.min(7,n.getInt("HandCount"+seat));i++){pose.pushPose();pose.mulPose(Axis.YP.rotationDegrees(seat*90));box(pose,buffers,light,Blocks.BLUE_TERRACOTTA,-.6F+i*.18F,.08F,.5F,.16F,.014F,.25F);box(pose,buffers,light,Blocks.GOLD_BLOCK,-.56F+i*.18F,.094F,.57F,.07F,.002F,.1F);pose.popPose();}
+            }
+            case THREAD_FOUR->{
+                var board=n.getIntArray("Board");box(pose,buffers,light,Blocks.PURPUR_BLOCK,-.65F,.05F,.05F,1.3F,.85F,.08F);
+                for(int row=0;row<6;row++)for(int col=0;col<7;col++){pose.pushPose();pose.translate(-.54F+col*.18F,.12F+row*.13F,.04F);pose.mulPose(Axis.XP.rotationDegrees(90));int team=board.length>row*7+col?board[row*7+col]:-1;float fall=col==n.getInt("LastColumn")&&row==n.getInt("LastRow")?Math.max(0,1-(n.getInt("TurnTicks")+partial)/16F)*.5F:0;pose.translate(0,0,fall);buttonPiece(pose,buffers,light,team<0?Blocks.BLACK_CONCRETE:gameColor(team==0?1:0),0,0,0,.055F);pose.popPose();}
+                for(float x:new float[]{-.65F,.55F})box(pose,buffers,light,Blocks.DARK_OAK_PLANKS,x,.05F,-.1F,.1F,.1F,.5F);
+            }
+            case WOBBLY_TOWER->{
+                var rows=n.getIntArray("Tower");float stability=(float)Math.max(0,n.getDouble("Stability"));boolean collapse=n.getBoolean("Done")&&stability<=0;
+                for(int row=0;row<rows.length;row++)for(int piece=0;piece<3;piece++)if((rows[row]&(1<<piece))!=0){pose.pushPose();pose.translate(0,.05F+row*.075F,0);float wobble=(float)Math.sin((e.tickCount+partial)*.18)*(1-stability)*3;pose.mulPose(Axis.ZP.rotationDegrees(wobble));pose.mulPose(Axis.YP.rotationDegrees(row%2*90));if(collapse){float t=Math.min(1,(n.getInt("TurnTicks")+partial)/30F);pose.translate((piece-1)*t*.6,-row*.07*t,t*.3);pose.mulPose(Axis.ZP.rotationDegrees(t*(piece-1)*80));}box(pose,buffers,light,Blocks.STRIPPED_OAK_WOOD,-.21F+piece*.14F,0,-.21F,.135F,.07F,.42F);pose.popPose();}
+            }
+            case MOUSEBOARD_DASH->{
+                for(int i=0;i<=30;i++){float x=-.8F+i%8*.21F,z=-.65F+i/8*.36F;box(pose,buffers,light,i%7==3?Blocks.YELLOW_TERRACOTTA:i%9==5?Blocks.PURPLE_TERRACOTTA:Blocks.GREEN_TERRACOTTA,x,.05F,z,.18F,.012F,.27F);if(i==7||i==16){box(pose,buffers,light,Blocks.SPRUCE_PLANKS,x,.07F,z,.2F,.02F,.3F);}}
+                var mice=n.getIntArray("Mouse");for(int who=0;who<Math.min(4,mice.length);who++){float progress=mice[who];if(who==n.getInt("LastActor")){float t=Math.min(1,(n.getInt("TurnTicks")+partial)/30F);progress=n.getInt("LastFrom")+(mice[who]-n.getInt("LastFrom"))*t;}int cell=Math.min(30,(int)progress);float x=-.73F+cell%8*.21F+who*.018F,z=-.55F+cell/8*.36F;box(pose,buffers,light,gameColor(who),x,.075F,z,.07F,.055F,.12F);box(pose,buffers,light,gameColor(who),x+.02F,.09F,z-.02F,.055F,.045F,.06F);for(float ear:new float[]{-.01F,.045F})box(pose,buffers,light,gameColor(who),x+ear,.13F,z,.025F,.025F,.025F);box(pose,buffers,light,Blocks.BLACK_CONCRETE,x+.055F,.12F,z-.026F,.013F,.014F,.014F);}
+                box(pose,buffers,light,Blocks.QUARTZ_BLOCK,-.08F,.065F,-.08F,.16F,.16F,.16F);for(int pip=0;pip<Math.min(4,n.getInt("Die"));pip++)box(pose,buffers,light,Blocks.BLACK_CONCRETE,-.045F+(pip%2)*.07F,.226F,-.045F+(pip/2)*.07F,.025F,.001F,.025F);
+            }
+            case BUTTON_FLICK->{
+                // Uniform .7 world scale matches both axes and every scoring radius in TabletopGames.
+                box(pose,buffers,light,Blocks.STRIPPED_OAK_WOOD,-.75F,.045F,-.75F,1.5F,.025F,1.5F);
+                for(float radius:new float[]{.6F,.38F,.2F,.08F})for(int i=0;i<40;i++){float a=i*(float)Math.PI/20;box(pose,buffers,light,Blocks.WHITE_TERRACOTTA,(float)Math.cos(a)*radius*.7F-.01F,.073F,.245F+(float)Math.sin(a)*radius*.7F-.01F,.02F,.001F,.02F);}
+                for(var tag:n.getList("Pucks",10)){var puck=(net.minecraft.nbt.CompoundTag)tag;buttonPiece(pose,buffers,light,gameColor(puck.getInt("Owner")),(float)puck.getDouble("X")*.7F,.075F,(float)puck.getDouble("Z")*.7F,.035F);}
+                if(n.getInt("Physics")==0&&!n.getBoolean("Done"))buttonPiece(pose,buffers,light,gameColor(n.getInt("Turn")),0,.075F,-.595F,.035F);
+                for(float edge:new float[]{-.79F,.75F}){box(pose,buffers,light,Blocks.DARK_OAK_PLANKS,edge,.05F,-.79F,.04F,.09F,1.58F);box(pose,buffers,light,Blocks.DARK_OAK_PLANKS,-.79F,.05F,edge,1.58F,.09F,.04F);}
+            }
+            case SILENT_CHARADES->{
+                box(pose,buffers,light,Blocks.WHITE_TERRACOTTA,-.42F,.055F,-.28F,.84F,.015F,.56F);for(int i=0;i<4;i++)box(pose,buffers,light,gameColor(i),-.32F+i*.18F,.072F,-.25F,.015F,.025F,.48F);
+                box(pose,buffers,light,Blocks.DARK_OAK_PLANKS,.5F,.06F,-.2F,.32F,.04F,.4F);box(pose,buffers,light,Blocks.BLUE_TERRACOTTA,.52F,.1F,-.18F,.28F,.01F,.36F);
+            }
+        }
+    }
+    private static void cardMark(PoseStack pose,MultiBufferSource buffers,int light,int symbol,float x,float y,float z,float pixel){
+        String[] glyphs={"010110010010111","110001010100111","110001010001110","101101111001001","011100010001110","110101110101101","010111010000010","101101101111101"};String glyph=glyphs[Math.floorMod(symbol,8)];
+        for(int row=0;row<5;row++)for(int col=0;col<3;col++)if(glyph.charAt(row*3+col)=='1')box(pose,buffers,light,Blocks.WHITE_CONCRETE,x+col*pixel,y,z+row*pixel,pixel*.8F,.002F,pixel*.8F);
+    }
+    private static void fishingLine(ScenePropEntity bobber,float partial,PoseStack pose,MultiBufferSource buffers){
+        var data=bobber.cakeData();var entity=bobber.level().getEntity(data.getInt("AnglerId"));
+        if(!(entity instanceof com.coraline.parents.ParentEntity parent)||!data.hasUUID("AnglerUUID")||!parent.getUUID().equals(data.getUUID("AnglerUUID"))||!parent.getMainHandItem().is(Items.FISHING_ROD)||parent.distanceToSqr(bobber)>1600)return;
+        double yaw=Math.toRadians(parent.yBodyRot),side=parent.getMainArm()==net.minecraft.world.entity.HumanoidArm.RIGHT?1:-1;
+        var start=new net.minecraft.world.phys.Vec3(net.minecraft.util.Mth.lerp(partial,bobber.xo,bobber.getX()),net.minecraft.util.Mth.lerp(partial,bobber.yo,bobber.getY())+.12,net.minecraft.util.Mth.lerp(partial,bobber.zo,bobber.getZ()));
+        var end=new net.minecraft.world.phys.Vec3(net.minecraft.util.Mth.lerp(partial,parent.xo,parent.getX())+Math.cos(yaw)*.35*side-Math.sin(yaw)*.5,net.minecraft.util.Mth.lerp(partial,parent.yo,parent.getY())+parent.getBbHeight()*.72,net.minecraft.util.Mth.lerp(partial,parent.zo,parent.getZ())+Math.sin(yaw)*.35*side+Math.cos(yaw)*.5);
+        var delta=end.subtract(start);var out=buffers.getBuffer(RenderType.lines());
+        for(int i=0;i<24;i++){double a=i/24.0,b=(i+1)/24.0;float x0=(float)(delta.x*a),y0=(float)(.12+delta.y*a-.35*4*a*(1-a)),z0=(float)(delta.z*a),x1=(float)(delta.x*b),y1=(float)(.12+delta.y*b-.35*4*b*(1-b)),z1=(float)(delta.z*b);float nx=x1-x0,ny=y1-y0,nz=z1-z0,length=(float)Math.sqrt(nx*nx+ny*ny+nz*nz);if(length==0)continue;
+            out.vertex(pose.last().pose(),x0,y0,z0).color(35,29,25,255).normal(pose.last().normal(),nx/length,ny/length,nz/length).endVertex();
+            out.vertex(pose.last().pose(),x1,y1,z1).color(35,29,25,255).normal(pose.last().normal(),nx/length,ny/length,nz/length).endVertex();
+        }
+    }
+    private static void outingScenery(ScenePropEntity e,PoseStack pose,MultiBufferSource buffers,int light){
+        boolean water=e.visualSlot()==1||e.visualSlot()==4;
+        if(e.visualSlot()==0||e.visualSlot()==2){for(int x=-3;x<=3;x++)for(int z=-3;z<=3;z++)box(pose,buffers,light,(x+z)%2==0?Blocks.PINK_WOOL:Blocks.WHITE_WOOL,x,.015F,z,1,.035F,1);}
+        if(e.visualSlot()==2){for(int i=0;i<4;i++){box(pose,buffers,light,Blocks.DARK_OAK_PLANKS,-4+i*2,.15F,4,1.8F,.1F,1);box(pose,buffers,light,Blocks.BLUE_WOOL,-3.8F+i*2,.25F,4.15F,1.4F,.04F,.7F);}}
+        if(water){for(int i=0;i<4;i++){box(pose,buffers,light,Blocks.SPRUCE_PLANKS,-2+i,.025F,-2,1,.12F,2);box(pose,buffers,light,Blocks.SPRUCE_LOG,-2+i,-.05F,-1.9F,.12F,1,.12F);}box(pose,buffers,light,Blocks.SPRUCE_PLANKS,-2,.2F,2,4,.08F,1);for(float x:new float[]{-2,1.8F})box(pose,buffers,light,Blocks.SPRUCE_PLANKS,x,0,2,.15F,.3F,.9F);
+            box(pose,buffers,light,Blocks.SPRUCE_PLANKS,-4,0,3,2,2.3F,.13F);box(pose,buffers,light,Blocks.SPRUCE_PLANKS,-4,0,3,.13F,2.3F,2);box(pose,buffers,light,Blocks.SPRUCE_PLANKS,-2.13F,0,3,.13F,2.3F,2);for(int i=0;i<4;i++)box(pose,buffers,light,Blocks.DARK_OAK_PLANKS,-4.25F,2.3F+i*.16F,3+i*.3F,2.5F,.16F,2.5F-i*.6F);
+            for(int i=0;i<3;i++)box(pose,buffers,light,Blocks.BARREL,-3.7F+i*.7F,.05F,2.05F,.5F,.6F,.5F);
+        }
+        for(int i=0;i<8;i++){float a=i*(float)Math.PI/4,x=(float)Math.cos(a)*5,z=(float)Math.sin(a)*5;box(pose,buffers,light,Blocks.DARK_OAK_LOG,x,0,z,.16F,1.2F,.16F);box(pose,buffers,15728880,Blocks.LANTERN,x-.12F,1.2F,z-.12F,.4F,.45F,.4F);
+            for(int j=0;j<3;j++)box(pose,buffers,light,j%2==0?Blocks.ALLIUM:Blocks.PINK_PETALS,x+.4F+j*.3F,.02F,z+.2F,.3F,.5F,.3F);}
+        // Trees are real, reversible world blocks; never non-colliding decorative trunks.
+    }
     private static void piano(ScenePropEntity e,float partial,PoseStack pose,MultiBufferSource buffers,int light){
         pose.mulPose(Axis.YP.rotationDegrees(-e.getYRot()-(e.mode()==2?partial*2.5F:0)));
         var black=Blocks.BLACK_CONCRETE;
@@ -615,7 +734,7 @@ public final class ScenePropRenderer extends EntityRenderer<ScenePropEntity> {
         pose.pushPose();pose.translate(-1.2,1.14,-.2);pose.mulPose(Axis.ZP.rotationDegrees(18));box(pose,buffers,light,wood,0,0,0,2.4F,.075F,1.6F);pose.popPose();
         box(pose,buffers,light,wood,-1.22F,.75F,-.55F,2.44F,.13F,.37F);
         for(int i=0;i<22;i++){
-            float x=-1.12F+i*.103F;float press=e.mode()>0?(float)Math.max(0,Math.sin((e.tickCount+partial)*.45+i*1.7))*.025F:0;
+            float x=-1.12F+i*.103F;float press=e.mode()==3?(i==11?(float)Math.max(0,Math.sin(Math.min(12,com.coraline.client.TraditionalClient.time()%60)*Math.PI/12))*.025F:0):e.mode()>0?(float)Math.max(0,Math.sin((e.tickCount+partial)*.45+i*1.7))*.025F:0;
             box(pose,buffers,light,Blocks.QUARTZ_BLOCK,x,.89F-press,-.53F,.097F,.04F,.31F);
             if(i%7!=2&&i%7!=6)box(pose,buffers,light,black,x+.07F,.94F-press,-.35F,.045F,.055F,.14F);
         }

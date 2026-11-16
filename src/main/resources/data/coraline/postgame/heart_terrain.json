@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:flat",
+  "settings": {
+    "biome": "coraline:true_heart",
+    "lakes": false,
+    "features": false,
+    "layers": [],
+    "structure_overrides": []
+  }
+}

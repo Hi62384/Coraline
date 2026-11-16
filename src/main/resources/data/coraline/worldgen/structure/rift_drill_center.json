@@ -1,0 +1,11 @@
+{
+  "type": "coraline:rift_drill_center",
+  "biomes": [
+    "coraline:postgame/white_rift_wastes",
+    "coraline:postgame/pale_wasteland",
+    "coraline:postgame/otherworld_badlands"
+  ],
+  "step": "surface_structures",
+  "spawn_overrides": {},
+  "terrain_adaptation": "none"
+}

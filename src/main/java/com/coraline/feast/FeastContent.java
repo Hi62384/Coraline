@@ -7,6 +7,8 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.*;
 
 public final class FeastContent {
+    public static final RegistryObject<Item> STORY_SPOON=ModItems.ITEMS.register("story_spoon",()->new Item(new Item.Properties()));
+    public static final RegistryObject<Item> STORY_TABLE_KNIFE=ModItems.ITEMS.register("story_table_knife",()->new Item(new Item.Properties()));
     public static final Map<String,RegistryObject<Item>> FOODS=new LinkedHashMap<>();
     static {
         for(String name:new String[]{"golden_chicken_breast","corn_on_the_cob","sweet_peas","mashed_potatoes","strawberry_pancakes","sausages","mango_milkshake","strawberry_milkshake","kiwi_milkshake","chocolate_milkshake","fruit_punch"}){

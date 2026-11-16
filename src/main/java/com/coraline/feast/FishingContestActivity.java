@@ -133,6 +133,9 @@ public final class FishingContestActivity {
         p.connection.send(new net.minecraft.network.protocol.game.ClientboundGameEventPacket(net.minecraft.network.protocol.game.ClientboundGameEventPacket.STOP_RAINING,0));
         p.connection.send(new net.minecraft.network.protocol.game.ClientboundGameEventPacket(net.minecraft.network.protocol.game.ClientboundGameEventPacket.RAIN_LEVEL_CHANGE,0));
     }
+    static void victimAudience(ServerPlayer p,VisitData.Scene s,ServerLevel level,BlockPos c){
+        ensureNpcs(p,s,level,c);setContestantsFishing(level,s,c,true);
+    }
     private static void ensureFather(ServerPlayer p,VisitData.Scene s,ServerLevel level,BlockPos c){
         if(!level.getEntitiesOfClass(ParentEntity.class,new AABB(c.south(20)).inflate(8),e->e.getPersistentData().getBoolean("CoralineFishingFather")&&e.getPersistentData().hasUUID(OWNER)&&s.owner.equals(e.getPersistentData().getUUID(OWNER))).isEmpty())return;
         var realm=RealmData.get(p.server).realms.get(s.door);var family=ParentAccess.family(p.server,s.owner);
@@ -168,7 +171,7 @@ public final class FishingContestActivity {
         }
         switch(l.fishingStage){
             case 0->{if(now>=l.fishingVoiceUntil){l.fishingStage=1;l.fishingEndAt=now+DURATION;l.fishingLastNpcAt=now;
-                grantRod(p,s);setContestantsFishing(level,s,c,true);OtherMotherLoop.changed(p);p.sendSystemMessage(Component.literal("Father's contest begins! Fish this lake for three minutes. Each catch adds its hidden value to your score."));}}
+                for(var member:CooperativeActivities.playing(p,s))grantRod(member,s);setContestantsFishing(level,s,c,true);OtherMotherLoop.changed(p);p.sendSystemMessage(Component.literal("Father's contest begins! Fish this lake for three minutes. Each catch adds its hidden value to your score."));}}
             case 1->{
                 if(now>=l.fishingEndAt){l.fishingStage=2;l.fishingWalkUntil=now+400;removeIssued(p);setContestantsFishing(level,s,c,false);OtherMotherLoop.changed(p);
                     p.sendSystemMessage(Component.literal("Time! Go to the illuminated judging pavilion on the south bank. The other four contestants are bringing their catches."));
@@ -254,14 +257,14 @@ public final class FishingContestActivity {
         // not replace the list FishingHook later spawns into the world.
         var reward=roll(p.getRandom());event.setCanceled(true);
         var awarded=reward.stack.copy();
-        if(!p.getInventory().add(awarded))p.drop(awarded,false);
+        if(!AcceptedButtonEyesInventory.activityReward(p,s,"fishing_catch_"+l.fishingCatches,java.util.List.of(awarded))&&!p.getInventory().add(awarded))p.drop(awarded,false);
         int points=catchPoints(reward.value);l.fishingScore+=points;l.fishingCatches++;OtherMotherLoop.changed(p);
         p.sendSystemMessage(Component.literal("Caught "+reward.stack.getHoverName().getString()+" — "+points+" points (total "+l.fishingScore+")."));
     }
     static boolean issued(ItemStack stack,ServerPlayer p,VisitData.Scene s){return stack.is(ModItems.FISHING_CONTEST_ROD.get())&&stack.hasTag()&&
         stack.getTag().hasUUID(OWNER)&&p.getUUID().equals(stack.getTag().getUUID(OWNER))&&stack.getTag().getInt(GEN)==s.loop.generation;}
     public static boolean canFish(ServerPlayer p,ItemStack stack){var s=OtherMotherLoop.active(p);return s!=null&&s.loop.activity==OtherMotherActivities.Activity.FISHING_CONTEST&&
-        ActivityWorld.isActivity(p.level())&&s.loop.fishingStage==1&&OtherMotherLoop.now(p)<s.loop.fishingEndAt&&issued(stack,p,s);}
+        ActivityWorld.isActivity(p.level())&&com.coraline.multiplayer.StoryCoop.canAct(p,s)&&s.loop.fishingStage==1&&OtherMotherLoop.now(p)<s.loop.fishingEndAt&&issued(stack,p,s);}
     private static void grantRod(ServerPlayer p,VisitData.Scene s){
         var stack=new ItemStack(ModItems.FISHING_CONTEST_ROD.get());stack.getOrCreateTag().putUUID(OWNER,p.getUUID());stack.getTag().putInt(GEN,s.loop.generation);
         stack.enchant(Enchantments.FISHING_SPEED,4);
@@ -293,7 +296,7 @@ public final class FishingContestActivity {
             case 4->new ItemStack[]{new ItemStack(Items.IRON_INGOT,6),new ItemStack(Items.COD,4)};
             default->new ItemStack[]{new ItemStack(Items.BREAD,4),new ItemStack(Items.KELP,8)};
         };
-        for(var stack:loot){p.getInventory().add(stack);if(!stack.isEmpty())p.drop(stack,false);}
+        if(!com.coraline.multiplayer.StoryRewardDelivery.award(p,s,"fishing_final",java.util.Arrays.asList(loot))&&!AcceptedButtonEyesInventory.locked(p))for(var stack:loot){p.getInventory().add(stack);if(!stack.isEmpty())p.drop(stack,false);}
         p.serverLevel().playSound(null,p.blockPosition(),SoundEvents.UI_TOAST_CHALLENGE_COMPLETE,SoundSource.PLAYERS,1F,1F);
         p.sendSystemMessage(Component.literal("You placed "+s.loop.fishingRank+ordinal(s.loop.fishingRank)+" in the fishing contest and received your prize!"));
     }

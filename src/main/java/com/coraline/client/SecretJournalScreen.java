@@ -14,13 +14,13 @@ import java.util.*;
 public final class SecretJournalScreen extends Screen {
     private CompoundTag data;
     private int voiceEvent,voiceState,voiceVariation=-1,scoldCategory,scoldState;
-    private String tab="Collection",filter="",selected="",confirmation="";
+    private String tab="Collection",filter="",selected="",confirmation="",multiplayerArgument="";
     private final Set<String> selection=new LinkedHashSet<>();
     private final List<EditBox> values=new ArrayList<>();
     private int page,left,top,w,h,refreshTicks,previewScroll;
     private EditBox search,argument;
-    private SecretJournalScreen(CompoundTag n){super(Component.literal(n.getBoolean("Lock")?"Seal Decoder":n.getBoolean("Debug")?"Secrets Debugger":"Secret Journal"));data=n;}
-    public static void receive(CompoundTag n){if(n==null)return;var mc=Minecraft.getInstance();if(!n.getBoolean("Debug")&&n.contains("Reward")&&n.getInt("Reward")>=0){mc.setScreen(new BlackmailRewardScreen(n));return;}if(!n.getBoolean("Debug")&&!n.getBoolean("AtJournal")&&!n.getBoolean("Lock"))return;if(mc.screen instanceof SecretJournalScreen screen&&screen.data.getBoolean("Debug")==n.getBoolean("Debug")&&screen.data.getBoolean("Lock")==n.getBoolean("Lock")){screen.data=n;screen.confirmation="";screen.rebuildWidgets();}else mc.setScreen(new SecretJournalScreen(n));}
+    private SecretJournalScreen(CompoundTag n){super(n.getBoolean("SiteLock")?Component.translatable("item.coraline.other_iron_lockpick"):Component.literal(n.getBoolean("Lock")?"Seal Decoder":n.getBoolean("Debug")?"Secrets Debugger":"Secret Journal"));data=n;}
+    public static void receive(CompoundTag n){if(n==null)return;if(VisitEventClient.receive(n))return;var mc=Minecraft.getInstance();if(!n.getBoolean("Debug")&&n.contains("Reward")&&n.getInt("Reward")>=0){mc.setScreen(new BlackmailRewardScreen(n));return;}if(!n.getBoolean("Debug")&&!n.getBoolean("AtJournal")&&!n.getBoolean("Lock"))return;if(mc.screen instanceof SecretJournalScreen screen&&screen.data.getBoolean("Debug")==n.getBoolean("Debug")&&screen.data.getBoolean("Lock")==n.getBoolean("Lock")){screen.data=n;screen.confirmation="";screen.rebuildWidgets();}else mc.setScreen(new SecretJournalScreen(n));}
     @Override public boolean isPauseScreen(){return false;}
     private UUID nonce(){return data.getUUID("Nonce");}
     private void action(String id,String value){SecretsNetwork.request(nonce(),id,value);}
@@ -43,14 +43,25 @@ public final class SecretJournalScreen extends Screen {
     private String ids(){return String.join(",",selection.isEmpty()&&!selected.isEmpty()?Set.of(selected):selection);}
     @Override protected void init(){w=Math.min(570,width-16);h=Math.min(320,height-16);left=(width-w)/2;top=(height-h)/2;values.clear();
         if(data.getBoolean("Lock")){button("Set pin",left+w/2-55,top+h-44,110,()->action("pin",""));return;}
-        String[] tabs=data.getBoolean("Debug")?new String[]{"Collection","Mother","Awareness","Journal","AI / Spies","World","Blackmail","Voice","Scold"}:new String[]{"Collection","Connections","Abilities","Map"};int tw=(w-16)/tabs.length;
+        String[] tabs=data.getBoolean("Debug")?new String[]{"Collection","Mother","Awareness","Journal","AI / Spies","World","Blackmail","Voice","Scold","Events","Trips","Games","Delivery"}:new String[]{"Collection","Connections","Abilities","Map"};int tw=(w-16)/tabs.length;
         for(int i=0;i<tabs.length;i++){String t=tabs[i];String label=font.width(t)>tw-6?switch(t){case "Collection"->"Collect";case "Awareness"->"Aware";case "AI / Spies"->"Spies";case "Blackmail"->"Mail";default->t;}:t;button(label,left+8+i*tw,top+26,tw-2,()->{tab=t;page=0;confirmation="";rebuildWidgets();});}
         if(data.getInt("Reward")>=0){for(int i=0;i<3;i++){int choice=i;button(new String[]{"Choose emeralds","Choose diamonds","Choose gold"}[i],left+8+i*(w-16)/3,top+h-25,(w-22)/3,()->action("reward",Integer.toString(choice)));}}
         else button("Close",left+w-64,top+h-25,56,this::onClose);
         if(data.getBoolean("AtJournal")&&!data.getBoolean("Debug"))button("Move journal",left+76,top+h-52,92,()->{action("move_journal","");onClose();});
+        if(data.getBoolean("Debug"))button("Story Rebirth",left+w-150,top+h-25,82,()->{tab="Rebirth";rebuildWidgets();});
+        if(data.getBoolean("Debug"))button("Tycoon Phase 1",left+w-260,top+h-25,105,()->action("tycoon_open",""));
+        if(data.getBoolean("Debug"))button("Accepted Button-Eyes Storyline",left+12,top+h-25,192,()->{tab="Button Eyes";rebuildWidgets();});
+        if(data.getBoolean("Debug"))button("Multiplayer",left+210,top+h-25,92,()->{tab="Multiplayer";page=0;rebuildWidgets();});
+        if(tab.equals("Multiplayer tests")){multiplayerTestControls();return;}
+        if(tab.equals("Multiplayer")){multiplayerControls();return;}
+        if(tab.equals("Button Eyes")){acceptedControls();return;}
+        if(tab.equals("Ghost Story")){ghostControls();return;}
+        if(tab.equals("Rebirth")){rebirthControls();return;}
         if(tab.equals("Mother")){motherControls();return;}
         if(tab.equals("Voice")){voiceControls();return;}
         if(tab.equals("Scold")){scoldControls();return;}
+        if(tab.equals("Events")){eventControls();return;}
+        if(tab.equals("Trips")||tab.equals("Games")||tab.equals("Delivery")){familyControls();return;}
         if(tab.equals("AI / Spies")||tab.equals("Journal")||tab.equals("World")||tab.equals("Blackmail")){debugControls();return;}
         if(tab.equals("Collection")||tab.equals("Awareness")){
             selection.retainAll(entries().stream().map(SecretRegistry.Secret::id).toList());if(entries().stream().noneMatch(s->s.id().equals(selected)))selected="";if(selected.isEmpty()&&!entries().isEmpty()){selected=entries().get(0).id();selection.add(selected);}
@@ -60,7 +71,7 @@ public final class SecretJournalScreen extends Screen {
             if(data.getBoolean("Debug")){
                 if(tab.equals("Awareness")){button("Confirm",bx,by,bw,()->action("expose",ids()));button("Suspect",bx+bw+4,by,bw,()->action("suspect",ids()));button("Unaware",bx,by+21,bw,()->action("unaware",ids()));button("Expose all",bx+bw+4,by+21,bw,()->action("expose_all",""));}
                 else {button("Give selected",bx,by,bw,()->action("give",ids()));button("Give all",bx+bw+4,by,bw,()->action("give_all",""));button("Deposit direct",bx,by+21,bw,()->action("deposit_debug",ids()));button("Remove",bx+bw+4,by+21,bw,()->action("remove_debug",ids()));}
-            }else if(data.getBoolean("AtJournal")){button("Deposit",bx,by,bw,()->action("deposit",ids()));button("Delete",bx+bw+4,by,bw,()->{previewScroll=0;confirmation="delete";});button("Make blackmail",bx,by+21,bw*2+4,()->{previewScroll=0;confirmation="blackmail";});}
+            }else if(data.getBoolean("AtJournal")){button("How to file",bx,by,bw,()->action("deposit",ids()));button("Delete",bx+bw+4,by,bw,()->{previewScroll=0;confirmation="delete";});button("Make blackmail",bx,by+21,bw*2+4,()->{previewScroll=0;confirmation="blackmail";});}
         }
         if(tab.equals("Abilities")){int row=0;for(var n:data.getList("Abilities",8)){String id=n.getAsString();if(!Set.of("invisibility","false_signal","combat","gift","servant","command","reveal","hijack","unweave").contains(id))continue;button(abilityName(id),left+14+(row%2)*(w/2),top+65+(row/2)*23,w/2-28,()->action("ability",id));row++;}}
     }
@@ -87,9 +98,49 @@ public final class SecretJournalScreen extends Screen {
         button("Play voice (no penalties)",left+16,top+132,w-32,()->action("voice_preview",voiceEvent+","+voiceState+","+voiceVariation));
         button("Actual event (real consequences)",left+16,top+155,w-32,()->action("voice_event",Integer.toString(voiceEvent)));
     }
+    private void familyControls(){
+        argument=new EditBox(font,left+12,top+52,w-24,18,Component.literal("Subtype / game / ticks / voice index"));argument.setValue("0");argument.setMaxLength(128);addRenderableWidget(argument);
+        String[][] actions=tab.equals("Delivery")?new String[][]{{"Force delivery","force"},{"Go recipient","destination"},{"Start delivery","window"},{"Recover package","package"},{"Resume","resume"},{"Cancel","cancel"},{"Protection","protection"},{"Voice 0–29","voice"},{"Inspect state","state"}}:tab.equals("Trips")?new String[][]{{"Force outing","force"},{"Choose subtype","subtype"},{"Go destination","destination"},{"Start window","window"},{"Force late","late"},{"Expire grace","grace"},{"Resume","resume"},{"Start experience","active"},{"Complete outing","finish"},{"Test reward","reward"},{"Voice 0–74","voice"},{"Inspect state","state"}}:new String[][]{{"Force Game Night","force"},{"Go game table","table"},{"Start window","window"},{"Set arrival ticks","time"},{"Force late","late"},{"Expire grace","grace"},{"Resume","resume"},{"Choose game","game"},{"Begin game","active"},{"Force win","win"},{"Force loss","lose"},{"NPC decision","npc"},{"Reset match","reset"},{"Rematch","rematch"},{"Complete night","complete"},{"Voice 0–77","voice"},{"Inspect state","state"}};
+        int rows=(actions.length+3)/4,gap=Math.min(25,(h-110)/rows);for(int i=0;i<actions.length;i++){var pair=actions[i];button(pair[0],left+12+i%4*(w-24)/4,top+78+i/4*gap,(w-30)/4,()->action(tab.equals("Delivery")?"delivery_event":tab.equals("Trips")?"outing_event":"game_night_event",pair[1]+","+argument.getValue()));}
+    }
+    private void eventControls(){
+        argument=new EditBox(font,left+12,top+52,w-24,18,Component.literal("Ticks / voice index / secret ID"));argument.setValue("0");argument.setMaxLength(128);addRenderableWidget(argument);
+        String[][] actions={{"Explore","explore"},{"Activity","activity"},{"Dinner","dinner"},{"Next event","end"},{"Set free ticks","time"},{"Start window","window"},{"Set arrival","arrival"},{"On time","ontime"},{"Late","late"},{"Expire grace","grace"},{"Resume","resume"},{"Begin meal","meal"},{"Complete","finish"},{"Go Mother","mother"},{"Go study","study"},{"Go table","table"},{"Father talk","talk"},{"Grant secret","reward"},{"Reset cap","reset_reward"},{"Voice 0–85","voice"},{"Grace samples","distribution"},{"Event state","state"}};
+        int rows=(actions.length+3)/4,gap=Math.min(23,(h-110)/rows);for(int i=0;i<actions.length;i++){var pair=actions[i];button(pair[0],left+12+i%4*(w-24)/4,top+78+i/4*gap,(w-30)/4,()->action("visit_event",pair[1]+","+argument.getValue()));}
+    }
+    private void acceptedControls(){
+        argument=new EditBox(font,left+12,top+52,w-24,18,Component.literal("Deterioration stage 0–5"));argument.setValue("0");addRenderableWidget(argument);
+        var actions=com.coraline.feast.AcceptedButtonEyes.DEBUG_ACTIONS;int columns=4;
+        for(int i=0;i<actions.length;i++){var id=actions[i];button(id.replace('_',' '),left+12+i%columns*(w-24)/columns,top+78+i/columns*22,(w-30)/columns,()->action("accepted_button_eyes",id+","+argument.getValue()));}
+        button("Ghost Storyline",left+12,top+h-52,170,()->{tab="Ghost Story";rebuildWidgets();});
+    }
+    private void ghostControls(){
+        argument=new EditBox(font,left+12,top+52,w-24,18,Component.literal("Value 0–1 / activity ID"));argument.setValue("0");argument.setMaxLength(100);addRenderableWidget(argument);
+        var actions=com.coraline.feast.GhostVictimDebug.ACTIONS;int columns=4,rows=(actions.length+columns-1)/columns,gap=Math.min(22,Math.max(19,(h-112)/rows));
+        for(int i=0;i<actions.length;i++){String id=actions[i];button(id.replace('_',' '),left+12+i%columns*(w-24)/columns,top+78+i/columns*gap,(w-30)/columns,()->action("ghost_victim_debug",id+","+argument.getValue()));}
+    }
+    private void multiplayerTestControls(){
+        argument=new EditBox(font,left+12,top+49,w-24,18,Component.literal("Actual player UUID, optional value"));argument.setHint(Component.literal("Player UUID, optional value (blank targets you)"));argument.setMaxLength(200);argument.setValue(multiplayerArgument);argument.setResponder(v->multiplayerArgument=v);addRenderableWidget(argument);
+        var actions=com.coraline.multiplayer.MultiplayerDebug.ACTIONS;int perPage=20;page=Math.max(0,Math.min(page,(actions.length-1)/perPage));
+        button("Roster",left+12,top+73,80,()->{tab="Multiplayer";page=0;rebuildWidgets();});button("<",left+w-72,top+73,26,()->{page--;rebuildWidgets();});button(">",left+w-40,top+73,26,()->{page++;rebuildWidgets();});
+        for(int i=0;i<perPage&&page*perPage+i<actions.length;i++){String action=actions[page*perPage+i];button(action.replace('_',' '),left+12+i%4*(w-24)/4,top+99+i/4*23,(w-30)/4,()->action("coop_control",action+"|"+argument.getValue()));}
+    }
+    private void multiplayerControls(){
+        argument=new EditBox(font,left+12,top+49,w-24,18,Component.literal("Player UUID"));argument.setHint(Component.literal("Player UUID (blank inspects your session)"));argument.setMaxLength(36);addRenderableWidget(argument);
+        button("Controls",left+12,top+h-49,90,()->{tab="Multiplayer tests";page=0;rebuildWidgets();});
+        button("Inspect",left+12,top+73,84,()->action("coop_inspect",argument.getValue()));button("Allow my guest",left+102,top+73,100,()->action("coop_allow",argument.getValue()));button("Remove my guest",left+208,top+73,100,()->action("coop_kick",argument.getValue()));
+        button("<",left+w-72,top+73,26,()->{page=Math.max(0,page-1);rebuildWidgets();});button(">",left+w-40,top+73,26,()->{page++;rebuildWidgets();});
+    }
+    private void rebirthControls(){
+        var actions=com.coraline.rebirth.StoryRebirth.DEBUG_ACTIONS;int i=0,columns=3;
+        for(String id:actions.keySet().stream().sorted().toList()){
+            String label=id.replace('_',' ');int index=i++;
+            button(label,left+12+(index%columns)*(w-24)/columns,top+52+(index/columns)*22,(w-30)/columns,()->action("story_rebirth",id));
+        }
+    }
     private void debugControls(){argument=new EditBox(font,left+12,top+52,w-24,18,Component.literal("Value / IDs"));argument.setMaxLength(4096);argument.setValue(tab.equals("Blackmail")?ids():"0");addRenderableWidget(argument);
         String[][] buttons=switch(tab){
-            case "Journal"->new String[][]{{"Clear journal","clear"},{"Inspect chosen spot","inspect"},{"Discover journal","discover"},{"Relocate (0–5)","hide"},{"Set inspection progress","inspection_time"},{"Forget knowledge","forget"}};
+            case "Journal"->new String[][]{{"Clear journal","clear"},{"Inspect chosen spot","inspect"},{"Discover journal","discover"},{"Relocate (0–11)","hide"},{"Set inspection progress","inspection_time"},{"Forget knowledge","forget"}};
             case "AI / Spies"->new String[][]{{"Start search","search"},{"Stop search","stop"},{"Missed portal delay","miss"},{"Set delay ticks","delay"},{"Direct chase","chase"},{"Noise at me","noise"},{"Spawn doll","doll"},{"Spawn rat","rat"},{"Spy report","report"},{"Bring Mother","mother"},{"Trigger trap (0–2)","trap"},{"Alert nearest rat","rat_alert"},{"Clear nearby spies","clear_spies"}};
             case "World"->new String[][]{{"Regenerate visit","regenerate"},{"Teleport to room index","teleport"},{"Build through level (0–3)","generate_tier"},{"Unlock chosen room","unlock_debug"},{"Reveal caches / ores","reveal_debug"},{"Refresh positions","refresh"}};
             default->new String[][]{{"Create from selected IDs","blackmail_debug"},{"Force acceptance","accept"},{"Force rejection","reject"},{"Give loop by ID","give_loop"}};
@@ -123,7 +174,23 @@ public final class SecretJournalScreen extends Screen {
                 g.drawWordWrap(font,Component.literal("Collect evidence. File it here to uncover connections and unlock new abilities."),left+w/2+20,cy+47,w/2-40,0xFF684F3F);
             }
         }
-        if(data.getBoolean("Lock")){g.drawCenteredString(font,"Align each pin inside the gold band",width/2,top+60,0xFF483427);int bx=left+30,by=top+h/2,bw=w-60;g.fill(bx,by,bx+bw,by+20,0xFF342B30);double window=data.getDouble("Window");g.fill(bx+(int)(bw*(.5-window/2)),by,bx+(int)(bw*(.5+window/2)),by+20,0xFFBCA352);double t=Minecraft.getInstance().level==null?0:Minecraft.getInstance().level.getGameTime()+partial-data.getLong("Start");int cursor=bx+(int)(bw*(Math.sin(t*data.getDouble("Speed"))+1)/2);g.fill(cursor-2,by-5,cursor+2,by+25,0xFFF0ECE1);g.drawCenteredString(font,data.getInt("Completed")+" / "+data.getInt("Pins")+" pins",width/2,by+35,0xFF483427);super.render(g,mx,my,partial);return;}
+        if(data.getBoolean("Lock")){
+            g.drawCenteredString(font,"Align each pin inside the gold band",width/2,top+60,0xFF483427);
+            int bx=left+30,by=top+h/2,bw=w-60;g.fill(bx,by,bx+bw,by+20,0xFF342B30);
+            double window=data.getDouble("Window");double target=data.contains("Target",net.minecraft.nbt.Tag.TAG_DOUBLE)?Math.max(window/2,Math.min(1-window/2,data.getDouble("Target"))):.5;
+            g.fill(bx+(int)(bw*(target-window/2)),by,bx+(int)(bw*(target+window/2)),by+20,0xFFBCA352);
+            double t=Minecraft.getInstance().level==null?0:Minecraft.getInstance().level.getGameTime()+partial-data.getLong("Start");
+            int cursor=bx+(int)(bw*(Math.sin(t*data.getDouble("Speed"))+1)/2);g.fill(cursor-2,by-5,cursor+2,by+25,0xFFF0ECE1);
+            g.drawCenteredString(font,data.getInt("Completed")+" / "+data.getInt("Pins")+" pins",width/2,by+35,0xFF483427);
+            if(data.getBoolean("SiteLock"))g.drawCenteredString(font,Component.translatable("message.coraline.lockpick_cost",data.getInt("Cost")),width/2,by+52,0xFF483427);
+            super.render(g,mx,my,partial);return;
+        }
+        if(tab.equals("Multiplayer")){
+            var view=data.getCompound("Multiplayer");String status=view.getBoolean("Blocked")?"Session storage requires recovery":!view.hasUUID("Id")?"No session":(view.getBoolean("Paused")?"Paused":"Active")+" | revision "+view.getLong("Revision")+" | queued payouts "+view.getInt("QueuedRewards");g.drawString(font,status,left+12,top+101,0xFF493A32,false);
+            if(view.hasUUID("Owner"))g.drawString(font,"Owner: "+view.getUUID("Owner"),left+12,top+116,0xFF493A32,false);
+            var members=view.getList("Members",10);int perPage=Math.max(1,(h-174)/19);page=Math.max(0,Math.min(page,Math.max(0,(members.size()-1)/perPage)));
+            for(int row=0;row<perPage&&page*perPage+row<members.size();row++){var member=members.getCompound(page*perPage+row);String name=member.contains("Name")?member.getString("Name"):member.getUUID("Player").toString();g.drawString(font,font.plainSubstrByWidth(name+" | "+member.getString("State")+(member.getBoolean("Online")?" | online":" | offline")+(member.getBoolean("Escrow")?" | inventory held":"")+(member.getBoolean("ModeHeld")?" | mode held":""),w-24),left+12,top+136+row*19,0xFF493A32,false);}
+        }
         if(tab.equals("Collection")||tab.equals("Awareness")){var entries=entries();for(int row=0;row<rows();row++){int i=page*rows()+row;if(i>=entries.size())break;var s=entries.get(i);int y=top+76+row*22;if(selection.contains(s.id()))g.fill(left+8,y-2,left+w/2-6,y+18,0xFFBEA77C);g.drawString(font,(has("Journal",s.id())?"• ":"+ ")+s.name(),left+12,y+3,0xFF392A24,false);}
             if(entries.isEmpty())g.drawWordWrap(font,Component.literal("No evidence yet. Search the house's drawers and the buildings beyond the garden."),left+12,top+90,w/2-24,0xFF392A24);
             var s=SecretRegistry.ALL.get(selected);if(s!=null){int x=left+w/2+8,y=top+54;g.drawWordWrap(font,Component.literal(s.name()+"  ·  severity "+String.format(Locale.ROOT,"%.2f",s.severity())),x,y,w/2-22,0xFF392A24);y+=30;for(var line:font.split(Component.literal(s.description()),w/2-22)){g.drawString(font,line,x,y,0xFF493A32,false);y+=10;}y+=5;for(int i=0;i<6;i++)if(s.points()[i]>0){g.drawString(font,SecretRegistry.ATTRIBUTES[i]+" +"+String.format(Locale.ROOT,"%.2f",s.points()[i]/100.),x,y,0xFF5E3929,false);y+=11;}if(!s.ability().isEmpty())g.drawString(font,"Ability: "+s.ability(),x,y,0xFF5E3929,false);if(data.getBoolean("Debug")&&tab.equals("Awareness"))g.drawString(font,has("Exposed",s.id())?"CONFIRMED":has("Suspected",s.id())?"SUSPECTED":"UNKNOWN",x,y+14,0xFF8A292F,false);}
@@ -133,6 +200,7 @@ public final class SecretJournalScreen extends Screen {
         else if(tab.equals("Mother")){int rh=Math.min(40,(h-104)/4),cw=(w-24)/2;for(int i=0;i<8;i++)g.drawString(font,i<2?"Relationship":(data.getDouble("Override"+(i-2))>=0?"Override":"Natural")+" · eff "+String.format(Locale.ROOT,"%.2f",data.getDouble("Effective"+(i-2))),left+12+(i/4)*cw,top+52+(i%4)*rh,0xFF493A32,false);}
         else if(tab.equals("Scold"))g.drawString(font,"Stage: "+data.getString("Conversation")+" · Proposal: "+(data.getBoolean("ProposalPending")?"yes":"no"),left+12,top+h-20,0xFF493A32,false);
         else if(tab.equals("AI / Spies"))g.drawString(font,data.getString("Search")+" · sight "+String.format(Locale.ROOT,"%.1f",data.getDouble("Sight")),left+12,top+h-36,0xFF493A32,false);
+        if(tab.equals("Map"))VisitEventClient.drawOutingMap(g,left+w/2,top+h/2,Math.min(w/2-15,h/2-45));
         super.render(g,mx,my,partial);
         if(!confirmation.isEmpty()){
             g.pose().pushPose();g.pose().translate(0,0,400);

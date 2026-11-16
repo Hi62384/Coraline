@@ -1,0 +1,90 @@
+{
+  "structures": [
+    {
+      "structure": "coraline:doll_workshop",
+      "weight": 3
+    },
+    {
+      "structure": "coraline:clockwork_factory",
+      "weight": 1
+    },
+    {
+      "structure": "coraline:soul_glass_mine",
+      "weight": 2
+    },
+    {
+      "structure": "coraline:rift_drill_center",
+      "weight": 1
+    },
+    {
+      "structure": "coraline:rift_soldier_outpost",
+      "weight": 2
+    },
+    {
+      "structure": "coraline:mirror_tower",
+      "weight": 1
+    },
+    {
+      "structure": "coraline:sunken_otherworld_ruins",
+      "weight": 1
+    },
+    {
+      "structure": "coraline:porcelain_mansion",
+      "weight": 1
+    },
+    {
+      "structure": "coraline:dimensional_seam",
+      "weight": 1
+    },
+    {
+      "structure": "coraline:other_village",
+      "weight": 2
+    },
+    {
+      "structure": "coraline:abandoned_village",
+      "weight": 1
+    },
+    {
+      "structure": "coraline:rootbound_temple",
+      "weight": 1
+    },
+    {
+      "structure": "coraline:ancient_boundary_shrine",
+      "weight": 1
+    },
+    {
+      "structure": "coraline:resistance_sanctuary",
+      "weight": 1
+    },
+    {
+      "structure": "coraline:forgotten_observatory",
+      "weight": 1
+    },
+    {
+      "structure": "coraline:grand_theatre",
+      "weight": 1
+    },
+    {
+      "structure": "coraline:endless_carnival",
+      "weight": 1
+    },
+    {
+      "structure": "coraline:abandoned_orphanage",
+      "weight": 1
+    },
+    {
+      "structure": "coraline:entity_heart_chamber",
+      "weight": 1
+    },
+    {
+      "structure": "coraline:false_pink_palace",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "coraline:independent_spread",
+    "spacing": 48,
+    "separation": 24,
+    "salt": 18237448
+  }
+}

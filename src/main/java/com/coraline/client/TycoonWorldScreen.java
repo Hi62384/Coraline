@@ -1,0 +1,114 @@
+package com.coraline.client;
+
+import com.coraline.tycoon.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.nbt.*;
+import net.minecraft.network.chat.Component;
+import java.util.*;
+
+/** Compact map-driven Phase 2 desk; no manual coordinate entry or hidden meters. */
+public final class TycoonWorldScreen extends Screen {
+    private CompoundTag data;private String tab="Dolls";private int quantity=1;private int page,tier=1,selectedX,selectedZ,left,top,w,h,gridX,gridY,cell;
+    private boolean analysis;private int analysisPage;private int structureView,rotation,soulView,farmSelection;
+    private TycoonWorldScreen(CompoundTag data){super(Component.literal(data.getString("Mode").equals("fooddebug")?"Coraline Tycoon — Food, Trust & Neglect":data.getString("Mode").equals("debug2")?"Coraline Tycoon — Phase 2":"Personal Other World"));this.data=data;}
+    public static void receive(CompoundTag n){var mc=Minecraft.getInstance();if(mc.screen instanceof TycoonAutomationScreen){TycoonAutomationScreen.receive(n);return;}if(mc.screen instanceof TycoonWorldScreen s){s.data=n;s.rebuildWidgets();}else mc.setScreen(new TycoonWorldScreen(n));}
+    public static void show(CompoundTag n){Minecraft.getInstance().setScreen(new TycoonWorldScreen(n));}
+    @Override public boolean isPauseScreen(){return false;}
+    public String selectedTab(){return tab;}
+    private void send(String action,String value){TycoonNetwork.action(data.getUUID("Nonce"),action,value);}
+    private void action(String value){send("tycoon2",value);}
+    private Button button(String text,int x,int y,int width,Runnable run){var b=Button.builder(Component.literal(text),unused->run.run()).bounds(x,y,width,20).build();addRenderableWidget(b);return b;}
+    @Override protected void init(){
+        w=Math.min(680,width-16);h=Math.min(360,height-16);left=(width-w)/2;top=(height-h)/2;
+        button("Refresh",left+10,top+h-28,60,()->send("refresh",""));button("Close",left+w-70,top+h-28,60,this::onClose);
+        button("Automation",left+w-100,top+2,90,()->Minecraft.getInstance().setScreen(new TycoonAutomationScreen(data)));
+        if(data.getString("Mode").equals("debug2")||data.getString("Mode").equals("fooddebug")){tab="Debug";var controls=data.getList("DebugControls",10);int rows=Math.max(1,(h-96)/24);for(int i=page*rows;i<Math.min(controls.size(),page*rows+rows);i++){var c=controls.getCompound(i);button(c.getString("Label"),left+12,top+40+(i%rows)*24,w-24,()->send(data.getString("Mode").equals("fooddebug")?"fooddebug":"debug2",c.getString("Action")));}pages(controls.size(),rows);return;}
+        String[] tabs={"Dolls","Visits","Terrain","House","Sky","Quality","Food","Build","Souls"};for(int i=0;i<tabs.length;i++){String name=tabs[i];button(name,left+8+i*(w-16)/tabs.length,top+27,(w-22)/tabs.length,()->{tab=name;page=0;tier=tab.equals("Sky")?data.getInt("SkyTier"):1;rebuildWidgets();});}
+        if(tab.equals("Build"))attractionControls();
+        if(tab.equals("Souls"))soulControls();
+        if(tab.equals("Food")){var rows=data.getList("FoodShop",10);page=Math.min(page,Math.max(0,rows.size()-1));if(!rows.isEmpty()){var row=rows.getCompound(page);if(page==7)quantity=1;button("Buy "+quantity+" — "+(quantity*row.getInt("Price"))+" Soul",left+12,foodButtonY(0),w-24,()->action("food:"+page+","+quantity)).active=data.getLong("SoulEssence")>=(long)quantity*row.getInt("Price");button("Quantity: "+quantity,left+12,foodButtonY(1),(w-32)/2,()->{quantity=quantity==1?4:quantity==4?8:1;rebuildWidgets();}).active=page<7;button("Special Gifts",left+20+(w-32)/2,foodButtonY(1),(w-32)/2,()->{page=7;quantity=1;rebuildWidgets();});}button("Supper Table — "+data.getInt("SupperTablePrice")+" Power",left+12,foodButtonY(2),(w-32)/2,()->action("supper:other_world_supper_table"));button("Other World Fridge — "+data.getInt("SupperFridgePrice")+" Power",left+20+(w-32)/2,foodButtonY(2),(w-32)/2,()->action("supper:other_world_fridge"));pages(rows.size(),1);}
+        if(tab.equals("Dolls")){var dolls=data.getList("Dolls",10);if(!dolls.isEmpty()){
+            page=Math.min(page,dolls.size()-1);var r=dolls.getCompound(page);int y=top+h-78,bw=(w-40)/3;
+            button(analysis?"Back to Doll Workshop":"Doll Personality Analysis",left+12,top+(analysis?79:109),w-24,()->{analysis=!analysis;analysisPage=0;rebuildWidgets();}).active=r.getBoolean("Crafted");
+            if(analysis){int rows=analysisRows(),size=analysisData(r).getList("Traits",10).size();analysisPage=Math.min(analysisPage,Math.max(0,(size-1)/rows));button("< Traits",left+12,y,(w-32)/2,()->{analysisPage=Math.max(0,analysisPage-1);rebuildWidgets();});button("Traits >",left+20+(w-32)/2,y,(w-32)/2,()->{analysisPage=Math.min(Math.max(0,(size-1)/rows),analysisPage+1);rebuildWidgets();});}
+            else{button("Create — "+data.getInt("DollCost"),left+12,y,bw,()->action("doll:"+r.getUUID("Id"))).active=!r.getBoolean("Crafted");button("Replace — "+data.getInt("ReplacementCost"),left+20+bw,y,bw,()->action("replace:"+r.getUUID("Id"))).active=r.getBoolean("Crafted")&&!r.getString("Status").equals("PLACED");button("Reassign bed",left+28+2*bw,y,bw,()->action("bed:"+r.getUUID("Id")));}
+        }pages(dolls.size(),1);}
+        if(tab.equals("Visits")){button("Preview eligible visitors",left+12,top+92,(w-32)/2,()->action("invite_preview"));button("Confirm Spawn Mice",left+20+(w-32)/2,top+92,(w-32)/2,()->action("invite_confirm")).active=data.getBoolean("Nighttime")&&data.getInt("Eligible")>0&&!data.getBoolean("VisitActive");button("Send All Visitors Home",left+12,top+118,w-24,()->action("sendhome")).active=data.getBoolean("VisitActive")||data.getLong("VisitorCount")>0;}
+        if(tab.equals("Terrain")){cell=Math.max(4,Math.min(12,(h-106)/16));gridX=left+12;gridY=top+56;int x=gridX+16*cell+12,space=left+w-x-12;button("<",x,top+102,25,()->{tier=Math.max(0,tier-1);rebuildWidgets();});button(">",x+space-25,top+102,25,()->{tier=Math.min(5,tier+1);rebuildWidgets();});var tile=selected();int cost=terrainCost(tile);button("Confirm — "+cost+" Power",x,top+128,space,()->action("terrain:"+selectedX+","+selectedZ+","+tier)).active=tile.getBoolean("Available")&&tier>tile.getInt("Tier")&&data.getInt("VoidPower")>=cost;}
+        if(tab.equals("House")||tab.equals("Sky")){boolean house=tab.equals("House");tier=Math.max(house?1:0,Math.min(5,tier));button("<",left+12,top+99,30,()->{tier=Math.max(house?1:0,tier-1);rebuildWidgets();});button(">",left+w-42,top+99,30,()->{tier=Math.min(5,tier+1);rebuildWidgets();});int current=data.getInt(house?"HouseTier":"SkyTier");int[] prices=data.getIntArray(house?"HousePrices":"SkyPrices");int cost=house?Math.max(1,prices[tier]-prices[Math.max(0,Math.min(5,current))]):tier==0||data.getCompound("OwnedSkies").getBoolean(Integer.toString(tier))?0:prices[tier];button((house?"Build / upgrade":"Select / purchase")+" — "+cost+" Power",left+12,top+130,w-24,()->action((house?"house:":"sky:")+tier)).active=(!house||tier>current)&&data.getInt("VoidPower")>=cost;}
+    }
+    private int foodButtonY(int row){return top+Math.min(151+row*26,h-100+row*24);}
+    private void attractionControls(){
+        button(structureView==0?"Purchased attractions":structureView==1?"Surveillance":"Attraction shop",left+12,top+59,w-24,()->{structureView=(structureView+1)%3;page=0;rebuildWidgets();});
+        int half=(w-32)/2;
+        if(structureView==0){var catalog=data.getList("AttractionCatalog",10);if(catalog.isEmpty())return;page=Math.min(page,catalog.size()-1);var row=catalog.getCompound(page);
+            button("Preview on selected terrain tile",left+12,top+130,w-24,()->action("attraction_preview:"+row.getString("Id")+","+selectedX+","+selectedZ+","+rotation));
+            button("Rotation: "+(rotation*90)+"°",left+12,top+155,half,()->{rotation=(rotation+1)%4;rebuildWidgets();});button("Confirm placement",left+20+half,top+155,half,()->action("attraction_confirm:"));pages(catalog.size(),1);
+        }else if(structureView==1){var list=data.getList("Attractions",10);if(list.isEmpty())return;page=Math.min(page,list.size()-1);var row=list.getCompound(page);String id=row.getUUID("Id").toString();
+            button("Upgrade tier",left+12,top+130,w-24,()->action("attraction_upgrade:"+id+",-1"));var type=TycoonAttractionType.parse(row.getString("Type"));
+            for(int i=0;i<3;i++){int branch=i;button(type.branches[i]+" "+row.getCompound("Branches").getInt(Integer.toString(i))+"/3",left+12+i*(w-24)/3,top+155,(w-28)/3,()->action("attraction_upgrade:"+id+","+branch));}
+            button("Preview sale",left+12,top+180,half,()->action("attraction_sale:"+id));button("Confirm sale",left+20+half,top+180,half,()->action("attraction_sell:"+id));pages(list.size(),1);
+        }else{
+            button("Place Spy Rat — 16 Power",left+12,top+130,half,()->action("spy:rat"));button("Place Spy Doll — 12 Power",left+20+half,top+130,half,()->action("spy:doll"));
+            var spies=data.getCompound("Spies");var keys=new ArrayList<>(spies.getAllKeys());Collections.sort(keys);if(!keys.isEmpty()){page=Math.min(page,keys.size()-1);String id=keys.get(page);var n=spies.getCompound(id);button("Upgrade "+n.getString("Kind")+" T"+n.getInt("Tier")+" — "+n.getInt("Tier")*12+" Power",left+12,top+155,w-24,()->action("spy_upgrade:"+id));pages(keys.size(),1);}
+        }
+    }
+    private void soulControls(){
+        button(soulView==0?"Soul Farms":soulView==1?"Build Soul Farm":"Soul Collection",left+12,top+59,w-24,()->{soulView=(soulView+1)%3;page=0;rebuildWidgets();});int half=(w-32)/2;
+        if(soulView==2){button("Preview selected terrain tile",left+12,top+155,w-24,()->action("farm_preview:"+selectedX+","+selectedZ+","+rotation));button("Rotation: "+rotation*90+"°",left+12,top+180,half,()->{rotation=(rotation+1)%4;rebuildWidgets();});button("Confirm farm construction",left+20+half,top+180,half,()->action("farm_confirm:"));return;}
+        var list=data.getList(soulView==0?"Souls":"SoulFarms",10);if(list.isEmpty())return;page=Math.min(page,list.size()-1);var row=list.getCompound(page);String id=row.getUUID("Id").toString();
+        if(soulView==0){
+            var farms=data.getList("SoulFarms",10);if(!farms.isEmpty()){farmSelection=Math.min(farmSelection,farms.size()-1);var farm=farms.getCompound(farmSelection);button("Choose farm: #"+farm.getInt("Ordinal")+" ("+farm.getInt("Assigned")+"/"+farm.getInt("Capacity")+")",left+12,top+181,half,()->{farmSelection=(farmSelection+1)%farms.size();rebuildWidgets();});button("Assign / move to selected farm",left+20+half,top+181,half,()->action("soul_assign:"+id+","+farm.getUUID("Id")));}
+            button("Unassign",left+12,top+206,half,()->action("soul_unassign:"+id));button(row.getBoolean("Protected")?"Protected — toggle":"Protect from automatic release",left+20+half,top+206,half,()->action("soul_protect:"+id));button("Preview permanent release",left+12,top+231,half,()->action("soul_release_preview:"+id));button("Confirm permanent release",left+20+half,top+231,half,()->action("soul_release:"+id));
+        }else{
+            button("Upgrade farm",left+12,top+169,half,()->action("farm_upgrade:"+id));button("Repair damaged farm",left+20+half,top+169,half,()->action("farm_repair:"+id));button("Pause / resume",left+12,top+194,w-24,()->action("farm_pause:"+id));button("Preview breach evacuation",left+12,top+219,half,()->action("farm_concede_preview:"+id));button("Concede Breach and Evacuate",left+20+half,top+219,half,()->action("farm_concede:"+id));
+        }pages(list.size(),1);
+    }
+    private void soulRender(GuiGraphics g){
+        g.drawString(font,"Soul Essence "+data.getString("SoulBalanceExact"),left+12,top+86,0xF1D9AC);
+        if(soulView==2){line(g,"Next farm: "+data.getInt("FarmPowerPrice")+" Power + "+data.getLong("NextFarmSoulPrice")+" Essence. Limit 30. Selected tile "+selectedX+", "+selectedZ+". Choose terrain on the Terrain tab.",left+12,top+104,w-24,0xD8CBDD);return;}
+        var list=data.getList(soulView==0?"Souls":"SoulFarms",10);if(list.isEmpty()){line(g,soulView==0?"No captured souls. Proposals are offered in visitor conversations; no readiness meter is shown.":"No Soul Farms built. The first farm costs no Soul Essence.",left+12,top+105,w-24,0xD8CBDD);return;}
+        var row=list.getCompound(Math.min(page,list.size()-1));
+        if(soulView==0){
+            g.drawString(font,font.plainSubstrByWidth(row.getString("Name")+" — "+row.getString("Status")+" — "+row.getString("Primary")+" / "+row.getString("Secondary"),w-24),left+12,top+103,0xB9E7FF);
+            g.drawString(font,String.format(java.util.Locale.ROOT,"Quality %.2f | Base %.4f Essence/s | Stability %.2f",row.getDouble("Quality"),row.getLong("BaseMicros")/1_000_000.,row.getDouble("Stability")),left+12,top+118,0xD8CBDD);
+            g.drawString(font,String.format(java.util.Locale.ROOT,"Resonance %.2f | Efficiency %.2f | Restlessness %.2f",row.getDouble("Resonance"),row.getDouble("Efficiency"),row.getDouble("Restlessness")),left+12,top+133,0xD8CBDD);
+            g.drawString(font,font.plainSubstrByWidth("Former resident "+row.getUUID("Resident")+" | captured at active tick "+row.getLong("CapturedAt"),w-24),left+12,top+148,0xC5B2D8);
+            g.drawString(font,row.hasUUID("Farm")?"Assigned to "+row.getUUID("Farm"):"Unassigned — no production",left+12,top+163,0xC5B2D8);
+        }else{
+            g.drawString(font,"Farm #"+row.getInt("Ordinal")+" — Tier "+row.getInt("Tier")+" — "+row.getString("State"),left+12,top+103,0xB9E7FF);
+            g.drawString(font,String.format(java.util.Locale.ROOT,"Souls %d/%d | Output %.4f Essence/s | Resonance ×%.3f",row.getInt("Assigned"),row.getInt("Capacity"),row.getLong("RateMicros")/1_000_000.,row.getDouble("ResonanceMultiplier")),left+12,top+118,0xD8CBDD);
+            g.drawString(font,"Location "+net.minecraft.core.BlockPos.of(row.getLong("Position")).toShortString(),left+12,top+133,0xC5B2D8);
+            if(row.getCompound("Breach").getBoolean("Active"))g.drawString(font,"BREACH: "+row.getCompound("Breach").getInt("Progress")/20+" / 600 seconds. Use the physical lodestone control to secure it.",left+12,top+148,0xFF9D9D);
+        }
+    }
+    private CompoundTag analysisData(CompoundTag resident){return data.getCompound("DollAnalysis").getCompound(resident.getUUID("Id").toString());}
+    private int analysisRows(){return Math.max(1,(h-210)/12);}
+    private void pages(int size,int rows){if(size<=rows)return;button("<",left+w/2-44,top+h-28,30,()->{page=Math.max(0,page-1);rebuildWidgets();});button(">",left+w/2+14,top+h-28,30,()->{page=Math.min((size-1)/rows,page+1);rebuildWidgets();});}
+    private CompoundTag selected(){for(var entry:data.getList("Tiles",10)){var n=(CompoundTag)entry;if(n.getInt("X")==selectedX&&n.getInt("Z")==selectedZ)return n;}return new CompoundTag();}
+    private int terrainCost(CompoundTag tile){int[] prices=data.getIntArray("TerrainPrices");if(prices.length<6)return 0;return tile.getBoolean("Owned")?Math.max(1,(prices[tier]-prices[Math.max(0,tile.getInt("Tier"))])*3/4):prices[tier];}
+    private void line(GuiGraphics g,String text,int x,int y,int maxWidth,int color){int count=0;for(var part:font.split(Component.literal(text),maxWidth)){if(count++>=3)break;g.drawString(font,part,x,y,color);y+=11;}}
+    @Override public void render(GuiGraphics g,int mx,int my,float partial){
+        renderBackground(g);g.fill(left,top,left+w,top+h,0xF0181424);g.fill(left+2,top+2,left+w-2,top+23,0xFF493452);g.drawString(font,font.plainSubstrByWidth(title.getString(),w-124),left+12,top+8,0xF1D9AC);
+        if(tab.equals("Dolls")){var rows=data.getList("Dolls",10);if(rows.isEmpty())line(g,"Accept a resident through the Orphanage Phone before creating a personalized doll.",left+12,top+64,w-24,0xD8CBDD);else{var r=rows.getCompound(Math.min(page,rows.size()-1));g.drawString(font,r.getString("Name"),left+12,top+61,0xF1D9AC);if(!analysis){line(g,"Bed: "+r.getString("Bed"),left+12,top+77,w-110,0xC5B2D8);line(g,"Doll: "+(r.getBoolean("Crafted")?r.getString("Status"):"Not crafted")+(r.getBoolean("Delivered")?" — delivered":""),left+12,top+91,w-110,0xD8CBDD);preview(g,left+w-55,top+85,r.getInt("Appearance"));}}}
+        if(tab.equals("Dolls")&&analysis){var dolls=data.getList("Dolls",10);if(!dolls.isEmpty()){var details=analysisData(dolls.getCompound(Math.min(page,dolls.size()-1)));var traits=details.getList("Traits",10);int rows=analysisRows();for(int i=analysisPage*rows;i<Math.min(traits.size(),(analysisPage+1)*rows);i++){var row=traits.getCompound(i);g.drawString(font,font.plainSubstrByWidth(row.getString("Trait")+": "+row.getString("Estimate"),w-24),left+12,top+104+(i%rows)*12,0xD8CBDD);}if(h>=232)g.drawString(font,font.plainSubstrByWidth(String.format(java.util.Locale.ROOT,"Analysis %.0f%% — active doll time and observations",details.getDouble("Progress")*100),w-24),left+12,top+h-95,0xC5B2D8);}}
+        if(tab.equals("Food")){var rows=data.getList("FoodShop",10);boolean compact=h<280;g.drawString(font,"Other World Food — Soul Essence: "+data.getLong("SoulEssence"),left+12,top+59,0xE8C581);if(!rows.isEmpty()){var row=rows.getCompound(Math.min(page,rows.size()-1));g.drawString(font,font.plainSubstrByWidth(row.getString("Name"),w-100),left+12,top+(compact?73:76),0xF1D9AC);g.drawString(font,font.plainSubstrByWidth(row.getString("Quality"),w-100),left+12,top+(compact?86:93),0xC5B2D8);String effects=page==7?(compact?"Gift: Trust +0.20 / Suspicion -0.20":"Exactly +0.20 Trustness / -0.20 Suspicion. Give manually; first visit only."):String.format(java.util.Locale.ROOT,compact?"Hunger +%.0f | Trust +%.3f per meal":"Hunger +%.0f — base Trustness +%.3f per genuine meal",row.getDouble("Hunger"),row.getDouble("Trust"));if(compact)g.drawString(font,font.plainSubstrByWidth(effects,w-105),left+12,top+99,0xD8CBDD);else line(g,effects,left+12,top+111,w-105,0xD8CBDD);var item=net.minecraftforge.registries.ForgeRegistries.ITEMS.getValue(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("coraline",row.getString("Id")));if(item!=null){g.pose().pushPose();g.pose().translate(left+w-75,top+(compact?75:83),0);float scale=compact?2.5F:3;g.pose().scale(scale,scale,scale);g.renderItem(new net.minecraft.world.item.ItemStack(item),0,0);g.pose().popPose();}}}
+        if(tab.equals("Visits")){g.drawString(font,data.getBoolean("Nighttime")?"Nighttime — eligible visitors: "+data.getInt("Eligible"):"The mice only come at night.",left+12,top+61,0xD8CBDD);g.drawString(font,"Inside: "+data.getLong("VisitorCount")+" — "+(data.getBoolean("VisitActive")?"Session active":"No active session"),left+12,top+76,0xC5B2D8);}
+        if(tab.equals("Terrain")){for(var entry:data.getList("Tiles",10)){var row=(CompoundTag)entry;int x=gridX+(row.getInt("X")+8)*cell,y=gridY+(row.getInt("Z")+8)*cell;int color=row.getBoolean("Owned")?new int[]{0xFF9E9DA7,0xFF5E8D63,0xFF7CA763,0xFF5EA17C,0xFFC380A0,0xFF907AC5}[Math.max(0,row.getInt("Tier"))]:row.getBoolean("Available")?0xFF51485D:0xFF292531;g.fill(x,y,x+cell-1,y+cell-1,color);if(row.getBoolean("Core"))g.fill(x+cell/2,y+cell/2,x+cell/2+1,y+cell/2+1,0xFFF1D9AC);if(row.getInt("X")==selectedX&&row.getInt("Z")==selectedZ){g.fill(x,y,x+cell,y+1,0xFFFFFFFF);g.fill(x,y,x+1,y+cell,0xFFFFFFFF);}}int x=gridX+16*cell+12,space=left+w-x-12;var row=selected();g.drawString(font,"Chunk "+selectedX+", "+selectedZ,x,top+58,0xF1D9AC);line(g,row.getBoolean("Owned")?"Current: "+TycoonLandscape.TIERS[row.getInt("Tier")]:row.getBoolean("Available")?"Connected unpurchased land":"Purchase connected neighbors first",x,top+72,space,0xC5B2D8);line(g,TycoonLandscape.TIERS[tier],x+31,top+105,Math.max(30,space-62),0xE1D8CE);}
+        if(tab.equals("House")||tab.equals("Sky")){boolean house=tab.equals("House");line(g,house?TycoonHouses.NAMES[tier]:TycoonSkies.NAMES[tier],left+12,top+61,w-24,0xF1D9AC);line(g,house?"Upgrade preserves the core. Protected edits or inventories require clearing the conflict first.":"Owned skies can be selected again without paying. Only your personal world changes.",left+12,top+77,w-24,0xC5B2D8);}
+        if(tab.equals("Quality")){g.drawString(font,String.format(java.util.Locale.ROOT,"World Goodness: %.1f / 100",data.getDouble("Goodness")),left+12,top+62,0xF1D9AC);String[] keys={"TerrainGoodness","HouseGoodness","SkyGoodness"};String[] labels={"Terrain /55","House /30","Sky /15"};for(int i=0;i<3;i++)g.drawString(font,String.format(java.util.Locale.ROOT,"%s: %.1f",labels[i],data.getDouble(keys[i])),left+12,top+82+i*15,0xD8CBDD);}
+        if(tab.equals("Build")){
+            var list=data.getList(structureView==0?"AttractionCatalog":"Attractions",10);
+            if(structureView==2){line(g,"Place spies where you stand on owned terrain. Rats patrol; dolls watch a limited field of view. Reports expire when contact is lost.",left+12,top+87,w-24,0xD8CBDD);}
+            else if(list.isEmpty())line(g,"No attractions purchased yet. Select a terrain tile, then preview a structure from the shop.",left+12,top+87,w-24,0xD8CBDD);
+            else{var row=list.getCompound(Math.min(page,list.size()-1));g.drawString(font,row.getString("Name")+(structureView==0?" — "+row.getInt("Price")+" Power":" — Tier "+row.getInt("Tier")),left+12,top+87,0xF1D9AC);g.drawString(font,structureView==0?"Selected terrain: "+selectedX+", "+selectedZ+" (select on Terrain tab)":"Occupancy "+row.getInt("Occupants")+" / "+row.getInt("Capacity")+" — "+row.getInt("Distance")+"m",left+12,top+104,0xD8CBDD);}
+        }
+        if(tab.equals("Souls"))soulRender(g);
+        String result=data.getString("Result");if(result.isBlank())result=data.getString("Construction");if(!result.isBlank()){if(tab.equals("Food")&&h<280){int y=foodButtonY(0)-12;g.drawString(font,font.plainSubstrByWidth(result,w-24),left+12,y,0xE8C581);if(mx>=left+12&&mx<left+w-12&&my>=y&&my<y+11)g.renderTooltip(font,Component.literal(result),mx,my);}else line(g,result,left+12,top+h-53,w-24,0xE8C581);}super.render(g,mx,my,partial);
+    }
+    @Override public boolean mouseClicked(double x,double y,int button){if(tab.equals("Terrain")&&button==0&&x>=gridX&&x<gridX+cell*16&&y>=gridY&&y<gridY+cell*16){selectedX=(int)(x-gridX)/cell-8;selectedZ=(int)(y-gridY)/cell-8;rebuildWidgets();return true;}return super.mouseClicked(x,y,button);}
+    private static void preview(GuiGraphics g,int x,int y,int seed){int skin=new int[]{0xFFE1B994,0xFFBA845E,0xFF835C43,0xFFF1D2BA,0xFFA66D4B}[(seed/5)%5],hair=new int[]{0xFF392A25,0xFFBB8139,0xFF251F25,0xFF77482D,0xFFD8C39E}[(seed/25)%5];g.fill(x-14,y-19,x+14,y+15,skin);g.fill(x-16,y-23,x+16,y-12,hair);if((seed/750)%4>0){g.fill(x-18,y-15,x-13,y+13,hair);g.fill(x+13,y-15,x+18,y+13,hair);}for(int dx:new int[]{-7,7})g.fill(x+dx-2,y-4,x+dx+2,y+1,0xFF272431);g.fill(x-4,y+9,x+4,y+10,0xFF6B453D);}
+}

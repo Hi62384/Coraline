@@ -1,0 +1,10 @@
+{
+  "type": "coraline:clockwork_factory",
+  "biomes": [
+    "coraline:postgame/clockwork_highlands",
+    "coraline:postgame/otherworld_badlands"
+  ],
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "none"
+}

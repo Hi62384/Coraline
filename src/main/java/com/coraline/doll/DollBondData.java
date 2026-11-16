@@ -14,10 +14,11 @@ import java.util.*;
 public final class DollBondData extends SavedData {
     public final Map<UUID,Bond> bonds=new HashMap<>();
     private final Map<UUID,Integer> retired=new HashMap<>();
+    private final Set<UUID> destroyedAfterBeldam=new HashSet<>();
     private MinecraftServer server;
     public static final class Bond {
         public ItemStack template=ItemStack.EMPTY;
-        public boolean lost,placed,recallRequested;
+        public boolean lost,placed,recallRequested,storyMissing;
         public long returnAt;
         public int generation;
         public UUID familyId;
@@ -31,7 +32,7 @@ public final class DollBondData extends SavedData {
         var tag=stack.getTagElement("BlockEntityTag");return tag!=null&&tag.hasUUID(DollItem.OWNER_ID)?tag.getUUID(DollItem.OWNER_ID):null;
     }
     private Bond ensure(ItemStack stack){
-        UUID id=owner(stack);if(id==null)return null;
+        UUID id=owner(stack);if(id==null||destroyedAfterBeldam.contains(id))return null;
         int generation=stack.getTagElement("BlockEntityTag").getInt("BondGeneration");
         if(generation<retired.getOrDefault(id,0))return null;
         if(server!=null&&!validateFamily(id))return null;
@@ -49,7 +50,20 @@ public final class DollBondData extends SavedData {
         if(b!=null&&b.familyId==null){b.familyId=family.id;setDirty();}
         return true;
     }
+    /** Victory permanently retires the spy, including watchdog and stale saved copies. */
+    public boolean destroyedAfterBeldam(UUID owner){return destroyedAfterBeldam.contains(owner);}
+    public void destroyAfterBeldam(UUID owner){
+        if(owner==null||!destroyedAfterBeldam.add(owner))return;
+        var bond=bonds.get(owner);
+        if(server!=null&&bond!=null&&bond.placed){var level=com.coraline.parents.FamilyData.level(server,bond.dimension);if(level!=null)level.getChunkAt(bond.position);}
+        endFamily(owner,true);setDirty();
+    }
     public void endFamily(UUID owner){
+        endFamily(owner,true);
+    }
+    /** Owner-local rewind must not opportunistically clean another player's stale items. */
+    public void rewindStory(UUID owner){endFamily(owner,false);}
+    private void endFamily(UUID owner,boolean cleanAll){
         if(owner==null)return;
         Bond b=bonds.remove(owner);
         if(b==null){if(retired.putIfAbsent(owner,1)==null)setDirty();return;}
@@ -59,6 +73,7 @@ public final class DollBondData extends SavedData {
         if(b.placed&&level!=null&&level.hasChunkAt(b.position)&&level.getBlockEntity(b.position) instanceof com.coraline.block.entity.DollBlockEntity doll&&owner.equals(doll.getOwnerId())){
             doll.moving=true;level.removeBlock(b.position,false);
         }
+        if(!cleanAll)return;
         for(var player:server.getPlayerList().getPlayers()){
             DollStorage.clean(player.getInventory(),player.serverLevel());
             DollStorage.clean(player.getEnderChestInventory(),player.serverLevel());
@@ -68,7 +83,7 @@ public final class DollBondData extends SavedData {
         }
     }
     public boolean current(ItemStack stack){
-        Bond b=ensure(stack);return b!=null&&stack.getTagElement("BlockEntityTag").getInt("BondGeneration")==b.generation;
+        Bond b=ensure(stack);return b!=null&&!b.storyMissing&&stack.getTagElement("BlockEntityTag").getInt("BondGeneration")==b.generation;
     }
     public void satisfied(ItemStack stack,long now,boolean inInventory){
         if(!current(stack))return;Bond b=ensure(stack);
@@ -88,6 +103,7 @@ public final class DollBondData extends SavedData {
     }
     public ItemStack claim(ServerPlayer player){
         server=player.server;
+        if(destroyedAfterBeldam.contains(player.getUUID()))return ItemStack.EMPTY;
         if(!validateFamily(player.getUUID()))return ItemStack.EMPTY;
         if(bonds.containsKey(player.getUUID()))return ItemStack.EMPTY;
         var stack=DollItem.createFor(player);int generation=retired.getOrDefault(player.getUUID(),0);
@@ -101,6 +117,7 @@ public final class DollBondData extends SavedData {
         tag.putInt("CoralineDollGeneration",b.generation);root.put(net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG,tag);
     }
     public void watchdog(ServerPlayer player){
+        if(destroyedAfterBeldam.contains(player.getUUID()))return;
         var family=com.coraline.parents.ParentAccess.family(player.server,player.getUUID());
         var backup=player.getPersistentData().getCompound(net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG);
         if(family==null)return;
@@ -129,22 +146,25 @@ public final class DollBondData extends SavedData {
         int min=CoralineConfig.DOLL_RETURN_MIN.get(),max=Math.max(min,CoralineConfig.DOLL_RETURN_MAX.get());
         b.returnAt=level.getServer().overworld().getGameTime()+min+level.random.nextInt(max-min+1);setDirty();
     }
+    public void markStoryMissing(UUID owner){var b=bonds.get(owner);if(b==null||b.storyMissing)return;b.storyMissing=true;b.lost=true;b.recallRequested=false;b.returnAt=Long.MAX_VALUE;if(b.placed){var l=com.coraline.parents.FamilyData.level(server,b.dimension);if(l!=null){l.getChunkAt(b.position);if(l.getBlockEntity(b.position) instanceof com.coraline.block.entity.DollBlockEntity doll&&owner.equals(doll.getOwnerId())){doll.moving=true;l.removeBlock(b.position,false);}}}b.placed=false;setDirty();}
     public static DollBondData load(CompoundTag n){
         var data=new DollBondData();
+        for(Tag entry:n.getList("DestroyedAfterBeldam",10)){var tag=(CompoundTag)entry;if(tag.hasUUID("Owner"))data.destroyedAfterBeldam.add(tag.getUUID("Owner"));}
         for(Tag entry:n.getList("Retired",10)){var tag=(CompoundTag)entry;if(tag.hasUUID("Owner"))data.retired.put(tag.getUUID("Owner"),tag.getInt("Generation"));}
         for(Tag entry:n.getList("Bonds",10)){
             CompoundTag tag=(CompoundTag)entry;if(!tag.hasUUID("Owner"))continue;
             Bond b=new Bond();b.template=ItemStack.of(tag.getCompound("Doll"));b.lost=tag.getBoolean("Lost");b.placed=tag.getBoolean("Placed");
             if(tag.hasUUID("Family"))b.familyId=tag.getUUID("Family");
             b.returnAt=tag.getLong("ReturnAt");b.position=BlockPos.of(tag.getLong("Position"));b.dimension=tag.getString("Dimension");
-            b.generation=tag.getInt("Generation");b.recallRequested=tag.getBoolean("RecallRequested");b.lastSatisfiedAt=tag.contains("LastSatisfiedAt")?tag.getLong("LastSatisfiedAt"):-1;b.nextDoorRoll=tag.getLong("NextDoorRoll");data.bonds.put(tag.getUUID("Owner"),b);
+            b.storyMissing=tag.getBoolean("StoryMissing");b.generation=tag.getInt("Generation");b.recallRequested=tag.getBoolean("RecallRequested");b.lastSatisfiedAt=tag.contains("LastSatisfiedAt")?tag.getLong("LastSatisfiedAt"):-1;b.nextDoorRoll=tag.getLong("NextDoorRoll");data.bonds.put(tag.getUUID("Owner"),b);
         }return data;
     }
     @Override public CompoundTag save(CompoundTag n){
+        ListTag destroyed=new ListTag();for(var id:destroyedAfterBeldam){var tag=new CompoundTag();tag.putUUID("Owner",id);destroyed.add(tag);}n.put("DestroyedAfterBeldam",destroyed);
         ListTag list=new ListTag();bonds.forEach((id,b)->{
             CompoundTag tag=new CompoundTag();tag.putUUID("Owner",id);tag.put("Doll",b.template.save(new CompoundTag()));
             if(b.familyId!=null)tag.putUUID("Family",b.familyId);
-            tag.putBoolean("Lost",b.lost);tag.putBoolean("Placed",b.placed);tag.putLong("ReturnAt",b.returnAt);tag.putLong("Position",b.position.asLong());tag.putString("Dimension",b.dimension);
+            tag.putBoolean("StoryMissing",b.storyMissing);tag.putBoolean("Lost",b.lost);tag.putBoolean("Placed",b.placed);tag.putLong("ReturnAt",b.returnAt);tag.putLong("Position",b.position.asLong());tag.putString("Dimension",b.dimension);
             tag.putInt("Generation",b.generation);tag.putBoolean("RecallRequested",b.recallRequested);tag.putLong("LastSatisfiedAt",b.lastSatisfiedAt);tag.putLong("NextDoorRoll",b.nextDoorRoll);list.add(tag);
         });n.put("Bonds",list);
         ListTag tombstones=new ListTag();retired.forEach((id,g)->{var tag=new CompoundTag();tag.putUUID("Owner",id);tag.putInt("Generation",g);tombstones.add(tag);});n.put("Retired",tombstones);return n;

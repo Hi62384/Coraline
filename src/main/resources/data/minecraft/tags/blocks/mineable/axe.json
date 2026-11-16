@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "coraline:buttonwood_log",
+    "coraline:paperwood_log",
+    "coraline:lanternwood_log",
+    "coraline:buttonwood_planks",
+    "coraline:paperwood_planks",
+    "coraline:lanternwood_planks",
+    "coraline:velvet_mushroom_block",
+    "coraline:velvet_mushroom_stem"
+  ]
+}

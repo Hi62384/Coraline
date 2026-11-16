@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "Q Q",
+    "KHK",
+    "NNN"
+  ],
+  "key": {
+    "H": {
+      "item": "coraline:void_heart"
+    },
+    "K": {
+      "item": "coraline:soulglass_block"
+    },
+    "N": {
+      "item": "coraline:moonstone_block"
+    },
+    "Q": {
+      "item": "coraline:perfect_block"
+    }
+  },
+  "result": {
+    "item": "coraline:other_world_void_chestplate",
+    "count": 1
+  }
+}

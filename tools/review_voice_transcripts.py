@@ -14,7 +14,7 @@ parser.add_argument('--split-at', type=float, default=4.0)
 args = parser.parse_args()
 manifest = json.loads((ROOT/os.environ['CORALINE_VOICE_MANIFEST']).read_text(encoding='utf-8'))
 source = ROOT/manifest['output']
-report = json.loads((source/manifest['validation_report']).read_text(encoding='utf-8'))
+report = json.loads((source/manifest.get('validation_report','validation_report.json')).read_text(encoding='utf-8'))
 expected = {}
 for group, profile in manifest['states'].items():
     for i, text in enumerate(profile['lines'], 1):

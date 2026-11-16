@@ -1,0 +1,95 @@
+{
+  "reference": "voicelines/otherfather/otherfathersample.wav",
+  "reference_sha256": "fd15d075b3704f9661ef3ce3a60961394d8ce980a194aefada5bcf9baaacafa5",
+  "emotion_order": [
+    "happy",
+    "angry",
+    "sad",
+    "afraid",
+    "disgusted",
+    "melancholic",
+    "surprised",
+    "calm"
+  ],
+  "states": {
+    "father_mother_goes_out_mother_left_1": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, your Other Mother has popped out, has she? Well, she's always got a hundred little things to attend to. Don't mind me, kiddo. I'll be at the piano if you need anything."
+      ],
+      "filename": "father_mother_goes_out_mother_left_1.wav",
+      "source_directory": ""
+    },
+    "father_mother_goes_out_mother_left_2": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, she's gone out for a while? Yes, she does that from time to time. I couldn't tell you exactly where she goes, though. She rather likes to keep certain things to herself."
+      ],
+      "filename": "father_mother_goes_out_mother_left_2.wav",
+      "source_directory": ""
+    },
+    "father_mother_goes_out_when_return_1": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "When will she be back? Oh, goodness, I haven't the faintest idea! She tends to return whenever she's finished whatever it is she's doing. Best not to worry about it."
+      ],
+      "filename": "father_mother_goes_out_when_return_1.wav",
+      "source_directory": ""
+    },
+    "father_mother_goes_out_when_return_2": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, well, your Other Mother can be rather unpredictable about these things. Sometimes she's back before I've even finished a piece of music. Other times, I have time to play the whole thing twice!"
+      ],
+      "filename": "father_mother_goes_out_when_return_2.wav",
+      "source_directory": ""
+    }
+  },
+  "output": "voicelines/otherfather/events/mother_goes_out",
+  "prefix": "father",
+  "event_directory": "mother_goes_out"
+}

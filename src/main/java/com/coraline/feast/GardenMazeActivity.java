@@ -303,7 +303,7 @@ public final class GardenMazeActivity {
             p.sendSystemMessage(Component.literal("The garden maze begins! Reach the prize garden in two minutes."));
         }
         if(now>=st.gardenEndAt){finish(p,s,c,false);return;}
-        if(p.getZ()<c.getZ()-29.5&&Math.abs(p.getX()-(c.getX()+.5))<2.5){finish(p,s,c,true);return;}
+        if(CooperativeActivities.playing(p,s).stream().anyMatch(member->member.getZ()<c.getZ()-29.5&&Math.abs(member.getX()-(c.getX()+.5))<2.5)){finish(p,s,c,true);return;}
         if(Math.abs(p.getX()-(c.getX()+.5))>30||p.getZ()>c.getZ()+30.5||p.getZ()<c.getZ()-31.5||p.getY()<c.getY()-2){
             p.teleportTo(p.serverLevel(),c.getX()+.5,c.getY(),c.getZ()+28.5,180,0);p.setDeltaMovement(Vec3.ZERO);p.fallDistance=0;
         }
@@ -340,7 +340,7 @@ public final class GardenMazeActivity {
         String prizeName=prize.getHoverName().getString();
         st.gardenClaimMask|=1<<slot;OtherMotherLoop.changed(p);
         var c=center(p,s);for(var display:p.serverLevel().getEntitiesOfClass(ScenePropEntity.class,new AABB(c.offset(new int[]{-9,-3,3,9}[slot],0,-42)).inflate(1),e->e.kind()==ScenePropEntity.PRIZE_PLATE&&e.slot==slot&&s.owner.equals(e.owner)))display.food(0,ItemStack.EMPTY);
-        p.getInventory().add(prize);if(!prize.isEmpty())p.drop(prize,false);
+        if(!com.coraline.multiplayer.StoryRewardDelivery.award(p,s,"maze_prize_"+slot,java.util.List.of(prize))&&!AcceptedButtonEyesInventory.locked(p)){p.getInventory().add(prize);if(!prize.isEmpty())p.drop(prize,false);}
         p.serverLevel().playSound(null,at,SoundEvents.UI_TOAST_CHALLENGE_COMPLETE,SoundSource.PLAYERS,.8F,1.3F);
         p.sendSystemMessage(Component.literal("Claimed "+prizeName+". "+(4-Integer.bitCount(st.gardenClaimMask))+" tables remain."));return true;
     }

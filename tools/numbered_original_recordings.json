@@ -1,0 +1,120 @@
+{
+  "format": 1,
+  "recordings": {
+    "wybie_adventure_intro": {
+      "source": "voicelines/othermother/extra/WybieIntroduce.wav",
+      "source_sha256": "c959187110f0e8960a7bbe9040104bdee498de40ab4422fbe80a3fbcd17b5aac",
+      "source_bytes": 4153388,
+      "resource": "numbered_originals/wybieintroduce",
+      "music": false,
+      "speaker": "Other Mother",
+      "source_seconds": 23.54503401360544
+    },
+    "theatre_music": {
+      "source": "music/eventbased/Theatre.mp3",
+      "source_sha256": "9a16cbd9d4265440eb4aa2ab780a2a8a5e564330cd846574e4fd0f5ff6c4787c",
+      "source_bytes": 3905965,
+      "resource": "numbered_originals/theatre_music",
+      "music": true,
+      "speaker": ""
+    },
+    "theatre_a": {
+      "source": "voicelines/MissSpinkAndForcible/other/A.wav",
+      "source_sha256": "6272fee05291ee401e5187409346b6a88af6eef71e5b85d7640fcaf4277d6b1f",
+      "source_bytes": 1329196,
+      "resource": "numbered_originals/theatre_a",
+      "music": false,
+      "speaker": "Other Spink & Other Forcible",
+      "source_seconds": 7.534875283446712
+    },
+    "theatre_b": {
+      "source": "voicelines/MissSpinkAndForcible/other/B.wav",
+      "source_sha256": "64ed4ee898b8c168e25769658117d1f70e2291371a5a31e99bdff58deb219970",
+      "source_bytes": 530476,
+      "resource": "numbered_originals/theatre_b",
+      "music": false,
+      "speaker": "Other Spink & Other Forcible",
+      "source_seconds": 3.006984126984127
+    },
+    "theatre_c": {
+      "source": "voicelines/MissSpinkAndForcible/other/C.wav",
+      "source_sha256": "c0367f4fcc750f5738261c47d9b6369984eb9862651876273684032099527382",
+      "source_bytes": 1073196,
+      "resource": "numbered_originals/theatre_c",
+      "music": false,
+      "speaker": "Other Spink & Other Forcible",
+      "source_seconds": 6.0836281179138325
+    },
+    "theatre_d": {
+      "source": "voicelines/MissSpinkAndForcible/other/D.wav",
+      "source_sha256": "c2c0e7537159552d2da960e146ad4957c02dcefbe8ce1ac95c538e939a490070",
+      "source_bytes": 1607724,
+      "resource": "numbered_originals/theatre_d",
+      "music": false,
+      "speaker": "Other Spink & Other Forcible",
+      "source_seconds": 9.113832199546485
+    },
+    "theatre_e": {
+      "source": "voicelines/MissSpinkAndForcible/other/E.wav",
+      "source_sha256": "950ebc42f7144c75926867a1cd16b746e2852d6a67063cdfadb9d80cbde75e5d",
+      "source_bytes": 3964972,
+      "resource": "numbered_originals/theatre_e",
+      "music": false,
+      "speaker": "Other Spink & Other Forcible",
+      "source_seconds": 22.47691609977324
+    },
+    "theatre_f": {
+      "source": "voicelines/MissSpinkAndForcible/other/F.wav",
+      "source_sha256": "b70b9cba49a75425771045a20f1541b74e8f3a4ab8aab29a290f56cf297c9380",
+      "source_bytes": 6074604,
+      "resource": "numbered_originals/theatre_f",
+      "music": false,
+      "speaker": "Other Spink & Other Forcible",
+      "source_seconds": 34.43628117913832
+    },
+    "theatre_meet_parents": {
+      "source": "voicelines/MissSpinkAndForcible/other/MeetParentsAfterEnd.wav",
+      "source_sha256": "0749cfa9e28bde7d24dff31e9d4e15844041263c3be2af23e1d6d66704648afb",
+      "source_bytes": 2705452,
+      "resource": "numbered_originals/theatre_meet_parents",
+      "music": false,
+      "speaker": "Other Spink & Other Forcible",
+      "source_seconds": 15.336780045351475
+    },
+    "mouse_circus_invite": {
+      "source": "voicelines/othermother/extra/BobinskyMiceCircusInvite.wav",
+      "source_sha256": "3ce0094b694a9bbbe74ca9201922ea438ce33bfefbf12319919180abffc8cf0c",
+      "source_bytes": 1808428,
+      "resource": "numbered_originals/mouse_circus_invite",
+      "music": false,
+      "speaker": "Other Mother",
+      "source_seconds": 10.251609977324263
+    },
+    "mouse_circus_intro": {
+      "source": "voicelines/bobinsky/other/CircusIntroduction.wav",
+      "source_sha256": "beae22138a01eb425f89c199594fc9d53cc286a64b47311e6cbc54ee044a5d6c",
+      "source_bytes": 4802604,
+      "resource": "numbered_originals/mouse_circus_intro",
+      "music": false,
+      "speaker": "Other Bobinsky",
+      "source_seconds": 27.225396825396825
+    },
+    "mouse_circus_music": {
+      "source": "music/eventbased/micecircus.mp3",
+      "source_sha256": "4fafb47d16f5a048daebe70ae767bd3e2915e89a327b9ff19805683f4668b74f",
+      "source_bytes": 1311788,
+      "resource": "numbered_originals/mouse_circus_music",
+      "music": true,
+      "speaker": ""
+    },
+    "mouse_circus_end": {
+      "source": "voicelines/bobinsky/other/CircusEnd.wav",
+      "source_sha256": "8eac7ccc0321c7054799147455cfa65d90234378ce2ea5b9566dd08c270346c8",
+      "source_bytes": 3657772,
+      "resource": "numbered_originals/mouse_circus_end",
+      "music": false,
+      "speaker": "Other Bobinsky",
+      "source_seconds": 20.735419501133787
+    }
+  }
+}

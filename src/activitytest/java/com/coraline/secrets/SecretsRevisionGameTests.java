@@ -23,10 +23,10 @@ public final class SecretsRevisionGameTests {
         h.assertTrue(s.target.equals(previous),"Mother tracked hidden player through blocks");
         for(int y=0;y<4;y++)for(int z=-2;z<=2;z++)p.serverLevel().setBlock(wall.offset(0,y,z),net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(),2);h.succeed();
     }
-    @GameTest(template="empty") public static void ratNeedsFourUnbrokenSecondsAndFacesItsSight(GameTestHelper h){
-        var n=new net.minecraft.nbt.CompoundTag();for(int i=1;i<80;i++)h.assertTrue(SecretSpies.watchTicks(n,i,true)<SecretSpies.RAT_WATCH_TICKS,"Rat alerted early");
-        h.assertTrue(SecretSpies.watchTicks(n,80,true)==SecretSpies.RAT_WATCH_TICKS,"Four-second sight not completed");
-        h.assertTrue(SecretSpies.watchTicks(n,81,false)==0&&SecretSpies.watchTicks(n,82,true)==1,"Broken sight not reset");
+    @GameTest(template="empty") public static void ratNeedsThreeUnbrokenSecondsAndFacesItsSight(GameTestHelper h){
+        var n=new net.minecraft.nbt.CompoundTag();for(int i=1;i<60;i++)h.assertTrue(SecretSpies.watchTicks(n,i,true)<SecretSpies.RAT_WATCH_TICKS,"Rat alerted early");
+        h.assertTrue(SecretSpies.watchTicks(n,60,true)==SecretSpies.RAT_WATCH_TICKS,"Three-second sight not completed");
+        h.assertTrue(SecretSpies.watchTicks(n,61,false)==0&&SecretSpies.watchTicks(n,62,true)==1,"Broken sight not reset");
         h.assertTrue(SecretSpies.watchTicks(n,90,true)==1,"Unloaded interval accumulated sight");
         var p=SecretsGameTests.fixture(h);var rat=com.coraline.registry.ModEntities.MOUSE.get().create(p.serverLevel());rat.setPos(p.position());rat.setYRot(0);
         p.setPos(rat.getX(),rat.getY(),rat.getZ()+4);h.assertTrue(SecretSpies.inRatView(rat,p),"Front invisible");
@@ -34,12 +34,13 @@ public final class SecretsRevisionGameTests {
     }
     @GameTest(template="empty") public static void visibleEvidenceInterruptsDialogueAwayFromPortal(GameTestHelper h){
         var p=SecretsGameTests.fixture(h);SecretsGameTests.warm(p);h.runAfterDelay(20,()->{var scene=OtherMotherLoop.scene(p);var s=SecretTransactions.state(p);
-        var m=com.coraline.registry.ModEntities.MOM.get().create(p.serverLevel());m.makeOtherParent(0);m.setNoGravity(true);m.setPos(p.getX()+3,p.getY(),p.getZ());p.serverLevel().addFreshEntity(m);scene.mom=m.getUUID();
+        var m=com.coraline.registry.ModEntities.MOM.get().create(p.serverLevel());m.makeOtherParent(0);m.setNoGravity(true);m.setPos(p.getX()+3,p.getY(),p.getZ());m.setYHeadRot(90);p.serverLevel().addFreshEntity(m);scene.mom=m.getUUID();
         SecretTransactions.issue(p,"key_drawer");s.dialogue.putString("Playing","old_voice");s.dialogue.putLong("Until",OtherMotherLoop.now(p)+1000);
         h.assertTrue(MotherInterrupts.check(p),"Evidence ignored while voice busy away from portal");
-        h.assertTrue(Reconciliation.active(p)&&s.search==SecretsState.Search.CONFRONTING,"Confrontation did not begin");
+        h.assertTrue(!Reconciliation.active(p)&&s.search==SecretsState.Search.DIRECT_CHASE&&s.dialogue.getString("Queue").isEmpty(),"Evidence started a scold instead of a chase");
         h.assertFalse(s.dialogue.getString("Playing").equals("old_voice"),"Old voice not cancelled");
-        h.assertTrue(s.dialogue.getString("Event").equals("RESTRICTED_ITEM_CAUGHT"),"Wrong confrontation type");m.discard();SecretsGameTests.cool(p);h.succeed();});
+        m.setPos(p.getX()+.3,p.getY(),p.getZ());MotherSearch.catchPlayer(p);
+        h.assertTrue(Reconciliation.active(p)&&s.dialogue.getString("Event").equals("RESTRICTED_ITEM_CAUGHT"),"Physical catch didn't start the remembered item confrontation");m.discard();SecretsGameTests.cool(p);h.succeed();});
     }
     @GameTest(template="empty") public static void pursuitRestoresMovementAfterDialoguePose(GameTestHelper h){
         var p=SecretsGameTests.fixture(h);var s=SecretTransactions.state(p);var m=com.coraline.registry.ModEntities.MOM.get().create(p.serverLevel());
@@ -86,7 +87,7 @@ public final class SecretsRevisionGameTests {
         var c=net.minecraft.core.BlockPos.ZERO;
         h.assertTrue(OtherWorldEstate.outsideDistance(c,c.south(87))==0,"Garden excluded");
         h.assertTrue(OtherWorldEstate.outsideDistance(c,c.south(127))==40,"Wrong garden distance");
-        h.assertTrue(OtherWorldEstate.outsideDistance(c,c.east(83))==40,"Wrong side distance");
+        h.assertTrue(OtherWorldEstate.outsideDistance(c,c.east(90))==40,"Wrong side distance");
         h.assertTrue(SecretWorld.distanceTier(60)==0&&SecretWorld.distanceTier(130)==1&&SecretWorld.distanceTier(200)==2&&SecretWorld.distanceTier(280)==3,"Tiers not distance based");h.succeed();
     }
 }

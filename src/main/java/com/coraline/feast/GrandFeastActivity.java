@@ -238,6 +238,9 @@ public final class GrandFeastActivity {
         p.connection.send(new net.minecraft.network.protocol.game.ClientboundGameEventPacket(net.minecraft.network.protocol.game.ClientboundGameEventPacket.STOP_RAINING,0));
         p.connection.send(new net.minecraft.network.protocol.game.ClientboundGameEventPacket(net.minecraft.network.protocol.game.ClientboundGameEventPacket.RAIN_LEVEL_CHANGE,0));
     }
+    static void victimAudience(ServerPlayer p,VisitData.Scene s,ServerLevel level,BlockPos c){
+        ensureGuests(p,s,level,c);ensurePlates(level,s,c);ensureCart(level,s,c);
+    }
     private static void ensureFather(ServerPlayer p,VisitData.Scene s,ServerLevel l,BlockPos c){
         if(!l.getEntitiesOfClass(ParentEntity.class,new AABB(c.south(36)).inflate(7),e->e.getPersistentData().getBoolean("CoralineFeastFather")&&e.getPersistentData().hasUUID(OWNER)&&s.owner.equals(e.getPersistentData().getUUID(OWNER))).isEmpty())return;
         var realm=RealmData.get(p.server).realms.get(s.door);var family=ParentAccess.family(p.server,s.owner);
@@ -314,7 +317,7 @@ public final class GrandFeastActivity {
             p.serverLevel().sendParticles(net.minecraft.core.particles.ParticleTypes.FIREWORK,c.getX()+.5,c.getY()+7,c.getZ()+.5,18,15,2,15,.04);
         }
         if(p.tickCount%20==0)p.displayClientMessage(Component.literal("Grand Feast: "+Math.max(0,(st.feastEndAt-now+19)/20)+"s | basket "+st.feastBasketCount+" | wave "+st.feastWave),true);
-        if(p.getY()<c.getY()-3||Math.abs(p.getX()-(c.getX()+.5))>47||Math.abs(p.getZ()-(c.getZ()+.5))>47){p.teleportTo(p.serverLevel(),c.getX()+.5,c.getY(),c.getZ()+36.5,180,0);p.setDeltaMovement(Vec3.ZERO);p.fallDistance=0;}
+        for(var member:CooperativeActivities.playing(p,s))if(member.getY()<c.getY()-3||Math.abs(member.getX()-(c.getX()+.5))>47||Math.abs(member.getZ()-(c.getZ()+.5))>47){member.teleportTo(p.serverLevel(),c.getX()+.5,c.getY(),c.getZ()+36.5,180,0);member.setDeltaMovement(Vec3.ZERO);member.fallDistance=0;}
     }
     private static void refresh(ServerPlayer p,VisitData.Scene s,BlockPos c,long now){
         ensurePlates(p.serverLevel(),s,c);
@@ -357,6 +360,12 @@ public final class GrandFeastActivity {
     }
     private static void deliverBasket(ServerPlayer p,VisitData.Scene s){
         int count=s.loop.feastBasketCount;
+        if(com.coraline.multiplayer.StorySessionData.get(p.server).groupActivity(s)){
+            var prizes=new java.util.ArrayList<ItemStack>();
+            for(int id=1;id<s.loop.feastBasketFood.length;id++){int remaining=s.loop.feastBasketFood[id];while(remaining>0){int batch=Math.min(remaining,64);remaining-=batch;prizes.add(new ItemStack(food(id),batch));}}
+            if(!prizes.isEmpty())com.coraline.multiplayer.StoryRewardDelivery.award(p,s,"grand_feast_basket",prizes);
+            java.util.Arrays.fill(s.loop.feastBasketFood,0);s.loop.feastBasketCount=0;OtherMotherLoop.changed(p);return;
+        }
         for(int id=1;id<s.loop.feastBasketFood.length;id++){
             int n=s.loop.feastBasketFood[id];s.loop.feastBasketFood[id]=0;
             while(n>0){int batch=Math.min(n,64);n-=batch;var stack=new ItemStack(food(id),batch);
@@ -400,7 +409,7 @@ public final class GrandFeastActivity {
                 v.noPhysics=true;v.move(MoverType.SELF,movement);v.setDeltaMovement(Vec3.ZERO);
             }
             if(step.horizontalDistanceSqr()>.0001){float yaw=(float)Math.toDegrees(Math.atan2(-step.x,step.z));v.setYRot(yaw);v.setYBodyRot(yaw);v.setYHeadRot(yaw);}
-            if(v.distanceToSqr(p)<.7&&now%15==i%15){var shove=p.position().subtract(v.position()).multiply(.06,0,.06);p.setDeltaMovement(p.getDeltaMovement().add(shove));}
+            if(now%15==i%15)for(var member:CooperativeActivities.playing(p,s))if(v.distanceToSqr(member)<.7){var shove=member.position().subtract(v.position()).multiply(.06,0,.06);member.setDeltaMovement(member.getDeltaMovement().add(shove));}
             if(st.feastEndAt==0||st.feastFinished||now<st.feastGuestCanEatAt||now<v.getPersistentData().getLong("FeastEatAt"))continue;
             if(target>=0&&v.distanceToSqr(goal)<2.2){take(p,s,c,target,true);v.getPersistentData().putLong("FeastEatAt",now+35+p.getRandom().nextInt(70));
                 l.sendParticles(net.minecraft.core.particles.ParticleTypes.HAPPY_VILLAGER,v.getX(),v.getY()+1.8,v.getZ(),4,.2,.2,.2,.01);
@@ -421,6 +430,7 @@ public final class GrandFeastActivity {
     }
     public static boolean interactProp(ServerPlayer p,VisitData.Scene s,ScenePropEntity prop){
         if(s.loop.activity!=OtherMotherActivities.Activity.GRAND_FEAST||prop.kind()!=ScenePropEntity.PLATE||prop.slot<0||prop.slot>=PLATES)return false;
+        if(!com.coraline.multiplayer.StoryCoop.canAct(p,s)||!s.owner.equals(prop.owner)||p.distanceToSqr(prop)>36)return true;
         if(!s.loop.feastFinished&&s.loop.feastEndAt>0&&s.loop.feastPlateFood[prop.slot]!=0){
             if(OtherMotherLoop.now(p)<s.loop.feastPlateRefillAt[prop.slot])p.displayClientMessage(Component.literal("The silver cover is still lifting…"),true);
             else take(p,s,center(p,s),prop.slot,false);

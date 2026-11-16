@@ -1,0 +1,83 @@
+{
+  "A": {
+    "source_sha256": "c62aad1743983f0b6fb8fafb3804fff50edb1f18685b568129f489dccdb93981",
+    "ogg_sha256": "4759e33a4e9597879d541be5df514e423cfbbe9776af30e8aa5233834740ef00",
+    "seconds": 7.1,
+    "ticks": 142,
+    "export_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "B": {
+    "source_sha256": "d13254791133f7d4c4ab791d1f79f40203da18b32982e709f4f4a61b68c6ee78",
+    "ogg_sha256": "c24098036110861bc0123e43555bb6e84e3ed24013e1d6cfe024b3e9cb445a29",
+    "seconds": 8.1,
+    "ticks": 162,
+    "export_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "C": {
+    "source_sha256": "fc71a837a17dd2e838255ae496aa00bbf2a02a97eff421ba985af2cd1f683e69",
+    "ogg_sha256": "15f9f169c9898d64020be27dba59edbb7b7598aeb41027189cca19610abb4295",
+    "seconds": 10.0,
+    "ticks": 200,
+    "export_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "D": {
+    "source_sha256": "fd3590935e9997eb8141bd3b5c0fc41949f1e8c2723f4eb80bf007e272386780",
+    "ogg_sha256": "b77d9557714ede8ff514ef4fd328673b50787b3db4a90bd169f89e4c56785d2d",
+    "seconds": 19.8,
+    "ticks": 396,
+    "export_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "E": {
+    "source_sha256": "720071b033f47d29345ec0889551eaf5237b429037bb141fc22bb6f8f35777df",
+    "ogg_sha256": "b0c2a57028cc1cf2c62d5a3a2c0b1651d268ff2d7e58f79a8d58c4e3104fd3fd",
+    "seconds": 36.0,
+    "ticks": 720,
+    "export_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "F": {
+    "source_sha256": "dfabe535b8e420098ba5fe1084b66f29253f7e47b7bae917559ee8a2da3a0b73",
+    "ogg_sha256": "d84c20dc1fb380f85d395087e0a116148f51b40a062a20bed45a2880f885776e",
+    "seconds": 12.8,
+    "ticks": 256,
+    "export_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "G": {
+    "source_sha256": "852eb19b2e08a402da0068a70cc9d60bdf20cc741fc41e9af46de43a76539be1",
+    "ogg_sha256": "dbb1be2757cfc8bcbcb8f55429d754bac6655ab8673452e68c53dfa1054a4617",
+    "seconds": 6.6,
+    "ticks": 132,
+    "export_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "H": {
+    "source_sha256": "51112bd88c4f87f465f0a7537076a6b441ca376bad1a04cb8fb1a8b7b3d8baa9",
+    "ogg_sha256": "d16f4b5790bc5af1a67330e77e36989dbfc466d6d37a1ede943359a919ed7d1b",
+    "seconds": 6.5,
+    "ticks": 130,
+    "export_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "I": {
+    "source_sha256": "c28b31849cf64e8a96f024b785197e29db4adaa4431b680cb877271d48e39149",
+    "ogg_sha256": "56ca5a46e0f8e2393c970c99fca77b69f555f0d4108bf65895ed1d340905cc3e",
+    "seconds": 14.2,
+    "ticks": 284,
+    "export_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  }
+}

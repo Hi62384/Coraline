@@ -9,31 +9,32 @@ import net.minecraft.client.renderer.blockentity.*;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-/** Perspective-compressed 3D fabric rings fit inside a wall, without replacing the owner's house. */
+/** Real-depth fabric behind the open door, rather than a flat portal card. */
 public final class DoorPortalRenderer implements BlockEntityRenderer<DoorBlockEntity> {
     private static final ResourceLocation TEXTURE=ResourceLocation.fromNamespaceAndPath("coraline","textures/block/tunnel_fabric.png");
     public DoorPortalRenderer(BlockEntityRendererProvider.Context context){}
+    @Override public int getViewDistance(){return 128;}
+    @Override public boolean shouldRenderOffScreen(DoorBlockEntity door){return true;}
     @Override public void render(DoorBlockEntity block,float partial,PoseStack pose,MultiBufferSource buffers,int light,int overlay){
-        var state=block.getBlockState();if(!state.getValue(TinyDoorBlock.PORTAL)||!state.getValue(TinyDoorBlock.OPEN))return;
-        pose.pushPose();pose.translate(.5,.5,.5);pose.mulPose(Axis.YP.rotationDegrees(-state.getValue(TinyDoorBlock.FACING).toYRot()+180));
-        var v=buffers.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
-        vertex(v,pose,-.44F,-.50F,.39F,0,0,0);vertex(v,pose,-.44F,.50F,.39F,0,1,0);
-        vertex(v,pose,.44F,.50F,.39F,1,1,0);vertex(v,pose,.44F,-.50F,.39F,1,0,0);
-        for(int ring=0;ring<24;ring++){
-            float a=(float)Math.pow(.87,ring)*.50F,b=a*.87F,z=.19F+ring*.007F;
-            for(int side=0;side<24;side++){
-                double t=side*Math.PI/12,u=(side+1)*Math.PI/12;
-                float brightness=(1-ring*.02F)*(.82F+.18F*(float)Math.sin(ring*1.7));
-                vertex(v,pose,(float)Math.cos(t)*a,(float)Math.sin(t)*a,z,side/12F,ring/4F,brightness);
-                vertex(v,pose,(float)Math.cos(u)*a,(float)Math.sin(u)*a,z,(side+1)/12F,ring/4F,brightness);
-                vertex(v,pose,(float)Math.cos(u)*b,(float)Math.sin(u)*b,z+.007F,(side+1)/12F,(ring+1)/4F,brightness);
-                vertex(v,pose,(float)Math.cos(t)*b,(float)Math.sin(t)*b,z+.007F,side/12F,(ring+1)/4F,brightness);
-            }
+        var state=block.getBlockState();
+        if(block.hasPostgameBinding()){
+            if(!state.getValue(TinyDoorBlock.PORTAL)||!state.getValue(TinyDoorBlock.OPEN))return;
+            pose.pushPose();pose.translate(.5,.5,.5);pose.mulPose(Axis.YP.rotationDegrees(-state.getValue(TinyDoorBlock.FACING).toYRot()+180));
+            var surface=buffers.getBuffer(StageCurtainRenderType.cloth(TEXTURE));float pulse=.8F+.2F*(float)Math.sin((block.getLevel().getGameTime()+partial)*.05F);
+            for(int side:new int[]{-1,1}){
+                surface.vertex(pose.last().pose(),-side*.48F,-.48F,.15F).color(.62F*pulse,.35F*pulse,1,1).uv(0,1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(15728880).normal(0,0,side).endVertex();
+                surface.vertex(pose.last().pose(),side*.48F,-.48F,.15F).color(.8F*pulse,.6F*pulse,1,1).uv(1,1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(15728880).normal(0,0,side).endVertex();
+                surface.vertex(pose.last().pose(),side*.48F,.48F,.15F).color(.62F*pulse,.35F*pulse,1,1).uv(1,0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(15728880).normal(0,0,side).endVertex();
+                surface.vertex(pose.last().pose(),-side*.48F,.48F,.15F).color(.8F*pulse,.6F*pulse,1,1).uv(0,0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(15728880).normal(0,0,side).endVertex();
+            }pose.popPose();return;
         }
-        var end=buffers.getBuffer(RenderType.entityCutoutNoCull(ResourceLocation.fromNamespaceAndPath("coraline","textures/block/tiny_door.png")));
-        vertex(end,pose,-.021F,-.026F,.365F,0,1,.65F);vertex(end,pose,.021F,-.026F,.365F,1,1,.65F);
-        vertex(end,pose,.021F,.026F,.365F,1,0,.65F);vertex(end,pose,-.021F,.026F,.365F,0,0,.65F);
-        pose.popPose();
+        if(block.storyBricked){
+            pose.pushPose();pose.translate(.5,.5,.5);pose.mulPose(Axis.YP.rotationDegrees(-state.getValue(TinyDoorBlock.FACING).toYRot()+180));
+            var brick=buffers.getBuffer(RenderType.entityCutoutNoCull(ResourceLocation.fromNamespaceAndPath("minecraft","textures/block/bricks.png")));
+            brick.vertex(pose.last().pose(),-.49F,-.49F,.15F).color(255,255,255,255).uv(0,1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(pose.last().normal(),0,0,1).endVertex();
+            brick.vertex(pose.last().pose(),.49F,-.49F,.15F).color(255,255,255,255).uv(1,1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(pose.last().normal(),0,0,1).endVertex();
+            brick.vertex(pose.last().pose(),.49F,.49F,.15F).color(255,255,255,255).uv(1,0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(pose.last().normal(),0,0,1).endVertex();
+            brick.vertex(pose.last().pose(),-.49F,.49F,.15F).color(255,255,255,255).uv(0,0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(pose.last().normal(),0,0,1).endVertex();pose.popPose();return;
+        }
     }
-    private static void vertex(VertexConsumer v,PoseStack p,float x,float y,float z,float u,float t,float color){v.vertex(p.last().pose(),x,y,z).color(color,color,color,1).uv(u,t).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(15728880).normal(p.last().normal(),0,0,-1).endVertex();}
 }

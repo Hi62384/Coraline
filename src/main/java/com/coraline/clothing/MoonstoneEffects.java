@@ -50,14 +50,14 @@ public final class MoonstoneEffects {
         for(int slot=0;slot<player.getInventory().getContainerSize();slot++){
             var stack=player.getInventory().getItem(slot);
             if(stack.getTag()!=null&&stack.getTag().getBoolean(SILK_MARK)&&(!night||stack!=player.getMainHandItem()))removeSilk(stack);
-            if(stack.getTag()!=null&&stack.getTag().contains(FORTUNE_MARK)&&stack!=player.getMainHandItem())removeFortune(stack);
+            if(stack.getTag()!=null&&stack.getTag().contains(FORTUNE_MARK)&&(stack!=player.getMainHandItem()||!PerfectPower.powered(player)))removeFortune(stack);
         }
         var main=player.getMainHandItem();
         if(night&&held(player,"shovel")&&EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH,main)==0){
             var enchants=EnchantmentHelper.getEnchantments(main);enchants.put(Enchantments.SILK_TOUCH,1);
             EnchantmentHelper.setEnchantments(enchants,main);main.getOrCreateTag().putBoolean(SILK_MARK,true);
         }
-        if(main.is(OtherMaterials.TOOLS.get("perfect_pickaxe").get())&&EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE,main)<3){
+        if(PerfectPower.powered(player)&&main.is(OtherMaterials.TOOLS.get("perfect_pickaxe").get())&&EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE,main)<3){
             int original=EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE,main);
             var enchants=EnchantmentHelper.getEnchantments(main);enchants.put(Enchantments.BLOCK_FORTUNE,3);
             EnchantmentHelper.setEnchantments(enchants,main);main.getOrCreateTag().putInt(FORTUNE_MARK,original);
@@ -91,7 +91,7 @@ public final class MoonstoneEffects {
         var player=event.getEntity();
         boolean moon=ClothingEffects.night(player.level())&&(held(player,"axe")||held(player,"shovel"));
         var main=player.getMainHandItem();
-        boolean perfect=main.is(OtherMaterials.TOOLS.get("perfect_pickaxe").get())||main.is(OtherMaterials.TOOLS.get("perfect_axe").get())||main.is(OtherMaterials.TOOLS.get("perfect_shovel").get())||main.is(OtherMaterials.TOOLS.get("perfect_hoe").get());
+        boolean perfect=PerfectPower.powered(player)&&(main.is(OtherMaterials.TOOLS.get("perfect_pickaxe").get())||main.is(OtherMaterials.TOOLS.get("perfect_axe").get())||main.is(OtherMaterials.TOOLS.get("perfect_shovel").get())||main.is(OtherMaterials.TOOLS.get("perfect_hoe").get()));
         if(!moon&&!perfect)return;
         if(player.getMainHandItem().getDestroySpeed(event.getState())<=1)return;
         // Efficiency V adds 5^2+1 to an effective tool's base speed.

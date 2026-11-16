@@ -1,0 +1,106 @@
+{
+  "textures": {
+    "stone": "minecraft:block/chiseled_stone_bricks",
+    "metal": "minecraft:block/iron_block",
+    "fake": "minecraft:block/gold_block",
+    "particle": "minecraft:block/chiseled_stone_bricks"
+  },
+  "elements": [
+    {
+      "from": [
+        1,
+        0,
+        1
+      ],
+      "to": [
+        15,
+        5,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#stone"
+        },
+        "south": {
+          "texture": "#stone"
+        },
+        "east": {
+          "texture": "#stone"
+        },
+        "west": {
+          "texture": "#stone"
+        },
+        "up": {
+          "texture": "#stone"
+        },
+        "down": {
+          "texture": "#stone"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        5,
+        3
+      ],
+      "to": [
+        13,
+        7,
+        5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#fake"
+        },
+        "south": {
+          "texture": "#fake"
+        },
+        "east": {
+          "texture": "#fake"
+        },
+        "west": {
+          "texture": "#fake"
+        },
+        "up": {
+          "texture": "#fake"
+        },
+        "down": {
+          "texture": "#fake"
+        }
+      }
+    },
+    {
+      "from": [
+        11,
+        5,
+        5
+      ],
+      "to": [
+        13,
+        7,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#fake"
+        },
+        "south": {
+          "texture": "#fake"
+        },
+        "east": {
+          "texture": "#fake"
+        },
+        "west": {
+          "texture": "#fake"
+        },
+        "up": {
+          "texture": "#fake"
+        },
+        "down": {
+          "texture": "#fake"
+        }
+      }
+    }
+  ]
+}

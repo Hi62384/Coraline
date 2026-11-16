@@ -21,8 +21,13 @@ public final class StoryMusicGuard {
     private static long ticks;
     @SubscribeEvent(priority=EventPriority.LOW) public static void onSound(PlaySoundEvent event){
         var sound=event.getSound();var mc=Minecraft.getInstance();if(sound==null||mc.level==null)return;
+        // A study performance is an actual world-local sound, not a centered story cue.
+        // Do not replace its tickable instance or globally mute distant ambient music.
+        if(VisitEventClient.spatialPerformance(sound)||ScenePreludeMusic.owns(sound)||AcceptedSewingMusic.owns(sound)||OtherMotherGameProposalMusic.owns(sound)||ParentsRescueArrivalMusic.owns(sound)||FirstEscapeMusic.owns(sound)||MissingParentsMusic.owns(sound))return;
         String cue=sound.getLocation().getPath();
-        boolean story="coraline".equals(sound.getLocation().getNamespace())&&(CUES.contains(cue)||cue.startsWith("ambient_")||cue.startsWith("magic_garden_")||cue.equals("coraline_garden")||cue.equals("cake_baking")||cue.startsWith("other_father_activity_"));
+        if("coraline".equals(sound.getLocation().getNamespace())&&FirstEscapeClient.decayedTunnel()&&Set.of("tunnel_enter","tunnel_hum","door_portal_open").contains(cue)){event.setSound(null);return;}
+        boolean visit=com.coraline.feast.VisitAudio.overworldStoryVoice(cue)||cue.startsWith("cocoa_beetles_")||cue.startsWith("mirror_prison_")||cue.startsWith("first_escape_")||cue.startsWith("black_is_traditional_")||cue.startsWith("parent_rescue_")||cue.startsWith("rescue_")||cue.startsWith("finale_");
+        boolean story="coraline".equals(sound.getLocation().getNamespace())&&(visit||CUES.contains(cue)||cue.startsWith("ambient_")||cue.startsWith("magic_garden_")||cue.equals("coraline_garden")||cue.equals("cake_baking")||cue.equals(com.coraline.feast.AcceptedButtonEyes.HOUSE_AMBIENCE)||cue.startsWith("other_father_activity_")||cue.startsWith("other_mother_")||cue.startsWith("father_dinner_")||cue.startsWith("father_pass_")||cue.startsWith("father_study_")||cue.startsWith("father_outing_")||cue.startsWith("father_game_night_"));
         if(story){
             // Server-originated scene cues arrive with a fixed world position. Keep the soundtrack
             // centered on the listener instead; ordinary entity sounds remain positional.
@@ -32,7 +37,10 @@ public final class StoryMusicGuard {
             }
             // SoundEngine starts streams asynchronously; give newly queued recordings a short grace period.
             playing.put(sound,ticks+40);mc.getMusicManager().stopPlaying();
-        }else if((!playing.isEmpty()||FestivalClient.active())&&sound.getSource()==SoundSource.MUSIC&&"minecraft".equals(sound.getLocation().getNamespace()))event.setSound(null);
+            // Visit recordings use RECORDS/VOICE. Stop an already playing vanilla
+            // background track as well; onSound prevents new tracks until the visit ends.
+            if(visit)mc.getSoundManager().stop(null,SoundSource.MUSIC);
+        }else if((OtherMotherGameProposalMusic.active()||ParentsRescueArrivalMusic.active()||FirstEscapeMusic.active()||MissingParentsMusic.active()||!playing.isEmpty()||FestivalClient.active()||VisitAudioClient.visitActive()||PartyAmbienceClient.active())&&sound.getSource()==SoundSource.MUSIC&&"minecraft".equals(sound.getLocation().getNamespace()))event.setSound(null);
     }
     private static final class ListenerRecording extends net.minecraft.client.resources.sounds.AbstractSoundInstance {
         private final SoundInstance original;

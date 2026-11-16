@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "D D",
+    "SGS",
+    "DDD"
+  ],
+  "key": {
+    "D": {
+      "item": "coraline:other_diamond"
+    },
+    "G": {
+      "item": "coraline:soulglass"
+    },
+    "S": {
+      "item": "minecraft:string"
+    }
+  },
+  "result": {
+    "item": "coraline:spidervision_chestplate",
+    "count": 1
+  }
+}

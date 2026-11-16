@@ -26,12 +26,13 @@ import java.util.*;
 @Mod.EventBusSubscriber(modid="coraline",value=Dist.CLIENT)
 public final class OtherWorldNature {
     record Anchor(BlockPos pos,boolean water,boolean leaves,long seed){}
-    private record Decoration(BlockPos pos,BlockState state,float scale,float dx,float dz,AABB bounds){}
+    private record Decoration(BlockPos pos,BlockState state,float scale,float dx,float dz,AABB bounds,int created){}
     private static final Map<Long,Anchor> ANCHORS=new LinkedHashMap<>();
     private static final Map<Long,Decoration> DECOR=new LinkedHashMap<>();
     private static final Random RANDOM=new Random(82117);
     private static ClientLevel world;
     private static int ticks;
+    private static boolean deadGarden(BlockPos at){if(!RescueClient.flag("GardenDead"))return false;var garden=BlockPos.of(RescueClient.position("Garden"));return Math.abs(at.getX()-garden.getX())<65&&Math.abs(at.getZ()-garden.getZ())<58;}
     @SubscribeEvent public static void tick(TickEvent.ClientTickEvent event){
         if(event.phase!=TickEvent.Phase.END)return;var mc=Minecraft.getInstance();
         if(world!=mc.level){world=mc.level;ANCHORS.clear();DECOR.clear();OtherWorldMotes.clear();RealmVisualState.client=null;}
@@ -40,13 +41,14 @@ public final class OtherWorldNature {
         var view=RealmVisualState.client;if(view!=null&&view.tunnel()){ANCHORS.clear();DECOR.clear();OtherWorldMotes.clear();return;}
         ticks++;var center=mc.player.blockPosition();int radius=OtherWorldVisualConfig.NATURE_RADIUS.get();
         if(ticks%20==0){
-            ANCHORS.values().removeIf(a->a.pos.distSqr(center)>radius*radius*1.5||!world.hasChunkAt(a.pos));
-            DECOR.values().removeIf(d->d.pos.distSqr(center)>radius*radius||!world.hasChunkAt(d.pos)||!world.isEmptyBlock(d.pos)||!naturalGround(world.getBlockState(d.pos.below())));
+            ANCHORS.values().removeIf(a->deadGarden(a.pos)||a.pos.distSqr(center)>radius*radius*1.5||!world.hasChunkAt(a.pos));
+            DECOR.values().removeIf(d->deadGarden(d.pos)||d.pos.distSqr(center)>(radius+8)*(radius+8)||!world.hasChunkAt(d.pos)||!world.isEmptyBlock(d.pos)||!naturalGround(world.getBlockState(d.pos.below())));
         }
         for(int i=0;i<OtherWorldVisualConfig.SCAN_BUDGET.get();i++){
             int x=center.getX()+RANDOM.nextInt(radius*2+1)-radius,z=center.getZ()+RANDOM.nextInt(radius*2+1)-radius;
             if(!world.hasChunk(x>>4,z>>4))continue;
             var top=world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE,new BlockPos(x,0,z));
+            if(deadGarden(top))continue;
             if(Math.abs(top.getY()-center.getY())>36)continue;
             var beneath=world.getBlockState(top.below());boolean leaves=beneath.is(BlockTags.LEAVES),water=beneath.getFluidState().is(FluidTags.WATER);
             if(!leaves&&!water&&!naturalGround(beneath)&&!beneath.is(BlockTags.FLOWERS)&&!beneath.is(Blocks.GRASS)&&!beneath.is(Blocks.TALL_GRASS))continue;
@@ -67,7 +69,7 @@ public final class OtherWorldNature {
         BlockState[] plants={Blocks.PINK_TULIP.defaultBlockState(),Blocks.OXEYE_DAISY.defaultBlockState(),Blocks.CORNFLOWER.defaultBlockState(),Blocks.AZURE_BLUET.defaultBlockState(),Blocks.LILY_OF_THE_VALLEY.defaultBlockState(),Blocks.FERN.defaultBlockState()};
         // Cell-wide species create deliberate little clumps rather than multicolor noise.
         var state=plants[Math.floorMod(cell,plants.length)];float scale=.45F+Math.floorMod(a.seed,25)/100F;
-        DECOR.put(a.pos.asLong(),new Decoration(a.pos,state,scale,Math.floorMod(a.seed>>8,21)/100F-.1F,Math.floorMod(a.seed>>16,21)/100F-.1F,new AABB(a.pos)));
+        DECOR.put(a.pos.asLong(),new Decoration(a.pos,state,scale,Math.floorMod(a.seed>>8,21)/100F-.1F,Math.floorMod(a.seed>>16,21)/100F-.1F,new AABB(a.pos),ticks));
     }
     @SubscribeEvent public static void render(RenderLevelStageEvent event){
         if(!OtherWorldAtmosphere.active())return;
@@ -75,10 +77,15 @@ public final class OtherWorldNature {
         if(event.getStage()==RenderLevelStageEvent.Stage.AFTER_CUTOUT_BLOCKS){
             var pose=event.getPoseStack();var cam=event.getCamera().getPosition();var buffers=mc.renderBuffers().bufferSource();
             for(var d:DECOR.values()){
-                if(!event.getFrustum().isVisible(d.bounds)||d.pos.distToCenterSqr(cam)>OtherWorldVisualConfig.NATURE_RADIUS.get()*OtherWorldVisualConfig.NATURE_RADIUS.get())continue;
+                if(AcceptedButtonEyesClient.house()&&Math.floorMod(d.pos.asLong(),100)<AcceptedButtonEyesClient.stage()*20)continue;
+                if(deadGarden(d.pos)||!event.getFrustum().isVisible(d.bounds)||d.pos.distToCenterSqr(cam)>OtherWorldVisualConfig.NATURE_RADIUS.get()*OtherWorldVisualConfig.NATURE_RADIUS.get())continue;
                 pose.pushPose();pose.translate(d.pos.getX()-cam.x+.5+d.dx,d.pos.getY()-cam.y,d.pos.getZ()-cam.z+.5+d.dz);
-                pose.mulPose(Axis.YP.rotationDegrees(Math.floorMod(d.pos.asLong(),4)*90));pose.scale(d.scale,d.scale,d.scale);pose.translate(-.5,0,-.5);
-                mc.getBlockRenderer().renderSingleBlock(d.state,pose,buffers,net.minecraft.client.renderer.LevelRenderer.getLightColor(world,d.pos),net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY);pose.popPose();
+                float growth=Mth.clamp((ticks-d.created+event.getPartialTick())/20F,0,1)*(float)Mth.clamp((OtherWorldVisualConfig.NATURE_RADIUS.get()-Math.sqrt(d.pos.distToCenterSqr(cam)))/8,0,1);
+                pose.mulPose(Axis.YP.rotationDegrees(Math.floorMod(d.pos.asLong(),4)*90));pose.scale(d.scale*growth,d.scale*growth,d.scale*growth);pose.translate(-.5,0,-.5);
+                int light=net.minecraft.client.renderer.LevelRenderer.getLightColor(world,d.pos);
+                // These are magical decorative plants, not unlit item meshes at midnight.
+                light=net.minecraft.client.renderer.LightTexture.pack(Math.max(12,net.minecraft.client.renderer.LightTexture.block(light)),Math.max(12,net.minecraft.client.renderer.LightTexture.sky(light)));
+                mc.getBlockRenderer().renderSingleBlock(d.state,pose,buffers,light,net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY);pose.popPose();
             }buffers.endBatch();
         }else if(event.getStage()==RenderLevelStageEvent.Stage.AFTER_PARTICLES)OtherWorldMotes.render(event);
     }

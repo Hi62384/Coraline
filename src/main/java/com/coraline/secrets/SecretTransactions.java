@@ -23,23 +23,38 @@ public final class SecretTransactions {
         inventory.setChanged();p.containerMenu.broadcastChanges();
         if(!stack.isEmpty()){stack.getOrCreateTag().putUUID("SecretRewardOwner",p.getUUID());var drop=p.drop(stack,false);if(drop!=null)drop.setNoPickUpDelay();}
     }
-    static ItemStack bound(ServerPlayer p,Item item,UUID token){var stack=new ItemStack(item);var n=stack.getOrCreateTag();n.putUUID("SecretOwner",p.getUUID());n.putUUID("SecretToken",token);return stack;}
-    public static boolean owned(ServerPlayer p,ItemStack stack){var n=stack.getTag();return n!=null&&n.hasUUID("SecretOwner")&&n.getUUID("SecretOwner").equals(p.getUUID())&&n.hasUUID("SecretToken");}
+    static ItemStack bound(ServerPlayer p,Item item,UUID token){var stack=new ItemStack(item);var n=stack.getOrCreateTag();n.putUUID("SecretOwner",p.getUUID());n.putUUID("SecretToken",token);n.putLong("StoryRun",com.coraline.rebirth.StoryRebirth.run(p));return stack;}
+    public static boolean owned(ServerPlayer p,ItemStack stack){var n=stack.getTag();if(n==null||!n.hasUUID("SecretOwner")||!n.getUUID("SecretOwner").equals(p.getUUID())||!n.hasUUID("SecretToken"))return false;
+        long run=com.coraline.rebirth.StoryRebirth.run(p);return run>0&&(n.contains("StoryRun")?n.getLong("StoryRun"):1)==run;}
     public static String evidence(ServerPlayer p,ItemStack stack){if(!owned(p,stack)||state(p)==null)return "";String id=state(p).issued.getOrDefault(stack.getTag().getUUID("SecretToken"),"");return SecretRegistry.ALL.containsKey(id)&&stack.is(SecretsItems.EVIDENCE.get(id).get())?id:"";}
     public static void issue(ServerPlayer p,String id){var s=state(p);if(s==null||!SecretRegistry.ALL.containsKey(id)||s.journal.contains(id)||s.issued.containsValue(id))return;UUID token=UUID.randomUUID();s.issued.put(token,id);checkpoint(p);give(p,bound(p,SecretsItems.EVIDENCE.get(id).get(),token));}
     /** Remove only genuine owner-bound forbidden evidence, never ordinary gear or filed secrets. */
     public static void confiscate(ServerPlayer p){
         var s=state(p);if(s==null)return;int removed=0;
+        var carried=p.containerMenu.getCarried();
+        if(carried.is(SecretsItems.KEY.get())&&owned(p,carried)){
+            p.containerMenu.setCarried(ItemStack.EMPTY);HouseCabinets.confiscated(p,carried);removed+=carried.getCount();s.exposed.add("personal_keyring");
+        }else {
+            String id=evidence(p,carried);if(!id.isEmpty()){p.containerMenu.setCarried(ItemStack.EMPTY);s.exposed.add(id);s.issued.remove(carried.getTag().getUUID("SecretToken"));removed+=carried.getCount();}
+        }
+        if(p.containerMenu!=p.inventoryMenu)p.closeContainer();
         for(int slot=0;slot<p.getInventory().getContainerSize();slot++){
             var item=p.getInventory().getItem(slot);
-            if(item.is(SecretsItems.KEY.get())&&owned(p,item)){removed+=item.getCount();p.getInventory().setItem(slot,ItemStack.EMPTY);s.world.putBoolean("KeyMissing",false);s.exposed.add("personal_keyring");continue;}
+            if(item.is(SecretsItems.KEY.get())&&owned(p,item)){HouseCabinets.confiscated(p,item);removed+=item.getCount();p.getInventory().setItem(slot,ItemStack.EMPTY);s.world.putBoolean("KeyMissing",false);s.exposed.add("personal_keyring");continue;}
             String id=evidence(p,item);if(id.isEmpty())continue;
             s.exposed.add(id);s.issued.remove(item.getTag().getUUID("SecretToken"));
             removed+=item.getCount();p.getInventory().setItem(slot,ItemStack.EMPTY);
         }
         if(removed>0){p.getInventory().setChanged();p.inventoryMenu.broadcastChanges();checkpoint(p);p.displayClientMessage(Component.literal("Other Mother confiscated "+removed+" forbidden item"+(removed==1?".":"s.")),true);}
     }
-    public static boolean deposit(ServerPlayer p,String id){var s=state(p);if(s==null||s.journal.contains(id))return false;for(int i=0;i<p.getInventory().getContainerSize();i++){var item=p.getInventory().getItem(i);if(id.equals(evidence(p,item))){s.issued.remove(item.getTag().getUUID("SecretToken"));item.shrink(1);s.journal.add(id);checkpoint(p);p.displayClientMessage(Component.literal("Journal updated: "+SecretRegistry.ALL.get(id).name()),true);return true;}}return false;}
+    public static boolean deposit(ServerPlayer p,String id){
+        var s=state(p);if(s==null||s.journal.contains(id)||!SecretRegistry.ALL.containsKey(id)||!SecretsRuntime.active(p))return false;
+        for(var hand:net.minecraft.world.InteractionHand.values()){
+            var book=p.getItemInHand(hand);var item=p.getItemInHand(hand==net.minecraft.world.InteractionHand.MAIN_HAND?net.minecraft.world.InteractionHand.OFF_HAND:net.minecraft.world.InteractionHand.MAIN_HAND);
+            if(!book.is(SecretsItems.JOURNAL.get())||!owned(p,book)||!s.world.hasUUID("CarriedJournalToken")||!s.world.getUUID("CarriedJournalToken").equals(book.getTag().getUUID("SecretToken"))||!id.equals(evidence(p,item)))continue;
+            s.issued.remove(item.getTag().getUUID("SecretToken"));item.shrink(1);s.journal.add(id);p.getInventory().setChanged();p.containerMenu.broadcastChanges();checkpoint(p);p.displayClientMessage(Component.literal("Journal updated: "+SecretRegistry.ALL.get(id).name()),true);return true;
+        }return false;
+    }
     public static void delete(ServerPlayer p,String id){var s=state(p);if(s!=null&&s.journal.remove(id))checkpoint(p);}
     public static boolean makeBlackmail(ServerPlayer p,Collection<String> selected){var s=state(p);var ids=new LinkedHashSet<>(selected);if(s==null||ids.isEmpty()||!s.journal.containsAll(ids)||s.blackmail.size()>=64)return false;UUID token=UUID.randomUUID();s.journal.removeAll(ids);s.blackmail.put(token,List.copyOf(ids));checkpoint(p);give(p,bound(p,SecretsItems.BLACKMAIL.get(),token));return true;}
     public static boolean resumeReward(ServerPlayer p){var s=state(p);if(s==null||!SecretsRuntime.active(p)||s.pendingReward<0)return false;SecretsNetwork.open(p,false,false);return true;}

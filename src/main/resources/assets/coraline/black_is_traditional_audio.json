@@ -1,0 +1,192 @@
+{
+  "A": {
+    "source_sha256": "c2c315f922430f1e32b7c967a34043cdd9cd00a9c29cd82cd7535d920c2aab95",
+    "ogg_sha256": "8a576e3d513190098db675dde98e8b480523b400991466cc6f33f8cfea472782",
+    "seconds": 3.493667,
+    "ticks": 70,
+    "source_bytes": 614444,
+    "mix_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "B": {
+    "source_sha256": "255e56416e5b545efbfd1bf4ccf9c64441f97eef49d22da97c66ceb9e4e89690",
+    "ogg_sha256": "7dc3fbb8dc10b3350985c1212b6a33d3503acdf4590572820136ba3cbe7c8c77",
+    "seconds": 15.3,
+    "ticks": 306,
+    "source_bytes": 2684972,
+    "mix_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "C": {
+    "source_sha256": "37aac280f427cde1a982dd24eeab52ed5801a6b982a1d1ac56dc6bc26fde7411",
+    "ogg_sha256": "2e589b4d3047f2243a6954ae75b08b54aba388d016d696069d9e77cd31c04c24",
+    "seconds": 2.531,
+    "ticks": 51,
+    "source_bytes": 446508,
+    "mix_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "D": {
+    "source_sha256": "9194fd2a0fb306978a710d7caef12a672ec03ee8bf5b37b0364de82fb128d64c",
+    "ogg_sha256": "e04857f1c74ba184ff7e62742fdc82706ae89ac4a3b6345c68d2d08b49d992ff",
+    "seconds": 3.563333,
+    "ticks": 72,
+    "source_bytes": 626732,
+    "mix_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "E": {
+    "source_sha256": "64e8539f5a129a799eaa28f560278f6cfd6ee2b9901ac1837472a2e10f5d9ed1",
+    "ogg_sha256": "7cd1d5fada98055415f676c8b6db5bc2e0993fcbd80d10e8a418ad7d4c1e9519",
+    "seconds": 2.008542,
+    "ticks": 41,
+    "source_bytes": 354348,
+    "mix_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "F": {
+    "source_sha256": "d945ef13e1f72eff9302beb28de5853a07ec04feb12e30385dd275b612d894a9",
+    "ogg_sha256": "614be55a3b7689b8e367c103cba2de604c171793e049841ec1193971fa458cd4",
+    "seconds": 2.054958,
+    "ticks": 42,
+    "source_bytes": 362540,
+    "mix_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "G": {
+    "source_sha256": "2e32b7b09d4f2d94fd5384a42b76893b0fdaa33d37836c2218147e311563dc7d",
+    "ogg_sha256": "5e5bf0b32168e2e5478150ee17e63dad8217fe580b671cf61b8e6c78655f6ff4",
+    "seconds": 4.5,
+    "ticks": 90,
+    "source_bytes": 778284,
+    "mix_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "H": {
+    "source_sha256": "d3e21bb31c341e1141c237d2966ab654b1cc65af99f13d6d97e39e57447f2351",
+    "ogg_sha256": "43304e6ec806e20a2bfe74f1efbd63ae76e332ab7a7944c265f24c827f044404",
+    "seconds": 3.296292,
+    "ticks": 66,
+    "source_bytes": 579628,
+    "mix_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "I": {
+    "source_sha256": "f25ab46c212bafaa67eed387a8e1214fb37a49783a423dc2317d56307836a72b",
+    "ogg_sha256": "6c8bb1a4de247d2376139c6ddcdcbdb9f1db35db8d3fb0bae4eb9c8e511b97f6",
+    "seconds": 3.168583,
+    "ticks": 64,
+    "source_bytes": 557100,
+    "mix_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "J": {
+    "source_sha256": "39a3655ae77bcb658f27a3498cf8c067659dd7c1dcf64b576ca44d2c0ea042d3",
+    "ogg_sha256": "3cb528d87eb3b77838f1cf0a533213c4bb4772bd4fcd5cf83de10b3790b2b923",
+    "seconds": 2.937333,
+    "ticks": 59,
+    "source_bytes": 518188,
+    "mix_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "K": {
+    "source_sha256": "030755374fedfa5598d833d66073bedbf00519997ee9a8235fe6c7881dea80ef",
+    "ogg_sha256": "7407a2ae3a03251f88802b5856f256f58e1b4da1b0803470b0e3de8cf529a83f",
+    "seconds": 6.7,
+    "ticks": 134,
+    "source_bytes": 1165356,
+    "mix_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "L": {
+    "source_sha256": "f038f0c6692183606f661e2aefc3ebb6cf82fd1710e7a55c3003df7b3ff2dbb0",
+    "ogg_sha256": "4b594325b6e5fa91370d731ed4109bebaa106592af66b89338e81b741a393bbf",
+    "seconds": 28.0,
+    "ticks": 560,
+    "source_bytes": 4923436,
+    "mix_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "M": {
+    "source_sha256": "6838ad7e77c037d26ea1bce86a70ccccf2c30e79c33f59e371c2714bbe07deab",
+    "ogg_sha256": "57d0e36aff620e895ebecd0589e96a1b33537a4ecef24a72b75f63ca65c3e28b",
+    "seconds": 31.9,
+    "ticks": 638,
+    "source_bytes": 5611564,
+    "mix_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "N": {
+    "source_sha256": "e77449495b7b3a2de0ae1ac89af323ff1ed0ae3a4bfdc6ea6663c63877e34971",
+    "ogg_sha256": "3f0069e5269b54206fdcc4540d2c483f7c54aabebb497a0bb9664b340249ce1c",
+    "seconds": 10.9,
+    "ticks": 218,
+    "source_bytes": 1921068,
+    "mix_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "O": {
+    "source_sha256": "f4d78532d2781bdab8d53289f42d4149c7132f4eb43005e2e47de3f8ea75d870",
+    "ogg_sha256": "5b5d91e7d61809b1a64d411dc122ad960da9691bfce9d27d2d5326e4ab883208",
+    "seconds": 9.3,
+    "ticks": 186,
+    "source_bytes": 1624108,
+    "mix_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "P": {
+    "source_sha256": "a2610149061f42d3038f6ee31f37e20faa1b2f8dcf51641a56441f03702123f1",
+    "ogg_sha256": "640def1bd8c9dd8ef06efbf37837fb67a47f1e8462a942f6c683a09807ff0436",
+    "seconds": 13.2,
+    "ticks": 264,
+    "source_bytes": 2326572,
+    "mix_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "Q": {
+    "source_sha256": "3ea50333092d2e97e0fa79745652cc99115f5a59aaac65aed05bc45941c8b3c9",
+    "ogg_sha256": "9a8f8a2743be9dcb2d315ded9370d601438fd0c566600c5f659d0edad831c3c9",
+    "seconds": 11.6,
+    "ticks": 232,
+    "source_bytes": 2037804,
+    "mix_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "R": {
+    "source_sha256": "47b6ddf4b1d661793b318bfdd92ed4d7b260003db21bf2d05ab0e9de8aec7fe2",
+    "ogg_sha256": "25dcd4f698046ad6bbe393d6c9df59b44a6f57a4abbfbb3ac7ad3e713198bcde",
+    "seconds": 6.1,
+    "ticks": 122,
+    "source_bytes": 1058860,
+    "mix_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  },
+  "S": {
+    "source_sha256": "03ff40558f715f0cca1845edaa9fd6e20a47b0762d58eafded475402ac8c6d64",
+    "ogg_sha256": "9ee7474f0a40d4a5bd28fbba346af0bfef5bdf620a890cd8f0827025a129aa06",
+    "seconds": 3.296292,
+    "ticks": 66,
+    "source_bytes": 579628,
+    "mix_revision": 2,
+    "target_lufs": -13,
+    "true_peak_limit_db": -2.5
+  }
+}

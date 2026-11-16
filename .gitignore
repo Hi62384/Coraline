@@ -16,6 +16,19 @@ out
 # gradle
 build
 .gradle
+build-activity/
+.gradle-activity/
+build-check-*/
+logs/
+*.log
+**/__pycache__/
+*.pyc
+ProjectBridge_patch.zip
+build-character-cast/
+.gradle-character-cast/
+.character-cast-patch-work/
+run-wybie-visit-qa/
+run-story-visits-qa/
 
 # other
 eclipse

@@ -1,0 +1,11 @@
+{
+  "type": "coraline:ancient_boundary_shrine",
+  "biomes": [
+    "coraline:postgame/pale_wasteland",
+    "coraline:postgame/porcelain_plains",
+    "coraline:postgame/forgotten_gardens"
+  ],
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "none"
+}

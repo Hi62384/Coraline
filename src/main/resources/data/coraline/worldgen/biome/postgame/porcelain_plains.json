@@ -1,0 +1,30 @@
+{
+  "has_precipitation": true,
+  "temperature": 0.4,
+  "downfall": 0.3,
+  "effects": {
+    "fog_color": 12570595,
+    "sky_color": 12634606,
+    "water_color": 6523571,
+    "water_fog_color": 3426157
+  },
+  "spawners": {
+    "monster": [
+      {
+        "type": "coraline:button_eyed_wanderer",
+        "weight": 12,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "coraline:porcelain_sentinel",
+        "weight": 3,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ]
+  },
+  "spawn_costs": {},
+  "carvers": {},
+  "features": []
+}

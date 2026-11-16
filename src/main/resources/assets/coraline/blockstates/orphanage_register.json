@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "slot=0": {
+      "model": "coraline:block/orphanage_register_0"
+    },
+    "slot=1": {
+      "model": "coraline:block/orphanage_register_1"
+    },
+    "slot=2": {
+      "model": "coraline:block/orphanage_register_2"
+    },
+    "slot=3": {
+      "model": "coraline:block/orphanage_register_3"
+    }
+  }
+}

@@ -39,6 +39,11 @@ public final class DoorData extends SavedData {
     }
     public boolean revoked(ItemStack stack){var d=doors.get(id(stack));return d!=null&&d.revoked;}
     public void endFamily(UUID owner){
+        endFamily(owner,true);
+    }
+    /** Keep other owners' inventories outside a ritual's reset transaction. */
+    public void rewindStory(UUID owner){endFamily(owner,false);}
+    private void endFamily(UUID owner,boolean cleanAll){
         if(owner==null)return;
         boolean changed=false;
         for(var d:List.copyOf(doors.values()))if(owner.equals(d.owner)&&!d.revoked){
@@ -51,10 +56,11 @@ public final class DoorData extends SavedData {
             }
             d.placed=false;d.absentUntil=0;
             var stored=com.coraline.parents.FamilyData.level(server,d.holderDimension);
-            if(stored!=null&&stored.hasChunkAt(d.holderPos)&&stored.getBlockEntity(d.holderPos) instanceof net.minecraft.world.Container container)
+            if(cleanAll&&stored!=null&&stored.hasChunkAt(d.holderPos)&&stored.getBlockEntity(d.holderPos) instanceof net.minecraft.world.Container container)
                 cleanDoors(container);
         }
         if(!changed)return;
+        if(!cleanAll){setDirty();return;}
         for(var player:server.getPlayerList().getPlayers()){
             cleanDoors(player.getInventory());cleanDoors(player.getEnderChestInventory());
             var cursor=player.containerMenu.getCarried();

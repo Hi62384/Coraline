@@ -1,0 +1,80 @@
+{
+  "a": {
+    "source": "voicelines/Wybie/A.wav",
+    "source_sha256": "3aa1c0d968fe58b70db0cc656b696be00dc78e1e8047bdc81cbac3511c03f4ca",
+    "seconds": 7.662583,
+    "ticks": 154
+  },
+  "b": {
+    "source": "voicelines/Wybie/B.wav",
+    "source_sha256": "9a9f6ebdb03a19f9a030b01e056bd1867f5ae7d6a3c1d30bd9bfd41cdfc7a9cf",
+    "seconds": 14.802708,
+    "ticks": 297
+  },
+  "c": {
+    "source": "voicelines/Wybie/C.wav",
+    "source_sha256": "27f85accd70c3c7e52f4a6ec3dbda04ae64b38c7955a8a44773e05a1dcd4d233",
+    "seconds": 7.500042,
+    "ticks": 151
+  },
+  "d": {
+    "source": "voicelines/Wybie/D.wav",
+    "source_sha256": "e5b319e2f3a663e96a676e5e1c13043ae680be8dabfbda8e4a81ca17a538c81d",
+    "seconds": 4.493083,
+    "ticks": 90
+  },
+  "e": {
+    "source": "voicelines/Wybie/E.wav",
+    "source_sha256": "7cc4f6a22f458f5ab9ffce26c521522a45aa65a257ffe83da1024cfcfee49349",
+    "seconds": 4.051875,
+    "ticks": 82
+  },
+  "f": {
+    "source": "voicelines/Wybie/F.wav",
+    "source_sha256": "2c64f0fae325bf381cebaab07ab0b885d0248cbcc8b6c9d4243850ce3d7d9580",
+    "seconds": 1.381583,
+    "ticks": 28
+  },
+  "g": {
+    "source": "voicelines/Wybie/G.wav",
+    "source_sha256": "0d46d210e679142ced05c488f041510cd127a0d2308a890a0330281725bd4972",
+    "seconds": 1.404833,
+    "ticks": 29
+  },
+  "h": {
+    "source": "voicelines/Wybie/H.wav",
+    "source_sha256": "e2440637d011d4a8c22470718df4dcd172564a93b571ec30f457eec14b97c94b",
+    "seconds": 1.253875,
+    "ticks": 26
+  },
+  "i": {
+    "source": "voicelines/Wybie/I.wav",
+    "source_sha256": "113e19a4e11d2b88596e8bac66c3817995f38a4cf76b6b6dfa8aecb5c48895cb",
+    "seconds": 4.7485,
+    "ticks": 95
+  },
+  "j": {
+    "source": "voicelines/Wybie/J.wav",
+    "source_sha256": "a947e8f468ad81a8b36a6bb477e442dcb2ce9284b047db2c5877292513a8aa1c",
+    "seconds": 21.919625,
+    "ticks": 439
+  },
+  "k": {
+    "source": "voicelines/Wybie/K.wav",
+    "source_sha256": "5a775c6960516749be847f566a1586d88834f586234820018a8a964f456c850d",
+    "seconds": 1.671833,
+    "ticks": 34
+  },
+  "l": {
+    "source": "voicelines/Wybie/L.wav",
+    "source_sha256": "675eaf4fb7c3c2d15e68bc42c8aa15bb4a6b1cfda8fa1ae0d87e88380c0aa880",
+    "seconds": 7.163375,
+    "ticks": 144
+  },
+  "music": {
+    "source": "music/eventbased/Wybie.mp3",
+    "source_sha256": "bce7f7c6f3d8aa4f543d543a6061fa43210633e4508ba1fffeb33f01225648bc",
+    "seconds": 129.45125,
+    "ticks": 2590
+  }
+}

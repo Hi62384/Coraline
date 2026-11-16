@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "coraline:block/breach_drive"
+    },
+    "powered=true": {
+      "model": "coraline:block/breach_drive"
+    }
+  }
+}

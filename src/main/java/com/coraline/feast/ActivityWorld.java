@@ -52,6 +52,28 @@ public final class ActivityWorld {
     public static boolean exitReady(VisitData.Scene s){
         return s!=null&&s.loop.phase==OtherMotherLoopState.Phase.ACTIVITY;
     }
+    /** Shared objective status is separate from the owner's always-available early exit. */
+    public static boolean groupFinished(VisitData.Scene s){
+        if(s==null)return false;return switch(s.loop.activity){
+            case ARCHERY_CONTEST -> ArcheryActivity.exitReady(s);
+            case CAKE_MAKING_CONTEST -> CakeContestActivity.exitReady(s);
+            case CARNIVAL -> s.loop.carnivalIssued&&s.loop.carnivalTokensRemaining==0&&s.loop.carnivalBooth<0&&s.loop.carnivalRide<0;
+            case DREAM_PARKOUR -> DreamParkourActivity.exitReady(s);
+            case FISHING_CONTEST -> FishingContestActivity.exitReady(s);
+            case GARDEN_MAZE -> GardenMazeActivity.exitReady(s);
+            case GRAND_FEAST -> GrandFeastActivity.exitReady(s);
+            case ICE_BOAT_RACE -> IceBoatRaceActivity.exitReady(s);
+            case MAGIC_SHOW -> MagicShowActivity.exitReady(s);
+            case MAGIC_GARDEN -> MagicGardenActivity.exitReady(s);
+            case MICE_CIRCUS -> MiceCircusActivity.exitReady(s);
+            case MUSIC_FESTIVAL -> s.loop.festival.getInt("Phase")>=3;
+            case OTHER_DESERT_TEMPLE -> DesertTempleActivity.exitReady(s);
+            case OTHER_END_CITY -> EndCityActivity.exitReady(s);
+            case OTHER_OCEAN_MONUMENT -> OceanMonumentActivity.exitReady(s);
+            case TREASURE_HUNT,SHOPPING_MALL,OTHER_MINESHAFT,SNOWBALL_BATTLE,OTHER_NETHER_FORTRESS,OTHER_WOODLAND_MANSION -> s.loop.expedition.getInt("Phase")>=4;
+            default -> s.loop.villageIssued&&s.loop.villageTokensRemaining==0;
+        };
+    }
     private static void start(ServerPlayer p,VisitData.Scene s,ServerLevel level){
         ExpeditionActivities.clearOtherArenas(p,s,level);
         if(s.loop.activity!=OtherMotherActivities.Activity.MUSIC_FESTIVAL){var old=MusicFestivalActivity.center(p,s);MusicFestivalActivity.clean(level,s,old);MusicFestivalActivity.removeBuild(level,old);}
@@ -91,6 +113,7 @@ public final class ActivityWorld {
         }
     }
     private static void clean(ServerPlayer p,VisitData.Scene s){
+        CooperativeActivities.cleanGuests(p,s);
         p.stopRiding();p.setForcedPose(null);
         VisitAudio.stopVoice(p,introSound(s.loop.activity));
         VisitAudio.introOffer(p,new VisitAudio.IntroOffer(introSound(s.loop.activity),s.loop.generation,0));
@@ -159,12 +182,16 @@ public final class ActivityWorld {
             var at=OtherWorld.safePlayer(p.serverLevel(),s.loop.portal.east(2));mom.getNavigation().stop();mom.teleportTo(at.getX()+.5,at.getY(),at.getZ()+.5);s.loop.motherPos=at;
         }
         if(!ExpeditionActivities.supports(s.loop.activity)&&s.loop.activity!=OtherMotherActivities.Activity.MUSIC_FESTIVAL&&s.loop.activity!=OtherMotherActivities.Activity.OTHER_DESERT_TEMPLE&&s.loop.activity!=OtherMotherActivities.Activity.OTHER_END_CITY&&s.loop.activity!=OtherMotherActivities.Activity.ARCHERY_CONTEST&&s.loop.activity!=OtherMotherActivities.Activity.CAKE_MAKING_CONTEST&&s.loop.activity!=OtherMotherActivities.Activity.CARNIVAL&&s.loop.activity!=OtherMotherActivities.Activity.DREAM_PARKOUR&&s.loop.activity!=OtherMotherActivities.Activity.FISHING_CONTEST&&s.loop.activity!=OtherMotherActivities.Activity.GARDEN_MAZE&&s.loop.activity!=OtherMotherActivities.Activity.GRAND_FEAST&&s.loop.activity!=OtherMotherActivities.Activity.ICE_BOAT_RACE&&s.loop.activity!=OtherMotherActivities.Activity.MAGIC_SHOW&&s.loop.activity!=OtherMotherActivities.Activity.MAGIC_GARDEN&&s.loop.activity!=OtherMotherActivities.Activity.MICE_CIRCUS&&s.loop.activity!=OtherMotherActivities.Activity.OTHER_OCEAN_MONUMENT)s.loop.activity=OtherMotherActivities.Activity.OTHER_VILLAGE;
+        if(!p.getUUID().equals(s.owner))return;
+        if(!com.coraline.multiplayer.StorySessionData.get(p.server).beginActivity(p,s))return;
+        AcceptedButtonEyes.activityEntered(p,s);
         OtherMotherLoop.phase(p,s,OtherMotherLoopState.Phase.ACTIVITY);
         var c=center(p,s);start(p,s,level);prepare(p,s,level);stabilizeExistingLeaves(level,c);
         p.stopRiding();p.setForcedPose(null);p.teleportTo(level,c.getX()+.5,c.getY(),c.getZ()+(s.loop.activity==OtherMotherActivities.Activity.MICE_CIRCUS?20.5:s.loop.activity==OtherMotherActivities.Activity.ARCHERY_CONTEST?6.5:s.loop.activity==OtherMotherActivities.Activity.CAKE_MAKING_CONTEST?25.5:s.loop.activity==OtherMotherActivities.Activity.CARNIVAL?46.5:s.loop.activity==OtherMotherActivities.Activity.DREAM_PARKOUR?16.5:s.loop.activity==OtherMotherActivities.Activity.FISHING_CONTEST?20.5:s.loop.activity==OtherMotherActivities.Activity.GARDEN_MAZE?34.5:s.loop.activity==OtherMotherActivities.Activity.GRAND_FEAST?36.5:s.loop.activity==OtherMotherActivities.Activity.ICE_BOAT_RACE?46.5:s.loop.activity==OtherMotherActivities.Activity.MAGIC_SHOW?9.5:s.loop.activity==OtherMotherActivities.Activity.MAGIC_GARDEN?43.5:.5),
             s.loop.activity==OtherMotherActivities.Activity.OTHER_VILLAGE?0:180,0);p.fallDistance=0;p.setDeltaMovement(Vec3.ZERO);
         // READY can transition to ACTIVITY only once, so the finalized introduction
         // cannot be replayed by repeatedly touching the portal in this session.
+        com.coraline.multiplayer.StoryCoop.transferGroup(p,s);
         VisitAudio.play(p,introSound(s.loop.activity),false);
     }
     /** Creative-only direct trip; it does not advance the regular visit. */
@@ -228,6 +255,8 @@ public final class ActivityWorld {
         };
     }
     public static void exit(ServerPlayer p,VisitData.Scene s){
+        if(!p.getUUID().equals(s.owner))return;
+        com.coraline.multiplayer.StoryActivitySafety.restore(p,s);
         if(!exitReady(s)){p.displayClientMessage(net.minecraft.network.chat.Component.literal(s.loop.activity==OtherMotherActivities.Activity.ARCHERY_CONTEST?
             "Fire all 64 of Father's contest arrows before returning.":s.loop.activity==OtherMotherActivities.Activity.CAKE_MAKING_CONTEST?
             "Finish the cake contest and collect your ranked prize before returning.":s.loop.activity==OtherMotherActivities.Activity.CARNIVAL?
@@ -267,81 +296,106 @@ public final class ActivityWorld {
             p.sendSystemMessage(Component.literal("Activity debug trip complete. Returned to your starting point."));return;
         }
         var level=p.server.getLevel(OtherWorld.KEY);if(level==null){OtherMotherLoop.fail(p,"The Other World is unavailable. Returning home.");return;}
-        clean(p,s);
+        AcceptedButtonEyes.activityReturning(p,s);clean(p,s);
         LoopProps.hold(level,s.loop.portal);var at=OtherWorld.safePlayer(level,s.loop.portal);
         p.teleportTo(level,at.getX()+.5,at.getY(),at.getZ()+.5,p.getYRot(),p.getXRot());p.fallDistance=0;p.setDeltaMovement(Vec3.ZERO);
+        com.coraline.multiplayer.StoryCoop.transferGroup(p,s);
+        AcceptedButtonEyes.activityReturned(p,s);
         ShoppingMallActivity.deliver(p);MineshaftActivity.deliver(p);
         LoopProps.removePortals(p.server,s);OtherMotherLoop.phase(p,s,OtherMotherLoopState.Phase.COMPLETE);
         if(s.mom!=null&&level.getEntity(s.mom) instanceof com.coraline.parents.ParentEntity mom){var safe=OtherWorld.safePlayer(level,at.east(2));mom.teleportTo(safe.getX()+.5,safe.getY(),safe.getZ()+.5);}
     }
+    /** Recover only the accepted branch's own activity; no completion or rewards. */
+    static boolean abortAccepted(ServerPlayer p,VisitData.Scene s){
+        if(!AcceptedButtonEyes.active(s)||!s.owner.equals(p.getUUID()))return false;
+        AcceptedButtonEyesInventory.confiscateActivityLoot(p,s);
+        if(!AcceptedButtonEyesWorld.transfer(p,s,AcceptedButtonEyesWorld.upstairs(s)))return false;
+        clean(p,s);LoopProps.removePortals(p.server,s);AcceptedButtonEyesInventory.cleanTemporary(p);
+        AcceptedButtonEyesProgress.abortActivity(AcceptedButtonEyes.data(s),OtherMotherLoop.now(p));
+        s.loop.phase=OtherMotherLoopState.Phase.ACCEPTED_BUTTON_EYES;OtherMotherLoop.changed(p);return true;
+    }
+    /** Explicit creative abort, not normal completion: do not deliver activity rewards. */
+    public static boolean debugReturn(ServerPlayer p,VisitData.Scene s){
+        if(!p.isCreative()||!p.getUUID().equals(s.owner))return false;var level=p.server.getLevel(OtherWorld.KEY);var realm=com.coraline.otherworld.RealmData.get(p.server).realms.get(s.door);if(level==null||realm==null)return false;
+        clean(p,s);var safe=OtherWorld.safePlayer(level,realm.porch==null?realm.doorPos:realm.porch);p.teleportTo(level,safe.getX()+.5,safe.getY(),safe.getZ()+.5,p.getYRot(),0);p.fallDistance=0;p.setDeltaMovement(Vec3.ZERO);p.getPersistentData().remove(DEBUG_RETURN);LoopProps.removePortals(p.server,s);OtherMotherLoop.phase(p,s,OtherMotherLoopState.Phase.EXPLORING);return true;
+    }
     static void tick(ServerPlayer p,VisitData.Scene s){
         if(s.loop.phase!=OtherMotherLoopState.Phase.ACTIVITY){OtherMotherLoop.fail(p,"Returning you home safely.");return;}
+        if(com.coraline.multiplayer.StoryActivitySafety.beforeDirectorTick(p,s))return;
         ActivitySoundscape.tick(p,s);
         var c=center(p,s);
         if(ExpeditionActivities.supports(s.loop.activity)){
             ExpeditionActivities.tick(p,s,c);
-            if(exitReady(s)&&p.distanceToSqr(Vec3.atBottomCenterOf(ExpeditionActivities.exitPos(c,s)))<1.2)exit(p,s);
+            if(exitReady(s)&&CooperativeActivities.exitNear(p,s,Vec3.atBottomCenterOf(ExpeditionActivities.exitPos(c,s)),1.2))exit(p,s);
         }else if(s.loop.activity==OtherMotherActivities.Activity.MUSIC_FESTIVAL){
             MusicFestivalActivity.tick(p,s,c);
-            if(exitReady(s)&&p.distanceToSqr(Vec3.atBottomCenterOf(MusicFestivalActivity.exitPos(c)))<1.2)exit(p,s);
+            if(exitReady(s)&&CooperativeActivities.exitNear(p,s,Vec3.atBottomCenterOf(MusicFestivalActivity.exitPos(c)),1.2))exit(p,s);
         }else if(s.loop.activity==OtherMotherActivities.Activity.OTHER_DESERT_TEMPLE){
             DesertTempleActivity.tick(p,s,c);
-            if(exitReady(s)&&p.distanceToSqr(Vec3.atBottomCenterOf(DesertTempleActivity.exitPos(c,s)))<1.2)exit(p,s);
+            if(exitReady(s)&&CooperativeActivities.exitNear(p,s,Vec3.atBottomCenterOf(DesertTempleActivity.exitPos(c,s)),1.2))exit(p,s);
         }else if(s.loop.activity==OtherMotherActivities.Activity.OTHER_END_CITY){
             EndCityActivity.tick(p,s,c);
-            if(exitReady(s)&&p.distanceToSqr(Vec3.atBottomCenterOf(EndCityActivity.exitPos(c,s)))<1.2)exit(p,s);
+            if(exitReady(s)&&CooperativeActivities.exitNear(p,s,Vec3.atBottomCenterOf(EndCityActivity.exitPos(c,s)),1.2))exit(p,s);
         }else if(s.loop.activity==OtherMotherActivities.Activity.OTHER_OCEAN_MONUMENT){
             OceanMonumentActivity.tick(p,s,c);
-            if(exitReady(s)&&p.distanceToSqr(Vec3.atBottomCenterOf(OceanMonumentActivity.exitPos(c,s)))<1.2)exit(p,s);
+            if(exitReady(s)&&CooperativeActivities.exitNear(p,s,Vec3.atBottomCenterOf(OceanMonumentActivity.exitPos(c,s)),1.2))exit(p,s);
         }else if(s.loop.activity==OtherMotherActivities.Activity.ARCHERY_CONTEST){
             if(s.loop.archeryGiftAt<=0){ArcheryActivity.start(p,s,p.serverLevel());VisitAudio.play(p,introSound(s.loop.activity),false);}
             ArcheryActivity.tick(p,s,c);
-            if(exitReady(s)&&p.distanceToSqr(Vec3.atBottomCenterOf(c.south(9)))<1.2)exit(p,s);
+            if(exitReady(s)&&CooperativeActivities.exitNear(p,s,Vec3.atBottomCenterOf(c.south(9)),1.2))exit(p,s);
         }else if(s.loop.activity==OtherMotherActivities.Activity.CAKE_MAKING_CONTEST){
             CakeContestActivity.tick(p,s,c);
-            if(exitReady(s)&&p.distanceToSqr(Vec3.atBottomCenterOf(c.south(30)))<1.2)exit(p,s);
+            if(exitReady(s)&&CooperativeActivities.exitNear(p,s,Vec3.atBottomCenterOf(c.south(30)),1.2))exit(p,s);
         }else if(s.loop.activity==OtherMotherActivities.Activity.CARNIVAL){
             if(s.loop.carnivalGiftAt<=0){CarnivalActivity.start(p,s,p.serverLevel());VisitAudio.play(p,introSound(s.loop.activity),false);}
             CarnivalActivity.tick(p,s,c);
-            if(exitReady(s)&&p.distanceToSqr(Vec3.atBottomCenterOf(c.south(49)))<1.2)exit(p,s);
+            if(exitReady(s)&&CooperativeActivities.exitNear(p,s,Vec3.atBottomCenterOf(c.south(49)),1.2))exit(p,s);
         }else if(s.loop.activity==OtherMotherActivities.Activity.DREAM_PARKOUR){
             if(s.loop.parkourVoiceUntil<=0){DreamParkourActivity.start(p,s,p.serverLevel());VisitAudio.play(p,introSound(s.loop.activity),false);}
             DreamParkourActivity.tick(p,s,c);
-            if(exitReady(s)&&p.distanceToSqr(Vec3.atBottomCenterOf(c.south(20)))<1.2)exit(p,s);
+            if(exitReady(s)&&CooperativeActivities.exitNear(p,s,Vec3.atBottomCenterOf(c.south(20)),1.2))exit(p,s);
         }else if(s.loop.activity==OtherMotherActivities.Activity.FISHING_CONTEST){
             if(s.loop.fishingVoiceUntil<=0){FishingContestActivity.start(p,s,p.serverLevel());VisitAudio.play(p,introSound(s.loop.activity),false);}
             FishingContestActivity.tick(p,s,c);
-            if(exitReady(s)&&p.distanceToSqr(Vec3.atBottomCenterOf(c.south(41)))<1.2)exit(p,s);
+            if(exitReady(s)&&CooperativeActivities.exitNear(p,s,Vec3.atBottomCenterOf(c.south(41)),1.2))exit(p,s);
         }else if(s.loop.activity==OtherMotherActivities.Activity.GARDEN_MAZE){
             if(s.loop.gardenVoiceUntil<=0){GardenMazeActivity.start(p,s,p.serverLevel());VisitAudio.play(p,introSound(s.loop.activity),false);}
             GardenMazeActivity.tick(p,s,c);
-            if(exitReady(s)&&p.distanceToSqr(Vec3.atBottomCenterOf(c.north(45)))<1.2)exit(p,s);
+            if(exitReady(s)&&CooperativeActivities.exitNear(p,s,Vec3.atBottomCenterOf(c.north(45)),1.2))exit(p,s);
         }else if(s.loop.activity==OtherMotherActivities.Activity.GRAND_FEAST){
             if(s.loop.feastVoiceUntil<=0){GrandFeastActivity.start(p,s,p.serverLevel());VisitAudio.play(p,introSound(s.loop.activity),false);}
             GrandFeastActivity.tick(p,s,c);
-            if(exitReady(s)&&p.distanceToSqr(Vec3.atBottomCenterOf(c.south(42)))<1.2)exit(p,s);
+            if(exitReady(s)&&CooperativeActivities.exitNear(p,s,Vec3.atBottomCenterOf(c.south(42)),1.2))exit(p,s);
         }else if(s.loop.activity==OtherMotherActivities.Activity.ICE_BOAT_RACE){
             if(s.loop.iceVoiceUntil<=0){IceBoatRaceActivity.start(p,s,p.serverLevel());VisitAudio.play(p,introSound(s.loop.activity),false);}
             IceBoatRaceActivity.tick(p,s,c);
-            if(exitReady(s)&&p.distanceToSqr(Vec3.atBottomCenterOf(c.south(51)))<1.2)exit(p,s);
+            if(exitReady(s)&&CooperativeActivities.exitNear(p,s,Vec3.atBottomCenterOf(c.south(51)),1.2))exit(p,s);
         }else if(s.loop.activity==OtherMotherActivities.Activity.MAGIC_SHOW){
             if(s.loop.magicVoiceUntil<=0){MagicShowActivity.start(p,s,p.serverLevel());VisitAudio.play(p,introSound(s.loop.activity),false);}
             MagicShowActivity.tick(p,s,c);
-            if(exitReady(s)&&p.distanceToSqr(Vec3.atBottomCenterOf(c.south(21)))<1.2)exit(p,s);
+            if(exitReady(s)&&CooperativeActivities.exitNear(p,s,Vec3.atBottomCenterOf(c.south(21)),1.2))exit(p,s);
         }else if(s.loop.activity==OtherMotherActivities.Activity.MAGIC_GARDEN){
             if(s.loop.flyingGardenVoiceUntil<=0){MagicGardenActivity.start(p,s,p.serverLevel());VisitAudio.play(p,introSound(s.loop.activity),false);}
             MagicGardenActivity.tick(p,s,c);
-            if(exitReady(s)&&p.distanceToSqr(Vec3.atBottomCenterOf(c.south(45)))<1.2)exit(p,s);
+            if(exitReady(s)&&CooperativeActivities.exitNear(p,s,Vec3.atBottomCenterOf(c.south(45)),1.2))exit(p,s);
         }else if(s.loop.activity==OtherMotherActivities.Activity.MICE_CIRCUS){
             if(s.loop.circusVoiceUntil<=0){MiceCircusActivity.start(p,s,p.serverLevel());VisitAudio.play(p,introSound(s.loop.activity),false);}
             MiceCircusActivity.tick(p,s,c);
-            if(exitReady(s)&&p.distanceToSqr(Vec3.atBottomCenterOf(c.south(24)))<1.2)exit(p,s);
+            if(exitReady(s)&&CooperativeActivities.exitNear(p,s,Vec3.atBottomCenterOf(c.south(24)),1.2))exit(p,s);
         }else{
             if(s.loop.villageGiftAt<=0){VillageActivity.start(p,s,p.serverLevel());VisitAudio.play(p,introSound(OtherMotherActivities.Activity.OTHER_VILLAGE),false);}
             if(p.tickCount%20==0){prepare(p,s,p.serverLevel());VillageActivity.wander(p,s,p.serverLevel(),c);}
             if(!s.loop.villageIssued&&OtherMotherLoop.now(p)>=s.loop.villageGiftAt)VillageActivity.grantTokens(p,s);
             if(p.getY()<78||Math.abs(p.getX()-(c.getX()+.5))>48||Math.abs(p.getZ()-(c.getZ()+.5))>48){p.teleportTo(p.serverLevel(),c.getX()+.5,c.getY(),c.getZ()+.5,p.getYRot(),p.getXRot());p.fallDistance=0;p.setDeltaMovement(Vec3.ZERO);}
-            if(exitReady(s)&&p.distanceToSqr(Vec3.atBottomCenterOf(c.south(5)))<1.2)exit(p,s);
+            if(exitReady(s)&&CooperativeActivities.exitNear(p,s,Vec3.atBottomCenterOf(c.south(5)),1.2))exit(p,s);
         }
+    }
+    /** All participants failed: leave the arena without a completion payout or relationship credit. */
+    public static void cooperativeFailure(ServerPlayer owner,VisitData.Scene scene){
+        if(!owner.getUUID().equals(scene.owner)||!com.coraline.multiplayer.StorySessionData.get(owner.server).groupActivity(scene))return;
+        var level=owner.server.getLevel(OtherWorld.KEY);if(level==null)return;
+        clean(owner,scene);com.coraline.multiplayer.StoryActivitySafety.restore(owner,scene);
+        LoopProps.hold(level,scene.loop.portal);var at=OtherWorld.safePlayer(level,scene.loop.portal);owner.teleportTo(level,at.getX()+.5,at.getY(),at.getZ()+.5,owner.getYRot(),0);
+        LoopProps.removePortals(owner.server,scene);OtherMotherLoop.phase(owner,scene,OtherMotherLoopState.Phase.EXPLORING);com.coraline.multiplayer.StoryCoop.transferGroup(owner,scene);owner.sendSystemMessage(Component.literal("The group could not finish this activity. Everyone has returned safely."));
     }
 }

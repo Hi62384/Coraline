@@ -9,6 +9,9 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 
 public final class ParentTasks {
+    public static final String[] MOM_TASKS={"Rest","Garden","Groceries","Buy clothes","Gather wood","Gather stone","Bake bread","Preserve food","Prepare dyes","Gather wool","Medicinal herbs","Go fishing","Collect honey"};
+    public static final String[] DAD_TASKS={"Rest","Make dinner","Gather iron","Gather coal","Cut building stone","Make glass","Gather redstone","Gather copper","Craft tools","Make rails","Make lanterns","Pack exploration supplies"};
+    public static int maximum(boolean mom,boolean rescued){return rescued?(mom?MOM_TASKS.length:DAD_TASKS.length)-1:mom?5:3;}
     public static boolean working(ParentEntity p,FamilyData.Family f){
         return !f.dead&&f.deathPhase==0&&f.owner!=null&&f.bed!=null&&f.chest!=null
                 &&p.level().dimension().location().toString().equals(f.homeDim)
@@ -17,7 +20,8 @@ public final class ParentTasks {
     public static int nextDelay(ParentEntity p){
         int base=CoralineConfig.TASK_INTERVAL.get();
         double variation=CoralineConfig.TASK_VARIATION.get();
-        return Math.max(20,(int)Math.round(base*(1-variation+2*variation*p.getRandom().nextDouble())));
+        double bonus=p.family()!=null&&p.family().rescued?RescuedParentBenefits.durationMultiplier():1;
+        return Math.max(20,(int)Math.round(base*bonus*(1-variation+2*variation*p.getRandom().nextDouble())));
     }
     private static void workWalk(ParentEntity p,FamilyData.Family f){
         if(!p.getNavigation().isDone()||p.tickCount%10!=0)return;
@@ -62,7 +66,10 @@ public final class ParentTasks {
         }chest.setChanged();
     }
     public static ItemStack reward(ParentEntity p,int task){
+        boolean rescued=p.family()!=null&&p.family().rescued;
         int food=CoralineConfig.FOOD_COUNT.get(),count=CoralineConfig.RESOURCE_COUNT.get();var random=p.getRandom();
+        if(rescued){food=Math.max(food+1,(int)Math.ceil(food*1.35));count=Math.max(count+2,(int)Math.ceil(count*1.35));}
+        if(rescued&&task>(p.isMom()?5:3))return upgraded(p,task,food,count);
         if(p.isMom())return switch(task){
             case 2 -> new ItemStack(random.nextDouble()<CoralineConfig.WRAP_CHANCE.get()?ModItems.MUSTARD_KETCHUP_SALSA_WRAP.get():new Item[]{Items.APPLE,Items.CARROT,Items.POTATO,Items.BREAD,Items.BEETROOT}[random.nextInt(5)],food);
             case 3 -> armor(p);
@@ -76,6 +83,12 @@ public final class ParentTasks {
             case 3 -> new ItemStack(Items.COAL,count);
             default -> ItemStack.EMPTY;
         };
+    }
+    private static ItemStack upgraded(ParentEntity p,int task,int food,int count){
+        Item item;if(p.isMom())item=switch(task){case 6->Items.BREAD;case 7->Items.BAKED_POTATO;case 8->new Item[]{Items.BLUE_DYE,Items.RED_DYE,Items.YELLOW_DYE}[p.getRandom().nextInt(3)];case 9->Items.WHITE_WOOL;case 10->Items.GLISTERING_MELON_SLICE;case 11->Items.COOKED_SALMON;case 12->Items.HONEY_BOTTLE;default->Items.AIR;};
+        else item=switch(task){case 4->Items.STONE_BRICKS;case 5->Items.GLASS;case 6->Items.REDSTONE;case 7->Items.RAW_COPPER;case 8->new Item[]{Items.IRON_PICKAXE,Items.IRON_AXE,Items.IRON_SHOVEL}[p.getRandom().nextInt(3)];case 9->Items.RAIL;case 10->Items.LANTERN;case 11->new Item[]{Items.TORCH,Items.LADDER,Items.LEAD}[p.getRandom().nextInt(3)];default->Items.AIR;};
+        int amount=item.getMaxStackSize()==1?1:(p.isMom()&&(task==10||task==12)||!p.isMom()&&task>=10)?Math.min(4,food):p.isMom()&&(task==6||task==7||task==11)?food:count;
+        return new ItemStack(item,Math.min(item.getMaxStackSize(),Math.max(1,amount)));
     }
     /** Both front positions and the two trunk sides are legitimate close-up delivery spots. */
     private static boolean approachStorage(ParentEntity p,FamilyData.Family f,Direction facing){

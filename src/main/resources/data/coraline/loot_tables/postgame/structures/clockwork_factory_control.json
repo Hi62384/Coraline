@@ -1,0 +1,46 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "coraline:postgame/structures/clockwork_factory"
+        }
+      ]
+    },
+    {
+      "name": "coraline_equipment_armor",
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.12
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "coraline:postgame/equipment/deep_armor"
+        }
+      ]
+    },
+    {
+      "name": "coraline_equipment_wardrobe",
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.12
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "coraline:postgame/equipment/rare_wardrobe"
+        }
+      ]
+    }
+  ]
+}

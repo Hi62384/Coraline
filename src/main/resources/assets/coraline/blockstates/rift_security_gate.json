@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "active=false,open=false": {
+      "model": "coraline:block/rift_security_gate"
+    },
+    "active=false,open=true": {
+      "model": "coraline:block/rift_security_gate_open"
+    },
+    "active=true,open=false": {
+      "model": "coraline:block/rift_security_gate"
+    },
+    "active=true,open=true": {
+      "model": "coraline:block/rift_security_gate_open"
+    }
+  }
+}

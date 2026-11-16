@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "NGN",
+    "S S"
+  ],
+  "key": {
+    "G": {
+      "item": "coraline:soulglass"
+    },
+    "N": {
+      "item": "coraline:moonstone_block"
+    },
+    "S": {
+      "item": "minecraft:string"
+    }
+  },
+  "result": {
+    "item": "coraline:super_spidervision_helmet",
+    "count": 1
+  }
+}

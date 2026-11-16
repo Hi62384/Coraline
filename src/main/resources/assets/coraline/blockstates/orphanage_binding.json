@@ -1,0 +1,9 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "coraline:block/orphanage_binding"
+      }
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+{"variants":{"facing=north":{"model":"coraline:block/rosewood_counter","y":0},"facing=east":{"model":"coraline:block/rosewood_counter","y":90},"facing=south":{"model":"coraline:block/rosewood_counter","y":180},"facing=west":{"model":"coraline:block/rosewood_counter","y":270}}}

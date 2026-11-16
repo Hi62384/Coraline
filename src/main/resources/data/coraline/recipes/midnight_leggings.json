@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "WMW",
+    "W W",
+    "W W"
+  ],
+  "key": {
+    "M": {
+      "item": "coraline:moonstone"
+    },
+    "W": {
+      "tag": "minecraft:wool"
+    }
+  },
+  "result": {
+    "item": "coraline:midnight_leggings",
+    "count": 1
+  }
+}

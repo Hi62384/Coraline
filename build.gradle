@@ -7,7 +7,7 @@ plugins {
 
 // Keep long-running activity GameTests independent of other builds in this checkout.
 if (project.hasProperty('isolatedActivityBuild')) {
-    layout.buildDirectory.set(layout.projectDirectory.dir('build-activity'))
+    layout.buildDirectory.set(layout.projectDirectory.dir(project.hasProperty('characterCastBuild') ? 'build-character-cast' : 'build-activity'))
 }
 
 version = mod_version
@@ -65,7 +65,7 @@ minecraft {
     runs {
         // applies to all the run configs below
         configureEach {
-            args '-mixin.config', 'coraline.mixins.json'
+            args '-mixin.config', 'coraline.mixins.json', '-mixin.config', 'coraline.party.mixins.json'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${layout.buildDirectory.get().asFile}/createSrgToMcp/output.srg"
             workingDirectory project.file('run')
@@ -90,6 +90,35 @@ minecraft {
         }
 
         client {
+            if (project.hasProperty('visitEventsVisualCheck')) {
+                property 'coraline.visitEventsVisualCheck', 'true'
+                workingDirectory project.file('run-wybie-visit-qa')
+                args '--quickPlaySingleplayer', 'WybieVisitQA'
+            }
+            if (project.hasProperty('seamlessTunnelVisualCheck')) {
+                property 'coraline.seamlessTunnelVisualCheck', 'true'
+                workingDirectory project.file('run-wybie-visit-qa')
+                args '--quickPlaySingleplayer', 'WybieVisitQA'
+            }
+            if (project.hasProperty('rosewoodHouseVisualCheck')) {
+                property 'coraline.rosewoodHouseVisualCheck', 'true'
+                if (project.hasProperty('storageOnlyVisualCheck')) property 'coraline.storageOnlyVisualCheck', 'true'
+                workingDirectory project.file('run-wybie-visit-qa')
+                args '--quickPlaySingleplayer', 'WybieVisitQA'
+            }
+            if (project.hasProperty('storyVisitsVisualCheck')) {
+                property 'coraline.storyVisitsVisualCheck', 'true'
+                if (project.hasProperty('storyVisitsFinishCheck')) property 'coraline.storyVisitsFinishCheck', 'true'
+                if (project.hasProperty('storyVisitsTeaOnly')) property 'coraline.storyVisitsTeaOnly', 'true'
+                workingDirectory project.file('run-story-visits-qa')
+                args '--quickPlaySingleplayer', 'StoryVisitsQA'
+            }
+            if (project.hasProperty('wybieVisitVisualCheck')) {
+                property 'coraline.wybieVisitVisualCheck', 'true'
+                if (project.hasProperty('wybieVisitPoseOnly')) property 'coraline.wybieVisitPoseOnly', 'true'
+                workingDirectory project.file('run-wybie-visit-qa')
+                args '--quickPlaySingleplayer', 'WybieVisitQA'
+            }
             if (project.hasProperty('scoldingAudioCheck')) {
                 property 'coraline.scoldingAudioCheck', 'true'
                 if (project.hasProperty('scoldingFlowStart')) property 'coraline.scoldingFlowStart', project.property('scoldingFlowStart')
@@ -243,13 +272,31 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 // Opt-in regression worlds are excluded from release jars.
 if (project.hasProperty('gameTests')) {
     if (project.hasProperty('visitGiftTests')) { sourceSets.main.java.srcDir 'src/visittest/java'; sourceSets.main.java.srcDir 'src/gametest/java/com/coraline/welcome' }
-    sourceSets.main.java.srcDir project.hasProperty('secretsTests') ? 'src/activitytest/java/com/coraline/secrets' : project.hasProperty('activityFixTests') ? 'src/activitytest/java' : project.hasProperty('welcomeTests') ? 'src/gametest/java/com/coraline/welcome' : project.hasProperty('familyResetTests') ? 'src/gametest/java/com/coraline/reset' : project.hasProperty('clothingTests') ? 'src/gametest/java/com/coraline/clothing' : 'src/gametest/java'
+    sourceSets.main.java.srcDir project.hasProperty('wybieVisitTests') ? 'src/wybietest/java' : project.hasProperty('secretsTests') ? 'src/activitytest/java/com/coraline/secrets' : project.hasProperty('activityFixTests') ? 'src/activitytest/java' : project.hasProperty('welcomeTests') ? 'src/gametest/java/com/coraline/welcome' : project.hasProperty('familyResetTests') ? 'src/gametest/java/com/coraline/reset' : project.hasProperty('clothingTests') ? 'src/gametest/java/com/coraline/clothing' : 'src/gametest/java'
     sourceSets.main.resources.srcDir 'src/gametest/resources'
     if (project.hasProperty('parentTests')) sourceSets.main.java.srcDir 'src/gametest/java/com/coraline/parents'
+    if (project.hasProperty('wybieTestClass')) sourceSets.main.java.exclude { element ->
+        !element.directory && element.file.absolutePath.replace('\\','/').contains('/src/wybietest/') && element.file.name.endsWith('GameTests.java') && element.file.name != project.property('wybieTestClass')
+    }
+    if (project.hasProperty('wybieTestClasses')) {
+        def selectedTests = new HashSet(Arrays.asList(project.property('wybieTestClasses').toString().split(',')))
+        if (selectedTests.isEmpty() || selectedTests.any { !(it ==~ /[A-Za-z0-9_]+GameTests\.java/) })
+            throw new GradleException('Invalid bounded GameTest class selection')
+        sourceSets.main.java.exclude { element ->
+            !element.directory && element.file.absolutePath.replace('\\','/').contains('/src/wybietest/') && element.file.name.endsWith('GameTests.java') && !selectedTests.contains(element.file.name)
+        }
+    }
 }
+if (project.hasProperty('gameTests')) sourceSets.main.java.srcDir 'src/rendercheck/java/com/coraline/qa'
 if (project.hasProperty('renderChecks')) {
+    if (project.hasProperty('rosewoodHouseVisualCheck') || project.hasProperty('seamlessTunnelVisualCheck') || project.hasProperty('visitEventsVisualCheck')) sourceSets.main.java.exclude 'com/coraline/client/DollRenderCheck.java'
     sourceSets.main.java.srcDir 'src/rendercheck/java'
-    if (project.hasProperty('iceBoatRaceVisualCheck') || project.hasProperty('magicActivitiesVisualCheck') || project.hasProperty('newActivitiesVisualCheck') || project.hasProperty('expeditionVisualCheck') || project.hasProperty('mallBattleHuntVisualCheck')) sourceSets.main.java.exclude 'com/coraline/client/DollRenderCheck.java'
+    if (project.hasProperty('renderCheckClasses')) {
+        def selectedRender = new HashSet(Arrays.asList(project.property('renderCheckClasses').toString().split(',')))
+        if (selectedRender.isEmpty() || selectedRender.any { !(it ==~ /[A-Za-z0-9_]+VisualCheck\.java/) }) throw new GradleException('Invalid render harness selection')
+        sourceSets.main.java.exclude { element -> !element.directory && element.file.absolutePath.replace('\\','/').contains('/src/rendercheck/') && !selectedRender.contains(element.file.name) && element.file.name != 'LeanWorldVisualCheck.java' }
+    }
+    if (project.hasProperty('storyVisitsVisualCheck') || project.hasProperty('wybieVisitVisualCheck') || project.hasProperty('iceBoatRaceVisualCheck') || project.hasProperty('magicActivitiesVisualCheck') || project.hasProperty('newActivitiesVisualCheck') || project.hasProperty('expeditionVisualCheck') || project.hasProperty('mallBattleHuntVisualCheck')) sourceSets.main.java.exclude 'com/coraline/client/DollRenderCheck.java'
 }
 
 tasks.register('importParentVoices', Exec) {
@@ -262,16 +309,125 @@ tasks.register('importParentVoices', Exec) {
     commandLine 'python', 'tools/import_parent_voices.py'
 }
 tasks.named('processResources').configure { dependsOn 'importParentVoices' }
+tasks.register('importWybieVisitAudio', Exec) {
+    commandLine 'python', 'tools/import_wybie_visit_audio.py'
+}
+tasks.named('processResources').configure { dependsOn 'importWybieVisitAudio' }
+
+// Original supplied WAVs only; no synthesis/transcription or subtitle changes.
+tasks.register('importFinalChapterRecordings', Exec) {
+    commandLine 'python', 'tools/import_final_chapter_recordings.py'
+}
+tasks.named('processResources').configure { dependsOn 'importFinalChapterRecordings' }
+tasks.register('checkFinalChapterRecordings', Exec) {
+    dependsOn 'importFinalChapterRecordings'
+    commandLine 'python', 'tools/verify_final_chapter_recordings.py'
+}
+tasks.register('testFinalChapterRecordingMerge', Exec) {
+    commandLine 'python', 'tools/test_final_chapter_recordings.py'
+}
+tasks.named('check').configure { dependsOn 'checkFinalChapterRecordings', 'testFinalChapterRecordingMerge' }
+// Shared sound/timing tables must be merged after the existing importers.
+gradle.projectsEvaluated {
+    tasks.named('importFinalChapterRecordings').configure {
+        mustRunAfter tasks.matching { it.name.startsWith('import') && it.name != 'importFinalChapterRecordings' }
+    }
+}
+tasks.register('buildVisitVoiceEnvelopes', Exec) {
+    dependsOn 'importWybieVisitAudio'
+    inputs.file 'tools/build_visit_envelopes.py'
+    inputs.files fileTree('src/main/resources/assets/coraline/sounds/wybie_visit') { include '*.ogg'; exclude 'music.ogg' }
+    inputs.files fileTree('src/main/resources/assets/coraline/sounds/bobinsky_visit') { include '*.ogg'; exclude 'music.ogg' }
+    outputs.file 'src/main/resources/assets/coraline/visit_voice_envelopes.json'
+    commandLine 'python', 'tools/build_visit_envelopes.py'
+}
+tasks.named('processResources').configure { dependsOn 'buildVisitVoiceEnvelopes' }
+
+tasks.register('buildFinalChapterEnvelopes', Exec) {
+    dependsOn 'importFinalChapterRecordings', 'buildVisitVoiceEnvelopes'
+    // Merge supplied-recording waveform data last; never synthesize or caption.
+    commandLine 'python', 'tools/build_final_chapter_envelopes.py'
+}
+tasks.named('processResources').configure { dependsOn 'buildFinalChapterEnvelopes' }
+tasks.named('checkFinalChapterRecordings').configure { dependsOn 'buildFinalChapterEnvelopes' }
+tasks.register('testFinalChapterEnvelopes', Exec) {
+    commandLine 'python', 'tools/test_final_chapter_envelopes.py'
+}
+tasks.named('check').configure { dependsOn 'testFinalChapterEnvelopes' }
+tasks.register('importRosewoodHouse', Exec) {
+    commandLine 'python', 'tools/import_rosewood_house.py'
+    inputs.file 'tools/import_rosewood_house.py'
+    inputs.file 'tools/repair_rosewood_house.py'
+    inputs.file 'tools/build_rosewood_fixtures.py'
+    inputs.file 'artwork/otherworld_house/Rosewood_House_Complete_v3.blueprint.json'
+    outputs.file 'src/main/resources/assets/coraline/structures/rosewood_house.json.gz'
+    outputs.files fileTree('src/main/resources/assets/coraline/models/block') { include 'rosewood_*.json' }
+    outputs.files fileTree('src/main/resources/assets/coraline/blockstates') { include 'rosewood_*.json' }
+    outputs.files 'src/main/resources/assets/coraline/textures/block/rosewood_drawer.png', 'src/main/resources/assets/coraline/textures/block/rosewood_cabinet.png', 'src/main/resources/assets/coraline/textures/item/borrowed_house_key.png', 'src/main/resources/assets/coraline/models/item/borrowed_house_key.json'
+}
+tasks.named('processResources').configure { dependsOn 'importRosewoodHouse' }
+tasks.register('importRosewoodGarden', Exec) {
+    commandLine 'python', 'tools/import_rosewood_garden.py'
+    inputs.files 'tools/import_rosewood_garden.py', 'artwork/otherworld_garden/Rosewood_Moonlit_Garden.blueprint.json'
+    outputs.file 'src/main/resources/assets/coraline/structures/rosewood_garden.json.gz'
+}
+tasks.named('processResources').configure { dependsOn 'importRosewoodGarden' }
+tasks.matching { it.name == 'validateModelJson' }.configureEach { dependsOn 'importRosewoodHouse' }
 tasks.register('importGameAudio', Exec) {
     dependsOn 'importParentVoices'
     commandLine 'python', 'tools/import_game_audio.py'
 }
 tasks.named('processResources').configure { dependsOn 'importGameAudio' }
+
+tasks.register('importFirstEscapeMusic', Exec) {
+    commandLine 'python', 'tools/import_first_escape_music.py'
+    inputs.files 'tools/import_first_escape_music.py', 'music/eventbased/FirstEscape.mp3'
+    outputs.files 'src/main/resources/assets/coraline/sounds/scenes/first_escape_music.ogg', 'src/main/resources/assets/coraline/first_escape_music_audio.json'
+}
+tasks.named('processResources').configure { dependsOn 'importFirstEscapeMusic' }
 tasks.register('importVisitAudio', Exec) {
     dependsOn 'importGameAudio'
     commandLine 'python', 'tools/import_visit_audio.py'
 }
 tasks.named('processResources').configure { dependsOn 'importVisitAudio' }
+
+tasks.register('importLegacyOriginalMetadata', Exec) {
+    dependsOn 'importVisitAudio', 'importWybieVisitAudio'
+    inputs.files 'tools/import_legacy_original_metadata.py', 'tools/legacy_original_recordings.json'
+    // Merge after the original exporters; never reset another importer's times.
+    commandLine 'python', 'tools/import_legacy_original_metadata.py'
+}
+tasks.named('processResources').configure { dependsOn 'importLegacyOriginalMetadata' }
+
+tasks.register('importVisitEventAudio', Exec) {
+    dependsOn 'importScoldingAudio', 'importWybieVisitAudio'
+    inputs.files(fileTree('voicelines/othermother/events'), fileTree('voicelines/otherfather/events'))
+    inputs.files('tools/prepare_exploration_audio.py','tools/visit_event_audio_catalog.py','tools/voice_recording_proof.py')
+    inputs.file 'tools/prepare_temporary_event_audio.py'
+    inputs.files('tools/compact_event_voice_plan.json','tools/full_event_voice_plan.json')
+    inputs.property 'temporaryEventAudio', project.hasProperty('temporaryEventAudio')
+    inputs.files(fileTree('tools') { include '*_voice_manifest.json' })
+    outputs.dir 'src/main/resources/assets/coraline/sounds/exploration'
+    outputs.dir 'src/main/resources/assets/coraline/sounds/family_dinner'
+    outputs.dir 'src/main/resources/assets/coraline/sounds/study'
+    outputs.dir 'src/main/resources/assets/coraline/sounds/family_outing'
+    outputs.dir 'src/main/resources/assets/coraline/sounds/family_game_night'
+    outputs.dir 'src/main/resources/assets/coraline/sounds/special_delivery'
+    outputs.dir 'src/main/resources/assets/coraline/sounds/house_party'
+    outputs.dir 'src/main/resources/assets/coraline/sounds/player_party'
+    outputs.dir 'src/main/resources/assets/coraline/sounds/mother_goes_out'
+    outputs.dir 'src/main/resources/assets/coraline/sounds/wybie_adventure'
+    outputs.dir 'src/main/resources/assets/coraline/sounds/theatre'
+    outputs.dir 'src/main/resources/assets/coraline/sounds/mouse_circus'
+    outputs.dir 'src/main/resources/assets/coraline/sounds/compact_events'
+    if (project.hasProperty('temporaryEventAudio')) {
+        commandLine 'python', 'tools/prepare_temporary_event_audio.py'
+    } else {
+        commandLine 'python', 'tools/prepare_exploration_audio.py', '--all'
+    }
+}
+tasks.named('processResources').configure { dependsOn 'importVisitEventAudio' }
+tasks.matching { it.name == 'buildStorySubtitles' }.configureEach { dependsOn 'importVisitEventAudio' }
 
 tasks.register('importWelcomeAudio', Exec) {
     dependsOn 'importVisitAudio'
@@ -317,8 +473,13 @@ tasks.register('importOtherFatherActivityIntros', Exec) {
     commandLine 'python', 'tools/import_welcome_audio.py'
 }
 tasks.register('buildStorySubtitles', Exec) {
-    dependsOn 'importOtherFatherActivityIntros'
-    commandLine 'python', 'tools/build_story_subtitles.py'
+    dependsOn 'importOtherFatherActivityIntros', 'importWybieVisitAudio', 'importLegacyOriginalMetadata'
+    inputs.property 'temporaryEventAudio', project.hasProperty('temporaryEventAudio')
+    if (project.hasProperty('temporaryEventAudio')) {
+        commandLine 'python', 'tools/build_story_subtitles.py', '--temporary-audio'
+    } else {
+        commandLine 'python', 'tools/build_story_subtitles.py'
+    }
 }
 tasks.register('importSecretsAudio', Exec) {
     dependsOn 'importOtherFatherActivityIntros'
@@ -332,6 +493,111 @@ tasks.register('importScoldingAudio', Exec) {
 }
 tasks.named('buildStorySubtitles').configure { dependsOn 'importScoldingAudio' }
 tasks.named('processResources').configure { dependsOn 'buildStorySubtitles' }
+
+// These tasks all merge sounds/timing JSON. Serialize them, including under --parallel.
+tasks.named('importWybieVisitAudio').configure { dependsOn 'importScoldingAudio' }
+tasks.register('importNumberedOriginalAudio', Exec) {
+    dependsOn 'importVisitEventAudio'
+    inputs.files('tools/import_numbered_original_audio.py', 'tools/numbered_original_recordings.json')
+    inputs.files('voicelines/othermother/extra/WybieIntroduce.wav', 'voicelines/othermother/extra/BobinskyMiceCircusInvite.wav',
+        'music/eventbased/Theatre.mp3', 'music/eventbased/micecircus.mp3',
+        'voicelines/bobinsky/other/CircusIntroduction.wav', 'voicelines/bobinsky/other/CircusEnd.wav')
+    inputs.files fileTree('voicelines/MissSpinkAndForcible/other') { include '*.wav' }
+    outputs.dir 'src/main/resources/assets/coraline/sounds/numbered_originals'
+    outputs.file 'src/main/resources/assets/coraline/numbered_original_audio.json'
+    // Explicitly defer the importer's separate decode-validation pass when tests are prohibited.
+    // Conversion, pinned source checks, timing extraction, backups and output readback stay enabled.
+    inputs.property('deferStandaloneAudioValidation', project.hasProperty('deferStandaloneAudioValidation'))
+    if (project.hasProperty('deferStandaloneAudioValidation')) {
+        commandLine 'python', 'tools/import_numbered_original_audio.py', '--convert-only'
+    } else {
+        commandLine 'python', 'tools/import_numbered_original_audio.py'
+    }
+}
+tasks.named('buildStorySubtitles').configure { dependsOn 'importNumberedOriginalAudio' }
+tasks.named('processResources').configure { dependsOn 'importNumberedOriginalAudio' }
+tasks.register('importCatAudio', Exec) {
+    dependsOn 'importNumberedOriginalAudio'
+    inputs.file 'tools/import_cat_audio.py'
+    inputs.files fileTree('voicelines/cat') { include '*.wav' }
+    outputs.dir 'src/main/resources/assets/coraline/sounds/cat_encounter'
+    outputs.file 'src/main/resources/assets/coraline/cat_encounter_audio.json'
+    commandLine 'python', 'tools/import_cat_audio.py'
+}
+tasks.named('buildStorySubtitles').configure { dependsOn 'importCatAudio' }
+tasks.named('processResources').configure { dependsOn 'importCatAudio' }
+tasks.register('importBlackIsTraditionalAudio', Exec) {
+    dependsOn 'importCatAudio'
+    workingDir projectDir
+    commandLine 'python', 'tools/import_black_is_traditional.py'
+}
+tasks.named('buildStorySubtitles').configure { dependsOn 'importBlackIsTraditionalAudio' }
+tasks.named('processResources').configure { dependsOn 'importBlackIsTraditionalAudio' }
+tasks.register('importFirstEscapeAudio', Exec) {
+    dependsOn 'importBlackIsTraditionalAudio'
+    commandLine 'python', 'tools/import_first_escape_story.py'
+}
+tasks.named('buildStorySubtitles').configure { dependsOn 'importFirstEscapeAudio' }
+tasks.named('processResources').configure { dependsOn 'importFirstEscapeAudio' }
+tasks.register('importMissingParentsTeaAudio', Exec) {
+    dependsOn 'importFirstEscapeAudio'
+    commandLine 'python', 'tools/import_missing_parents_tea.py'
+}
+tasks.named('processResources').configure { dependsOn 'importMissingParentsTeaAudio' }
+tasks.register('importMissingParentsMusic', Exec) {
+    dependsOn 'importMissingParentsTeaAudio'
+    commandLine 'python', 'tools/import_missing_parents_music.py'
+}
+tasks.named('processResources').configure { dependsOn 'importMissingParentsMusic' }
+tasks.named('buildStorySubtitles').configure { dependsOn 'importMissingParentsMusic' }
+tasks.register('importRescueChaptersAudio', Exec) {
+    dependsOn 'importMissingParentsTeaAudio'
+    commandLine 'python', 'tools/import_rescue_chapters.py'
+}
+tasks.named('processResources').configure { dependsOn 'importRescueChaptersAudio' }
+tasks.register('importIncidentalDialogueAudio', Exec) {
+    // Shared sounds/timing manifests must still be merged serially.
+    dependsOn 'importRescueChaptersAudio', 'importMissingParentsMusic'
+    commandLine 'python', 'tools/import_incidental_dialogue_audio.py'
+}
+tasks.named('processResources').configure { dependsOn 'importIncidentalDialogueAudio' }
+tasks.named('buildStorySubtitles').configure { dependsOn 'importIncidentalDialogueAudio' }
+
+tasks.register('importAcceptedGhostAudio', Exec) {
+    dependsOn 'importIncidentalDialogueAudio'
+    commandLine 'python', 'tools/import_accepted_ghost_audio.py'
+}
+tasks.named('processResources').configure { dependsOn 'importAcceptedGhostAudio' }
+tasks.register('importGhostVictimAudio', Exec) {
+    dependsOn 'importAcceptedGhostAudio'
+    inputs.files(fileTree('artwork/audio_masters/ghost_victim'), 'tools/import_child_gibberish_audio.py')
+    commandLine 'python', 'tools/import_child_gibberish_audio.py'
+}
+tasks.named('processResources').configure { dependsOn 'importGhostVictimAudio' }
+tasks.named('buildStorySubtitles').configure { dependsOn 'importGhostVictimAudio' }
+tasks.named('buildStorySubtitles').configure { dependsOn 'importAcceptedGhostAudio' }
+tasks.named('buildVisitVoiceEnvelopes').configure { dependsOn 'importAcceptedGhostAudio' }
+tasks.named('buildVisitVoiceEnvelopes').configure {
+    dependsOn 'importIncidentalDialogueAudio'
+    inputs.files fileTree('src/main/resources/assets/coraline/sounds/visit/incidental') { include '**/*.ogg' }
+}
+tasks.named('buildVisitVoiceEnvelopes').configure {
+    dependsOn 'importRescueChaptersAudio'
+    inputs.files fileTree('src/main/resources/assets/coraline/sounds/rescue_chapters') { include '*.ogg' }
+}
+tasks.named('buildStorySubtitles').configure { dependsOn 'importMissingParentsTeaAudio' }
+tasks.named('buildVisitVoiceEnvelopes').configure {
+    dependsOn 'importMissingParentsTeaAudio'
+    inputs.files fileTree('src/main/resources/assets/coraline/sounds/missing_parents_tea') { include '*.ogg' }
+    inputs.files fileTree('src/main/resources/assets/coraline/sounds/missing_parents_cat') { include '*.ogg' }
+}
+tasks.named('buildVisitVoiceEnvelopes').configure {
+    dependsOn 'importFirstEscapeAudio'
+    ['cocoa_beetles','mirror_prison','first_escape','missing_parents'].each { part -> inputs.files fileTree('src/main/resources/assets/coraline/sounds/'+part) { include '*.ogg' } }
+    dependsOn 'importCatAudio'
+    inputs.files fileTree('src/main/resources/assets/coraline/sounds/cat_encounter') { include '*.ogg' }
+}
+
 
 repositories {
     // Put repositories for dependencies here
@@ -393,6 +659,7 @@ tasks.named('processResources', ProcessResources).configure {
     // Optimize COPIED runtime resources, leaving original artwork/audio untouched.
     // Copy all inputs again on rerun: sound aliases must start from the source manifest.
     doLast {
+        if (project.hasProperty('compactSingleRelease')) System.gc()
         project.exec {
             commandLine 'python', 'tools/optimize_runtime_assets.py',
                 '--resources', destinationDir.absolutePath,
@@ -402,23 +669,61 @@ tasks.named('processResources', ProcessResources).configure {
     }
 }
 
+// In the compact single-VM build, return unused compiler/configuration heap
+// before an external importer, validator or Forge tool needs its own memory.
+// All tasks and memory guards remain enabled.
+if (project.hasProperty('compactSingleRelease')) {
+    tasks.configureEach { task ->
+        if (task instanceof Exec || task.name == 'reobfJar') {
+            task.doFirst { System.gc() }
+        }
+    }
+}
+
 tasks.register('testRuntimeAssetOptimization', Exec) {
     commandLine 'python', 'tools/test_optimize_runtime_assets.py'
 }
 tasks.named('check').configure { dependsOn 'testRuntimeAssetOptimization' }
+tasks.register('testStreamingMappings', Exec) {
+    commandLine 'python', 'tools/test_stream_srg_mappings.py'
+}
+tasks.named('check').configure { dependsOn 'testStreamingMappings' }
+
+// Inspect the final reobfuscated distributable, never a sources/development JAR.
+tasks.register('verifyReleaseJarSize', Exec) {
+    dependsOn 'reobfJar'
+    onlyIf { !project.hasProperty('temporaryEventAudio') }
+    doFirst {
+        commandLine 'python', 'tools/verify_release_jar_size.py',
+            '--jar', tasks.named('jar').get().archiveFile.get().asFile.absolutePath,
+            '--report', layout.buildDirectory.file('reports/release-jar-size.json').get().asFile.absolutePath
+    }
+}
 
 // Example for how to get properties into the manifest for reading at runtime.
 tasks.named('jar', Jar).configure {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+    if (project.hasProperty('temporaryEventAudio')) archiveClassifier.set('placeholder-audio')
+    else {
+        // Keep the archived placeholder inventory/cues in source, but never
+        // advertise or package them as part of a complete genuine-voice build.
+        exclude 'assets/coraline/temporary_event_audio.json'
+        exclude 'assets/coraline/sounds/temporary_event_audio/**'
+    }
+    // Copy tasks can retain this opt-in fixture after a GameTest build. It has
+    // no runtime role and must not leak into a subsequent production release.
+    if (!project.hasProperty('gameTests')) exclude 'data/coraline/structures/empty.nbt'
     manifest {
         attributes([
                 'Specification-Title'     : mod_id,
-                'MixinConfigs'            : 'coraline.mixins.json',
+                  'Audio-Build-Kind'         : project.hasProperty('temporaryEventAudio') ? 'placeholder-audio' : 'genuine-audio',
+                'MixinConfigs'            : 'coraline.mixins.json,coraline.party.mixins.json',
                 'Specification-Vendor'    : mod_authors,
                 'Specification-Version'   : '1', // We are version 1 of ourselves
                 'Implementation-Title'    : project.name,
                 'Implementation-Version'  : project.jar.archiveVersion,
-                'Implementation-Vendor'   : mod_authors,
-                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                'Implementation-Vendor'   : mod_authors
         ])
     }
 
@@ -450,29 +755,100 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 def clothingRefmap = layout.buildDirectory.file('generated/mixin/coraline.refmap.json')
+
+// Disposable code checks before all recordings exist. Normal resource copying
+// and optimization still run. This mode cannot assemble a release artifact.
+if (project.hasProperty('qaCodeOnlyResources')) {
+    if (!project.hasProperty('gameTests') || !project.hasProperty('exportNativeLaunch')) {
+        throw new GradleException('qaCodeOnlyResources is limited to disposable server QA.')
+    }
+    tasks.matching { task -> task.name in [
+        'importParentVoices','importWybieVisitAudio','importFinalChapterRecordings',
+        'importWelcomeAudio','importLootAudio','importVisitGiftAudio','importTutorialAudio',
+        'importActivityAudio','importArrivalAudio','importActivityCompleteAudio',
+        'importOtherFatherActivityIntros','importSecretsAudio','importScoldingAudio','importCatAudio',
+        'buildVisitVoiceEnvelopes','buildFinalChapterEnvelopes','importGameAudio',
+        'importFirstEscapeMusic','importVisitAudio','importLegacyOriginalMetadata',
+        'importVisitEventAudio','importNumberedOriginalAudio','importBlackIsTraditionalAudio',
+        'importFirstEscapeAudio','importMissingParentsTeaAudio','importMissingParentsMusic',
+        'importRescueChaptersAudio','importIncidentalDialogueAudio','importAcceptedGhostAudio',
+        'buildStorySubtitles'
+    ] }.configureEach { enabled = false }
+    gradle.taskGraph.whenReady { graph ->
+        if (graph.allTasks.any { it.name in ['jar','reobfJar','build','assemble','publish'] }) {
+            throw new GradleException('Code-only QA resources cannot produce a release artifact.')
+        }
+    }
+}
+def mixinShadowMappings = layout.buildDirectory.file('generated/mixin-shadow.srg')
 def clothingMappings = layout.buildDirectory.file('generatedMappings/clothing.srg')
 tasks.register('clothingSrgMappings') {
     dependsOn 'createMcpToSrg'
     inputs.file(layout.buildDirectory.file('createMcpToSrg/output.tsrg'))
+    inputs.file('tools/stream_srg_mappings.py')
     outputs.file(clothingMappings)
     doLast {
         clothingMappings.get().asFile.parentFile.mkdirs()
-        net.minecraftforge.srgutils.IMappingFile.load(layout.buildDirectory.file('createMcpToSrg/output.tsrg').get().asFile)
-            .write(clothingMappings.get().asFile.toPath(), net.minecraftforge.srgutils.IMappingFile.Format.SRG, false)
+        if (project.hasProperty('compactSingleRelease')) {
+            System.gc()
+            project.exec { commandLine 'python', 'tools/stream_srg_mappings.py',
+                layout.buildDirectory.file('createMcpToSrg/output.tsrg').get().asFile.absolutePath,
+                clothingMappings.get().asFile.absolutePath }
+        } else {
+            net.minecraftforge.srgutils.IMappingFile.load(layout.buildDirectory.file('createMcpToSrg/output.tsrg').get().asFile)
+                .write(clothingMappings.get().asFile.toPath(), net.minecraftforge.srgutils.IMappingFile.Format.SRG, false)
+        }
     }
 }
 sourceSets.main.resources.srcDir(layout.buildDirectory.dir('generated/mixin'))
 tasks.named('compileJava', JavaCompile).configure {
     // Opt-in test sources share main output. Force a full compilation when switching
     // source sets; incremental annotation processing can otherwise remove test classes.
-    if (project.hasProperty('gameTests')) options.incremental = false
+    // Mixin emits one shared refmap and shadow mapping file for the compilation.
+    // Incremental compilation can silently leave either output incomplete.
+    options.incremental = false
+    // The guarded low-memory source build releases compiler state with this
+    // worker instead of retaining the full mapped classpath in Gradle. Mixin
+    // processing and its declared outputs remain part of the same real task.
+    if (project.hasProperty('isolatedLowMemoryCompiler')) {
+        options.fork = true
+        options.forkOptions.memoryInitialSize = '16m'
+        options.forkOptions.memoryMaximumSize = '256m'
+        options.forkOptions.jvmArgs += ['-XX:+UseSerialGC', '-XX:ActiveProcessorCount=2',
+            '-XX:MaxMetaspaceSize=128m', '-XX:ReservedCodeCacheSize=32m', '-XX:MaxDirectMemorySize=48m']
+    }
     dependsOn 'clothingSrgMappings'
+    outputs.files(clothingRefmap, mixinShadowMappings)
     doFirst { clothingRefmap.get().asFile.parentFile.mkdirs() }
     options.compilerArgs += [
         '-AdefaultObfuscationEnv=searge',
         "-AreobfSrgFile=${clothingMappings.get().asFile}",
-        "-AoutRefMapFile=${clothingRefmap.get().asFile}"
+        "-AoutRefMapFile=${clothingRefmap.get().asFile}",
+        "-AoutSrgFile=${mixinShadowMappings.get().asFile}"
     ]
+}
+
+// Shadows belong to the mixin class, not Minecraft's inheritance tree. The
+// normal game mappings cannot rename them without the annotation processor's
+// supplemental mappings. Refmaps alone only cover injections/accessors.
+tasks.withType(net.minecraftforge.gradle.userdev.tasks.RenameJarInPlace).configureEach {
+    if (name == 'reobfJar') {
+        if (project.hasProperty('compactSingleRelease')) {
+            // Keep the Gradle owner at 192 MiB while its one serial Forge
+            // remapper retains the existing 384 MiB cap. No second daemon.
+            jvmArgs.addAll('-Xms16m', '-Xmx384m', '-XX:+UseSerialGC',
+                '-XX:ActiveProcessorCount=2', '-XX:MaxMetaspaceSize=128m',
+                '-XX:ReservedCodeCacheSize=32m', '-XX:MaxDirectMemorySize=48m',
+                '-Djdk.nio.maxCachedBufferSize=1048576')
+        }
+        dependsOn 'compileJava'
+        extraMappings.from(mixinShadowMappings)
+        doLast {
+            project.exec {
+                commandLine 'python', 'tools/verify_packaged_mixins.py', input.get().asFile.absolutePath
+            }
+        }
+    }
 }
 tasks.named('processResources').configure { dependsOn 'compileJava' }
 
@@ -498,3 +874,136 @@ if (project.hasProperty('activityFixTests')) {
         }
     }
 }
+
+// Opt-in QA preparation: release compiler memory before starting Minecraft.
+// Export the actual ForgeGradle launch spec, never an invented launch command.
+abstract class CoralineQaRunExporter extends net.minecraftforge.gradle.common.util.runs.RunConfigGenerator {
+    static Map prepare(def task) {
+        // Mirror MinecraftRunTask.exec's configuration using the same token/arg
+        // generators. JavaExec itself is deliberately not invoked here.
+        def cfg=task.runConfig.get()
+        def tokens=configureTokensLazy(task.project,cfg,mapModClassesToGradle(task.project,cfg),task.minecraftArtifacts,task.runtimeClasspathArtifacts)
+        task.workingDir=task.project.file(cfg.workingDirectory)
+        task.workingDir.mkdirs()
+        task.args(getArgsStream(cfg,tokens,false).toArray())
+        cfg.jvmArgs.each { task.jvmArgs(cfg.replace(tokens,it)) }
+        if (cfg.isClient()) task.additionalClientArgs.get().each { task.jvmArgs(cfg.replace(tokens,it)) }
+        cfg.environment.each { key,value -> task.environment(key,cfg.replace(tokens,value)) }
+        cfg.properties.each { key,value -> task.systemProperty(key,cfg.replace(tokens,value)) }
+        cfg.allSources.each { task.classpath(it.runtimeClasspath) }
+        task.executable=task.javaLauncher.get().executablePath.asFile.absolutePath
+        // Gradle 8.8's new JVM-arguments property is materialized only inside
+        // JavaExec.exec; getAllJvmArgs alone omits Forge's module/open options.
+        def pendingJvm=task.jvmArguments.getOrElse([])
+        def providerJvm=task.jvmArgumentProviders.collectMany { it.asArguments().toList() }
+        return [command: [task.executable]+task.allJvmArgs+pendingJvm+providerJvm+['-cp',task.classpath.asPath,task.mainClass.get()]+task.args,
+                cwd:task.workingDir.absolutePath, environment:task.environment]
+    }
+}
+if (project.hasProperty('exportNativeLaunch')) {
+    tasks.matching { it.name in ['runClient', 'runGameTestServer'] }.configureEach {
+        doFirst {
+            def launchFile=layout.buildDirectory.file('qa-launch-' + name + '.json').get().asFile
+            launchFile.parentFile.mkdirs()
+            launchFile.text=groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(CoralineQaRunExporter.prepare(delegate)))
+            logger.lifecycle('Prepared native launch: ' + launchFile.absolutePath)
+            throw new org.gradle.api.tasks.StopExecutionException('Prepared only; native process runs after Gradle exits')
+        }
+    }
+}
+
+// Complete supplied Mantis score; shared manifests are merged by the importer.
+tasks.register('importOtherFatherBossMusic', Exec) {
+    dependsOn 'importRescueChaptersAudio'
+    commandLine 'python', 'tools/import_other_father_boss_music.py'
+    inputs.files 'tools/import_other_father_boss_music.py', 'tools/import_missing_parents_music.py', 'music/eventbased/OtherFatherBossFight.mp3'
+}
+tasks.named('processResources').configure { dependsOn 'importOtherFatherBossMusic' }
+
+tasks.register('importLongFaceMusic', Exec) {
+    dependsOn 'importOtherFatherBossMusic'
+    commandLine 'python', 'tools/import_long_face_music.py'
+    inputs.files 'tools/import_long_face_music.py', 'music/HePulledALooooongFace.mp3'
+}
+tasks.named('processResources').configure { dependsOn 'importLongFaceMusic' }
+
+// Serialize shared-manifest writes before normal runtime asset optimization.
+tasks.register('importTheCatMusic', Exec) {
+    dependsOn 'importLongFaceMusic'
+    commandLine 'python', 'tools/import_the_cat_music.py'
+    inputs.files 'tools/import_the_cat_music.py', 'music/eventbased/TheCat.mp3'
+}
+tasks.named('processResources').configure { dependsOn 'importTheCatMusic' }
+
+tasks.register('importRescueArrivalMusic', Exec) {
+    dependsOn 'importTheCatMusic'
+    commandLine 'python', 'tools/import_rescue_arrival_music.py'
+    inputs.files 'tools/import_rescue_arrival_music.py', 'music/eventbased/EnterOtherWorldParentsRescue.mp3'
+}
+tasks.named('processResources').configure { dependsOn 'importRescueArrivalMusic' }
+
+tasks.register('importGameProposalMusic', Exec) {
+    dependsOn 'importRescueArrivalMusic'
+    commandLine 'python', 'tools/import_game_proposal_music.py'
+    inputs.files 'tools/import_game_proposal_music.py', 'music/eventbased/OtherMotherGameProposal.mp3'
+}
+tasks.named('processResources').configure { dependsOn 'importGameProposalMusic' }
+
+tasks.register('importSpinkBossMusic', Exec) {
+    dependsOn 'importGameProposalMusic'
+    commandLine 'python', 'tools/import_spink_boss_music.py'
+    inputs.files 'tools/import_spink_boss_music.py', 'music/eventbased/SpinkAndForcibleBossFight.mp3'
+}
+tasks.named('processResources').configure { dependsOn 'importSpinkBossMusic' }
+
+// Complete the same audio task graph serially without retaining Gradle beside
+// each decoder. A receipt is accepted only for the exact graph and unchanged
+// masters, scripts, captions and imported outputs. Resource optimization and
+// all release checks still execute normally.
+def serializedAudioTask = { task -> task instanceof Exec && (
+    (task.name.startsWith('import') && !(task.name in ['importRosewoodHouse','importRosewoodGarden'])) ||
+    task.name in ['buildVisitVoiceEnvelopes','buildFinalChapterEnvelopes','buildStorySubtitles']) }
+if (project.hasProperty('exportSerializedImports') || project.hasProperty('preparedSerializedImports')) {
+    if (project.hasProperty('temporaryEventAudio') || project.hasProperty('qaCodeOnlyResources'))
+        throw new GradleException('Serialized release imports require genuine audio.')
+    gradle.taskGraph.whenReady { graph ->
+        def rows = graph.allTasks.findAll(serializedAudioTask).collect { task ->
+            [name:task.name, command:task.commandLine.collect { it.toString() },
+             environment:task.environment.findAll { key,value -> key == 'CORALINE_VOICE_MANIFEST' }.collectEntries { key,value -> [(key.toString()):value.toString()] }]
+        }
+        if (rows.isEmpty()) throw new GradleException('No complete audio import graph.')
+        def checkedPath = { value ->
+            def path=project.file(value).canonicalFile
+            if (!path.toPath().startsWith(layout.buildDirectory.get().asFile.canonicalFile.toPath()))
+                throw new GradleException('Serialized import receipt escaped this build.')
+            path
+        }
+        if (project.hasProperty('exportSerializedImports')) {
+            def output=checkedPath(project.property('exportSerializedImports'))
+            output.parentFile.mkdirs()
+            def compiler=tasks.named('compileJava', JavaCompile).get()
+            def compileSpec=[sources:compiler.source.files.collect { it.canonicalPath }.sort(),
+                classpath:compiler.classpath.files.collect { it.canonicalPath },
+                processors:compiler.options.annotationProcessorPath.files.collect { it.canonicalPath },
+                arguments:compiler.options.compilerArgs.collect { it.toString() },
+                sourceCompatibility:compiler.sourceCompatibility, targetCompatibility:compiler.targetCompatibility,
+                destination:compiler.destinationDirectory.get().asFile.canonicalPath]
+            output.text=groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson([format:1,version:mod_version,tasks:rows,compile:compileSpec]))
+            throw new GradleException('SERIALIZED_IMPORT_GRAPH_EXPORTED: no build tasks executed')
+        }
+        def receipt=checkedPath(project.property('preparedSerializedImports'))
+        def proof=new groovy.json.JsonSlurper().parse(receipt)
+        if (proof.status != 'passed' || proof.graph.tasks != rows || proof.graph.version != mod_version)
+            throw new GradleException('Serialized import graph/version does not match this release.')
+        project.exec { commandLine 'python','tools/serialized_release_imports.py','verify','--receipt',receipt.absolutePath }
+        graph.allTasks.findAll(serializedAudioTask).each { task -> task.onlyIf { false } }
+    }
+}
+
+// Post-boss interludes use the complete supplied masters and shared timing tables.
+tasks.register('importGhostEyeMusic', Exec) {
+    dependsOn 'importSpinkBossMusic'
+    commandLine 'python', 'tools/import_ghost_eye_music.py'
+    inputs.files 'tools/import_ghost_eye_music.py', 'sound/GardenGhostEye.mp3', 'sound/TheatreGhostEye.mp3', 'sound/CircusGhostEye.mp3'
+}
+tasks.named('processResources').configure { dependsOn 'importGhostEyeMusic' }

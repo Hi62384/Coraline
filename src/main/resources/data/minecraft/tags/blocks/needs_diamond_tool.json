@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "coraline:soulglass_ore"
+    "coraline:soulglass_ore",
+    "coraline:perfect_ore"
   ]
 }

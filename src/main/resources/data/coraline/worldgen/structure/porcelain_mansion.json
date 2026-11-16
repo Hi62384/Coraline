@@ -1,0 +1,11 @@
+{
+  "type": "coraline:porcelain_mansion",
+  "biomes": [
+    "coraline:postgame/porcelain_plains",
+    "coraline:postgame/forgotten_gardens",
+    "coraline:postgame/stitched_meadows"
+  ],
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "none"
+}

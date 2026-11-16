@@ -1,0 +1,38 @@
+{
+  "garden_ghost_eye_music": {
+    "source": "sound/GardenGhostEye.mp3",
+    "source_sha256": "ab11456cfe55bbb3d81cc9cd6cd667b11b350649721c22d4ca2b9e674e48a483",
+    "ogg_sha256": "dcb05948074c15d4aad3a456f58691750270ecc357a9ae10503b33ab1f05a3db",
+    "export": {
+      "sample_rate": 48000,
+      "channels": 2,
+      "samples": 767374,
+      "seconds": 15.986958333333334,
+      "ticks": 320
+    }
+  },
+  "theatre_ghost_eye_music": {
+    "source": "sound/TheatreGhostEye.mp3",
+    "source_sha256": "4827e73e84a343250b5683b939e7d45fbd4d1cd93b05e79f74afd8de6ce74b70",
+    "ogg_sha256": "c531a5432272918bd39a8eb205cb384c05bfe8c08b0b55fdc6b0a9cb34ffa842",
+    "export": {
+      "sample_rate": 48000,
+      "channels": 2,
+      "samples": 511583,
+      "seconds": 10.657979166666667,
+      "ticks": 214
+    }
+  },
+  "circus_ghost_eye_music": {
+    "source": "sound/CircusGhostEye.mp3",
+    "source_sha256": "8eb57173d34df34bc2bc0fc309a4d9382afaacdc79762a7d6f41ab7791a84547",
+    "ogg_sha256": "2567a76053886cb01f8ea43ee36e55e0de94ebb14f0b6a2006b1eddc900b619d",
+    "export": {
+      "sample_rate": 48000,
+      "channels": 2,
+      "samples": 2123893,
+      "seconds": 44.247770833333334,
+      "ticks": 885
+    }
+  }
+}

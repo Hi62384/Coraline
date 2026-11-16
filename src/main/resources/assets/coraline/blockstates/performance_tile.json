@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "color=0,lit=false": {
+      "model": "coraline:block/performance_tile_0_0"
+    },
+    "color=0,lit=true": {
+      "model": "coraline:block/performance_tile_0_1"
+    },
+    "color=1,lit=false": {
+      "model": "coraline:block/performance_tile_1_0"
+    },
+    "color=1,lit=true": {
+      "model": "coraline:block/performance_tile_1_1"
+    },
+    "color=2,lit=false": {
+      "model": "coraline:block/performance_tile_2_0"
+    },
+    "color=2,lit=true": {
+      "model": "coraline:block/performance_tile_2_1"
+    },
+    "color=3,lit=false": {
+      "model": "coraline:block/performance_tile_3_0"
+    },
+    "color=3,lit=true": {
+      "model": "coraline:block/performance_tile_3_1"
+    }
+  }
+}

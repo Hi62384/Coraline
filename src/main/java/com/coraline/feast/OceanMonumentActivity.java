@@ -28,6 +28,7 @@ import java.util.*;
 public final class OceanMonumentActivity {
     static final String OWNER="CoralineOceanOwner";
     static final int CHARGE_TICKS=80;
+    private static final String AIR_BACKUP="CoralineOceanBreathing";
     // 0 speech, 1 swimming, 2 treasure available, 3 failed, 4 claimed.
     static BlockPos center(ServerPlayer p,VisitData.Scene s){return VillageActivity.center(p,s).east(1880);}
     static CompoundTag state(VisitData.Scene s){return s.loop.ocean;}
@@ -58,6 +59,7 @@ public final class OceanMonumentActivity {
         for(var g:l.getEntitiesOfClass(Guardian.class,OceanMonumentCourse.bounds(c),e->owned(e,s))){beam(g,0);g.discard();}
     }
     static void restoreBreathing(ServerPlayer p,VisitData.Scene s){
+        if(p.getPersistentData().contains(AIR_BACKUP)){restoreNativeBreathing(p);return;}if(!p.getUUID().equals(s.owner))return;
         var n=state(s);if(!n.getBoolean("Breathing"))return;
         p.removeEffect(MobEffects.WATER_BREATHING);n.putBoolean("Breathing",false);
         if(n.contains("OldBreathing")){
@@ -68,7 +70,20 @@ public final class OceanMonumentActivity {
         }
         p.setAirSupply(p.getMaxAirSupply());
     }
+    public static void restoreNativeBreathing(ServerPlayer p){
+        var backup=p.getPersistentData().getCompound(AIR_BACKUP);if(!backup.hasUUID("Player")||!backup.getUUID("Player").equals(p.getUUID())||!backup.contains("StartedAt",net.minecraft.nbt.Tag.TAG_LONG))return;
+        var current=p.getEffect(MobEffects.WATER_BREATHING);if(current!=null&&current.getAmplifier()==0&&!current.isInfiniteDuration()&&current.getDuration()<=220&&!current.isVisible()&&!current.showIcon())p.removeEffect(MobEffects.WATER_BREATHING);
+        if(backup.contains("OldBreathing")){var old=MobEffectInstance.load(backup.getCompound("OldBreathing"));if(old!=null){int remaining=old.isInfiniteDuration()?-1:old.getDuration()-(int)Math.min(Integer.MAX_VALUE,Math.max(0,OtherMotherLoop.now(p)-backup.getLong("StartedAt")));var kept=p.getEffect(MobEffects.WATER_BREATHING);if((remaining==-1||remaining>0)&&(kept==null||kept.getAmplifier()<old.getAmplifier()||kept.getAmplifier()==old.getAmplifier()&&!kept.isInfiniteDuration()&&(remaining==-1||kept.getDuration()<remaining)))p.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING,remaining,old.getAmplifier(),old.isAmbient(),old.isVisible(),old.showIcon()));}}
+        p.getPersistentData().remove(AIR_BACKUP);
+    }
+    @SubscribeEvent public static void recoverAir(net.minecraftforge.event.TickEvent.PlayerTickEvent event){
+        if(event.phase!=net.minecraftforge.event.TickEvent.Phase.END||!(event.player instanceof ServerPlayer p)||p.tickCount%20!=0||!p.getPersistentData().contains(AIR_BACKUP))return;var scene=OtherMotherLoop.active(p);if(scene==null||scene.loop.activity!=OtherMotherActivities.Activity.OTHER_OCEAN_MONUMENT||state(scene).getInt("Phase")!=1||!ActivityWorld.isActivity(p.level()))restoreNativeBreathing(p);
+    }
     private static void breathing(ServerPlayer p,VisitData.Scene s){
+        if(com.coraline.multiplayer.StorySessionData.get(p.server).groupActivity(s)){
+            if(!p.getPersistentData().contains(AIR_BACKUP)){var backup=new CompoundTag();backup.putUUID("Player",p.getUUID());backup.putUUID("Owner",s.owner);backup.putUUID("Door",s.door);backup.putInt("Generation",s.loop.generation);backup.putLong("StartedAt",OtherMotherLoop.now(p));var old=p.getEffect(MobEffects.WATER_BREATHING);if(old!=null)backup.put("OldBreathing",old.save(new CompoundTag()));p.getPersistentData().put(AIR_BACKUP,backup);}
+            if(p.tickCount%100==0||!p.hasEffect(MobEffects.WATER_BREATHING))p.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING,220,0,false,false,false));p.setAirSupply(p.getMaxAirSupply());return;
+        }
         var n=state(s);if(!n.getBoolean("Breathing")){
             var old=p.getEffect(MobEffects.WATER_BREATHING);if(old!=null)n.put("OldBreathing",old.save(new CompoundTag()));
             n.putBoolean("Breathing",true);n.putLong("BreathingAt",OtherMotherLoop.now(p));
@@ -89,40 +104,34 @@ public final class OceanMonumentActivity {
             if(p.distanceToSqr(Vec3.atBottomCenterOf(c))>64)move(p,c,.5,0,.5);
             if(OtherMotherLoop.now(p)<n.getLong("VoiceUntil"))return;
             n.putInt("Phase",1);n.putLong("Started",OtherMotherLoop.now(p));n.putInt("Section",0);
-            breathing(p,s);move(p,c,.5,1,-13.5);title(p,"OTHER OCEAN MONUMENT","Break the Guardians' line of sight.");OtherMotherLoop.changed(p);return;
+            for(var member:CooperativeActivities.playing(p,s))breathing(member,s);move(p,c,.5,1,-13.5);CooperativeActivities.regroup(p,s);title(p,"OTHER OCEAN MONUMENT","Break the Guardians' line of sight.");OtherMotherLoop.changed(p);return;
         }
         if(phase>=2){
             if(p.getY()<c.getY()-5||phase==3&&p.getZ()<c.getZ()-10||!OceanMonumentCourse.bounds(c).inflate(2).contains(p.position()))move(p,c,.5,phase==3?0:8,phase==3?.5:-280.5);
             if(phase==2&&p.tickCount%20==0)ensurePrize(p,s,c);
             return;
         }
-        breathing(p,s);
-        if(p.getY()<c.getY()||p.getY()>c.getY()+17||Math.abs(p.getX()-c.getX())>13.8){finish(p,s,c,false);return;}
-        double z=p.getZ()-c.getZ(),y=p.getY()-c.getY();
-        int boundary=OceanMonumentCourse.start(section)-OceanMonumentCourse.LENGTH+1;
-        // Every threshold must be crossed, at the correct height, one chamber at a time.
-        if(z<boundary+.8){
-            if(z<boundary-3||y<OceanMonumentCourse.exitHeight(section)-.2){finish(p,s,c,false);return;}
-            if(section==5){finish(p,s,c,true);return;}
-            n.putInt("Section",++section);stopGuardians(l,s,c);
-            p.playNotifySound(SoundEvents.AMETHYST_BLOCK_CHIME,SoundSource.PLAYERS,.45F,1.3F);OtherMotherLoop.changed(p);
+        for(var member:CooperativeActivities.playing(p,s)){
+            breathing(member,s);if(member.getY()<c.getY()||member.getY()>c.getY()+17||Math.abs(member.getX()-c.getX())>13.8){lose(member,p,s,c);continue;}
+            double z=member.getZ()-c.getZ(),y=member.getY()-c.getY();int boundary=OceanMonumentCourse.start(section)-OceanMonumentCourse.LENGTH+1;
+            if(z<boundary+.8){if(z<boundary-3||y<OceanMonumentCourse.exitHeight(section)-.2){lose(member,p,s,c);continue;}if(section==5){finish(p,s,c,true);return;}n.putInt("Section",++section);stopGuardians(l,s,c);member.playNotifySound(SoundEvents.AMETHYST_BLOCK_CHIME,SoundSource.PLAYERS,.45F,1.3F);OtherMotherLoop.changed(p);break;}
         }
-        if(p.tickCount%20==0){
-            LoopProps.hold(l,p.blockPosition());ensureGuardians(l,s,c,section);
-            p.displayClientMessage(Component.literal("Section "+(section+1)+" / 6"),true);
-        }
+        if(n.getInt("Phase")!=1)return;
+        if(p.tickCount%20==0){ensureGuardians(l,s,c,section);for(var member:CooperativeActivities.playing(p,s)){LoopProps.hold(l,member.blockPosition());member.displayClientMessage(Component.literal("Section "+(section+1)+" / 6"),true);}}
         if(section==4&&p.tickCount%4==0)OceanMonumentCourse.cyclingCover(l,c,OtherMotherLoop.now(p));
-        for(var g:l.getEntitiesOfClass(Guardian.class,new AABB(p.blockPosition()).inflate(55,20,55),e->owned(e,s))){
-            var data=g.getPersistentData();int slot=data.getInt("Slot"),gs=data.getInt("Section");
-            g.noPhysics=true;g.setDeltaMovement(Vec3.ZERO);g.setPos(OceanMonumentCourse.guardian(gs,slot).add(Vec3.atLowerCornerOf(c)));
-            boolean visible=gs==section&&g.distanceToSqr(p)<24*24&&clearSight(l,g.getEyePosition(),p.getEyePosition(),g)&&clearSight(l,g.getEyePosition(),p.position().add(0,.6,0),g);
-            int charge=nextCharge(data.getInt("Charge"),visible);data.putInt("Charge",charge);
-            if(!visible){beam(g,0);continue;}
-            if(charge==1){beam(g,p.getId());l.broadcastEntityEvent(g,(byte)21);}
-            g.getLookControl().setLookAt(p,60,60);
-            if(charge%20==0)p.playNotifySound(SoundEvents.NOTE_BLOCK_PLING.value(),SoundSource.HOSTILE,.18F,.6F+charge/100F);
-            if(charge>=CHARGE_TICKS){finish(p,s,c,false);return;}
+        final int activeSection=section;
+        for(var g:l.getEntitiesOfClass(Guardian.class,OceanMonumentCourse.bounds(c),e->owned(e,s))){
+            var data=g.getPersistentData();int slot=data.getInt("Slot"),gs=data.getInt("Section");g.noPhysics=true;g.setDeltaMovement(Vec3.ZERO);g.setPos(OceanMonumentCourse.guardian(gs,slot).add(Vec3.atLowerCornerOf(c)));
+            var target=CooperativeActivities.playing(p,s).stream().filter(member->gs==activeSection&&g.distanceToSqr(member)<24*24&&clearSight(l,g.getEyePosition(),member.getEyePosition(),g)&&clearSight(l,g.getEyePosition(),member.position().add(0,.6,0),g)).min(java.util.Comparator.comparingDouble(g::distanceToSqr)).orElse(null);
+            if(target==null){data.putInt("Charge",0);data.remove("BeamPlayer");beam(g,0);continue;}
+            if(!data.hasUUID("BeamPlayer")||!data.getUUID("BeamPlayer").equals(target.getUUID())){data.putInt("Charge",0);data.putUUID("BeamPlayer",target.getUUID());}
+            int charge=nextCharge(data.getInt("Charge"),true);data.putInt("Charge",charge);if(charge==1){beam(g,target.getId());l.broadcastEntityEvent(g,(byte)21);}g.getLookControl().setLookAt(target,60,60);
+            if(charge%20==0)target.playNotifySound(SoundEvents.NOTE_BLOCK_PLING.value(),SoundSource.HOSTILE,.18F,.6F+charge/100F);
+            if(charge>=CHARGE_TICKS){lose(target,p,s,c);data.putInt("Charge",0);data.remove("BeamPlayer");beam(g,0);if(n.getInt("Phase")!=1)return;}
         }
+    }
+    private static void lose(ServerPlayer participant,ServerPlayer director,VisitData.Scene scene,BlockPos c){
+        if(com.coraline.multiplayer.StorySessionData.get(director.server).groupActivity(scene)){if(CooperativeActivities.failed(participant,scene)){restoreBreathing(participant,scene);title(participant,"LASERED","Watch the group finish the monument.");}return;}finish(director,scene,c,false);
     }
     static int nextCharge(int previous,boolean visible){return visible?previous+1:0;}
     static boolean clearSight(ServerLevel l,Vec3 from,Vec3 to,Entity source){return l.clip(new ClipContext(from,to,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,source)).getType()==HitResult.Type.MISS;}
@@ -140,7 +149,7 @@ public final class OceanMonumentActivity {
     }
     static void finish(ServerPlayer p,VisitData.Scene s,BlockPos c,boolean success){
         if(!owns(p,s)||state(s).getInt("Phase")!=1)return;
-        state(s).putInt("Phase",success?2:3);stopGuardians(p.serverLevel(),s,c);restoreBreathing(p,s);
+        state(s).putInt("Phase",success?2:3);stopGuardians(p.serverLevel(),s,c);for(var member:com.coraline.multiplayer.StorySessionData.get(p.server).audience(p))restoreBreathing(member,s);
         OceanMonumentCourse.cyclingCover(p.serverLevel(),c,0);ActivitySoundscape.stop(p,s);
         p.displayClientMessage(Component.empty(),true);
         if(success)OceanMonumentCourse.openVault(p.serverLevel(),c);
@@ -159,18 +168,12 @@ public final class OceanMonumentActivity {
     }
     static boolean interactProp(ServerPlayer p,VisitData.Scene s,ScenePropEntity prop){
         if(prop.kind()!=ScenePropEntity.PRIZE_PLATE||prop.slot!=610)return false;
-        if(!owns(p,s)||!owned(prop,s)||state(s).getInt("Phase")!=2||p.distanceToSqr(prop)>25)return true;
-        if(!takePrize(s,p.getUUID()))return true;
+        if(!com.coraline.multiplayer.StoryCoop.canAct(p,s)||!ActivityWorld.isActivity(p.level())||s.loop.activity!=OtherMotherActivities.Activity.OTHER_OCEAN_MONUMENT||!owned(prop,s)||state(s).getInt("Phase")!=2||p.distanceToSqr(prop)>25)return true;
+        if(!takePrize(s,s.owner))return true;
         OtherMotherLoop.changed(p);prop.food(0,ItemStack.EMPTY);prop.discard();
         // Existing top activity tier, with the storyline's food/treasure theme preserved.
-        if(s.loop.activityLoot()==OtherMotherDialogue.Loot.FOOD){
-            for(int i=0;i<4;i++)ActivityTokens.give(p,FeastContent.serving(p.getRandom(),i));
-            ActivityTokens.give(p,new ItemStack(Items.ENCHANTED_GOLDEN_APPLE));
-        }else{
-            ActivityTokens.give(p,new ItemStack(Items.DIAMOND,4+p.getRandom().nextInt(3)));
-            ActivityTokens.give(p,new ItemStack(Items.GOLD_INGOT,8));
-            ActivityTokens.give(p,new ItemStack(com.coraline.clothing.OtherMaterials.OTHER_IRON.get(),2));
-        }
+        var prizes=new java.util.ArrayList<ItemStack>();if(s.loop.activityLoot()==OtherMotherDialogue.Loot.FOOD){for(int i=0;i<4;i++)prizes.add(FeastContent.serving(p.getRandom(),i));prizes.add(new ItemStack(Items.ENCHANTED_GOLDEN_APPLE));}else{prizes.add(new ItemStack(Items.DIAMOND,4+p.getRandom().nextInt(3)));prizes.add(new ItemStack(Items.GOLD_INGOT,8));prizes.add(new ItemStack(com.coraline.clothing.OtherMaterials.OTHER_IRON.get(),2));}
+        if(!com.coraline.multiplayer.StoryRewardDelivery.award(p,s,"ocean_final",prizes))for(var prize:prizes)ActivityTokens.give(p,prize);
         ActivityWorld.ensureExit(p,s);return true;
     }
     static boolean takePrize(VisitData.Scene s,UUID player){

@@ -1,0 +1,11 @@
+{
+  "type": "coraline:false_pink_palace",
+  "biomes": [
+    "coraline:postgame/forgotten_gardens",
+    "coraline:postgame/pale_wasteland",
+    "coraline:postgame/porcelain_plains"
+  ],
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "none"
+}

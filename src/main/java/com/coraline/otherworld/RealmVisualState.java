@@ -27,7 +27,8 @@ public final class RealmVisualState {
         var r=RealmData.get(p.server).realms.get(n.getUUID("CoralineVisitDoor"));if(r==null)return;
         if(p.tickCount%20!=0&&!n.contains("CoralineWhiteoutStart"))return;
         BlockPos center=r.sourceDoor==null?r.doorPos:r.sourceDoor.offset(r.dx,0,r.dz);
-        long whiteoutAge=n.contains("CoralineWhiteoutStart")?p.server.overworld().getGameTime()-n.getLong("CoralineWhiteoutStart"):-1;
-        CHANNEL.send(PacketDistributor.PLAYER.with(()->p),new View(center,r.porch==null?r.doorPos:r.porch,r.radius,n.getBoolean("CoralineInTunnel"),whiteoutAge));
+        boolean firstVisit=com.coraline.feast.FirstVisit.active(p)!=null;
+        long whiteoutAge=!firstVisit&&n.contains("CoralineWhiteoutStart")?p.server.overworld().getGameTime()-n.getLong("CoralineWhiteoutStart"):-1;
+        CHANNEL.send(PacketDistributor.PLAYER.with(()->p),new View(center,r.porch==null?r.doorPos:r.porch,firstVisit?1000000:r.radius,n.getBoolean("CoralineInTunnel"),whiteoutAge));
     }
 }

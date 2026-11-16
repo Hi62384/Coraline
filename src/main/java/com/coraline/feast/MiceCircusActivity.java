@@ -190,14 +190,23 @@ public final class MiceCircusActivity {
     }
     private static void caption(ServerPlayer p,String speaker,String line,int ticks){VisitAudio.caption(p,speaker,line,ticks);}
     public static void interactBookie(ServerPlayer p,FishingContestNpcEntity e){
-        var s=OtherMotherLoop.active(p);if(s==null||s.loop.activity!=OtherMotherActivities.Activity.MICE_CIRCUS||!owned(e,s)||!p.getUUID().equals(s.owner))return;
+        var s=OtherMotherLoop.active(p);if(s==null||s.loop.activity!=OtherMotherActivities.Activity.MICE_CIRCUS||!owned(e,s)||!com.coraline.multiplayer.StoryCoop.canAct(p,s)||p.distanceToSqr(e)>25)return;
         if(s.loop.circusPhase==3)caption(p,"Button-Eyed Bookie","My two Perfect Ingots against yours. Pick one of the five mice!",100);
         else if(s.loop.circusPhase<3)p.displayClientMessage(Component.literal("Let Father finish his introduction."),true);
         else p.displayClientMessage(Component.literal("Watch the race — the wager is locked in."),true);
     }
     static boolean interactProp(ServerPlayer p,VisitData.Scene s,ScenePropEntity prop){
         if(prop.kind()!=ScenePropEntity.CIRCUS_CHOICE&&prop.kind()!=ScenePropEntity.CIRCUS_BET)return false;
-        if(!p.getUUID().equals(s.owner)||!owned(prop,s)||s.loop.circusPhase!=3)return true;
+        if(!com.coraline.multiplayer.StoryCoop.canAct(p,s)||!owned(prop,s)||p.distanceToSqr(prop)>36||s.loop.circusPhase!=3)return true;
+        // Guests may start the common race as spectators. They never spend the
+        // owner's souvenir, inherit the owner's wager, or receive its payout.
+        if(!p.getUUID().equals(s.owner)||p.isShiftKeyDown()){
+            int selected=prop.mode();if(selected<0||selected>=NAMES.length)return true;
+            var st=s.loop;st.circusWager=ItemStack.EMPTY;st.circusBetState=3;st.circusBetMouse=selected;st.circusSelected=selected;
+            st.circusBookieMouse=(selected+1)%NAMES.length;st.circusPhase=4;st.circusPhaseUntil=OtherMotherLoop.now(p)+100;
+            caption(p,"Button-Eyed Bookie","Let's watch the race. No wager this time.",100);
+            ensureBetProps(s,p.serverLevel(),center(p,s));OtherMotherLoop.changed(p);return true;
+        }
         int selected=prop.mode();if(selected<0||selected>=NAMES.length)return true;
         int count=p.getInventory().items.stream().filter(i->i.is(ModItems.PERFECT_INGOT.get())).mapToInt(ItemStack::getCount).sum();
         if(count<2){p.displayClientMessage(Component.literal("Pick up your two souvenir Perfect Ingots first."),true);return true;}
@@ -233,8 +242,9 @@ public final class MiceCircusActivity {
             float yaw=(float)Math.toDegrees(Math.atan2(-step.x,step.z));e.setYRot(yaw);e.setYBodyRot(yaw);e.setYHeadRot(yaw);
         }else{float yaw=(float)Math.toDegrees(Math.atan2(-(p.getX()-e.getX()),p.getZ()-e.getZ()));e.setYRot(yaw);e.setYBodyRot(yaw);e.setYHeadRot(yaw);}
     }
-    private static void recoverVisitors(ServerPlayer p,BlockPos c){
-        for(var visitor:p.serverLevel().players()){
+    private static void recoverVisitors(ServerPlayer p,VisitData.Scene s,BlockPos c){
+        for(var visitor:CooperativeActivities.playing(p,s)){
+            if(visitor.level()!=p.level())continue;
             double r=Math.hypot(visitor.getX()-c.getX()-.5,visitor.getZ()-c.getZ()-.5);
             if(r<70&&(visitor.getY()<c.getY()-3||r>31)){
                 visitor.stopRiding();visitor.teleportTo(p.serverLevel(),c.getX()+.5,c.getY()+.1,c.getZ()+20.5,visitor.getYRot(),visitor.getXRot());
@@ -242,10 +252,15 @@ public final class MiceCircusActivity {
             }
         }
     }
-    private static void animate(ServerPlayer p,VisitData.Scene s,BlockPos c,int elapsed){
+    static void victimPerformance(ServerPlayer p,VisitData.Scene s,ServerLevel level,BlockPos c,long seed,int elapsed){
+        if(elapsed%40==0){build(level,c);ensureCrowd(s,level,c);ensureMice(s,level,c);}s.loop.circusSeed=seed;
+        animate(p,s,c,elapsed%1600,level,false);
+    }
+    private static void animate(ServerPlayer p,VisitData.Scene s,BlockPos c,int elapsed){animate(p,s,c,elapsed,p.serverLevel(),true);}
+    private static void animate(ServerPlayer p,VisitData.Scene s,BlockPos c,int elapsed,ServerLevel level,boolean hud){
         var st=s.loop;
         for(int i=0;i<NAMES.length;i++){
-            var m=mouse(p.serverLevel(),s,c,i);if(m==null)continue;
+            var m=mouse(level,s,c,i);if(m==null)continue;
             double progress=CircusRaceCourse.progress(st.circusSeed,i,elapsed);
             Vec3 local=CircusRaceCourse.position(progress,i),at=local.add(Vec3.atBottomCenterOf(c));
             if(progress>=1)at=Vec3.atBottomCenterOf(c).add((i-2)*.8,0,12);
@@ -255,22 +270,22 @@ public final class MiceCircusActivity {
             int act=CircusRaceCourse.legAt(progress).act();
             if(CircusRaceCourse.legAt(progress).arc()==6&&!m.getPersistentData().getBoolean("CircusCannonFired")){
                 m.getPersistentData().putBoolean("CircusCannonFired",true);
-                p.serverLevel().playSound(null,m.blockPosition(),SoundEvents.FIREWORK_ROCKET_LAUNCH,SoundSource.PLAYERS,.45F,1.3F);
-                p.serverLevel().sendParticles(ParticleTypes.CLOUD,at.x,at.y,at.z,12,.25,.25,.25,.025);
+                level.playSound(null,m.blockPosition(),SoundEvents.FIREWORK_ROCKET_LAUNCH,SoundSource.PLAYERS,.45F,1.3F);
+                level.sendParticles(ParticleTypes.CLOUD,at.x,at.y,at.z,12,.25,.25,.25,.025);
             }
             if(act==4&&!m.getPersistentData().getBoolean("CircusLanded")){
                 m.getPersistentData().putBoolean("CircusLanded",true);
-                p.serverLevel().playSound(null,m.blockPosition(),SoundEvents.SLIME_BLOCK_FALL,SoundSource.PLAYERS,.6F,1.3F);
+                level.playSound(null,m.blockPosition(),SoundEvents.SLIME_BLOCK_FALL,SoundSource.PLAYERS,.6F,1.3F);
             }
             if(st.circusScores[i]!=act+1){
                 st.circusScores[i]=act+1;
-                if(act==3)p.serverLevel().sendParticles(ParticleTypes.CLOUD,at.x,at.y+.2,at.z,8,.25,.15,.25,.03);
-                if(i==st.circusBetMouse)p.playNotifySound(SoundEvents.NOTE_BLOCK_BELL.value(),SoundSource.PLAYERS,.45F,1F+act*.12F);
+                if(act==3)level.sendParticles(ParticleTypes.CLOUD,at.x,at.y+.2,at.z,8,.25,.15,.25,.03);
+                if(hud&&i==st.circusBetMouse)p.playNotifySound(SoundEvents.NOTE_BLOCK_BELL.value(),SoundSource.PLAYERS,.45F,1F+act*.12F);
             }
             if(act==3&&CircusRaceCourse.legAt(progress).arc()==6&&elapsed%4==0)
-                p.serverLevel().sendParticles(ParticleTypes.CRIT,at.x,at.y+.2,at.z,2,.08,.08,.08,0);
+                level.sendParticles(ParticleTypes.CRIT,at.x,at.y+.2,at.z,2,.08,.08,.08,0);
         }
-        if(elapsed%20==0){
+        if(hud&&elapsed%20==0){
             int leader=0;for(int i=1;i<NAMES.length;i++)if(CircusRaceCourse.progress(st.circusSeed,i,elapsed)>CircusRaceCourse.progress(st.circusSeed,leader,elapsed))leader=i;
             int winner=CircusRaceCourse.winner(st.circusSeed);if(elapsed>=CircusRaceCourse.finishTick(st.circusSeed,winner))leader=winner;
             int act=CircusRaceCourse.legAt(CircusRaceCourse.progress(st.circusSeed,st.circusBetMouse,elapsed)).act();st.circusAct=act;
@@ -278,12 +293,16 @@ public final class MiceCircusActivity {
         }
     }
     static void tick(ServerPlayer p,VisitData.Scene s,BlockPos c){
-        var st=s.loop;long now=OtherMotherLoop.now(p);recoverVisitors(p,c);
+        var st=s.loop;long now=OtherMotherLoop.now(p);recoverVisitors(p,s,c);
         if(p.tickCount%80==0)prepare(p,s,p.serverLevel(),c);
         if(st.circusPhase>=6){if(p.tickCount%40==0)ActivityWorld.ensureExit(p,s);return;}
         if(now<st.circusVoiceUntil)return;
         if(st.circusPhase==0){
-            if(!st.circusGifted){st.circusGifted=true;ActivityTokens.give(p,new ItemStack(ModItems.PERFECT_INGOT.get(),2));}
+            if(!st.circusGifted){
+                var gifts=java.util.List.of(new ItemStack(ModItems.PERFECT_INGOT.get(),2));
+                if(!com.coraline.multiplayer.StoryRewardDelivery.award(p,s,"circus_souvenir",gifts))ActivityTokens.give(p,gifts.get(0));
+                st.circusGifted=true;
+            }
             caption(p,"Other Father","A show souvenir for you: two Perfect Ingots!",90);
             st.circusPhase=1;st.circusPhaseUntil=now+90;OtherMotherLoop.changed(p);return;
         }
@@ -293,7 +312,7 @@ public final class MiceCircusActivity {
             ensureBetProps(s,p.serverLevel(),c);OtherMotherLoop.changed(p);return;
         }
         if(st.circusPhase==3){
-            if(p.tickCount%10==0){p.displayClientMessage(Component.literal("Right-click a mouse display to place your two-ingot bet.").withStyle(net.minecraft.ChatFormatting.YELLOW,net.minecraft.ChatFormatting.BOLD),true);
+            if(p.tickCount%10==0){p.displayClientMessage(Component.literal("Right-click a mouse display to bet. Sneak-click, or have a guest choose, to watch without a wager.").withStyle(net.minecraft.ChatFormatting.YELLOW,net.minecraft.ChatFormatting.BOLD),true);
                 for(int i=0;i<5;i++)p.serverLevel().sendParticles(ParticleTypes.HAPPY_VILLAGER,c.getX()-3.5+i*2,c.getY()+1.4,c.getZ()+17.5,1,.2,.1,.2,0);}
             return;
         }

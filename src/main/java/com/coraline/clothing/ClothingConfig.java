@@ -25,7 +25,7 @@ public final class ClothingConfig {
     public static final ForgeConfigSpec.IntValue LUCK_LOOTING=B.defineInRange("sets.luck.extraLootingLevels",2,0,10);
     public static final ForgeConfigSpec.DoubleValue VINE_CHANCE=B.defineInRange("sets.gardenVines.retaliationChance",.5,0,1);
     public static final ForgeConfigSpec.IntValue VINE_TICKS=B.defineInRange("sets.gardenVines.effectTicks",80,1,1200);
-    public static final ForgeConfigSpec.IntValue MINER_MULTIPLIER=B.comment("Multiplies ordinary block drops, including placed blocks. Never duplicates block entities or tagged items.").defineInRange("sets.miners.dropMultiplier",2,1,8);
+    public static final ForgeConfigSpec.IntValue MINER_MULTIPLIER=B.comment("Multiplies ordinary block drops, including placed blocks. Never duplicates block entities, tagged items, or Coraline economy resources in coraline:miner_bonus_excluded.").defineInRange("sets.miners.dropMultiplier",2,1,8);
     public static final ForgeConfigSpec.DoubleValue SOUL_HIT=B.defineInRange("sets.soulbound.healthOnHit",1.0,0,20);
     public static final ForgeConfigSpec.DoubleValue SOUL_KILL=B.defineInRange("sets.soulbound.healthOnKill",6.0,0,40);
     public static final ForgeConfigSpec.DoubleValue WEB_CHANCE=B.defineInRange("sets.spidervision.webChance",.3,0,1);

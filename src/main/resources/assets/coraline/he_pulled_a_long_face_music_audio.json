@@ -1,0 +1,13 @@
+{
+  "source": "music/HePulledALooooongFace.mp3",
+  "source_sha256": "0abf8348d6a38f4eb5bfd6622b32ef01d4688093b597aea6525c7f8fe6c59b2e",
+  "ogg_sha256": "e15892680dfcd4b4821267d4ea677acf1249ffb549329ee2b1e7eea508c87e72",
+  "export": {
+    "sample_rate": 48000,
+    "channels": 2,
+    "samples": 8118997,
+    "seconds": 169.14577083333333,
+    "ticks": 3383
+  },
+  "role": "piano_reveal_loop"
+}

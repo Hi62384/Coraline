@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "coraline:lanternwood_log"
+    }
+  ],
+  "result": {
+    "item": "coraline:lanternwood_planks",
+    "count": 4
+  }
+}

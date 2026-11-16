@@ -15,10 +15,13 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid="coraline",value=Dist.CLIENT)
 public final class TunnelAudio {
     private static Hum hum;
-    private static boolean inside(){var mc=Minecraft.getInstance();return mc.level!=null&&OtherWorld.isOther(mc.level)&&mc.player!=null&&mc.player.isAlive()&&RealmVisualState.client!=null&&RealmVisualState.client.tunnel();}
+    private static net.minecraft.world.level.Level previousLevel;
+    private static boolean inside(){var mc=Minecraft.getInstance();return !FirstEscapeClient.decayedTunnel()&&mc.level!=null&&mc.player!=null&&mc.player.isAlive()&&(mc.player.getPersistentData().getBoolean("CoralineAutoCrawl")||OtherWorld.isOther(mc.level)&&RealmVisualState.client!=null&&RealmVisualState.client.tunnel());}
     @SubscribeEvent public static void tick(TickEvent.ClientTickEvent e){
         if(e.phase!=TickEvent.Phase.END)return;
         var manager=Minecraft.getInstance().getSoundManager();
+        if(FirstEscapeClient.decayedTunnel()){manager.stop(ModSounds.TUNNEL_ENTER.getId(),SoundSource.RECORDS);manager.stop(ModSounds.DOOR_PORTAL_OPEN.getId(),SoundSource.RECORDS);}
+        if(previousLevel!=Minecraft.getInstance().level){if(hum!=null)manager.stop(hum);hum=null;previousLevel=Minecraft.getInstance().level;}
         if(!inside()){if(hum!=null){manager.stop(hum);hum=null;}return;}
         if(hum==null){hum=new Hum();manager.play(hum);}
     }

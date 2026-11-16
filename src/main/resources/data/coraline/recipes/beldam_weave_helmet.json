@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "GGG",
+    "G G"
+  ],
+  "key": {
+    "G": {
+      "item": "coraline:soulglass"
+    }
+  },
+  "result": {
+    "item": "coraline:beldam_weave_helmet",
+    "count": 1
+  }
+}

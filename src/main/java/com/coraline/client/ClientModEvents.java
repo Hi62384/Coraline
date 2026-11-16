@@ -15,10 +15,15 @@ public final class ClientModEvents {
     private ClientModEvents() {
     }
     @SubscribeEvent public static void reload(net.minecraftforge.client.event.RegisterClientReloadListenersEvent event){
+        event.registerReloadListener((net.minecraft.server.packs.resources.ResourceManagerReloadListener)manager->com.coraline.client.renderer.CharacterModel.clearCache());
         event.registerReloadListener((net.minecraft.server.packs.resources.ResourceManagerReloadListener)manager->com.mojang.blaze3d.systems.RenderSystem.recordRenderCall(OtherWorldColorGrade::reset));
+        event.registerReloadListener((net.minecraft.server.packs.resources.ResourceManagerReloadListener)manager->com.mojang.blaze3d.systems.RenderSystem.recordRenderCall(SeeingStoneClient::reset));
     }
     @SubscribeEvent public static void dimensionEffects(net.minecraftforge.client.event.RegisterDimensionSpecialEffectsEvent event){
         event.register(com.coraline.otherworld.OtherWorld.KEY.location(),new OtherWorldSky());
+        event.register(com.coraline.tycoon.TycoonWorld.KEY.location(),new TycoonSky());
+        event.register(com.coraline.postgame.InfiniteRealm.TYPE,new OtherWorldSky());
+        event.register(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("coraline","true_heart"),new TrueHeartSky());
     }
 
     @SubscribeEvent
@@ -29,16 +34,39 @@ public final class ClientModEvents {
 
     @SubscribeEvent
     public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(com.coraline.client.renderer.OtherworldResidentModel.LAYER,com.coraline.client.renderer.OtherworldResidentModel::layer);
+        event.registerLayerDefinition(com.coraline.client.renderer.WhiteVoidAvatarModel.LAYER,com.coraline.client.renderer.WhiteVoidAvatarModel::layer);
+        event.registerLayerDefinition(com.coraline.client.renderer.PostgameHostileModel.LAYER,com.coraline.client.renderer.PostgameHostileModel::layer);
         event.registerLayerDefinition(com.coraline.client.renderer.WybieModel.LAYER, com.coraline.client.renderer.WybieModel::createLayer);
         event.registerLayerDefinition(com.coraline.client.renderer.MouseRenderer.LAYER,com.coraline.client.renderer.MouseRenderer::layer);
     }
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(ModEntities.CARNIVAL_TARGET.get(),com.coraline.client.renderer.CarnivalTargetRenderer::new);
+        event.registerEntityRenderer(ModEntities.OTHERWORLD_RESIDENT.get(),com.coraline.client.renderer.OtherworldResidentRenderer::new);
+        event.registerEntityRenderer(ModEntities.WHITE_VOID_AVATAR.get(),com.coraline.client.renderer.WhiteVoidAvatarRenderer::new);
+        event.registerEntityRenderer(ModEntities.TRUE_HEART.get(),com.coraline.client.renderer.TrueHeartRenderer::new);
+        event.registerEntityRenderer(ModEntities.VOID_BOLT.get(),context->new com.coraline.client.renderer.VoidEffectRenderer<>(context,false));
+        event.registerEntityRenderer(ModEntities.VOID_HAZARD.get(),context->new com.coraline.client.renderer.VoidEffectRenderer<>(context,true));
+        for(var type:com.coraline.postgame.PostgameHostiles.TYPES.values())event.registerEntityRenderer(type.get(),com.coraline.client.renderer.PostgameHostileRenderer::new);
+        event.registerEntityRenderer(com.coraline.tycoon.TycoonContent.NPC.get(),com.coraline.client.renderer.TycoonNpcRenderer::new);
+        event.registerEntityRenderer(com.coraline.tycoon.TycoonAutomationContent.WORKER.get(),com.coraline.client.renderer.TycoonWorkerRenderer::new);
+        event.registerEntityRenderer(com.coraline.tycoon.TycoonFoodContent.SEAT.get(),net.minecraft.client.renderer.entity.NoopRenderer::new);
+        event.registerEntityRenderer(com.coraline.tycoon.TycoonPhaseTwoContent.DOLL_ACTOR.get(),com.coraline.client.renderer.TycoonDollRenderer::new);
+        event.registerEntityRenderer(ModEntities.TEA_GLASS.get(),com.coraline.client.renderer.TeaGlassRenderer::new);
+        com.coraline.registry.CharacterCast.ENTITIES.forEach((id,type)->event.registerEntityRenderer(type.get(),context->new com.coraline.client.renderer.CharacterRenderer(context,id)));
         event.registerEntityRenderer(ModEntities.MAGIC_BOLT.get(),net.minecraft.client.renderer.entity.NoopRenderer::new);
         event.registerEntityRenderer(ModEntities.SCENE_PROP.get(),com.coraline.client.renderer.ScenePropRenderer::new);
         event.registerEntityRenderer(ModEntities.WYBIE.get(), WybieRenderer::new);
+        event.registerEntityRenderer(ModEntities.WYBIE_VISITOR.get(),com.coraline.client.renderer.WybieVisitorRenderer::new);
+        event.registerEntityRenderer(ModEntities.BOBINSKY_VISITOR.get(),com.coraline.client.renderer.BobinskyVisitorRenderer::new);
+        event.registerEntityRenderer(ModEntities.SPINK_VISITOR.get(),c->new com.coraline.client.renderer.TeaVisitorRenderer(c,"miss_spink"));event.registerEntityRenderer(ModEntities.FORCIBLE_VISITOR.get(),c->new com.coraline.client.renderer.TeaVisitorRenderer(c,"miss_forcible"));event.registerEntityRenderer(ModEntities.TEA_SEAT.get(),net.minecraft.client.renderer.entity.NoopRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.DOLL.get(), DollRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.INFINITE_SITE_CACHE.get(),net.minecraft.client.renderer.blockentity.ChestRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.BREACH_DRIVE.get(),com.coraline.client.renderer.BreachDriveRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.MAGIC_MIRROR.get(),com.coraline.client.renderer.MagicMirrorRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.RIFT_MACHINE.get(),com.coraline.client.renderer.RiftMachineRenderer::new);
         event.registerEntityRenderer(ModEntities.MOM.get(),c->new com.coraline.client.renderer.ParentRenderer(c,true));
         event.registerEntityRenderer(ModEntities.DAD.get(),c->new com.coraline.client.renderer.ParentRenderer(c,false));
         event.registerEntityRenderer(ModEntities.BOUND_DOLL.get(),net.minecraft.client.renderer.entity.ItemEntityRenderer::new);
@@ -67,6 +95,10 @@ public final class ClientModEvents {
     }
     @SubscribeEvent public static void setup(net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent event){
         event.enqueueWork(()->net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(
+            com.coraline.postgame.InfiniteContent.ILLUSION_MIRROR.get(),net.minecraft.client.renderer.RenderType.translucent()));
+        event.enqueueWork(()->net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(
+            com.coraline.registry.ModBlocks.LOCKED_HOUSE_DOOR.get(),net.minecraft.client.renderer.RenderType.cutout()));
+        event.enqueueWork(()->net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(
             com.coraline.registry.ModBlocks.SOULGLASS_BLOCK.get(),net.minecraft.client.renderer.RenderType.translucent()));
         event.enqueueWork(()->net.minecraft.client.renderer.item.ItemProperties.register(com.coraline.food.TreatFoods.ITEMS.get("cotton_candy").get(),net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("coraline","bites"),(stack,level,entity,seed)->com.coraline.food.ReusableTreat.bites(stack)));
         event.enqueueWork(()->{
@@ -81,5 +113,7 @@ public final class ClientModEvents {
                     (player.getMainHandItem()==stack||player.getOffhandItem()==stack)?1:0);
         });
         event.enqueueWork(()->net.minecraft.client.gui.screens.MenuScreens.register(com.coraline.registry.ModMenus.PARENTS.get(),com.coraline.client.ParentsScreen::new));
+        event.enqueueWork(()->net.minecraft.client.gui.screens.MenuScreens.register(com.coraline.registry.ModMenus.BREACH_DRIVE.get(),BreachDriveScreen::new));
+        event.enqueueWork(()->net.minecraft.client.gui.screens.MenuScreens.register(com.coraline.registry.ModMenus.MAGIC_MIRROR.get(),MagicMirrorScreen::new));
     }
 }

@@ -1,0 +1,13 @@
+{
+  "source": "music/eventbased/OtherFatherBossFight.mp3",
+  "source_sha256": "d70af32e19284275590ecbd83177745737170dde767f46499bbba4b139e9c142",
+  "ogg_sha256": "b7834ea732ce097279aadbb6372600ef6581053d9c943b6aed3546eaa1fa2325",
+  "export": {
+    "sample_rate": 48000,
+    "channels": 2,
+    "samples": 6861776,
+    "seconds": 142.95366666666666,
+    "ticks": 2860
+  },
+  "role": "mantis_encounter_music"
+}

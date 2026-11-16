@@ -1,0 +1,6 @@
+{
+  "parent": "builtin/entity",
+  "textures": {
+    "particle": "coraline:models/sculpted/fabric"
+  }
+}

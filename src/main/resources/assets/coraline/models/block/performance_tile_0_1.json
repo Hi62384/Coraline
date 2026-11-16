@@ -1,0 +1,58 @@
+{
+  "textures": {
+    "color": "minecraft:block/red_concrete",
+    "light": "minecraft:block/sea_lantern",
+    "particle": "minecraft:block/red_concrete"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#color"
+        },
+        "south": {
+          "texture": "#color"
+        },
+        "east": {
+          "texture": "#color"
+        },
+        "west": {
+          "texture": "#color"
+        },
+        "up": {
+          "texture": "#color"
+        },
+        "down": {
+          "texture": "#color"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        16.01,
+        3
+      ],
+      "to": [
+        13,
+        16.01,
+        13
+      ],
+      "faces": {
+        "up": {
+          "texture": "#light"
+        }
+      }
+    }
+  ]
+}

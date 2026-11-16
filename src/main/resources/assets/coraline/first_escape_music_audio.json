@@ -1,0 +1,15 @@
+{
+  "source": "music/eventbased/FirstEscape.mp3",
+  "source_sha256": "b1d42f9d8e57c3ddda5a24f240868abf590a6f232f0f5606966f8d4bb01789bf",
+  "channels": 2,
+  "sample_rate": 48000,
+  "seconds": 69.950125,
+  "ogg_sha256": "57c6f92621df7c16ebb80b0f19842b0e54a2094c9ae1511197e16c5d94f47a8b",
+  "export": {
+    "sample_rate": 48000,
+    "channels": 2,
+    "samples": 3357606,
+    "seconds": 69.950125,
+    "ticks": 1400
+  }
+}

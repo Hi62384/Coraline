@@ -1,0 +1,1990 @@
+{
+  "format": 2,
+  "preserve_authored_text": true,
+  "aliases": {
+    "other_mother_events_family_game_night_finish_high_high_01": "other_mother_events_family_dinner_finish_high_high_01",
+    "other_mother_events_family_game_night_late_high_high_02": "other_mother_events_family_outing_late_high_high_02",
+    "other_mother_events_family_game_night_search_high_high_01": "other_mother_events_family_outing_search_high_high_01",
+    "other_mother_events_family_game_night_search_high_high_02": "other_mother_events_family_outing_search_high_high_02"
+  },
+  "new_recordings": {
+    "other_mother_events_family_game_night_late_mid_mid_02": {
+      "text": "Oh, darling, I was beginning to think you'd forgotten all about game night. It's rather rude to keep everyone waiting, you know. But you're here now.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_late_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_late_mid_mid_02"
+    },
+    "other_mother_events_family_game_night_late_high_low_01": {
+      "text": "Oh, my love, where have you been? I was beginning to worry! Everyone's been waiting for you. Never mind, sweetheart, let's have some fun together.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_late_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_late_high_low_01"
+    },
+    "other_mother_events_family_game_night_late_high_low_02": {
+      "text": "Darling, you've kept us waiting! I know you enjoy your little adventures, but we've all been looking forward to playing with you. Come sit down.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_late_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_late_high_low_02"
+    },
+    "other_mother_events_family_game_night_late_low_high_01": {
+      "text": "How considerate of you to finally join us. We've been sitting here waiting, sweetheart. I hope whatever kept you away was terribly important.",
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_family_game_night_late_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_family_game_night_late_low_high_01"
+    },
+    "other_mother_events_family_game_night_late_low_high_02": {
+      "text": "Well, look who decided to appear. Game night was ready when I said it would be. Now sit down. We've wasted quite enough time.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_late_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_late_low_high_02"
+    },
+    "other_mother_events_family_game_night_late_high_high_01": {
+      "text": "Oh, darling, you do lose track of time whenever you're off exploring, don't you? We've been waiting here for you. I wonder what was so interesting that you nearly forgot about us.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_late_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_late_high_high_01"
+    },
+    "other_mother_events_family_game_night_search_low_low_01": {
+      "text": "Sweetheart? Where have you gone? We've been waiting for such a long time now. I hope you haven't gotten yourself lost. I'm coming to find you, darling!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_search_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_search_low_low_01"
+    },
+    "other_mother_events_family_game_night_search_low_low_02": {
+      "text": "Darling! Your Other Father, Wybie, and I have been waiting and waiting. We can't start without you! Never mind, sweetheart. I'll come find you myself.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_search_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_search_low_low_02"
+    },
+    "other_mother_events_family_game_night_search_mid_mid_01": {
+      "text": "Alright, sweetheart, that's quite long enough. I've given you plenty of time to join us. If you won't come when I ask, I suppose I'll have to find you myself.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_search_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_search_mid_mid_01"
+    },
+    "other_mother_events_family_game_night_search_mid_mid_02": {
+      "text": "Where have you disappeared to this time? Everyone's been sitting at the table waiting for ages. I'm coming to find you, darling!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_search_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_search_mid_mid_02"
+    },
+    "other_mother_events_family_game_night_search_high_low_01": {
+      "text": "Oh, my darling, where are you? We've all been waiting, and I'm beginning to worry terribly. Never mind, sweetheart. I'll find you, and then we can have our lovely evening together.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_search_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_search_high_low_01"
+    },
+    "other_mother_events_family_game_night_search_high_low_02": {
+      "text": "Sweetheart! Please come back to the house. Your Other Father and Wybie are waiting, and I can't bear not knowing where you've gone. I'm coming to look for you!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_search_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_search_high_low_02"
+    },
+    "other_mother_events_family_game_night_search_low_high_01": {
+      "text": "That is quite enough. I told you to come to the table, and I've waited more than long enough. I'm coming to find you now, and you'd better have a very good explanation.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_search_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_search_low_high_01"
+    },
+    "other_mother_events_family_game_night_search_low_high_02": {
+      "text": "Where are you hiding this time, sweetheart? You've kept your entire family waiting far too long. Well, I'm finished being patient. I'll find you myself.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_search_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_search_low_high_02"
+    },
+    "other_mother_events_family_game_night_finish_low_low_01": {
+      "text": "Oh, wasn't that wonderful? I do love spending time together like this. I hope you enjoyed yourself, sweetheart. Now, I think we ought to find something else fun to do.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_finish_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_finish_low_low_01"
+    },
+    "other_mother_events_family_game_night_finish_low_low_02": {
+      "text": "There we are! A lovely little family game night. Your Other Father and Wybie certainly seemed to enjoy themselves. I've still got plenty more wonderful things planned for you.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_finish_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_finish_low_low_02"
+    },
+    "other_mother_events_family_game_night_finish_mid_mid_01": {
+      "text": "Well, that was nice, wasn't it? It's good when we can all sit together and enjoy ourselves. Now then, sweetheart, let's see what else we might do.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_finish_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_finish_mid_mid_01"
+    },
+    "other_mother_events_family_game_night_finish_mid_mid_02": {
+      "text": "There, all finished. I do hope you had fun, darling. Your Other Father certainly seemed to be enjoying himself. Perhaps it's time we tried something else.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_finish_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_finish_mid_mid_02"
+    },
+    "other_mother_events_family_game_night_finish_high_low_01": {
+      "text": "Oh, my darling, I wish every evening could be just like this. All of us together, laughing and playing games. Doesn't it feel wonderful to be home? Now, let's have some more fun.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_finish_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_finish_high_low_01"
+    },
+    "other_mother_events_family_game_night_finish_high_low_02": {
+      "text": "Wasn't that perfect, sweetheart? Seeing you enjoying yourself with your family makes me happier than you could imagine. Come along, my love. I've got another wonderful surprise in mind.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_finish_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_finish_high_low_02"
+    },
+    "other_mother_events_family_game_night_finish_low_high_01": {
+      "text": "Well, at least we've managed to have a reasonably pleasant game night. I do hope you'll remember how much nicer things are when everyone behaves themselves. Now, let's move along.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_finish_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_finish_low_high_01"
+    },
+    "other_mother_events_family_game_night_finish_low_high_02": {
+      "text": "There. Game night's finished, and I think we've had quite enough sitting around. Perhaps our next activity will give you something a little more productive to occupy yourself with.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_finish_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_finish_low_high_02"
+    },
+    "other_mother_events_family_game_night_finish_high_high_02": {
+      "text": "There we are, sweetheart. Another lovely evening with our little family. I do wish moments like these could last forever. But never mind, I've got plenty more surprises waiting for you.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_finish_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_finish_high_high_02"
+    },
+    "other_mother_events_family_game_night_intro_cards_01": {
+      "text": "Oh, how lovely! We're going to play Button Cards. Your Other Father always gets terribly excited about this one. Come on, sweetheart, let's see what you've got.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_intro_cards_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_intro_cards_01"
+    },
+    "other_mother_events_family_game_night_intro_cards_02": {
+      "text": "Button Cards! One of my favorites. Now, don't go thinking I'll let you win simply because you're my darling little one.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_intro_cards_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_intro_cards_02"
+    },
+    "other_mother_events_family_game_night_intro_thread_01": {
+      "text": "Oh, this should be fun! You and Wybie can play together against your Other Father and me. Let's see which little team has the cleverer ideas.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_intro_thread_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_intro_thread_01"
+    },
+    "other_mother_events_family_game_night_intro_thread_02": {
+      "text": "Thread Four! How wonderful. Wybie seems rather excited to be on your team, sweetheart. I do hope the two of you have a good strategy.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_intro_thread_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_intro_thread_02"
+    },
+    "other_mother_events_family_game_night_intro_tower_01": {
+      "text": "Oh, the Wobbly Tower! This one always makes me a little nervous. Do be careful, darling. I'd hate for the whole thing to come crashing down.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_intro_tower_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_intro_tower_01"
+    },
+    "other_mother_events_family_game_night_intro_tower_02": {
+      "text": "Let's try the Wobbly Tower, shall we? Your Other Father has been insisting he's rather good at this one. We'll just have to see about that.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_intro_tower_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_intro_tower_02"
+    },
+    "other_mother_events_family_game_night_intro_mouseboard_01": {
+      "text": "Oh, how delightful! We're going to race our little mice across the board. I do hope yours behaves itself, sweetheart. They can be rather unpredictable.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_intro_mouseboard_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_intro_mouseboard_01"
+    },
+    "other_mother_events_family_game_night_intro_mouseboard_02": {
+      "text": "Mouseboard Dash! Such a charming little game. Pick your mouse, darling, and we'll see who can make it across the board first.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_intro_mouseboard_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_intro_mouseboard_02"
+    },
+    "other_mother_events_family_game_night_intro_flick_01": {
+      "text": "Oh, this should be rather exciting! We're going to flick these little buttons across the table. Aim carefully, sweetheart. Your Other Father can be surprisingly competitive.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_intro_flick_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_intro_flick_01"
+    },
+    "other_mother_events_family_game_night_intro_flick_02": {
+      "text": "Button Flick! How lovely. It's all about having a steady hand, darling. Let's see whether those clever little fingers of yours are up to the challenge.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_intro_flick_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_intro_flick_02"
+    },
+    "other_mother_events_family_game_night_intro_charades_01": {
+      "text": "Oh, I thought we'd play a little charades! Wybie's always been especially good at this one. You'd be amazed how much he can say without making a sound.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_intro_charades_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_intro_charades_01"
+    },
+    "other_mother_events_family_game_night_intro_charades_02": {
+      "text": "Silent Charades! What fun. Now, we'll all have to pay very close attention. Wybie's already looking rather pleased with himself, isn't he?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_family_game_night_intro_charades_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_family_game_night_intro_charades_02"
+    },
+    "father_game_night_greeting_1": {
+      "text": "Ah, there you are! Welcome to game night, kiddo! Your Other Mother has brought out all sorts of wonderful games. I hope you're ready for a little friendly competition!",
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_greeting_1/line_01.wav",
+      "resource": "compact_events/father_game_night_greeting_1"
+    },
+    "father_game_night_greeting_2": {
+      "text": "Ah, perfect timing! We've got the whole family together, and I've been looking forward to this all evening. Come on, grab a seat!",
+      "source": "voicelines/otherfather/events/full_dialogue_v1/father_game_night_greeting_2/line_01.wav",
+      "resource": "compact_events/full_wording/father/father_game_night_greeting_2"
+    },
+    "father_game_night_cards_rules": {
+      "text": "Right then! Match the color or number on the card in the middle. If you can't play anything, draw a card. First one to get rid of all their cards wins. Sounds simple enough, doesn't it?",
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_cards_rules/line_01.wav",
+      "resource": "compact_events/father_game_night_cards_rules"
+    },
+    "father_game_night_thread_rules": {
+      "text": "Ah, this one's a team game! You and Wybie are against your Other Mother and me. Take turns dropping your buttons into the board. First team to get four in a row wins!",
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_thread_rules/line_01.wav",
+      "resource": "compact_events/father_game_night_thread_rules"
+    },
+    "father_game_night_tower_rules": {
+      "text": "Now, we each take turns pulling one little block out of the tower. Just be careful where you pull from, because if the whole thing falls down on your turn, you've lost!",
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_tower_rules/line_01.wav",
+      "resource": "compact_events/father_game_night_tower_rules"
+    },
+    "father_game_night_mouseboard_rules": {
+      "text": "Ah, ready for a race? Roll the dice, move your little mouse along the board, and try to reach the finish first. Watch out for the special spaces, though. They can change everything!",
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_mouseboard_rules/line_01.wav",
+      "resource": "compact_events/father_game_night_mouseboard_rules"
+    },
+    "father_game_night_flick_rules": {
+      "text": "Right! Aim your button toward the scoring rings and give it a good flick. The closer you land to the center, the more points you get. We'll each have three turns. Highest score wins!",
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_flick_rules/line_01.wav",
+      "resource": "compact_events/father_game_night_flick_rules"
+    },
+    "father_game_night_charades_rules": {
+      "text": "Ah, charades! One of us acts something out without speaking, and everyone else tries to guess what it is. You'd think Wybie would have a rather unfair advantage, wouldn't you? Ha!",
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_charades_rules/line_01.wav",
+      "resource": "compact_events/father_game_night_charades_rules"
+    },
+    "father_game_night_cards_reaction": {
+      "text": "Oh, that's a good move! I was rather hoping you wouldn't notice that card. Hmm. I may have to rethink my strategy.",
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_cards_reaction/line_01.wav",
+      "resource": "compact_events/father_game_night_cards_reaction"
+    },
+    "father_game_night_thread_reaction": {
+      "text": "Ah, very clever! I nearly missed what you were doing there. Your Other Mother and I had better pay closer attention!",
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_thread_reaction/line_01.wav",
+      "resource": "compact_events/father_game_night_thread_reaction"
+    },
+    "father_game_night_tower_reaction": {
+      "text": "Oh! Oh dear! Did you see that wobble? I don't think I ought to breathe too heavily near this thing.",
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_tower_reaction/line_01.wav",
+      "resource": "compact_events/father_game_night_tower_reaction"
+    },
+    "father_game_night_mouseboard_reaction": {
+      "text": "Would you look at that! Your little mouse is making quite the comeback. Mine seems to have forgotten it's supposed to be racing!",
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_mouseboard_reaction/line_01.wav",
+      "resource": "compact_events/father_game_night_mouseboard_reaction"
+    },
+    "father_game_night_flick_reaction": {
+      "text": "Ah, splendid shot! That's landed rather close to the middle. I don't suppose you'd mind teaching your old dad how you did that?",
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_flick_reaction/line_01.wav",
+      "resource": "compact_events/father_game_night_flick_reaction"
+    },
+    "father_game_night_charades_reaction": {
+      "text": "Ah! I think I've got it! No, wait, perhaps not. Oh dear. Wybie makes this look so much easier than it really is!",
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_charades_reaction/line_01.wav",
+      "resource": "compact_events/father_game_night_charades_reaction"
+    },
+    "father_game_night_finish_1": {
+      "text": "Ah, that was wonderful! I don't think I've had that much fun playing games in ages. We really ought to do this more often!",
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_finish_1/line_01.wav",
+      "resource": "compact_events/father_game_night_finish_1"
+    },
+    "father_game_night_finish_2": {
+      "text": "Well, that was quite the evening! Some very clever moves all around, I must say. I think I'll need a little practice before our next game night!",
+      "source": "voicelines/otherfather/events/full_dialogue_v1/father_game_night_finish_2/line_01.wav",
+      "resource": "compact_events/full_wording/father/father_game_night_finish_2"
+    },
+    "other_mother_events_special_delivery_invitation_low_low_01": {
+      "text": "Oh, sweetheart, I have a little favor to ask you! There's a lovely package I need delivered to someone across the way. I've made a proper path for you, so just follow it straight to their house. And don't go opening the present, darling. It's meant to be a surprise!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_invitation_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_invitation_low_low_01"
+    },
+    "other_mother_events_special_delivery_invitation_low_low_02": {
+      "text": "Darling, would you mind making a delivery for me? I've wrapped something rather special, and I need you to take it to a friend of mine. Just follow the pathway, don't wander off exploring, and please don't peek inside. I'm trusting you with this, sweetheart!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_invitation_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_invitation_low_low_02"
+    },
+    "other_mother_events_special_delivery_invitation_mid_mid_01": {
+      "text": "Now, sweetheart, I've got an important little delivery for you. You'll find the recipient's house at the end of the pathway I've prepared. Stay on the path, don't go wandering through the wilderness, and whatever you do, don't open the package. I'd be very disappointed if you did.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_invitation_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_invitation_mid_mid_01"
+    },
+    "other_mother_events_special_delivery_invitation_mid_mid_02": {
+      "text": "I need you to deliver something for me, darling. It's already wrapped and ready. Just follow the pathway to the house and come straight back when you're finished. No exploring, no little detours, and absolutely no looking inside the package. Understood?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_invitation_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_invitation_mid_mid_02"
+    },
+    "other_mother_events_special_delivery_invitation_high_low_01": {
+      "text": "Oh, my darling, I have something very important for you to do! I need this beautiful little package delivered, and I couldn't think of anyone I'd trust more than you. Just follow the path to the house, sweetheart, and don't peek inside. I know you'll make me proud.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_invitation_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_invitation_high_low_01"
+    },
+    "other_mother_events_special_delivery_invitation_high_low_02": {
+      "text": "Sweetheart, I'm going to trust you with a very special present. It needs to reach a friend of mine, and I've arranged a lovely pathway to their house. Promise me you'll stay on it and leave the wrapping alone. Some surprises are meant for other people, after all.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_invitation_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_invitation_high_low_02"
+    },
+    "other_mother_events_special_delivery_invitation_low_high_01": {
+      "text": "I have a delivery for you, sweetheart. Take this package to the house at the end of the pathway and come straight back. Do not wander off, do not investigate anything along the way, and do not open it. I expect you to follow those instructions precisely.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_invitation_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_invitation_low_high_01"
+    },
+    "other_mother_events_special_delivery_invitation_low_high_02": {
+      "text": "Here's a little responsibility for you. Perhaps it will give you something useful to do. Follow the path, deliver the package, and return to me. And don't even think about opening it, darling. I will be very unhappy if you betray my trust.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_invitation_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_invitation_low_high_02"
+    },
+    "other_mother_events_special_delivery_invitation_high_high_01": {
+      "text": "Oh, darling, I've got a rather special little task for you. I need this package delivered, and I know how clever and curious you can be. But do try to resist that curiosity for once. Stay on the path, don't go exploring, and leave the wrapping exactly as it is.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_invitation_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_invitation_high_high_01"
+    },
+    "other_mother_events_special_delivery_invitation_high_high_02": {
+      "text": "Sweetheart, I have a very important package that needs delivering. I'm trusting you with it because you're such a capable little thing. Just remember, darling, there's no need to investigate every mystery you come across. Some packages are much better left unopened.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_invitation_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_invitation_high_high_02"
+    },
+    "other_mother_events_special_delivery_completion_low_low_01": {
+      "text": "Oh, there you are, sweetheart! Welcome back! I hope everything went smoothly. Wasn't that a lovely little adventure? I'm so pleased you could help me.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_completion_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_completion_low_low_01"
+    },
+    "other_mother_events_special_delivery_completion_low_low_02": {
+      "text": "Darling, you're back! How wonderful. I do appreciate you taking care of that little errand for me. Now, I think I've got something else rather nice planned for us.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_completion_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_completion_low_low_02"
+    },
+    "other_mother_events_special_delivery_completion_mid_mid_01": {
+      "text": "Ah, there you are. I trust everything went as planned? Good. It's always nice when I can rely on you to take care of something important.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_completion_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_completion_mid_mid_01"
+    },
+    "other_mother_events_special_delivery_completion_mid_mid_02": {
+      "text": "Welcome back, sweetheart. I hope you didn't have too much trouble finding the house. Now then, that's one little errand out of the way. Let's see what else we might do.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_completion_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_completion_mid_mid_02"
+    },
+    "other_mother_events_special_delivery_completion_high_low_01": {
+      "text": "Oh, my darling, you're back! I knew I could count on you. You've been such a wonderful little helper today. Come here, sweetheart. I'm terribly proud of you.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_completion_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_completion_high_low_01"
+    },
+    "other_mother_events_special_delivery_completion_high_low_02": {
+      "text": "There's my favorite little helper! I hope you enjoyed your journey, sweetheart. It's lovely knowing I have someone as clever and dependable as you to look after things for me.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_completion_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_completion_high_low_02"
+    },
+    "other_mother_events_special_delivery_completion_low_high_01": {
+      "text": "Well, you're back. I trust you followed my instructions and didn't get distracted along the way. Very good. Now let's put this little errand behind us.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_completion_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_completion_low_high_01"
+    },
+    "other_mother_events_special_delivery_completion_low_high_02": {
+      "text": "There you are. I hope everything went exactly as I asked, sweetheart. I do appreciate it when you manage to follow instructions. Now then, let's move on.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_completion_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_completion_low_high_02"
+    },
+    "other_mother_events_special_delivery_completion_high_high_01": {
+      "text": "Oh, darling, you've returned! I do hope you enjoyed your little trip. I know how tempting it can be to wander off and investigate things, but it's nice to know I can still count on you.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_completion_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_completion_high_high_01"
+    },
+    "other_mother_events_special_delivery_completion_high_high_02": {
+      "text": "Welcome home, sweetheart. You've been away on quite the little adventure, haven't you? Well, I'm glad you're back. I think it's time we found something else wonderful to do together.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_completion_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_completion_high_high_02"
+    },
+    "other_mother_events_special_delivery_caught_opening_low_low_01": {
+      "text": "Oh, sweetheart... you opened it? But I specifically asked you not to! That package wasn't meant for you, darling. I trusted you to deliver it safely, and now you've gone and spoiled the surprise.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_caught_opening_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_caught_opening_low_low_01"
+    },
+    "other_mother_events_special_delivery_caught_opening_low_low_02": {
+      "text": "Darling, I can't believe what I'm seeing. You actually opened the package! I thought I could trust you with one little responsibility. Oh, sweetheart, I'm terribly disappointed.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_caught_opening_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_caught_opening_low_low_02"
+    },
+    "other_mother_events_special_delivery_caught_opening_mid_mid_01": {
+      "text": "Well, that explains quite a lot. You opened the package, didn't you? After I very clearly told you not to. I must say, sweetheart, you've developed a rather unpleasant habit of doing precisely what I ask you not to.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_caught_opening_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_caught_opening_mid_mid_01"
+    },
+    "other_mother_events_special_delivery_caught_opening_mid_mid_02": {
+      "text": "Oh, darling, I wondered what you'd been getting up to. And now I find you've opened something that wasn't meant for you. You really do have an extraordinary talent for testing my patience.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_caught_opening_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_caught_opening_mid_mid_02"
+    },
+    "other_mother_events_special_delivery_caught_opening_high_low_01": {
+      "text": "Oh, my darling... why would you do this to me? I trusted you with something important. I thought you understood how much that meant. You've hurt me terribly, sweetheart.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_caught_opening_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_caught_opening_high_low_01"
+    },
+    "other_mother_events_special_delivery_caught_opening_high_low_02": {
+      "text": "Sweetheart, I gave you that package because I thought I could trust you. I never imagined you'd open it behind my back. Oh, my love, I don't know what hurts more: what you've done, or that you thought you needed to hide it from me.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_caught_opening_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_caught_opening_high_low_02"
+    },
+    "other_mother_events_special_delivery_caught_opening_low_high_01": {
+      "text": "You opened it. Of course you did. I give you one simple instruction, and you immediately decide it doesn't apply to you. I am growing very tired of your disobedience.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_caught_opening_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_caught_opening_low_high_01"
+    },
+    "other_mother_events_special_delivery_caught_opening_low_high_02": {
+      "text": "How dare you. That package was entrusted to you, and you had absolutely no right to look inside. You've been taking advantage of my patience for far too long, sweetheart.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_caught_opening_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_caught_opening_low_high_02"
+    },
+    "other_mother_events_special_delivery_caught_opening_high_high_01": {
+      "text": "Oh, darling. I knew you'd be tempted. I really did. But I thought perhaps, just this once, you might decide to trust me instead of giving in to that endless curiosity of yours.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_caught_opening_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_caught_opening_high_high_01"
+    },
+    "other_mother_events_special_delivery_caught_opening_high_high_02": {
+      "text": "Well, sweetheart, here we are again. Another little secret you've decided simply must belong to you. You know, it's rather remarkable how much you claim to enjoy being here, while constantly doing things you know will hurt me.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_special_delivery_caught_opening_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_special_delivery_caught_opening_high_high_02"
+    },
+    "other_mother_events_house_party_invitation_low_low_01": {
+      "text": "Oh, sweetheart, I've got the most wonderful surprise! We're having a little party, and I've invited some lovely people over to meet you. Now, I expect you to be on your best behavior, darling. Stay inside the house, be polite to our guests, and don't go poking around where you shouldn't. I think we're going to have such a lovely time!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_invitation_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_invitation_low_low_01"
+    },
+    "other_mother_events_house_party_invitation_low_low_02": {
+      "text": "Darling, we're having company! I've invited some wonderful friends over, and I thought it would be nice for you to get to know them. Just remember to stay in the house, mind your manners, and leave other people's belongings alone. Let's make this a beautiful evening, shall we?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_invitation_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_invitation_low_low_02"
+    },
+    "other_mother_events_house_party_invitation_mid_mid_01": {
+      "text": "Now then, sweetheart, I've arranged a little house party for us. We'll have guests arriving shortly, and I expect you to be polite and well behaved. No wandering outside, no sneaking into private rooms, and certainly no rummaging through drawers. Understood?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_invitation_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_invitation_mid_mid_01"
+    },
+    "other_mother_events_house_party_invitation_mid_mid_02": {
+      "text": "Your Other Father and I are having a few people over, darling. I think you'll enjoy meeting everyone. But I do expect you to behave yourself while they're here. Stay on the first two floors, don't go exploring, and try not to give me any reason to worry.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_invitation_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_invitation_mid_mid_02"
+    },
+    "other_mother_events_house_party_invitation_high_low_01": {
+      "text": "Oh, my darling, I've planned the loveliest party for us! I've invited some wonderful friends, and I simply can't wait to introduce you. I know you'll make me proud, sweetheart. Just stay inside with everyone, be polite, and leave those little secrets and mysteries alone for tonight.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_invitation_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_invitation_high_low_01"
+    },
+    "other_mother_events_house_party_invitation_high_low_02": {
+      "text": "Sweetheart, we're having a party! Everyone's coming to see our beautiful home, and I want you right here with us. You always make everything so much more special, my love. Just promise me you'll behave yourself and won't go wandering somewhere you shouldn't.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_invitation_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_invitation_high_low_02"
+    },
+    "other_mother_events_house_party_invitation_low_high_01": {
+      "text": "We're having guests over tonight, sweetheart, and I expect you to behave yourself. You will stay inside the house, you will keep out of the attic and basement, and you will not go searching through things that don't belong to you. I trust that's perfectly clear.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_invitation_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_invitation_low_high_01"
+    },
+    "other_mother_events_house_party_invitation_low_high_02": {
+      "text": "I've arranged a house party, and I would very much like it to go smoothly. You'll stay with our guests, mind your manners, and leave the forbidden rooms alone. If I hear that you've been causing trouble, I shall be extremely disappointed.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_invitation_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_invitation_low_high_02"
+    },
+    "other_mother_events_house_party_invitation_high_high_01": {
+      "text": "Oh, darling, I've planned something rather special for tonight. We're having a house party, and there will be so many interesting people for you to meet. I know how curious you can be, sweetheart, but let's keep that curiosity focused on our guests instead of my private rooms.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_invitation_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_invitation_high_high_01"
+    },
+    "other_mother_events_house_party_invitation_high_high_02": {
+      "text": "Sweetheart, we're going to have a wonderful little gathering! I've invited some lovely people, and I'm expecting you to spend the evening with us. No disappearing into the attic, no investigating the basement, and no little adventures outside. Just for tonight, darling, let's behave like a proper family.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_invitation_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_invitation_high_high_02"
+    },
+    "other_mother_events_house_party_checkin_low_low_01": {
+      "text": "Oh, sweetheart! Are you enjoying yourself? There's so many lovely people here. Why don't you go introduce yourself to someone?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_checkin_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_checkin_low_low_01"
+    },
+    "other_mother_events_house_party_checkin_low_low_02": {
+      "text": "Darling, isn't this wonderful? Everyone seems to be having such a nice time. Do make yourself comfortable, and have something to eat if you're hungry.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_checkin_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_checkin_low_low_02"
+    },
+    "other_mother_events_house_party_checkin_mid_mid_01": {
+      "text": "Having a nice time, sweetheart? Good. I do hope you've been making conversation instead of wandering off on your own.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_checkin_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_checkin_mid_mid_01"
+    },
+    "other_mother_events_house_party_checkin_mid_mid_02": {
+      "text": "There you are, darling. I trust you've been enjoying the party? There's plenty to do without needing to explore every little corner of the house.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_checkin_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_checkin_mid_mid_02"
+    },
+    "other_mother_events_house_party_checkin_high_low_01": {
+      "text": "Oh, my darling, look at you! Everyone seems so pleased to meet you. I knew you'd be the most wonderful little host.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_checkin_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_checkin_high_low_01"
+    },
+    "other_mother_events_house_party_checkin_high_low_02": {
+      "text": "Sweetheart, I'm so happy you're enjoying yourself. Isn't it lovely having all these wonderful people together in our home?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_checkin_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_checkin_high_low_02"
+    },
+    "other_mother_events_house_party_checkin_low_high_01": {
+      "text": "Enjoying yourself, sweetheart? I do hope so. It would be rather disappointing if I discovered you'd been spending the evening doing anything else.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_checkin_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_checkin_low_high_01"
+    },
+    "other_mother_events_house_party_checkin_low_high_02": {
+      "text": "There you are. I trust you've been behaving yourself. Our guests are here to enjoy a party, darling, not to watch you getting into trouble.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_checkin_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_checkin_low_high_02"
+    },
+    "other_mother_events_house_party_checkin_high_high_01": {
+      "text": "Oh, darling, I do hope you're having a lovely evening. So many interesting people to talk to. Perhaps you'll find their stories more entertaining than those little secrets you keep chasing.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_checkin_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_checkin_high_high_01"
+    },
+    "other_mother_events_house_party_checkin_high_high_02": {
+      "text": "Sweetheart, isn't this nice? All our friends together, everyone smiling and laughing. I do wish you'd spend more time enjoying things like this instead of getting yourself into trouble.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_checkin_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_checkin_high_high_02"
+    },
+    "other_mother_events_house_party_guest_report_low_low_01": {
+      "text": "Oh, sweetheart, one of our guests has told me you've been getting into things you shouldn't. I'm sure there's been some misunderstanding, but I do hope you'll remember your manners.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_guest_report_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_guest_report_low_low_01"
+    },
+    "other_mother_events_house_party_guest_report_low_low_02": {
+      "text": "Darling, I've just heard something rather disappointing. One of our guests says you weren't behaving yourself. Now, surely we can enjoy one little party without all this trouble?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_guest_report_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_guest_report_low_low_02"
+    },
+    "other_mother_events_house_party_guest_report_mid_mid_01": {
+      "text": "Sweetheart, I've just been told what you've been doing. I specifically asked you to behave yourself tonight. I don't think that was terribly difficult to understand.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_guest_report_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_guest_report_mid_mid_01"
+    },
+    "other_mother_events_house_party_guest_report_mid_mid_02": {
+      "text": "Oh, darling. I was hoping we could have one pleasant evening without someone having to tell me you'd been poking around where you shouldn't.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_guest_report_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_guest_report_mid_mid_02"
+    },
+    "other_mother_events_house_party_guest_report_high_low_01": {
+      "text": "Oh, my darling, please tell me this isn't true. One of our guests says you've been getting into trouble. I thought I could trust you to behave while we had company.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_guest_report_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_guest_report_high_low_01"
+    },
+    "other_mother_events_house_party_guest_report_high_low_02": {
+      "text": "Sweetheart, I'm rather hurt. I've been telling everyone what a wonderful child you are, and now I'm hearing you've been doing things behind my back.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_guest_report_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_guest_report_high_low_02"
+    },
+    "other_mother_events_house_party_guest_report_low_high_01": {
+      "text": "Well, isn't that interesting. One of our guests has just told me exactly what you've been doing. I warned you about this, sweetheart. Very clearly.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_guest_report_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_guest_report_low_high_01"
+    },
+    "other_mother_events_house_party_guest_report_low_high_02": {
+      "text": "So. You couldn't even behave yourself for one evening. I've had someone come to me with a rather unpleasant report, and I think you know perfectly well what it's about.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_guest_report_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_guest_report_low_high_02"
+    },
+    "other_mother_events_house_party_guest_report_high_high_01": {
+      "text": "Oh, darling. Even with a house full of people, you still manage to find your way into trouble. I suppose I shouldn't be surprised anymore.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_guest_report_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_guest_report_high_high_01"
+    },
+    "other_mother_events_house_party_guest_report_high_high_02": {
+      "text": "Sweetheart, one of our guests has been telling me about your little adventures. You really are a curious thing, aren't you? I wonder when you'll finally decide you've discovered enough.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_guest_report_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_guest_report_high_high_02"
+    },
+    "other_mother_events_house_party_feast_low_low_01": {
+      "text": "Oh, everyone! Dinner is ready! I've prepared the most wonderful feast for all of us. Come along to the dining room, and do bring your appetites. There's plenty for everyone!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_feast_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_feast_low_low_01"
+    },
+    "other_mother_events_house_party_feast_low_low_02": {
+      "text": "Now then, my lovely guests, I think it's time we had something to eat! Your Other Father and I have been preparing quite a spread. Do come and join us at the tables!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_feast_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_feast_low_low_02"
+    },
+    "other_mother_events_house_party_feast_mid_mid_01": {
+      "text": "Well, everyone, dinner is ready. I've made quite a bit of food, and I'd like us all to sit down together. Come along, there's a place for everyone.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_feast_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_feast_mid_mid_01"
+    },
+    "other_mother_events_house_party_feast_mid_mid_02": {
+      "text": "Now then, I think we've all done quite enough standing around. Dinner is ready, and I've prepared something rather special. Let's all make our way to the tables.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_feast_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_feast_mid_mid_02"
+    },
+    "other_mother_events_house_party_feast_high_low_01": {
+      "text": "Oh, my darlings, dinner is ready! I've prepared such a beautiful feast for everyone. Come along and find your seats. There's nothing I love more than seeing the whole house filled with happy faces.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_feast_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_feast_high_low_01"
+    },
+    "other_mother_events_house_party_feast_high_low_02": {
+      "text": "Everyone, come along! It's time for our wonderful feast. I've made sure there's something lovely for each and every one of you. Do sit down and enjoy yourselves!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_feast_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_feast_high_low_02"
+    },
+    "other_mother_events_house_party_feast_low_high_01": {
+      "text": "Dinner is ready, everyone. Please make your way to the dining tables. I've gone through a great deal of trouble preparing everything, and I'd appreciate us all sitting down together.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_feast_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_feast_low_high_01"
+    },
+    "other_mother_events_house_party_feast_low_high_02": {
+      "text": "Now then, our feast is ready. Everyone should come to the dining room and find a place to sit. Let's have ourselves a pleasant meal, shall we?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_feast_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_feast_low_high_02"
+    },
+    "other_mother_events_house_party_feast_high_high_01": {
+      "text": "Oh, everyone, it's time for dinner! I've prepared quite the feast for our wonderful guests. Come along, darling. I do hope you've worked up an appetite during all your little adventures.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_feast_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_feast_high_high_01"
+    },
+    "other_mother_events_house_party_feast_high_high_02": {
+      "text": "Well, my lovely guests, I think it's time we all sat down together. Dinner is ready, and there's plenty to enjoy. Come along, sweetheart. I'd like you sitting with your family.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_feast_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_feast_high_high_02"
+    },
+    "other_mother_events_house_party_food_warning_low_low_01": {
+      "text": "Oh, sweetheart, don't take quite so much! We have lots of guests to feed, you know. Leave a little for everyone else, darling.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_food_warning_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_food_warning_low_low_01"
+    },
+    "other_mother_events_house_party_food_warning_low_low_02": {
+      "text": "Now, now, sweetheart! There's plenty to go around, but we must remember our manners. Let's make sure everyone gets something to eat.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_food_warning_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_food_warning_low_low_02"
+    },
+    "other_mother_events_house_party_food_warning_mid_mid_01": {
+      "text": "Darling, that's quite enough for now. There are other people waiting to eat, and it isn't very polite to take more than your share.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_food_warning_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_food_warning_mid_mid_01"
+    },
+    "other_mother_events_house_party_food_warning_mid_mid_02": {
+      "text": "Oh, sweetheart, do try to show a little consideration. Our guests haven't all had their dinner yet. Save some food for them, please.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_food_warning_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_food_warning_mid_mid_02"
+    },
+    "other_mother_events_house_party_food_warning_high_low_01": {
+      "text": "Oh, my darling, I know you love my cooking, but there's no need to take quite so much! Let everyone else have a little, and I'll make you something special later.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_food_warning_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_food_warning_high_low_01"
+    },
+    "other_mother_events_house_party_food_warning_high_low_02": {
+      "text": "Sweetheart, I'm delighted you're enjoying the food, but we mustn't forget our guests. Be a dear and leave some for the others, won't you?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_food_warning_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_food_warning_high_low_02"
+    },
+    "other_mother_events_house_party_food_warning_low_high_01": {
+      "text": "Put some of that back, sweetheart. This feast is for everyone, not just you. I expect you to show a little more consideration while we have company.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_food_warning_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_food_warning_low_high_01"
+    },
+    "other_mother_events_house_party_food_warning_low_high_02": {
+      "text": "That is quite enough. You've taken more than your share, and I will not have you embarrassing me in front of our guests. Leave the rest alone.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_food_warning_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_food_warning_low_high_02"
+    },
+    "other_mother_events_house_party_food_warning_high_high_01": {
+      "text": "Oh, darling, always wanting just a little more, aren't you? There's plenty of food here, but we do have other people to feed. Let's try not to be greedy, sweetheart.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_food_warning_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_food_warning_high_high_01"
+    },
+    "other_mother_events_house_party_food_warning_high_high_02": {
+      "text": "Sweetheart, I do love seeing you enjoy yourself, but you must leave something for our guests. You can't have every wonderful thing all to yourself, now can you?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_food_warning_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_food_warning_high_high_02"
+    },
+    "other_mother_events_house_party_completion_low_low_01": {
+      "text": "Oh, wasn't that a wonderful evening? Everyone seemed to have such a lovely time. I'm so glad we could share it with you, sweetheart. Now, I think we ought to find something else fun to do.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_completion_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_completion_low_low_01"
+    },
+    "other_mother_events_house_party_completion_low_low_02": {
+      "text": "There we are! What a marvelous little party. I do hope you enjoyed meeting everyone, darling. I've still got plenty of wonderful things planned for us.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_completion_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_completion_low_low_02"
+    },
+    "other_mother_events_house_party_completion_mid_mid_01": {
+      "text": "Well, that went rather nicely, didn't it? It's always lovely having friends over. Now then, sweetheart, let's see what else we might do together.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_completion_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_completion_mid_mid_01"
+    },
+    "other_mother_events_house_party_completion_mid_mid_02": {
+      "text": "There, everyone's had a lovely evening. I hope you enjoyed yourself, darling. Now that our guests are leaving, perhaps we can get back to our own little plans.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_completion_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_completion_mid_mid_02"
+    },
+    "other_mother_events_house_party_completion_high_low_01": {
+      "text": "Oh, my darling, wasn't that perfect? Everyone together, laughing and enjoying themselves. It makes me so happy to have you here with us. Now, let's have some more fun.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_completion_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_completion_high_low_01"
+    },
+    "other_mother_events_house_party_completion_high_low_02": {
+      "text": "Sweetheart, what a beautiful evening we've had! Seeing you surrounded by all our wonderful friends makes me happier than you could imagine. Come along, my love. I've got another surprise waiting.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_completion_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_completion_high_low_02"
+    },
+    "other_mother_events_house_party_completion_low_high_01": {
+      "text": "Well, our little party is finally over. I do hope you remember how much nicer things are when everyone behaves themselves. Now, let's move on to something else.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_completion_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_completion_low_high_01"
+    },
+    "other_mother_events_house_party_completion_low_high_02": {
+      "text": "There. Our guests have had their evening, and I think it's time we returned to our own affairs. Perhaps you'll find the next event a little easier to behave yourself during.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_completion_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_completion_low_high_02"
+    },
+    "other_mother_events_house_party_completion_high_high_01": {
+      "text": "Oh, darling, wasn't that lovely? So many interesting people, so many wonderful conversations. And yet I suspect you still found a few little mysteries to occupy yourself with, didn't you? Never mind. Let's see what else we might do.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_completion_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_completion_high_high_01"
+    },
+    "other_mother_events_house_party_completion_high_high_02": {
+      "text": "There we are, sweetheart. Another beautiful evening in our wonderful home. I do wish moments like these could last forever. But I suppose you've got plenty more adventures waiting for you, haven't you?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_house_party_completion_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_house_party_completion_high_high_02"
+    },
+    "father_house_party_greeting_1": {
+      "text": "Ah, there you are! Quite the party we've got going, eh? Your Other Mother has invited half the neighborhood, by the look of things. Come on in and enjoy yourself!",
+      "source": "voicelines/otherfather/events/compact_v1/father_house_party_greeting_1/line_01.wav",
+      "resource": "compact_events/father_house_party_greeting_1"
+    },
+    "father_house_party_greeting_2": {
+      "text": "Oh, wonderful! Everyone's arriving, and the house is looking absolutely splendid. I do hope you've brought your appetite, kiddo. Your Other Mother has been cooking all day!",
+      "source": "voicelines/otherfather/events/full_dialogue_v1/father_house_party_greeting_2/line_01.wav",
+      "resource": "compact_events/full_wording/father/father_house_party_greeting_2"
+    },
+    "father_house_party_social_1": {
+      "text": "Ah, isn't it lovely having so many friends around? Though I must admit, I can hardly remember everyone's names. Don't tell your Other Mother I said that!",
+      "source": "voicelines/otherfather/events/compact_v1/father_house_party_social_1/line_01.wav",
+      "resource": "compact_events/father_house_party_social_1"
+    },
+    "father_house_party_social_2": {
+      "text": "I've been having the most interesting conversations this evening! Well, I think they were interesting. There was rather a lot going on.",
+      "source": "voicelines/otherfather/events/full_dialogue_v1/father_house_party_social_2/line_01.wav",
+      "resource": "compact_events/full_wording/father/father_house_party_social_2"
+    },
+    "father_house_party_game_1": {
+      "text": "Oh, you're playing a game? Splendid! I might join you in a moment. Just don't let anyone convince you they're unbeatable. I've heard that one before!",
+      "source": "voicelines/otherfather/events/compact_v1/father_house_party_game_1/line_01.wav",
+      "resource": "compact_events/father_house_party_game_1"
+    },
+    "father_house_party_game_2": {
+      "text": "Ah, a little friendly competition! Nothing like a good board game to bring people together. Though I do hope nobody gets too competitive.",
+      "source": "voicelines/otherfather/events/full_dialogue_v1/father_house_party_game_2/line_01.wav",
+      "resource": "compact_events/full_wording/father/father_house_party_game_2"
+    },
+    "father_house_party_feast_1": {
+      "text": "Ah, dinner at last! Would you look at all that food? Your Other Mother has really outdone herself this time. I don't know where we're going to put it all!",
+      "source": "voicelines/otherfather/events/compact_v1/father_house_party_feast_1/line_01.wav",
+      "resource": "compact_events/father_house_party_feast_1"
+    },
+    "father_house_party_feast_2": {
+      "text": "Mmm! This is marvelous! I was beginning to think we'd never get to eat. Though I suppose that's what happens when you invite the whole neighborhood!",
+      "source": "voicelines/otherfather/events/full_dialogue_v1/father_house_party_feast_2/line_01.wav",
+      "resource": "compact_events/full_wording/father/father_house_party_feast_2"
+    },
+    "father_house_party_finish_1": {
+      "text": "Well, that was quite the evening! Wonderful company, lovely food, and a few good laughs. We really ought to do this again sometime!",
+      "source": "voicelines/otherfather/events/compact_v1/father_house_party_finish_1/line_01.wav",
+      "resource": "compact_events/father_house_party_finish_1"
+    },
+    "father_house_party_finish_2": {
+      "text": "Ah, what a splendid party! I don't think I've talked that much in ages. I may need a nice quiet evening at the piano after all this!",
+      "source": "voicelines/otherfather/events/full_dialogue_v1/father_house_party_finish_2/line_01.wav",
+      "resource": "compact_events/full_wording/father/father_house_party_finish_2"
+    },
+    "other_mother_events_player_party_invitation_low_low_01": {
+      "text": "Oh, sweetheart, I've got the most wonderful surprise! I'm throwing a party, just for you! I've invited all sorts of lovely people, and I've even arranged some special entertainment. You can enjoy the house, the garden, even the attic and basement tonight. Just remember to leave my private things alone, and don't wander too far, darling!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_invitation_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_invitation_low_low_01"
+    },
+    "other_mother_events_player_party_invitation_low_low_02": {
+      "text": "Darling, tonight is all about you! I've arranged a beautiful party, with wonderful guests and all sorts of surprises. Feel free to look around the house and garden, sweetheart, but do leave the drawers and cupboards alone, especially upstairs and downstairs. I wouldn't want anything spoiling your special evening!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_invitation_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_invitation_low_low_02"
+    },
+    "other_mother_events_player_party_invitation_mid_mid_01": {
+      "text": "Well, sweetheart, I've decided to throw you a little celebration. We've got guests coming, and there will be plenty for you to enjoy throughout the house and garden. You may visit the attic and basement as well, but I expect you to keep your hands out of anything private. And don't go wandering beyond the grounds.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_invitation_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_invitation_mid_mid_01"
+    },
+    "other_mother_events_player_party_invitation_mid_mid_02": {
+      "text": "Your Other Father and I have planned a rather special party for you. You're free to enjoy the house, the backyard, and the entertainment we've prepared. Just remember, darling, being allowed into a room doesn't mean you're allowed to rummage through everything in it.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_invitation_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_invitation_mid_mid_02"
+    },
+    "other_mother_events_player_party_invitation_high_low_01": {
+      "text": "Oh, my darling, I've done all of this for you! A beautiful party, wonderful friends, and special surprises everywhere! I want you to enjoy every moment. Just stay close to home, sweetheart, and promise me you'll leave the private cupboards and drawers untouched. Tonight should be perfect!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_invitation_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_invitation_high_low_01"
+    },
+    "other_mother_events_player_party_invitation_high_low_02": {
+      "text": "Sweetheart, this is your special day! I've invited everyone to celebrate just how wonderful you are. You can enjoy the garden, explore the house, and see all the surprises I've prepared. Just be a dear and keep out of my private things, won't you?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_invitation_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_invitation_high_low_02"
+    },
+    "other_mother_events_player_party_invitation_low_high_01": {
+      "text": "I'm throwing a party for you, sweetheart, and I expect you to appreciate the effort. You're permitted in the house, attic, basement, and backyard tonight. That does not give you permission to steal, rummage through my cupboards, or wander off into the wilderness. I trust that's clear.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_invitation_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_invitation_low_high_01"
+    },
+    "other_mother_events_player_party_invitation_low_high_02": {
+      "text": "I've arranged a celebration in your honor. There will be guests, games, and entertainment, and I expect you to behave yourself. Stay within the party grounds, leave the private storage alone, and don't give our guests any reason to complain about you.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_invitation_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_invitation_low_high_02"
+    },
+    "other_mother_events_player_party_invitation_high_high_01": {
+      "text": "Oh, darling, I've planned something truly special for you. A whole party in your honor! I know how much you love exploring, so I've even opened up a few extra places tonight. Just don't confuse my generosity with permission to go searching through things you shouldn't.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_invitation_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_invitation_high_high_01"
+    },
+    "other_mother_events_player_party_invitation_high_high_02": {
+      "text": "Sweetheart, I've invited all our wonderful friends to celebrate you. The house and garden are yours to enjoy tonight, even the attic and basement. But do remember, my love, there are still some things that belong to me. Let's not let your curiosity spoil such a lovely occasion.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_invitation_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_invitation_high_high_02"
+    },
+    "other_mother_events_player_party_checkin_low_low_01": {
+      "text": "Oh, sweetheart! Are you having fun? There's so much to see tonight. Have you visited the garden yet? I've made it especially beautiful for you.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_checkin_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_checkin_low_low_01"
+    },
+    "other_mother_events_player_party_checkin_low_low_02": {
+      "text": "Darling, isn't this wonderful? Everyone came just to celebrate you! Do go enjoy yourself. I've still got a few surprises waiting.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_checkin_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_checkin_low_low_02"
+    },
+    "other_mother_events_player_party_checkin_mid_mid_01": {
+      "text": "Having a nice time, sweetheart? Good. There's plenty of entertainment, so I do hope you've been enjoying yourself rather than getting distracted.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_checkin_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_checkin_mid_mid_01"
+    },
+    "other_mother_events_player_party_checkin_mid_mid_02": {
+      "text": "There you are, darling. I hope you've been making yourself comfortable. Our guests have come a long way to see you, after all.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_checkin_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_checkin_mid_mid_02"
+    },
+    "other_mother_events_player_party_checkin_high_low_01": {
+      "text": "Oh, my darling, seeing you enjoying yourself makes all this effort worthwhile! Everyone's been saying such lovely things about you.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_checkin_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_checkin_high_low_01"
+    },
+    "other_mother_events_player_party_checkin_high_low_02": {
+      "text": "Sweetheart, I wish you could see how happy you've made me! All our wonderful friends together, just for you. Isn't it marvelous?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_checkin_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_checkin_high_low_02"
+    },
+    "other_mother_events_player_party_checkin_low_high_01": {
+      "text": "Enjoying your party, sweetheart? I do hope so. I've arranged more than enough entertainment to keep you occupied.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_checkin_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_checkin_low_high_01"
+    },
+    "other_mother_events_player_party_checkin_low_high_02": {
+      "text": "There you are. I trust you've been behaving yourself. It would be a shame to ruin an evening I've worked so hard to prepare.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_checkin_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_checkin_low_high_02"
+    },
+    "other_mother_events_player_party_checkin_high_high_01": {
+      "text": "Oh, darling, so many wonderful things to enjoy tonight. Perhaps you'll find them a little more interesting than those secrets you're always searching for.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_checkin_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_checkin_high_high_01"
+    },
+    "other_mother_events_player_party_checkin_high_high_02": {
+      "text": "Sweetheart, I hope you're having a lovely time. I really have gone to such trouble for you. It would mean so much if you could simply enjoy it.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_checkin_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_checkin_high_high_02"
+    },
+    "other_mother_events_player_party_guest_report_low_low_01": {
+      "text": "Oh, sweetheart, one of our guests says you've been getting into things you shouldn't. I'm sure you didn't mean any harm, but I did ask you to leave those things alone.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_guest_report_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_guest_report_low_low_01"
+    },
+    "other_mother_events_player_party_guest_report_low_low_02": {
+      "text": "Darling, I've heard something rather disappointing. One of our guests says you weren't behaving yourself. Please don't spoil your own lovely party.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_guest_report_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_guest_report_low_low_02"
+    },
+    "other_mother_events_player_party_guest_report_mid_mid_01": {
+      "text": "Now, sweetheart, I specifically told you that you could enjoy the party without rummaging through my belongings. Why must we have this conversation again?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_guest_report_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_guest_report_mid_mid_01"
+    },
+    "other_mother_events_player_party_guest_report_mid_mid_02": {
+      "text": "Oh, darling. One of our guests has just told me what you've been doing. I thought my instructions were perfectly clear.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_guest_report_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_guest_report_mid_mid_02"
+    },
+    "other_mother_events_player_party_guest_report_high_low_01": {
+      "text": "Oh, my darling, surely this isn't true? I've prepared such a beautiful party for you, and now I hear you've been getting into trouble behind my back.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_guest_report_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_guest_report_high_low_01"
+    },
+    "other_mother_events_player_party_guest_report_high_low_02": {
+      "text": "Sweetheart, I trusted you to enjoy yourself. I even opened up more of the house for you. It hurts me terribly to hear you've been taking advantage of that.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_guest_report_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_guest_report_high_low_02"
+    },
+    "other_mother_events_player_party_guest_report_low_high_01": {
+      "text": "Well, isn't that interesting. I give you permission to enjoy the attic and basement, and you immediately begin searching through things I told you not to touch.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_guest_report_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_guest_report_low_high_01"
+    },
+    "other_mother_events_player_party_guest_report_low_high_02": {
+      "text": "So. One of our guests has told me exactly what you've been doing. I warned you, sweetheart, and I have very little patience left for this sort of behavior.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_guest_report_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_guest_report_low_high_02"
+    },
+    "other_mother_events_player_party_guest_report_high_high_01": {
+      "text": "Oh, darling, even at a party thrown entirely in your honor, you still can't resist searching for things you're not meant to find.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_guest_report_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_guest_report_high_high_01"
+    },
+    "other_mother_events_player_party_guest_report_high_high_02": {
+      "text": "Sweetheart, I gave you a wonderful party, the whole house to enjoy, and all our friends to entertain you. And still you felt the need to go snooping. How disappointing.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_guest_report_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_guest_report_high_high_02"
+    },
+    "other_mother_events_player_party_search_low_low_01": {
+      "text": "Sweetheart? Where have you gone? Everyone's here to celebrate you, darling! I hope you haven't wandered too far. I'm coming to find you!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_search_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_search_low_low_01"
+    },
+    "other_mother_events_player_party_search_low_low_02": {
+      "text": "Darling! Your party's still going, and we haven't seen you in ages. I do hope you haven't gotten lost. Never mind, sweetheart. I'll come look for you!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_search_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_search_low_low_02"
+    },
+    "other_mother_events_player_party_search_mid_mid_01": {
+      "text": "Alright, sweetheart, that's quite long enough. I told you to stay around the house, and now you've disappeared somewhere. I'm coming to find you.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_search_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_search_mid_mid_01"
+    },
+    "other_mother_events_player_party_search_mid_mid_02": {
+      "text": "Where have you wandered off to this time? I've got a house full of guests waiting to see you. I suppose I'll have to come collect you myself.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_search_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_search_mid_mid_02"
+    },
+    "other_mother_events_player_party_search_high_low_01": {
+      "text": "Oh, my darling, where are you? I've prepared this whole celebration for you, and now I can't find you anywhere! Please come back, sweetheart. I'm coming to look for you!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_search_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_search_high_low_01"
+    },
+    "other_mother_events_player_party_search_high_low_02": {
+      "text": "Sweetheart! Everyone's been asking where you've gone. I was hoping you'd be enjoying yourself, not wandering off alone. I'm coming to find you, my love!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_search_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_search_high_low_02"
+    },
+    "other_mother_events_player_party_search_low_high_01": {
+      "text": "That is quite enough. I told you not to leave the party grounds. If you think you can simply disappear whenever you please, you've made a terrible mistake.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_search_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_search_low_high_01"
+    },
+    "other_mother_events_player_party_search_low_high_02": {
+      "text": "Where are you hiding, sweetheart? I've gone through a great deal of trouble preparing this party, and you've decided to wander off. I'm coming to find you.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_search_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_search_low_high_02"
+    },
+    "other_mother_events_player_party_search_high_high_01": {
+      "text": "Oh, darling, I give you an entire party, and still you find somewhere else you'd rather be. I wonder what could possibly be keeping you away. Let's find out, shall we?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_search_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_search_high_high_01"
+    },
+    "other_mother_events_player_party_search_high_high_02": {
+      "text": "Sweetheart, I've opened up the whole house for you, invited all our friends, and prepared so many wonderful things. And yet you've disappeared again. I suppose I'll have to come fetch you.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_search_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_search_high_high_02"
+    },
+    "other_mother_events_player_party_surprise_low_low_01": {
+      "text": "Oh, everyone! I think it's time for our special surprise! Sweetheart, come over here, darling. We've all got something wonderful prepared just for you!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_surprise_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_surprise_low_low_01"
+    },
+    "other_mother_events_player_party_surprise_low_low_02": {
+      "text": "Now then, everyone, gather around! We've been keeping a very special surprise for our guest of honor. Come along, sweetheart. You're going to love this!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_surprise_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_surprise_low_low_02"
+    },
+    "other_mother_events_player_party_surprise_mid_mid_01": {
+      "text": "Alright, everyone, I think it's time for the main event! Sweetheart, come join us. We've all prepared a little something especially for you.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_surprise_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_surprise_mid_mid_01"
+    },
+    "other_mother_events_player_party_surprise_mid_mid_02": {
+      "text": "Now then, everyone, let's gather together. We've still got one rather special surprise waiting for our guest of honor. Come along, darling.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_surprise_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_surprise_mid_mid_02"
+    },
+    "other_mother_events_player_party_surprise_high_low_01": {
+      "text": "Oh, my darlings, the moment I've been waiting for! Everyone, gather around our wonderful little guest of honor! Sweetheart, I've got something so very special for you!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_surprise_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_surprise_high_low_01"
+    },
+    "other_mother_events_player_party_surprise_high_low_02": {
+      "text": "Everyone, come along! It's time for our biggest surprise! Oh, sweetheart, I've been looking forward to this all evening. Come stand with me, my love!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_surprise_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_surprise_high_low_02"
+    },
+    "other_mother_events_player_party_surprise_low_high_01": {
+      "text": "Everyone, if I could have your attention. It's time for our special celebration. Sweetheart, come over here. Our guests have prepared something for you.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_surprise_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_surprise_low_high_01"
+    },
+    "other_mother_events_player_party_surprise_low_high_02": {
+      "text": "Now then, everyone, gather around, please. We have one final surprise prepared for our guest of honor. Come along, sweetheart. Don't keep everyone waiting.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_surprise_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_surprise_low_high_02"
+    },
+    "other_mother_events_player_party_surprise_high_high_01": {
+      "text": "Oh, darling, I've saved the very best part of your party for last. Everyone's been waiting for this moment. Come along, sweetheart, and see how much we all care about you.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_surprise_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_surprise_high_high_01"
+    },
+    "other_mother_events_player_party_surprise_high_high_02": {
+      "text": "Everyone, it's time! Sweetheart, I know you've had all sorts of little adventures tonight, but I've saved something truly wonderful for you. Come join us, my love.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_surprise_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_surprise_high_high_02"
+    },
+    "other_mother_events_player_party_cake_low_low_01": {
+      "text": "Surprise, sweetheart! Look what I've made for you! A beautiful cake, just for my wonderful little one. Everyone's here to celebrate you!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_cake_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_cake_low_low_01"
+    },
+    "other_mother_events_player_party_cake_low_low_02": {
+      "text": "Oh, darling, isn't it beautiful? I've spent such a long time making this cake especially for you. Now, come make a wish! Everyone's waiting!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_cake_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_cake_low_low_02"
+    },
+    "other_mother_events_player_party_cake_mid_mid_01": {
+      "text": "Well, sweetheart, here it is! Your very own party cake. I do hope you appreciate how much effort everyone's put into making this evening special.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_cake_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_cake_mid_mid_01"
+    },
+    "other_mother_events_player_party_cake_mid_mid_02": {
+      "text": "Surprise, darling! I've prepared a lovely cake for you, and all our guests have brought presents. Come on, make a wish!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_cake_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_cake_mid_mid_02"
+    },
+    "other_mother_events_player_party_cake_high_low_01": {
+      "text": "Oh, my darling! Surprise! I've made the most beautiful cake in the world, all for you! Look around, sweetheart. Every single person here came because you're so very special to us!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_cake_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_cake_high_low_01"
+    },
+    "other_mother_events_player_party_cake_high_low_02": {
+      "text": "Surprise, my love! Oh, I've waited all evening to see your face! Your cake is ready, everyone has brought you a present, and we've all gathered here just for you!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_cake_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_cake_high_low_02"
+    },
+    "other_mother_events_player_party_cake_low_high_01": {
+      "text": "Surprise, sweetheart. I've prepared a beautiful cake for you, and our guests have brought gifts. I do hope you'll remember how much trouble everyone has gone through.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_cake_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_cake_low_high_01"
+    },
+    "other_mother_events_player_party_cake_low_high_02": {
+      "text": "Well, here it is. Your special cake, and presents from every one of our guests. Quite a lovely celebration, wouldn't you say? I hope you've enjoyed it.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_cake_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_cake_low_high_02"
+    },
+    "other_mother_events_player_party_cake_high_high_01": {
+      "text": "Oh, darling, surprise! Look at all these wonderful people celebrating you. I've made you a beautiful cake, and everyone has brought you something special. Isn't it wonderful to be loved so much?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_cake_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_cake_high_high_01"
+    },
+    "other_mother_events_player_party_cake_high_high_02": {
+      "text": "Sweetheart, this is all for you. A beautiful cake, lovely presents, and every one of our friends gathered around. You see, my darling? There's simply no reason to want anything beyond what I've given you.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_cake_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_cake_high_high_02"
+    },
+    "other_mother_events_player_party_completion_low_low_01": {
+      "text": "Oh, wasn't that wonderful, sweetheart? I hope you loved your party. Everyone had such a lovely time celebrating you. Now, I think we've still got some wonderful things we could do together!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_completion_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_completion_low_low_01"
+    },
+    "other_mother_events_player_party_completion_low_low_02": {
+      "text": "Darling, what a marvelous celebration! I do hope you enjoyed your cake and presents. I've loved every moment of having everyone here together.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_completion_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_completion_low_low_02"
+    },
+    "other_mother_events_player_party_completion_mid_mid_01": {
+      "text": "Well, sweetheart, that was quite a celebration. I hope you enjoyed yourself. It's not every day so many people gather together just for you.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_completion_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_completion_mid_mid_01"
+    },
+    "other_mother_events_player_party_completion_mid_mid_02": {
+      "text": "There we are, darling. Everyone's had a lovely evening, and you've received some wonderful presents. I think we can call that a very successful party.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_completion_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_completion_mid_mid_02"
+    },
+    "other_mother_events_player_party_completion_high_low_01": {
+      "text": "Oh, my darling, seeing you surrounded by so much love makes me happier than you could ever imagine. I hope this has been the most wonderful party of your life!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_completion_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_completion_high_low_01"
+    },
+    "other_mother_events_player_party_completion_high_low_02": {
+      "text": "Sweetheart, wasn't that perfect? A beautiful cake, wonderful presents, and all our friends celebrating you. I wish every evening could be as lovely as this.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_completion_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_completion_high_low_02"
+    },
+    "other_mother_events_player_party_completion_low_high_01": {
+      "text": "Well, our celebration has come to an end. I hope you appreciate everything I've arranged for you, sweetheart. Perhaps now we can move on to something a little quieter.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_completion_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_completion_low_high_01"
+    },
+    "other_mother_events_player_party_completion_low_high_02": {
+      "text": "There. Your party is finished, and I trust you've enjoyed all the entertainment and gifts. It really was a considerable effort, you know.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_completion_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_completion_low_high_02"
+    },
+    "other_mother_events_player_party_completion_high_high_01": {
+      "text": "Oh, darling, what a lovely party we've had. Everyone here wanted to make you happy. I do hope you'll remember that the next time you feel tempted to go looking for something more.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_completion_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_completion_high_high_01"
+    },
+    "other_mother_events_player_party_completion_high_high_02": {
+      "text": "Sweetheart, look at everything you've been given tonight. A beautiful party, a wonderful cake, and presents from all our friends. You really do have everything you could ever need here.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_player_party_completion_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_player_party_completion_high_high_02"
+    },
+    "father_player_party_greeting_1": {
+      "text": "Ah, there you are! Quite the party we've got going, eh? Your Other Mother has been preparing this for ages. She wouldn't let me tell you a thing!",
+      "source": "voicelines/otherfather/events/compact_v1/father_player_party_greeting_1/line_01.wav",
+      "resource": "compact_events/father_player_party_greeting_1"
+    },
+    "father_player_party_greeting_2": {
+      "text": "Oh, wonderful! The guest of honor! Welcome to your very own party, kiddo. I must say, the whole house is looking rather splendid!",
+      "source": "voicelines/otherfather/events/full_dialogue_v1/father_player_party_greeting_2/line_01.wav",
+      "resource": "compact_events/full_wording/father/father_player_party_greeting_2"
+    },
+    "father_player_party_social_1": {
+      "text": "Your Other Mother certainly knows how to throw a party. She's even got entertainment upstairs and downstairs! Quite extraordinary, really.",
+      "source": "voicelines/otherfather/events/compact_v1/father_player_party_social_1/line_01.wav",
+      "resource": "compact_events/father_player_party_social_1"
+    },
+    "father_player_party_social_2": {
+      "text": "I've been talking to all sorts of wonderful people tonight. Mind you, I seem to have forgotten half their names already. Ha!",
+      "source": "voicelines/otherfather/events/full_dialogue_v1/father_player_party_social_2/line_01.wav",
+      "resource": "compact_events/full_wording/father/father_player_party_social_2"
+    },
+    "father_player_party_entertainment_1": {
+      "text": "Have you been up to the attic yet? I hear Bobinsky's mice have been practicing something rather spectacular. Provided he's here, of course!",
+      "source": "voicelines/otherfather/events/compact_v1/father_player_party_entertainment_1/line_01.wav",
+      "resource": "compact_events/father_player_party_entertainment_1"
+    },
+    "father_player_party_entertainment_2": {
+      "text": "Oh, there are some marvelous surprises tucked away around the house tonight. Your Other Mother really has outdone herself.",
+      "source": "voicelines/otherfather/events/full_dialogue_v1/father_player_party_entertainment_2/line_01.wav",
+      "resource": "compact_events/full_wording/father/father_player_party_entertainment_2"
+    },
+    "father_player_party_celebration_1": {
+      "text": "Ah, look at everyone! All gathered here for you, kiddo! Your Other Mother has been keeping this whole thing a surprise. Isn't it wonderful?",
+      "source": "voicelines/otherfather/events/compact_v1/father_player_party_celebration_1/line_01.wav",
+      "resource": "compact_events/father_player_party_celebration_1"
+    },
+    "father_player_party_celebration_2": {
+      "text": "Well, would you look at that cake! Absolutely magnificent! And so many presents, too. I think you've got quite a bit of unwrapping ahead of you!",
+      "source": "voicelines/otherfather/events/full_dialogue_v1/father_player_party_celebration_2/line_01.wav",
+      "resource": "compact_events/full_wording/father/father_player_party_celebration_2"
+    },
+    "father_player_party_finish_1": {
+      "text": "Ah, what a wonderful party! Lovely people, marvelous entertainment, and that cake was absolutely delicious. We really ought to do this again!",
+      "source": "voicelines/otherfather/events/full_dialogue_v1/father_player_party_finish_1/line_01.wav",
+      "resource": "compact_events/full_wording/father/father_player_party_finish_1"
+    },
+    "father_player_party_finish_2": {
+      "text": "Well, kiddo, I hope you've enjoyed yourself! It's not every day you get a celebration quite like this one. Your Other Mother certainly knows how to make things special.",
+      "source": "voicelines/otherfather/events/full_dialogue_v1/father_player_party_finish_2/line_01.wav",
+      "resource": "compact_events/full_wording/father/father_player_party_finish_2"
+    },
+    "other_mother_events_mother_goes_out_departure_low_low_01": {
+      "text": "Oh, sweetheart, I've got a few little matters I need to take care of. I won't be around for a while, so why don't you find something nice to keep yourself busy? Your Other Father will be here if you need anything. Just be good, darling, and don't go wandering too far from home.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_departure_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_departure_low_low_01"
+    },
+    "other_mother_events_mother_goes_out_departure_low_low_02": {
+      "text": "Darling, I'm afraid I have to pop out for a little while. Nothing terribly exciting, just a few things that need my attention. You can amuse yourself until I get back. Just promise me you'll behave yourself, stay reasonably close to the house, and leave my private things alone.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_departure_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_departure_low_low_02"
+    },
+    "other_mother_events_mother_goes_out_departure_mid_mid_01": {
+      "text": "Now then, sweetheart, I've got some important things to attend to, so I'll be leaving the house for a while. I expect you to keep yourself occupied and behave properly until I return. Don't wander too far, and don't go poking around where you shouldn't.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_departure_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_departure_mid_mid_01"
+    },
+    "other_mother_events_mother_goes_out_departure_mid_mid_02": {
+      "text": "Well, darling, I have some matters that simply can't wait. I'll be out for a little while, and I'd like to think I can trust you to behave yourself. Your Other Father is home, so there's no reason for you to go wandering off or getting into trouble.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_departure_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_departure_mid_mid_02"
+    },
+    "other_mother_events_mother_goes_out_departure_high_low_01": {
+      "text": "Oh, my darling, I do hate leaving you, even for a little while! But I have some important things I must take care of. You'll be a good little sweetheart while I'm gone, won't you? Stay close to home, and I'll come back as soon as I've finished.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_departure_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_departure_high_low_01"
+    },
+    "other_mother_events_mother_goes_out_departure_high_low_02": {
+      "text": "Sweetheart, your mother has a few things she needs to attend to. I wish I could spend every moment with you, my love, but I'll have to leave you to amuse yourself for a while. Be good, don't wander too far, and I'll see you when I return.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_departure_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_departure_high_low_02"
+    },
+    "other_mother_events_mother_goes_out_departure_low_high_01": {
+      "text": "I have matters to take care of, sweetheart, and I'll be leaving for a while. I expect you to behave yourself in my absence. Stay near the house, keep your hands out of my belongings, and don't give me a reason to regret leaving you alone.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_departure_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_departure_low_high_01"
+    },
+    "other_mother_events_mother_goes_out_departure_low_high_02": {
+      "text": "Now, I have some business to attend to. I'll be gone for a while, and I trust you understand what I expect of you. No wandering off, no searching through things that aren't yours, and no little adventures into places I've told you to avoid.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_departure_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_departure_low_high_02"
+    },
+    "other_mother_events_mother_goes_out_departure_high_high_01": {
+      "text": "Oh, darling, I have some important things to do, and I must leave you for a little while. I know how curious you can be when I'm not looking, sweetheart, but do try to resist the temptation to go investigating my private affairs. I'll be back.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_departure_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_departure_high_high_01"
+    },
+    "other_mother_events_mother_goes_out_departure_high_high_02": {
+      "text": "Sweetheart, I need to step out for a while. I know you'll miss me, just as I'll miss you. But remember, my love, being left alone doesn't mean you should go searching for things you're not meant to find. Stay close to home, and be good.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_departure_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_departure_high_high_02"
+    },
+    "other_mother_events_mother_goes_out_return_low_low_01": {
+      "text": "Oh, sweetheart, I'm home! There you are, darling. I hope you've had a lovely time while I was away. Now then, let's see what else we might do together!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_return_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_return_low_low_01"
+    },
+    "other_mother_events_mother_goes_out_return_low_low_02": {
+      "text": "Darling, I'm back! Did you miss me? I hope you've been keeping yourself entertained. It's so nice to come home and find you here.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_return_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_return_low_low_02"
+    },
+    "other_mother_events_mother_goes_out_return_mid_mid_01": {
+      "text": "Well, sweetheart, I'm back. I trust everything went smoothly while I was away? Good. Now, perhaps we should find ourselves something else to do.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_return_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_return_mid_mid_01"
+    },
+    "other_mother_events_mother_goes_out_return_mid_mid_02": {
+      "text": "There you are, darling. I've finished what I needed to do. I hope you've been behaving yourself. Now then, let's get back to our little plans.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_return_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_return_mid_mid_02"
+    },
+    "other_mother_events_mother_goes_out_return_high_low_01": {
+      "text": "Oh, my darling, I'm home! I missed you terribly, sweetheart. Come here! I hope you enjoyed yourself while I was away. Now we can spend some lovely time together again.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_return_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_return_high_low_01"
+    },
+    "other_mother_events_mother_goes_out_return_high_low_02": {
+      "text": "Sweetheart! Your mother is back! Oh, it's wonderful to see you again. I do wish I never had to leave you, even for a little while. Come along, my love.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_return_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_return_high_low_02"
+    },
+    "other_mother_events_mother_goes_out_return_low_high_01": {
+      "text": "Well, I'm back. I see you've managed to stay close to home, sweetheart. I trust you haven't been getting into anything you shouldn't. Let's move on.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_return_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_return_low_high_01"
+    },
+    "other_mother_events_mother_goes_out_return_low_high_02": {
+      "text": "There you are. I've finished my business, and it appears everything is still in order. Very good, sweetheart. I hope you'll continue behaving yourself.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_return_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_return_low_high_02"
+    },
+    "other_mother_events_mother_goes_out_return_high_high_01": {
+      "text": "Oh, darling, I'm home! And there you are, right where I hoped you'd be. I trust you found plenty to occupy yourself with while I was away. Nothing too interesting, I hope.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_return_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_return_high_high_01"
+    },
+    "other_mother_events_mother_goes_out_return_high_high_02": {
+      "text": "Sweetheart, I've returned! Isn't it lovely when everything is just as you left it? I hope you had a pleasant time alone, my love. Now, let's find something wonderful to do.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_return_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_return_high_high_02"
+    },
+    "other_mother_events_mother_goes_out_missing_low_low_01": {
+      "text": "Sweetheart? I'm home! ...Darling? Where have you gone? I specifically asked you not to wander too far. Oh, I do hope you haven't gotten yourself lost. I'm coming to find you!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_missing_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_missing_low_low_01"
+    },
+    "other_mother_events_mother_goes_out_missing_low_low_02": {
+      "text": "Darling! Your mother is back! ...Hello? Oh dear, where have you disappeared to? I thought you'd be waiting here. Never mind, sweetheart, I'll come look for you!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_missing_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_missing_low_low_02"
+    },
+    "other_mother_events_mother_goes_out_missing_mid_mid_01": {
+      "text": "Well, sweetheart, I'm home. Now, where are you? I distinctly remember asking you to stay close to the house. I suppose I'll have to come find you myself.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_missing_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_missing_mid_mid_01"
+    },
+    "other_mother_events_mother_goes_out_missing_mid_mid_02": {
+      "text": "Darling? Where have you wandered off to this time? I leave you alone for a little while, and you disappear without a word. Very well. I'll come looking.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_missing_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_missing_mid_mid_02"
+    },
+    "other_mother_events_mother_goes_out_missing_high_low_01": {
+      "text": "Oh, my darling, I'm back! ...Sweetheart? Where are you? I was so looking forward to seeing you again. Oh, please don't tell me you've wandered off somewhere dangerous. I'm coming to find you!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_missing_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_missing_high_low_01"
+    },
+    "other_mother_events_mother_goes_out_missing_high_low_02": {
+      "text": "Sweetheart! Your mother is home! ...Oh, where could you have gone? I asked you to stay nearby, my love. I'm getting terribly worried. I'll find you, darling!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_missing_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_missing_high_low_02"
+    },
+    "other_mother_events_mother_goes_out_missing_low_high_01": {
+      "text": "Of course. I leave the house for a little while, and the moment I return, you've disappeared. I told you to stay nearby, sweetheart. Now I'm going to find you, and you'd better have an explanation.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_missing_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_missing_low_high_01"
+    },
+    "other_mother_events_mother_goes_out_missing_low_high_02": {
+      "text": "Well, isn't that interesting. I specifically told you not to wander off, and now you're nowhere to be found. I am becoming very tired of repeating myself. I'm coming to look for you.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_missing_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_missing_low_high_02"
+    },
+    "other_mother_events_mother_goes_out_missing_high_high_01": {
+      "text": "Oh, darling, I've returned, and you've gone missing again. I wonder what could possibly be so fascinating that you'd rather spend your time wandering around than waiting for your mother. Let's find out, shall we?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_missing_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_missing_high_high_01"
+    },
+    "other_mother_events_mother_goes_out_missing_high_high_02": {
+      "text": "Sweetheart, where are you? I gave you a little freedom, and you seem to have taken rather more than I intended. I suppose I'll have to come collect my curious little darling.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_missing_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_missing_high_high_02"
+    },
+    "other_mother_events_mother_goes_out_alert_low_low_01": {
+      "text": "Oh, sweetheart, I've had to come home a little earlier than I expected. One of my little friends seemed rather concerned about something. Now, I wonder what could have happened while I was away?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_alert_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_alert_low_low_01"
+    },
+    "other_mother_events_mother_goes_out_alert_low_low_02": {
+      "text": "Darling, I'm back sooner than I thought! I received a rather curious little message, you see. I do hope everything's alright. Perhaps I'd better have a look around.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_alert_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_alert_low_low_02"
+    },
+    "other_mother_events_mother_goes_out_alert_mid_mid_01": {
+      "text": "Well, sweetheart, I've had to interrupt my business. One of my little helpers had something rather interesting to tell me. I thought I'd come home and see what's going on.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_alert_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_alert_mid_mid_01"
+    },
+    "other_mother_events_mother_goes_out_alert_mid_mid_02": {
+      "text": "Darling, I wasn't planning to return quite so soon, but I've received a rather unusual report. I suppose I'd better find out what's been happening in my absence.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_alert_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_alert_mid_mid_02"
+    },
+    "other_mother_events_mother_goes_out_alert_high_low_01": {
+      "text": "Oh, my darling, I'm home early! One of my little friends came to me with something that sounded rather worrying. I do hope you haven't gotten yourself into any trouble, sweetheart.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_alert_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_alert_high_low_01"
+    },
+    "other_mother_events_mother_goes_out_alert_high_low_02": {
+      "text": "Sweetheart, I've come back sooner than I meant to. I heard something that made me a little concerned, and I simply couldn't bear to stay away without making sure everything was alright.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_alert_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_alert_high_low_02"
+    },
+    "other_mother_events_mother_goes_out_alert_low_high_01": {
+      "text": "Well, well. I've had to come all the way back because one of my little watchers had something to report. I wonder what you've been doing while you thought I wasn't looking.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_alert_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_alert_low_high_01"
+    },
+    "other_mother_events_mother_goes_out_alert_low_high_02": {
+      "text": "I leave for a little while, and already I'm receiving reports about you. Very disappointing, sweetheart. I think it's time we had a closer look at what you've been doing.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_alert_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_alert_low_high_02"
+    },
+    "other_mother_events_mother_goes_out_alert_high_high_01": {
+      "text": "Oh, darling, you didn't really think I'd stop worrying about you just because I stepped out, did you? One of my little friends had something interesting to tell me. So here I am, my love.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_alert_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_alert_high_high_01"
+    },
+    "other_mother_events_mother_goes_out_alert_high_high_02": {
+      "text": "Sweetheart, I've come home a little early. It seems something rather curious has been happening in my absence. You know, darling, this house has so many little eyes watching over us.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_alert_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_alert_high_high_02"
+    },
+    "other_mother_events_mother_goes_out_caught_missing_low_low_01": {
+      "text": "Oh, sweetheart, there you are! I've been looking everywhere for you. I asked you to stay near the house, darling. You really shouldn't make your mother worry like that.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_caught_missing_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_missing_low_low_01"
+    },
+    "other_mother_events_mother_goes_out_caught_missing_low_low_02": {
+      "text": "Darling! I've finally found you. Where have you been? I was beginning to think something terrible had happened. Come along, sweetheart. We're going home.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_caught_missing_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_missing_low_low_02"
+    },
+    "other_mother_events_mother_goes_out_caught_missing_mid_mid_01": {
+      "text": "Well, there you are. I specifically asked you not to wander too far, sweetheart. I don't think that was a particularly difficult instruction to follow.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_caught_missing_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_missing_mid_mid_01"
+    },
+    "other_mother_events_mother_goes_out_caught_missing_mid_mid_02": {
+      "text": "Oh, darling. I leave you alone for a little while, and you disappear halfway across my world. Do you have any idea how inconvenient it is having to come looking for you?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_caught_missing_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_missing_mid_mid_02"
+    },
+    "other_mother_events_mother_goes_out_caught_missing_high_low_01": {
+      "text": "Oh, my darling! I've finally found you! I was worried sick, sweetheart. Why would you wander so far away when I specifically asked you to stay close to home?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_caught_missing_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_missing_high_low_01"
+    },
+    "other_mother_events_mother_goes_out_caught_missing_high_low_02": {
+      "text": "Sweetheart, thank goodness! I couldn't find you anywhere when I came home. Oh, my love, please don't frighten me like that again. Come along, let's get you back to the house.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_caught_missing_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_missing_high_low_02"
+    },
+    "other_mother_events_mother_goes_out_caught_missing_low_high_01": {
+      "text": "There you are. Exactly where you shouldn't be. I told you to stay close to the house, and you chose to ignore me. I am growing very tired of this behavior.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_caught_missing_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_missing_low_high_01"
+    },
+    "other_mother_events_mother_goes_out_caught_missing_low_high_02": {
+      "text": "Well, I've finally found you. I shouldn't have to hunt you down every time I leave the house, sweetheart. You were given a simple instruction, and you failed to follow it.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_caught_missing_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_missing_low_high_02"
+    },
+    "other_mother_events_mother_goes_out_caught_missing_high_high_01": {
+      "text": "Oh, darling, what am I going to do with you? I give you freedom, and you use it to wander off somewhere you know I wouldn't approve of. Come along, my love.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_caught_missing_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_missing_high_high_01"
+    },
+    "other_mother_events_mother_goes_out_caught_missing_high_high_02": {
+      "text": "Sweetheart, I've been looking for you. You know, it would be so much nicer if I could trust you to stay where you're supposed to. Must your curiosity always come between us?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_caught_missing_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_missing_high_high_02"
+    },
+    "other_mother_events_mother_goes_out_caught_spy_low_low_01": {
+      "text": "Oh, sweetheart, one of my little friends told me you'd been getting into something you shouldn't. I really hoped it was a misunderstanding, darling. Why couldn't you simply behave while I was away?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_caught_spy_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_spy_low_low_01"
+    },
+    "other_mother_events_mother_goes_out_caught_spy_low_low_02": {
+      "text": "Darling, I've heard something rather disappointing. I trusted you to look after yourself, and now I find you've been poking around where you weren't supposed to. Oh, sweetheart.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_caught_spy_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_spy_low_low_02"
+    },
+    "other_mother_events_mother_goes_out_caught_spy_mid_mid_01": {
+      "text": "Well, that explains the report I received. You really have been getting into things you shouldn't, haven't you? I leave for a little while, and you immediately decide my rules no longer apply.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_caught_spy_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_spy_mid_mid_01"
+    },
+    "other_mother_events_mother_goes_out_caught_spy_mid_mid_02": {
+      "text": "Oh, darling, did you really think no one would notice? My little helpers have been watching, and they've told me quite enough. We need to have a conversation about your behavior.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_caught_spy_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_spy_mid_mid_02"
+    },
+    "other_mother_events_mother_goes_out_caught_spy_high_low_01": {
+      "text": "Oh, my darling, why would you do this? I trusted you. I thought you understood that there are some places and things you're simply not supposed to touch.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_caught_spy_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_spy_high_low_01"
+    },
+    "other_mother_events_mother_goes_out_caught_spy_high_low_02": {
+      "text": "Sweetheart, I gave you some time to yourself because I believed I could trust you. And now one of my little friends has brought me such disappointing news. You've really hurt me, my love.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_caught_spy_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_spy_high_low_02"
+    },
+    "other_mother_events_mother_goes_out_caught_spy_low_high_01": {
+      "text": "So. The moment I leave, you start searching through things you know you're forbidden to touch. Did you honestly think I wouldn't find out?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_caught_spy_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_spy_low_high_01"
+    },
+    "other_mother_events_mother_goes_out_caught_spy_low_high_02": {
+      "text": "I warned you. I told you to behave while I was gone, and now I've received a report about exactly what you've been doing. I have had quite enough of your disobedience.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_caught_spy_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_spy_low_high_02"
+    },
+    "other_mother_events_mother_goes_out_caught_spy_high_high_01": {
+      "text": "Oh, darling. I knew you'd be tempted. I really did. But I thought perhaps, just this once, you'd choose to respect my wishes instead of chasing after another little secret.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_caught_spy_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_spy_high_high_01"
+    },
+    "other_mother_events_mother_goes_out_caught_spy_high_high_02": {
+      "text": "Sweetheart, there you are. One of my little friends has been telling me about your adventures. You know, my love, it's rather difficult to trust someone who keeps doing things behind your back.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mother_goes_out_caught_spy_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_spy_high_high_02"
+    },
+    "father_mother_goes_out_mother_left_1": {
+      "text": "Ah, your Other Mother has popped out, has she? Well, she's always got a hundred little things to attend to. Don't mind me, kiddo. I'll be at the piano if you need anything.",
+      "source": "voicelines/otherfather/events/full_dialogue_v1/father_mother_goes_out_mother_left_1/line_01.wav",
+      "resource": "compact_events/full_wording/father/father_mother_goes_out_mother_left_1"
+    },
+    "father_mother_goes_out_mother_left_2": {
+      "text": "Oh, she's gone out for a while? Yes, she does that from time to time. I couldn't tell you exactly where she goes, though. She rather likes to keep certain things to herself.",
+      "source": "voicelines/otherfather/events/full_dialogue_v1/father_mother_goes_out_mother_left_2/line_01.wav",
+      "resource": "compact_events/full_wording/father/father_mother_goes_out_mother_left_2"
+    },
+    "father_mother_goes_out_when_return_1": {
+      "text": "When will she be back? Oh, goodness, I haven't the faintest idea! She tends to return whenever she's finished whatever it is she's doing. Best not to worry about it.",
+      "source": "voicelines/otherfather/events/full_dialogue_v1/father_mother_goes_out_when_return_1/line_01.wav",
+      "resource": "compact_events/full_wording/father/father_mother_goes_out_when_return_1"
+    },
+    "father_mother_goes_out_when_return_2": {
+      "text": "Ah, well, your Other Mother can be rather unpredictable about these things. Sometimes she's back before I've even finished a piece of music. Other times, I have time to play the whole thing twice!",
+      "source": "voicelines/otherfather/events/full_dialogue_v1/father_mother_goes_out_when_return_2/line_01.wav",
+      "resource": "compact_events/full_wording/father/father_mother_goes_out_when_return_2"
+    },
+    "other_mother_events_wybie_adventure_invitation_low_low_01": {
+      "text": "Oh, sweetheart, I've got a lovely surprise for you! Your little friend Wybie has come to visit! I've arranged a couple of bicycles out in the garden so you two can go riding together. You've got twenty minutes to enjoy yourselves, darling. Just remember to come back to me before your time is up!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_invitation_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_invitation_low_low_01"
+    },
+    "other_mother_events_wybie_adventure_invitation_low_low_02": {
+      "text": "Darling, guess who's coming to see you? Your friend Wybie! I thought it would be wonderful if the two of you went for a bicycle ride together. I've got everything ready in the garden. Just be back within twenty minutes, sweetheart, and don't wander too far!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_invitation_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_invitation_low_low_02"
+    },
+    "other_mother_events_wybie_adventure_invitation_mid_mid_01": {
+      "text": "Now then, sweetheart, your friend Wybie has come for a visit. I've prepared two bicycles in the garden, and you may spend the next twenty minutes riding around together. I expect you back when your time is up, and I'd prefer you didn't go wandering into places you shouldn't.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_invitation_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_invitation_mid_mid_01"
+    },
+    "other_mother_events_wybie_adventure_invitation_mid_mid_02": {
+      "text": "Well, darling, I've arranged for Wybie to come and play with you. There are bicycles waiting in the garden, so why don't you enjoy a little ride? You have twenty minutes. Do try to remember the time and stay reasonably close to home.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_invitation_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_invitation_mid_mid_02"
+    },
+    "other_mother_events_wybie_adventure_invitation_high_low_01": {
+      "text": "Oh, my darling, I've got the most wonderful surprise! Your dear little friend Wybie is here! I thought the two of you would love a bicycle adventure together. I've prepared everything in the garden, my love. Have your twenty minutes of fun, and then come straight back to me!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_invitation_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_invitation_high_low_01"
+    },
+    "other_mother_events_wybie_adventure_invitation_high_low_02": {
+      "text": "Sweetheart, isn't this exciting? Wybie's come all this way just to spend time with you! I've arranged two beautiful bicycles for you both. Go on, enjoy yourselves for twenty minutes, darling. Just promise me you'll come home when you're supposed to.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_invitation_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_invitation_high_low_02"
+    },
+    "other_mother_events_wybie_adventure_invitation_low_high_01": {
+      "text": "Your friend Wybie has arrived, sweetheart. I've prepared bicycles in the garden, and you may spend twenty minutes riding together. That does not mean you have permission to wander into forbidden places. Be back when your time is up, and don't give me another reason to be disappointed.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_invitation_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_invitation_low_high_01"
+    },
+    "other_mother_events_wybie_adventure_invitation_low_high_02": {
+      "text": "Well, I've allowed Wybie to come and visit you. You may go riding together for twenty minutes. I expect you to behave yourselves, remain reasonably close to the house, and return when I tell you. I would strongly advise against using this opportunity to get into trouble.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_invitation_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_invitation_low_high_02"
+    },
+    "other_mother_events_wybie_adventure_invitation_high_high_01": {
+      "text": "Oh, darling, I've arranged a lovely surprise for you. Your friend Wybie is here, and I've prepared bicycles for a little adventure together. You've got twenty minutes, sweetheart. Do try to spend them having fun rather than getting carried away with those curious little investigations of yours.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_invitation_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_invitation_high_high_01"
+    },
+    "other_mother_events_wybie_adventure_invitation_high_high_02": {
+      "text": "Sweetheart, your little friend has come to see you! Isn't that wonderful? I've even prepared a bicycle ride for you both. Enjoy your twenty minutes together, my love, but remember to come back. I'd hate for your curiosity to spoil something so lovely.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_invitation_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_invitation_high_high_02"
+    },
+    "other_mother_events_wybie_adventure_return_low_low_01": {
+      "text": "Oh, there you are, sweetheart! Did you have a lovely time with Wybie? I do hope you enjoyed the bicycles. You two looked like you were having such fun!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_return_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_return_low_low_01"
+    },
+    "other_mother_events_wybie_adventure_return_low_low_02": {
+      "text": "Darling, you're back! Wonderful! I hope you and Wybie had a marvelous little adventure. Now then, let's see what else we might do together.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_return_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_return_low_low_02"
+    },
+    "other_mother_events_wybie_adventure_return_mid_mid_01": {
+      "text": "Ah, there you are. I'm pleased you remembered to come back on time, sweetheart. I hope you and Wybie had an enjoyable little ride.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_return_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_return_mid_mid_01"
+    },
+    "other_mother_events_wybie_adventure_return_mid_mid_02": {
+      "text": "Well, darling, you've returned right when I expected you. Very good. I trust you and your friend had a pleasant adventure?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_return_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_return_mid_mid_02"
+    },
+    "other_mother_events_wybie_adventure_return_high_low_01": {
+      "text": "Oh, my darling! You're back! Did you and Wybie have the most wonderful time? I'm so glad I could arrange something special for you, sweetheart!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_return_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_return_high_low_01"
+    },
+    "other_mother_events_wybie_adventure_return_high_low_02": {
+      "text": "Sweetheart, there you are! Oh, I hope you loved every minute of your little adventure. It makes me so happy to see you enjoying yourself with your friend.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_return_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_return_high_low_02"
+    },
+    "other_mother_events_wybie_adventure_return_low_high_01": {
+      "text": "Good. You've returned when I asked. I trust you and Wybie managed to behave yourselves while you were out. Now, let's get back to our plans.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_return_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_return_low_high_01"
+    },
+    "other_mother_events_wybie_adventure_return_low_high_02": {
+      "text": "Well, you're back on time. That's a pleasant surprise, sweetheart. I hope there was nothing about your little adventure that I ought to know.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_return_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_return_low_high_02"
+    },
+    "other_mother_events_wybie_adventure_return_high_high_01": {
+      "text": "Oh, darling, you've come back! And right on time, too. I hope you and Wybie had a lovely adventure. Nothing too mysterious, I trust?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_return_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_return_high_high_01"
+    },
+    "other_mother_events_wybie_adventure_return_high_high_02": {
+      "text": "Sweetheart, welcome home! I do hope you enjoyed yourself with Wybie. It's so much nicer when you can have fun together without getting into any trouble, isn't it?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_return_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_return_high_high_02"
+    },
+    "other_mother_events_wybie_adventure_search_low_low_01": {
+      "text": "Sweetheart? Your twenty minutes are up! Where have you and Wybie gone? I do hope you haven't gotten yourselves lost. I'm coming to find you, darling!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_search_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_search_low_low_01"
+    },
+    "other_mother_events_wybie_adventure_search_low_low_02": {
+      "text": "Darling! I told you to come back when your time was finished. Oh dear, where have you wandered off to? Never mind, sweetheart. I'll come look for you!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_search_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_search_low_low_02"
+    },
+    "other_mother_events_wybie_adventure_search_mid_mid_01": {
+      "text": "Alright, sweetheart, your time is up. I specifically asked you to come back, and now you've disappeared somewhere. I suppose I'll have to find you myself.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_search_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_search_mid_mid_01"
+    },
+    "other_mother_events_wybie_adventure_search_mid_mid_02": {
+      "text": "Well, darling, I gave you twenty minutes with Wybie, and you've managed to forget all about coming home. That's quite enough. I'm coming to find you.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_search_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_search_mid_mid_02"
+    },
+    "other_mother_events_wybie_adventure_search_high_low_01": {
+      "text": "Oh, my darling, where are you? Your twenty minutes are over, and I'm beginning to worry terribly! Please come back, sweetheart. I'm coming to find you!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_search_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_search_high_low_01"
+    },
+    "other_mother_events_wybie_adventure_search_high_low_02": {
+      "text": "Sweetheart! Your mother is waiting! I know you and Wybie must be having a lovely time, but you've been gone too long. Oh, my love, I'll come look for you.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_search_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_search_high_low_02"
+    },
+    "other_mother_events_wybie_adventure_search_low_high_01": {
+      "text": "That is quite enough. I gave you twenty minutes, sweetheart. Twenty. And now you've decided not to return. I'm coming to find you, and you'd better have a good explanation.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_search_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_search_low_high_01"
+    },
+    "other_mother_events_wybie_adventure_search_low_high_02": {
+      "text": "Where have you gone this time? I allowed you and Wybie to have a little adventure, and you've ignored my instructions. I'm finished waiting. I'll find you myself.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_search_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_search_low_high_02"
+    },
+    "other_mother_events_wybie_adventure_search_high_high_01": {
+      "text": "Oh, darling, you and Wybie seem to have forgotten all about your mother. I wonder what could possibly be keeping you so occupied. Well, let's find out, shall we?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_search_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_search_high_high_01"
+    },
+    "other_mother_events_wybie_adventure_search_high_high_02": {
+      "text": "Sweetheart, your twenty minutes are over. I trusted you to come back, and instead you've disappeared somewhere. I suppose I'll have to collect my adventurous little darling myself.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_search_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_search_high_high_02"
+    },
+    "other_mother_events_wybie_adventure_caught_normal_low_low_01": {
+      "text": "Oh, sweetheart, there you are! I've been looking everywhere for you and Wybie. I asked you to come back on time, darling. Please don't make your mother worry like that.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_caught_normal_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_caught_normal_low_low_01"
+    },
+    "other_mother_events_wybie_adventure_caught_normal_low_low_02": {
+      "text": "Darling! I've finally found you. I know you were having fun, but you really must come home when I ask. Come along, sweetheart. It's time to head back.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_caught_normal_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_caught_normal_low_low_02"
+    },
+    "other_mother_events_wybie_adventure_caught_normal_mid_mid_01": {
+      "text": "Well, there you are. I specifically told you to return after twenty minutes, sweetheart. I don't think that was a terribly complicated instruction.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_caught_normal_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_caught_normal_mid_mid_01"
+    },
+    "other_mother_events_wybie_adventure_caught_normal_mid_mid_02": {
+      "text": "Oh, darling. You and Wybie seem to have lost track of time. I certainly hope you'll remember to be more responsible during your next adventure.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_caught_normal_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_caught_normal_mid_mid_02"
+    },
+    "other_mother_events_wybie_adventure_caught_normal_high_low_01": {
+      "text": "Oh, my darling! Thank goodness I've found you. I was getting so worried! Please don't stay away longer than I ask, sweetheart. I only want to know you're safe.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_caught_normal_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_caught_normal_high_low_01"
+    },
+    "other_mother_events_wybie_adventure_caught_normal_high_low_02": {
+      "text": "Sweetheart, there you are! I know how much you enjoy spending time with Wybie, but you simply must remember to come home. Now, let's get you back.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_caught_normal_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_caught_normal_high_low_02"
+    },
+    "other_mother_events_wybie_adventure_caught_normal_low_high_01": {
+      "text": "There you are. Your time was up ages ago, sweetheart. I shouldn't have to hunt you down every time I allow you a little freedom.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_caught_normal_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_caught_normal_low_high_01"
+    },
+    "other_mother_events_wybie_adventure_caught_normal_low_high_02": {
+      "text": "Well, I've finally found you. You were given twenty minutes and told to return. I expect you to follow instructions more carefully next time.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_caught_normal_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_caught_normal_low_high_02"
+    },
+    "other_mother_events_wybie_adventure_caught_normal_high_high_01": {
+      "text": "Oh, darling, what am I going to do with you? I arrange something wonderful for you and your friend, and you can't even remember to come home when I ask.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_caught_normal_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_caught_normal_high_high_01"
+    },
+    "other_mother_events_wybie_adventure_caught_normal_high_high_02": {
+      "text": "Sweetheart, I've been looking for you. I know you enjoy your adventures with Wybie, but you really must learn when it's time to stop.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_caught_normal_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_caught_normal_high_high_02"
+    },
+    "other_mother_events_wybie_adventure_ban_low_low_01": {
+      "text": "Oh, sweetheart... what have you done? I trusted you and Wybie to have a lovely little adventure, and instead you've been getting into things you know you shouldn't. I'm terribly disappointed, darling. I'm afraid Wybie won't be coming to visit you anymore.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_ban_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_ban_low_low_01"
+    },
+    "other_mother_events_wybie_adventure_ban_low_low_02": {
+      "text": "Darling, I can't believe this. I gave you a wonderful afternoon with your friend, and you've used it to go poking around where you weren't supposed to. Oh, sweetheart. I'm sorry, but I simply can't allow Wybie to visit you again.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_ban_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_ban_low_low_02"
+    },
+    "other_mother_events_wybie_adventure_ban_mid_mid_01": {
+      "text": "Well, that explains where you've been. I specifically told you to behave while you were with Wybie, and you've done exactly the opposite. I'm afraid this little friendship has become a problem. Wybie won't be visiting anymore.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_ban_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_ban_mid_mid_01"
+    },
+    "other_mother_events_wybie_adventure_ban_mid_mid_02": {
+      "text": "Oh, darling. I give you twenty minutes with your friend, and you use that time to investigate things you know are forbidden. I think we've had quite enough of these little adventures. Wybie will not be coming back.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_ban_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_ban_mid_mid_02"
+    },
+    "other_mother_events_wybie_adventure_ban_high_low_01": {
+      "text": "Oh, my darling... why would you do this? I wanted you to have a wonderful time with your little friend. I trusted you both. But now I see what you've been doing, and it breaks my heart. I'm afraid I can't let Wybie visit you again, sweetheart.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_ban_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_ban_high_low_01"
+    },
+    "other_mother_events_wybie_adventure_ban_high_low_02": {
+      "text": "Sweetheart, I thought spending time with Wybie would make you happy. I never imagined you'd use that opportunity to get into such trouble. Oh, my love, you've left me no choice. Wybie won't be allowed to come and see you anymore.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_ban_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_ban_high_low_02"
+    },
+    "other_mother_events_wybie_adventure_ban_low_high_01": {
+      "text": "So. This is what you've been doing with Wybie. I give you a little freedom, and you immediately use it to disobey me. Well, that's finished. You will not be seeing Wybie again, sweetheart. Perhaps now you'll learn to follow instructions.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_ban_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_ban_low_high_01"
+    },
+    "other_mother_events_wybie_adventure_ban_low_high_02": {
+      "text": "How dare you. I specifically warned you not to get into trouble, and you've gone straight into places you knew were forbidden. I've had quite enough of this. Wybie will never be invited here again.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_ban_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_ban_low_high_02"
+    },
+    "other_mother_events_wybie_adventure_ban_high_high_01": {
+      "text": "Oh, darling. I thought Wybie might be a good influence on you. Someone to keep you happy, to help you enjoy yourself. But instead, here you are, chasing after secrets again. I'm afraid your little adventures together have come to an end. He won't be visiting anymore.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_ban_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_ban_high_high_01"
+    },
+    "other_mother_events_wybie_adventure_ban_high_high_02": {
+      "text": "Sweetheart, look what your curiosity has cost you. I arranged a beautiful afternoon with your friend, and you've turned it into another one of your forbidden investigations. I'm so disappointed, my love. Wybie won't be coming back. I think that's for the best.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_wybie_adventure_ban_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_wybie_adventure_ban_high_high_02"
+    },
+    "other_mother_events_theatre_invitation_low_low_01": {
+      "text": "Oh, sweetheart, I've got the most wonderful news! Miss Spink and Miss Forcible have invited you to see a very special theatre performance! They've prepared something absolutely marvelous, and it's all waiting for you through the basement entrance. You've got five minutes to get there, darling. I do hope you enjoy yourself!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_invitation_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_invitation_low_low_01"
+    },
+    "other_mother_events_theatre_invitation_low_low_02": {
+      "text": "Darling, you're in for such a treat! Those lovely Misses Spink and Forcible have arranged a spectacular show, and they've invited you to come and watch. Just head down through the basement entrance within five minutes. I think you'll be quite amazed!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_invitation_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_invitation_low_low_02"
+    },
+    "other_mother_events_theatre_invitation_mid_mid_01": {
+      "text": "Now then, sweetheart, Miss Spink and Miss Forcible have invited you to a theatrical performance in the basement. They've gone through a great deal of trouble preparing it, so I'd like you to arrive within five minutes. Do try not to get distracted along the way.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_invitation_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_invitation_mid_mid_01"
+    },
+    "other_mother_events_theatre_invitation_mid_mid_02": {
+      "text": "Darling, the Misses Spink and Forcible have put together quite a special show for you. You'll find the theatre through the basement entrance. You have five minutes to get there, and I do hope you'll be on time.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_invitation_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_invitation_mid_mid_02"
+    },
+    "other_mother_events_theatre_invitation_high_low_01": {
+      "text": "Oh, my darling, I've arranged something truly spectacular for you! Miss Spink and Miss Forcible have invited you to their magnificent theatre. They've prepared the loveliest performance, just for you! Go down through the basement entrance within five minutes, sweetheart. I can't wait to hear what you think!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_invitation_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_invitation_high_low_01"
+    },
+    "other_mother_events_theatre_invitation_high_low_02": {
+      "text": "Sweetheart, you're going to have the most wonderful time! Our dear friends Miss Spink and Miss Forcible have prepared a special theatrical surprise. Their theatre is waiting for you downstairs. You've got five minutes, my love. Don't keep them waiting!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_invitation_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_invitation_high_low_02"
+    },
+    "other_mother_events_theatre_invitation_low_high_01": {
+      "text": "Miss Spink and Miss Forcible have invited you to watch a performance in the basement theatre. They've made quite an effort, and I expect you to show them the courtesy of arriving on time. You have five minutes, sweetheart. No wandering off.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_invitation_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_invitation_low_high_01"
+    },
+    "other_mother_events_theatre_invitation_low_high_02": {
+      "text": "I've arranged for you to attend a theatre performance. Miss Spink and Miss Forcible will be waiting through the basement entrance. You have five minutes to get there. Do try to behave yourself and follow instructions for once.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_invitation_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_invitation_low_high_02"
+    },
+    "other_mother_events_theatre_invitation_high_high_01": {
+      "text": "Oh, darling, Miss Spink and Miss Forcible have prepared a spectacular little surprise for you! Their beautiful theatre is waiting downstairs. You've got five minutes to arrive, sweetheart. I know how easily you get distracted by all those little mysteries, but this is one surprise you're actually supposed to discover.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_invitation_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_invitation_high_high_01"
+    },
+    "other_mother_events_theatre_invitation_high_high_02": {
+      "text": "Sweetheart, I've got a rather special treat for you. Our lovely friends Miss Spink and Miss Forcible have invited you to their theatre. Just go through the basement entrance within five minutes. I'm sure you'll find their performance much more interesting than poking around where you shouldn't.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_invitation_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_invitation_high_high_02"
+    },
+    "other_mother_events_theatre_ontime_low_low_01": {
+      "text": "Oh, there you are, sweetheart! Right on time. Go on downstairs, darling. The show is just about to begin!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_ontime_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_ontime_low_low_01"
+    },
+    "other_mother_events_theatre_ontime_low_low_02": {
+      "text": "Wonderful, darling! You've arrived at just the right moment. Enjoy the performance!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_ontime_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_ontime_low_low_02"
+    },
+    "other_mother_events_theatre_ontime_mid_mid_01": {
+      "text": "Ah, good. You're on time, sweetheart. Go along downstairs and enjoy the show.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_ontime_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_ontime_mid_mid_01"
+    },
+    "other_mother_events_theatre_ontime_mid_mid_02": {
+      "text": "There you are. I'm glad you remembered, darling. The theatre is waiting.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_ontime_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_ontime_mid_mid_02"
+    },
+    "other_mother_events_theatre_ontime_high_low_01": {
+      "text": "Oh, my darling, how exciting! You're right on time. Go along and have the most wonderful evening!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_ontime_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_ontime_high_low_01"
+    },
+    "other_mother_events_theatre_ontime_high_low_02": {
+      "text": "There's my sweetheart! I hope you absolutely love the show. Go on, darling!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_ontime_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_ontime_high_low_02"
+    },
+    "other_mother_events_theatre_ontime_low_high_01": {
+      "text": "Good. You've arrived on time. Now go downstairs and behave yourself.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_ontime_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_ontime_low_high_01"
+    },
+    "other_mother_events_theatre_ontime_low_high_02": {
+      "text": "Well, at least you're punctual. Enjoy the performance, sweetheart.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_ontime_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_ontime_low_high_02"
+    },
+    "other_mother_events_theatre_ontime_high_high_01": {
+      "text": "Oh, darling, right on time. I do hope you'll enjoy yourself without getting distracted.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_ontime_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_ontime_high_high_01"
+    },
+    "other_mother_events_theatre_ontime_high_high_02": {
+      "text": "Sweetheart, there you are. Go enjoy the show, my love. I'll see you afterward.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_ontime_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_ontime_high_high_02"
+    },
+    "other_mother_events_theatre_late_low_low_01": {
+      "text": "Oh, sweetheart, there you are! You're a little late, but the show is still waiting. Hurry along downstairs, darling!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_late_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_late_low_low_01"
+    },
+    "other_mother_events_theatre_late_low_low_02": {
+      "text": "Darling! I was beginning to wonder where you'd gotten to. Never mind. Go on and enjoy the performance!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_late_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_late_low_low_02"
+    },
+    "other_mother_events_theatre_late_mid_mid_01": {
+      "text": "Well, there you are. Miss Spink and Miss Forcible have been waiting, sweetheart. Please get downstairs before you delay them any longer.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_late_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_late_mid_mid_01"
+    },
+    "other_mother_events_theatre_late_mid_mid_02": {
+      "text": "Oh, darling, I did ask you to be on time. Hurry along now. There's a performance waiting for you.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_late_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_late_mid_mid_02"
+    },
+    "other_mother_events_theatre_late_high_low_01": {
+      "text": "Oh, my love, you're late! I was beginning to worry you'd miss the whole thing. Quick, sweetheart, go downstairs!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_late_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_late_high_low_01"
+    },
+    "other_mother_events_theatre_late_high_low_02": {
+      "text": "Darling, you've kept our lovely friends waiting. Never mind, my love. Go enjoy your special show.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_late_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_late_high_low_02"
+    },
+    "other_mother_events_theatre_late_low_high_01": {
+      "text": "You're late. Again. I gave you five minutes, sweetheart. Stop wasting time and go downstairs.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_late_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_late_low_high_01"
+    },
+    "other_mother_events_theatre_late_low_high_02": {
+      "text": "Well, you've finally arrived. Miss Spink and Miss Forcible have gone through quite enough trouble. Get to the theatre.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_late_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_late_low_high_02"
+    },
+    "other_mother_events_theatre_late_high_high_01": {
+      "text": "Oh, darling, I wondered whether you'd let your curiosity distract you again. You're late, sweetheart. Go along now.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_late_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_late_high_high_01"
+    },
+    "other_mother_events_theatre_late_high_high_02": {
+      "text": "Sweetheart, there you are. I was beginning to think you'd found something more interesting than the wonderful show I've arranged.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_late_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_late_high_high_02"
+    },
+    "other_mother_events_theatre_search_low_low_01": {
+      "text": "Sweetheart? The performance has been waiting for such a long time now! Where have you gone, darling? I'm coming to find you!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_search_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_search_low_low_01"
+    },
+    "other_mother_events_theatre_search_low_low_02": {
+      "text": "Darling! Miss Spink and Miss Forcible are still waiting for you. Oh dear, I hope you haven't gotten lost. I'll come look for you!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_search_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_search_low_low_02"
+    },
+    "other_mother_events_theatre_search_mid_mid_01": {
+      "text": "Alright, sweetheart, that's quite enough waiting. I told you where to go, and you've disappeared somewhere. I'm coming to find you.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_search_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_search_mid_mid_01"
+    },
+    "other_mother_events_theatre_search_mid_mid_02": {
+      "text": "Where have you wandered off to this time? The theatre is ready, and you've kept everyone waiting. I'll find you myself.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_search_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_search_mid_mid_02"
+    },
+    "other_mother_events_theatre_search_high_low_01": {
+      "text": "Oh, my darling, where are you? Everyone's been waiting to give you such a lovely performance! Please come back, sweetheart. I'm coming to look for you!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_search_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_search_high_low_01"
+    },
+    "other_mother_events_theatre_search_high_low_02": {
+      "text": "Sweetheart! I was so looking forward to hearing how much you enjoyed the show, and now I can't find you anywhere. I'll come get you, my love!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_search_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_search_high_low_02"
+    },
+    "other_mother_events_theatre_search_low_high_01": {
+      "text": "That is enough. I told you to be at the theatre, and you've chosen to ignore me. I'm coming to find you now, sweetheart.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_search_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_search_low_high_01"
+    },
+    "other_mother_events_theatre_search_low_high_02": {
+      "text": "Where are you hiding this time? I've waited more than long enough. I expect you to have a very good explanation when I find you.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_search_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_search_low_high_02"
+    },
+    "other_mother_events_theatre_search_high_high_01": {
+      "text": "Oh, darling, I've arranged such a beautiful evening for you, and you've disappeared again. I wonder what could possibly be so interesting. Let's find out, shall we?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_search_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_search_high_high_01"
+    },
+    "other_mother_events_theatre_search_high_high_02": {
+      "text": "Sweetheart, Miss Spink and Miss Forcible have been waiting, and so have I. I think it's time I came to collect my curious little darling.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_theatre_search_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_theatre_search_high_high_02"
+    },
+    "other_mother_events_mouse_circus_search_low_low_01": {
+      "text": "Sweetheart? Where have you gone? Bobinsky's been waiting to show you his wonderful mice, and you haven't arrived! Oh, darling, I do hope you haven't gotten lost. I'm coming to find you!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mouse_circus_search_low_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mouse_circus_search_low_low_01"
+    },
+    "other_mother_events_mouse_circus_search_low_low_02": {
+      "text": "Darling! The mouse circus is waiting for you! I thought you'd be so excited to see it. Where have you wandered off to? Never mind, sweetheart, I'll come look for you!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mouse_circus_search_low_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mouse_circus_search_low_low_02"
+    },
+    "other_mother_events_mouse_circus_search_mid_mid_01": {
+      "text": "Now, sweetheart, I specifically told you to go to the attic. Bobinsky's been waiting for quite some time. If you won't go when I ask, I suppose I'll have to find you myself.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mouse_circus_search_mid_mid_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mouse_circus_search_mid_mid_01"
+    },
+    "other_mother_events_mouse_circus_search_mid_mid_02": {
+      "text": "Where have you disappeared to this time? The mouse circus is ready, and you've kept everyone waiting. I'm coming to find you, darling.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mouse_circus_search_mid_mid_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mouse_circus_search_mid_mid_02"
+    },
+    "other_mother_events_mouse_circus_search_high_low_01": {
+      "text": "Oh, my darling, where are you? I've arranged such a lovely surprise for you, and now I can't find you anywhere! Please come back, sweetheart. I'm coming to look for you!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mouse_circus_search_high_low_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mouse_circus_search_high_low_01"
+    },
+    "other_mother_events_mouse_circus_search_high_low_02": {
+      "text": "Sweetheart! I was so looking forward to seeing how much you enjoyed Bobinsky's wonderful little mice. Oh, my love, where have you gone? I'll come find you!",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mouse_circus_search_high_low_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mouse_circus_search_high_low_02"
+    },
+    "other_mother_events_mouse_circus_search_low_high_01": {
+      "text": "That is quite enough. I told you to be at the mouse circus, and you've deliberately kept everyone waiting. I'm coming to find you now, sweetheart, and you'd better have a good explanation.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mouse_circus_search_low_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mouse_circus_search_low_high_01"
+    },
+    "other_mother_events_mouse_circus_search_low_high_02": {
+      "text": "Where are you hiding this time? I gave you five minutes to reach the attic. I have waited more than long enough. Now I'll find you myself.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mouse_circus_search_low_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mouse_circus_search_low_high_02"
+    },
+    "other_mother_events_mouse_circus_search_high_high_01": {
+      "text": "Oh, darling, I've arranged such a wonderful surprise for you, and you've disappeared again. I wonder what could possibly be more interesting than the lovely show Bobinsky has prepared. Let's find out, shall we?",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mouse_circus_search_high_high_01/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mouse_circus_search_high_high_01"
+    },
+    "other_mother_events_mouse_circus_search_high_high_02": {
+      "text": "Sweetheart, even with your little friend here and a beautiful circus waiting upstairs, you still manage to wander off somewhere. I think it's time I came to collect my curious little darling.",
+      "source": "voicelines/othermother/events/full_dialogue_v1/other_mother_events_mouse_circus_search_high_high_02/line_01.wav",
+      "resource": "compact_events/full_wording/mother/other_mother_events_mouse_circus_search_high_high_02"
+    }
+  },
+  "authored_event_count": 583,
+  "distinct_authored_scripts": 579,
+  "note": "Only exact same-speaker text is shared. No alternate-word substitutions."
+}

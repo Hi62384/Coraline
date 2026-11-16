@@ -534,9 +534,18 @@ public final class CarnivalActivity {
             level.addFreshEntity(v);
         }
     }
-    static void tick(ServerPlayer p,VisitData.Scene s,BlockPos c){
-        var l=s.loop;long now=OtherMotherLoop.now(p);
-        if(p.tickCount%20==0)prepare(p,s,p.serverLevel(),c);
+    private static boolean shared(VisitData.Scene s,ServerPlayer p){return com.coraline.multiplayer.StorySessionData.get(p.server).groupActivity(s);}
+    private static ServerPlayer buyer(ServerPlayer director,VisitData.Scene s){
+        var n=s.loop.story.getCompound("CarnivalGroup");if(!n.hasUUID("Buyer"))return director;
+        var actual=director.server.getPlayerList().getPlayer(n.getUUID("Buyer"));
+        return actual!=null&&actual.serverLevel()==director.serverLevel()&&com.coraline.multiplayer.StoryCoop.canAct(actual,s)?actual:null;
+    }
+    private static void bindBuyer(ServerPlayer p,VisitData.Scene s){if(!s.loop.story.contains("CarnivalGroup"))s.loop.story.put("CarnivalGroup",new net.minecraft.nbt.CompoundTag());s.loop.story.getCompound("CarnivalGroup").putUUID("Buyer",p.getUUID());}
+    static void tick(ServerPlayer director,VisitData.Scene s,BlockPos c){
+        if(director.tickCount%20==0)prepare(director,s,director.serverLevel(),c);
+        var l=s.loop;long now=OtherMotherLoop.now(director);ServerPlayer p=buyer(director,s);
+        if(p==null){l.carnivalBooth=-1;l.carnivalGameUntil=0;l.carnivalRide=-1;l.carnivalRideUntil=0;s.loop.story.getCompound("CarnivalGroup").remove("Buyer");OtherMotherLoop.changed(director);ensureGameProps(director.serverLevel(),s,c);return;}
+
         if(p.getY()<78||Math.abs(p.getX()-(c.getX()+.5))>53||Math.abs(p.getZ()-(c.getZ()+.5))>53){
             p.teleportTo(p.serverLevel(),c.getX()+.5,c.getY(),c.getZ()+46.5,180,0);p.setDeltaMovement(Vec3.ZERO);p.fallDistance=0;
         }
@@ -544,7 +553,7 @@ public final class CarnivalActivity {
         if(p.tickCount%2==0){moveAttendants(p,s,c);moveCrowd(p,s,c);}
         moveRideSeats(p,s,c,now);
         if(l.carnivalRide>=0&&(now>=l.carnivalRideUntil||!p.isPassenger())){
-            p.stopRiding();int ride=l.carnivalRide;l.carnivalRide=-1;l.carnivalRideUntil=0;OtherMotherLoop.changed(p);
+            p.stopRiding();s.loop.story.getCompound("CarnivalGroup").remove("Buyer");int ride=l.carnivalRide;l.carnivalRide=-1;l.carnivalRideUntil=0;OtherMotherLoop.changed(p);
             if(ride==0)for(var wheel:p.serverLevel().getEntitiesOfClass(ScenePropEntity.class,new AABB(c.offset(0,17,-40)).inflate(18),
                 e->e.kind()==ScenePropEntity.CARNIVAL_FERRIS_WHEEL&&s.owner.equals(e.owner)))wheel.mode(0);
             var at=ride==0?c.offset(0,0,-35):c.offset(36,0,-22);p.teleportTo(p.serverLevel(),at.getX()+.5,at.getY(),at.getZ()+.5,180,0);
@@ -657,6 +666,7 @@ public final class CarnivalActivity {
     }
     private static void grantTokens(ServerPlayer p,VisitData.Scene s){
         if(s.loop.carnivalIssued)return;
+        if(shared(s,p)){removeTokens(p);s.loop.carnivalIssued=true;OtherMotherLoop.changed(p);title(p,"15 SHARED CARNIVAL TOKENS","Everyone spends from the same pool.");return;}
         removeTokens(p);var stack=new ItemStack(ModItems.VILLAGE_TOKEN.get(),TOKEN_COUNT);
         stack.getOrCreateTag().putUUID(OWNER,p.getUUID());stack.getTag().putInt(GEN,s.loop.generation);
         ActivityTokens.give(p,stack);
@@ -665,6 +675,7 @@ public final class CarnivalActivity {
         title(p,"15 CARNIVAL TOKENS","Spend them however you like!");
     }
     private static boolean spendTokens(ServerPlayer p,VisitData.Scene s,int cost){
+        if(shared(s,p))return cost>=0&&s.loop.carnivalIssued&&s.loop.carnivalTokensRemaining>=cost&&com.coraline.multiplayer.StoryCoop.canAct(p,s);
         int held=0;for(var stack:p.getInventory().items)if(tokenMatches(stack,p,s))held+=stack.getCount();
         for(var stack:p.getInventory().offhand)if(tokenMatches(stack,p,s))held+=stack.getCount();
         if(held<cost)return false;
@@ -674,7 +685,7 @@ public final class CarnivalActivity {
     }
     public static boolean interactBlock(ServerPlayer p,BlockPos at){
         var s=OtherMotherLoop.active(p);if(s==null||s.loop.activity!=OtherMotherActivities.Activity.CARNIVAL||!ActivityWorld.isActivity(p.level()))return false;
-        var l=s.loop;var c=center(p,s);
+        var l=s.loop;var c=center(p,s);if(!com.coraline.multiplayer.StoryCoop.canAct(p,s))return true;var payer=buyer(p,s);if((l.carnivalBooth>=0||l.carnivalRide>=0)&&(payer==null||payer!=p))return true;
         for(var food:new Booth[]{Booth.POPCORN,Booth.CANDY_APPLES,Booth.COTTON_CANDY,Booth.PIE_CART,Booth.LEMONADE,Booth.CHOCOLATE})
             if(at.equals(c.offset(food.x,0,food.z+2))){startGame(p,s,food);return true;}
         if(l.carnivalBooth<0)return false;
@@ -750,7 +761,7 @@ public final class CarnivalActivity {
         var seats=p.serverLevel().getEntitiesOfClass(ScenePropEntity.class,new AABB(center(p,s)).inflate(55,40,55),e->e.kind()==(ride==0?ScenePropEntity.CARNIVAL_GONDOLA:ScenePropEntity.CARNIVAL_MOUNT)&&e.slot==70+ride&&s.owner.equals(e.owner));
         if(seats.isEmpty())return;var seat=seats.get(0);if(!seat.getPassengers().isEmpty()){p.displayClientMessage(Component.literal("This seat is occupied."),true);return;}
         if(p.startRiding(seat,true)){if(!spendTokens(p,s,price)){p.stopRiding();p.displayClientMessage(Component.literal("Your issued tokens are missing."),true);return;}
-            l.carnivalTokensRemaining-=price;l.carnivalRide=ride;l.carnivalRideUntil=OtherMotherLoop.now(p)+600;OtherMotherLoop.changed(p);
+            l.carnivalTokensRemaining-=price;bindBuyer(p,s);l.carnivalRide=ride;l.carnivalRideUntil=OtherMotherLoop.now(p)+600;OtherMotherLoop.changed(p);
             if(ride==0)for(var wheel:p.serverLevel().getEntitiesOfClass(ScenePropEntity.class,new AABB(center(p,s).offset(0,17,-40)).inflate(18),
                 e->e.kind()==ScenePropEntity.CARNIVAL_FERRIS_WHEEL&&s.owner.equals(e.owner)))wheel.mode(1);
             p.sendSystemMessage(Component.literal(ride==0?"The Ferris wheel lifts you over the lights. Sneak to leave early.":"The carousel begins to turn. Sneak to leave early."));}
@@ -763,7 +774,7 @@ public final class CarnivalActivity {
         int price=cost(selected);
         if(l.carnivalTokensRemaining<price){p.displayClientMessage(Component.literal(selected.title+" costs "+price+" tokens. You have "+l.carnivalTokensRemaining+"."),true);return;}
         if(!spendTokens(p,s,price)){p.displayClientMessage(Component.literal("Your issued tokens are missing."),true);return;}
-        l.carnivalTokensRemaining-=price;l.carnivalBooth=selected.ordinal();l.carnivalProgress=0;l.carnivalFailures=0;
+        l.carnivalTokensRemaining-=price;bindBuyer(p,s);l.carnivalBooth=selected.ordinal();l.carnivalProgress=0;l.carnivalFailures=0;
         l.carnivalRoundAt=now;l.carnivalGameUntil=now+(selected==Booth.MIRROR_MAZE?120:selected==Booth.LUCKY_WHEEL?20:selected.game==Game.INSTANT?1:45)*20L;
         l.carnivalTarget=selected==Booth.HIGH_STRIKER||selected==Booth.DUCK_POND?0:p.getRandom().nextInt(8);l.carnivalLastActionAt=now-10;OtherMotherLoop.changed(p);
         p.serverLevel().playSound(null,p.blockPosition(),SoundEvents.UI_BUTTON_CLICK.value(),SoundSource.PLAYERS,.8F,1.1F);
@@ -901,7 +912,7 @@ public final class CarnivalActivity {
             if(success&&tier==0)tier=1;
             if(!success)tier=Math.min(tier,1);
         }
-        l.carnivalBooth=-1;l.carnivalGameUntil=0;removeAmmo(p);OtherMotherLoop.changed(p);
+        l.carnivalBooth=-1;l.carnivalGameUntil=0;s.loop.story.getCompound("CarnivalGroup").remove("Buyer");removeAmmo(p);OtherMotherLoop.changed(p);
         CarnivalNetwork.send(p,s,false);
         ensureGameProps(p.serverLevel(),s,center(p,s));
         var prize=booth==Booth.LUCKY_WHEEL&&success?wheelPrize(l.carnivalTarget):reward(p,tier,booth);

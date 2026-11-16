@@ -1,0 +1,17 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {"paper": "minecraft:block/purple_terracotta", "ribbon": "minecraft:block/gold_block", "seal": "minecraft:block/red_concrete", "button": "minecraft:block/black_concrete", "particle": "minecraft:block/purple_terracotta"},
+  "display": {
+    "gui": {"rotation": [25, 225, 0], "translation": [0, 0, 0], "scale": [0.85, 0.85, 0.85]},
+    "firstperson_righthand": {"rotation": [0, 45, 0], "translation": [0, 1.5, 0], "scale": [0.5, 0.5, 0.5]},
+    "thirdperson_righthand": {"rotation": [0, 0, 0], "translation": [0, 2, 0], "scale": [0.45, 0.45, 0.45]},
+    "ground": {"translation": [0, 1, 0], "scale": [0.5, 0.5, 0.5]}
+  },
+  "elements": [
+    {"from": [2, 2, 3], "to": [14, 11, 13], "faces": {"north": {"texture": "#paper"}, "south": {"texture": "#paper"}, "east": {"texture": "#paper"}, "west": {"texture": "#paper"}, "up": {"texture": "#paper"}, "down": {"texture": "#paper"}}},
+    {"from": [7, 1.9, 2.9], "to": [9, 11.1, 13.1], "faces": {"north": {"texture": "#ribbon"}, "south": {"texture": "#ribbon"}, "east": {"texture": "#ribbon"}, "west": {"texture": "#ribbon"}, "up": {"texture": "#ribbon"}, "down": {"texture": "#ribbon"}}},
+    {"from": [1.9, 1.9, 7], "to": [14.1, 11.1, 9], "faces": {"north": {"texture": "#ribbon"}, "south": {"texture": "#ribbon"}, "east": {"texture": "#ribbon"}, "west": {"texture": "#ribbon"}, "up": {"texture": "#ribbon"}, "down": {"texture": "#ribbon"}}},
+    {"from": [6, 5, 2.5], "to": [10, 8, 2.9], "faces": {"north": {"texture": "#seal"}, "south": {"texture": "#seal"}, "east": {"texture": "#seal"}, "west": {"texture": "#seal"}, "up": {"texture": "#seal"}, "down": {"texture": "#seal"}}},
+    {"from": [7.25, 5.75, 2.35], "to": [8.75, 7.25, 2.5], "faces": {"north": {"texture": "#button"}, "south": {"texture": "#button"}, "east": {"texture": "#button"}, "west": {"texture": "#button"}, "up": {"texture": "#button"}, "down": {"texture": "#button"}}}
+  ]
+}

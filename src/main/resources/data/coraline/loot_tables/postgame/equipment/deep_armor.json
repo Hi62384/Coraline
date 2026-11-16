@@ -1,0 +1,150 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "coraline:spidervision_helmet",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:spidervision_chestplate",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:spidervision_leggings",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:spidervision_boots",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:beldam_weave_helmet",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:beldam_weave_chestplate",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:beldam_weave_leggings",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:beldam_weave_boots",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:soulbound_helmet",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:soulbound_chestplate",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:soulbound_leggings",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:soulbound_boots",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:super_spidervision_helmet",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:super_spidervision_chestplate",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:super_spidervision_leggings",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:super_spidervision_boots",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:potent_beldam_weave_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:potent_beldam_weave_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:potent_beldam_weave_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:potent_beldam_weave_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:soulbound_potent_beldam_weave_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:soulbound_potent_beldam_weave_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:soulbound_potent_beldam_weave_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:soulbound_potent_beldam_weave_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:luck_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:luck_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:luck_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:luck_boots",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

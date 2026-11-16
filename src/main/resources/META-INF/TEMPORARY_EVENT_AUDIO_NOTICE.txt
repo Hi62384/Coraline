@@ -1,0 +1,1 @@
+PLACEHOLDER-AUDIO BUILD: 0 missing parent lines use quiet cue audio and authored text. Genuine masters and existing runtime exports are preserved. This is not a fully voiced release. See assets/coraline/temporary_event_audio.json for IDs, hashes and replacement steps.

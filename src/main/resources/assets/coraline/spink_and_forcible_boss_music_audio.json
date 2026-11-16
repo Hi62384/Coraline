@@ -1,0 +1,13 @@
+{
+  "source": "music/eventbased/SpinkAndForcibleBossFight.mp3",
+  "source_sha256": "63ac7a42551a76db1b731a29f17aa30f50fd0c20b0778341f32031d48c28c393",
+  "ogg_sha256": "19627125c1032cff4bafc8690e94e16bc134cd9f1e9f73080036738148ebd541",
+  "export": {
+    "sample_rate": 48000,
+    "channels": 2,
+    "samples": 6084372,
+    "seconds": 126.75775,
+    "ticks": 2536
+  },
+  "role": "spink_and_forcible_boss_loop"
+}

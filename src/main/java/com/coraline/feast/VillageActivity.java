@@ -212,10 +212,11 @@ public final class VillageActivity {
     static void grantTokens(ServerPlayer p,VisitData.Scene s){
         if(s.loop.villageIssued)return;
         removeTokens(p);
-        var stack=new ItemStack(ModItems.VILLAGE_TOKEN.get(),TOKEN_COUNT);
-        ActivityTokens.give(p,stack);
+        if(!com.coraline.multiplayer.StorySessionData.get(p.server).groupActivity(s)){
+            var stack=new ItemStack(ModItems.VILLAGE_TOKEN.get(),TOKEN_COUNT);ActivityTokens.give(p,stack);
+        }
         s.loop.villageIssued=true;OtherMotherLoop.changed(p);
-        p.sendSystemMessage(Component.literal("Father gives you 20 button tokens. Each villager will trade only once."));
+        p.sendSystemMessage(Component.literal("Father provides 20 button tokens for the visit. In a group, everyone spends from the same pool. Each villager trades once."));
         levelSound(p,SoundEvents.VILLAGER_CELEBRATE);
     }
     private static void levelSound(ServerPlayer p,net.minecraft.sounds.SoundEvent sound){p.serverLevel().playSound(null,p.blockPosition(),sound,SoundSource.NEUTRAL,1,1);}
@@ -223,15 +224,16 @@ public final class VillageActivity {
     public static void trade(ServerPlayer p,Villager v,InteractionHand hand){
         if(hand!=InteractionHand.MAIN_HAND)return;
         var s=OtherMotherLoop.active(p);
-        if(s==null||s.loop.phase!=OtherMotherLoopState.Phase.ACTIVITY||!ActivityWorld.isActivity(p.level())||
-            !v.getPersistentData().hasUUID("CoralineVillageOwner")||!p.getUUID().equals(v.getPersistentData().getUUID("CoralineVillageOwner"))||
+        if(s==null||s.loop.activity!=OtherMotherActivities.Activity.OTHER_VILLAGE||s.loop.phase!=OtherMotherLoopState.Phase.ACTIVITY||!ActivityWorld.isActivity(p.level())||
+            !v.getPersistentData().hasUUID("CoralineVillageOwner")||!s.owner.equals(v.getPersistentData().getUUID("CoralineVillageOwner"))||!com.coraline.multiplayer.StoryCoop.canAct(p,s)||
             v.getPersistentData().getInt("CoralineVillageGeneration")!=s.loop.generation||p.distanceToSqr(v)>25)return;
         if(!s.loop.villageIssued){p.displayClientMessage(Component.literal("Wait for Father to finish speaking."),true);return;}
         if(s.loop.villageTokensRemaining<=0){p.displayClientMessage(Component.literal("All tokens are spent. The return portal is open."),true);return;}
         if(v.getPersistentData().getBoolean("CoralineVillageTraded")){p.displayClientMessage(Component.literal("This villager has already traded with you."),true);return;}
+        boolean shared=com.coraline.multiplayer.StorySessionData.get(p.server).groupActivity(s);
         var token=p.getItemInHand(hand);
-        if(!token.is(ModItems.VILLAGE_TOKEN.get())||token.isEmpty()){p.displayClientMessage(Component.literal("Hold a button token to trade."),true);return;}
-        token.shrink(1);v.getPersistentData().putBoolean("CoralineVillageTraded",true);
+        if(!shared&&(!token.is(ModItems.VILLAGE_TOKEN.get())||token.isEmpty())){p.displayClientMessage(Component.literal("Hold a button token to trade."),true);return;}
+        if(!shared)token.shrink(1);v.getPersistentData().putBoolean("CoralineVillageTraded",true);
         s.loop.villageTokensRemaining=Math.max(0,s.loop.villageTokensRemaining-1);OtherMotherLoop.changed(p);
         var reward=reward(p.getRandom());var name=reward.getHoverName().getString();
         p.getInventory().add(reward);if(!reward.isEmpty())p.drop(reward,false);

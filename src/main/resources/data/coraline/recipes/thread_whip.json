@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " OS",
+    " SO",
+    "S  "
+  ],
+  "key": {
+    "O": {
+      "item": "coraline:perfect_ore"
+    },
+    "S": {
+      "item": "minecraft:string"
+    }
+  },
+  "result": {
+    "item": "coraline:thread_whip",
+    "count": 1
+  }
+}

@@ -8,6 +8,21 @@
   },
   "elements": [
     {
+      "name": "brick_reveal_left_rear",
+      "from": [0, 0, 14], "to": [1, 16, 16],
+      "faces": {"north":{"texture":"#bricks"},"south":{"texture":"#bricks"},"east":{"texture":"#bricks"},"west":{"texture":"#bricks"},"up":{"texture":"#bricks"},"down":{"texture":"#bricks"}}
+    },
+    {
+      "name": "brick_reveal_right_rear",
+      "from": [15, 0, 14], "to": [16, 16, 16],
+      "faces": {"north":{"texture":"#bricks"},"south":{"texture":"#bricks"},"east":{"texture":"#bricks"},"west":{"texture":"#bricks"},"up":{"texture":"#bricks"},"down":{"texture":"#bricks"}}
+    },
+    {
+      "name": "brick_reveal_header_rear",
+      "from": [1, 15, 14], "to": [15, 16, 16],
+      "faces": {"north":{"texture":"#bricks"},"south":{"texture":"#bricks"},"east":{"texture":"#bricks"},"west":{"texture":"#bricks"},"up":{"texture":"#bricks"},"down":{"texture":"#bricks"}}
+    },
+    {
       "from": [
         0,
         0,

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "I I",
+    "M I"
+  ],
+  "key": {
+    "I": {
+      "item": "coraline:other_iron_ingot"
+    },
+    "M": {
+      "item": "coraline:moonstone"
+    }
+  },
+  "result": {
+    "item": "coraline:miners_boots",
+    "count": 1
+  }
+}

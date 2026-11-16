@@ -1,4 +1,32 @@
 {
+  "party_chatter": {
+    "sounds": [
+      {
+        "name": "coraline:party_chatter/murmur_0",
+        "attenuation_distance": 9
+      },
+      {
+        "name": "coraline:party_chatter/murmur_1",
+        "attenuation_distance": 9
+      },
+      {
+        "name": "coraline:party_chatter/murmur_2",
+        "attenuation_distance": 9
+      },
+      {
+        "name": "coraline:party_chatter/murmur_3",
+        "attenuation_distance": 9
+      },
+      {
+        "name": "coraline:party_chatter/murmur_4",
+        "attenuation_distance": 9
+      },
+      {
+        "name": "coraline:party_chatter/murmur_5",
+        "attenuation_distance": 9
+      }
+    ]
+  },
   "circus_race": {
     "sounds": [
       {
@@ -3042,6 +3070,6963 @@
     "sounds": [
       {
         "name": "coraline:visit/other_mother/scolding/serious/high_high/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "wybie_visit_a": {
+    "sounds": [
+      {
+        "name": "coraline:wybie_visit/a",
+        "stream": true
+      }
+    ]
+  },
+  "wybie_visit_b": {
+    "sounds": [
+      {
+        "name": "coraline:wybie_visit/b",
+        "stream": true
+      }
+    ]
+  },
+  "wybie_visit_c": {
+    "sounds": [
+      {
+        "name": "coraline:wybie_visit/c",
+        "stream": true
+      }
+    ]
+  },
+  "wybie_visit_d": {
+    "sounds": [
+      {
+        "name": "coraline:wybie_visit/d",
+        "stream": true
+      }
+    ]
+  },
+  "wybie_visit_e": {
+    "sounds": [
+      {
+        "name": "coraline:wybie_visit/e",
+        "stream": true
+      }
+    ]
+  },
+  "wybie_visit_f": {
+    "sounds": [
+      {
+        "name": "coraline:wybie_visit/f",
+        "stream": true
+      }
+    ]
+  },
+  "wybie_visit_g": {
+    "sounds": [
+      {
+        "name": "coraline:wybie_visit/g",
+        "stream": true
+      }
+    ]
+  },
+  "wybie_visit_h": {
+    "sounds": [
+      {
+        "name": "coraline:wybie_visit/h",
+        "stream": true
+      }
+    ]
+  },
+  "wybie_visit_i": {
+    "sounds": [
+      {
+        "name": "coraline:wybie_visit/i",
+        "stream": true
+      }
+    ]
+  },
+  "wybie_visit_j": {
+    "sounds": [
+      {
+        "name": "coraline:wybie_visit/j",
+        "stream": true
+      }
+    ]
+  },
+  "wybie_visit_k": {
+    "sounds": [
+      {
+        "name": "coraline:wybie_visit/k",
+        "stream": true
+      }
+    ]
+  },
+  "wybie_visit_l": {
+    "sounds": [
+      {
+        "name": "coraline:wybie_visit/l",
+        "stream": true
+      }
+    ]
+  },
+  "wybie_visit_music": {
+    "sounds": [
+      {
+        "name": "coraline:wybie_visit/music",
+        "stream": true
+      }
+    ]
+  },
+  "bobinsky_visit_a": {
+    "sounds": [
+      {
+        "name": "coraline:bobinsky_visit/a",
+        "stream": true
+      }
+    ]
+  },
+  "bobinsky_visit_b": {
+    "sounds": [
+      {
+        "name": "coraline:bobinsky_visit/b",
+        "stream": true
+      }
+    ]
+  },
+  "bobinsky_visit_c": {
+    "sounds": [
+      {
+        "name": "coraline:bobinsky_visit/c",
+        "stream": true
+      }
+    ]
+  },
+  "bobinsky_visit_d": {
+    "sounds": [
+      {
+        "name": "coraline:bobinsky_visit/d",
+        "stream": true
+      }
+    ]
+  },
+  "bobinsky_visit_e": {
+    "sounds": [
+      {
+        "name": "coraline:bobinsky_visit/e",
+        "stream": true
+      }
+    ]
+  },
+  "bobinsky_visit_f": {
+    "sounds": [
+      {
+        "name": "coraline:bobinsky_visit/f",
+        "stream": true
+      }
+    ]
+  },
+  "bobinsky_visit_g": {
+    "sounds": [
+      {
+        "name": "coraline:bobinsky_visit/g",
+        "stream": true
+      }
+    ]
+  },
+  "bobinsky_visit_h": {
+    "sounds": [
+      {
+        "name": "coraline:bobinsky_visit/h",
+        "stream": true
+      }
+    ]
+  },
+  "bobinsky_visit_i": {
+    "sounds": [
+      {
+        "name": "coraline:bobinsky_visit/i",
+        "stream": true
+      }
+    ]
+  },
+  "bobinsky_visit_j": {
+    "sounds": [
+      {
+        "name": "coraline:bobinsky_visit/j",
+        "stream": true
+      }
+    ]
+  },
+  "bobinsky_visit_k": {
+    "sounds": [
+      {
+        "name": "coraline:bobinsky_visit/k",
+        "stream": true
+      }
+    ]
+  },
+  "bobinsky_visit_music": {
+    "sounds": [
+      {
+        "name": "coraline:bobinsky_visit/music",
+        "stream": true
+      }
+    ]
+  },
+  "tea_visit_a": {
+    "sounds": [
+      {
+        "name": "coraline:tea_visit/a",
+        "stream": true
+      }
+    ]
+  },
+  "tea_visit_b": {
+    "sounds": [
+      {
+        "name": "coraline:tea_visit/b",
+        "stream": true
+      }
+    ]
+  },
+  "tea_visit_c": {
+    "sounds": [
+      {
+        "name": "coraline:tea_visit/c",
+        "stream": true
+      }
+    ]
+  },
+  "tea_visit_d": {
+    "sounds": [
+      {
+        "name": "coraline:tea_visit/d",
+        "stream": true
+      }
+    ]
+  },
+  "tea_visit_e": {
+    "sounds": [
+      {
+        "name": "coraline:tea_visit/e",
+        "stream": true
+      }
+    ]
+  },
+  "tea_visit_f": {
+    "sounds": [
+      {
+        "name": "coraline:tea_visit/f",
+        "stream": true
+      }
+    ]
+  },
+  "tea_visit_g": {
+    "sounds": [
+      {
+        "name": "coraline:tea_visit/g",
+        "stream": true
+      }
+    ]
+  },
+  "tea_visit_h": {
+    "sounds": [
+      {
+        "name": "coraline:tea_visit/h",
+        "stream": true
+      }
+    ]
+  },
+  "tea_visit_i": {
+    "sounds": [
+      {
+        "name": "coraline:tea_visit/i",
+        "stream": true
+      }
+    ]
+  },
+  "tea_visit_j": {
+    "sounds": [
+      {
+        "name": "coraline:tea_visit/j",
+        "stream": true
+      }
+    ]
+  },
+  "tea_visit_music": {
+    "sounds": [
+      {
+        "name": "coraline:tea_visit/music",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_exploration_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:exploration/low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_exploration_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:exploration/low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_exploration_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:exploration/mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_exploration_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:exploration/mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_exploration_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:exploration/high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_exploration_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:exploration/high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_exploration_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:exploration/low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_exploration_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:exploration/low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_exploration_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:exploration/high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_exploration_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:exploration/high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_invitation_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/invitation/low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_invitation_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/invitation/low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_invitation_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/invitation/mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_invitation_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/invitation/mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_invitation_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/invitation/high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_invitation_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/invitation/high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_invitation_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/invitation/low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_invitation_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/invitation/low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_invitation_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/invitation/high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_invitation_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/invitation/high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_ontime_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/ontime/low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_ontime_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/ontime/low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_ontime_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/ontime/mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_ontime_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/ontime/mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_ontime_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/ontime/high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_ontime_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/ontime/high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_ontime_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/ontime/low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_ontime_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/ontime/low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_ontime_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/ontime/high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_ontime_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/ontime/high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_late_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/late/low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_late_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/late/low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_late_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/late/mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_late_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/late/mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_late_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/late/high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_late_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/late/high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_late_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/late/low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_late_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/late/low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_late_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/late/high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_late_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/late/high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_search_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/search/low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_search_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/search/low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_search_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/search/mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_search_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/search/mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_search_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/search/high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_search_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/search/high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_search_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/search/low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_search_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/search/low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_search_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/search/high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_search_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/search/high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_finish_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/finish/low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_finish_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/finish/low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_finish_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/finish/mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_finish_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/finish/mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_finish_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/finish/high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_finish_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/finish/high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_finish_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/finish/low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_finish_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/finish/low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_finish_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/finish/high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_dinner_finish_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/finish/high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "father_dinner_greeting_1": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/father_dinner_greeting_1",
+        "stream": true
+      }
+    ]
+  },
+  "father_dinner_greeting_2": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/father_dinner_greeting_2",
+        "stream": true
+      }
+    ]
+  },
+  "father_pass_bread": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/father_pass_bread",
+        "stream": true
+      }
+    ]
+  },
+  "father_pass_potatoes": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/father_pass_potatoes",
+        "stream": true
+      }
+    ]
+  },
+  "father_dinner_comment_1": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/father_dinner_comment_1",
+        "stream": true
+      }
+    ]
+  },
+  "father_dinner_comment_2": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/father_dinner_comment_2",
+        "stream": true
+      }
+    ]
+  },
+  "father_dinner_question": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/father_dinner_question",
+        "stream": true
+      }
+    ]
+  },
+  "father_dinner_finish": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/father_dinner_finish",
+        "stream": true
+      }
+    ]
+  },
+  "father_study_root": {
+    "sounds": [
+      {
+        "name": "coraline:study/father_study_root",
+        "stream": true
+      }
+    ]
+  },
+  "father_study_music": {
+    "sounds": [
+      {
+        "name": "coraline:study/father_study_music",
+        "stream": true
+      }
+    ]
+  },
+  "father_study_melody": {
+    "sounds": [
+      {
+        "name": "coraline:study/father_study_melody",
+        "stream": true
+      }
+    ]
+  },
+  "father_study_questions": {
+    "sounds": [
+      {
+        "name": "coraline:study/father_study_questions",
+        "stream": true
+      }
+    ]
+  },
+  "father_study_house": {
+    "sounds": [
+      {
+        "name": "coraline:study/father_study_house",
+        "stream": true
+      }
+    ]
+  },
+  "father_study_marks": {
+    "sounds": [
+      {
+        "name": "coraline:study/father_study_marks",
+        "stream": true
+      }
+    ]
+  },
+  "father_study_watchers": {
+    "sounds": [
+      {
+        "name": "coraline:study/father_study_watchers",
+        "stream": true
+      }
+    ]
+  },
+  "father_study_blind": {
+    "sounds": [
+      {
+        "name": "coraline:study/father_study_blind",
+        "stream": true
+      }
+    ]
+  },
+  "father_study_machines": {
+    "sounds": [
+      {
+        "name": "coraline:study/father_study_machines",
+        "stream": true
+      }
+    ]
+  },
+  "father_study_gifts": {
+    "sounds": [
+      {
+        "name": "coraline:study/father_study_gifts",
+        "stream": true
+      }
+    ]
+  },
+  "father_study_workshop": {
+    "sounds": [
+      {
+        "name": "coraline:study/father_study_workshop",
+        "stream": true
+      }
+    ]
+  },
+  "father_study_world": {
+    "sounds": [
+      {
+        "name": "coraline:study/father_study_world",
+        "stream": true
+      }
+    ]
+  },
+  "father_study_trees": {
+    "sounds": [
+      {
+        "name": "coraline:study/father_study_trees",
+        "stream": true
+      }
+    ]
+  },
+  "father_study_family": {
+    "sounds": [
+      {
+        "name": "coraline:study/father_study_family",
+        "stream": true
+      }
+    ]
+  },
+  "father_study_kindness": {
+    "sounds": [
+      {
+        "name": "coraline:study/father_study_kindness",
+        "stream": true
+      }
+    ]
+  },
+  "father_study_wybie": {
+    "sounds": [
+      {
+        "name": "coraline:study/father_study_wybie",
+        "stream": true
+      }
+    ]
+  },
+  "father_study_hesitate": {
+    "sounds": [
+      {
+        "name": "coraline:study/father_study_hesitate",
+        "stream": true
+      }
+    ]
+  },
+  "father_study_uncomfortable": {
+    "sounds": [
+      {
+        "name": "coraline:study/father_study_uncomfortable",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_invitation_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/invitation/low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_invitation_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/invitation/low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_invitation_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/invitation/mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_invitation_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/invitation/mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_invitation_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/invitation/high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_invitation_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/invitation/high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_invitation_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/invitation/low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_invitation_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/invitation/low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_invitation_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/invitation/high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_invitation_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/invitation/high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_ontime_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/ontime/low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_ontime_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/ontime/low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_ontime_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/ontime/mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_ontime_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/ontime/mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_ontime_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/ontime/high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_ontime_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/ontime/high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_ontime_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/ontime/low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_ontime_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/ontime/low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_ontime_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/ontime/high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_ontime_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/ontime/high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_late_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/late/low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_late_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/late/low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_late_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/late/mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_late_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/late/mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_late_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/late/high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_late_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/late/high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_late_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/late/low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_late_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/late/low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_late_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/late/high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_late_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/late/high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_search_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/search/low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_search_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/search/low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_search_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/search/mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_search_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/search/mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_search_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/search/high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_search_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/search/high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_search_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/search/low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_search_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/search/low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_search_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/search/high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_search_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/search/high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_finish_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/finish/low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_finish_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/finish/low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_finish_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/finish/mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_finish_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/finish/mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_finish_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/finish/high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_finish_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/finish/high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_finish_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/finish/low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_finish_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/finish/low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_finish_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/finish/high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_finish_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/finish/high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_destination_picnic_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/destination/picnic_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_destination_picnic_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/destination/picnic_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_destination_fishing_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/destination/fishing_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_destination_fishing_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/destination/fishing_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_destination_stargazing_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/destination/stargazing_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_destination_stargazing_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/destination/stargazing_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_destination_woodland_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/destination/woodland_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_destination_woodland_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/destination/woodland_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_destination_boat_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/destination/boat_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_outing_destination_boat_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/destination/boat_02",
+        "stream": true
+      }
+    ]
+  },
+  "father_outing_picnic_father_start": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/father_outing_picnic_father_start",
+        "stream": true
+      }
+    ]
+  },
+  "father_outing_picnic_father_interaction": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/father_outing_picnic_father_interaction",
+        "stream": true
+      }
+    ]
+  },
+  "father_outing_picnic_father_finish": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/father_outing_picnic_father_finish",
+        "stream": true
+      }
+    ]
+  },
+  "father_outing_fishing_father_start": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/father_outing_fishing_father_start",
+        "stream": true
+      }
+    ]
+  },
+  "father_outing_fishing_father_interaction": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/father_outing_fishing_father_interaction",
+        "stream": true
+      }
+    ]
+  },
+  "father_outing_fishing_father_finish": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/father_outing_fishing_father_finish",
+        "stream": true
+      }
+    ]
+  },
+  "father_outing_stargazing_father_start": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/father_outing_stargazing_father_start",
+        "stream": true
+      }
+    ]
+  },
+  "father_outing_stargazing_father_interaction": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/father_outing_stargazing_father_interaction",
+        "stream": true
+      }
+    ]
+  },
+  "father_outing_stargazing_father_finish": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/father_outing_stargazing_father_finish",
+        "stream": true
+      }
+    ]
+  },
+  "father_outing_woodland_father_start": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/father_outing_woodland_father_start",
+        "stream": true
+      }
+    ]
+  },
+  "father_outing_woodland_father_interaction": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/father_outing_woodland_father_interaction",
+        "stream": true
+      }
+    ]
+  },
+  "father_outing_woodland_father_finish": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/father_outing_woodland_father_finish",
+        "stream": true
+      }
+    ]
+  },
+  "father_outing_boat_father_start": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/father_outing_boat_father_start",
+        "stream": true
+      }
+    ]
+  },
+  "father_outing_boat_father_interaction": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/father_outing_boat_father_interaction",
+        "stream": true
+      }
+    ]
+  },
+  "father_outing_boat_father_finish": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/father_outing_boat_father_finish",
+        "stream": true
+      }
+    ]
+  },
+  "wybie_adventure_intro": {
+    "sounds": [
+      {
+        "name": "coraline:numbered_originals/wybieintroduce",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_music": {
+    "sounds": [
+      {
+        "name": "coraline:numbered_originals/theatre_music",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_a": {
+    "sounds": [
+      {
+        "name": "coraline:numbered_originals/theatre_a",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_b": {
+    "sounds": [
+      {
+        "name": "coraline:numbered_originals/theatre_b",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_c": {
+    "sounds": [
+      {
+        "name": "coraline:numbered_originals/theatre_c",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_d": {
+    "sounds": [
+      {
+        "name": "coraline:numbered_originals/theatre_d",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_e": {
+    "sounds": [
+      {
+        "name": "coraline:numbered_originals/theatre_e",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_f": {
+    "sounds": [
+      {
+        "name": "coraline:numbered_originals/theatre_f",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_meet_parents": {
+    "sounds": [
+      {
+        "name": "coraline:numbered_originals/theatre_meet_parents",
+        "stream": true
+      }
+    ]
+  },
+  "mouse_circus_invite": {
+    "sounds": [
+      {
+        "name": "coraline:numbered_originals/mouse_circus_invite",
+        "stream": true
+      }
+    ]
+  },
+  "mouse_circus_intro": {
+    "sounds": [
+      {
+        "name": "coraline:numbered_originals/mouse_circus_intro",
+        "stream": true
+      }
+    ]
+  },
+  "mouse_circus_music": {
+    "sounds": [
+      {
+        "name": "coraline:numbered_originals/mouse_circus_music",
+        "stream": true
+      }
+    ]
+  },
+  "mouse_circus_end": {
+    "sounds": [
+      {
+        "name": "coraline:numbered_originals/mouse_circus_end",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_invitation_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_game_night/invitation/low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_invitation_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_game_night/invitation/low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_invitation_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_game_night/invitation/mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_invitation_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_game_night/invitation/mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_invitation_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_game_night/invitation/high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_invitation_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_game_night/invitation/high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_invitation_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_game_night/invitation/low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_invitation_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_game_night/invitation/low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_invitation_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_game_night/invitation/high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_invitation_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_game_night/invitation/high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_ontime_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_game_night/ontime/low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_ontime_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_game_night/ontime/low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_ontime_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_game_night/ontime/mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_ontime_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_game_night/ontime/mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_ontime_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_game_night/ontime/high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_ontime_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_game_night/ontime/high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_ontime_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_game_night/ontime/low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_ontime_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_game_night/ontime/low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_ontime_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_game_night/ontime/high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_ontime_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_game_night/ontime/high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_late_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_game_night/late/low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_late_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_game_night/late/low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_late_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_game_night/late/mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_late_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_late_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_late_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_late_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_late_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_late_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_late_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/other_mother_events_family_game_night_late_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_late_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_late_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_late_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_late_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_late_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/late/high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_search_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_search_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_search_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_search_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_search_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_search_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_search_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_search_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_search_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_search_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_search_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_search_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_search_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_search_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_search_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_search_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_search_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/search/high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_search_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:family_outing/search/high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_finish_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_finish_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_finish_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_finish_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_finish_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_finish_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_finish_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_finish_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_finish_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_finish_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_finish_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_finish_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_finish_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_finish_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_finish_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_finish_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_finish_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:family_dinner/finish/high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_finish_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_finish_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_intro_cards_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_intro_cards_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_intro_cards_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_intro_cards_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_intro_thread_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_intro_thread_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_intro_thread_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_intro_thread_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_intro_tower_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_intro_tower_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_intro_tower_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_intro_tower_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_intro_mouseboard_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_intro_mouseboard_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_intro_mouseboard_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_intro_mouseboard_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_intro_flick_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_intro_flick_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_intro_flick_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_intro_flick_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_intro_charades_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_intro_charades_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_family_game_night_intro_charades_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_family_game_night_intro_charades_02",
+        "stream": true
+      }
+    ]
+  },
+  "father_game_night_greeting_1": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/father_game_night_greeting_1",
+        "stream": true
+      }
+    ]
+  },
+  "father_game_night_greeting_2": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/father/father_game_night_greeting_2",
+        "stream": true
+      }
+    ]
+  },
+  "father_game_night_cards_rules": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/father_game_night_cards_rules",
+        "stream": true
+      }
+    ]
+  },
+  "father_game_night_thread_rules": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/father_game_night_thread_rules",
+        "stream": true
+      }
+    ]
+  },
+  "father_game_night_tower_rules": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/father_game_night_tower_rules",
+        "stream": true
+      }
+    ]
+  },
+  "father_game_night_mouseboard_rules": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/father_game_night_mouseboard_rules",
+        "stream": true
+      }
+    ]
+  },
+  "father_game_night_flick_rules": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/father_game_night_flick_rules",
+        "stream": true
+      }
+    ]
+  },
+  "father_game_night_charades_rules": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/father_game_night_charades_rules",
+        "stream": true
+      }
+    ]
+  },
+  "father_game_night_cards_reaction": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/father_game_night_cards_reaction",
+        "stream": true
+      }
+    ]
+  },
+  "father_game_night_thread_reaction": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/father_game_night_thread_reaction",
+        "stream": true
+      }
+    ]
+  },
+  "father_game_night_tower_reaction": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/father_game_night_tower_reaction",
+        "stream": true
+      }
+    ]
+  },
+  "father_game_night_mouseboard_reaction": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/father_game_night_mouseboard_reaction",
+        "stream": true
+      }
+    ]
+  },
+  "father_game_night_flick_reaction": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/father_game_night_flick_reaction",
+        "stream": true
+      }
+    ]
+  },
+  "father_game_night_charades_reaction": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/father_game_night_charades_reaction",
+        "stream": true
+      }
+    ]
+  },
+  "father_game_night_finish_1": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/father_game_night_finish_1",
+        "stream": true
+      }
+    ]
+  },
+  "father_game_night_finish_2": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/father/father_game_night_finish_2",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_invitation_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_invitation_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_invitation_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_invitation_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_invitation_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_invitation_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_invitation_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_invitation_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_invitation_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_invitation_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_invitation_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_invitation_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_invitation_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_invitation_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_invitation_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_invitation_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_invitation_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_invitation_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_invitation_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_invitation_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_completion_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_completion_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_completion_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_completion_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_completion_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_completion_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_completion_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_completion_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_completion_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_completion_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_completion_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_completion_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_completion_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_completion_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_completion_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_completion_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_completion_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_completion_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_completion_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_completion_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_caught_opening_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_caught_opening_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_caught_opening_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_caught_opening_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_caught_opening_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_caught_opening_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_caught_opening_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_caught_opening_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_caught_opening_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_caught_opening_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_caught_opening_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_caught_opening_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_caught_opening_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_caught_opening_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_caught_opening_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_caught_opening_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_caught_opening_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_caught_opening_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_special_delivery_caught_opening_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_special_delivery_caught_opening_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_invitation_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_invitation_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_invitation_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_invitation_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_invitation_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_invitation_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_invitation_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_invitation_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_invitation_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_invitation_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_invitation_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_invitation_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_invitation_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_invitation_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_invitation_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_invitation_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_invitation_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_invitation_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_invitation_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_invitation_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_checkin_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_checkin_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_checkin_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_checkin_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_checkin_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_checkin_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_checkin_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_checkin_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_checkin_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_checkin_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_checkin_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_checkin_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_checkin_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_checkin_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_checkin_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_checkin_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_checkin_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_checkin_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_checkin_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_checkin_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_guest_report_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_guest_report_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_guest_report_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_guest_report_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_guest_report_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_guest_report_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_guest_report_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_guest_report_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_guest_report_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_guest_report_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_guest_report_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_guest_report_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_guest_report_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_guest_report_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_guest_report_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_guest_report_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_guest_report_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_guest_report_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_guest_report_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_guest_report_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_feast_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_feast_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_feast_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_feast_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_feast_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_feast_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_feast_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_feast_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_feast_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_feast_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_feast_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_feast_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_feast_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_feast_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_feast_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_feast_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_feast_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_feast_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_feast_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_feast_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_food_warning_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_food_warning_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_food_warning_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_food_warning_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_food_warning_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_food_warning_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_food_warning_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_food_warning_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_food_warning_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_food_warning_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_food_warning_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_food_warning_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_food_warning_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_food_warning_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_food_warning_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_food_warning_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_food_warning_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_food_warning_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_food_warning_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_food_warning_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_completion_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_completion_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_completion_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_completion_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_completion_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_completion_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_completion_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_completion_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_completion_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_completion_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_completion_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_completion_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_completion_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_completion_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_completion_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_completion_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_completion_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_completion_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_house_party_completion_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_house_party_completion_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "father_house_party_greeting_1": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/father_house_party_greeting_1",
+        "stream": true
+      }
+    ]
+  },
+  "father_house_party_greeting_2": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/father/father_house_party_greeting_2",
+        "stream": true
+      }
+    ]
+  },
+  "father_house_party_social_1": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/father_house_party_social_1",
+        "stream": true
+      }
+    ]
+  },
+  "father_house_party_social_2": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/father/father_house_party_social_2",
+        "stream": true
+      }
+    ]
+  },
+  "father_house_party_game_1": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/father_house_party_game_1",
+        "stream": true
+      }
+    ]
+  },
+  "father_house_party_game_2": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/father/father_house_party_game_2",
+        "stream": true
+      }
+    ]
+  },
+  "father_house_party_feast_1": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/father_house_party_feast_1",
+        "stream": true
+      }
+    ]
+  },
+  "father_house_party_feast_2": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/father/father_house_party_feast_2",
+        "stream": true
+      }
+    ]
+  },
+  "father_house_party_finish_1": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/father_house_party_finish_1",
+        "stream": true
+      }
+    ]
+  },
+  "father_house_party_finish_2": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/father/father_house_party_finish_2",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_invitation_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_invitation_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_invitation_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_invitation_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_invitation_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_invitation_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_invitation_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_invitation_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_invitation_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_invitation_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_invitation_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_invitation_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_invitation_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_invitation_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_invitation_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_invitation_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_invitation_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_invitation_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_invitation_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_invitation_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_checkin_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_checkin_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_checkin_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_checkin_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_checkin_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_checkin_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_checkin_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_checkin_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_checkin_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_checkin_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_checkin_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_checkin_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_checkin_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_checkin_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_checkin_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_checkin_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_checkin_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_checkin_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_checkin_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_checkin_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_guest_report_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_guest_report_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_guest_report_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_guest_report_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_guest_report_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_guest_report_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_guest_report_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_guest_report_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_guest_report_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_guest_report_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_guest_report_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_guest_report_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_guest_report_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_guest_report_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_guest_report_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_guest_report_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_guest_report_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_guest_report_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_guest_report_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_guest_report_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_search_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_search_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_search_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_search_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_search_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_search_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_search_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_search_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_search_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_search_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_search_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_search_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_search_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_search_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_search_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_search_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_search_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_search_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_search_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_search_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_surprise_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_surprise_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_surprise_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_surprise_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_surprise_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_surprise_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_surprise_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_surprise_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_surprise_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_surprise_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_surprise_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_surprise_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_surprise_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_surprise_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_surprise_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_surprise_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_surprise_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_surprise_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_surprise_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_surprise_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_cake_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_cake_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_cake_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_cake_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_cake_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_cake_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_cake_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_cake_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_cake_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_cake_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_cake_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_cake_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_cake_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_cake_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_cake_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_cake_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_cake_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_cake_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_cake_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_cake_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_completion_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_completion_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_completion_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_completion_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_completion_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_completion_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_completion_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_completion_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_completion_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_completion_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_completion_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_completion_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_completion_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_completion_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_completion_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_completion_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_completion_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_completion_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_player_party_completion_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_player_party_completion_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "father_player_party_greeting_1": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/father_player_party_greeting_1",
+        "stream": true
+      }
+    ]
+  },
+  "father_player_party_greeting_2": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/father/father_player_party_greeting_2",
+        "stream": true
+      }
+    ]
+  },
+  "father_player_party_social_1": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/father_player_party_social_1",
+        "stream": true
+      }
+    ]
+  },
+  "father_player_party_social_2": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/father/father_player_party_social_2",
+        "stream": true
+      }
+    ]
+  },
+  "father_player_party_entertainment_1": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/father_player_party_entertainment_1",
+        "stream": true
+      }
+    ]
+  },
+  "father_player_party_entertainment_2": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/father/father_player_party_entertainment_2",
+        "stream": true
+      }
+    ]
+  },
+  "father_player_party_celebration_1": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/father_player_party_celebration_1",
+        "stream": true
+      }
+    ]
+  },
+  "father_player_party_celebration_2": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/father/father_player_party_celebration_2",
+        "stream": true
+      }
+    ]
+  },
+  "father_player_party_finish_1": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/father/father_player_party_finish_1",
+        "stream": true
+      }
+    ]
+  },
+  "father_player_party_finish_2": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/father/father_player_party_finish_2",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_departure_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_departure_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_departure_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_departure_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_departure_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_departure_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_departure_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_departure_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_departure_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_departure_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_departure_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_departure_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_departure_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_departure_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_departure_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_departure_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_departure_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_departure_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_departure_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_departure_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_return_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_return_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_return_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_return_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_return_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_return_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_return_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_return_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_return_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_return_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_return_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_return_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_return_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_return_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_return_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_return_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_return_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_return_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_return_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_return_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_missing_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_missing_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_missing_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_missing_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_missing_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_missing_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_missing_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_missing_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_missing_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_missing_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_missing_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_missing_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_missing_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_missing_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_missing_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_missing_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_missing_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_missing_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_missing_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_missing_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_alert_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_alert_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_alert_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_alert_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_alert_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_alert_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_alert_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_alert_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_alert_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_alert_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_alert_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_alert_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_alert_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_alert_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_alert_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_alert_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_alert_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_alert_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_alert_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_alert_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_caught_missing_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_missing_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_caught_missing_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_missing_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_caught_missing_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_missing_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_caught_missing_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_missing_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_caught_missing_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_missing_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_caught_missing_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_missing_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_caught_missing_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_missing_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_caught_missing_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_missing_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_caught_missing_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_missing_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_caught_missing_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_missing_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_caught_spy_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_spy_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_caught_spy_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_spy_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_caught_spy_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_spy_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_caught_spy_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_spy_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_caught_spy_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_spy_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_caught_spy_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_spy_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_caught_spy_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_spy_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_caught_spy_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_spy_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_caught_spy_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_spy_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mother_goes_out_caught_spy_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mother_goes_out_caught_spy_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "father_mother_goes_out_mother_left_1": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/father/father_mother_goes_out_mother_left_1",
+        "stream": true
+      }
+    ]
+  },
+  "father_mother_goes_out_mother_left_2": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/father/father_mother_goes_out_mother_left_2",
+        "stream": true
+      }
+    ]
+  },
+  "father_mother_goes_out_when_return_1": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/father/father_mother_goes_out_when_return_1",
+        "stream": true
+      }
+    ]
+  },
+  "father_mother_goes_out_when_return_2": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/father/father_mother_goes_out_when_return_2",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_invitation_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_invitation_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_invitation_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_invitation_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_invitation_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_invitation_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_invitation_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_invitation_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_invitation_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_invitation_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_invitation_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_invitation_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_invitation_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_invitation_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_invitation_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_invitation_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_invitation_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_invitation_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_invitation_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_invitation_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_return_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_return_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_return_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_return_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_return_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_return_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_return_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_return_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_return_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_return_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_return_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_return_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_return_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_return_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_return_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_return_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_return_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_return_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_return_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_return_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_search_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_search_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_search_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_search_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_search_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_search_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_search_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_search_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_search_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_search_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_search_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_search_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_search_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_search_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_search_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_search_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_search_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_search_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_search_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_search_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_caught_normal_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_caught_normal_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_caught_normal_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_caught_normal_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_caught_normal_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_caught_normal_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_caught_normal_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_caught_normal_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_caught_normal_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_caught_normal_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_caught_normal_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_caught_normal_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_caught_normal_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_caught_normal_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_caught_normal_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_caught_normal_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_caught_normal_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_caught_normal_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_caught_normal_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_caught_normal_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_ban_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_ban_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_ban_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_ban_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_ban_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_ban_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_ban_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_ban_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_ban_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_ban_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_ban_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_ban_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_ban_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_ban_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_ban_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_ban_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_ban_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_ban_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_wybie_adventure_ban_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_wybie_adventure_ban_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_invitation_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_invitation_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_invitation_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_invitation_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_invitation_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_invitation_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_invitation_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_invitation_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_invitation_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_invitation_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_invitation_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_invitation_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_invitation_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_invitation_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_invitation_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_invitation_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_invitation_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_invitation_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_invitation_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_invitation_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_ontime_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_ontime_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_ontime_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_ontime_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_ontime_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_ontime_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_ontime_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_ontime_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_ontime_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_ontime_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_ontime_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_ontime_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_ontime_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_ontime_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_ontime_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_ontime_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_ontime_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_ontime_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_ontime_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_ontime_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_late_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_late_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_late_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_late_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_late_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_late_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_late_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_late_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_late_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_late_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_late_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_late_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_late_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_late_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_late_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_late_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_late_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_late_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_late_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_late_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_search_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_search_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_search_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_search_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_search_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_search_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_search_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_search_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_search_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_search_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_search_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_search_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_search_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_search_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_search_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_search_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_search_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_search_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_theatre_search_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_theatre_search_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mouse_circus_search_low_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mouse_circus_search_low_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mouse_circus_search_low_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mouse_circus_search_low_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mouse_circus_search_mid_mid_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mouse_circus_search_mid_mid_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mouse_circus_search_mid_mid_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mouse_circus_search_mid_mid_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mouse_circus_search_high_low_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mouse_circus_search_high_low_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mouse_circus_search_high_low_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mouse_circus_search_high_low_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mouse_circus_search_low_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mouse_circus_search_low_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mouse_circus_search_low_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mouse_circus_search_low_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mouse_circus_search_high_high_01": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mouse_circus_search_high_high_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_events_mouse_circus_search_high_high_02": {
+    "sounds": [
+      {
+        "name": "coraline:compact_events/full_wording/mother/other_mother_events_mouse_circus_search_high_high_02",
+        "stream": true
+      }
+    ]
+  },
+  "cat_encounter_a": {
+    "sounds": [
+      {
+        "name": "coraline:cat_encounter/a",
+        "stream": true
+      }
+    ]
+  },
+  "cat_encounter_b": {
+    "sounds": [
+      {
+        "name": "coraline:cat_encounter/b",
+        "stream": true
+      }
+    ]
+  },
+  "cat_encounter_c": {
+    "sounds": [
+      {
+        "name": "coraline:cat_encounter/c",
+        "stream": true
+      }
+    ]
+  },
+  "cat_encounter_d": {
+    "sounds": [
+      {
+        "name": "coraline:cat_encounter/d",
+        "stream": true
+      }
+    ]
+  },
+  "cat_encounter_e": {
+    "sounds": [
+      {
+        "name": "coraline:cat_encounter/e",
+        "stream": true
+      }
+    ]
+  },
+  "cat_encounter_f": {
+    "sounds": [
+      {
+        "name": "coraline:cat_encounter/f",
+        "stream": true
+      }
+    ]
+  },
+  "cat_encounter_g": {
+    "sounds": [
+      {
+        "name": "coraline:cat_encounter/g",
+        "stream": true
+      }
+    ]
+  },
+  "cat_encounter_h": {
+    "sounds": [
+      {
+        "name": "coraline:cat_encounter/h",
+        "stream": true
+      }
+    ]
+  },
+  "cat_encounter_i": {
+    "sounds": [
+      {
+        "name": "coraline:cat_encounter/i",
+        "stream": true
+      }
+    ]
+  },
+  "black_is_traditional_a": {
+    "sounds": [
+      {
+        "name": "coraline:black_is_traditional/a",
+        "stream": true
+      }
+    ]
+  },
+  "black_is_traditional_b": {
+    "sounds": [
+      {
+        "name": "coraline:black_is_traditional/b",
+        "stream": true
+      }
+    ]
+  },
+  "black_is_traditional_c": {
+    "sounds": [
+      {
+        "name": "coraline:black_is_traditional/c",
+        "stream": true
+      }
+    ]
+  },
+  "black_is_traditional_d": {
+    "sounds": [
+      {
+        "name": "coraline:black_is_traditional/d",
+        "stream": true
+      }
+    ]
+  },
+  "black_is_traditional_e": {
+    "sounds": [
+      {
+        "name": "coraline:black_is_traditional/e",
+        "stream": true
+      }
+    ]
+  },
+  "black_is_traditional_f": {
+    "sounds": [
+      {
+        "name": "coraline:black_is_traditional/f",
+        "stream": true
+      }
+    ]
+  },
+  "black_is_traditional_g": {
+    "sounds": [
+      {
+        "name": "coraline:black_is_traditional/g",
+        "stream": true
+      }
+    ]
+  },
+  "black_is_traditional_h": {
+    "sounds": [
+      {
+        "name": "coraline:black_is_traditional/h",
+        "stream": true
+      }
+    ]
+  },
+  "black_is_traditional_i": {
+    "sounds": [
+      {
+        "name": "coraline:black_is_traditional/i",
+        "stream": true
+      }
+    ]
+  },
+  "black_is_traditional_j": {
+    "sounds": [
+      {
+        "name": "coraline:black_is_traditional/j",
+        "stream": true
+      }
+    ]
+  },
+  "black_is_traditional_k": {
+    "sounds": [
+      {
+        "name": "coraline:black_is_traditional/k",
+        "stream": true
+      }
+    ]
+  },
+  "black_is_traditional_l": {
+    "sounds": [
+      {
+        "name": "coraline:black_is_traditional/l",
+        "stream": true
+      }
+    ]
+  },
+  "black_is_traditional_m": {
+    "sounds": [
+      {
+        "name": "coraline:black_is_traditional/m",
+        "stream": true
+      }
+    ]
+  },
+  "black_is_traditional_n": {
+    "sounds": [
+      {
+        "name": "coraline:black_is_traditional/n",
+        "stream": true
+      }
+    ]
+  },
+  "black_is_traditional_o": {
+    "sounds": [
+      {
+        "name": "coraline:black_is_traditional/o",
+        "stream": true
+      }
+    ]
+  },
+  "black_is_traditional_p": {
+    "sounds": [
+      {
+        "name": "coraline:black_is_traditional/p",
+        "stream": true
+      }
+    ]
+  },
+  "black_is_traditional_q": {
+    "sounds": [
+      {
+        "name": "coraline:black_is_traditional/q",
+        "stream": true
+      }
+    ]
+  },
+  "black_is_traditional_r": {
+    "sounds": [
+      {
+        "name": "coraline:black_is_traditional/r",
+        "stream": true
+      }
+    ]
+  },
+  "black_is_traditional_s": {
+    "sounds": [
+      {
+        "name": "coraline:black_is_traditional/s",
+        "stream": true
+      }
+    ]
+  },
+  "cocoa_beetles_a": {
+    "sounds": [
+      {
+        "name": "coraline:cocoa_beetles/a",
+        "stream": true
+      }
+    ]
+  },
+  "cocoa_beetles_b": {
+    "sounds": [
+      {
+        "name": "coraline:cocoa_beetles/b",
+        "stream": true
+      }
+    ]
+  },
+  "cocoa_beetles_c": {
+    "sounds": [
+      {
+        "name": "coraline:cocoa_beetles/c",
+        "stream": true
+      }
+    ]
+  },
+  "cocoa_beetles_d": {
+    "sounds": [
+      {
+        "name": "coraline:cocoa_beetles/d",
+        "stream": true
+      }
+    ]
+  },
+  "cocoa_beetles_e": {
+    "sounds": [
+      {
+        "name": "coraline:cocoa_beetles/e",
+        "stream": true
+      }
+    ]
+  },
+  "cocoa_beetles_f": {
+    "sounds": [
+      {
+        "name": "coraline:cocoa_beetles/f",
+        "stream": true
+      }
+    ]
+  },
+  "cocoa_beetles_g": {
+    "sounds": [
+      {
+        "name": "coraline:cocoa_beetles/g",
+        "stream": true
+      }
+    ]
+  },
+  "mirror_prison_a": {
+    "sounds": [
+      {
+        "name": "coraline:mirror_prison/a",
+        "stream": true
+      }
+    ]
+  },
+  "mirror_prison_b": {
+    "sounds": [
+      {
+        "name": "coraline:mirror_prison/b",
+        "stream": true
+      }
+    ]
+  },
+  "mirror_prison_c": {
+    "sounds": [
+      {
+        "name": "coraline:mirror_prison/c",
+        "stream": true
+      }
+    ]
+  },
+  "mirror_prison_d": {
+    "sounds": [
+      {
+        "name": "coraline:mirror_prison/d",
+        "stream": true
+      }
+    ]
+  },
+  "mirror_prison_e": {
+    "sounds": [
+      {
+        "name": "coraline:mirror_prison/e",
+        "stream": true
+      }
+    ]
+  },
+  "first_escape_a": {
+    "sounds": [
+      {
+        "name": "coraline:first_escape/a",
+        "stream": true
+      }
+    ]
+  },
+  "first_escape_b": {
+    "sounds": [
+      {
+        "name": "coraline:first_escape/b",
+        "stream": true
+      }
+    ]
+  },
+  "first_escape_c": {
+    "sounds": [
+      {
+        "name": "coraline:first_escape/c",
+        "stream": true
+      }
+    ]
+  },
+  "first_escape_d": {
+    "sounds": [
+      {
+        "name": "coraline:first_escape/d",
+        "stream": true
+      }
+    ]
+  },
+  "first_escape_e": {
+    "sounds": [
+      {
+        "name": "coraline:first_escape/e",
+        "stream": true
+      }
+    ]
+  },
+  "first_escape_f": {
+    "sounds": [
+      {
+        "name": "coraline:first_escape/f",
+        "stream": true
+      }
+    ]
+  },
+  "first_escape_g": {
+    "sounds": [
+      {
+        "name": "coraline:first_escape/g",
+        "stream": true
+      }
+    ]
+  },
+  "missing_parents_a": {
+    "sounds": [
+      {
+        "name": "coraline:missing_parents/a",
+        "stream": true
+      }
+    ]
+  },
+  "missing_parents_b": {
+    "sounds": [
+      {
+        "name": "coraline:missing_parents/b",
+        "stream": true
+      }
+    ]
+  },
+  "missing_parents_c": {
+    "sounds": [
+      {
+        "name": "coraline:missing_parents/c",
+        "stream": true
+      }
+    ]
+  },
+  "missing_parents_d": {
+    "sounds": [
+      {
+        "name": "coraline:missing_parents/d",
+        "stream": true
+      }
+    ]
+  },
+  "missing_parents_e": {
+    "sounds": [
+      {
+        "name": "coraline:missing_parents/e",
+        "stream": true
+      }
+    ]
+  },
+  "missing_parents_f": {
+    "sounds": [
+      {
+        "name": "coraline:missing_parents/f",
+        "stream": true
+      }
+    ]
+  },
+  "missing_parents_g": {
+    "sounds": [
+      {
+        "name": "coraline:missing_parents/g",
+        "stream": true
+      }
+    ]
+  },
+  "missing_parents_tea_a": {
+    "sounds": [
+      {
+        "name": "coraline:missing_parents_tea/a",
+        "stream": true
+      }
+    ]
+  },
+  "missing_parents_tea_b": {
+    "sounds": [
+      {
+        "name": "coraline:missing_parents_tea/b",
+        "stream": true
+      }
+    ]
+  },
+  "missing_parents_tea_c": {
+    "sounds": [
+      {
+        "name": "coraline:missing_parents_tea/c",
+        "stream": true
+      }
+    ]
+  },
+  "missing_parents_tea_d": {
+    "sounds": [
+      {
+        "name": "coraline:missing_parents_tea/d",
+        "stream": true
+      }
+    ]
+  },
+  "missing_parents_tea_e": {
+    "sounds": [
+      {
+        "name": "coraline:missing_parents_tea/e",
+        "stream": true
+      }
+    ]
+  },
+  "missing_parents_tea_f": {
+    "sounds": [
+      {
+        "name": "coraline:missing_parents_tea/f",
+        "stream": true
+      }
+    ]
+  },
+  "missing_parents_tea_g": {
+    "sounds": [
+      {
+        "name": "coraline:missing_parents_tea/g",
+        "stream": true
+      }
+    ]
+  },
+  "missing_parents_tea_h": {
+    "sounds": [
+      {
+        "name": "coraline:missing_parents_tea/h",
+        "stream": true
+      }
+    ]
+  },
+  "missing_parents_tea_i": {
+    "sounds": [
+      {
+        "name": "coraline:missing_parents_tea/i",
+        "stream": true
+      }
+    ]
+  },
+  "missing_parents_cat_a": {
+    "sounds": [
+      {
+        "name": "coraline:missing_parents_cat/a",
+        "stream": true
+      }
+    ]
+  },
+  "missing_parents_cat_b": {
+    "sounds": [
+      {
+        "name": "coraline:missing_parents_cat/b",
+        "stream": true
+      }
+    ]
+  },
+  "missing_parents_cat_c": {
+    "sounds": [
+      {
+        "name": "coraline:missing_parents_cat/c",
+        "stream": true
+      }
+    ]
+  },
+  "missing_parents_cat_d": {
+    "sounds": [
+      {
+        "name": "coraline:missing_parents_cat/d",
+        "stream": true
+      }
+    ]
+  },
+  "missing_parents_cat_e": {
+    "sounds": [
+      {
+        "name": "coraline:missing_parents_cat/e",
+        "stream": true
+      }
+    ]
+  },
+  "missing_parents_cat_f": {
+    "sounds": [
+      {
+        "name": "coraline:missing_parents_cat/f",
+        "stream": true
+      }
+    ]
+  },
+  "parent_rescue_a": {
+    "sounds": [
+      {
+        "name": "coraline:parent_rescue/a",
+        "stream": true
+      }
+    ]
+  },
+  "parent_rescue_b": {
+    "sounds": [
+      {
+        "name": "coraline:parent_rescue/b",
+        "stream": true
+      }
+    ]
+  },
+  "parent_rescue_c": {
+    "sounds": [
+      {
+        "name": "coraline:parent_rescue/c",
+        "stream": true
+      }
+    ]
+  },
+  "parent_rescue_d": {
+    "sounds": [
+      {
+        "name": "coraline:parent_rescue/d",
+        "stream": true
+      }
+    ]
+  },
+  "parent_rescue_e": {
+    "sounds": [
+      {
+        "name": "coraline:parent_rescue/e",
+        "stream": true
+      }
+    ]
+  },
+  "parent_rescue_f": {
+    "sounds": [
+      {
+        "name": "coraline:parent_rescue/f",
+        "stream": true
+      }
+    ]
+  },
+  "parent_rescue_g": {
+    "sounds": [
+      {
+        "name": "coraline:parent_rescue/g",
+        "stream": true
+      }
+    ]
+  },
+  "parent_rescue_h": {
+    "sounds": [
+      {
+        "name": "coraline:parent_rescue/h",
+        "stream": true
+      }
+    ]
+  },
+  "parent_rescue_i": {
+    "sounds": [
+      {
+        "name": "coraline:parent_rescue/i",
+        "stream": true
+      }
+    ]
+  },
+  "parent_rescue_j": {
+    "sounds": [
+      {
+        "name": "coraline:parent_rescue/j",
+        "stream": true
+      }
+    ]
+  },
+  "parent_rescue_k": {
+    "sounds": [
+      {
+        "name": "coraline:parent_rescue/k",
+        "stream": true
+      }
+    ]
+  },
+  "parent_rescue_l": {
+    "sounds": [
+      {
+        "name": "coraline:parent_rescue/l",
+        "stream": true
+      }
+    ]
+  },
+  "parent_rescue_m": {
+    "sounds": [
+      {
+        "name": "coraline:parent_rescue/m",
+        "stream": true
+      }
+    ]
+  },
+  "parent_rescue_n": {
+    "sounds": [
+      {
+        "name": "coraline:parent_rescue/n",
+        "stream": true
+      }
+    ]
+  },
+  "party_exploration": {
+    "sounds": [
+      {
+        "name": "coraline:visit/party_exploration",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_arrival_music": {
+    "sounds": [
+      {
+        "name": "coraline:visit/theatre_arrival_music",
+        "stream": true
+      }
+    ]
+  },
+  "traditional_music": {
+    "sounds": [
+      {
+        "name": "coraline:visit/traditional_music",
+        "stream": true
+      }
+    ]
+  },
+  "rescue_mantis_intro": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/rescue_mantis_intro",
+        "stream": true
+      }
+    ]
+  },
+  "rescue_mantis_take": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/rescue_mantis_take",
+        "stream": true
+      }
+    ]
+  },
+  "rescue_mantis_gone": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/rescue_mantis_gone",
+        "stream": true
+      }
+    ]
+  },
+  "rescue_theatre_grab": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/rescue_theatre_grab",
+        "stream": true
+      }
+    ]
+  },
+  "rescue_clothes": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/rescue_clothes",
+        "stream": true
+      }
+    ]
+  },
+  "rescue_theatre_music": {
+    "sounds": [
+      {
+        "name": "coraline:numbered_originals/theatre_music",
+        "stream": true
+      }
+    ]
+  },
+  "rescue_bobinsky_a": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/rescue_bobinsky_a",
+        "stream": true
+      }
+    ]
+  },
+  "rescue_bobinsky_b": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/rescue_bobinsky_b",
+        "stream": true
+      }
+    ]
+  },
+  "rescue_bobinsky_c": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/rescue_bobinsky_c",
+        "stream": true
+      }
+    ]
+  },
+  "rescue_bobinsky_d": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/rescue_bobinsky_d",
+        "stream": true
+      }
+    ]
+  },
+  "rescue_bobinsky_e": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/rescue_bobinsky_e",
+        "stream": true
+      }
+    ]
+  },
+  "finale_a": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/finale_a",
+        "stream": true
+      }
+    ]
+  },
+  "finale_b": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/finale_b",
+        "stream": true
+      }
+    ]
+  },
+  "finale_c": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/finale_c",
+        "stream": true
+      }
+    ]
+  },
+  "finale_d": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/finale_d",
+        "stream": true
+      }
+    ]
+  },
+  "finale_e": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/finale_e",
+        "stream": true
+      }
+    ]
+  },
+  "finale_f": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/finale_f",
+        "stream": true
+      }
+    ]
+  },
+  "finale_g": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/finale_g",
+        "stream": true
+      }
+    ]
+  },
+  "finale_h": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/finale_h",
+        "stream": true
+      }
+    ]
+  },
+  "finale_i": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/finale_i",
+        "stream": true
+      }
+    ]
+  },
+  "finale_j": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/finale_j",
+        "stream": true
+      }
+    ]
+  },
+  "finale_k": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/finale_k",
+        "stream": true
+      }
+    ]
+  },
+  "finale_m": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/finale_m",
+        "stream": true
+      }
+    ]
+  },
+  "finale_n": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/finale_n",
+        "stream": true
+      }
+    ]
+  },
+  "finale_o": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/finale_o",
+        "stream": true
+      }
+    ]
+  },
+  "finale_p": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/finale_p",
+        "stream": true
+      }
+    ]
+  },
+  "finale_q": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/finale_q",
+        "stream": true
+      }
+    ]
+  },
+  "finale_s": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/finale_s",
+        "stream": true
+      }
+    ]
+  },
+  "reunion_a": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/reunion_a",
+        "stream": true
+      }
+    ]
+  },
+  "reunion_b": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/reunion_b",
+        "stream": true
+      }
+    ]
+  },
+  "farewell_a": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/farewell_a",
+        "stream": true
+      }
+    ]
+  },
+  "farewell_b": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/farewell_b",
+        "stream": true
+      }
+    ]
+  },
+  "farewell_c": {
+    "sounds": [
+      {
+        "name": "coraline:rescue_chapters/farewell_c",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_opening_a": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/theatre_opening_a",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_opening_b": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/theatre_opening_b",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_opening_c": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/theatre_opening_c",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_opening_d": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/theatre_opening_d",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_opening_e": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/theatre_opening_e",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_opening_f": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/theatre_opening_f",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_opening_g": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/theatre_opening_g",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_opening_h": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/theatre_opening_h",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_opening_i": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/theatre_opening_i",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_opening_j": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/theatre_opening_j",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_opening_k": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/theatre_opening_k",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_opening_l": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/theatre_opening_l",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_opening_m": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/theatre_opening_m",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_opening_n": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/theatre_opening_n",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_entrance": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/theatre_entrance",
+        "stream": true
+      }
+    ]
+  },
+  "crawling_hand_a": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/crawling_hand_a",
+        "stream": true
+      }
+    ]
+  },
+  "crawling_hand_b": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/crawling_hand_b",
+        "stream": true
+      }
+    ]
+  },
+  "crawling_hand_c": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/crawling_hand_c",
+        "stream": true
+      }
+    ]
+  },
+  "crawling_hand_d": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/crawling_hand_d",
+        "stream": true
+      }
+    ]
+  },
+  "crawling_hand_e": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/crawling_hand_e",
+        "stream": true
+      }
+    ]
+  },
+  "crawling_hand_f": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/crawling_hand_f",
+        "stream": true
+      }
+    ]
+  },
+  "crawling_hand_g": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/crawling_hand_g",
+        "stream": true
+      }
+    ]
+  },
+  "crawling_hand_h": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/crawling_hand_h",
+        "stream": true
+      }
+    ]
+  },
+  "crawling_hand_i": {
+    "sounds": [
+      {
+        "name": "coraline:final_chapter_originals/crawling_hand_i",
+        "stream": true
+      }
+    ]
+  },
+  "first_escape_music": {
+    "sounds": [
+      {
+        "name": "coraline:scenes/first_escape_music",
+        "stream": true
+      }
+    ]
+  },
+  "missing_parents_music": {
+    "sounds": [
+      {
+        "name": "coraline:scenes/missing_parents_music",
+        "stream": true
+      }
+    ]
+  },
+  "mirror_prison_e_accepted": {
+    "sounds": [
+      {
+        "name": "coraline:mirror_prison/e_accepted",
+        "stream": true
+      }
+    ]
+  },
+  "ghost_victim_talk": {
+    "subtitle": "subtitle.coraline.ghost_victim_talk",
+    "sounds": [
+      {
+        "name": "coraline:ghost_victim/yada_01",
+        "stream": false
+      },
+      {
+        "name": "coraline:ghost_victim/yada_02",
+        "stream": false
+      },
+      {
+        "name": "coraline:ghost_victim/yada_03",
+        "stream": false
+      },
+      {
+        "name": "coraline:ghost_victim/yada_04",
+        "stream": false
+      }
+    ]
+  },
+  "other_mother_incidental_mother_53b786200560bb87": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_53b786200560bb87/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_daec9bfb13e1ea70": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_daec9bfb13e1ea70/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_e70aa513e654e519": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_e70aa513e654e519/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_a2143168fdeb4b9c": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_a2143168fdeb4b9c/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_4d82080348d9a6ae": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_4d82080348d9a6ae/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_2db239ff1bd049e7": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_2db239ff1bd049e7/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_fa78a1093df128cb": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_fa78a1093df128cb/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_8827102deb3fc37a": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_8827102deb3fc37a/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_8a837b55f1744cc3": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_8a837b55f1744cc3/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_bf6893f43e32f183": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_bf6893f43e32f183/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_3c817b07a8a14585": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_3c817b07a8a14585/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_d854d939a96cdace": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_d854d939a96cdace/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_7931bd385965424e": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_7931bd385965424e/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_45461fe113ecbfd6": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_45461fe113ecbfd6/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_625fa41d0e6f25fd": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_625fa41d0e6f25fd/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_4a2d0ea27fcce29c": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_4a2d0ea27fcce29c/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_d5b630c76a4a38bd": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_d5b630c76a4a38bd/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_5a771ba2311c052e": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_5a771ba2311c052e/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_72a99e42ceb5f434": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_72a99e42ceb5f434/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_c3ffe1fb62744db6": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_c3ffe1fb62744db6/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_766c9e324a70a890": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_766c9e324a70a890/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_09917b2eec90b9ba": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_09917b2eec90b9ba/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_89e91dcb58538ad1": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_89e91dcb58538ad1/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_e8fc2e8328d283e1": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_e8fc2e8328d283e1/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_8739b747be2432dc": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_8739b747be2432dc/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_3d579e60714fb609": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_3d579e60714fb609/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_af6b9bb016341735": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_af6b9bb016341735/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_d4b2ad46c4e4ee72": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_d4b2ad46c4e4ee72/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_37538e5ce2ad2da9": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_37538e5ce2ad2da9/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_986542a1149ece70": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_986542a1149ece70/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_ce4ccd109b096e5b": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_ce4ccd109b096e5b/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_2af40e1436c1f636": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_2af40e1436c1f636/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_52cf08cca27ada57": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_52cf08cca27ada57/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_c54a134046300f8d": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_c54a134046300f8d/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_25ad3d2edcaf6689": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_25ad3d2edcaf6689/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_2df71b1545bbc2af": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_2df71b1545bbc2af/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_c5eb142462bd1381": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_c5eb142462bd1381/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_1e2de78509aa6fb5": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_1e2de78509aa6fb5/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_a2dcd4562bd70596": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_a2dcd4562bd70596/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_5e8f0260fccd51f1": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_5e8f0260fccd51f1/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_b7647c74db56297e": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_b7647c74db56297e/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_479160a1785c796e": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_479160a1785c796e/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_f3a88507d540ac40": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_f3a88507d540ac40/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_incidental_mother_4a77c0d2667be0c2": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/mother/mother_4a77c0d2667be0c2/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_0ab52f4f31b76468": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_0ab52f4f31b76468/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_c5b21ca526c80aa8": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_c5b21ca526c80aa8/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_48df0bd06725e514": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_48df0bd06725e514/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_61f0e868cc25665f": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_61f0e868cc25665f/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_7fe33e518e7c9247": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_7fe33e518e7c9247/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_b932d64b631d503c": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_b932d64b631d503c/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_947c6986ad359616": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_947c6986ad359616/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_53d4e4ecf0e48df8": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_53d4e4ecf0e48df8/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_fb0d95c2d7d534e6": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_fb0d95c2d7d534e6/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_97a7ca538495f3b6": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_97a7ca538495f3b6/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_9d79f43f4cbe420a": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_9d79f43f4cbe420a/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_dcb322ffb60deecf": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_dcb322ffb60deecf/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_3fa5e9c5536cf0fd": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_3fa5e9c5536cf0fd/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_09917b2eec90b9ba": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_09917b2eec90b9ba/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_d4fd618a8f134d6f": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_d4fd618a8f134d6f/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_f1bcabd3c4ef1f08": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_f1bcabd3c4ef1f08/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_d62856b68065549b": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_d62856b68065549b/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_1c9975620296be7c": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_1c9975620296be7c/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_ac3e8e26a9cd08ba": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_ac3e8e26a9cd08ba/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_ebd1015c52657493": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_ebd1015c52657493/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_b5e563a4d8d98d19": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_b5e563a4d8d98d19/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_c3e5e93b65725985": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_c3e5e93b65725985/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_75db0c14e2239cf6": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_75db0c14e2239cf6/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_6825abdb737d2f84": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_6825abdb737d2f84/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_891a44541352c45e": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_891a44541352c45e/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_07b3278b7fb36c21": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_07b3278b7fb36c21/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_adb903263c6f14bf": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_adb903263c6f14bf/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_c633eb57ed3df09c": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_c633eb57ed3df09c/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_39811507f0bc49cf": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_39811507f0bc49cf/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_a9711bc8c5c38289": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_a9711bc8c5c38289/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_1d5cd6d4a9a02f15": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_1d5cd6d4a9a02f15/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_313c7c53ee707808": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_313c7c53ee707808/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_2df5b35de358d953": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_2df5b35de358d953/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "father_incidental_f9259e71856122aa": {
+    "sounds": [
+      {
+        "name": "coraline:visit/incidental/father/father_f9259e71856122aa/line_01",
+        "stream": true
+      }
+    ]
+  },
+  "other_father_boss_music": {
+    "sounds": [
+      {
+        "name": "coraline:scenes/other_father_boss_music",
+        "stream": true
+      }
+    ]
+  },
+  "he_pulled_a_long_face_music": {
+    "sounds": [
+      {
+        "name": "coraline:scenes/he_pulled_a_long_face_music",
+        "stream": true
+      }
+    ]
+  },
+  "the_cat_music": {
+    "sounds": [
+      {
+        "name": "coraline:scenes/the_cat_music",
+        "stream": true
+      }
+    ]
+  },
+  "parents_rescue_arrival_music": {
+    "sounds": [
+      {
+        "name": "coraline:scenes/parents_rescue_arrival_music",
+        "stream": true
+      }
+    ]
+  },
+  "other_mother_game_proposal_music": {
+    "sounds": [
+      {
+        "name": "coraline:scenes/other_mother_game_proposal_music",
+        "stream": true
+      }
+    ]
+  },
+  "spink_and_forcible_boss_music": {
+    "sounds": [
+      {
+        "name": "coraline:scenes/spink_and_forcible_boss_music",
+        "stream": true
+      }
+    ]
+  },
+  "accepted_little_me_music": {
+    "sounds": [
+      {
+        "name": "coraline:scenes/accepted_little_me_music",
+        "stream": true
+      }
+    ]
+  },
+  "garden_ghost_eye_music": {
+    "sounds": [
+      {
+        "name": "coraline:scenes/garden_ghost_eye_music",
+        "stream": true
+      }
+    ]
+  },
+  "theatre_ghost_eye_music": {
+    "sounds": [
+      {
+        "name": "coraline:scenes/theatre_ghost_eye_music",
+        "stream": true
+      }
+    ]
+  },
+  "circus_ghost_eye_music": {
+    "sounds": [
+      {
+        "name": "coraline:scenes/circus_ghost_eye_music",
+        "stream": true
+      }
+    ]
+  },
+  "accepted_ghost_children_music": {
+    "sounds": [
+      {
+        "name": "coraline:visit/accepted_ghost_children_music",
         "stream": true
       }
     ]

@@ -14,6 +14,13 @@ public final class VisitData extends SavedData {
         public long supperMusicEndsAt;
         public BlockPos piano,table;
         public boolean cakeTaken;
+        public boolean wybieVisited;
+        public boolean bobinskyVisited;
+        public boolean teaVisited;
+        public UUID wybieActor;
+        public boolean neighborVisitsReady,teaSiteHint;
+        public int nextNeighborVisit;
+        public long nextNeighborAttempt;
         public OtherMotherWelcome.State welcomeState=OtherMotherWelcome.State.LOW_TRUST_LOW_SUSPICION;
         public String lastWelcome="";
         public long welcomeAfter;
@@ -24,6 +31,8 @@ public final class VisitData extends SavedData {
     public static VisitData load(CompoundTag root){var data=new VisitData();for(var tag:root.getList("Scenes",10)){
         var n=(CompoundTag)tag;var s=new Scene();s.owner=n.getUUID("Owner");s.door=n.getUUID("Door");s.mom=n.hasUUID("Mom")?n.getUUID("Mom"):null;s.dad=n.hasUUID("Dad")?n.getUUID("Dad"):null;
         try{s.stage=Stage.valueOf(n.getString("Stage"));}catch(IllegalArgumentException e){s.stage=Stage.DONE;}
+        s.wybieVisited=n.getBoolean("WybieVisited");s.bobinskyVisited=n.getBoolean("BobinskyVisited");s.teaVisited=n.getBoolean("TeaVisited");s.wybieActor=n.hasUUID("WybieActor")?n.getUUID("WybieActor"):null;
+        s.neighborVisitsReady=n.getBoolean("NeighborVisitsReady")||s.wybieVisited||s.bobinskyVisited||s.teaVisited;s.teaSiteHint=n.getBoolean("TeaSiteHint");s.nextNeighborVisit=Math.floorMod(n.getInt("NextNeighborVisit"),3);s.nextNeighborAttempt=n.getLong("NextNeighborAttempt");
         s.welcomeState=OtherMotherWelcome.State.fromId(n.getString("WelcomeState"));
         s.loop=OtherMotherLoopState.load(n.getCompound("MainLoop"));
         if(!n.contains("MainLoop"))s.loop.visits=s.stage==Stage.DONE?1:0;
@@ -33,8 +42,10 @@ public final class VisitData extends SavedData {
         s.family=n.hasUUID("Family")?n.getUUID("Family"):null;s.elapsed=n.getInt("Elapsed");s.supperMusicEndsAt=n.getLong("SupperMusicEndsAt");s.piano=BlockPos.of(n.getLong("Piano"));s.table=BlockPos.of(n.getLong("Table"));s.cakeTaken=n.getBoolean("CakeTaken");data.scenes.put(s.owner,s);
     }return data;}
     @Override public CompoundTag save(CompoundTag root){var list=new ListTag();for(var s:scenes.values()){
-        var n=new CompoundTag();n.putUUID("Owner",s.owner);n.putUUID("Door",s.door);if(s.mom!=null)n.putUUID("Mom",s.mom);if(s.dad!=null)n.putUUID("Dad",s.dad);n.putString("Stage",s.stage.name());n.putInt("Elapsed",s.elapsed);n.putLong("SupperMusicEndsAt",s.supperMusicEndsAt);n.putLong("Piano",s.piano.asLong());n.putLong("Table",s.table.asLong());n.putBoolean("CakeTaken",s.cakeTaken);list.add(n);
+        var n=new CompoundTag();n.putUUID("Owner",s.owner);n.putUUID("Door",s.door);if(s.mom!=null)n.putUUID("Mom",s.mom);if(s.dad!=null)n.putUUID("Dad",s.dad);n.putString("Stage",s.stage.name());n.putInt("Elapsed",s.elapsed);n.putLong("SupperMusicEndsAt",s.supperMusicEndsAt);n.putLong("Piano",s.piano==null?0:s.piano.asLong());n.putLong("Table",s.table==null?0:s.table.asLong());n.putBoolean("CakeTaken",s.cakeTaken);list.add(n);
         if(s.family!=null)n.putUUID("Family",s.family);
+        n.putBoolean("WybieVisited",s.wybieVisited);n.putBoolean("BobinskyVisited",s.bobinskyVisited);n.putBoolean("TeaVisited",s.teaVisited);if(s.wybieActor!=null)n.putUUID("WybieActor",s.wybieActor);
+        n.putBoolean("NeighborVisitsReady",s.neighborVisitsReady);n.putBoolean("TeaSiteHint",s.teaSiteHint);n.putInt("NextNeighborVisit",s.nextNeighborVisit);n.putLong("NextNeighborAttempt",s.nextNeighborAttempt);
         n.put("MainLoop",s.loop.save());
         n.putString("WelcomeState",s.welcomeState.id());n.putString("LastWelcome",s.lastWelcome);n.putLong("WelcomeAfter",s.welcomeAfter);
         var history=new CompoundTag();s.lastDialogue.forEach(history::putString);n.put("OtherMotherDialogue",history);

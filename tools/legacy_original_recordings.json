@@ -1,0 +1,443 @@
+{
+  "wybie_line_a": {
+    "source": "voicelines/A.wav",
+    "source_sha256": "4da9a716394cde5f9b927464c4f5258dc1120d4c50c2bf436aaee02b1db1ef63",
+    "ogg_sha256": "d431e7cd37ca426565ef918261da7bb8393a5ee028dff911a01c5c108cfb0e48",
+    "resource": "wybie/a",
+    "source_seconds": 28.151125,
+    "music": false,
+    "speaker": "Wybie"
+  },
+  "wybie_line_b": {
+    "source": "voicelines/B.wav",
+    "source_sha256": "1dba139832b93554088bbe193016d370ccf99e227a23c32d47bc9e65e52729e6",
+    "ogg_sha256": "f61d77880dd48dfbe73d14da6864e6eec5868a169ef5e82f5387148062f024f2",
+    "resource": "wybie/b",
+    "source_seconds": 20.940541666666668,
+    "music": false,
+    "speaker": "Wybie"
+  },
+  "wybie_line_c": {
+    "source": "voicelines/C.wav",
+    "source_sha256": "f43d478a9939faddc87ef0631ff2cb63b2c8e8757bd96338ce572da2b70f24f7",
+    "ogg_sha256": "81e82da16d7a0f6493dc362245fbdedae1bd4492c3710ac82978bb33795ba81f",
+    "resource": "wybie/c",
+    "source_seconds": 4.361541666666667,
+    "music": false,
+    "speaker": "Wybie"
+  },
+  "other_mother_intro": {
+    "source": "voicelines/OtherMotherIntro.wav",
+    "source_sha256": "eebb24363f0bfda7ea26c8a0fe320758cba02f0465e7416c164259b0d73ff688",
+    "ogg_sha256": "02c72289c40229c91354ed31742207308ec32abc93d4df78da5b2f99f90b0e9e",
+    "resource": "visit/other_mother_intro",
+    "source_seconds": 34.3,
+    "music": false,
+    "speaker": "Other Mother"
+  },
+  "other_father_enter_scene": {
+    "source": "voicelines/OtherFatherEnterScene.wav",
+    "source_sha256": "f938965b50a9d9d96231ab6df4b9cfc1c84716dbb70ccf40070aee4680938fce",
+    "ogg_sha256": "815f80e1d1b9f5eea8441017ed190a7ac569168b0393f6fd1291c368e083d781",
+    "resource": "visit/other_father_enter_scene",
+    "source_seconds": 5.6,
+    "music": false,
+    "speaker": "Other Father"
+  },
+  "other_father_intro": {
+    "source": "voicelines/OtherFatherIntro.wav",
+    "source_sha256": "9a44f348b2db6ecafb4913ca027677ace0d3cbbf1f34db68e0cd2699cedc739b",
+    "ogg_sha256": "cc194d47c41e35e1b66954b98fa3393091e6828f39a2830f6ea3f94c2868da87",
+    "resource": "visit/other_father_intro",
+    "source_seconds": 14.3,
+    "music": false,
+    "speaker": "Other Father"
+  },
+  "other_father_dinners_ready": {
+    "source": "voicelines/OtherFatherDinnersReady.wav",
+    "source_sha256": "eaa068b39aca8fe397a8bb827f4b637b6487c42c48b58349ecaa8c233721be85",
+    "ogg_sha256": "e01cffad9c770456fb78c2acac17d5f9f6d0b80c06612dd66f27c27ff9146c45",
+    "resource": "visit/other_father_dinners_ready",
+    "source_seconds": 14.1,
+    "music": false,
+    "speaker": "Other Father"
+  },
+  "other_father_golden_chicken_breast": {
+    "source": "voicelines/OtherFatherGoldenChickenBreast.wav",
+    "source_sha256": "5ca8aeaa85ad464595925fadec9021b99acd85eaf3a7f726086e1d80d990d98e",
+    "ogg_sha256": "ef288efd46866ab0ba520da07730ceba19cd11998b9b0d05e49ef13f21cec1f4",
+    "resource": "visit/other_father_golden_chicken_breast",
+    "source_seconds": 13.1,
+    "music": false,
+    "speaker": "Other Father"
+  },
+  "other_parents_waiting": {
+    "source": "voicelines/OtherParentsWeveBeenWaitingForYou.wav",
+    "source_sha256": "0bde51aea08097e1b7d297fa901e6df3211b11883f18bbeed1d40537f22d37b3",
+    "ogg_sha256": "c6112f5bfa11b9a79b1240efe81d1cb6ac8c620e6a34b52af6430d41d6524184",
+    "resource": "visit/other_parents_waiting",
+    "source_seconds": 5.7,
+    "music": false,
+    "speaker": "Other Parents"
+  },
+  "other_mother_visit_again": {
+    "source": "voicelines/OtherMotherVisitAgain.mp3",
+    "source_sha256": "58b80e8c7e6633e1848d5197c7602635fb0c5dafcba102f7adece584b4c5ad2e",
+    "ogg_sha256": "7ed3feb647a1a13f08bb9ca547d9bfbc3ca626aaf7a123e742d9263ada4eb2d6",
+    "resource": "visit/other_mother_visit_again",
+    "source_seconds": 8.2,
+    "music": false,
+    "speaker": "Other Mother"
+  },
+  "see_you_soon": {
+    "source": "voicelines/SeeYouSoon.wav",
+    "source_sha256": "e7ebb9d9f08f5d2aed0e5463e26e2c0f0120c52c826f31fd1a55d779eeff219f",
+    "ogg_sha256": "ef4204acd298673eaf840745559112f8194b94b09d66bdb1c6dd74e8048badef",
+    "resource": "visit/see_you_soon",
+    "source_seconds": 3.4,
+    "music": false,
+    "speaker": "Other Mother"
+  },
+  "other_mother_supper_0": {
+    "source": "voicelines/OtherMotherSupper0.wav",
+    "source_sha256": "f0754a2809e0781618d9ef0c26933484f89223c6d4503b963964f2b25842732f",
+    "ogg_sha256": "400f833eeaecaecd38da517ffd43f4e6e33c14a480f3e57c9a79ab2eb74cfd75",
+    "resource": "visit/other_mother_supper_0",
+    "source_seconds": 1.8515833333333334,
+    "music": false,
+    "speaker": "Other Mother"
+  },
+  "other_mother_supper_1": {
+    "source": "voicelines/OtherMotherSupper1.wav",
+    "source_sha256": "77708857400601b1ae6989fb5f65676b590cc35e5455f909bb28f34485372db8",
+    "ogg_sha256": "bf45807b127391bcc6f0aedd73175f90d4e1dc2a517b62f7093ca934f337953f",
+    "resource": "visit/other_mother_supper_1",
+    "source_seconds": 5.5,
+    "music": false,
+    "speaker": "Other Mother"
+  },
+  "other_mother_supper_2": {
+    "source": "voicelines/OtherMotherSupper2.wav",
+    "source_sha256": "5b337e1b09d931b93b567301ba85d9b2f426a30f80705cc2fc0a0df2cb72a1c1",
+    "ogg_sha256": "ff636c3f7f8fefb9bc6256a3952c1b2dc34b0521e7094b5aa4c277b4aa3f0790",
+    "resource": "visit/other_mother_supper_2",
+    "source_seconds": 4.3,
+    "music": false,
+    "speaker": "Other Mother"
+  },
+  "wybie_visit_a": {
+    "source": "voicelines/Wybie/A.wav",
+    "source_sha256": "3aa1c0d968fe58b70db0cc656b696be00dc78e1e8047bdc81cbac3511c03f4ca",
+    "ogg_sha256": "da938045000a5f1ff9590266a9a59c052348bd818491c06a8f272cc1b9e49a46",
+    "resource": "wybie_visit/a",
+    "source_seconds": 7.662583333333333,
+    "music": false,
+    "speaker": "Wybie"
+  },
+  "wybie_visit_b": {
+    "source": "voicelines/Wybie/B.wav",
+    "source_sha256": "9a9f6ebdb03a19f9a030b01e056bd1867f5ae7d6a3c1d30bd9bfd41cdfc7a9cf",
+    "ogg_sha256": "09514e0c04699cc627b820309ef4169623f2e51f4f2e9220e0490a0aa621e097",
+    "resource": "wybie_visit/b",
+    "source_seconds": 14.802708333333333,
+    "music": false,
+    "speaker": "Wybie"
+  },
+  "wybie_visit_c": {
+    "source": "voicelines/Wybie/C.wav",
+    "source_sha256": "27f85accd70c3c7e52f4a6ec3dbda04ae64b38c7955a8a44773e05a1dcd4d233",
+    "ogg_sha256": "5a496ff354cea0747e0a30c0aec1228c06f24f0ebf62746047c493c3d8ac3abe",
+    "resource": "wybie_visit/c",
+    "source_seconds": 7.500041666666666,
+    "music": false,
+    "speaker": "Wybie"
+  },
+  "wybie_visit_d": {
+    "source": "voicelines/Wybie/D.wav",
+    "source_sha256": "e5b319e2f3a663e96a676e5e1c13043ae680be8dabfbda8e4a81ca17a538c81d",
+    "ogg_sha256": "03d6a4a12b3724817497ae071bc1f77ba81e288fcd737ac0ea33d2725fb0c425",
+    "resource": "wybie_visit/d",
+    "source_seconds": 4.493083333333334,
+    "music": false,
+    "speaker": "Wybie"
+  },
+  "wybie_visit_e": {
+    "source": "voicelines/Wybie/E.wav",
+    "source_sha256": "7cc4f6a22f458f5ab9ffce26c521522a45aa65a257ffe83da1024cfcfee49349",
+    "ogg_sha256": "5997048143f536aad4758f18230525b1daccd0e243c814647b25e81f424e8e64",
+    "resource": "wybie_visit/e",
+    "source_seconds": 4.051875,
+    "music": false,
+    "speaker": "Wybie"
+  },
+  "wybie_visit_f": {
+    "source": "voicelines/Wybie/F.wav",
+    "source_sha256": "2c64f0fae325bf381cebaab07ab0b885d0248cbcc8b6c9d4243850ce3d7d9580",
+    "ogg_sha256": "2db2f7aed9e318213679846259720661f71dac1ecf8a5ed01a1c15227fb17ff7",
+    "resource": "wybie_visit/f",
+    "source_seconds": 1.3815833333333334,
+    "music": false,
+    "speaker": "Wybie"
+  },
+  "wybie_visit_g": {
+    "source": "voicelines/Wybie/G.wav",
+    "source_sha256": "0d46d210e679142ced05c488f041510cd127a0d2308a890a0330281725bd4972",
+    "ogg_sha256": "dd6bff6180d6b15429746811cee65ab28917ded365eee6bedb54e36511b34744",
+    "resource": "wybie_visit/g",
+    "source_seconds": 1.4048333333333334,
+    "music": false,
+    "speaker": "Wybie"
+  },
+  "wybie_visit_h": {
+    "source": "voicelines/Wybie/H.wav",
+    "source_sha256": "e2440637d011d4a8c22470718df4dcd172564a93b571ec30f457eec14b97c94b",
+    "ogg_sha256": "ed649df12f07b7ad16f8b0be9c15bb672dc1479401e91fefad9c90696314b39e",
+    "resource": "wybie_visit/h",
+    "source_seconds": 1.253875,
+    "music": false,
+    "speaker": "Wybie"
+  },
+  "wybie_visit_i": {
+    "source": "voicelines/Wybie/I.wav",
+    "source_sha256": "113e19a4e11d2b88596e8bac66c3817995f38a4cf76b6b6dfa8aecb5c48895cb",
+    "ogg_sha256": "c581cb45a868dc97865ae81ed475b55b275d2cece037fdb4ff9df82ce2aea023",
+    "resource": "wybie_visit/i",
+    "source_seconds": 4.7485,
+    "music": false,
+    "speaker": "Wybie"
+  },
+  "wybie_visit_j": {
+    "source": "voicelines/Wybie/J.wav",
+    "source_sha256": "a947e8f468ad81a8b36a6bb477e442dcb2ce9284b047db2c5877292513a8aa1c",
+    "ogg_sha256": "6cb5a8319ec2fb6b035e1f065d57a7369f3c4030a78432538d80ce5b3961da65",
+    "resource": "wybie_visit/j",
+    "source_seconds": 21.919625,
+    "music": false,
+    "speaker": "Wybie"
+  },
+  "wybie_visit_k": {
+    "source": "voicelines/Wybie/K.wav",
+    "source_sha256": "5a775c6960516749be847f566a1586d88834f586234820018a8a964f456c850d",
+    "ogg_sha256": "6d511a251f0d2b080531fdda2d923e1076267b31012925152ee6339e5a845b3d",
+    "resource": "wybie_visit/k",
+    "source_seconds": 1.6718333333333333,
+    "music": false,
+    "speaker": "Wybie"
+  },
+  "wybie_visit_l": {
+    "source": "voicelines/Wybie/L.wav",
+    "source_sha256": "675eaf4fb7c3c2d15e68bc42c8aa15bb4a6b1cfda8fa1ae0d87e88380c0aa880",
+    "ogg_sha256": "dd70be554a8e8ef33062d27f2a2dfbdf63a31ccdec111c509c39e1e913d4f424",
+    "resource": "wybie_visit/l",
+    "source_seconds": 7.163375,
+    "music": false,
+    "speaker": "Wybie"
+  },
+  "bobinsky_visit_a": {
+    "source": "voicelines/bobinsky/A.wav",
+    "source_sha256": "4cc0a96d94d2e5b4ee86e331c99158712d685be041ebf157f0d7eaf603363e8d",
+    "ogg_sha256": "bcda0b51168b598afee7a70da77801a828e90892b50ab97ef598b1cc044ffdeb",
+    "resource": "bobinsky_visit/a",
+    "source_seconds": 15.325166666666666,
+    "music": false,
+    "speaker": "Mr. Bobinsky"
+  },
+  "bobinsky_visit_b": {
+    "source": "voicelines/bobinsky/B.wav",
+    "source_sha256": "24a1f5774add7d1223fbc379c00ebdb5025fb2d723ce2e707927d8056175f676",
+    "ogg_sha256": "b9e5c3df72fff6dda048283d4f289b2f7081462f67f39a8542adbc1a680dc016",
+    "resource": "bobinsky_visit/b",
+    "source_seconds": 10.309666666666667,
+    "music": false,
+    "speaker": "Mr. Bobinsky"
+  },
+  "bobinsky_visit_c": {
+    "source": "voicelines/bobinsky/C.wav",
+    "source_sha256": "f3139fb930a7844c26267ddea0466e334f8b502a345b75c11f60c9d0c617cd67",
+    "ogg_sha256": "6b0ee690463ee3fb0ee7c3f1928fddb75c8fbba2e0fe2d140879e63d3112d443",
+    "resource": "bobinsky_visit/c",
+    "source_seconds": 7.476833333333333,
+    "music": false,
+    "speaker": "Mr. Bobinsky"
+  },
+  "bobinsky_visit_d": {
+    "source": "voicelines/bobinsky/D.wav",
+    "source_sha256": "22b5655a62e8ddea1d48023505384ca1aebf041c44196c8b2c4c0ba6f40c80c4",
+    "ogg_sha256": "a6719d6d2dc36b88e3425306d46e5a0a4ceacaee454c81858bb3d27b8b00e358",
+    "resource": "bobinsky_visit/d",
+    "source_seconds": 11.180416666666666,
+    "music": false,
+    "speaker": "Mr. Bobinsky"
+  },
+  "bobinsky_visit_e": {
+    "source": "voicelines/bobinsky/E.wav",
+    "source_sha256": "20bf96140423987bffcaaa6acb42c30f881692ebeb0e534a41db647670bef42c",
+    "ogg_sha256": "5929b35cc2a9dd706e2f6e57263aa1009008a9d7636c957863a6145b4eeb0f87",
+    "resource": "bobinsky_visit/e",
+    "source_seconds": 17.97225,
+    "music": false,
+    "speaker": "Mr. Bobinsky"
+  },
+  "bobinsky_visit_f": {
+    "source": "voicelines/bobinsky/F.wav",
+    "source_sha256": "bd794e45d18b09ac2f6fec2e9ede02112a568e94df66bdbabd0386cda28e1aae",
+    "ogg_sha256": "7f5b3f4a8de0f9eb91b341aa914b92a6c21b91e5f35362d55a1298691ee9e6b1",
+    "resource": "bobinsky_visit/f",
+    "source_seconds": 4.771708333333334,
+    "music": false,
+    "speaker": "Mr. Bobinsky"
+  },
+  "bobinsky_visit_g": {
+    "source": "voicelines/bobinsky/G.wav",
+    "source_sha256": "91a2d1a0bdb39c6c9208788a863f2c5eef06356cf3a51d636e4c8e5e96deadbb",
+    "ogg_sha256": "4a1690c163a87287e5e83a68433f8e9559c78b921155dd14d0e71e8e7e11e5f1",
+    "resource": "bobinsky_visit/g",
+    "source_seconds": 4.771708333333334,
+    "music": false,
+    "speaker": "Mr. Bobinsky"
+  },
+  "bobinsky_visit_h": {
+    "source": "voicelines/bobinsky/H.wav",
+    "source_sha256": "e09ad5d4f79f40b5a41b490747fcef1a901d8bbd1a3cfd4acb2ddb5618e9f321",
+    "ogg_sha256": "94e694a8a1b81eced95a4ebc507aaa65877a0f9d68dacb563cd12765ed5ad446",
+    "resource": "bobinsky_visit/h",
+    "source_seconds": 3.0534166666666667,
+    "music": false,
+    "speaker": "Mr. Bobinsky"
+  },
+  "bobinsky_visit_i": {
+    "source": "voicelines/bobinsky/I.wav",
+    "source_sha256": "d3bd346baf979d2c867df206584153d5d6162f2e09cc5f2f5cd1d4fa0de87d39",
+    "ogg_sha256": "8c193d3655af6a7b4bc308be019c8f8130ad91c44386bce35432733d3dc74108",
+    "resource": "bobinsky_visit/i",
+    "source_seconds": 1.8808333333333334,
+    "music": false,
+    "speaker": "Mr. Bobinsky"
+  },
+  "bobinsky_visit_j": {
+    "source": "voicelines/bobinsky/J.wav",
+    "source_sha256": "8b9e315e0de21bdf5e0c83e691f7d805e5d5f8246b9f541ced6840e139670bfa",
+    "ogg_sha256": "0f8159cbbfade8661ec0d89283a0df992f8fc8f975a4dc908f0295c65c8225c3",
+    "resource": "bobinsky_visit/j",
+    "source_seconds": 18.332166666666666,
+    "music": false,
+    "speaker": "Mr. Bobinsky"
+  },
+  "bobinsky_visit_k": {
+    "source": "voicelines/bobinsky/K.wav",
+    "source_sha256": "e743b5bfaa0c987f6b1f0287f88364b554a61dbb6af34e2d66c9d1e790ea05d7",
+    "ogg_sha256": "9f4d2548db88d31b929fa027bec1236fc401b20d46d9ae4dd7c24a51f9e38f46",
+    "resource": "bobinsky_visit/k",
+    "source_seconds": 19.086791666666667,
+    "music": false,
+    "speaker": "Mr. Bobinsky"
+  },
+  "tea_visit_a": {
+    "source": "voicelines/MissSpinkAndForcible/A.wav",
+    "source_sha256": "574090509cd62080f9eff19a11e1f9742c2053722a0592f5d4d7afccc5d82182",
+    "ogg_sha256": "675b1497f0cc44e1ef35fd9d0d174d8c9cf1f6abe541445eb9a3e4a7cb59d36d",
+    "resource": "tea_visit/a",
+    "source_seconds": 9.47375,
+    "music": false,
+    "speaker": "Miss Spink & Miss Forcible"
+  },
+  "tea_visit_b": {
+    "source": "voicelines/MissSpinkAndForcible/B.wav",
+    "source_sha256": "c9dedf0609f0f3aa1d935f33a0cedaf3f9607953d8e845e74864241fb2d65ccf",
+    "ogg_sha256": "2f92a1bf47896bb621f4762439a0d3e4cbb740435c8b453693613a40e76783aa",
+    "resource": "tea_visit/b",
+    "source_seconds": 2.438083333333333,
+    "music": false,
+    "speaker": "Miss Spink & Miss Forcible"
+  },
+  "tea_visit_c": {
+    "source": "voicelines/MissSpinkAndForcible/C.wav",
+    "source_sha256": "6b658fea1c85c3f48e4da0ac9e738b38f19ae1460b7ec0c257e4b49a25ce8b0c",
+    "ogg_sha256": "9e81827c91c549f43a7cf9baccdb855be2e4e54b2cdb5a500710f26e475f367c",
+    "resource": "tea_visit/c",
+    "source_seconds": 19.168583333333334,
+    "music": false,
+    "speaker": "Miss Spink & Miss Forcible"
+  },
+  "tea_visit_d": {
+    "source": "voicelines/MissSpinkAndForcible/D.wav",
+    "source_sha256": "879bab6b53a2ff57165072c53e60bb09accf13e4032490cef9c1740f96ac4d1b",
+    "ogg_sha256": "20a7945345ebcf1905e5b9410bce03991263a7b3b8fa749e9316925cffed6f25",
+    "resource": "tea_visit/d",
+    "source_seconds": 10.53025,
+    "music": false,
+    "speaker": "Miss Spink & Miss Forcible"
+  },
+  "tea_visit_e": {
+    "source": "voicelines/MissSpinkAndForcible/E.wav",
+    "source_sha256": "54ccca06ffb30b36f1ec9d7fd08be2851af1c6312f66e0fd663dc918e2766d9c",
+    "ogg_sha256": "a1f9483a9e35bbb8df6d90f41c799e8b26ecac503641ccdffd942b6f52781c36",
+    "resource": "tea_visit/e",
+    "source_seconds": 4.8529583333333335,
+    "music": false,
+    "speaker": "Miss Spink & Miss Forcible"
+  },
+  "tea_visit_f": {
+    "source": "voicelines/MissSpinkAndForcible/F.wav",
+    "source_sha256": "9dcd6181ca546447997aa94a084956855d545482634b3af8b2cfede383f867e9",
+    "ogg_sha256": "484199bdd29730721e117b95849afd94c7d75993ab946919fc304193c16976ed",
+    "resource": "tea_visit/f",
+    "source_seconds": 9.787208333333334,
+    "music": false,
+    "speaker": "Miss Spink & Miss Forcible"
+  },
+  "tea_visit_g": {
+    "source": "voicelines/MissSpinkAndForcible/G.wav",
+    "source_sha256": "1f346ea6cbc772db7f51f413a741ee42fc531b7cc80b170c2d021fd4fa65c2cc",
+    "ogg_sha256": "1ac260ee41952945f78abb44cb0c1cda4001193b1dcb345b3560dabc4403ae84",
+    "resource": "tea_visit/g",
+    "source_seconds": 29.141041666666666,
+    "music": false,
+    "speaker": "Miss Spink & Miss Forcible"
+  },
+  "tea_visit_h": {
+    "source": "voicelines/MissSpinkAndForcible/H.wav",
+    "source_sha256": "cb22f9359a140e667a4fbc3b6d93b23fb542a6d2210945d06f1910f71daab525",
+    "ogg_sha256": "0bc64cf84b6092de80481ea2bf5cac4ef389423188ad681b1cf2d3b7597cdd64",
+    "resource": "tea_visit/h",
+    "source_seconds": 3.285625,
+    "music": false,
+    "speaker": "Miss Spink & Miss Forcible"
+  },
+  "tea_visit_i": {
+    "source": "voicelines/MissSpinkAndForcible/I.wav",
+    "source_sha256": "dcebeb70663458fe0da5274eb9a1dbe7222669b110090a418d9e9f3bdd1c5e22",
+    "ogg_sha256": "2e52e2071a054595f6499362c74e33a13ddc1fbe183fa9d30f62fb3b4d47dc81",
+    "resource": "tea_visit/i",
+    "source_seconds": 1.55575,
+    "music": false,
+    "speaker": "Miss Spink & Miss Forcible"
+  },
+  "tea_visit_j": {
+    "source": "voicelines/MissSpinkAndForcible/J.wav",
+    "source_sha256": "02f967751af145ccec51c2fced1807b2e6ddad825ad72c3760bb5d6b77a6959b",
+    "ogg_sha256": "3159b483a11f06ac1aa22780f9858cfc555dcb64ffafd18566ae9d9f51a0100f",
+    "resource": "tea_visit/j",
+    "source_seconds": 11.475958333333333,
+    "music": false,
+    "speaker": "Miss Spink & Miss Forcible"
+  },
+  "magic_garden_hop_on": {
+    "source": "voicelines/otherfather/activities/magic_garden/HopOnKiddo.mp3",
+    "source_sha256": "12de7badffdac6c95d43de55ae5145e5657c96d84ab4ef1fa191a3012df41282",
+    "ogg_sha256": "20ba8dbd3a750806668488fe418d695bc257ea3c53ba182eb5df9456db4a9721",
+    "resource": "visit/magic_garden_hop_on",
+    "source_seconds": 3.1,
+    "music": false,
+    "speaker": "Other Father"
+  },
+  "magic_garden_mother_said": {
+    "source": "voicelines/otherfather/activities/magic_garden/MotherSaidYoudLikeIt.mp3",
+    "source_sha256": "4fe1e65900506b3903da8ea734775d10a935de75bb3f48e6a1b077ea450f0276",
+    "ogg_sha256": "bd94911213ab90edd0b8b5b9d866d8bf33612a30db126728c20267134a7c4d7e",
+    "resource": "visit/magic_garden_mother_said",
+    "source_seconds": 9.1,
+    "music": false,
+    "speaker": "Other Father"
+  }
+}

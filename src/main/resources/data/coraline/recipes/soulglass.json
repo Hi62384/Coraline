@@ -1,1 +1,10 @@
-{"type":"minecraft:crafting_shaped","pattern":[" G ","GSG"," G "],"key":{"G":{"item":"minecraft:glass"},"S":{"item":"minecraft:soul_sand"}},"result":{"item":"coraline:soulglass","count":4}}
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": {
+    "item": "coraline:soulglass_ore"
+  },
+  "result": "coraline:soulglass",
+  "experience": 0.7,
+  "cookingtime": 200
+}

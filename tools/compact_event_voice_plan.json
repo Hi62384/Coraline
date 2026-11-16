@@ -1,0 +1,712 @@
+{
+  "format": 1,
+  "missing_events_before": 399,
+  "new_unique_recordings": 101,
+  "aliases": {
+    "other_mother_events_family_game_night_late_mid_mid_02": "other_mother_events_family_game_night_late_low_low_01",
+    "other_mother_events_family_game_night_late_high_low_01": "other_mother_events_family_game_night_late_low_low_01",
+    "other_mother_events_family_game_night_late_high_low_02": "other_mother_events_family_game_night_late_low_low_01",
+    "other_mother_events_family_game_night_late_low_high_02": "other_mother_events_family_game_night_late_low_high_01",
+    "other_mother_events_family_game_night_late_high_high_01": "other_mother_events_family_game_night_late_low_high_01",
+    "other_mother_events_family_game_night_late_high_high_02": "other_mother_events_family_game_night_late_low_high_01",
+    "other_mother_events_family_game_night_search_low_low_02": "other_mother_events_family_game_night_search_low_low_01",
+    "other_mother_events_family_game_night_search_mid_mid_01": "other_mother_events_family_game_night_search_low_low_01",
+    "other_mother_events_family_game_night_search_mid_mid_02": "other_mother_events_family_game_night_search_low_low_01",
+    "other_mother_events_family_game_night_search_high_low_01": "other_mother_events_family_game_night_search_low_low_01",
+    "other_mother_events_family_game_night_search_high_low_02": "other_mother_events_family_game_night_search_low_low_01",
+    "other_mother_events_family_game_night_search_low_high_02": "other_mother_events_family_game_night_search_low_high_01",
+    "other_mother_events_family_game_night_search_high_high_01": "other_mother_events_family_game_night_search_low_high_01",
+    "other_mother_events_family_game_night_search_high_high_02": "other_mother_events_family_game_night_search_low_high_01",
+    "other_mother_events_family_game_night_finish_low_low_02": "other_mother_events_family_game_night_finish_low_low_01",
+    "other_mother_events_family_game_night_finish_mid_mid_01": "other_mother_events_family_game_night_finish_low_low_01",
+    "other_mother_events_family_game_night_finish_mid_mid_02": "other_mother_events_family_game_night_finish_low_low_01",
+    "other_mother_events_family_game_night_finish_high_low_01": "other_mother_events_family_game_night_finish_low_low_01",
+    "other_mother_events_family_game_night_finish_high_low_02": "other_mother_events_family_game_night_finish_low_low_01",
+    "other_mother_events_family_game_night_finish_low_high_02": "other_mother_events_family_game_night_finish_low_high_01",
+    "other_mother_events_family_game_night_finish_high_high_01": "other_mother_events_family_game_night_finish_low_high_01",
+    "other_mother_events_family_game_night_finish_high_high_02": "other_mother_events_family_game_night_finish_low_high_01",
+    "other_mother_events_family_game_night_intro_cards_02": "other_mother_events_family_game_night_intro_cards_01",
+    "other_mother_events_family_game_night_intro_thread_02": "other_mother_events_family_game_night_intro_thread_01",
+    "other_mother_events_family_game_night_intro_tower_02": "other_mother_events_family_game_night_intro_tower_01",
+    "other_mother_events_family_game_night_intro_mouseboard_02": "other_mother_events_family_game_night_intro_mouseboard_01",
+    "other_mother_events_family_game_night_intro_flick_02": "other_mother_events_family_game_night_intro_flick_01",
+    "other_mother_events_family_game_night_intro_charades_02": "other_mother_events_family_game_night_intro_charades_01",
+    "father_game_night_greeting_2": "father_game_night_greeting_1",
+    "father_game_night_finish_2": "father_game_night_finish_1",
+    "other_mother_events_special_delivery_invitation_low_low_02": "other_mother_events_special_delivery_invitation_low_low_01",
+    "other_mother_events_special_delivery_invitation_mid_mid_01": "other_mother_events_special_delivery_invitation_low_low_01",
+    "other_mother_events_special_delivery_invitation_mid_mid_02": "other_mother_events_special_delivery_invitation_low_low_01",
+    "other_mother_events_special_delivery_invitation_high_low_01": "other_mother_events_special_delivery_invitation_low_low_01",
+    "other_mother_events_special_delivery_invitation_high_low_02": "other_mother_events_special_delivery_invitation_low_low_01",
+    "other_mother_events_special_delivery_invitation_low_high_02": "other_mother_events_special_delivery_invitation_low_high_01",
+    "other_mother_events_special_delivery_invitation_high_high_01": "other_mother_events_special_delivery_invitation_low_high_01",
+    "other_mother_events_special_delivery_invitation_high_high_02": "other_mother_events_special_delivery_invitation_low_high_01",
+    "other_mother_events_special_delivery_completion_low_low_02": "other_mother_events_special_delivery_completion_low_low_01",
+    "other_mother_events_special_delivery_completion_mid_mid_01": "other_mother_events_special_delivery_completion_low_low_01",
+    "other_mother_events_special_delivery_completion_mid_mid_02": "other_mother_events_special_delivery_completion_low_low_01",
+    "other_mother_events_special_delivery_completion_high_low_01": "other_mother_events_special_delivery_completion_low_low_01",
+    "other_mother_events_special_delivery_completion_high_low_02": "other_mother_events_special_delivery_completion_low_low_01",
+    "other_mother_events_special_delivery_completion_low_high_02": "other_mother_events_special_delivery_completion_low_high_01",
+    "other_mother_events_special_delivery_completion_high_high_01": "other_mother_events_special_delivery_completion_low_high_01",
+    "other_mother_events_special_delivery_completion_high_high_02": "other_mother_events_special_delivery_completion_low_high_01",
+    "other_mother_events_special_delivery_caught_opening_low_low_02": "other_mother_events_special_delivery_caught_opening_low_low_01",
+    "other_mother_events_special_delivery_caught_opening_mid_mid_01": "other_mother_events_special_delivery_caught_opening_low_low_01",
+    "other_mother_events_special_delivery_caught_opening_mid_mid_02": "other_mother_events_special_delivery_caught_opening_low_low_01",
+    "other_mother_events_special_delivery_caught_opening_high_low_01": "other_mother_events_special_delivery_caught_opening_low_low_01",
+    "other_mother_events_special_delivery_caught_opening_high_low_02": "other_mother_events_special_delivery_caught_opening_low_low_01",
+    "other_mother_events_special_delivery_caught_opening_low_high_02": "other_mother_events_special_delivery_caught_opening_low_high_01",
+    "other_mother_events_special_delivery_caught_opening_high_high_01": "other_mother_events_special_delivery_caught_opening_low_high_01",
+    "other_mother_events_special_delivery_caught_opening_high_high_02": "other_mother_events_special_delivery_caught_opening_low_high_01",
+    "other_mother_events_house_party_invitation_low_low_02": "other_mother_events_house_party_invitation_low_low_01",
+    "other_mother_events_house_party_invitation_mid_mid_01": "other_mother_events_house_party_invitation_low_low_01",
+    "other_mother_events_house_party_invitation_mid_mid_02": "other_mother_events_house_party_invitation_low_low_01",
+    "other_mother_events_house_party_invitation_high_low_01": "other_mother_events_house_party_invitation_low_low_01",
+    "other_mother_events_house_party_invitation_high_low_02": "other_mother_events_house_party_invitation_low_low_01",
+    "other_mother_events_house_party_invitation_low_high_02": "other_mother_events_house_party_invitation_low_high_01",
+    "other_mother_events_house_party_invitation_high_high_01": "other_mother_events_house_party_invitation_low_high_01",
+    "other_mother_events_house_party_invitation_high_high_02": "other_mother_events_house_party_invitation_low_high_01",
+    "other_mother_events_house_party_checkin_low_low_02": "other_mother_events_house_party_checkin_low_low_01",
+    "other_mother_events_house_party_checkin_mid_mid_01": "other_mother_events_house_party_checkin_low_low_01",
+    "other_mother_events_house_party_checkin_mid_mid_02": "other_mother_events_house_party_checkin_low_low_01",
+    "other_mother_events_house_party_checkin_high_low_01": "other_mother_events_house_party_checkin_low_low_01",
+    "other_mother_events_house_party_checkin_high_low_02": "other_mother_events_house_party_checkin_low_low_01",
+    "other_mother_events_house_party_checkin_low_high_02": "other_mother_events_house_party_checkin_low_high_01",
+    "other_mother_events_house_party_checkin_high_high_01": "other_mother_events_house_party_checkin_low_high_01",
+    "other_mother_events_house_party_checkin_high_high_02": "other_mother_events_house_party_checkin_low_high_01",
+    "other_mother_events_house_party_guest_report_low_low_02": "other_mother_events_house_party_guest_report_low_low_01",
+    "other_mother_events_house_party_guest_report_mid_mid_01": "other_mother_events_house_party_guest_report_low_low_01",
+    "other_mother_events_house_party_guest_report_mid_mid_02": "other_mother_events_house_party_guest_report_low_low_01",
+    "other_mother_events_house_party_guest_report_high_low_01": "other_mother_events_house_party_guest_report_low_low_01",
+    "other_mother_events_house_party_guest_report_high_low_02": "other_mother_events_house_party_guest_report_low_low_01",
+    "other_mother_events_house_party_guest_report_low_high_02": "other_mother_events_house_party_guest_report_low_high_01",
+    "other_mother_events_house_party_guest_report_high_high_01": "other_mother_events_house_party_guest_report_low_high_01",
+    "other_mother_events_house_party_guest_report_high_high_02": "other_mother_events_house_party_guest_report_low_high_01",
+    "other_mother_events_house_party_feast_low_low_02": "other_mother_events_house_party_feast_low_low_01",
+    "other_mother_events_house_party_feast_mid_mid_01": "other_mother_events_house_party_feast_low_low_01",
+    "other_mother_events_house_party_feast_mid_mid_02": "other_mother_events_house_party_feast_low_low_01",
+    "other_mother_events_house_party_feast_high_low_01": "other_mother_events_house_party_feast_low_low_01",
+    "other_mother_events_house_party_feast_high_low_02": "other_mother_events_house_party_feast_low_low_01",
+    "other_mother_events_house_party_feast_low_high_02": "other_mother_events_house_party_feast_low_high_01",
+    "other_mother_events_house_party_feast_high_high_01": "other_mother_events_house_party_feast_low_high_01",
+    "other_mother_events_house_party_feast_high_high_02": "other_mother_events_house_party_feast_low_high_01",
+    "other_mother_events_house_party_food_warning_low_low_02": "other_mother_events_house_party_food_warning_low_low_01",
+    "other_mother_events_house_party_food_warning_mid_mid_01": "other_mother_events_house_party_food_warning_low_low_01",
+    "other_mother_events_house_party_food_warning_mid_mid_02": "other_mother_events_house_party_food_warning_low_low_01",
+    "other_mother_events_house_party_food_warning_high_low_01": "other_mother_events_house_party_food_warning_low_low_01",
+    "other_mother_events_house_party_food_warning_high_low_02": "other_mother_events_house_party_food_warning_low_low_01",
+    "other_mother_events_house_party_food_warning_low_high_02": "other_mother_events_house_party_food_warning_low_high_01",
+    "other_mother_events_house_party_food_warning_high_high_01": "other_mother_events_house_party_food_warning_low_high_01",
+    "other_mother_events_house_party_food_warning_high_high_02": "other_mother_events_house_party_food_warning_low_high_01",
+    "other_mother_events_house_party_completion_low_low_02": "other_mother_events_house_party_completion_low_low_01",
+    "other_mother_events_house_party_completion_mid_mid_01": "other_mother_events_house_party_completion_low_low_01",
+    "other_mother_events_house_party_completion_mid_mid_02": "other_mother_events_house_party_completion_low_low_01",
+    "other_mother_events_house_party_completion_high_low_01": "other_mother_events_house_party_completion_low_low_01",
+    "other_mother_events_house_party_completion_high_low_02": "other_mother_events_house_party_completion_low_low_01",
+    "other_mother_events_house_party_completion_low_high_02": "other_mother_events_house_party_completion_low_high_01",
+    "other_mother_events_house_party_completion_high_high_01": "other_mother_events_house_party_completion_low_high_01",
+    "other_mother_events_house_party_completion_high_high_02": "other_mother_events_house_party_completion_low_high_01",
+    "father_house_party_greeting_2": "father_house_party_greeting_1",
+    "father_house_party_social_2": "father_house_party_social_1",
+    "father_house_party_game_2": "father_house_party_game_1",
+    "father_house_party_feast_2": "father_house_party_feast_1",
+    "father_house_party_finish_2": "father_house_party_finish_1",
+    "other_mother_events_player_party_invitation_low_low_02": "other_mother_events_player_party_invitation_low_low_01",
+    "other_mother_events_player_party_invitation_mid_mid_01": "other_mother_events_player_party_invitation_low_low_01",
+    "other_mother_events_player_party_invitation_mid_mid_02": "other_mother_events_player_party_invitation_low_low_01",
+    "other_mother_events_player_party_invitation_high_low_01": "other_mother_events_player_party_invitation_low_low_01",
+    "other_mother_events_player_party_invitation_high_low_02": "other_mother_events_player_party_invitation_low_low_01",
+    "other_mother_events_player_party_invitation_low_high_02": "other_mother_events_player_party_invitation_low_high_01",
+    "other_mother_events_player_party_invitation_high_high_01": "other_mother_events_player_party_invitation_low_high_01",
+    "other_mother_events_player_party_invitation_high_high_02": "other_mother_events_player_party_invitation_low_high_01",
+    "other_mother_events_player_party_checkin_low_low_02": "other_mother_events_player_party_checkin_low_low_01",
+    "other_mother_events_player_party_checkin_mid_mid_01": "other_mother_events_player_party_checkin_low_low_01",
+    "other_mother_events_player_party_checkin_mid_mid_02": "other_mother_events_player_party_checkin_low_low_01",
+    "other_mother_events_player_party_checkin_high_low_01": "other_mother_events_player_party_checkin_low_low_01",
+    "other_mother_events_player_party_checkin_high_low_02": "other_mother_events_player_party_checkin_low_low_01",
+    "other_mother_events_player_party_checkin_low_high_02": "other_mother_events_player_party_checkin_low_high_01",
+    "other_mother_events_player_party_checkin_high_high_01": "other_mother_events_player_party_checkin_low_high_01",
+    "other_mother_events_player_party_checkin_high_high_02": "other_mother_events_player_party_checkin_low_high_01",
+    "other_mother_events_player_party_guest_report_low_low_02": "other_mother_events_player_party_guest_report_low_low_01",
+    "other_mother_events_player_party_guest_report_mid_mid_01": "other_mother_events_player_party_guest_report_low_low_01",
+    "other_mother_events_player_party_guest_report_mid_mid_02": "other_mother_events_player_party_guest_report_low_low_01",
+    "other_mother_events_player_party_guest_report_high_low_01": "other_mother_events_player_party_guest_report_low_low_01",
+    "other_mother_events_player_party_guest_report_high_low_02": "other_mother_events_player_party_guest_report_low_low_01",
+    "other_mother_events_player_party_guest_report_low_high_02": "other_mother_events_player_party_guest_report_low_high_01",
+    "other_mother_events_player_party_guest_report_high_high_01": "other_mother_events_player_party_guest_report_low_high_01",
+    "other_mother_events_player_party_guest_report_high_high_02": "other_mother_events_player_party_guest_report_low_high_01",
+    "other_mother_events_player_party_search_low_low_02": "other_mother_events_player_party_search_low_low_01",
+    "other_mother_events_player_party_search_mid_mid_01": "other_mother_events_player_party_search_low_low_01",
+    "other_mother_events_player_party_search_mid_mid_02": "other_mother_events_player_party_search_low_low_01",
+    "other_mother_events_player_party_search_high_low_01": "other_mother_events_player_party_search_low_low_01",
+    "other_mother_events_player_party_search_high_low_02": "other_mother_events_player_party_search_low_low_01",
+    "other_mother_events_player_party_search_low_high_02": "other_mother_events_player_party_search_low_high_01",
+    "other_mother_events_player_party_search_high_high_01": "other_mother_events_player_party_search_low_high_01",
+    "other_mother_events_player_party_search_high_high_02": "other_mother_events_player_party_search_low_high_01",
+    "other_mother_events_player_party_surprise_low_low_02": "other_mother_events_player_party_surprise_low_low_01",
+    "other_mother_events_player_party_surprise_mid_mid_01": "other_mother_events_player_party_surprise_low_low_01",
+    "other_mother_events_player_party_surprise_mid_mid_02": "other_mother_events_player_party_surprise_low_low_01",
+    "other_mother_events_player_party_surprise_high_low_01": "other_mother_events_player_party_surprise_low_low_01",
+    "other_mother_events_player_party_surprise_high_low_02": "other_mother_events_player_party_surprise_low_low_01",
+    "other_mother_events_player_party_surprise_low_high_02": "other_mother_events_player_party_surprise_low_high_01",
+    "other_mother_events_player_party_surprise_high_high_01": "other_mother_events_player_party_surprise_low_high_01",
+    "other_mother_events_player_party_surprise_high_high_02": "other_mother_events_player_party_surprise_low_high_01",
+    "other_mother_events_player_party_cake_low_low_02": "other_mother_events_player_party_cake_low_low_01",
+    "other_mother_events_player_party_cake_mid_mid_01": "other_mother_events_player_party_cake_low_low_01",
+    "other_mother_events_player_party_cake_mid_mid_02": "other_mother_events_player_party_cake_low_low_01",
+    "other_mother_events_player_party_cake_high_low_01": "other_mother_events_player_party_cake_low_low_01",
+    "other_mother_events_player_party_cake_high_low_02": "other_mother_events_player_party_cake_low_low_01",
+    "other_mother_events_player_party_cake_low_high_02": "other_mother_events_player_party_cake_low_high_01",
+    "other_mother_events_player_party_cake_high_high_01": "other_mother_events_player_party_cake_low_high_01",
+    "other_mother_events_player_party_cake_high_high_02": "other_mother_events_player_party_cake_low_high_01",
+    "other_mother_events_player_party_completion_low_low_02": "other_mother_events_player_party_completion_low_low_01",
+    "other_mother_events_player_party_completion_mid_mid_01": "other_mother_events_player_party_completion_low_low_01",
+    "other_mother_events_player_party_completion_mid_mid_02": "other_mother_events_player_party_completion_low_low_01",
+    "other_mother_events_player_party_completion_high_low_01": "other_mother_events_player_party_completion_low_low_01",
+    "other_mother_events_player_party_completion_high_low_02": "other_mother_events_player_party_completion_low_low_01",
+    "other_mother_events_player_party_completion_low_high_02": "other_mother_events_player_party_completion_low_high_01",
+    "other_mother_events_player_party_completion_high_high_01": "other_mother_events_player_party_completion_low_high_01",
+    "other_mother_events_player_party_completion_high_high_02": "other_mother_events_player_party_completion_low_high_01",
+    "father_player_party_greeting_2": "father_player_party_greeting_1",
+    "father_player_party_social_2": "father_player_party_social_1",
+    "father_player_party_entertainment_2": "father_player_party_entertainment_1",
+    "father_player_party_celebration_2": "father_player_party_celebration_1",
+    "father_player_party_finish_2": "father_player_party_finish_1",
+    "other_mother_events_mother_goes_out_departure_low_low_02": "other_mother_events_mother_goes_out_departure_low_low_01",
+    "other_mother_events_mother_goes_out_departure_mid_mid_01": "other_mother_events_mother_goes_out_departure_low_low_01",
+    "other_mother_events_mother_goes_out_departure_mid_mid_02": "other_mother_events_mother_goes_out_departure_low_low_01",
+    "other_mother_events_mother_goes_out_departure_high_low_01": "other_mother_events_mother_goes_out_departure_low_low_01",
+    "other_mother_events_mother_goes_out_departure_high_low_02": "other_mother_events_mother_goes_out_departure_low_low_01",
+    "other_mother_events_mother_goes_out_departure_low_high_02": "other_mother_events_mother_goes_out_departure_low_high_01",
+    "other_mother_events_mother_goes_out_departure_high_high_01": "other_mother_events_mother_goes_out_departure_low_high_01",
+    "other_mother_events_mother_goes_out_departure_high_high_02": "other_mother_events_mother_goes_out_departure_low_high_01",
+    "other_mother_events_mother_goes_out_return_low_low_02": "other_mother_events_mother_goes_out_return_low_low_01",
+    "other_mother_events_mother_goes_out_return_mid_mid_01": "other_mother_events_mother_goes_out_return_low_low_01",
+    "other_mother_events_mother_goes_out_return_mid_mid_02": "other_mother_events_mother_goes_out_return_low_low_01",
+    "other_mother_events_mother_goes_out_return_high_low_01": "other_mother_events_mother_goes_out_return_low_low_01",
+    "other_mother_events_mother_goes_out_return_high_low_02": "other_mother_events_mother_goes_out_return_low_low_01",
+    "other_mother_events_mother_goes_out_return_low_high_02": "other_mother_events_mother_goes_out_return_low_high_01",
+    "other_mother_events_mother_goes_out_return_high_high_01": "other_mother_events_mother_goes_out_return_low_high_01",
+    "other_mother_events_mother_goes_out_return_high_high_02": "other_mother_events_mother_goes_out_return_low_high_01",
+    "other_mother_events_mother_goes_out_missing_low_low_02": "other_mother_events_mother_goes_out_missing_low_low_01",
+    "other_mother_events_mother_goes_out_missing_mid_mid_01": "other_mother_events_mother_goes_out_missing_low_low_01",
+    "other_mother_events_mother_goes_out_missing_mid_mid_02": "other_mother_events_mother_goes_out_missing_low_low_01",
+    "other_mother_events_mother_goes_out_missing_high_low_01": "other_mother_events_mother_goes_out_missing_low_low_01",
+    "other_mother_events_mother_goes_out_missing_high_low_02": "other_mother_events_mother_goes_out_missing_low_low_01",
+    "other_mother_events_mother_goes_out_missing_low_high_02": "other_mother_events_mother_goes_out_missing_low_high_01",
+    "other_mother_events_mother_goes_out_missing_high_high_01": "other_mother_events_mother_goes_out_missing_low_high_01",
+    "other_mother_events_mother_goes_out_missing_high_high_02": "other_mother_events_mother_goes_out_missing_low_high_01",
+    "other_mother_events_mother_goes_out_alert_low_low_02": "other_mother_events_mother_goes_out_alert_low_low_01",
+    "other_mother_events_mother_goes_out_alert_mid_mid_01": "other_mother_events_mother_goes_out_alert_low_low_01",
+    "other_mother_events_mother_goes_out_alert_mid_mid_02": "other_mother_events_mother_goes_out_alert_low_low_01",
+    "other_mother_events_mother_goes_out_alert_high_low_01": "other_mother_events_mother_goes_out_alert_low_low_01",
+    "other_mother_events_mother_goes_out_alert_high_low_02": "other_mother_events_mother_goes_out_alert_low_low_01",
+    "other_mother_events_mother_goes_out_alert_low_high_02": "other_mother_events_mother_goes_out_alert_low_high_01",
+    "other_mother_events_mother_goes_out_alert_high_high_01": "other_mother_events_mother_goes_out_alert_low_high_01",
+    "other_mother_events_mother_goes_out_alert_high_high_02": "other_mother_events_mother_goes_out_alert_low_high_01",
+    "other_mother_events_mother_goes_out_caught_missing_low_low_02": "other_mother_events_mother_goes_out_caught_missing_low_low_01",
+    "other_mother_events_mother_goes_out_caught_missing_mid_mid_01": "other_mother_events_mother_goes_out_caught_missing_low_low_01",
+    "other_mother_events_mother_goes_out_caught_missing_mid_mid_02": "other_mother_events_mother_goes_out_caught_missing_low_low_01",
+    "other_mother_events_mother_goes_out_caught_missing_high_low_01": "other_mother_events_mother_goes_out_caught_missing_low_low_01",
+    "other_mother_events_mother_goes_out_caught_missing_high_low_02": "other_mother_events_mother_goes_out_caught_missing_low_low_01",
+    "other_mother_events_mother_goes_out_caught_missing_low_high_02": "other_mother_events_mother_goes_out_caught_missing_low_high_01",
+    "other_mother_events_mother_goes_out_caught_missing_high_high_01": "other_mother_events_mother_goes_out_caught_missing_low_high_01",
+    "other_mother_events_mother_goes_out_caught_missing_high_high_02": "other_mother_events_mother_goes_out_caught_missing_low_high_01",
+    "other_mother_events_mother_goes_out_caught_spy_low_low_02": "other_mother_events_mother_goes_out_caught_spy_low_low_01",
+    "other_mother_events_mother_goes_out_caught_spy_mid_mid_01": "other_mother_events_mother_goes_out_caught_spy_low_low_01",
+    "other_mother_events_mother_goes_out_caught_spy_mid_mid_02": "other_mother_events_mother_goes_out_caught_spy_low_low_01",
+    "other_mother_events_mother_goes_out_caught_spy_high_low_01": "other_mother_events_mother_goes_out_caught_spy_low_low_01",
+    "other_mother_events_mother_goes_out_caught_spy_high_low_02": "other_mother_events_mother_goes_out_caught_spy_low_low_01",
+    "other_mother_events_mother_goes_out_caught_spy_low_high_02": "other_mother_events_mother_goes_out_caught_spy_low_high_01",
+    "other_mother_events_mother_goes_out_caught_spy_high_high_01": "other_mother_events_mother_goes_out_caught_spy_low_high_01",
+    "other_mother_events_mother_goes_out_caught_spy_high_high_02": "other_mother_events_mother_goes_out_caught_spy_low_high_01",
+    "father_mother_goes_out_mother_left_2": "father_mother_goes_out_mother_left_1",
+    "father_mother_goes_out_when_return_2": "father_mother_goes_out_when_return_1",
+    "other_mother_events_wybie_adventure_invitation_low_low_02": "other_mother_events_wybie_adventure_invitation_low_low_01",
+    "other_mother_events_wybie_adventure_invitation_mid_mid_01": "other_mother_events_wybie_adventure_invitation_low_low_01",
+    "other_mother_events_wybie_adventure_invitation_mid_mid_02": "other_mother_events_wybie_adventure_invitation_low_low_01",
+    "other_mother_events_wybie_adventure_invitation_high_low_01": "other_mother_events_wybie_adventure_invitation_low_low_01",
+    "other_mother_events_wybie_adventure_invitation_high_low_02": "other_mother_events_wybie_adventure_invitation_low_low_01",
+    "other_mother_events_wybie_adventure_invitation_low_high_02": "other_mother_events_wybie_adventure_invitation_low_high_01",
+    "other_mother_events_wybie_adventure_invitation_high_high_01": "other_mother_events_wybie_adventure_invitation_low_high_01",
+    "other_mother_events_wybie_adventure_invitation_high_high_02": "other_mother_events_wybie_adventure_invitation_low_high_01",
+    "other_mother_events_wybie_adventure_return_low_low_02": "other_mother_events_wybie_adventure_return_low_low_01",
+    "other_mother_events_wybie_adventure_return_mid_mid_01": "other_mother_events_wybie_adventure_return_low_low_01",
+    "other_mother_events_wybie_adventure_return_mid_mid_02": "other_mother_events_wybie_adventure_return_low_low_01",
+    "other_mother_events_wybie_adventure_return_high_low_01": "other_mother_events_wybie_adventure_return_low_low_01",
+    "other_mother_events_wybie_adventure_return_high_low_02": "other_mother_events_wybie_adventure_return_low_low_01",
+    "other_mother_events_wybie_adventure_return_low_high_02": "other_mother_events_wybie_adventure_return_low_high_01",
+    "other_mother_events_wybie_adventure_return_high_high_01": "other_mother_events_wybie_adventure_return_low_high_01",
+    "other_mother_events_wybie_adventure_return_high_high_02": "other_mother_events_wybie_adventure_return_low_high_01",
+    "other_mother_events_wybie_adventure_search_low_low_02": "other_mother_events_wybie_adventure_search_low_low_01",
+    "other_mother_events_wybie_adventure_search_mid_mid_01": "other_mother_events_wybie_adventure_search_low_low_01",
+    "other_mother_events_wybie_adventure_search_mid_mid_02": "other_mother_events_wybie_adventure_search_low_low_01",
+    "other_mother_events_wybie_adventure_search_high_low_01": "other_mother_events_wybie_adventure_search_low_low_01",
+    "other_mother_events_wybie_adventure_search_high_low_02": "other_mother_events_wybie_adventure_search_low_low_01",
+    "other_mother_events_wybie_adventure_search_low_high_02": "other_mother_events_wybie_adventure_search_low_high_01",
+    "other_mother_events_wybie_adventure_search_high_high_01": "other_mother_events_wybie_adventure_search_low_high_01",
+    "other_mother_events_wybie_adventure_search_high_high_02": "other_mother_events_wybie_adventure_search_low_high_01",
+    "other_mother_events_wybie_adventure_caught_normal_low_low_02": "other_mother_events_wybie_adventure_caught_normal_low_low_01",
+    "other_mother_events_wybie_adventure_caught_normal_mid_mid_01": "other_mother_events_wybie_adventure_caught_normal_low_low_01",
+    "other_mother_events_wybie_adventure_caught_normal_mid_mid_02": "other_mother_events_wybie_adventure_caught_normal_low_low_01",
+    "other_mother_events_wybie_adventure_caught_normal_high_low_01": "other_mother_events_wybie_adventure_caught_normal_low_low_01",
+    "other_mother_events_wybie_adventure_caught_normal_high_low_02": "other_mother_events_wybie_adventure_caught_normal_low_low_01",
+    "other_mother_events_wybie_adventure_caught_normal_low_high_02": "other_mother_events_wybie_adventure_caught_normal_low_high_01",
+    "other_mother_events_wybie_adventure_caught_normal_high_high_01": "other_mother_events_wybie_adventure_caught_normal_low_high_01",
+    "other_mother_events_wybie_adventure_caught_normal_high_high_02": "other_mother_events_wybie_adventure_caught_normal_low_high_01",
+    "other_mother_events_wybie_adventure_ban_low_low_02": "other_mother_events_wybie_adventure_ban_low_low_01",
+    "other_mother_events_wybie_adventure_ban_mid_mid_01": "other_mother_events_wybie_adventure_ban_low_low_01",
+    "other_mother_events_wybie_adventure_ban_mid_mid_02": "other_mother_events_wybie_adventure_ban_low_low_01",
+    "other_mother_events_wybie_adventure_ban_high_low_01": "other_mother_events_wybie_adventure_ban_low_low_01",
+    "other_mother_events_wybie_adventure_ban_high_low_02": "other_mother_events_wybie_adventure_ban_low_low_01",
+    "other_mother_events_wybie_adventure_ban_low_high_02": "other_mother_events_wybie_adventure_ban_low_high_01",
+    "other_mother_events_wybie_adventure_ban_high_high_01": "other_mother_events_wybie_adventure_ban_low_high_01",
+    "other_mother_events_wybie_adventure_ban_high_high_02": "other_mother_events_wybie_adventure_ban_low_high_01",
+    "other_mother_events_theatre_invitation_low_low_02": "other_mother_events_theatre_invitation_low_low_01",
+    "other_mother_events_theatre_invitation_mid_mid_01": "other_mother_events_theatre_invitation_low_low_01",
+    "other_mother_events_theatre_invitation_mid_mid_02": "other_mother_events_theatre_invitation_low_low_01",
+    "other_mother_events_theatre_invitation_high_low_01": "other_mother_events_theatre_invitation_low_low_01",
+    "other_mother_events_theatre_invitation_high_low_02": "other_mother_events_theatre_invitation_low_low_01",
+    "other_mother_events_theatre_invitation_low_high_02": "other_mother_events_theatre_invitation_low_high_01",
+    "other_mother_events_theatre_invitation_high_high_01": "other_mother_events_theatre_invitation_low_high_01",
+    "other_mother_events_theatre_invitation_high_high_02": "other_mother_events_theatre_invitation_low_high_01",
+    "other_mother_events_theatre_ontime_low_low_02": "other_mother_events_theatre_ontime_low_low_01",
+    "other_mother_events_theatre_ontime_mid_mid_01": "other_mother_events_theatre_ontime_low_low_01",
+    "other_mother_events_theatre_ontime_mid_mid_02": "other_mother_events_theatre_ontime_low_low_01",
+    "other_mother_events_theatre_ontime_high_low_01": "other_mother_events_theatre_ontime_low_low_01",
+    "other_mother_events_theatre_ontime_high_low_02": "other_mother_events_theatre_ontime_low_low_01",
+    "other_mother_events_theatre_ontime_low_high_02": "other_mother_events_theatre_ontime_low_high_01",
+    "other_mother_events_theatre_ontime_high_high_01": "other_mother_events_theatre_ontime_low_high_01",
+    "other_mother_events_theatre_ontime_high_high_02": "other_mother_events_theatre_ontime_low_high_01",
+    "other_mother_events_theatre_late_low_low_02": "other_mother_events_theatre_late_low_low_01",
+    "other_mother_events_theatre_late_mid_mid_01": "other_mother_events_theatre_late_low_low_01",
+    "other_mother_events_theatre_late_mid_mid_02": "other_mother_events_theatre_late_low_low_01",
+    "other_mother_events_theatre_late_high_low_01": "other_mother_events_theatre_late_low_low_01",
+    "other_mother_events_theatre_late_high_low_02": "other_mother_events_theatre_late_low_low_01",
+    "other_mother_events_theatre_late_low_high_02": "other_mother_events_theatre_late_low_high_01",
+    "other_mother_events_theatre_late_high_high_01": "other_mother_events_theatre_late_low_high_01",
+    "other_mother_events_theatre_late_high_high_02": "other_mother_events_theatre_late_low_high_01",
+    "other_mother_events_theatre_search_low_low_02": "other_mother_events_theatre_search_low_low_01",
+    "other_mother_events_theatre_search_mid_mid_01": "other_mother_events_theatre_search_low_low_01",
+    "other_mother_events_theatre_search_mid_mid_02": "other_mother_events_theatre_search_low_low_01",
+    "other_mother_events_theatre_search_high_low_01": "other_mother_events_theatre_search_low_low_01",
+    "other_mother_events_theatre_search_high_low_02": "other_mother_events_theatre_search_low_low_01",
+    "other_mother_events_theatre_search_low_high_02": "other_mother_events_theatre_search_low_high_01",
+    "other_mother_events_theatre_search_high_high_01": "other_mother_events_theatre_search_low_high_01",
+    "other_mother_events_theatre_search_high_high_02": "other_mother_events_theatre_search_low_high_01",
+    "other_mother_events_mouse_circus_search_low_low_02": "other_mother_events_mouse_circus_search_low_low_01",
+    "other_mother_events_mouse_circus_search_mid_mid_01": "other_mother_events_mouse_circus_search_low_low_01",
+    "other_mother_events_mouse_circus_search_mid_mid_02": "other_mother_events_mouse_circus_search_low_low_01",
+    "other_mother_events_mouse_circus_search_high_low_01": "other_mother_events_mouse_circus_search_low_low_01",
+    "other_mother_events_mouse_circus_search_high_low_02": "other_mother_events_mouse_circus_search_low_low_01",
+    "other_mother_events_mouse_circus_search_low_high_02": "other_mother_events_mouse_circus_search_low_high_01",
+    "other_mother_events_mouse_circus_search_high_high_01": "other_mother_events_mouse_circus_search_low_high_01",
+    "other_mother_events_mouse_circus_search_high_high_02": "other_mother_events_mouse_circus_search_low_high_01"
+  },
+  "new_recordings": {
+    "other_mother_events_family_game_night_late_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_family_game_night_late_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_family_game_night_late_low_high_01"
+    },
+    "other_mother_events_family_game_night_search_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_family_game_night_search_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_family_game_night_search_low_low_01"
+    },
+    "other_mother_events_family_game_night_search_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_family_game_night_search_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_family_game_night_search_low_high_01"
+    },
+    "other_mother_events_family_game_night_finish_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_family_game_night_finish_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_family_game_night_finish_low_low_01"
+    },
+    "other_mother_events_family_game_night_finish_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_family_game_night_finish_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_family_game_night_finish_low_high_01"
+    },
+    "other_mother_events_family_game_night_intro_cards_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_family_game_night_intro_cards_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_family_game_night_intro_cards_01"
+    },
+    "other_mother_events_family_game_night_intro_thread_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_family_game_night_intro_thread_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_family_game_night_intro_thread_01"
+    },
+    "other_mother_events_family_game_night_intro_tower_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_family_game_night_intro_tower_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_family_game_night_intro_tower_01"
+    },
+    "other_mother_events_family_game_night_intro_mouseboard_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_family_game_night_intro_mouseboard_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_family_game_night_intro_mouseboard_01"
+    },
+    "other_mother_events_family_game_night_intro_flick_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_family_game_night_intro_flick_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_family_game_night_intro_flick_01"
+    },
+    "other_mother_events_family_game_night_intro_charades_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_family_game_night_intro_charades_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_family_game_night_intro_charades_01"
+    },
+    "father_game_night_greeting_1": {
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_greeting_1/line_01.wav",
+      "resource": "compact_events/father_game_night_greeting_1"
+    },
+    "father_game_night_cards_rules": {
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_cards_rules/line_01.wav",
+      "resource": "compact_events/father_game_night_cards_rules"
+    },
+    "father_game_night_thread_rules": {
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_thread_rules/line_01.wav",
+      "resource": "compact_events/father_game_night_thread_rules"
+    },
+    "father_game_night_tower_rules": {
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_tower_rules/line_01.wav",
+      "resource": "compact_events/father_game_night_tower_rules"
+    },
+    "father_game_night_mouseboard_rules": {
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_mouseboard_rules/line_01.wav",
+      "resource": "compact_events/father_game_night_mouseboard_rules"
+    },
+    "father_game_night_flick_rules": {
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_flick_rules/line_01.wav",
+      "resource": "compact_events/father_game_night_flick_rules"
+    },
+    "father_game_night_charades_rules": {
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_charades_rules/line_01.wav",
+      "resource": "compact_events/father_game_night_charades_rules"
+    },
+    "father_game_night_cards_reaction": {
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_cards_reaction/line_01.wav",
+      "resource": "compact_events/father_game_night_cards_reaction"
+    },
+    "father_game_night_thread_reaction": {
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_thread_reaction/line_01.wav",
+      "resource": "compact_events/father_game_night_thread_reaction"
+    },
+    "father_game_night_tower_reaction": {
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_tower_reaction/line_01.wav",
+      "resource": "compact_events/father_game_night_tower_reaction"
+    },
+    "father_game_night_mouseboard_reaction": {
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_mouseboard_reaction/line_01.wav",
+      "resource": "compact_events/father_game_night_mouseboard_reaction"
+    },
+    "father_game_night_flick_reaction": {
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_flick_reaction/line_01.wav",
+      "resource": "compact_events/father_game_night_flick_reaction"
+    },
+    "father_game_night_charades_reaction": {
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_charades_reaction/line_01.wav",
+      "resource": "compact_events/father_game_night_charades_reaction"
+    },
+    "father_game_night_finish_1": {
+      "source": "voicelines/otherfather/events/compact_v1/father_game_night_finish_1/line_01.wav",
+      "resource": "compact_events/father_game_night_finish_1"
+    },
+    "other_mother_events_special_delivery_invitation_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_special_delivery_invitation_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_special_delivery_invitation_low_low_01"
+    },
+    "other_mother_events_special_delivery_invitation_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_special_delivery_invitation_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_special_delivery_invitation_low_high_01"
+    },
+    "other_mother_events_special_delivery_completion_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_special_delivery_completion_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_special_delivery_completion_low_low_01"
+    },
+    "other_mother_events_special_delivery_completion_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_special_delivery_completion_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_special_delivery_completion_low_high_01"
+    },
+    "other_mother_events_special_delivery_caught_opening_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_special_delivery_caught_opening_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_special_delivery_caught_opening_low_low_01"
+    },
+    "other_mother_events_special_delivery_caught_opening_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_special_delivery_caught_opening_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_special_delivery_caught_opening_low_high_01"
+    },
+    "other_mother_events_house_party_invitation_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_house_party_invitation_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_house_party_invitation_low_low_01"
+    },
+    "other_mother_events_house_party_invitation_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_house_party_invitation_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_house_party_invitation_low_high_01"
+    },
+    "other_mother_events_house_party_checkin_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_house_party_checkin_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_house_party_checkin_low_low_01"
+    },
+    "other_mother_events_house_party_checkin_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_house_party_checkin_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_house_party_checkin_low_high_01"
+    },
+    "other_mother_events_house_party_guest_report_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_house_party_guest_report_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_house_party_guest_report_low_low_01"
+    },
+    "other_mother_events_house_party_guest_report_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_house_party_guest_report_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_house_party_guest_report_low_high_01"
+    },
+    "other_mother_events_house_party_feast_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_house_party_feast_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_house_party_feast_low_low_01"
+    },
+    "other_mother_events_house_party_feast_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_house_party_feast_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_house_party_feast_low_high_01"
+    },
+    "other_mother_events_house_party_food_warning_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_house_party_food_warning_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_house_party_food_warning_low_low_01"
+    },
+    "other_mother_events_house_party_food_warning_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_house_party_food_warning_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_house_party_food_warning_low_high_01"
+    },
+    "other_mother_events_house_party_completion_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_house_party_completion_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_house_party_completion_low_low_01"
+    },
+    "other_mother_events_house_party_completion_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_house_party_completion_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_house_party_completion_low_high_01"
+    },
+    "father_house_party_greeting_1": {
+      "source": "voicelines/otherfather/events/compact_v1/father_house_party_greeting_1/line_01.wav",
+      "resource": "compact_events/father_house_party_greeting_1"
+    },
+    "father_house_party_social_1": {
+      "source": "voicelines/otherfather/events/compact_v1/father_house_party_social_1/line_01.wav",
+      "resource": "compact_events/father_house_party_social_1"
+    },
+    "father_house_party_game_1": {
+      "source": "voicelines/otherfather/events/compact_v1/father_house_party_game_1/line_01.wav",
+      "resource": "compact_events/father_house_party_game_1"
+    },
+    "father_house_party_feast_1": {
+      "source": "voicelines/otherfather/events/compact_v1/father_house_party_feast_1/line_01.wav",
+      "resource": "compact_events/father_house_party_feast_1"
+    },
+    "father_house_party_finish_1": {
+      "source": "voicelines/otherfather/events/compact_v1/father_house_party_finish_1/line_01.wav",
+      "resource": "compact_events/father_house_party_finish_1"
+    },
+    "other_mother_events_player_party_invitation_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_player_party_invitation_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_player_party_invitation_low_low_01"
+    },
+    "other_mother_events_player_party_invitation_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_player_party_invitation_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_player_party_invitation_low_high_01"
+    },
+    "other_mother_events_player_party_checkin_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_player_party_checkin_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_player_party_checkin_low_low_01"
+    },
+    "other_mother_events_player_party_checkin_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_player_party_checkin_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_player_party_checkin_low_high_01"
+    },
+    "other_mother_events_player_party_guest_report_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_player_party_guest_report_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_player_party_guest_report_low_low_01"
+    },
+    "other_mother_events_player_party_guest_report_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_player_party_guest_report_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_player_party_guest_report_low_high_01"
+    },
+    "other_mother_events_player_party_search_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_player_party_search_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_player_party_search_low_low_01"
+    },
+    "other_mother_events_player_party_search_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_player_party_search_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_player_party_search_low_high_01"
+    },
+    "other_mother_events_player_party_surprise_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_player_party_surprise_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_player_party_surprise_low_low_01"
+    },
+    "other_mother_events_player_party_surprise_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_player_party_surprise_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_player_party_surprise_low_high_01"
+    },
+    "other_mother_events_player_party_cake_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_player_party_cake_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_player_party_cake_low_low_01"
+    },
+    "other_mother_events_player_party_cake_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_player_party_cake_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_player_party_cake_low_high_01"
+    },
+    "other_mother_events_player_party_completion_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_player_party_completion_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_player_party_completion_low_low_01"
+    },
+    "other_mother_events_player_party_completion_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_player_party_completion_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_player_party_completion_low_high_01"
+    },
+    "father_player_party_greeting_1": {
+      "source": "voicelines/otherfather/events/compact_v1/father_player_party_greeting_1/line_01.wav",
+      "resource": "compact_events/father_player_party_greeting_1"
+    },
+    "father_player_party_social_1": {
+      "source": "voicelines/otherfather/events/compact_v1/father_player_party_social_1/line_01.wav",
+      "resource": "compact_events/father_player_party_social_1"
+    },
+    "father_player_party_entertainment_1": {
+      "source": "voicelines/otherfather/events/compact_v1/father_player_party_entertainment_1/line_01.wav",
+      "resource": "compact_events/father_player_party_entertainment_1"
+    },
+    "father_player_party_celebration_1": {
+      "source": "voicelines/otherfather/events/compact_v1/father_player_party_celebration_1/line_01.wav",
+      "resource": "compact_events/father_player_party_celebration_1"
+    },
+    "father_player_party_finish_1": {
+      "source": "voicelines/otherfather/events/compact_v1/father_player_party_finish_1/line_01.wav",
+      "resource": "compact_events/father_player_party_finish_1"
+    },
+    "other_mother_events_mother_goes_out_departure_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_mother_goes_out_departure_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_mother_goes_out_departure_low_low_01"
+    },
+    "other_mother_events_mother_goes_out_departure_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_mother_goes_out_departure_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_mother_goes_out_departure_low_high_01"
+    },
+    "other_mother_events_mother_goes_out_return_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_mother_goes_out_return_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_mother_goes_out_return_low_low_01"
+    },
+    "other_mother_events_mother_goes_out_return_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_mother_goes_out_return_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_mother_goes_out_return_low_high_01"
+    },
+    "other_mother_events_mother_goes_out_missing_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_mother_goes_out_missing_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_mother_goes_out_missing_low_low_01"
+    },
+    "other_mother_events_mother_goes_out_missing_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_mother_goes_out_missing_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_mother_goes_out_missing_low_high_01"
+    },
+    "other_mother_events_mother_goes_out_alert_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_mother_goes_out_alert_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_mother_goes_out_alert_low_low_01"
+    },
+    "other_mother_events_mother_goes_out_alert_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_mother_goes_out_alert_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_mother_goes_out_alert_low_high_01"
+    },
+    "other_mother_events_mother_goes_out_caught_missing_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_mother_goes_out_caught_missing_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_mother_goes_out_caught_missing_low_low_01"
+    },
+    "other_mother_events_mother_goes_out_caught_missing_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_mother_goes_out_caught_missing_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_mother_goes_out_caught_missing_low_high_01"
+    },
+    "other_mother_events_mother_goes_out_caught_spy_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_mother_goes_out_caught_spy_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_mother_goes_out_caught_spy_low_low_01"
+    },
+    "other_mother_events_mother_goes_out_caught_spy_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_mother_goes_out_caught_spy_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_mother_goes_out_caught_spy_low_high_01"
+    },
+    "father_mother_goes_out_mother_left_1": {
+      "source": "voicelines/otherfather/events/compact_v1/father_mother_goes_out_mother_left_1/line_01.wav",
+      "resource": "compact_events/father_mother_goes_out_mother_left_1"
+    },
+    "father_mother_goes_out_when_return_1": {
+      "source": "voicelines/otherfather/events/compact_v1/father_mother_goes_out_when_return_1/line_01.wav",
+      "resource": "compact_events/father_mother_goes_out_when_return_1"
+    },
+    "other_mother_events_wybie_adventure_invitation_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_wybie_adventure_invitation_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_wybie_adventure_invitation_low_low_01"
+    },
+    "other_mother_events_wybie_adventure_invitation_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_wybie_adventure_invitation_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_wybie_adventure_invitation_low_high_01"
+    },
+    "other_mother_events_wybie_adventure_return_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_wybie_adventure_return_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_wybie_adventure_return_low_low_01"
+    },
+    "other_mother_events_wybie_adventure_return_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_wybie_adventure_return_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_wybie_adventure_return_low_high_01"
+    },
+    "other_mother_events_wybie_adventure_search_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_wybie_adventure_search_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_wybie_adventure_search_low_low_01"
+    },
+    "other_mother_events_wybie_adventure_search_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_wybie_adventure_search_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_wybie_adventure_search_low_high_01"
+    },
+    "other_mother_events_wybie_adventure_caught_normal_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_wybie_adventure_caught_normal_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_wybie_adventure_caught_normal_low_low_01"
+    },
+    "other_mother_events_wybie_adventure_caught_normal_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_wybie_adventure_caught_normal_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_wybie_adventure_caught_normal_low_high_01"
+    },
+    "other_mother_events_wybie_adventure_ban_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_wybie_adventure_ban_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_wybie_adventure_ban_low_low_01"
+    },
+    "other_mother_events_wybie_adventure_ban_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_wybie_adventure_ban_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_wybie_adventure_ban_low_high_01"
+    },
+    "other_mother_events_theatre_invitation_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_theatre_invitation_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_theatre_invitation_low_low_01"
+    },
+    "other_mother_events_theatre_invitation_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_theatre_invitation_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_theatre_invitation_low_high_01"
+    },
+    "other_mother_events_theatre_ontime_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_theatre_ontime_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_theatre_ontime_low_low_01"
+    },
+    "other_mother_events_theatre_ontime_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_theatre_ontime_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_theatre_ontime_low_high_01"
+    },
+    "other_mother_events_theatre_late_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_theatre_late_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_theatre_late_low_low_01"
+    },
+    "other_mother_events_theatre_late_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_theatre_late_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_theatre_late_low_high_01"
+    },
+    "other_mother_events_theatre_search_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_theatre_search_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_theatre_search_low_low_01"
+    },
+    "other_mother_events_theatre_search_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_theatre_search_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_theatre_search_low_high_01"
+    },
+    "other_mother_events_mouse_circus_search_low_low_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_mouse_circus_search_low_low_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_mouse_circus_search_low_low_01"
+    },
+    "other_mother_events_mouse_circus_search_low_high_01": {
+      "source": "voicelines/othermother/events/compact_v1/other_mother_events_mouse_circus_search_low_high_01/line_01.wav",
+      "resource": "compact_events/other_mother_events_mouse_circus_search_low_high_01"
+    }
+  },
+  "note": "Only missing alternates consolidated. Existing voices, original scripts, event IDs and gameplay retained."
+}

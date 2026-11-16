@@ -26,6 +26,6 @@ public final class ServerResponsivenessGameTests {
         var choose=LoopProps.class.getDeclaredMethod("choosePortal",net.minecraft.server.level.ServerPlayer.class,VisitData.Scene.class);choose.setAccessible(true);
         h.assertTrue((Boolean)choose.invoke(null,p,scene),"Missing outdoor terrain ended visit");
         h.assertTrue(LoopProps.portalSite(realm.house,scene.loop.portal),"Fallback immediately rejected by portal lifecycle");
-        h.assertTrue(scene.loop.portal.getX()<realm.house.getX()&&Math.abs(scene.loop.portal.getZ()-realm.house.getZ())<=5,"Fallback is not in study");h.succeed();
+        h.assertTrue(com.coraline.otherworld.OtherWorldEstate.insideStudy(realm.house,scene.loop.portal),"Fallback is not in study");h.succeed();
     }
 }

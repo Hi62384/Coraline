@@ -1,1 +1,1 @@
-{"parent":"coraline:item/mansion_key"}
+{"parent":"minecraft:item/generated","textures":{"layer0":"coraline:item/borrowed_house_key"}}

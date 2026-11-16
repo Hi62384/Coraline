@@ -1,0 +1,74 @@
+{
+  "a": {
+    "source": "voicelines/bobinsky/A.wav",
+    "source_sha256": "4cc0a96d94d2e5b4ee86e331c99158712d685be041ebf157f0d7eaf603363e8d",
+    "seconds": 15.325167,
+    "ticks": 307
+  },
+  "b": {
+    "source": "voicelines/bobinsky/B.wav",
+    "source_sha256": "24a1f5774add7d1223fbc379c00ebdb5025fb2d723ce2e707927d8056175f676",
+    "seconds": 10.309667,
+    "ticks": 207
+  },
+  "c": {
+    "source": "voicelines/bobinsky/C.wav",
+    "source_sha256": "f3139fb930a7844c26267ddea0466e334f8b502a345b75c11f60c9d0c617cd67",
+    "seconds": 7.476833,
+    "ticks": 150
+  },
+  "d": {
+    "source": "voicelines/bobinsky/D.wav",
+    "source_sha256": "22b5655a62e8ddea1d48023505384ca1aebf041c44196c8b2c4c0ba6f40c80c4",
+    "seconds": 11.180417,
+    "ticks": 224
+  },
+  "e": {
+    "source": "voicelines/bobinsky/E.wav",
+    "source_sha256": "20bf96140423987bffcaaa6acb42c30f881692ebeb0e534a41db647670bef42c",
+    "seconds": 17.97225,
+    "ticks": 360
+  },
+  "f": {
+    "source": "voicelines/bobinsky/F.wav",
+    "source_sha256": "bd794e45d18b09ac2f6fec2e9ede02112a568e94df66bdbabd0386cda28e1aae",
+    "seconds": 4.771708,
+    "ticks": 96
+  },
+  "g": {
+    "source": "voicelines/bobinsky/G.wav",
+    "source_sha256": "91a2d1a0bdb39c6c9208788a863f2c5eef06356cf3a51d636e4c8e5e96deadbb",
+    "seconds": 4.771708,
+    "ticks": 96
+  },
+  "h": {
+    "source": "voicelines/bobinsky/H.wav",
+    "source_sha256": "e09ad5d4f79f40b5a41b490747fcef1a901d8bbd1a3cfd4acb2ddb5618e9f321",
+    "seconds": 3.053417,
+    "ticks": 62
+  },
+  "i": {
+    "source": "voicelines/bobinsky/I.wav",
+    "source_sha256": "d3bd346baf979d2c867df206584153d5d6162f2e09cc5f2f5cd1d4fa0de87d39",
+    "seconds": 1.880833,
+    "ticks": 38
+  },
+  "j": {
+    "source": "voicelines/bobinsky/J.wav",
+    "source_sha256": "8b9e315e0de21bdf5e0c83e691f7d805e5d5f8246b9f541ced6840e139670bfa",
+    "seconds": 18.332167,
+    "ticks": 367
+  },
+  "k": {
+    "source": "voicelines/bobinsky/K.wav",
+    "source_sha256": "e743b5bfaa0c987f6b1f0287f88364b554a61dbb6af34e2d66c9d1e790ea05d7",
+    "seconds": 19.086792,
+    "ticks": 382
+  },
+  "music": {
+    "source": "music/eventbased/Bobinsky.mp3",
+    "source_sha256": "15c12dd6a194be5dff6322bdb3769e61fd9477065315861d1b5a9d2c7ccda86b",
+    "seconds": 140.596833,
+    "ticks": 2812
+  }
+}

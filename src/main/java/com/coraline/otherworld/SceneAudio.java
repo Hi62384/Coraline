@@ -88,13 +88,14 @@ public final class SceneAudio extends SavedData {
     }
     public static void doorOpened(net.minecraft.server.level.ServerLevel level,net.minecraft.core.BlockPos pos){
         if(OtherWorld.isOther(level)||!(level.getBlockEntity(pos) instanceof DoorBlockEntity block))return;
-        var d=DoorData.get(level.getServer()).doors.get(block.doorId);if(d==null||!OtherWorld.active(level,d))return;
+        var d=DoorData.get(level.getServer()).doors.get(block.doorId);if(d==null||com.coraline.feast.StoryTunnel.permanent(level.getServer(),d.owner)||!OtherWorld.active(level,d))return;
         var data=get(level.getServer());String key="Door_"+d.id;long night=Math.floorDiv(level.getDayTime(),24000);
         if(data.state.contains(key)&&data.state.getLong(key)==night)return;
         data.state.putLong(key,night);data.setDirty();
         level.playSound(null,pos,ModSounds.DOOR_PORTAL_OPEN.get(),SoundSource.RECORDS,com.coraline.config.CoralineConfig.SCENE_VOLUME.get().floatValue(),1);
     }
     public static void tunnelEntered(ServerPlayer p,DoorData.Door d){
+        var scene=com.coraline.feast.OtherMotherLoop.scene(p);if(com.coraline.feast.FirstEscapeStory.engaged(scene)&&com.coraline.feast.FirstEscapeStory.data(scene).getBoolean("DecayedTunnel"))return;
         var source=com.coraline.parents.FamilyData.level(p.server,d.dimension);if(source==null)return;
         var data=get(p.server);String key="Tunnel_"+p.getUUID()+"_"+d.id;long night=Math.floorDiv(source.getDayTime(),24000);
         if(data.state.contains(key)&&data.state.getLong(key)==night)return;

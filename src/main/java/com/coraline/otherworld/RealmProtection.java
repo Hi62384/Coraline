@@ -11,7 +11,20 @@ import net.minecraft.network.chat.Component;
 
 @Mod.EventBusSubscriber(modid="coraline")
 public final class RealmProtection {
+    /** Vanilla doors otherwise predict an open state before the server can
+     * reject a story/key lock. The use packet still reaches the server, which
+     * alone opens an allowed door or explains why it is locked. No lock policy
+     * is guessed client-side, and ordinary/personal-world doors are unaffected. */
+    @SubscribeEvent(priority=net.minecraftforge.eventbus.api.EventPriority.HIGHEST)
+    public static void authoritativeStoryDoors(PlayerInteractEvent.RightClickBlock e){
+        if(!e.getLevel().isClientSide||!OtherWorld.isOther(e.getLevel())||!(e.getLevel().getBlockState(e.getPos()).getBlock() instanceof DoorBlock))return;
+        e.setUseBlock(net.minecraftforge.eventbus.api.Event.Result.DENY);
+        e.setUseItem(net.minecraftforge.eventbus.api.Event.Result.DENY);
+        e.setCanceled(true);e.setCancellationResult(InteractionResult.SUCCESS);
+    }
     @SubscribeEvent public static void entityJoin(net.minecraftforge.event.entity.EntityJoinLevelEvent e){
+        if(com.coraline.feast.GhostVictimActors.allowedInProtectedWorld(e.getEntity()))return;
+        if(e.getEntity() instanceof net.minecraft.world.entity.projectile.FishingHook hook&&com.coraline.feast.FamilyOuting.allowHook(hook))return;
         if(e.getLevel() instanceof net.minecraft.server.level.ServerLevel level&&com.coraline.feast.ActivityWorld.protectedWorld(level)&&e.getEntity() instanceof com.coraline.parents.ParentEntity p&&p.isOtherParent()&&p.getPersistentData().hasUUID("RealmDoor")){
             var r=RealmData.get(level.getServer()).realms.get(p.getPersistentData().getUUID("RealmDoor"));
             if(r==null||p.getPersistentData().getInt("RealmGeneration")!=r.parentGeneration){e.setCanceled(true);return;}
@@ -19,6 +32,7 @@ public final class RealmProtection {
         if(!e.getLevel().isClientSide&&com.coraline.feast.ActivityWorld.protectedWorld(e.getLevel())&&!e.getEntity().getPersistentData().getBoolean("CoralineDecoration")&&!(e.getEntity() instanceof ServerPlayer)&&!(e.getEntity() instanceof net.minecraft.world.entity.item.ItemEntity)&&!(com.coraline.feast.ActivityWorld.isActivity(e.getLevel())&&e.getEntity() instanceof net.minecraft.world.entity.projectile.FishingHook)&&!(e.getEntity() instanceof com.coraline.parents.ParentEntity p&&p.isOtherParent()))e.setCanceled(true);
     }
     @SubscribeEvent public static void tunnelDamage(net.minecraftforge.event.entity.living.LivingAttackEvent e){
+        if(e.getEntity() instanceof ServerPlayer p&&com.coraline.feast.RescueCombat.permitted(p,e.getSource()))return;
         if(e.getEntity() instanceof ServerPlayer p&&com.coraline.feast.ActivityWorld.protectedWorld(p.level())){p.fallDistance=0;e.setCanceled(true);}
     }
     @SubscribeEvent public static void death(net.minecraftforge.event.entity.living.LivingDeathEvent e){
@@ -29,6 +43,7 @@ public final class RealmProtection {
     }
     @SubscribeEvent public static void attack(net.minecraftforge.event.entity.player.AttackEntityEvent e){if(e.getEntity() instanceof ServerPlayer p&&e.getTarget().getPersistentData().hasUUID("SecretOwner")&&p.getUUID().equals(e.getTarget().getPersistentData().getUUID("SecretOwner"))&&e.getTarget() instanceof com.coraline.otherworld.MouseEntity){com.coraline.secrets.SecretSpies.removeRat(p,e.getTarget());e.getTarget().discard();e.setCanceled(true);return;}if(com.coraline.feast.ActivityWorld.protectedWorld(e.getEntity().level())&&(e.getTarget().getPersistentData().getBoolean("CoralineDecoration")||e.getTarget() instanceof com.coraline.parents.ParentEntity)){if(e.getEntity() instanceof net.minecraft.server.level.ServerPlayer p)com.coraline.feast.MineshaftActivity.attack(p,e.getTarget());e.setCanceled(true);}}
     @SubscribeEvent public static void interact(PlayerInteractEvent.EntityInteract e){
+        if(e.getEntity() instanceof ServerPlayer p&&e.getTarget() instanceof com.coraline.parents.ParentEntity resident&&com.coraline.feast.SpecialDelivery.recipientInteract(p,resident)){e.setCanceled(true);e.setCancellationResult(InteractionResult.SUCCESS);return;}
         if(e.getEntity() instanceof ServerPlayer p&&e.getTarget()==com.coraline.secrets.MotherSearch.mother(p)&&com.coraline.secrets.MotherInterrupts.blackmail(p)){e.setCanceled(true);e.setCancellationResult(InteractionResult.SUCCESS);return;}
         if(e.getEntity() instanceof ServerPlayer p&&com.coraline.secrets.JournalPlacement.interact(p,e.getTarget())){e.setCanceled(true);e.setCancellationResult(InteractionResult.SUCCESS);return;}
         if(e.getEntity() instanceof ServerPlayer p&&com.coraline.secrets.SecretsRuntime.active(p)&&e.getTarget()==com.coraline.secrets.MotherSearch.mother(p)&&(com.coraline.secrets.SecretTransactions.resumeReward(p)||com.coraline.secrets.SecretDialogue.busy(p)||com.coraline.secrets.SecretTransactions.offer(p,e.getItemStack(),-1))){e.setCanceled(true);e.setCancellationResult(InteractionResult.SUCCESS);return;}
@@ -45,9 +60,11 @@ public final class RealmProtection {
             if(e.getEntity() instanceof ServerPlayer p&&e.getTarget() instanceof net.minecraft.world.entity.npc.Villager v){com.coraline.feast.VillageActivity.trade(p,v,e.getHand());e.setCanceled(true);e.setCancellationResult(InteractionResult.SUCCESS);}
             return;
         }
-        if(com.coraline.feast.ActivityWorld.protectedWorld(e.getLevel())&&!(e.getTarget() instanceof com.coraline.parents.ParentEntity)&&!(e.getTarget() instanceof com.coraline.feast.ScenePropEntity))e.setCanceled(true);
+        if(com.coraline.feast.ActivityWorld.protectedWorld(e.getLevel())&&!(e.getTarget() instanceof com.coraline.parents.ParentEntity)&&!(e.getTarget() instanceof com.coraline.feast.ScenePropEntity)&&!(e.getTarget() instanceof com.coraline.feast.CinematicPropEntity))e.setCanceled(true);
     }
     @SubscribeEvent public static void interactSpecific(PlayerInteractEvent.EntityInteractSpecific e){
+        if(e.getHand()==net.minecraft.world.InteractionHand.MAIN_HAND&&e.getEntity() instanceof ServerPlayer p&&e.getTarget() instanceof com.coraline.parents.ParentEntity parent&&com.coraline.feast.VisitEvents.interact(p,parent)){e.setCanceled(true);e.setCancellationResult(InteractionResult.SUCCESS);return;}
+        if(e.getHand()==net.minecraft.world.InteractionHand.MAIN_HAND&&e.getEntity() instanceof ServerPlayer p&&e.getTarget() instanceof net.minecraft.world.entity.Mob guest&&com.coraline.feast.PartyConversations.open(p,guest)){e.setCanceled(true);e.setCancellationResult(InteractionResult.SUCCESS);return;}
         if(e.getEntity() instanceof ServerPlayer p&&e.getTarget()==com.coraline.secrets.MotherSearch.mother(p)&&com.coraline.secrets.MotherInterrupts.blackmail(p)){e.setCanceled(true);e.setCancellationResult(InteractionResult.SUCCESS);return;}
         if(e.getEntity() instanceof ServerPlayer p&&com.coraline.secrets.JournalPlacement.interact(p,e.getTarget())){e.setCanceled(true);e.setCancellationResult(InteractionResult.SUCCESS);return;}
         if(com.coraline.feast.ActivityWorld.isActivity(e.getLevel())&&e.getItemStack().is(com.coraline.registry.ModItems.SNOWBALL_POUCH.get())){if(e.getEntity() instanceof ServerPlayer p)com.coraline.feast.SnowballBattleActivity.throwBall(p);e.setCanceled(true);e.setCancellationResult(InteractionResult.SUCCESS);return;}
@@ -63,15 +80,17 @@ public final class RealmProtection {
             if(e.getEntity() instanceof ServerPlayer p&&e.getTarget() instanceof net.minecraft.world.entity.npc.Villager v){com.coraline.feast.VillageActivity.trade(p,v,e.getHand());e.setCanceled(true);e.setCancellationResult(InteractionResult.SUCCESS);}
             return;
         }
-        if(com.coraline.feast.ActivityWorld.protectedWorld(e.getLevel())&&!(e.getTarget() instanceof com.coraline.feast.ScenePropEntity))e.setCanceled(true);
+        if(com.coraline.feast.ActivityWorld.protectedWorld(e.getLevel())&&!(e.getTarget() instanceof com.coraline.feast.ScenePropEntity)&&!(e.getTarget() instanceof com.coraline.feast.CinematicPropEntity))e.setCanceled(true);
     }
     @SubscribeEvent public static void breakBlock(BlockEvent.BreakEvent e){if(e.getPlayer() instanceof ServerPlayer p&&com.coraline.secrets.WildOres.canMine(p,e.getPos()))return;if(e.getPlayer() instanceof ServerPlayer p&&com.coraline.secrets.SecretWorld.mine(p,e.getPos())){e.setCanceled(true);return;}if(e.getLevel() instanceof net.minecraft.world.level.Level level&&com.coraline.feast.ActivityWorld.protectedWorld(level))e.setCanceled(true);}
     @SubscribeEvent public static void place(BlockEvent.EntityPlaceEvent e){if(e.getLevel() instanceof net.minecraft.world.level.Level level&&com.coraline.feast.ActivityWorld.protectedWorld(level))e.setCanceled(true);}
     private static boolean creativeDebug(net.minecraft.world.entity.player.Player player,net.minecraft.world.item.ItemStack stack){
+        if(player.hasPermissions(2)&&(stack.getItem() instanceof com.coraline.item.StorySkipDebugItem||stack.getItem() instanceof com.coraline.item.FirstEscapeDebugItem))return true;
+        if((player.hasPermissions(2)||player.isCreative())&&(stack.getItem() instanceof com.coraline.item.AfterFinalBossDebugItem||stack.getItem() instanceof com.coraline.item.AfterOtherFatherDebugItem||stack.getItem() instanceof com.coraline.item.AfterGhostConversationDebugItem))return true;
         if((stack.is(com.coraline.secrets.SecretsItems.DEBUG.get())||stack.is(com.coraline.secrets.SecretsItems.JOURNAL_DISCOVERY_DEBUG.get()))&&player.hasPermissions(2))return true;
         if(!player.isCreative())return false;
         var item=stack.getItem();
-        return item instanceof com.coraline.item.FirstVisitDebugItem||item instanceof com.coraline.item.FamilySetupDebugItem||
+        return item instanceof com.coraline.item.SkipEventDebugItem||item instanceof com.coraline.item.FirstVisitDebugItem||item instanceof com.coraline.item.NeighborVisitsDebugItem||item instanceof com.coraline.item.FamilySetupDebugItem||
             item instanceof com.coraline.item.RelationshipDebugItem||item instanceof com.coraline.item.VillageActivityDebugItem||
             item instanceof com.coraline.item.ArcheryActivityDebugItem||item instanceof com.coraline.item.CakeActivityDebugItem||
             item instanceof com.coraline.item.CarnivalActivityDebugItem||item instanceof com.coraline.item.DreamParkourActivityDebugItem||
@@ -80,9 +99,11 @@ public final class RealmProtection {
             item instanceof com.coraline.item.MagicActivityDebugItem;
     }
     @SubscribeEvent public static void useItem(PlayerInteractEvent.RightClickItem e){
+        if(e.getItemStack().is(com.coraline.registry.ModItems.WRAPPED_PARTY_GIFT.get()))return;
         if(creativeDebug(e.getEntity(),e.getItemStack())||e.getItemStack().is(com.coraline.secrets.SecretsItems.GUIDE.get()))return;
         if(e.getEntity() instanceof ServerPlayer loopPlayer&&com.coraline.feast.OtherMotherLoop.portalOnly(loopPlayer)){e.setCanceled(true);return;}
         if(e.getEntity() instanceof ServerPlayer p&&com.coraline.feast.FirstVisit.active(p)!=null&&com.coraline.feast.FirstVisit.active(p).stage==com.coraline.feast.VisitData.Stage.BED){e.setCanceled(true);return;}
+        if(e.getItemStack().is(com.coraline.registry.ModItems.SEEING_STONE.get()))return;
         if(!com.coraline.feast.ActivityWorld.protectedWorld(e.getLevel()))return;var item=e.getItemStack().getItem();
         if(com.coraline.feast.ActivityWorld.isActivity(e.getLevel())&&item==com.coraline.registry.ModItems.ACTIVITY_MINE_MAP.get())return;
         if(com.coraline.feast.ActivityWorld.isActivity(e.getLevel())&&item==com.coraline.registry.ModItems.MANSION_KEY.get())return;
@@ -99,7 +120,17 @@ public final class RealmProtection {
             e.setUseBlock(net.minecraftforge.eventbus.api.Event.Result.DENY);e.setUseItem(net.minecraftforge.eventbus.api.Event.Result.ALLOW);return;
         }
         if(!com.coraline.feast.ActivityWorld.protectedWorld(e.getLevel()))return;
-        if(e.getEntity() instanceof ServerPlayer secretPlayer&&com.coraline.secrets.SecretWorld.interact(secretPlayer,e.getPos())){e.setCanceled(true);e.setCancellationResult(InteractionResult.SUCCESS);return;}
+        if(e.getItemStack().is(com.coraline.registry.ModItems.SEEING_STONE.get())){
+            // Inspection must not open scenery or escape a sleep/travel lock.
+            if(e.getEntity() instanceof ServerPlayer p&&(com.coraline.feast.OtherMotherLoop.portalOnly(p)||
+                com.coraline.feast.FirstVisit.active(p)!=null&&com.coraline.feast.FirstVisit.active(p).stage==com.coraline.feast.VisitData.Stage.BED)){
+                e.setCanceled(true);return;
+            }
+            e.setUseBlock(net.minecraftforge.eventbus.api.Event.Result.DENY);
+            e.setUseItem(net.minecraftforge.eventbus.api.Event.Result.ALLOW);return;
+        }
+        if(e.getEntity() instanceof ServerPlayer storyPlayer&&com.coraline.feast.BlackIsTraditional.block(storyPlayer,e.getPos())){e.setCanceled(true);e.setCancellationResult(InteractionResult.SUCCESS);return;}
+        if(e.getEntity() instanceof ServerPlayer secretPlayer&&(com.coraline.secrets.HouseCabinets.interact(secretPlayer,e.getPos())||com.coraline.secrets.SecretWorld.interact(secretPlayer,e.getPos()))){e.setCanceled(true);e.setCancellationResult(InteractionResult.SUCCESS);return;}
         var state=e.getLevel().getBlockState(e.getPos());
         if(e.getEntity() instanceof ServerPlayer visitor&&state.is(Blocks.SPRUCE_DOOR)){
             var tag=visitor.getPersistentData();
@@ -112,7 +143,7 @@ public final class RealmProtection {
         }
         if(e.getEntity() instanceof ServerPlayer visitor){
             var scene=com.coraline.feast.FirstVisit.active(visitor);
-            if(scene!=null&&state.is(Blocks.DARK_OAK_DOOR)){
+            if(scene!=null&&state.getBlock() instanceof net.minecraft.world.level.block.DoorBlock){
                 var realm=RealmData.get(visitor.server).realms.get(scene.door);
                 var study=realm==null||realm.house==null?null:OtherWorldEstate.studyDoor(realm.house);
                 boolean isStudy=study!=null&&(e.getPos().equals(study)||e.getPos().equals(study.above()));
@@ -156,6 +187,11 @@ public final class RealmProtection {
             if((state.getBlock() instanceof BedBlock&&!com.coraline.feast.FirstVisit.bedAllowed(p))||(scene.stage==com.coraline.feast.VisitData.Stage.BED&&!(state.getBlock() instanceof BedBlock)&&!passage)){p.displayClientMessage(Component.literal(scene.stage==com.coraline.feast.VisitData.Stage.BED?"It's time for bed.":"Your Other Mother is expecting you for dinner first."),true);e.setCanceled(true);return;}
         }
         if(state.is(com.coraline.registry.ModBlocks.TINY_DOOR.get()))return;
+        if(OtherWorld.isOther(e.getLevel())&&state.getBlock() instanceof DoorBlock&&e.getEntity() instanceof ServerPlayer visitor){
+            if(com.coraline.feast.FirstEscapeStory.block(visitor,e.getPos())){e.setCanceled(true);e.setCancellationResult(InteractionResult.SUCCESS);return;}
+            boolean changed=AuthoritativeHouseDoors.toggle(visitor,e.getPos());
+            e.setCanceled(true);e.setCancellationResult(changed?InteractionResult.SUCCESS:InteractionResult.PASS);return;
+        }
         if(state.getBlock() instanceof DoorBlock||state.getBlock() instanceof TrapDoorBlock||state.getBlock() instanceof FenceGateBlock)return;
         if(state.getBlock() instanceof BedBlock&&e.getEntity() instanceof ServerPlayer player){
             var tag=player.getPersistentData();var r=tag.hasUUID("CoralineVisitDoor")?RealmData.get(player.server).realms.get(tag.getUUID("CoralineVisitDoor")):null;

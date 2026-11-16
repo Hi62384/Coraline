@@ -4,6 +4,7 @@ Only Sample.wav is used as reference audio. Emotion is controlled with explicit
 vectors, not another speaker/clip. Native model pacing is retained (no time stretch).
 """
 import argparse
+import gc
 import hashlib
 import json
 import os
@@ -12,6 +13,7 @@ import random
 import sys
 import time
 import warnings
+from contextlib import nullcontext
 
 ROOT = Path(__file__).resolve().parents[1]
 ENGINE = ROOT / '.voice-tools/index-tts'
@@ -22,9 +24,11 @@ os.environ.setdefault('HF_HUB_OFFLINE', '1')
 os.environ.setdefault('TOKENIZERS_PARALLELISM', 'false')
 sys.path.insert(0, str(ENGINE))
 
-import numpy as np
-import soundfile as sf
-import torch
+from low_memory_voice_loader import release_own_loading_pages
+with release_own_loading_pages() if '--memory-efficient' in sys.argv else nullcontext():
+    import numpy as np
+    import soundfile as sf
+    import torch
 
 MANIFEST = json.loads((ROOT / os.environ.get('CORALINE_VOICE_MANIFEST', 'tools/other_mother_welcome.json')).read_text(encoding='utf-8'))
 REFERENCE = ROOT / MANIFEST['reference']
@@ -95,10 +99,33 @@ def main():
         help='Limit a repair run to these exact manifest recordings.')
     parser.add_argument('--seed-offset', type=int, default=0)
     parser.add_argument('--device', default='cuda:0')
+    parser.add_argument('--memory-efficient', action='store_true',
+                        help='Map checkpoints and construct modules on their final device, avoiding CPU duplicates.')
+    parser.add_argument('--max-new-takes',type=int,choices=[1,5,10,20],help='Exit normally at a completed-take boundary; memory-efficient bounded workers retire after at most five. This does not certify full coverage.')
+    parser.add_argument('--prepare-reference-cache',action='store_true',help='Original reference-only conditioning; stops before speech and verifies lossless persistence.')
+    parser.add_argument('--require-reference-cache',action='store_true',help='Require the exact verified fixed-reference tensors; never fall back to a different/cold reference.')
     args = parser.parse_args()
+    if (args.prepare_reference_cache or args.require_reference_cache) and not args.memory_efficient:
+        raise ValueError('Fixed-reference cache requires the established memory-efficient path')
+    if args.prepare_reference_cache and (args.require_reference_cache or args.max_new_takes or args.state or args.only or args.replace):
+        raise ValueError('Reference-only preparation is separate from speech generation/repair')
+    from voice_batch_scope import effective_take_limit
+    batch_limit=effective_take_limit(args.max_new_takes,args.memory_efficient)
     check_reference()
-    from indextts.infer_v2 import IndexTTS2
+    import indextts.infer_v2 as inference
     model = ENGINE / 'checkpoints_2'
+    if args.memory_efficient:
+        from low_memory_voice_loader import install
+        install(inference, torch, args.device, model)
+    reference_context=None;cached_reference=None;cache_provenance=None
+    if args.prepare_reference_cache or args.require_reference_cache:
+        import fixed_reference_cache as reference_cache
+        reference_context=reference_cache.build_context(ROOT,REFERENCE,model)
+        if args.prepare_reference_cache:reference_cache.reference_only_constructor(inference)
+        else:
+            cached_reference=reference_cache.load(ROOT,reference_context,np,required=True)
+            reference_cache.skip_reference_encoder(inference)
+    IndexTTS2 = inference.IndexTTS2
     aux = model / 'hf_cache'
     print('Loading IndexTTS2 (explicit emotion vectors; no extra reference voice)...', flush=True)
     torch.set_num_threads(6)
@@ -109,7 +136,7 @@ def main():
                                   'semantic_codec': str(aux/'maskgct/semantic_codec/model.safetensors'),
                                   'campplus': str(aux/'campplus/campplus_cn_common.bin'),
                                   'bigvgan': str(aux/'bigvgan')})
-    if args.device.startswith('cuda') and torch.cuda.get_device_properties(0).total_memory < 8*2**30:
+    if not cached_reference and args.device.startswith('cuda') and (args.memory_efficient or torch.cuda.get_device_properties(0).total_memory < 8*2**30):
         # Reference encoding is done twice and cached. Keep the full-precision
         # encoder on CPU to leave GPU room for speech on 6 GB cards.
         # No quantization, alternate reference, or model-weight edits are used.
@@ -122,13 +149,25 @@ def main():
             features = encoded.hidden_states[17].to(engine.device)
             return (features-engine.semantic_mean)/engine.semantic_std
         engine.get_emb = reference_embeddings
-        print('6 GB GPU: CPU reference encoder; GPU speech generation.', flush=True)
+        print('CPU reference encoder; GPU speech generation.', flush=True)
+    if args.prepare_reference_cache:
+        reference_cache.prepare(engine,REFERENCE,ROOT,reference_context,next(iter(MANIFEST['states'].values())),torch,np)
+        check_reference()
+        return
+    if cached_reference:
+        cache_provenance=reference_cache.restore(engine,REFERENCE,cached_reference,torch)
+        torch.cuda.empty_cache()
+        print('Restored exact verified reference tensors; reference encoder was not loaded.',flush=True)
+    if args.memory_efficient:
+        from low_memory_voice_loader import install_cached_reference_retirement
+        install_cached_reference_retirement(engine,str(REFERENCE))
     report_path = OUTPUT / MANIFEST.get('generation_report', 'generation_report.json')
     report = json.loads(report_path.read_text(encoding='utf-8')) if report_path.exists() else {
         'engine': 'IndexTTS2', 'engine_commit': 'd9e41aac89fd00b3d71497fddb287b7f24613712',
         'reference': MANIFEST['reference'], 'reference_sha256': MANIFEST['reference_sha256'],
         'reference_limit_seconds': 15, 'lines': {},
         'note': 'Acting uses model emotion vectors. Human listening review is still required.'}
+    new_takes=0
     for state_index, (state, profile) in enumerate(MANIFEST['states'].items()):
         if args.state and state != args.state:
             continue
@@ -143,10 +182,25 @@ def main():
                 continue
             final = OUTPUT / profile.get('source_directory', state) / filename
             if final.exists() and not args.replace:
+                prior=report.get('lines',{}).get(relative,{})
+                if prior.get('text')!=text or prior.get('sha256')!=hashlib.sha256(final.read_bytes()).hexdigest():
+                    raise RuntimeError('Existing unverified/changed take preserved; inspect and back up before a targeted repair: '+relative)
                 print(f'Keeping existing {relative}', flush=True)
                 continue
             raw = WORK / 'current.wav'
             for attempt in range(2):
+                # Release completed inference workspaces between takes. Long
+                # batches otherwise fragment a 6 GiB GPU despite cached weights.
+                gc.collect()
+                if args.device.startswith('cuda'):
+                    torch.cuda.empty_cache()
+                if args.memory_efficient:
+                    # Release this process's clean mapped checkpoint/reference
+                    # pages between takes too. Windows can retain them through
+                    # a long batch after the initial loading hooks have run.
+                    # Weights, precision, scripts and reference remain intact.
+                    from low_memory_voice_loader import trim_own_mapped_pages
+                    trim_own_mapped_pages()
                 seed = 17400 + state_index*100 + i*10 + attempt + args.seed_offset
                 random.seed(seed)
                 np.random.seed(seed)
@@ -155,13 +209,16 @@ def main():
                 print(f'Generating {relative}, attempt {attempt+1}', flush=True)
                 began = time.monotonic()
                 try:
-                    with warnings.catch_warnings(record=True) as caught:
+                    # Reference/style conditioning is cached outside the model's
+                    # inner no_grad block too; this is wholly inference work.
+                    with torch.inference_mode(), warnings.catch_warnings(record=True) as caught:
                         warnings.simplefilter('always', RuntimeWarning)
                         segments = profile.get('segments', [{'text':text,'emotion':profile['emotion']}])
                         if ' '.join(part['text'] for part in segments) != text:
                             raise ValueError('Emotional segments do not match the complete script')
                         pieces = []
                         for part_index, part in enumerate(segments):
+                            if cached_reference:reference_cache.replay_reference_rng(engine,torch)
                             engine.infer(spk_audio_prompt=str(REFERENCE), text=part['text'],
                                          output_path=str(raw), emo_vector=engine.normalize_emo_vec(part['emotion']),
                                          use_random=False, temperature=profile['temperature'],
@@ -180,10 +237,22 @@ def main():
                     stats = finish_audio(raw, final, text)
                     stats.update(text=text, direction=profile['direction'], emotion=emotion,
                                  seed=seed, attempt=attempt+1, inference_seconds=time.monotonic()-began)
+                    if cache_provenance:stats['fixed_reference_cache']=cache_provenance
                     if 'segments' in profile: stats['segments']=profile['segments']
                     report['lines'][relative] = stats
-                    report_path.write_text(json.dumps(report, indent=2, ensure_ascii=False)+'\n', encoding='utf-8')
+                    # A guarded stop must not truncate the accumulated receipts
+                    # for earlier, already completed masters.
+                    staged_report=report_path.with_suffix('.tmp')
+                    staged_report.write_text(json.dumps(report, indent=2, ensure_ascii=False)+'\n', encoding='utf-8')
+                    staged_report.replace(report_path)
                     print(f'Validated {relative}: {stats["seconds"]:.2f}s', flush=True)
+                    if args.memory_efficient:
+                        trim_own_mapped_pages()
+                    new_takes+=1
+                    if batch_limit and new_takes>=batch_limit:
+                        check_reference()
+                        print('Completed bounded generation batch; full coverage remains a separate gate.',flush=True)
+                        return
                     break
                 except ValueError as error:
                     print(f'Retrying invalid audio: {error}', flush=True)

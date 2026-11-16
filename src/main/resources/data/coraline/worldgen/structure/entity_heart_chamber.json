@@ -1,0 +1,11 @@
+{
+  "type": "coraline:entity_heart_chamber",
+  "biomes": [
+    "coraline:postgame/white_rift_wastes",
+    "coraline:postgame/threadbound_mountains",
+    "coraline:postgame/pale_wasteland"
+  ],
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "none"
+}

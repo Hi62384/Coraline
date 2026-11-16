@@ -2,6 +2,7 @@ package com.coraline.config;
 import net.minecraftforge.common.ForgeConfigSpec;
 public final class CoralineConfig {
     private static final ForgeConfigSpec.Builder B=new ForgeConfigSpec.Builder();
+    public static final ForgeConfigSpec.DoubleValue RESCUED_TASK_MULTIPLIER=B.defineInRange("parents.rescuedTaskDurationMultiplier",.55,.25,1.0);
     public static final ForgeConfigSpec.BooleanValue PARENTS_SPAWN=B.define("parents.naturalSpawning",true);
     public static final ForgeConfigSpec.IntValue SPAWN_INTERVAL=B.defineInRange("parents.spawnCheckTicks",1200,20,72000);
     public static final ForgeConfigSpec.DoubleValue SPAWN_CHANCE=B.defineInRange("parents.spawnChancePerPlayer",0.035,0,1);

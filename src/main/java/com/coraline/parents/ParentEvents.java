@@ -31,6 +31,7 @@ public final class ParentEvents {
         if(ParentAccess.family(owner.server,owner.getUUID())!=null)return false;
         return spawnPair(owner.serverLevel(),near,owner.getUUID());
     }
+    public static boolean spawnPairForCompleteEnding(ServerPlayer player,ServerLevel home,BlockPos near,java.util.UUID reset){if(home.getServer()!=player.server||com.coraline.postgame.TrueHeartBattle.pendingReset(player.server,player.getUUID()).filter(reset::equals).isEmpty()||ParentAccess.family(player.server,player.getUUID())!=null)return false;return spawnPair(home,near,player.getUUID());}
     private static boolean spawnPair(ServerLevel level,BlockPos near,java.util.UUID owner){
         ParentEntity mom=ModEntities.MOM.get().create(level),dad=ModEntities.DAD.get().create(level);
         if(mom==null||dad==null)return false;
@@ -64,8 +65,9 @@ public final class ParentEvents {
             monster.targetSelector.addGoal(3,new NearestAttackableTargetGoal<>(monster,ParentEntity.class,true));
         }
     }
-    @SubscribeEvent public static void playerTick(TickEvent.PlayerTickEvent e){
+    @SubscribeEvent public static void playerTick(TickEvent.PlayerTickEvent e){if(e.player instanceof net.minecraft.server.level.ServerPlayer coopPlayer&&com.coraline.multiplayer.StoryCoop.directorBlocked(coopPlayer))return;
         if(e.phase!=TickEvent.Phase.END||!(e.player instanceof ServerPlayer p))return;
+        if(com.coraline.postgame.TrueHeartBattle.recoveryPending(p))return;
         ServerLevel l=p.serverLevel();
         if(com.coraline.otherworld.OtherWorld.isOther(l))return;
         if(p.tickCount%40==0){

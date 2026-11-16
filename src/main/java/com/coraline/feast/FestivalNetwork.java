@@ -19,7 +19,7 @@ public final class FestivalNetwork {
         CHANNEL.messageBuilder(Press.class,1,NetworkDirection.PLAY_TO_SERVER).encoder((m,b)->{b.writeInt(m.generation);b.writeInt(m.lane);}).decoder(b->new Press(b.readInt(),b.readInt()))
             .consumerMainThread((m,c)->{var p=c.get().getSender();if(p!=null)MusicFestivalActivity.press(p,m.generation,m.lane);}).add();
     }
-    public static void send(ServerPlayer p,State state){CHANNEL.send(PacketDistributor.PLAYER.with(()->p),state);}
+    public static void send(ServerPlayer p,State state){for(var recipient:com.coraline.multiplayer.StorySessionData.get(p.server).audience(p))CHANNEL.send(PacketDistributor.PLAYER.with(()->recipient),state);}
     public static void clear(ServerPlayer p){send(p,new State(0,-999,0,0,0,0,0,new int[0],new int[0]));}
     public static void press(int generation,int lane){CHANNEL.sendToServer(new Press(generation,lane));}
     private FestivalNetwork(){}

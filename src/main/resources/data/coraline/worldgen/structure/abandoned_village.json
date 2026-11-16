@@ -1,0 +1,11 @@
+{
+  "type": "coraline:abandoned_village",
+  "biomes": [
+    "coraline:postgame/paperwood_forest",
+    "coraline:postgame/rootbound_wilds",
+    "coraline:postgame/lanternwood"
+  ],
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "none"
+}

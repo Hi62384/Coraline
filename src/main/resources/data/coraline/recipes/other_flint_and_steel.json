@@ -1,1 +1,20 @@
-{"type":"minecraft:crafting_shaped","pattern":["I "," F"],"key":{"I":{"item":"coraline:other_iron_ingot"},"F":{"item":"minecraft:flint"}},"result":{"item":"coraline:other_flint_and_steel"}}
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "I ",
+    " F"
+  ],
+  "key": {
+    "F": {
+      "item": "minecraft:flint"
+    },
+    "I": {
+      "item": "coraline:other_iron_ingot"
+    }
+  },
+  "result": {
+    "item": "coraline:other_flint_and_steel",
+    "count": 1
+  }
+}

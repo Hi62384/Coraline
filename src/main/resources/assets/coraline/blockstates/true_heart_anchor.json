@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "part=0,sealed=true": {
+      "model": "coraline:block/true_heart_0_1"
+    },
+    "part=0,sealed=false": {
+      "model": "coraline:block/true_heart_0_0"
+    },
+    "part=1,sealed=true": {
+      "model": "coraline:block/true_heart_1_1"
+    },
+    "part=1,sealed=false": {
+      "model": "coraline:block/true_heart_1_0"
+    },
+    "part=2,sealed=true": {
+      "model": "coraline:block/true_heart_2_1"
+    },
+    "part=2,sealed=false": {
+      "model": "coraline:block/true_heart_2_0"
+    },
+    "part=3,sealed=true": {
+      "model": "coraline:block/true_heart_3_1"
+    },
+    "part=3,sealed=false": {
+      "model": "coraline:block/true_heart_3_0"
+    },
+    "part=4,sealed=true": {
+      "model": "coraline:block/true_heart_4_1"
+    },
+    "part=4,sealed=false": {
+      "model": "coraline:block/true_heart_4_0"
+    }
+  }
+}

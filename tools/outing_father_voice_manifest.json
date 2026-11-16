@@ -1,0 +1,303 @@
+{
+  "reference": "voicelines/otherfather/otherfathersample.wav",
+  "reference_sha256": "fd15d075b3704f9661ef3ce3a60961394d8ce980a194aefada5bcf9baaacafa5",
+  "emotion_order": [
+    "happy",
+    "angry",
+    "sad",
+    "afraid",
+    "disgusted",
+    "melancholic",
+    "surprised",
+    "calm"
+  ],
+  "states": {
+    "father_outing_picnic_father_start": {
+      "direction": "Cheerful, affectionate, absent-minded and occasionally ridiculous.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, there you are! Welcome to our little picnic. Your Other Mother has packed enough food to feed half the village, so I do hope you've brought an appetite!"
+      ],
+      "filename": "father_outing_picnic_father_start.wav",
+      "source_directory": ""
+    },
+    "father_outing_picnic_father_interaction": {
+      "direction": "Cheerful, affectionate, absent-minded and occasionally ridiculous.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, those sandwiches look marvelous! Would you mind passing one over here, kiddo? I seem to have gotten myself rather comfortable."
+      ],
+      "filename": "father_outing_picnic_father_interaction.wav",
+      "source_directory": ""
+    },
+    "father_outing_picnic_father_finish": {
+      "direction": "Cheerful, affectionate, absent-minded and occasionally ridiculous.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ahh, that was splendid! Good food, lovely scenery, and wonderful company. I don't think we could have asked for a nicer afternoon."
+      ],
+      "filename": "father_outing_picnic_father_finish.wav",
+      "source_directory": ""
+    },
+    "father_outing_fishing_father_start": {
+      "direction": "Cheerful, affectionate, absent-minded and occasionally ridiculous.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, ready to catch something? I've brought plenty of bait, and I have a feeling the fish are going to be awfully cooperative today. Come on, let's get those lines in the water!"
+      ],
+      "filename": "father_outing_fishing_father_start.wav",
+      "source_directory": ""
+    },
+    "father_outing_fishing_father_interaction": {
+      "direction": "Cheerful, affectionate, absent-minded and occasionally ridiculous.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Now, don't pull too soon! Give it a moment, let the fish take the bait, and then give the rod a good tug. There you are! You've got the idea!"
+      ],
+      "filename": "father_outing_fishing_father_interaction.wav",
+      "source_directory": ""
+    },
+    "father_outing_fishing_father_finish": {
+      "direction": "Cheerful, affectionate, absent-minded and occasionally ridiculous.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Well, that was a lovely bit of fishing! I don't think I've had this much fun with a rod in ages. We ought to do this again sometime!"
+      ],
+      "filename": "father_outing_fishing_father_finish.wav",
+      "source_directory": ""
+    },
+    "father_outing_stargazing_father_start": {
+      "direction": "Cheerful, affectionate, absent-minded and occasionally ridiculous.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, there you are! Just look at that sky! Your Other Mother tells me the stars are especially bright tonight. I've brought my telescope so we can have a proper look."
+      ],
+      "filename": "father_outing_stargazing_father_start.wav",
+      "source_directory": ""
+    },
+    "father_outing_stargazing_father_interaction": {
+      "direction": "Cheerful, affectionate, absent-minded and occasionally ridiculous.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "See those three bright little stars over there? They make a rather lovely pattern, don't they? Take a look through the telescope. You might be surprised what you find."
+      ],
+      "filename": "father_outing_stargazing_father_interaction.wav",
+      "source_directory": ""
+    },
+    "father_outing_stargazing_father_finish": {
+      "direction": "Cheerful, affectionate, absent-minded and occasionally ridiculous.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, wonderful! There's something rather special about looking up at all those stars, isn't there? Makes the whole world feel just a little bit more magical."
+      ],
+      "filename": "father_outing_stargazing_father_finish.wav",
+      "source_directory": ""
+    },
+    "father_outing_woodland_father_start": {
+      "direction": "Cheerful, affectionate, absent-minded and occasionally ridiculous.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, ready for a walk, kiddo? Your Other Mother has picked out a beautiful little path for us. I've heard there's a rather lovely waterfall somewhere along the way!"
+      ],
+      "filename": "father_outing_woodland_father_start.wav",
+      "source_directory": ""
+    },
+    "father_outing_woodland_father_interaction": {
+      "direction": "Cheerful, affectionate, absent-minded and occasionally ridiculous.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, would you look at that! Isn't nature extraordinary? I've never seen flowers quite like those before. Your Other Mother certainly knows how to make a garden grow."
+      ],
+      "filename": "father_outing_woodland_father_interaction.wav",
+      "source_directory": ""
+    },
+    "father_outing_woodland_father_finish": {
+      "direction": "Cheerful, affectionate, absent-minded and occasionally ridiculous.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Well, that was refreshing! A lovely walk, a bit of fresh air, and some beautiful sights. I think I could get used to doing that every day!"
+      ],
+      "filename": "father_outing_woodland_father_finish.wav",
+      "source_directory": ""
+    },
+    "father_outing_boat_father_start": {
+      "direction": "Cheerful, affectionate, absent-minded and occasionally ridiculous.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, all aboard! I've got the boat ready, and your Other Mother has planned a lovely route for us. Just find yourself a comfortable seat, and I'll handle the steering!"
+      ],
+      "filename": "father_outing_boat_father_start.wav",
+      "source_directory": ""
+    },
+    "father_outing_boat_father_interaction": {
+      "direction": "Cheerful, affectionate, absent-minded and occasionally ridiculous.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Would you look at that view! The water's so calm you can almost see the stars reflected in it. Beautiful, isn't it? Mind you don't lean too far over!"
+      ],
+      "filename": "father_outing_boat_father_interaction.wav",
+      "source_directory": ""
+    },
+    "father_outing_boat_father_finish": {
+      "direction": "Cheerful, affectionate, absent-minded and occasionally ridiculous.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "And there we are, safe and sound! Not a bad little voyage, if I do say so myself. I hope you enjoyed the ride as much as I did!"
+      ],
+      "filename": "father_outing_boat_father_finish.wav",
+      "source_directory": ""
+    }
+  },
+  "output": "voicelines/otherfather/events/family_outing",
+  "prefix": "father"
+}

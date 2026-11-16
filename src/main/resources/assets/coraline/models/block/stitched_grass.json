@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "coraline:block/postgame/stitched_grass_top",
+    "bottom": "coraline:block/postgame/other_soil",
+    "side": "coraline:block/postgame/other_soil"
+  }
+}

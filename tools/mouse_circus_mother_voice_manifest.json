@@ -1,0 +1,109 @@
+{
+  "reference": "voicelines/othermother/Sample.wav",
+  "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+  "emotion_order": [
+    "happy",
+    "angry",
+    "sad",
+    "afraid",
+    "disgusted",
+    "melancholic",
+    "surprised",
+    "calm"
+  ],
+  "states": {
+    "search/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Sweetheart? Where have you gone? Bobinsky's been waiting to show you his wonderful mice, and you haven't arrived! Oh, darling, I do hope you haven't gotten lost. I'm coming to find you!",
+        "Darling! The mouse circus is waiting for you! I thought you'd be so excited to see it. Where have you wandered off to? Never mind, sweetheart, I'll come look for you!"
+      ]
+    },
+    "search/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Now, sweetheart, I specifically told you to go to the attic. Bobinsky's been waiting for quite some time. If you won't go when I ask, I suppose I'll have to find you myself.",
+        "Where have you disappeared to this time? The mouse circus is ready, and you've kept everyone waiting. I'm coming to find you, darling."
+      ]
+    },
+    "search/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, where are you? I've arranged such a lovely surprise for you, and now I can't find you anywhere! Please come back, sweetheart. I'm coming to look for you!",
+        "Sweetheart! I was so looking forward to seeing how much you enjoyed Bobinsky's wonderful little mice. Oh, my love, where have you gone? I'll come find you!"
+      ]
+    },
+    "search/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "That is quite enough. I told you to be at the mouse circus, and you've deliberately kept everyone waiting. I'm coming to find you now, sweetheart, and you'd better have a good explanation.",
+        "Where are you hiding this time? I gave you five minutes to reach the attic. I have waited more than long enough. Now I'll find you myself."
+      ]
+    },
+    "search/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, I've arranged such a wonderful surprise for you, and you've disappeared again. I wonder what could possibly be more interesting than the lovely show Bobinsky has prepared. Let's find out, shall we?",
+        "Sweetheart, even with your little friend here and a beautiful circus waiting upstairs, you still manage to wander off somewhere. I think it's time I came to collect my curious little darling."
+      ]
+    }
+  },
+  "output": "voicelines/othermother/events/mouse_circus",
+  "prefix": "line",
+  "event_directory": "mouse_circus"
+}

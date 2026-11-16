@@ -1,0 +1,1433 @@
+{
+  "reference": "voicelines/othermother/Sample.wav",
+  "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+  "output": "voicelines/othermother/events/compact_v1",
+  "prefix": "line",
+  "states": {
+    "other_mother_events_family_game_night_late_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "How considerate of you to finally join us. We've been sitting here waiting, sweetheart. I hope whatever kept you away was terribly important."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_family_game_night_late_low_high_01"
+    },
+    "other_mother_events_family_game_night_search_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Sweetheart? Where have you gone? We've been waiting for such a long time now. I hope you haven't gotten yourself lost. I'm coming to find you, darling!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_family_game_night_search_low_low_01"
+    },
+    "other_mother_events_family_game_night_search_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "That is quite enough. I told you to come to the table, and I've waited more than long enough. I'm coming to find you now, and you'd better have a very good explanation."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_family_game_night_search_low_high_01"
+    },
+    "other_mother_events_family_game_night_finish_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, wasn't that wonderful? I do love spending time together like this. I hope you enjoyed yourself, sweetheart. Now, I think we ought to find something else fun to do."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_family_game_night_finish_low_low_01"
+    },
+    "other_mother_events_family_game_night_finish_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Well, at least we've managed to have a reasonably pleasant game night. I do hope you'll remember how much nicer things are when everyone behaves themselves. Now, let's move along."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_family_game_night_finish_low_high_01"
+    },
+    "other_mother_events_family_game_night_intro_cards_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, how lovely! We're going to play Button Cards. Your Other Father always gets terribly excited about this one. Come on, sweetheart, let's see what you've got."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_family_game_night_intro_cards_01"
+    },
+    "other_mother_events_family_game_night_intro_thread_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, this should be fun! You and Wybie can play together against your Other Father and me. Let's see which little team has the cleverer ideas."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_family_game_night_intro_thread_01"
+    },
+    "other_mother_events_family_game_night_intro_tower_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, the Wobbly Tower! This one always makes me a little nervous. Do be careful, darling. I'd hate for the whole thing to come crashing down."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_family_game_night_intro_tower_01"
+    },
+    "other_mother_events_family_game_night_intro_mouseboard_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, how delightful! We're going to race our little mice across the board. I do hope yours behaves itself, sweetheart. They can be rather unpredictable."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_family_game_night_intro_mouseboard_01"
+    },
+    "other_mother_events_family_game_night_intro_flick_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, this should be rather exciting! We're going to flick these little buttons across the table. Aim carefully, sweetheart. Your Other Father can be surprisingly competitive."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_family_game_night_intro_flick_01"
+    },
+    "other_mother_events_family_game_night_intro_charades_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, I thought we'd play a little charades! Wybie's always been especially good at this one. You'd be amazed how much he can say without making a sound."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_family_game_night_intro_charades_01"
+    },
+    "other_mother_events_special_delivery_invitation_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, I have a little favor to ask you! There's a lovely package I need delivered to someone across the way. I've made a proper path for you, so just follow it straight to their house. And don't go opening the present, darling. It's meant to be a surprise!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_special_delivery_invitation_low_low_01"
+    },
+    "other_mother_events_special_delivery_invitation_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "I have a delivery for you, sweetheart. Take this package to the house at the end of the pathway and come straight back. Do not wander off, do not investigate anything along the way, and do not open it. I expect you to follow those instructions precisely."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_special_delivery_invitation_low_high_01"
+    },
+    "other_mother_events_special_delivery_completion_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, there you are, sweetheart! Welcome back! I hope everything went smoothly. Wasn't that a lovely little adventure? I'm so pleased you could help me."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_special_delivery_completion_low_low_01"
+    },
+    "other_mother_events_special_delivery_completion_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Well, you're back. I trust you followed my instructions and didn't get distracted along the way. Very good. Now let's put this little errand behind us."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_special_delivery_completion_low_high_01"
+    },
+    "other_mother_events_special_delivery_caught_opening_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart... you opened it? But I specifically asked you not to! That package wasn't meant for you, darling. I trusted you to deliver it safely, and now you've gone and spoiled the surprise."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_special_delivery_caught_opening_low_low_01"
+    },
+    "other_mother_events_special_delivery_caught_opening_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "You opened it. Of course you did. I give you one simple instruction, and you immediately decide it doesn't apply to you. I am growing very tired of your disobedience."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_special_delivery_caught_opening_low_high_01"
+    },
+    "other_mother_events_house_party_invitation_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, I've got the most wonderful surprise! We're having a little party, and I've invited some lovely people over to meet you. Now, I expect you to be on your best behavior, darling. Stay inside the house, be polite to our guests, and don't go poking around where you shouldn't. I think we're going to have such a lovely time!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_house_party_invitation_low_low_01"
+    },
+    "other_mother_events_house_party_invitation_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "We're having guests over tonight, sweetheart, and I expect you to behave yourself. You will stay inside the house, you will keep out of the attic and basement, and you will not go searching through things that don't belong to you. I trust that's perfectly clear."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_house_party_invitation_low_high_01"
+    },
+    "other_mother_events_house_party_checkin_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart! Are you enjoying yourself? There's so many lovely people here. Why don't you go introduce yourself to someone?"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_house_party_checkin_low_low_01"
+    },
+    "other_mother_events_house_party_checkin_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Enjoying yourself, sweetheart? I do hope so. It would be rather disappointing if I discovered you'd been spending the evening doing anything else."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_house_party_checkin_low_high_01"
+    },
+    "other_mother_events_house_party_guest_report_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, one of our guests has told me you've been getting into things you shouldn't. I'm sure there's been some misunderstanding, but I do hope you'll remember your manners."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_house_party_guest_report_low_low_01"
+    },
+    "other_mother_events_house_party_guest_report_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Well, isn't that interesting. One of our guests has just told me exactly what you've been doing. I warned you about this, sweetheart. Very clearly."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_house_party_guest_report_low_high_01"
+    },
+    "other_mother_events_house_party_feast_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, everyone! Dinner is ready! I've prepared the most wonderful feast for all of us. Come along to the dining room, and do bring your appetites. There's plenty for everyone!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_house_party_feast_low_low_01"
+    },
+    "other_mother_events_house_party_feast_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Dinner is ready, everyone. Please make your way to the dining tables. I've gone through a great deal of trouble preparing everything, and I'd appreciate us all sitting down together."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_house_party_feast_low_high_01"
+    },
+    "other_mother_events_house_party_food_warning_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, don't take quite so much! We have lots of guests to feed, you know. Leave a little for everyone else, darling."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_house_party_food_warning_low_low_01"
+    },
+    "other_mother_events_house_party_food_warning_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Put some of that back, sweetheart. This feast is for everyone, not just you. I expect you to show a little more consideration while we have company."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_house_party_food_warning_low_high_01"
+    },
+    "other_mother_events_house_party_completion_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, wasn't that a wonderful evening? Everyone seemed to have such a lovely time. I'm so glad we could share it with you, sweetheart. Now, I think we ought to find something else fun to do."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_house_party_completion_low_low_01"
+    },
+    "other_mother_events_house_party_completion_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Well, our little party is finally over. I do hope you remember how much nicer things are when everyone behaves themselves. Now, let's move on to something else."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_house_party_completion_low_high_01"
+    },
+    "other_mother_events_player_party_invitation_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, I've got the most wonderful surprise! I'm throwing a party, just for you! I've invited all sorts of lovely people, and I've even arranged some special entertainment. You can enjoy the house, the garden, even the attic and basement tonight. Just remember to leave my private things alone, and don't wander too far, darling!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_player_party_invitation_low_low_01"
+    },
+    "other_mother_events_player_party_invitation_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "I'm throwing a party for you, sweetheart, and I expect you to appreciate the effort. You're permitted in the house, attic, basement, and backyard tonight. That does not give you permission to steal, rummage through my cupboards, or wander off into the wilderness. I trust that's clear."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_player_party_invitation_low_high_01"
+    },
+    "other_mother_events_player_party_checkin_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart! Are you having fun? There's so much to see tonight. Have you visited the garden yet? I've made it especially beautiful for you."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_player_party_checkin_low_low_01"
+    },
+    "other_mother_events_player_party_checkin_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Enjoying your party, sweetheart? I do hope so. I've arranged more than enough entertainment to keep you occupied."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_player_party_checkin_low_high_01"
+    },
+    "other_mother_events_player_party_guest_report_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, one of our guests says you've been getting into things you shouldn't. I'm sure you didn't mean any harm, but I did ask you to leave those things alone."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_player_party_guest_report_low_low_01"
+    },
+    "other_mother_events_player_party_guest_report_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Well, isn't that interesting. I give you permission to enjoy the attic and basement, and you immediately begin searching through things I told you not to touch."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_player_party_guest_report_low_high_01"
+    },
+    "other_mother_events_player_party_search_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Sweetheart? Where have you gone? Everyone's here to celebrate you, darling! I hope you haven't wandered too far. I'm coming to find you!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_player_party_search_low_low_01"
+    },
+    "other_mother_events_player_party_search_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "That is quite enough. I told you not to leave the party grounds. If you think you can simply disappear whenever you please, you've made a terrible mistake."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_player_party_search_low_high_01"
+    },
+    "other_mother_events_player_party_surprise_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, everyone! I think it's time for our special surprise! Sweetheart, come over here, darling. We've all got something wonderful prepared just for you!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_player_party_surprise_low_low_01"
+    },
+    "other_mother_events_player_party_surprise_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Everyone, if I could have your attention. It's time for our special celebration. Sweetheart, come over here. Our guests have prepared something for you."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_player_party_surprise_low_high_01"
+    },
+    "other_mother_events_player_party_cake_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Surprise, sweetheart! Look what I've made for you! A beautiful cake, just for my wonderful little one. Everyone's here to celebrate you!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_player_party_cake_low_low_01"
+    },
+    "other_mother_events_player_party_cake_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Surprise, sweetheart. I've prepared a beautiful cake for you, and our guests have brought gifts. I do hope you'll remember how much trouble everyone has gone through."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_player_party_cake_low_high_01"
+    },
+    "other_mother_events_player_party_completion_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, wasn't that wonderful, sweetheart? I hope you loved your party. Everyone had such a lovely time celebrating you. Now, I think we've still got some wonderful things we could do together!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_player_party_completion_low_low_01"
+    },
+    "other_mother_events_player_party_completion_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Well, our celebration has come to an end. I hope you appreciate everything I've arranged for you, sweetheart. Perhaps now we can move on to something a little quieter."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_player_party_completion_low_high_01"
+    },
+    "other_mother_events_mother_goes_out_departure_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, I've got a few little matters I need to take care of. I won't be around for a while, so why don't you find something nice to keep yourself busy? Your Other Father will be here if you need anything. Just be good, darling, and don't go wandering too far from home."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_mother_goes_out_departure_low_low_01"
+    },
+    "other_mother_events_mother_goes_out_departure_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "I have matters to take care of, sweetheart, and I'll be leaving for a while. I expect you to behave yourself in my absence. Stay near the house, keep your hands out of my belongings, and don't give me a reason to regret leaving you alone."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_mother_goes_out_departure_low_high_01"
+    },
+    "other_mother_events_mother_goes_out_return_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, I'm home! There you are, darling. I hope you've had a lovely time while I was away. Now then, let's see what else we might do together!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_mother_goes_out_return_low_low_01"
+    },
+    "other_mother_events_mother_goes_out_return_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Well, I'm back. I see you've managed to stay close to home, sweetheart. I trust you haven't been getting into anything you shouldn't. Let's move on."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_mother_goes_out_return_low_high_01"
+    },
+    "other_mother_events_mother_goes_out_missing_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Sweetheart? I'm home! ...Darling? Where have you gone? I specifically asked you not to wander too far. Oh, I do hope you haven't gotten yourself lost. I'm coming to find you!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_mother_goes_out_missing_low_low_01"
+    },
+    "other_mother_events_mother_goes_out_missing_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Of course. I leave the house for a little while, and the moment I return, you've disappeared. I told you to stay nearby, sweetheart. Now I'm going to find you, and you'd better have an explanation."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_mother_goes_out_missing_low_high_01"
+    },
+    "other_mother_events_mother_goes_out_alert_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, I've had to come home a little earlier than I expected. One of my little friends seemed rather concerned about something. Now, I wonder what could have happened while I was away?"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_mother_goes_out_alert_low_low_01"
+    },
+    "other_mother_events_mother_goes_out_alert_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Well, well. I've had to come all the way back because one of my little watchers had something to report. I wonder what you've been doing while you thought I wasn't looking."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_mother_goes_out_alert_low_high_01"
+    },
+    "other_mother_events_mother_goes_out_caught_missing_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, there you are! I've been looking everywhere for you. I asked you to stay near the house, darling. You really shouldn't make your mother worry like that."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_mother_goes_out_caught_missing_low_low_01"
+    },
+    "other_mother_events_mother_goes_out_caught_missing_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "There you are. Exactly where you shouldn't be. I told you to stay close to the house, and you chose to ignore me. I am growing very tired of this behavior."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_mother_goes_out_caught_missing_low_high_01"
+    },
+    "other_mother_events_mother_goes_out_caught_spy_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, one of my little friends told me you'd been getting into something you shouldn't. I really hoped it was a misunderstanding, darling. Why couldn't you simply behave while I was away?"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_mother_goes_out_caught_spy_low_low_01"
+    },
+    "other_mother_events_mother_goes_out_caught_spy_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "So. The moment I leave, you start searching through things you know you're forbidden to touch. Did you honestly think I wouldn't find out?"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_mother_goes_out_caught_spy_low_high_01"
+    },
+    "other_mother_events_wybie_adventure_invitation_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, I've got a lovely surprise for you! Your little friend Wybie has come to visit! I've arranged a couple of bicycles out in the garden so you two can go riding together. You've got twenty minutes to enjoy yourselves, darling. Just remember to come back to me before your time is up!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_wybie_adventure_invitation_low_low_01"
+    },
+    "other_mother_events_wybie_adventure_invitation_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Your friend Wybie has arrived, sweetheart. I've prepared bicycles in the garden, and you may spend twenty minutes riding together. That does not mean you have permission to wander into forbidden places. Be back when your time is up, and don't give me another reason to be disappointed."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_wybie_adventure_invitation_low_high_01"
+    },
+    "other_mother_events_wybie_adventure_return_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, there you are, sweetheart! Did you have a lovely time with Wybie? I do hope you enjoyed the bicycles. You two looked like you were having such fun!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_wybie_adventure_return_low_low_01"
+    },
+    "other_mother_events_wybie_adventure_return_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Good. You've returned when I asked. I trust you and Wybie managed to behave yourselves while you were out. Now, let's get back to our plans."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_wybie_adventure_return_low_high_01"
+    },
+    "other_mother_events_wybie_adventure_search_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Sweetheart? Your twenty minutes are up! Where have you and Wybie gone? I do hope you haven't gotten yourselves lost. I'm coming to find you, darling!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_wybie_adventure_search_low_low_01"
+    },
+    "other_mother_events_wybie_adventure_search_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "That is quite enough. I gave you twenty minutes, sweetheart. Twenty. And now you've decided not to return. I'm coming to find you, and you'd better have a good explanation."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_wybie_adventure_search_low_high_01"
+    },
+    "other_mother_events_wybie_adventure_caught_normal_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, there you are! I've been looking everywhere for you and Wybie. I asked you to come back on time, darling. Please don't make your mother worry like that."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_wybie_adventure_caught_normal_low_low_01"
+    },
+    "other_mother_events_wybie_adventure_caught_normal_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "There you are. Your time was up ages ago, sweetheart. I shouldn't have to hunt you down every time I allow you a little freedom."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_wybie_adventure_caught_normal_low_high_01"
+    },
+    "other_mother_events_wybie_adventure_ban_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart... what have you done? I trusted you and Wybie to have a lovely little adventure, and instead you've been getting into things you know you shouldn't. I'm terribly disappointed, darling. I'm afraid Wybie won't be coming to visit you anymore."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_wybie_adventure_ban_low_low_01"
+    },
+    "other_mother_events_wybie_adventure_ban_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "So. This is what you've been doing with Wybie. I give you a little freedom, and you immediately use it to disobey me. Well, that's finished. You will not be seeing Wybie again, sweetheart. Perhaps now you'll learn to follow instructions."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_wybie_adventure_ban_low_high_01"
+    },
+    "other_mother_events_theatre_invitation_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, I've got the most wonderful news! Miss Spink and Miss Forcible have invited you to see a very special theatre performance! They've prepared something absolutely marvelous, and it's all waiting for you through the basement entrance. You've got five minutes to get there, darling. I do hope you enjoy yourself!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_theatre_invitation_low_low_01"
+    },
+    "other_mother_events_theatre_invitation_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Miss Spink and Miss Forcible have invited you to watch a performance in the basement theatre. They've made quite an effort, and I expect you to show them the courtesy of arriving on time. You have five minutes, sweetheart. No wandering off."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_theatre_invitation_low_high_01"
+    },
+    "other_mother_events_theatre_ontime_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, there you are, sweetheart! Right on time. Go on downstairs, darling. The show is just about to begin!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_theatre_ontime_low_low_01"
+    },
+    "other_mother_events_theatre_ontime_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Good. You've arrived on time. Now go downstairs and behave yourself."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_theatre_ontime_low_high_01"
+    },
+    "other_mother_events_theatre_late_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, there you are! You're a little late, but the show is still waiting. Hurry along downstairs, darling!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_theatre_late_low_low_01"
+    },
+    "other_mother_events_theatre_late_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "You're late. Again. I gave you five minutes, sweetheart. Stop wasting time and go downstairs."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_theatre_late_low_high_01"
+    },
+    "other_mother_events_theatre_search_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Sweetheart? The performance has been waiting for such a long time now! Where have you gone, darling? I'm coming to find you!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_theatre_search_low_low_01"
+    },
+    "other_mother_events_theatre_search_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "That is enough. I told you to be at the theatre, and you've chosen to ignore me. I'm coming to find you now, sweetheart."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_theatre_search_low_high_01"
+    },
+    "other_mother_events_mouse_circus_search_low_low_01": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Sweetheart? Where have you gone? Bobinsky's been waiting to show you his wonderful mice, and you haven't arrived! Oh, darling, I do hope you haven't gotten lost. I'm coming to find you!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_mouse_circus_search_low_low_01"
+    },
+    "other_mother_events_mouse_circus_search_low_high_01": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "That is quite enough. I told you to be at the mouse circus, and you've deliberately kept everyone waiting. I'm coming to find you now, sweetheart, and you'd better have a good explanation."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "other_mother_events_mouse_circus_search_low_high_01"
+    }
+  }
+}

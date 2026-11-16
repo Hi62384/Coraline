@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "coraline:paperwood_log"
+    }
+  ],
+  "result": {
+    "item": "coraline:paperwood_planks",
+    "count": 4
+  }
+}

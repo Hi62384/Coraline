@@ -1,0 +1,11 @@
+{
+  "type": "coraline:abandoned_orphanage",
+  "biomes": [
+    "coraline:postgame/paperwood_forest",
+    "coraline:postgame/rootbound_wilds",
+    "coraline:postgame/pale_wasteland"
+  ],
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "none"
+}

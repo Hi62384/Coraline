@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "active=false,part=0,pulse=false": {
+      "model": "coraline:block/factory_0_0_0"
+    },
+    "active=false,part=0,pulse=true": {
+      "model": "coraline:block/factory_0_0_1"
+    },
+    "active=true,part=0,pulse=false": {
+      "model": "coraline:block/factory_0_1_0"
+    },
+    "active=true,part=0,pulse=true": {
+      "model": "coraline:block/factory_0_1_1"
+    },
+    "active=false,part=1,pulse=false": {
+      "model": "coraline:block/factory_1_0_0"
+    },
+    "active=false,part=1,pulse=true": {
+      "model": "coraline:block/factory_1_0_0"
+    },
+    "active=true,part=1,pulse=false": {
+      "model": "coraline:block/factory_1_1_0"
+    },
+    "active=true,part=1,pulse=true": {
+      "model": "coraline:block/factory_1_1_0"
+    },
+    "active=false,part=2,pulse=false": {
+      "model": "coraline:block/factory_2_0_0"
+    },
+    "active=false,part=2,pulse=true": {
+      "model": "coraline:block/factory_2_0_0"
+    },
+    "active=true,part=2,pulse=false": {
+      "model": "coraline:block/factory_2_1_0"
+    },
+    "active=true,part=2,pulse=true": {
+      "model": "coraline:block/factory_2_1_0"
+    },
+    "active=false,part=3,pulse=false": {
+      "model": "coraline:block/factory_3_0_0"
+    },
+    "active=false,part=3,pulse=true": {
+      "model": "coraline:block/factory_3_0_0"
+    },
+    "active=true,part=3,pulse=false": {
+      "model": "coraline:block/factory_3_1_0"
+    },
+    "active=true,part=3,pulse=true": {
+      "model": "coraline:block/factory_3_1_0"
+    }
+  }
+}

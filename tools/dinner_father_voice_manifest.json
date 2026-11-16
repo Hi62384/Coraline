@@ -1,0 +1,170 @@
+{
+  "reference": "voicelines/otherfather/otherfathersample.wav",
+  "reference_sha256": "fd15d075b3704f9661ef3ce3a60961394d8ce980a194aefada5bcf9baaacafa5",
+  "emotion_order": [
+    "happy",
+    "angry",
+    "sad",
+    "afraid",
+    "disgusted",
+    "melancholic",
+    "surprised",
+    "calm"
+  ],
+  "states": {
+    "father_dinner_greeting_1": {
+      "direction": "Warm, cheerful, slightly awkward and playful.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.05,
+        0.55
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, there you are! Come on, sit down. Your Other Mother has made an absolutely marvelous dinner for us."
+      ],
+      "filename": "father_dinner_greeting_1.wav",
+      "source_directory": ""
+    },
+    "father_dinner_greeting_2": {
+      "direction": "Warm, cheerful, slightly awkward and playful.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.05,
+        0.55
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, wonderful! The whole family's here. I was beginning to think I'd have to eat your portion myself. Ha! Only joking, of course."
+      ],
+      "filename": "father_dinner_greeting_2.wav",
+      "source_directory": ""
+    },
+    "father_pass_bread": {
+      "direction": "Warm, cheerful, slightly awkward and playful.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.05,
+        0.55
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, would you mind passing the bread, kiddo? It's rather a long reach from here."
+      ],
+      "filename": "father_pass_bread.wav",
+      "source_directory": ""
+    },
+    "father_pass_potatoes": {
+      "direction": "Warm, cheerful, slightly awkward and playful.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.05,
+        0.55
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Those potatoes look awfully good. Could you pass them over here for me?"
+      ],
+      "filename": "father_pass_potatoes.wav",
+      "source_directory": ""
+    },
+    "father_dinner_comment_1": {
+      "direction": "Warm, cheerful, slightly awkward and playful.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.05,
+        0.55
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Mmm! Your Other Mother really has outdone herself this time. I don't think I've ever had anything quite so delicious."
+      ],
+      "filename": "father_dinner_comment_1.wav",
+      "source_directory": ""
+    },
+    "father_dinner_comment_2": {
+      "direction": "Warm, cheerful, slightly awkward and playful.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.05,
+        0.55
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "You know, there's something rather wonderful about everyone sitting down together. Makes the whole house feel a little warmer, doesn't it?"
+      ],
+      "filename": "father_dinner_comment_2.wav",
+      "source_directory": ""
+    },
+    "father_dinner_question": {
+      "direction": "Warm, cheerful, slightly awkward and playful.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.05,
+        0.55
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "So, what have you been getting up to today? Anything particularly exciting?"
+      ],
+      "filename": "father_dinner_question.wav",
+      "source_directory": ""
+    },
+    "father_dinner_finish": {
+      "direction": "Warm, cheerful, slightly awkward and playful.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.05,
+        0.55
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ahh, that was splendid! I don't think I could manage another bite. Well, perhaps just one more little piece of pie."
+      ],
+      "filename": "father_dinner_finish.wav",
+      "source_directory": ""
+    }
+  },
+  "output": "voicelines/otherfather/events/family_dinner",
+  "prefix": "father"
+}

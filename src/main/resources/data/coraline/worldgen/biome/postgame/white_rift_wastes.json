@@ -1,0 +1,36 @@
+{
+  "has_precipitation": false,
+  "temperature": 0.3,
+  "downfall": 0,
+  "effects": {
+    "fog_color": 15130604,
+    "sky_color": 15656948,
+    "water_color": 6523571,
+    "water_fog_color": 3426157
+  },
+  "spawners": {
+    "monster": [
+      {
+        "type": "coraline:rift_soldier",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "coraline:porcelain_sentinel",
+        "weight": 3,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "coraline:void_stalker",
+        "weight": 4,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ]
+  },
+  "spawn_costs": {},
+  "carvers": {},
+  "features": []
+}

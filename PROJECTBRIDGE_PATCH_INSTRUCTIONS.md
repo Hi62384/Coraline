@@ -1,12 +1,13 @@
+<!-- ProjectBridge delivery-mode policy v2 -->
+> **SCOPE: ZIP PACKAGING FOR NORMAL READ-ONLY CHATGPT OR EXPLICIT ZIP REQUESTS.** > Normal ChatGPT reading GitHub without a writable checkout uses these instructions > for coding-change requests by default unless another delivery is requested. > Codex, IDE agents and other agents that can edit files directly should modify > the project normally and must **not** create a ProjectBridge patch ZIP unless > the user specifically asks for one. Merely reading this file does not select > ZIP-delivery mode for Codex. Older unconditional requirements below apply **only** > when ProjectBridge ZIP delivery is the chosen workflow.
+
 # REQUIRED: ProjectBridge Offline Patch Delivery Instructions
 
 **Repository:** `Hi62384/Coraline`  
 **Applier:** ProjectBridge Offline Patcher (the Windows offline app)  
 **ZIP format:** `projectbridge.offline-patch.v1`
 
-> **MANDATORY PRE-FLIGHT FOR CHATGPT:** Before making any changes to this project or promising a downloadable fix, read this file **in full** and read the repository-root `AGENTS.md`. Apply both documents. The user should only need to give a feature request, not identify individual files or assemble project ZIPs.
-
-## 1. Required workflow
+## 1. Workflow (only for explicitly requested offline ZIP patches)
 
 1. Access the latest relevant code from `https://github.com/Hi62384/Coraline` **read-only**, preferably with the GitHub connector. Inspect the current `main` branch (or explicitly requested ref), repository structure, dependencies and related files; do not stop at the first matching filename. Read the root `AGENTS.md` and this entire document before editing.
 2. Record the **exact source commit SHA** you used as the baseline. If GitHub code is stale relative to the user's local copy, say so. **Never silently overwrite local modifications.**
@@ -132,10 +133,10 @@ If those helper scripts are unavailable, Python's standard `hashlib`, `json`, an
 - If there are no file changes, **do not create an empty patch ZIP**. Explain why.
 - Report tests honestly; compilation or gameplay may require the user's own PC, installed SDKs, game runtime and assets.
 
-## 6. Future-chat mandatory opening prompt
+## 6. Optional opening prompt for normal ChatGPT ZIP delivery
 
 A normal ChatGPT conversation is **not guaranteed to automatically open repository instruction files**. To ensure this document is actually read at the start of a new chat, begin the request with:
 
 > **Before doing anything else, open `https://github.com/Hi62384/Coraline/blob/main/AGENTS.md` and `https://github.com/Hi62384/Coraline/blob/main/PROJECTBRIDGE_PATCH_INSTRUCTIONS.md`, read both in full, and follow the offline patch ZIP specification. Read-only GitHub; return `ProjectBridge_patch.zip` compatible with my offline applier. Then implement: [YOUR REQUEST].**
 
-These instructions are the repository's required workflow for assistants that have read them. The repository files themselves cannot override ChatGPT's system settings or guarantee that a new conversation reads them unprompted.
+These instructions apply only when offline ZIP delivery was explicitly requested. The repository files themselves cannot override ChatGPT's system settings or guarantee that a new conversation reads them unprompted.

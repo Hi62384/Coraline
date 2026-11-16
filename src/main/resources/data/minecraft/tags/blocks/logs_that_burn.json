@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "coraline:buttonwood_log",
+    "coraline:paperwood_log",
+    "coraline:lanternwood_log"
+  ]
+}

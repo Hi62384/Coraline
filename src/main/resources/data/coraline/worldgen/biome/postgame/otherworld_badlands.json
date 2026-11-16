@@ -1,0 +1,24 @@
+{
+  "has_precipitation": false,
+  "temperature": 1.3,
+  "downfall": 0,
+  "effects": {
+    "fog_color": 11369840,
+    "sky_color": 14001048,
+    "water_color": 6523571,
+    "water_fog_color": 3426157
+  },
+  "spawners": {
+    "monster": [
+      {
+        "type": "coraline:clockwork_watcher",
+        "weight": 8,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ]
+  },
+  "spawn_costs": {},
+  "carvers": {},
+  "features": []
+}

@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /** A three-lap frozen festival race. Checkpoints and results belong only to the visiting player. */
+@net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid="coraline")
 public final class IceBoatRaceActivity {
     private static final String OWNER="CoralineIceRaceOwner",GEN="CoralineIceRaceGeneration",SLOT="CoralineIceRaceSlot";
     private static final int RIVALS=6,LAPS=3,GATES=14;
@@ -347,6 +348,28 @@ public final class IceBoatRaceActivity {
         for(int i=0;i<RIVALS;i++){stagger(s.loop,i);ensureRacer(l,s,c,i);}
         p.sendSystemMessage(Component.literal("Three laps. Follow the glowing bends and pass every checkpoint. Steer your boat to win!"));
     }
+    private static void groupBoats(ServerPlayer director,VisitData.Scene scene,BlockPos c,long now,boolean racing){
+        var data=com.coraline.multiplayer.StorySessionData.get(director.server);if(!data.groupActivity(scene))return;int slot=0;
+        for(var member:CooperativeActivities.playing(director,scene))if(member!=director){
+            var progress=data.activityProgress(member,scene,"ice_race");if(progress==null)continue;Boat vehicle=null;
+            if(progress.hasUUID("Boat")){if(progress.contains("BoatPos"))LoopProps.hold(director.serverLevel(),BlockPos.of(progress.getLong("BoatPos")));var nativeEntity=director.serverLevel().getEntity(progress.getUUID("Boat"));if(nativeEntity instanceof Boat b&&owned(b,scene)&&b.getPersistentData().hasUUID("CoopRacer")&&b.getPersistentData().getUUID("CoopRacer").equals(member.getUUID()))vehicle=b;}
+            if(vehicle==null){vehicle=spawnBoat(director.serverLevel(),scene,c,-100-slot,progress.getInt("Checkpoint")*LENGTH/GATES-slot*2.3,slot%2==0?1.2:-1.2);if(vehicle==null)continue;vehicle.getPersistentData().putUUID("CoopRacer",member.getUUID());progress.putUUID("Boat",vehicle.getUUID());progress.putBoolean("Boarded",false);data.touch(director.server);}
+            progress.putLong("BoatPos",vehicle.blockPosition().asLong());slot++;
+            if(!racing){vehicle.setCustomName(Component.literal("CoralineRaceCountdownLock"));vehicle.setCustomNameVisible(false);vehicle.setDeltaMovement(Vec3.ZERO);continue;}
+            releaseStartLock(vehicle);
+            if(!progress.getBoolean("Boarded")){member.stopRiding();member.teleportTo(member.serverLevel(),vehicle.getX(),vehicle.getY()+.2,vehicle.getZ(),vehicle.getYRot(),0);if(member.startRiding(vehicle,true))progress.putBoolean("Boarded",true);}
+            if(member.getVehicle()!=vehicle){if(member.tickCount%40==0)member.displayClientMessage(Component.literal("Board your own race boat to continue."),true);continue;}
+            double x=vehicle.getX()-c.getX()-.5,z=vehicle.getZ()-c.getZ()-.5;int checkpoint=progress.getInt("Checkpoint");Point gate=point((checkpoint+1)*LENGTH/GATES);
+            if(Math.hypot(x-gate.x,z-gate.z)<6.2&&trackDistance(x,z)<trackRadius(x,z)+.7){checkpoint++;if(checkpoint==GATES){checkpoint=0;progress.putInt("Lap",progress.getInt("Lap")+1);}progress.putInt("Checkpoint",checkpoint);data.touch(director.server);if(progress.getInt("Lap")>=LAPS){result(director,scene,c,1+(int)Arrays.stream(scene.loop.iceRivalFinish).filter(n->n>0).count());return;}}
+            if(trackDistance(x,z)>12){Point back=lane(checkpoint*LENGTH/GATES+2,slot%2==0?1.2:-1.2);vehicle.setPos(c.getX()+.5+back.x,c.getY(),c.getZ()+.5+back.z);vehicle.setDeltaMovement(Vec3.ZERO);}
+            if(member.tickCount%10==0)member.displayClientMessage(Component.literal("Lap: "+Math.min(LAPS,progress.getInt("Lap")+1)+" / "+LAPS+" | Checkpoint: "+checkpoint+" / "+GATES),true);
+        }
+    }
+    @net.minecraftforge.eventbus.api.SubscribeEvent public static void groupBoatMount(net.minecraftforge.event.entity.EntityMountEvent event){
+        if(!event.isMounting()||!(event.getEntityMounting() instanceof ServerPlayer p)||!(event.getEntityBeingMounted() instanceof Boat boat)||!boat.getPersistentData().hasUUID(OWNER))return;
+        var scene=OtherMotherLoop.active(p);if(scene==null||!owned(boat,scene)||!com.coraline.multiplayer.StoryCoop.canAct(p,scene)){event.setCanceled(true);return;}
+        var tag=boat.getPersistentData();boolean own=tag.hasUUID("CoopRacer")?tag.getUUID("CoopRacer").equals(p.getUUID()):tag.getInt(SLOT)==-1&&scene.owner.equals(p.getUUID());if(!own)event.setCanceled(true);
+    }
     private static void stagger(OtherMotherLoopState state,int slot){state.iceRivalProgress[slot]=-2.5-slot*1.7;}
     private static void releaseStartLock(Boat boat){
         if(boat==null)return;
@@ -404,10 +427,11 @@ public final class IceBoatRaceActivity {
     }
     private static void result(ServerPlayer p,VisitData.Scene s,BlockPos c,int rank){
         var st=s.loop;if(st.iceStage==3)return;st.iceStage=3;st.iceRank=rank;st.iceResultAt=OtherMotherLoop.now(p)+70;
-        p.stopRiding();p.teleportTo(p.serverLevel(),c.getX()+.5,c.getY(),c.getZ()+48.5,0,0);p.setDeltaMovement(Vec3.ZERO);
+        p.stopRiding();p.teleportTo(p.serverLevel(),c.getX()+.5,c.getY(),c.getZ()+48.5,0,0);p.setDeltaMovement(Vec3.ZERO);CooperativeActivities.regroup(p,s);
         if(rank==1&&!st.iceRewarded){st.iceRewarded=true;
-            for(ItemStack reward:new ItemStack[]{new ItemStack(Items.DIAMOND,6),new ItemStack(Items.EMERALD,10),new ItemStack(Items.ENCHANTED_GOLDEN_APPLE)}){
-                p.getInventory().add(reward);if(!reward.isEmpty())p.drop(reward,false);
+            var groupPrizes=java.util.List.of(new ItemStack(Items.DIAMOND,6),new ItemStack(Items.EMERALD,10),new ItemStack(Items.ENCHANTED_GOLDEN_APPLE));boolean groupPaid=com.coraline.multiplayer.StoryRewardDelivery.award(p,s,"ice_final",groupPrizes);
+            for(ItemStack reward:groupPrizes){
+                if(!groupPaid&&!AcceptedButtonEyesInventory.locked(p)){p.getInventory().add(reward);if(!reward.isEmpty())p.drop(reward,false);}
             }
             p.serverLevel().playSound(null,p.blockPosition(),SoundEvents.UI_TOAST_CHALLENGE_COMPLETE,SoundSource.PLAYERS,1,1);
             p.sendSystemMessage(Component.literal("FIRST PLACE! You won the Ice Boat Race and Father's champion prize!"));
@@ -426,12 +450,12 @@ public final class IceBoatRaceActivity {
         switch(st.iceStage){
             case 0->{if(now>=st.iceVoiceUntil){launch(p,s,c);st.iceStage=1;st.iceCountdownUntil=now+80;OtherMotherLoop.changed(p);}}
             case 1->{
-                Boat b=boat(l,s,c,-1);if(b!=null){b.setCustomName(Component.literal("CoralineRaceCountdownLock"));Point at=lane(0,-1.2);b.setPos(c.getX()+.5+at.x,c.getY(),c.getZ()+.5+at.z);b.setDeltaMovement(Vec3.ZERO);}
+                groupBoats(p,s,c,now,false);Boat b=boat(l,s,c,-1);if(b!=null){b.setCustomName(Component.literal("CoralineRaceCountdownLock"));Point at=lane(0,-1.2);b.setPos(c.getX()+.5+at.x,c.getY(),c.getZ()+.5+at.z);b.setDeltaMovement(Vec3.ZERO);}
                 if(now>=st.iceCountdownUntil){releaseStartLock(b);st.iceStage=2;OtherMotherLoop.changed(p);p.sendSystemMessage(Component.literal("GO! Three laps around the frozen festival!"));}
                 else if((st.iceCountdownUntil-now)%20==0)p.displayClientMessage(Component.literal("Ice Boat Race starts in "+Math.max(1,(st.iceCountdownUntil-now+19)/20)+"…"),true);
             }
             case 2->{
-                moveRivals(p,s,c,now);Boat b=boat(l,s,c,-1);
+                moveRivals(p,s,c,now);groupBoats(p,s,c,now,true);if(st.iceStage!=2)return;Boat b=boat(l,s,c,-1);
                 releaseStartLock(b); // Also recovers a race reloaded just after the countdown.
                 if(b!=null&&p.getVehicle()==b){
                     double x=b.getX()-c.getX()-.5,z=b.getZ()-c.getZ()-.5;

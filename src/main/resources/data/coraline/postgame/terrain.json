@@ -1,0 +1,216 @@
+{
+  "type": "coraline:infinite_other_world",
+  "biome_source": {
+    "type": "coraline:infinite_climate",
+    "biomes": {
+      "stitched_meadows": "coraline:postgame/stitched_meadows",
+      "buttonwood_forest": "coraline:postgame/buttonwood_forest",
+      "porcelain_plains": "coraline:postgame/porcelain_plains",
+      "candy_wonderland": "coraline:postgame/candy_wonderland",
+      "velvet_mushroom_forest": "coraline:postgame/velvet_mushroom_forest",
+      "clockwork_highlands": "coraline:postgame/clockwork_highlands",
+      "mirror_marsh": "coraline:postgame/mirror_marsh",
+      "threadbound_mountains": "coraline:postgame/threadbound_mountains",
+      "paperwood_forest": "coraline:postgame/paperwood_forest",
+      "forgotten_gardens": "coraline:postgame/forgotten_gardens",
+      "pale_wasteland": "coraline:postgame/pale_wasteland",
+      "otherworld_badlands": "coraline:postgame/otherworld_badlands",
+      "lanternwood": "coraline:postgame/lanternwood",
+      "stitched_coast": "coraline:postgame/stitched_coast",
+      "rootbound_wilds": "coraline:postgame/rootbound_wilds",
+      "white_rift_wastes": "coraline:postgame/white_rift_wastes",
+      "cave_porcelain": "coraline:postgame/cave_porcelain",
+      "cave_soul_glass": "coraline:postgame/cave_soul_glass",
+      "cave_threadroot": "coraline:postgame/cave_threadroot",
+      "cave_clockwork": "coraline:postgame/cave_clockwork",
+      "cave_mirror": "coraline:postgame/cave_mirror",
+      "cave_white_rift": "coraline:postgame/cave_white_rift"
+    }
+  },
+  "palette": {
+    "strata": {
+      "stitched_meadows": {
+        "surface": {
+          "Name": "coraline:stitched_grass"
+        },
+        "subsoil": {
+          "Name": "coraline:other_soil"
+        },
+        "rock": {
+          "Name": "coraline:threadbound_rock"
+        }
+      },
+      "buttonwood_forest": {
+        "surface": {
+          "Name": "coraline:stitched_grass"
+        },
+        "subsoil": {
+          "Name": "coraline:rootbound_soil"
+        },
+        "rock": {
+          "Name": "coraline:threadbound_rock"
+        }
+      },
+      "porcelain_plains": {
+        "surface": {
+          "Name": "coraline:porcelain_stone"
+        },
+        "subsoil": {
+          "Name": "coraline:porcelain_stone"
+        },
+        "rock": {
+          "Name": "coraline:porcelain_stone"
+        }
+      },
+      "candy_wonderland": {
+        "surface": {
+          "Name": "coraline:candy_stone"
+        },
+        "subsoil": {
+          "Name": "coraline:other_soil"
+        },
+        "rock": {
+          "Name": "coraline:candy_stone"
+        }
+      },
+      "velvet_mushroom_forest": {
+        "surface": {
+          "Name": "coraline:velvet_mycelium"
+        },
+        "subsoil": {
+          "Name": "coraline:other_soil"
+        },
+        "rock": {
+          "Name": "coraline:voidstone"
+        }
+      },
+      "clockwork_highlands": {
+        "surface": {
+          "Name": "coraline:clockwork_stone"
+        },
+        "subsoil": {
+          "Name": "coraline:other_soil"
+        },
+        "rock": {
+          "Name": "coraline:clockwork_stone"
+        }
+      },
+      "mirror_marsh": {
+        "surface": {
+          "Name": "coraline:mirror_sand"
+        },
+        "subsoil": {
+          "Name": "coraline:other_soil"
+        },
+        "rock": {
+          "Name": "coraline:mirrorstone"
+        }
+      },
+      "threadbound_mountains": {
+        "surface": {
+          "Name": "coraline:threadbound_rock"
+        },
+        "subsoil": {
+          "Name": "coraline:threadbound_rock"
+        },
+        "rock": {
+          "Name": "coraline:threadbound_rock"
+        }
+      },
+      "paperwood_forest": {
+        "surface": {
+          "Name": "coraline:rootbound_soil"
+        },
+        "subsoil": {
+          "Name": "coraline:other_soil"
+        },
+        "rock": {
+          "Name": "coraline:porcelain_stone"
+        }
+      },
+      "forgotten_gardens": {
+        "surface": {
+          "Name": "coraline:otherworld_moss"
+        },
+        "subsoil": {
+          "Name": "coraline:other_soil"
+        },
+        "rock": {
+          "Name": "coraline:porcelain_stone"
+        }
+      },
+      "pale_wasteland": {
+        "surface": {
+          "Name": "coraline:pale_rift_stone"
+        },
+        "subsoil": {
+          "Name": "coraline:pale_rift_stone"
+        },
+        "rock": {
+          "Name": "coraline:voidstone"
+        }
+      },
+      "otherworld_badlands": {
+        "surface": {
+          "Name": "coraline:stitched_clay"
+        },
+        "subsoil": {
+          "Name": "coraline:stitched_clay"
+        },
+        "rock": {
+          "Name": "coraline:stitched_clay"
+        }
+      },
+      "lanternwood": {
+        "surface": {
+          "Name": "coraline:otherworld_moss"
+        },
+        "subsoil": {
+          "Name": "coraline:rootbound_soil"
+        },
+        "rock": {
+          "Name": "coraline:voidstone"
+        }
+      },
+      "stitched_coast": {
+        "surface": {
+          "Name": "coraline:mirror_sand"
+        },
+        "subsoil": {
+          "Name": "coraline:mirror_sand"
+        },
+        "rock": {
+          "Name": "coraline:threadbound_rock"
+        }
+      },
+      "rootbound_wilds": {
+        "surface": {
+          "Name": "coraline:rootbound_soil"
+        },
+        "subsoil": {
+          "Name": "coraline:other_soil"
+        },
+        "rock": {
+          "Name": "coraline:threadbound_rock"
+        }
+      },
+      "white_rift_wastes": {
+        "surface": {
+          "Name": "coraline:pale_rift_stone"
+        },
+        "subsoil": {
+          "Name": "coraline:mirrorstone"
+        },
+        "rock": {
+          "Name": "coraline:voidstone"
+        }
+      }
+    },
+    "water": {
+      "Name": "minecraft:water"
+    },
+    "foundation": {
+      "Name": "minecraft:bedrock"
+    }
+  }
+}

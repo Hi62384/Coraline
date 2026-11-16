@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "active=false,open=false": {
+      "model": "coraline:block/rift_drill_conduit"
+    },
+    "active=false,open=true": {
+      "model": "coraline:block/rift_drill_conduit"
+    },
+    "active=true,open=false": {
+      "model": "coraline:block/rift_drill_conduit"
+    },
+    "active=true,open=true": {
+      "model": "coraline:block/rift_drill_conduit"
+    }
+  }
+}

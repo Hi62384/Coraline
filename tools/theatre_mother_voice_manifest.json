@@ -1,0 +1,379 @@
+{
+  "reference": "voicelines/othermother/Sample.wav",
+  "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+  "emotion_order": [
+    "happy",
+    "angry",
+    "sad",
+    "afraid",
+    "disgusted",
+    "melancholic",
+    "surprised",
+    "calm"
+  ],
+  "states": {
+    "invitation/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, I've got the most wonderful news! Miss Spink and Miss Forcible have invited you to see a very special theatre performance! They've prepared something absolutely marvelous, and it's all waiting for you through the basement entrance. You've got five minutes to get there, darling. I do hope you enjoy yourself!",
+        "Darling, you're in for such a treat! Those lovely Misses Spink and Forcible have arranged a spectacular show, and they've invited you to come and watch. Just head down through the basement entrance within five minutes. I think you'll be quite amazed!"
+      ]
+    },
+    "invitation/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Now then, sweetheart, Miss Spink and Miss Forcible have invited you to a theatrical performance in the basement. They've gone through a great deal of trouble preparing it, so I'd like you to arrive within five minutes. Do try not to get distracted along the way.",
+        "Darling, the Misses Spink and Forcible have put together quite a special show for you. You'll find the theatre through the basement entrance. You have five minutes to get there, and I do hope you'll be on time."
+      ]
+    },
+    "invitation/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, I've arranged something truly spectacular for you! Miss Spink and Miss Forcible have invited you to their magnificent theatre. They've prepared the loveliest performance, just for you! Go down through the basement entrance within five minutes, sweetheart. I can't wait to hear what you think!",
+        "Sweetheart, you're going to have the most wonderful time! Our dear friends Miss Spink and Miss Forcible have prepared a special theatrical surprise. Their theatre is waiting for you downstairs. You've got five minutes, my love. Don't keep them waiting!"
+      ]
+    },
+    "invitation/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Miss Spink and Miss Forcible have invited you to watch a performance in the basement theatre. They've made quite an effort, and I expect you to show them the courtesy of arriving on time. You have five minutes, sweetheart. No wandering off.",
+        "I've arranged for you to attend a theatre performance. Miss Spink and Miss Forcible will be waiting through the basement entrance. You have five minutes to get there. Do try to behave yourself and follow instructions for once."
+      ]
+    },
+    "invitation/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, Miss Spink and Miss Forcible have prepared a spectacular little surprise for you! Their beautiful theatre is waiting downstairs. You've got five minutes to arrive, sweetheart. I know how easily you get distracted by all those little mysteries, but this is one surprise you're actually supposed to discover.",
+        "Sweetheart, I've got a rather special treat for you. Our lovely friends Miss Spink and Miss Forcible have invited you to their theatre. Just go through the basement entrance within five minutes. I'm sure you'll find their performance much more interesting than poking around where you shouldn't."
+      ]
+    },
+    "ontime/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, there you are, sweetheart! Right on time. Go on downstairs, darling. The show is just about to begin!",
+        "Wonderful, darling! You've arrived at just the right moment. Enjoy the performance!"
+      ]
+    },
+    "ontime/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Ah, good. You're on time, sweetheart. Go along downstairs and enjoy the show.",
+        "There you are. I'm glad you remembered, darling. The theatre is waiting."
+      ]
+    },
+    "ontime/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, how exciting! You're right on time. Go along and have the most wonderful evening!",
+        "There's my sweetheart! I hope you absolutely love the show. Go on, darling!"
+      ]
+    },
+    "ontime/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Good. You've arrived on time. Now go downstairs and behave yourself.",
+        "Well, at least you're punctual. Enjoy the performance, sweetheart."
+      ]
+    },
+    "ontime/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, right on time. I do hope you'll enjoy yourself without getting distracted.",
+        "Sweetheart, there you are. Go enjoy the show, my love. I'll see you afterward."
+      ]
+    },
+    "late/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, there you are! You're a little late, but the show is still waiting. Hurry along downstairs, darling!",
+        "Darling! I was beginning to wonder where you'd gotten to. Never mind. Go on and enjoy the performance!"
+      ]
+    },
+    "late/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Well, there you are. Miss Spink and Miss Forcible have been waiting, sweetheart. Please get downstairs before you delay them any longer.",
+        "Oh, darling, I did ask you to be on time. Hurry along now. There's a performance waiting for you."
+      ]
+    },
+    "late/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my love, you're late! I was beginning to worry you'd miss the whole thing. Quick, sweetheart, go downstairs!",
+        "Darling, you've kept our lovely friends waiting. Never mind, my love. Go enjoy your special show."
+      ]
+    },
+    "late/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "You're late. Again. I gave you five minutes, sweetheart. Stop wasting time and go downstairs.",
+        "Well, you've finally arrived. Miss Spink and Miss Forcible have gone through quite enough trouble. Get to the theatre."
+      ]
+    },
+    "late/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, I wondered whether you'd let your curiosity distract you again. You're late, sweetheart. Go along now.",
+        "Sweetheart, there you are. I was beginning to think you'd found something more interesting than the wonderful show I've arranged."
+      ]
+    },
+    "search/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Sweetheart? The performance has been waiting for such a long time now! Where have you gone, darling? I'm coming to find you!",
+        "Darling! Miss Spink and Miss Forcible are still waiting for you. Oh dear, I hope you haven't gotten lost. I'll come look for you!"
+      ]
+    },
+    "search/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Alright, sweetheart, that's quite enough waiting. I told you where to go, and you've disappeared somewhere. I'm coming to find you.",
+        "Where have you wandered off to this time? The theatre is ready, and you've kept everyone waiting. I'll find you myself."
+      ]
+    },
+    "search/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, where are you? Everyone's been waiting to give you such a lovely performance! Please come back, sweetheart. I'm coming to look for you!",
+        "Sweetheart! I was so looking forward to hearing how much you enjoyed the show, and now I can't find you anywhere. I'll come get you, my love!"
+      ]
+    },
+    "search/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "That is enough. I told you to be at the theatre, and you've chosen to ignore me. I'm coming to find you now, sweetheart.",
+        "Where are you hiding this time? I've waited more than long enough. I expect you to have a very good explanation when I find you."
+      ]
+    },
+    "search/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, I've arranged such a beautiful evening for you, and you've disappeared again. I wonder what could possibly be so interesting. Let's find out, shall we?",
+        "Sweetheart, Miss Spink and Miss Forcible have been waiting, and so have I. I think it's time I came to collect my curious little darling."
+      ]
+    }
+  },
+  "output": "voicelines/othermother/events/theatre",
+  "prefix": "line",
+  "event_directory": "theatre"
+}

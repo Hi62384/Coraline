@@ -25,7 +25,7 @@ public final class MusicFestivalActivity {
     static BlockPos center(ServerPlayer p,VisitData.Scene s){return VillageActivity.center(p,s).south(600);}
     static BlockPos exitPos(BlockPos c){return c.south(9);}
     static CompoundTag state(VisitData.Scene s){return s.loop.festival;}
-    static boolean owns(ServerPlayer p,VisitData.Scene s){return s.owner.equals(p.getUUID())&&s.loop.phase==OtherMotherLoopState.Phase.ACTIVITY&&s.loop.activity==OtherMotherActivities.Activity.MUSIC_FESTIVAL&&ActivityWorld.isActivity(p.level());}
+    static boolean owns(ServerPlayer p,VisitData.Scene s){return com.coraline.multiplayer.StoryCoop.member(p,s)&&s.loop.phase==OtherMotherLoopState.Phase.ACTIVITY&&s.loop.activity==OtherMotherActivities.Activity.MUSIC_FESTIVAL&&ActivityWorld.isActivity(p.level());}
     static boolean exitReady(VisitData.Scene s){return state(s).getInt("Phase")==1||state(s).getInt("Phase")>=3;}
     static Vec3 station(BlockPos c){return Vec3.atBottomCenterOf(c.offset(0,1,-26));}
     static void start(ServerPlayer p,VisitData.Scene s,ServerLevel l){
@@ -82,7 +82,7 @@ public final class MusicFestivalActivity {
         if(elapsed<0&&elapsed%20==0)p.playNotifySound(SoundEvents.NOTE_BLOCK_HAT.value(),SoundSource.PLAYERS,.4F,1.2F);
     }
     public static void press(ServerPlayer p,int generation,int lane){
-        var s=OtherMotherLoop.active(p);if(s==null||!owns(p,s)||s.loop.generation!=generation||state(s).getInt("Phase")!=2||lane<0||lane>3)return;
+        var s=OtherMotherLoop.active(p);if(s==null||!owns(p,s)||!com.coraline.multiplayer.StoryCoop.canAct(p,s)||p.distanceToSqr(center(p,s).north(24).getCenter())>144||s.loop.generation!=generation||state(s).getInt("Phase")!=2||lane<0||lane>3)return;
         var run=LIVE.get(s.owner);if(run==null)return;long now=OtherMotherLoop.now(p);int elapsed=(int)(now-state(s).getLong("Start"));if(elapsed<0||elapsed>=FestivalChart.track(run.track).duration())return;
         // Multiple different buttons in one tick are wrong inputs, not four free hit attempts.
         if(now==run.lastPress){run.score.miss(true);run.grade=3;run.gradeAt=now;return;}run.lastPress=now;
@@ -135,7 +135,8 @@ public final class MusicFestivalActivity {
     private static void sync(ServerPlayer p,VisitData.Scene s,Performance run,int elapsed){FestivalNetwork.send(p,new FestivalNetwork.State(s.loop.generation,elapsed,run.track,run.score.crowd,run.score.streak,run.score.accuracy(),OtherMotherLoop.now(p)-run.gradeAt<12?run.grade:0,FestivalChart.pack(run.chart),run.resolved));}
     private static void finish(ServerPlayer p,VisitData.Scene s,BlockPos c,Performance run){
         if(state(s).getInt("Phase")!=2)return;state(s).putInt("Phase",3);var pool=state(s).getList("Pool",Tag.TAG_COMPOUND).copy();state(s).remove("Pool");OtherMotherLoop.changed(p);
-        int total=0;for(var item:pool){var stack=ItemStack.of((CompoundTag)item);total+=stack.getCount();ActivityTokens.give(p,stack);}
+        var prizes=new java.util.ArrayList<ItemStack>();int total=0;for(var item:pool){var stack=ItemStack.of((CompoundTag)item);total+=stack.getCount();prizes.add(stack);}
+        if(!prizes.isEmpty()&&!com.coraline.multiplayer.StoryRewardDelivery.award(p,s,"festival_final",prizes))for(var stack:prizes)ActivityTokens.give(p,stack);
         for(var tip:run.tips)tip.prop.discard();LIVE.remove(s.owner);FestivalNetwork.clear(p);p.displayClientMessage(Component.empty(),true);
         ActivityScenery.title(p,"BRAVO!","Crowd "+run.score.crowd+" • "+run.score.accuracy()+"% • "+total+" gifts");
         p.playNotifySound(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE,SoundSource.PLAYERS,.5F,1.1F);ActivityWorld.ensureExit(p,s);

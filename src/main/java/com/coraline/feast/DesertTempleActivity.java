@@ -26,22 +26,22 @@ public final class DesertTempleActivity {
     private static void beginPreview(ServerPlayer p,VisitData.Scene s,BlockPos c){
         var n=state(s);int room=n.getInt("Room");PATHS.remove(s.owner);path(s);n.putInt("Phase",2);n.putInt("Next",0);n.putBoolean("OnBoard",false);n.putLong("Preview",OtherMotherLoop.now(p));
         DesertTempleCourse.gate(p.serverLevel(),c,room,true);ActivityScenery.teleport(p,Vec3.atBottomCenterOf(c.offset(0,3,DesertTempleCourse.top(room)+5)));
-        p.setYRot(180);p.setXRot(35);p.connection.teleport(p.getX(),p.getY(),p.getZ(),180,35);OtherMotherLoop.changed(p);
+        CooperativeActivities.regroup(p,s);p.setYRot(180);p.setXRot(35);p.connection.teleport(p.getX(),p.getY(),p.getZ(),180,35);OtherMotherLoop.changed(p);
     }
     static void tick(ServerPlayer p,VisitData.Scene s,BlockPos c){
         if(!owns(p,s))return;var n=state(s);int phase=n.getInt("Phase"),room=n.getInt("Room");long now=OtherMotherLoop.now(p);int top=DesertTempleCourse.top(room),size=TemplePath.size(room);
         if(phase>=5){if(p.getY()<c.getY()-2)ActivityScenery.teleport(p,Vec3.atBottomCenterOf(exitPos(c,s).south(3)));return;}
         if(phase==0){if(now>=n.getLong("VoiceUntil")){n.putInt("Phase",1);ActivityScenery.title(p,"DESERT TEMPLE","Memorize the lights. Walk the path.");OtherMotherLoop.changed(p);}return;}
-        if(!DesertTempleCourse.bounds(c).contains(p.position())||p.getY()<c.getY()-.2){fail(p,s,c);return;}
+        for(var member:CooperativeActivities.playing(p,s))if(!DesertTempleCourse.bounds(c).contains(member.position())||member.getY()<c.getY()-.2){fail(member,s,c);if(n.getInt("Phase")>=5)return;}
         if(phase==4){ensurePrize(p,s,c);return;}
         if(phase==1){
             // Approaching each viewing balcony starts that room; walking the connecting halls remains free.
-            if(p.getZ()<=c.getZ()+top+10)beginPreview(p,s,c);
+            if(CooperativeActivities.playing(p,s).stream().anyMatch(member->member.getZ()<=c.getZ()+top+10))beginPreview(p,s,c);
             else if(p.tickCount%20==0)p.displayClientMessage(Component.literal("Room "+(room+1)+" / 5 • Enter the viewing balcony"),true);
             return;
         }
         if(phase==2){
-            var at=Vec3.atBottomCenterOf(c.offset(0,3,top+5));if(p.position().distanceToSqr(at)>1)ActivityScenery.teleport(p,at);
+            var at=Vec3.atBottomCenterOf(c.offset(0,3,top+5));for(var member:CooperativeActivities.playing(p,s))if(member.position().distanceToSqr(at)>1)ActivityScenery.teleport(member,at);
             var route=path(s);long age=now-n.getLong("Preview");int reveal=Math.min(route.size(),1+(int)(age*route.size()/Math.max(1,previewTicks(room)/2)));
             if(p.tickCount%2==0)for(int i=0;i<reveal;i++){var tile=DesertTempleCourse.tile(c,room,route.get(i));ActivityBlocks.set(p.serverLevel(),tile.below(),Blocks.SEA_LANTERN.defaultBlockState(),2);ActivityBlocks.set(p.serverLevel(),tile,Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE.defaultBlockState(),2);}
             if(age%8==0)p.playNotifySound(SoundEvents.NOTE_BLOCK_CHIME.value(),SoundSource.PLAYERS,.18F,1+(float)reveal/route.size());
@@ -51,20 +51,26 @@ public final class DesertTempleActivity {
                 n.putInt("Phase",3);DesertTempleCourse.gate(p.serverLevel(),c,room,false);ActivityScenery.title(p,"REMEMBER THE PATH","");p.playNotifySound(SoundEvents.IRON_DOOR_OPEN,SoundSource.BLOCKS,.5F,.8F);OtherMotherLoop.changed(p);
             }return;
         }
+        for(var member:CooperativeActivities.playing(p,s)){stepPlayer(member,s,c,room,top,size);if(n.getInt("Phase")!=3)break;}
+        if(p.tickCount%20==0)p.displayClientMessage(Component.literal("Room "+(room+1)+" / 5"),true);
+    }
+    private static void stepPlayer(ServerPlayer p,VisitData.Scene s,BlockPos c,int room,int top,int size){
+        var n=state(s);var trial=com.coraline.multiplayer.StorySessionData.get(p.server).activityProgress(p,s,"temple");if(trial==null)trial=n;else if(!trial.contains("Room")||trial.getInt("Room")!=room){trial.putInt("Room",room);trial.putInt("Next",0);trial.putBoolean("OnBoard",false);}
         double rx=p.getX()-c.getX(),rz=p.getZ()-c.getZ();int x=(int)Math.floor(rx)+size/2,z=top-(int)Math.floor(rz);
         boolean board=x>=0&&x<size&&z>=0&&z<size;
         if(board){
             if(p.getY()>c.getY()+.3){fail(p,s,c);return;} // no jumping across pressure plates
-            n.putBoolean("OnBoard",true);var route=path(s);int previous=n.getInt("Next"),next=TemplePath.step(route,previous,new TemplePath.Tile(x,z));
-            if(next<0){fail(p,s,c);return;}if(next!=previous){n.putInt("Next",next);OtherMotherLoop.changed(p);p.playNotifySound(SoundEvents.NOTE_BLOCK_BELL.value(),SoundSource.PLAYERS,.12F,.8F+next*.015F);}
+            trial.putBoolean("OnBoard",true);var route=path(s);int previous=trial.getInt("Next"),next=TemplePath.step(route,previous,new TemplePath.Tile(x,z));
+            if(next<0){fail(p,s,c);return;}if(next!=previous){trial.putInt("Next",next);OtherMotherLoop.changed(p);p.playNotifySound(SoundEvents.NOTE_BLOCK_BELL.value(),SoundSource.PLAYERS,.12F,.8F+next*.015F);}
             if(next==route.size()){
                 DesertTempleCourse.door(p.serverLevel(),c,room,false);PATHS.remove(s.owner);n.putInt("Phase",room==4?4:1);if(room<4)n.putInt("Room",room+1);
                 p.playNotifySound(SoundEvents.PLAYER_LEVELUP,SoundSource.PLAYERS,.6F,1.2F);p.serverLevel().sendParticles(ParticleTypes.FIREWORK,p.getX(),p.getY()+1,p.getZ(),16,.8,.8,.8,.04);OtherMotherLoop.changed(p);
             }
-        }else if(n.getBoolean("OnBoard")||rz<top-size+1||Math.abs(rx)>size/2.0+1){fail(p,s,c);return;}
-        if(p.tickCount%20==0)p.displayClientMessage(Component.literal("Room "+(room+1)+" / 5"),true);
+        }else if(trial.getBoolean("OnBoard")||rz<top-size+1||Math.abs(rx)>size/2.0+1){fail(p,s,c);return;}
     }
     private static void fail(ServerPlayer p,VisitData.Scene s,BlockPos c){
+        if(CooperativeActivities.failed(p,s)){ActivityScenery.title(p,"WRONG STEP","Watch the group finish the path.");return;}
+        if(p.isSpectator()&&com.coraline.multiplayer.StorySessionData.get(p.server).groupActivity(s))return;
         if(state(s).getInt("Phase")>=5)return;state(s).putInt("Phase",5);PATHS.remove(s.owner);OtherMotherLoop.changed(p);
         ActivityScenery.title(p,"THE TEMPLE REMEMBERS","One wrong step. No jackpot this time.");p.playNotifySound(SoundEvents.GENERIC_EXPLODE,SoundSource.BLOCKS,.6F,.5F);
         p.serverLevel().sendParticles(ParticleTypes.SMOKE,p.getX(),p.getY()+.5,p.getZ(),30,.8,.5,.8,.05);ActivityScenery.teleport(p,Vec3.atBottomCenterOf(c));ActivityWorld.ensureExit(p,s);
@@ -76,11 +82,12 @@ public final class DesertTempleActivity {
         }
     }
     static boolean takePrize(VisitData.Scene s,UUID owner){if(!s.owner.equals(owner)||state(s).getInt("Phase")!=4)return false;state(s).putInt("Phase",6);return true;}
-    static boolean interactProp(ServerPlayer p,VisitData.Scene s,ScenePropEntity prop){if(prop.slot!=710)return false;if(!owns(p,s)||!takePrize(s,p.getUUID()))return true;OtherMotherLoop.changed(p);prop.discard();jackpot(p,s);ActivityWorld.ensureExit(p,s);return true;}
+    static boolean interactProp(ServerPlayer p,VisitData.Scene s,ScenePropEntity prop){if(prop.slot!=710)return false;if(!com.coraline.multiplayer.StoryCoop.canAct(p,s)||!ActivityWorld.isActivity(p.level())||s.loop.activity!=OtherMotherActivities.Activity.OTHER_DESERT_TEMPLE||!takePrize(s,s.owner))return true;OtherMotherLoop.changed(p);prop.discard();jackpot(p,s);ActivityWorld.ensureExit(p,s);return true;}
     static void jackpot(ServerPlayer p,VisitData.Scene s){
         // Existing activity top-tier scale, preserving the current visit's reward theme.
-        if(s.loop.activityLoot()==OtherMotherDialogue.Loot.FOOD){ActivityTokens.give(p,new ItemStack(Items.ENCHANTED_GOLDEN_APPLE));for(int i=0;i<4;i++)ActivityTokens.give(p,FeastContent.serving(p.getRandom(),i));}
-        else {ActivityTokens.give(p,new ItemStack(Items.NETHERITE_INGOT));ActivityTokens.give(p,new ItemStack(Items.DIAMOND,4+p.getRandom().nextInt(3)));ActivityTokens.give(p,new ItemStack(com.coraline.clothing.OtherMaterials.OTHER_IRON.get(),2));}
+        var prizes=new java.util.ArrayList<ItemStack>();if(s.loop.activityLoot()==OtherMotherDialogue.Loot.FOOD){prizes.add(new ItemStack(Items.ENCHANTED_GOLDEN_APPLE));for(int i=0;i<4;i++)prizes.add(FeastContent.serving(p.getRandom(),i));}
+        else {prizes.add(new ItemStack(Items.NETHERITE_INGOT));prizes.add(new ItemStack(Items.DIAMOND,4+p.getRandom().nextInt(3)));prizes.add(new ItemStack(com.coraline.clothing.OtherMaterials.OTHER_IRON.get(),2));}
+        if(!com.coraline.multiplayer.StoryRewardDelivery.award(p,s,"temple_final",prizes))for(var item:prizes)ActivityTokens.give(p,item);
         p.playNotifySound(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE,SoundSource.PLAYERS,.7F,1);
     }
     static void clean(ServerLevel l,VisitData.Scene s,BlockPos c){PATHS.remove(s.owner);ActivityScenery.clean(l,s,DesertTempleCourse.bounds(c).inflate(3));}

@@ -1,0 +1,8 @@
+Incidental Other Mother and Other Father dialogue uses the local IndexTTS2
+pipeline and the same respective supplied reference recordings as this mod's
+other generated parent dialogue. These are generated character recordings,
+not newly performed recordings by an actor. Existing supplied story recordings
+are preserved separately. See INDEXTTS_AUDIO_LICENSE.txt for the model's notice.
+Scripts are the existing authored dinner, party, delivery and secret remarks.
+Generation/reference/script hashes and objective speech-quality receipts are
+retained with the source masters outside this runtime archive.

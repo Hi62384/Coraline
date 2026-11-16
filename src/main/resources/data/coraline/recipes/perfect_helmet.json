@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "PPP",
+    "P P"
+  ],
+  "key": {
+    "P": {
+      "item": "coraline:perfect_ingot"
+    }
+  },
+  "result": {
+    "item": "coraline:perfect_helmet",
+    "count": 1
+  }
+}

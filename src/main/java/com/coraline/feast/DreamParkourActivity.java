@@ -351,7 +351,7 @@ public final class DreamParkourActivity {
         }
         if(l.parkourRewarded)return;
         if(p.tickCount%4==0)pulsePads(p.serverLevel(),c,l.parkourSeed,now);
-        if(p.onGround()&&landedStage(p,c)==STAGES-1){finish(p,s,c,true);return;}
+        if(CooperativeActivities.playing(p,s).stream().anyMatch(member->member.onGround()&&landedStage(member,c)==STAGES-1)){finish(p,s,c,true);return;}
         if(now>=l.parkourEndAt){finish(p,s,c,false);return;}
         if(p.tickCount%20==0){int seconds=(int)Math.max(0,(l.parkourEndAt-now+19)/20);
             p.displayClientMessage(Component.literal("Dream climb: "+seconds+"s left  |  Current height: "+height(p,c)+" blocks"),true);}
@@ -359,7 +359,7 @@ public final class DreamParkourActivity {
     private static int height(ServerPlayer p,BlockPos c){return Math.max(0,Math.min(stage(c,STAGES-1).getY()-c.getY()+1,(int)Math.floor(p.getY()-c.getY())));}
     private static void finish(ServerPlayer p,VisitData.Scene s,BlockPos c,boolean summit){
         var l=s.loop;if(l.parkourRewarded)return;
-        int currentHeight=summit?stage(c,STAGES-1).getY()-c.getY()+1:height(p,c);
+        int currentHeight=summit?stage(c,STAGES-1).getY()-c.getY()+1:CooperativeActivities.playing(p,s).stream().mapToInt(member->height(member,c)).max().orElse(0);
         int tier=currentHeight==0?0:Math.min(5,1+(currentHeight-1)/36);
         var prize=switch(tier){
             case 0->new ItemStack(Items.COOKIE,4);
@@ -369,7 +369,7 @@ public final class DreamParkourActivity {
             case 4->new ItemStack(Items.DIAMOND,6);
             default->new ItemStack(Items.NETHERITE_INGOT,2);
         };
-        String name=prize.getHoverName().getString();p.getInventory().add(prize);if(!prize.isEmpty())p.drop(prize,false);
+        String name=prize.getHoverName().getString();if(!com.coraline.multiplayer.StoryRewardDelivery.award(p,s,"parkour_final",java.util.List.of(prize))&&!AcceptedButtonEyesInventory.locked(p)){p.getInventory().add(prize);if(!prize.isEmpty())p.drop(prize,false);}
         l.parkourRewarded=true;OtherMotherLoop.changed(p);ActivityWorld.ensureExit(p,s);
         // The player may be seventy blocks up when time expires; bring them
         // back to the launch cloud so the newly opened portal is reachable.

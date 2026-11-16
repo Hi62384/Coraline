@@ -1,0 +1,68 @@
+{
+  "a": {
+    "source": "voicelines/MissSpinkAndForcible/A.wav",
+    "source_sha256": "574090509cd62080f9eff19a11e1f9742c2053722a0592f5d4d7afccc5d82182",
+    "seconds": 9.47375,
+    "ticks": 190
+  },
+  "b": {
+    "source": "voicelines/MissSpinkAndForcible/B.wav",
+    "source_sha256": "c9dedf0609f0f3aa1d935f33a0cedaf3f9607953d8e845e74864241fb2d65ccf",
+    "seconds": 2.438083,
+    "ticks": 49
+  },
+  "c": {
+    "source": "voicelines/MissSpinkAndForcible/C.wav",
+    "source_sha256": "6b658fea1c85c3f48e4da0ac9e738b38f19ae1460b7ec0c257e4b49a25ce8b0c",
+    "seconds": 19.168583,
+    "ticks": 384
+  },
+  "d": {
+    "source": "voicelines/MissSpinkAndForcible/D.wav",
+    "source_sha256": "879bab6b53a2ff57165072c53e60bb09accf13e4032490cef9c1740f96ac4d1b",
+    "seconds": 10.53025,
+    "ticks": 211
+  },
+  "e": {
+    "source": "voicelines/MissSpinkAndForcible/E.wav",
+    "source_sha256": "54ccca06ffb30b36f1ec9d7fd08be2851af1c6312f66e0fd663dc918e2766d9c",
+    "seconds": 4.852958,
+    "ticks": 98
+  },
+  "f": {
+    "source": "voicelines/MissSpinkAndForcible/F.wav",
+    "source_sha256": "9dcd6181ca546447997aa94a084956855d545482634b3af8b2cfede383f867e9",
+    "seconds": 9.787208,
+    "ticks": 196
+  },
+  "g": {
+    "source": "voicelines/MissSpinkAndForcible/G.wav",
+    "source_sha256": "1f346ea6cbc772db7f51f413a741ee42fc531b7cc80b170c2d021fd4fa65c2cc",
+    "seconds": 29.141042,
+    "ticks": 583
+  },
+  "h": {
+    "source": "voicelines/MissSpinkAndForcible/H.wav",
+    "source_sha256": "cb22f9359a140e667a4fbc3b6d93b23fb542a6d2210945d06f1910f71daab525",
+    "seconds": 3.285625,
+    "ticks": 66
+  },
+  "i": {
+    "source": "voicelines/MissSpinkAndForcible/I.wav",
+    "source_sha256": "dcebeb70663458fe0da5274eb9a1dbe7222669b110090a418d9e9f3bdd1c5e22",
+    "seconds": 1.55575,
+    "ticks": 32
+  },
+  "j": {
+    "source": "voicelines/MissSpinkAndForcible/J.wav",
+    "source_sha256": "02f967751af145ccec51c2fced1807b2e6ddad825ad72c3760bb5d6b77a6959b",
+    "seconds": 11.475958,
+    "ticks": 230
+  },
+  "music": {
+    "source": "music/eventbased/SpinkAndForcible.mp3",
+    "source_sha256": "c98646ae75abd994f46b9e422738d9cd3e86cd0d2c1899f00474130d53249ee1",
+    "seconds": 31.079917,
+    "ticks": 622
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "coraline:button_eye",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:other_iron_thread_cutter",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:needle_rapier",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:thread_whip",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

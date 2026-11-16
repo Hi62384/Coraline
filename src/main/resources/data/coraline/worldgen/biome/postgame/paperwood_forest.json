@@ -1,0 +1,36 @@
+{
+  "has_precipitation": true,
+  "temperature": 0.55,
+  "downfall": 0.55,
+  "effects": {
+    "fog_color": 12893611,
+    "sky_color": 14734780,
+    "water_color": 6523571,
+    "water_fog_color": 3426157
+  },
+  "spawners": {
+    "monster": [
+      {
+        "type": "coraline:button_eyed_wanderer",
+        "weight": 12,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "coraline:stitched_hound",
+        "weight": 8,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "coraline:paper_wraith",
+        "weight": 5,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ]
+  },
+  "spawn_costs": {},
+  "carvers": {},
+  "features": []
+}

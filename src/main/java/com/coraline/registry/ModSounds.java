@@ -17,6 +17,7 @@ public final class ModSounds {
     public static final RegistryObject<SoundEvent> WYBIE_LINE_C = register("wybie_line_c");
     public static final RegistryObject<SoundEvent> FESTIVAL_HARP_LOW=register("festival_harp_low"), FESTIVAL_HARP=register("festival_harp"), FESTIVAL_HARP_HIGH=register("festival_harp_high");
     public static final RegistryObject<SoundEvent> THREAD_WHIP = register("thread_whip");
+    public static final RegistryObject<SoundEvent> PARTY_CHATTER=SOUNDS.register("party_chatter",()->SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath("coraline","party_chatter")));
 
     private ModSounds() {
     }

@@ -191,6 +191,11 @@ final class CakeMaking {
     }
     private static void pulse(ServerPlayer p,Vec3 at){p.serverLevel().sendParticles(p,ParticleTypes.END_ROD,true,
         at.x,at.y+.20,at.z,1,.015,.015,.015,0);}
+    static void victimWorkpiece(ServerLevel level,VisitData.Scene s,BlockPos c,int step){
+        s.loop.cakeStage=3;s.loop.cakeStep=Math.max(0,Math.min(5,step));s.loop.cakeBase=0;s.loop.cakeLayers=2;
+        s.loop.cakeFilling=0;s.loop.cakeFrosting=0;s.loop.cakeFrostCoverage=step>=4?100:0;
+        s.loop.cakeOvenStartedAt=level.getGameTime()-Math.max(0,(step-2)*100L);install(level,s,c);sync(level,s,c);
+    }
     private static void sync(ServerLevel level,VisitData.Scene s,BlockPos c){
         var l=s.loop;if(l.cakeStage!=3)return;var props=LoopProps.nearby(level,s,c);
         for(int slot=0;slot<3;slot++){

@@ -69,6 +69,7 @@ public final class MineshaftActivity {
             p.getInventory().setItem(loanSlot,tool);
         }
         n.put("MineExtraStored",extra);p.inventoryMenu.broadcastChanges();
+        for(var member:CooperativeActivities.playing(p,s))if(member!=p){giveGuestTool(member,s,ModItems.ACTIVITY_MINING_PICK.get());giveGuestTool(member,s,ModItems.ACTIVITY_MINING_SHOVEL.get());giveGuestTool(member,s,ModItems.ACTIVITY_MINE_MAP.get());}
         ExpeditionNetwork.mine(p,5);
         ActivityScenery.title(p,"OTHER MINESHAFT","20 minutes. Five hearts. Return here to keep your haul.");ActivityWorld.ensureExit(p,s);
     }
@@ -79,16 +80,20 @@ public final class MineshaftActivity {
         var dig=DIG.get(p.getUUID());if(dig==null||!dig.pos.equals(at)){reset(p);dig=new Dig(at,OtherMotherLoop.now(p));DIG.put(p.getUUID(),dig);}dig.heartbeat=OtherMotherLoop.now(p);
     }
     private static void reset(ServerPlayer p){var d=DIG.remove(p.getUUID());if(d!=null)p.serverLevel().destroyBlockProgress(p.getId(),d.pos,-1);}
-    static void tick(ServerPlayer p,VisitData.Scene s,BlockPos c){var n=state(s);if(!bounds(c,s.loop.activity).inflate(-1).contains(p.position())){if(n.getInt("Phase")==1){fail(p,s,"You fell outside the mine.");return;}ActivityScenery.teleport(p,Vec3.atBottomCenterOf(c));}if(n.getInt("Phase")!=1)return;
-        long now=OtherMotherLoop.now(p),left=n.getLong("End")-now;if(left<=0){fail(p,s,"You did not return before the deadline.");return;}
-        if(!ORES.containsKey(s.owner)){fail(p,s,"The expedition was interrupted.");return;}
-        enforceHands(p,s);
-        if(p.tickCount%10==0)ExpeditionNetwork.mine(p,n.getInt("Hearts"));
-        MineThreats.tick(p,s,c,now);
-        if(n.getInt("Phase")!=1)return;
-        var bar=BARS.computeIfAbsent(s.owner,id->new ServerBossEvent(Component.empty(),BossEvent.BossBarColor.BLUE,BossEvent.BossBarOverlay.PROGRESS));bar.addPlayer(p);bar.setProgress(Math.max(0,Math.min(1,left/24000F)));if(p.tickCount%10==0)bar.setName(Component.literal(String.format("%d:%02d • Bag: %d • Return to the entrance",left/1200,(left/20)%60,n.getInt("Count"))));
-        if(left==1200||left==600||left==200){ActivityScenery.title(p,"",left/20+" seconds remaining");p.playNotifySound(SoundEvents.NOTE_BLOCK_CHIME.value(),SoundSource.PLAYERS,.6F,1);}
-        var d=DIG.get(s.owner);if(d==null)return;var ore=ORES.getOrDefault(s.owner,Map.of()).get(d.pos);
+    static CompoundTag personal(ServerPlayer p,VisitData.Scene s){var progress=com.coraline.multiplayer.StorySessionData.get(p.server).activityProgress(p,s,"mine");if(progress==null)return state(s);if(!progress.contains("Hearts"))progress.putInt("Hearts",5);return progress;}
+    static void tick(ServerPlayer p,VisitData.Scene s,BlockPos c){
+        var n=state(s);if(n.getInt("Phase")!=1)return;long now=OtherMotherLoop.now(p),left=n.getLong("End")-now;
+        if(left<=0||!ORES.containsKey(s.owner)){if(com.coraline.multiplayer.StorySessionData.get(p.server).groupActivity(s))ActivityWorld.cooperativeFailure(p,s);else fail(p,s,left<=0?"You did not return before the deadline.":"The expedition was interrupted.");return;}
+        for(var member:CooperativeActivities.playing(p,s)){
+            if(!bounds(c,s.loop.activity).inflate(-1).contains(member.position())){fail(member,s,"You fell outside the mine.");continue;}
+            if(member==p)enforceHands(member,s);else if(member.tickCount%40==0){giveGuestTool(member,s,ModItems.ACTIVITY_MINING_PICK.get());giveGuestTool(member,s,ModItems.ACTIVITY_MINING_SHOVEL.get());giveGuestTool(member,s,ModItems.ACTIVITY_MINE_MAP.get());}
+            if(p.tickCount%10==0)ExpeditionNetwork.mine(member,personal(member,s).getInt("Hearts"));digTick(member,s,now);
+        }
+        MineThreats.tick(p,s,c,now);if(n.getInt("Phase")!=1)return;
+        var bar=BARS.computeIfAbsent(s.owner,id->new ServerBossEvent(Component.empty(),BossEvent.BossBarColor.BLUE,BossEvent.BossBarOverlay.PROGRESS));for(var member:CooperativeActivities.playing(p,s))bar.addPlayer(member);bar.setProgress(Math.max(0,Math.min(1,left/24000F)));if(p.tickCount%10==0)bar.setName(Component.literal(String.format("%d:%02d | Bag: %d | Return to the entrance",left/1200,(left/20)%60,n.getInt("Count"))));
+    }
+    private static void digTick(ServerPlayer p,VisitData.Scene s,long now){
+        var d=DIG.get(p.getUUID());if(d==null)return;var ore=ORES.getOrDefault(s.owner,Map.of()).get(d.pos);
         if(ore==null||now-d.heartbeat>8||!validTool(p,s,ModItems.ACTIVITY_MINING_PICK.get())||p.getEyePosition().distanceToSqr(Vec3.atCenterOf(d.pos))>30||!p.level().getBlockState(d.pos).is(BLOCKS[ore.kind])){reset(p);return;}
         d.ticks++;p.serverLevel().destroyBlockProgress(p.getId(),d.pos,Math.min(9,d.ticks*10/ore.ticks()));
         if(d.ticks%5==0)p.playNotifySound(SoundEvents.STONE_HIT,SoundSource.BLOCKS,.5F,1.2F);
@@ -100,15 +105,15 @@ public final class MineshaftActivity {
     /** Successful extraction is allowed only through the entrance portal before time expires. */
     static void settle(ServerPlayer p,VisitData.Scene s){
         var n=state(s);if(n.getBoolean("Paid"))return;
-        boolean success=n.getInt("Phase")==1&&n.getInt("Hearts")>0&&OtherMotherLoop.now(p)<n.getLong("End")
-            &&p.position().distanceToSqr(Vec3.atBottomCenterOf(center(p,s).south(7)))<36;
+        boolean success=n.getInt("Phase")==1&&!CooperativeActivities.playing(p,s).isEmpty()&&OtherMotherLoop.now(p)<n.getLong("End")
+            &&CooperativeActivities.near(p,s,Vec3.atBottomCenterOf(center(p,s).south(7)),36);
         n.putBoolean("Paid",true);var bag=n.getList("Bag",10).copy();n.remove("Bag");
-        if(success){var pending=p.getPersistentData().getList("CoralineMineDelivery",10);for(var t:bag)pending.add(t);p.getPersistentData().put("CoralineMineDelivery",pending);}
+        if(success){var prizes=new java.util.ArrayList<ItemStack>();for(var t:bag)prizes.add(ItemStack.of((CompoundTag)t));if(!prizes.isEmpty()&&!com.coraline.multiplayer.StoryRewardDelivery.award(p,s,"mine_extraction",prizes)){var pending=p.getPersistentData().getList("CoralineMineDelivery",10);for(var t:bag)pending.add(t);p.getPersistentData().put("CoralineMineDelivery",pending);}}
         n.putInt("Phase",success?4:5);restoreLantern(p,s);OtherMotherLoop.changed(p);
     }
     public static void deliver(ServerPlayer p){var tags=p.getPersistentData().getList("CoralineMineDelivery",10).copy();p.getPersistentData().remove("CoralineMineDelivery");for(var tag:tags)ActivityTokens.give(p,ItemStack.of((CompoundTag)tag));}
     static void restoreLantern(ServerPlayer p,VisitData.Scene s){
-        var n=state(s);if(!n.getBoolean("LanternBorrowed"))return;
+        if(!p.getUUID().equals(s.owner))return;var n=state(s);if(!n.getBoolean("LanternBorrowed"))return;
         for(int i=0;i<p.getInventory().getContainerSize();i++){var stack=p.getInventory().getItem(i);if(ExpeditionActivities.temporary(stack))p.getInventory().setItem(i,ItemStack.EMPTY);}
         for(var entry:n.getList("MineExtraStored",10)){
             var saved=(CompoundTag)entry;var stack=ItemStack.of(saved.getCompound("Stack"));int slot=saved.getInt("Slot");
@@ -133,11 +138,13 @@ public final class MineshaftActivity {
         p.inventoryMenu.broadcastChanges();
     }
     static void fail(ServerPlayer p,VisitData.Scene s,String why){
+        if(com.coraline.multiplayer.StorySessionData.get(p.server).groupActivity(s)&&!AcceptedButtonEyes.active(s)){CooperativeActivities.failed(p,s);reset(p);return;}
         var n=state(s);if(n.getBoolean("Paid"))return;n.putBoolean("Paid",true);n.putInt("Phase",5);n.putString("Failure",why);n.remove("Bag");n.putInt("Count",0);
         clear(p,s);restoreLantern(p,s);restore(p,s);OtherMotherLoop.changed(p);
         if(ActivityWorld.isActivity(p.level())){ActivityScenery.teleport(p,Vec3.atBottomCenterOf(center(p,s)));ActivityScenery.title(p,"EXPEDITION LOST",why+" Your mining bag is lost.");ActivityWorld.ensureExit(p,s);}
     }
     static void finish(ServerPlayer p,VisitData.Scene s,boolean show){fail(p,s,"Expedition ended.");}
+    static void leaveViewer(ServerPlayer p){reset(p);for(var bar:BARS.values())bar.removePlayer(p);ExpeditionNetwork.mine(p,-1);}
     static void clear(ServerPlayer p,VisitData.Scene s){ExpeditionNetwork.mine(p,-1);reset(p);var b=BARS.remove(s.owner);if(b!=null)b.removeAllPlayers();forget(s.owner);}
     static void forget(UUID owner){ORES.remove(owner);DIG.remove(owner);var b=BARS.remove(owner);if(b!=null)b.removeAllPlayers();}
     public static boolean cart(ServerPlayer p,net.minecraft.world.entity.Entity e){if(!e.getPersistentData().getBoolean("ExpeditionCart"))return false;var s=OtherMotherLoop.active(p);if(owns(p,s)&&s.loop.activity==OtherMotherActivities.Activity.OTHER_MINESHAFT&&state(s).getInt("Phase")==1&&ActivityScenery.owned(e,s)&&e.getPersistentData().getInt("Generation")==s.loop.generation&&p.distanceToSqr(e)<25){if(p.getVehicle()==e)return true;var c=center(p,s);int n=(int)(c.getZ()-e.getZ());e.getPersistentData().putInt("MineStop",Math.min(262,((n+16)/64+1)*64+10));p.startRiding(e,true);e.setDeltaMovement(0,0,-.35);}return true;}

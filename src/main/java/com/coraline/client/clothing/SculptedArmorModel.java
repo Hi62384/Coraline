@@ -20,6 +20,7 @@ public final class SculptedArmorModel extends HumanoidModel<LivingEntity> {
     private static final Map<String,SculptedArmorModel> CACHE=new HashMap<>();
     private final List<Panel> panels=new ArrayList<>();
     private double viewDistance;
+    private boolean perfectPowered;
     private final ModelPart cape=new ModelPart(List.of(),Map.of());
     private record Point(float x,float y,float z,float u,float v,float nx,float ny,float nz) {}
     private record Panel(ModelPart bone,float r,float g,float b,int detail,boolean emissive,List<Point> vertices) {}
@@ -85,6 +86,7 @@ public final class SculptedArmorModel extends HumanoidModel<LivingEntity> {
         model.cape.copyFrom(model.body);
         model.cape.xRot-=.035f*(float)Math.sin(entity.tickCount*.045);
         model.viewDistance=Minecraft.getInstance().gameRenderer.getMainCamera().getPosition().distanceToSqr(entity.position());
+        model.perfectPowered=id.startsWith("perfect_")&&PerfectPowerVisuals.powered(entity);
         return model;
     }
     public static void clearCache(){CACHE.clear();}
@@ -99,7 +101,7 @@ public final class SculptedArmorModel extends HumanoidModel<LivingEntity> {
             panel.bone.translateAndRotate(pose);
             var transform=pose.last();
             for(var v:panel.vertices)consumer.vertex(transform.pose(),v.x,v.y,v.z)
-                .color(r*panel.r,g*panel.g,b*panel.b,alpha).uv(v.u,v.v).overlayCoords(overlay).uv2(panel.emissive?net.minecraft.client.renderer.LightTexture.FULL_BRIGHT:light)
+                .color(r*(perfectPowered?panel.r*.65F+.35F:panel.r),g*(perfectPowered?panel.g*.65F+.26F:panel.g),b*(perfectPowered?panel.b*.65F+.035F:panel.b),alpha).uv(v.u,v.v).overlayCoords(overlay).uv2(panel.emissive||perfectPowered?net.minecraft.client.renderer.LightTexture.FULL_BRIGHT:light)
                 .normal(transform.normal(),v.nx,v.ny,v.nz).endVertex();
             pose.popPose();
         }

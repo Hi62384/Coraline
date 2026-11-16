@@ -1,0 +1,233 @@
+{
+  "rescue_mantis_intro": {
+    "source": "voicelines/otherfather/extra/MotherMakingMe.wav",
+    "source_sha256": "2b907fb7a1ae5c686cebe038ad453c2eaaf2c5f752881a82db891f13ca92c6ab",
+    "ogg_sha256": "30ec5af648d0c8816517a8e9a74a7fd5660a358b6ae996e6f3b6e584aa9d2ae4",
+    "seconds": 12.979958,
+    "ticks": 260
+  },
+  "rescue_mantis_take": {
+    "source": "voicelines/otherfather/extra/TakeIt.wav",
+    "source_sha256": "986b956c94804ff6f49ca5b0412f9992feb159ce4c74a75a697c23d17db03f4c",
+    "ogg_sha256": "42e26a80a4923e5cd728ab0272be8185ad1314e130ddbb9c0a124a816d00087c",
+    "seconds": 2.728333,
+    "ticks": 55
+  },
+  "rescue_mantis_gone": {
+    "source": "voicelines/otherfather/extra/Blurgh.wav",
+    "source_sha256": "c6c7d3b3a813652fc8b4c175aba0e1d185289c248744394f258c5a6ad8d77fe8",
+    "ogg_sha256": "f29c51b58f4af1e61ca1cd5f470a3119a2718488d2e4fcc48fffac7f3c980346",
+    "seconds": 2.600625,
+    "ticks": 53
+  },
+  "rescue_theatre_grab": {
+    "source": "voicelines/MissSpinkAndForcible/other/ThiefGiveItBack.wav",
+    "source_sha256": "62e74db1792a544da5aebb630bebd3ce60a613bfd6910ee86b0602d53ea2e716",
+    "ogg_sha256": "00ea84a178ab7882e427fa11db1e744ec81f07861abfc24ac4f5c2a79384edc4",
+    "seconds": 21.130167,
+    "ticks": 423
+  },
+  "rescue_clothes": {
+    "source": "voicelines/story/EvilWitchImNotScared.wav",
+    "source_sha256": "9267e1c90b5e6607b27579a59c6065b32446806fc75c15089eddf7aa908f7825",
+    "ogg_sha256": "cc7e03415b93233ccf9f8d1789c5589690b7033c053c88073b8cbdb04d4f16f7",
+    "seconds": 7.604542,
+    "ticks": 153
+  },
+  "rescue_theatre_music": {
+    "source": "music/eventbased/Theatre.mp3",
+    "source_sha256": "9a16cbd9d4265440eb4aa2ab780a2a8a5e564330cd846574e4fd0f5ff6c4787c",
+    "ogg_sha256": "9197e4c021d1097432b2852a61fc5dbd51c99e823d24fb47d825824cdab96242",
+    "shared_reference": "coraline:numbered_originals/theatre_music",
+    "ticks": 1952
+  },
+  "rescue_bobinsky_a": {
+    "source": "voicelines/bobinsky/other/A.wav",
+    "source_sha256": "140b00072235886f2d80f7ea4e53b82dde88d7aa7b80350ae88c1838919c84da",
+    "ogg_sha256": "44ab7c3a07b7da1a1bed2ce1d3db68bb0fe0a00d24416b30345a17fa9f999751",
+    "seconds": 7.116917,
+    "ticks": 143
+  },
+  "rescue_bobinsky_b": {
+    "source": "voicelines/bobinsky/other/B.wav",
+    "source_sha256": "ca9b5b3b43cde78893fc8b26a0965411d1f4f659a87f121f9ea78d85dcc3225b",
+    "ogg_sha256": "44f6483b05d54b16c2fc728a65a2270d36b87b96ecf762754ed98cb0a81942a8",
+    "seconds": 6.060417,
+    "ticks": 122
+  },
+  "rescue_bobinsky_c": {
+    "source": "voicelines/bobinsky/other/C.wav",
+    "source_sha256": "77e0e7012b033a07d5519fe4cce52f8dad4e7d5fdb97d56b0aae78b4b78b9a15",
+    "ogg_sha256": "ec7e67356a100a44acbef5e92ae6c03f9c164c58000a6e1c1c064d2084834cdb",
+    "seconds": 4.632375,
+    "ticks": 93
+  },
+  "rescue_bobinsky_d": {
+    "source": "voicelines/bobinsky/other/D.wav",
+    "source_sha256": "c03a5cae97c593cac5b91c17f964ebe3acc91a1d8aa0fb8dc41df67aeb0a2a0d",
+    "ogg_sha256": "49333164b21b430888872eab898b723b1a751c6ede29b8a36725df58d4251de3",
+    "seconds": 16.428125,
+    "ticks": 329
+  },
+  "rescue_bobinsky_e": {
+    "source": "voicelines/bobinsky/other/E.wav",
+    "source_sha256": "12fd836ab77eb875894cbabbb227fbba3edfc3322b1f253a1992561ef6d86a42",
+    "ogg_sha256": "b46d337e915ca6e91c6b624769be4aae3d07e386a8fc45dbcd02b4da0c4e2761",
+    "seconds": 24.93825,
+    "ticks": 499
+  },
+  "finale_a": {
+    "source": "voicelines/story/FinalBossFight/A.wav",
+    "source_sha256": "32aee6f406163d5ddf212981eb3ad6fc4e73806d56823a4164614d68ad7255ef",
+    "ogg_sha256": "c628e878671424cab176d9f9a3f97ac82f11a6fdab4aa1a51a93eb1c676dbd4d",
+    "seconds": 9.589833,
+    "ticks": 192
+  },
+  "finale_b": {
+    "source": "voicelines/story/FinalBossFight/B.wav",
+    "source_sha256": "74ab5c0dd2f466a82dd77460364d02796ce2a54333acb43bb5cfc06e6fa07fe2",
+    "ogg_sha256": "d018b68aeafae6f5551090f901c7e4c829fdda43663fd3fffdf9a3fae70f5441",
+    "seconds": 10.181958,
+    "ticks": 204
+  },
+  "finale_c": {
+    "source": "voicelines/story/FinalBossFight/C.wav",
+    "source_sha256": "896ba188484ccd44518bc407ac8677f734f0231133e5f91b5c6b1659f5a4b4d6",
+    "ogg_sha256": "a950f8269a1576cc02bcef059fd3b6e06d01bfffc7e3ac2222e8452f487bb302",
+    "seconds": 5.433458,
+    "ticks": 109
+  },
+  "finale_d": {
+    "source": "voicelines/story/FinalBossFight/D.wav",
+    "source_sha256": "47a9ed174ac65395067614ea1ce4a37bb9c6397510a43801e2df5845ad539d0e",
+    "ogg_sha256": "fab683493eb7c53fa1a9b668de53440d94e4042c79467ee7f7e5ce96012363b0",
+    "seconds": 17.856167,
+    "ticks": 358
+  },
+  "finale_e": {
+    "source": "voicelines/story/FinalBossFight/E.wav",
+    "source_sha256": "7427e75e8e97a520b67a79e90084c407dc3bf069437159343a0cf58235244c6b",
+    "ogg_sha256": "b7974bbc6dd4b7c5360dc8997d95b8ebaf51ed419e0303f448a2ee13df9ff5c8",
+    "seconds": 1.729875,
+    "ticks": 35
+  },
+  "finale_f": {
+    "source": "voicelines/story/FinalBossFight/F.wav",
+    "source_sha256": "7065373cc245fc28cb6530885153949bb4515c38a916952b8e1808d34768c763",
+    "ogg_sha256": "302e240b720915009ab34269defd0b979f9bb614316c8f76698dc5aca1630e15",
+    "seconds": 4.551125,
+    "ticks": 92
+  },
+  "finale_g": {
+    "source": "voicelines/story/FinalBossFight/G.wav",
+    "source_sha256": "bd1b26e9026c33c77872a98818406fc1215142ce45b0f4338b59965e8c3a110d",
+    "ogg_sha256": "e56a6d5587bb8007cfeeed132ff6523e48f660439f09d8b2a9275dba69120b1e",
+    "seconds": 8.034125,
+    "ticks": 161
+  },
+  "finale_h": {
+    "source": "voicelines/story/FinalBossFight/H.wav",
+    "source_sha256": "87a5dc9548dd028032ddf7272133438157ca55743448b8794563d0986139b872",
+    "ogg_sha256": "28bb02ed2ed4c6f65a38e024f58f8ccedf00a6358f6d48089282f7dc91ff6f6d",
+    "seconds": 6.048792,
+    "ticks": 121
+  },
+  "finale_i": {
+    "source": "voicelines/story/FinalBossFight/I.wav",
+    "source_sha256": "f1642d0568e3d216d5ac8d453ee6654727de2891f904578d9a533ce620e94e40",
+    "ogg_sha256": "2b9e75761dd40f11878d8d30cc8bab66b5c4473aae2bf6df14908149f8279a2a",
+    "seconds": 2.856042,
+    "ticks": 58
+  },
+  "finale_j": {
+    "source": "voicelines/story/FinalBossFight/J.wav",
+    "source_sha256": "221ff44e4fcb62b270f3806c52e2f45f01c4a546670e192db11457217e8962e9",
+    "ogg_sha256": "5a311def341de7e2e6dae09887a77c5ff6f7324e7a84e7f0298647d173bd0d92",
+    "seconds": 5.688917,
+    "ticks": 114
+  },
+  "finale_k": {
+    "source": "voicelines/story/FinalBossFight/K.wav",
+    "source_sha256": "c82cfc4eb2b95835970209ef2deb08dbc240139db9af56e0dcf13832e6a8b87c",
+    "ogg_sha256": "dd65a2a004437a6f2e4beb4091040593ee93b3866c6dfc482e4b19db7b9ee427",
+    "seconds": 5.735333,
+    "ticks": 115
+  },
+  "finale_m": {
+    "source": "voicelines/story/FinalBossFight/M.wav",
+    "source_sha256": "36dc579e49f0d6c3ccd22a430ac36f749cfcd351a163dcc92986ae87ac1dc1d9",
+    "ogg_sha256": "6687f71234ef358e18a38d27668edb48e12a92f817f4aef27ac4ec4cdbe9b646",
+    "seconds": 3.924167,
+    "ticks": 79
+  },
+  "finale_n": {
+    "source": "voicelines/story/FinalBossFight/N.wav",
+    "source_sha256": "98d4987ec1d41a39bbed5335cfbbcedc8a73abe10478206699da2234b113533b",
+    "ogg_sha256": "2e420dfb84b648fdb7bdf8884e262c9d1361174d79c242c86c530941b714d478",
+    "seconds": 17.008625,
+    "ticks": 341
+  },
+  "finale_o": {
+    "source": "voicelines/story/FinalBossFight/O.wav",
+    "source_sha256": "762e6605a0d7712e8f9730137dae6d2c9f5c034fc8357bc28944a806e2bd4468",
+    "ogg_sha256": "421661add2bab8799f7fee0cf5e8e108ab825261d64eedf80d42e98e44c5abfc",
+    "seconds": 2.449708,
+    "ticks": 49
+  },
+  "finale_p": {
+    "source": "voicelines/story/FinalBossFight/P.wav",
+    "source_sha256": "7a0e737eb5d53a3fd6df1e4fce2b86919c8434df7ad01517904450860018b725",
+    "ogg_sha256": "61df98901f421a47474d42180524d56fc4944972da38a7a27ce37f04ecbe96ac",
+    "seconds": 8.185042,
+    "ticks": 164
+  },
+  "finale_q": {
+    "source": "voicelines/story/FinalBossFight/Q.wav",
+    "source_sha256": "f215250323dbbf3c6b02fd83b43cfc73c23b00b62bb5db94981d44025ff53179",
+    "ogg_sha256": "07a165c92f9feba5f19c2c5ebc3cbcaa8d230391cd07f593585e269218d8eced",
+    "seconds": 13.235375,
+    "ticks": 265
+  },
+  "finale_s": {
+    "source": "voicelines/story/FinalBossFight/S.wav",
+    "source_sha256": "98f6953c151cd4e3d63e5e8296639f174e004a03c2f9f99fdf17267d14618242",
+    "ogg_sha256": "c6460c4b7471f4a36c740501143ae4cbf61fe3e442ce851362636cc4ffc55e54",
+    "seconds": 16.567458,
+    "ticks": 332
+  },
+  "reunion_a": {
+    "source": "voicelines/story/ParentsReturn/A.wav",
+    "source_sha256": "a9156f13c629fa99f374cb0c59830e8d77296e1f823dbf655360fa0a9881f0b6",
+    "ogg_sha256": "9b7b0d7a774f67e0d6d5a2746df26d2d9e439786fb0e5f1567e90b9eaa6c1102",
+    "seconds": 31.103125,
+    "ticks": 623
+  },
+  "reunion_b": {
+    "source": "voicelines/story/ParentsReturn/B.wav",
+    "source_sha256": "8c84cd6755f206bb40c9115680d8ba4206fbcdfdb60d87c46523fcce931f6dfb",
+    "ogg_sha256": "a5b8031e089d28517a0719f236f5578fe97d351ffbf066159118601c549b98fc",
+    "seconds": 4.806542,
+    "ticks": 97
+  },
+  "farewell_a": {
+    "source": "voicelines/story/GhostChildrenFreed/A.wav",
+    "source_sha256": "fe4c8df4088cf27d28815aefb195049a8286942d26bef42ef7b583d217b22483",
+    "ogg_sha256": "d6a68ea2a5df83b5629aa51d46dd927e5b91c9aab002796169dfb6ace8b532a7",
+    "seconds": 12.95675,
+    "ticks": 260
+  },
+  "farewell_b": {
+    "source": "voicelines/story/GhostChildrenFreed/B.wav",
+    "source_sha256": "86fe9d9cbefabb394bbcf4f82d117bb31b079903eb9ae917ea701910a1b06cd8",
+    "ogg_sha256": "d382168f04d4941fba95a92a5c301a42e1698985388831f6abf66d6ab6acf521",
+    "seconds": 33.890083,
+    "ticks": 678
+  },
+  "farewell_c": {
+    "source": "voicelines/story/GhostChildrenFreed/C.wav",
+    "source_sha256": "eae6f5264f96a904baa45ffc75307dea8b70025a8a5e154eb16a715d1e071ccc",
+    "ogg_sha256": "6fb827ba0c94253e95de228594fee20c7b95f5669b4a0e8d7f8a55ebdee68184",
+    "seconds": 34.760292,
+    "ticks": 696
+  }
+}

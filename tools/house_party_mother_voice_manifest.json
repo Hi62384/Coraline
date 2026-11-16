@@ -1,0 +1,559 @@
+{
+  "reference": "voicelines/othermother/Sample.wav",
+  "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+  "emotion_order": [
+    "happy",
+    "angry",
+    "sad",
+    "afraid",
+    "disgusted",
+    "melancholic",
+    "surprised",
+    "calm"
+  ],
+  "states": {
+    "invitation/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, I've got the most wonderful surprise! We're having a little party, and I've invited some lovely people over to meet you. Now, I expect you to be on your best behavior, darling. Stay inside the house, be polite to our guests, and don't go poking around where you shouldn't. I think we're going to have such a lovely time!",
+        "Darling, we're having company! I've invited some wonderful friends over, and I thought it would be nice for you to get to know them. Just remember to stay in the house, mind your manners, and leave other people's belongings alone. Let's make this a beautiful evening, shall we?"
+      ]
+    },
+    "invitation/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Now then, sweetheart, I've arranged a little house party for us. We'll have guests arriving shortly, and I expect you to be polite and well behaved. No wandering outside, no sneaking into private rooms, and certainly no rummaging through drawers. Understood?",
+        "Your Other Father and I are having a few people over, darling. I think you'll enjoy meeting everyone. But I do expect you to behave yourself while they're here. Stay on the first two floors, don't go exploring, and try not to give me any reason to worry."
+      ]
+    },
+    "invitation/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, I've planned the loveliest party for us! I've invited some wonderful friends, and I simply can't wait to introduce you. I know you'll make me proud, sweetheart. Just stay inside with everyone, be polite, and leave those little secrets and mysteries alone for tonight.",
+        "Sweetheart, we're having a party! Everyone's coming to see our beautiful home, and I want you right here with us. You always make everything so much more special, my love. Just promise me you'll behave yourself and won't go wandering somewhere you shouldn't."
+      ]
+    },
+    "invitation/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "We're having guests over tonight, sweetheart, and I expect you to behave yourself. You will stay inside the house, you will keep out of the attic and basement, and you will not go searching through things that don't belong to you. I trust that's perfectly clear.",
+        "I've arranged a house party, and I would very much like it to go smoothly. You'll stay with our guests, mind your manners, and leave the forbidden rooms alone. If I hear that you've been causing trouble, I shall be extremely disappointed."
+      ]
+    },
+    "invitation/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, I've planned something rather special for tonight. We're having a house party, and there will be so many interesting people for you to meet. I know how curious you can be, sweetheart, but let's keep that curiosity focused on our guests instead of my private rooms.",
+        "Sweetheart, we're going to have a wonderful little gathering! I've invited some lovely people, and I'm expecting you to spend the evening with us. No disappearing into the attic, no investigating the basement, and no little adventures outside. Just for tonight, darling, let's behave like a proper family."
+      ]
+    },
+    "checkin/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart! Are you enjoying yourself? There's so many lovely people here. Why don't you go introduce yourself to someone?",
+        "Darling, isn't this wonderful? Everyone seems to be having such a nice time. Do make yourself comfortable, and have something to eat if you're hungry."
+      ]
+    },
+    "checkin/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Having a nice time, sweetheart? Good. I do hope you've been making conversation instead of wandering off on your own.",
+        "There you are, darling. I trust you've been enjoying the party? There's plenty to do without needing to explore every little corner of the house."
+      ]
+    },
+    "checkin/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, look at you! Everyone seems so pleased to meet you. I knew you'd be the most wonderful little host.",
+        "Sweetheart, I'm so happy you're enjoying yourself. Isn't it lovely having all these wonderful people together in our home?"
+      ]
+    },
+    "checkin/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Enjoying yourself, sweetheart? I do hope so. It would be rather disappointing if I discovered you'd been spending the evening doing anything else.",
+        "There you are. I trust you've been behaving yourself. Our guests are here to enjoy a party, darling, not to watch you getting into trouble."
+      ]
+    },
+    "checkin/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, I do hope you're having a lovely evening. So many interesting people to talk to. Perhaps you'll find their stories more entertaining than those little secrets you keep chasing.",
+        "Sweetheart, isn't this nice? All our friends together, everyone smiling and laughing. I do wish you'd spend more time enjoying things like this instead of getting yourself into trouble."
+      ]
+    },
+    "guest_report/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, one of our guests has told me you've been getting into things you shouldn't. I'm sure there's been some misunderstanding, but I do hope you'll remember your manners.",
+        "Darling, I've just heard something rather disappointing. One of our guests says you weren't behaving yourself. Now, surely we can enjoy one little party without all this trouble?"
+      ]
+    },
+    "guest_report/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Sweetheart, I've just been told what you've been doing. I specifically asked you to behave yourself tonight. I don't think that was terribly difficult to understand.",
+        "Oh, darling. I was hoping we could have one pleasant evening without someone having to tell me you'd been poking around where you shouldn't."
+      ]
+    },
+    "guest_report/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, please tell me this isn't true. One of our guests says you've been getting into trouble. I thought I could trust you to behave while we had company.",
+        "Sweetheart, I'm rather hurt. I've been telling everyone what a wonderful child you are, and now I'm hearing you've been doing things behind my back."
+      ]
+    },
+    "guest_report/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Well, isn't that interesting. One of our guests has just told me exactly what you've been doing. I warned you about this, sweetheart. Very clearly.",
+        "So. You couldn't even behave yourself for one evening. I've had someone come to me with a rather unpleasant report, and I think you know perfectly well what it's about."
+      ]
+    },
+    "guest_report/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling. Even with a house full of people, you still manage to find your way into trouble. I suppose I shouldn't be surprised anymore.",
+        "Sweetheart, one of our guests has been telling me about your little adventures. You really are a curious thing, aren't you? I wonder when you'll finally decide you've discovered enough."
+      ]
+    },
+    "feast/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, everyone! Dinner is ready! I've prepared the most wonderful feast for all of us. Come along to the dining room, and do bring your appetites. There's plenty for everyone!",
+        "Now then, my lovely guests, I think it's time we had something to eat! Your Other Father and I have been preparing quite a spread. Do come and join us at the tables!"
+      ]
+    },
+    "feast/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Well, everyone, dinner is ready. I've made quite a bit of food, and I'd like us all to sit down together. Come along, there's a place for everyone.",
+        "Now then, I think we've all done quite enough standing around. Dinner is ready, and I've prepared something rather special. Let's all make our way to the tables."
+      ]
+    },
+    "feast/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darlings, dinner is ready! I've prepared such a beautiful feast for everyone. Come along and find your seats. There's nothing I love more than seeing the whole house filled with happy faces.",
+        "Everyone, come along! It's time for our wonderful feast. I've made sure there's something lovely for each and every one of you. Do sit down and enjoy yourselves!"
+      ]
+    },
+    "feast/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Dinner is ready, everyone. Please make your way to the dining tables. I've gone through a great deal of trouble preparing everything, and I'd appreciate us all sitting down together.",
+        "Now then, our feast is ready. Everyone should come to the dining room and find a place to sit. Let's have ourselves a pleasant meal, shall we?"
+      ]
+    },
+    "feast/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, everyone, it's time for dinner! I've prepared quite the feast for our wonderful guests. Come along, darling. I do hope you've worked up an appetite during all your little adventures.",
+        "Well, my lovely guests, I think it's time we all sat down together. Dinner is ready, and there's plenty to enjoy. Come along, sweetheart. I'd like you sitting with your family."
+      ]
+    },
+    "food_warning/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, don't take quite so much! We have lots of guests to feed, you know. Leave a little for everyone else, darling.",
+        "Now, now, sweetheart! There's plenty to go around, but we must remember our manners. Let's make sure everyone gets something to eat."
+      ]
+    },
+    "food_warning/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Darling, that's quite enough for now. There are other people waiting to eat, and it isn't very polite to take more than your share.",
+        "Oh, sweetheart, do try to show a little consideration. Our guests haven't all had their dinner yet. Save some food for them, please."
+      ]
+    },
+    "food_warning/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, I know you love my cooking, but there's no need to take quite so much! Let everyone else have a little, and I'll make you something special later.",
+        "Sweetheart, I'm delighted you're enjoying the food, but we mustn't forget our guests. Be a dear and leave some for the others, won't you?"
+      ]
+    },
+    "food_warning/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Put some of that back, sweetheart. This feast is for everyone, not just you. I expect you to show a little more consideration while we have company.",
+        "That is quite enough. You've taken more than your share, and I will not have you embarrassing me in front of our guests. Leave the rest alone."
+      ]
+    },
+    "food_warning/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, always wanting just a little more, aren't you? There's plenty of food here, but we do have other people to feed. Let's try not to be greedy, sweetheart.",
+        "Sweetheart, I do love seeing you enjoy yourself, but you must leave something for our guests. You can't have every wonderful thing all to yourself, now can you?"
+      ]
+    },
+    "completion/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, wasn't that a wonderful evening? Everyone seemed to have such a lovely time. I'm so glad we could share it with you, sweetheart. Now, I think we ought to find something else fun to do.",
+        "There we are! What a marvelous little party. I do hope you enjoyed meeting everyone, darling. I've still got plenty of wonderful things planned for us."
+      ]
+    },
+    "completion/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Well, that went rather nicely, didn't it? It's always lovely having friends over. Now then, sweetheart, let's see what else we might do together.",
+        "There, everyone's had a lovely evening. I hope you enjoyed yourself, darling. Now that our guests are leaving, perhaps we can get back to our own little plans."
+      ]
+    },
+    "completion/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, wasn't that perfect? Everyone together, laughing and enjoying themselves. It makes me so happy to have you here with us. Now, let's have some more fun.",
+        "Sweetheart, what a beautiful evening we've had! Seeing you surrounded by all our wonderful friends makes me happier than you could imagine. Come along, my love. I've got another surprise waiting."
+      ]
+    },
+    "completion/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Well, our little party is finally over. I do hope you remember how much nicer things are when everyone behaves themselves. Now, let's move on to something else.",
+        "There. Our guests have had their evening, and I think it's time we returned to our own affairs. Perhaps you'll find the next event a little easier to behave yourself during."
+      ]
+    },
+    "completion/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, wasn't that lovely? So many interesting people, so many wonderful conversations. And yet I suspect you still found a few little mysteries to occupy yourself with, didn't you? Never mind. Let's see what else we might do.",
+        "There we are, sweetheart. Another beautiful evening in our wonderful home. I do wish moments like these could last forever. But I suppose you've got plenty more adventures waiting for you, haven't you?"
+      ]
+    }
+  },
+  "output": "voicelines/othermother/events/house_party",
+  "prefix": "line",
+  "event_directory": "house_party"
+}

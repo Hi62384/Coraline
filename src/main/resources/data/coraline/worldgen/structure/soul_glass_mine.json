@@ -1,0 +1,11 @@
+{
+  "type": "coraline:soul_glass_mine",
+  "biomes": [
+    "coraline:postgame/threadbound_mountains",
+    "coraline:postgame/porcelain_plains",
+    "coraline:postgame/white_rift_wastes"
+  ],
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "none"
+}

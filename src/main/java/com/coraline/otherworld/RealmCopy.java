@@ -63,8 +63,8 @@ public final class RealmCopy {
             if((long)(nx-door.pos.getX())*(nx-door.pos.getX())+(long)(nz-door.pos.getZ())*(nz-door.pos.getZ())>r*r)continue;
             var chunk=new ChunkPos(x,z);if(existing&&realm.copiedChunks.contains(chunk.toLong()))continue;
             if(existing&&preserved(x*16,z*16)&&preserved(x*16+15,z*16)&&preserved(x*16,z*16+15)&&preserved(x*16+15,z*16+15)){realm.copiedChunks.add(chunk.toLong());continue;}
-            if(!existing&&x*16<=sourceSite.getX()+50&&x*16+15>=sourceSite.getX()-50&&
-                z*16<=sourceSite.getZ()+99&&z*16+15>=sourceSite.getZ()-26)priority.add(chunk);
+            if(!existing&&x*16<=sourceSite.getX()+50&&x*16+15>=sourceSite.getX()-90&&
+                z*16<=sourceSite.getZ()+99&&z*16+15>=sourceSite.getZ()-155)priority.add(chunk);
             else outer.add(chunk);
         }
         outer.sort(Comparator.comparingLong(chunk->{long x=(long)chunk.getMiddleBlockX()-sourceSite.getX(),z=(long)chunk.getMiddleBlockZ()-sourceSite.getZ();return x*x+z*z;}));
@@ -115,6 +115,10 @@ public final class RealmCopy {
         return false;
     }
     private void copy(LevelChunk from,LevelChunk to){
+        // Terrain height is invariant across vertical sections. Computing it in
+        // every section repeated the same downward search up to 24 times/column.
+        int[] terrainHeights=new int[256];
+        for(int x=0;x<16;x++)for(int z=0;z<16;z++)terrainHeights[x*16+z]=terrainSurface(from,x,z);
         for(var pos:new ArrayList<>(to.getBlockEntities().keySet()))if(!preserved(pos.getX()-realm.dx,pos.getZ()-realm.dz))to.removeBlockEntity(pos);
         // The Other World is a visual shell. Fully enclosed voxels can never be seen
         // or touched here, so do not store millions of buried copies underneath it.
@@ -129,17 +133,31 @@ public final class RealmCopy {
                 if((long)(wx-door.pos.getX())*(wx-door.pos.getX())+(long)(wz-door.pos.getZ())*(wz-door.pos.getZ())>realm.radius*realm.radius)continue;
                 // Heightmap tops can be bamboo, logs, or a canopy. Find the
                 // actual earth below so the copied shell never omits its floor.
-                int terrain=terrainSurface(from,x,z);
+                int terrain=terrainHeights[x*16+z];
                 // A shallow surface shell cuts open natural caves and ravines,
                 // exposing the dimension's blue void through their floors.
                 // Preserve their visible walls all the way to the source base.
                 for(int ly=0;ly<16;ly++){
-                    var state=src.getBlockState(x,ly,z);if(state.isAir())continue;
+                    var state=src.getBlockState(x,ly,z);if(state.isAir()||state.is(com.coraline.registry.ModBlocks.PARENTS_BED.get()))continue;
+                    // This immutable visual copy must not decay at the clipped
+                    // island/tree boundary and litter the realm with saplings.
+                    if(state.getBlock() instanceof net.minecraft.world.level.block.LeavesBlock)state=state.setValue(net.minecraft.world.level.block.LeavesBlock.PERSISTENT,true);
                     var p=new BlockPos(wx,y+ly,wz);
                     if((y+ly>=terrain-15&&y+ly<=terrain)||exposed(from,p,state))states.set(x,ly,z,state);
                 }
             }
             to.getSections()[i]=new LevelChunkSection(states,oldBiomes);
+        }
+        // Resolve unsupported copied vegetation before neighbor ticks can drop
+        // seeds/flowers. Never sweep ItemEntities: legitimate player/story drops
+        // remain untouched, as do the preserved columns from existing realms.
+        for(int x=0;x<16;x++)for(int z=0;z<16;z++){
+            int wx=from.getPos().getMinBlockX()+x,wz=from.getPos().getMinBlockZ()+z;if(preserved(wx,wz))continue;
+            for(int y=target.getMinBuildHeight();y<target.getMaxBuildHeight();y++){
+                if(to.getSection(target.getSectionIndex(y)).hasOnlyAir()){y=(Math.floorDiv(y,16)+1)*16-1;continue;}
+                var pos=new BlockPos(to.getPos().getMinBlockX()+x,y,to.getPos().getMinBlockZ()+z);var state=to.getBlockState(pos);
+                if(state.getBlock() instanceof net.minecraft.world.level.block.BushBlock&&!state.canSurvive(target,pos))to.setBlockState(pos,Blocks.AIR.defaultBlockState(),false);
+            }
         }
         // Only the copied dimension's visual biome palette changes. Keep every block
         // state and block-entity copy rule above/below intact, including source loot.

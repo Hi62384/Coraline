@@ -1,0 +1,559 @@
+{
+  "reference": "voicelines/othermother/Sample.wav",
+  "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+  "emotion_order": [
+    "happy",
+    "angry",
+    "sad",
+    "afraid",
+    "disgusted",
+    "melancholic",
+    "surprised",
+    "calm"
+  ],
+  "states": {
+    "departure/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, I've got a few little matters I need to take care of. I won't be around for a while, so why don't you find something nice to keep yourself busy? Your Other Father will be here if you need anything. Just be good, darling, and don't go wandering too far from home.",
+        "Darling, I'm afraid I have to pop out for a little while. Nothing terribly exciting, just a few things that need my attention. You can amuse yourself until I get back. Just promise me you'll behave yourself, stay reasonably close to the house, and leave my private things alone."
+      ]
+    },
+    "departure/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Now then, sweetheart, I've got some important things to attend to, so I'll be leaving the house for a while. I expect you to keep yourself occupied and behave properly until I return. Don't wander too far, and don't go poking around where you shouldn't.",
+        "Well, darling, I have some matters that simply can't wait. I'll be out for a little while, and I'd like to think I can trust you to behave yourself. Your Other Father is home, so there's no reason for you to go wandering off or getting into trouble."
+      ]
+    },
+    "departure/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, I do hate leaving you, even for a little while! But I have some important things I must take care of. You'll be a good little sweetheart while I'm gone, won't you? Stay close to home, and I'll come back as soon as I've finished.",
+        "Sweetheart, your mother has a few things she needs to attend to. I wish I could spend every moment with you, my love, but I'll have to leave you to amuse yourself for a while. Be good, don't wander too far, and I'll see you when I return."
+      ]
+    },
+    "departure/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "I have matters to take care of, sweetheart, and I'll be leaving for a while. I expect you to behave yourself in my absence. Stay near the house, keep your hands out of my belongings, and don't give me a reason to regret leaving you alone.",
+        "Now, I have some business to attend to. I'll be gone for a while, and I trust you understand what I expect of you. No wandering off, no searching through things that aren't yours, and no little adventures into places I've told you to avoid."
+      ]
+    },
+    "departure/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, I have some important things to do, and I must leave you for a little while. I know how curious you can be when I'm not looking, sweetheart, but do try to resist the temptation to go investigating my private affairs. I'll be back.",
+        "Sweetheart, I need to step out for a while. I know you'll miss me, just as I'll miss you. But remember, my love, being left alone doesn't mean you should go searching for things you're not meant to find. Stay close to home, and be good."
+      ]
+    },
+    "return/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, I'm home! There you are, darling. I hope you've had a lovely time while I was away. Now then, let's see what else we might do together!",
+        "Darling, I'm back! Did you miss me? I hope you've been keeping yourself entertained. It's so nice to come home and find you here."
+      ]
+    },
+    "return/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Well, sweetheart, I'm back. I trust everything went smoothly while I was away? Good. Now, perhaps we should find ourselves something else to do.",
+        "There you are, darling. I've finished what I needed to do. I hope you've been behaving yourself. Now then, let's get back to our little plans."
+      ]
+    },
+    "return/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, I'm home! I missed you terribly, sweetheart. Come here! I hope you enjoyed yourself while I was away. Now we can spend some lovely time together again.",
+        "Sweetheart! Your mother is back! Oh, it's wonderful to see you again. I do wish I never had to leave you, even for a little while. Come along, my love."
+      ]
+    },
+    "return/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Well, I'm back. I see you've managed to stay close to home, sweetheart. I trust you haven't been getting into anything you shouldn't. Let's move on.",
+        "There you are. I've finished my business, and it appears everything is still in order. Very good, sweetheart. I hope you'll continue behaving yourself."
+      ]
+    },
+    "return/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, I'm home! And there you are, right where I hoped you'd be. I trust you found plenty to occupy yourself with while I was away. Nothing too interesting, I hope.",
+        "Sweetheart, I've returned! Isn't it lovely when everything is just as you left it? I hope you had a pleasant time alone, my love. Now, let's find something wonderful to do."
+      ]
+    },
+    "missing/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Sweetheart? I'm home! ...Darling? Where have you gone? I specifically asked you not to wander too far. Oh, I do hope you haven't gotten yourself lost. I'm coming to find you!",
+        "Darling! Your mother is back! ...Hello? Oh dear, where have you disappeared to? I thought you'd be waiting here. Never mind, sweetheart, I'll come look for you!"
+      ]
+    },
+    "missing/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Well, sweetheart, I'm home. Now, where are you? I distinctly remember asking you to stay close to the house. I suppose I'll have to come find you myself.",
+        "Darling? Where have you wandered off to this time? I leave you alone for a little while, and you disappear without a word. Very well. I'll come looking."
+      ]
+    },
+    "missing/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, I'm back! ...Sweetheart? Where are you? I was so looking forward to seeing you again. Oh, please don't tell me you've wandered off somewhere dangerous. I'm coming to find you!",
+        "Sweetheart! Your mother is home! ...Oh, where could you have gone? I asked you to stay nearby, my love. I'm getting terribly worried. I'll find you, darling!"
+      ]
+    },
+    "missing/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Of course. I leave the house for a little while, and the moment I return, you've disappeared. I told you to stay nearby, sweetheart. Now I'm going to find you, and you'd better have an explanation.",
+        "Well, isn't that interesting. I specifically told you not to wander off, and now you're nowhere to be found. I am becoming very tired of repeating myself. I'm coming to look for you."
+      ]
+    },
+    "missing/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, I've returned, and you've gone missing again. I wonder what could possibly be so fascinating that you'd rather spend your time wandering around than waiting for your mother. Let's find out, shall we?",
+        "Sweetheart, where are you? I gave you a little freedom, and you seem to have taken rather more than I intended. I suppose I'll have to come collect my curious little darling."
+      ]
+    },
+    "alert/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, I've had to come home a little earlier than I expected. One of my little friends seemed rather concerned about something. Now, I wonder what could have happened while I was away?",
+        "Darling, I'm back sooner than I thought! I received a rather curious little message, you see. I do hope everything's alright. Perhaps I'd better have a look around."
+      ]
+    },
+    "alert/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Well, sweetheart, I've had to interrupt my business. One of my little helpers had something rather interesting to tell me. I thought I'd come home and see what's going on.",
+        "Darling, I wasn't planning to return quite so soon, but I've received a rather unusual report. I suppose I'd better find out what's been happening in my absence."
+      ]
+    },
+    "alert/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, I'm home early! One of my little friends came to me with something that sounded rather worrying. I do hope you haven't gotten yourself into any trouble, sweetheart.",
+        "Sweetheart, I've come back sooner than I meant to. I heard something that made me a little concerned, and I simply couldn't bear to stay away without making sure everything was alright."
+      ]
+    },
+    "alert/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Well, well. I've had to come all the way back because one of my little watchers had something to report. I wonder what you've been doing while you thought I wasn't looking.",
+        "I leave for a little while, and already I'm receiving reports about you. Very disappointing, sweetheart. I think it's time we had a closer look at what you've been doing."
+      ]
+    },
+    "alert/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, you didn't really think I'd stop worrying about you just because I stepped out, did you? One of my little friends had something interesting to tell me. So here I am, my love.",
+        "Sweetheart, I've come home a little early. It seems something rather curious has been happening in my absence. You know, darling, this house has so many little eyes watching over us."
+      ]
+    },
+    "caught_missing/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, there you are! I've been looking everywhere for you. I asked you to stay near the house, darling. You really shouldn't make your mother worry like that.",
+        "Darling! I've finally found you. Where have you been? I was beginning to think something terrible had happened. Come along, sweetheart. We're going home."
+      ]
+    },
+    "caught_missing/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Well, there you are. I specifically asked you not to wander too far, sweetheart. I don't think that was a particularly difficult instruction to follow.",
+        "Oh, darling. I leave you alone for a little while, and you disappear halfway across my world. Do you have any idea how inconvenient it is having to come looking for you?"
+      ]
+    },
+    "caught_missing/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling! I've finally found you! I was worried sick, sweetheart. Why would you wander so far away when I specifically asked you to stay close to home?",
+        "Sweetheart, thank goodness! I couldn't find you anywhere when I came home. Oh, my love, please don't frighten me like that again. Come along, let's get you back to the house."
+      ]
+    },
+    "caught_missing/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "There you are. Exactly where you shouldn't be. I told you to stay close to the house, and you chose to ignore me. I am growing very tired of this behavior.",
+        "Well, I've finally found you. I shouldn't have to hunt you down every time I leave the house, sweetheart. You were given a simple instruction, and you failed to follow it."
+      ]
+    },
+    "caught_missing/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, what am I going to do with you? I give you freedom, and you use it to wander off somewhere you know I wouldn't approve of. Come along, my love.",
+        "Sweetheart, I've been looking for you. You know, it would be so much nicer if I could trust you to stay where you're supposed to. Must your curiosity always come between us?"
+      ]
+    },
+    "caught_spy/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, one of my little friends told me you'd been getting into something you shouldn't. I really hoped it was a misunderstanding, darling. Why couldn't you simply behave while I was away?",
+        "Darling, I've heard something rather disappointing. I trusted you to look after yourself, and now I find you've been poking around where you weren't supposed to. Oh, sweetheart."
+      ]
+    },
+    "caught_spy/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Well, that explains the report I received. You really have been getting into things you shouldn't, haven't you? I leave for a little while, and you immediately decide my rules no longer apply.",
+        "Oh, darling, did you really think no one would notice? My little helpers have been watching, and they've told me quite enough. We need to have a conversation about your behavior."
+      ]
+    },
+    "caught_spy/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, why would you do this? I trusted you. I thought you understood that there are some places and things you're simply not supposed to touch.",
+        "Sweetheart, I gave you some time to yourself because I believed I could trust you. And now one of my little friends has brought me such disappointing news. You've really hurt me, my love."
+      ]
+    },
+    "caught_spy/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "So. The moment I leave, you start searching through things you know you're forbidden to touch. Did you honestly think I wouldn't find out?",
+        "I warned you. I told you to behave while I was gone, and now I've received a report about exactly what you've been doing. I have had quite enough of your disobedience."
+      ]
+    },
+    "caught_spy/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling. I knew you'd be tempted. I really did. But I thought perhaps, just this once, you'd choose to respect my wishes instead of chasing after another little secret.",
+        "Sweetheart, there you are. One of my little friends has been telling me about your adventures. You know, my love, it's rather difficult to trust someone who keeps doing things behind your back."
+      ]
+    }
+  },
+  "output": "voicelines/othermother/events/mother_goes_out",
+  "prefix": "line",
+  "event_directory": "mother_goes_out"
+}

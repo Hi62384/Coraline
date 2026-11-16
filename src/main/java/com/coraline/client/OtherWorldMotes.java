@@ -21,6 +21,7 @@ final class OtherWorldMotes {
     static void clear(){MOTES.clear();}
     static void tick(ClientLevel level,Vec3 player,Collection<OtherWorldNature.Anchor> anchors,ParticleStatus settings){
         int cap=settings==ParticleStatus.MINIMAL?0:OtherWorldVisualConfig.MOTES.get()/(settings==ParticleStatus.DECREASED?2:1);
+        if(AcceptedButtonEyesClient.house())cap=Math.round(cap*Math.max(0,1-AcceptedButtonEyesClient.stage()/5));
         MOTES.removeIf(m->++m.age>=m.life||m.origin.distanceToSqr(player)>2500);
         if(cap==0){clear();return;}if(MOTES.size()>=cap||anchors.isEmpty()||RANDOM.nextInt(3)!=0)return;
         int choice=RANDOM.nextInt(anchors.size());OtherWorldNature.Anchor a=null;

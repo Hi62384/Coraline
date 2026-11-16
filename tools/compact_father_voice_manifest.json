@@ -1,0 +1,502 @@
+{
+  "reference": "voicelines/otherfather/otherfathersample.wav",
+  "reference_sha256": "fd15d075b3704f9661ef3ce3a60961394d8ce980a194aefada5bcf9baaacafa5",
+  "output": "voicelines/otherfather/events/compact_v1",
+  "prefix": "line",
+  "states": {
+    "father_game_night_greeting_1": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, there you are! Welcome to game night, kiddo! Your Other Mother has brought out all sorts of wonderful games. I hope you're ready for a little friendly competition!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_game_night_greeting_1"
+    },
+    "father_game_night_cards_rules": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Right then! Match the color or number on the card in the middle. If you can't play anything, draw a card. First one to get rid of all their cards wins. Sounds simple enough, doesn't it?"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_game_night_cards_rules"
+    },
+    "father_game_night_thread_rules": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, this one's a team game! You and Wybie are against your Other Mother and me. Take turns dropping your buttons into the board. First team to get four in a row wins!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_game_night_thread_rules"
+    },
+    "father_game_night_tower_rules": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Now, we each take turns pulling one little block out of the tower. Just be careful where you pull from, because if the whole thing falls down on your turn, you've lost!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_game_night_tower_rules"
+    },
+    "father_game_night_mouseboard_rules": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, ready for a race? Roll the dice, move your little mouse along the board, and try to reach the finish first. Watch out for the special spaces, though. They can change everything!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_game_night_mouseboard_rules"
+    },
+    "father_game_night_flick_rules": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Right! Aim your button toward the scoring rings and give it a good flick. The closer you land to the center, the more points you get. We'll each have three turns. Highest score wins!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_game_night_flick_rules"
+    },
+    "father_game_night_charades_rules": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, charades! One of us acts something out without speaking, and everyone else tries to guess what it is. You'd think Wybie would have a rather unfair advantage, wouldn't you? Ha!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_game_night_charades_rules"
+    },
+    "father_game_night_cards_reaction": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, that's a good move! I was rather hoping you wouldn't notice that card. Hmm. I may have to rethink my strategy."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_game_night_cards_reaction"
+    },
+    "father_game_night_thread_reaction": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, very clever! I nearly missed what you were doing there. Your Other Mother and I had better pay closer attention!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_game_night_thread_reaction"
+    },
+    "father_game_night_tower_reaction": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh! Oh dear! Did you see that wobble? I don't think I ought to breathe too heavily near this thing."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_game_night_tower_reaction"
+    },
+    "father_game_night_mouseboard_reaction": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Would you look at that! Your little mouse is making quite the comeback. Mine seems to have forgotten it's supposed to be racing!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_game_night_mouseboard_reaction"
+    },
+    "father_game_night_flick_reaction": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, splendid shot! That's landed rather close to the middle. I don't suppose you'd mind teaching your old dad how you did that?"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_game_night_flick_reaction"
+    },
+    "father_game_night_charades_reaction": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah! I think I've got it! No, wait, perhaps not. Oh dear. Wybie makes this look so much easier than it really is!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_game_night_charades_reaction"
+    },
+    "father_game_night_finish_1": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, that was wonderful! I don't think I've had that much fun playing games in ages. We really ought to do this more often!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_game_night_finish_1"
+    },
+    "father_house_party_greeting_1": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, there you are! Quite the party we've got going, eh? Your Other Mother has invited half the neighborhood, by the look of things. Come on in and enjoy yourself!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_house_party_greeting_1"
+    },
+    "father_house_party_social_1": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, isn't it lovely having so many friends around? Though I must admit, I can hardly remember everyone's names. Don't tell your Other Mother I said that!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_house_party_social_1"
+    },
+    "father_house_party_game_1": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, you're playing a game? Splendid! I might join you in a moment. Just don't let anyone convince you they're unbeatable. I've heard that one before!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_house_party_game_1"
+    },
+    "father_house_party_feast_1": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, dinner at last! Would you look at all that food? Your Other Mother has really outdone herself this time. I don't know where we're going to put it all!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_house_party_feast_1"
+    },
+    "father_house_party_finish_1": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Well, that was quite the evening! Wonderful company, lovely food, and a few good laughs. We really ought to do this again sometime!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_house_party_finish_1"
+    },
+    "father_player_party_greeting_1": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, there you are! Quite the party we've got going, eh? Your Other Mother has been preparing this for ages. She wouldn't let me tell you a thing!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_player_party_greeting_1"
+    },
+    "father_player_party_social_1": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Your Other Mother certainly knows how to throw a party. She's even got entertainment upstairs and downstairs! Quite extraordinary, really."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_player_party_social_1"
+    },
+    "father_player_party_entertainment_1": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Have you been up to the attic yet? I hear Bobinsky's mice have been practicing something rather spectacular. Provided he's here, of course!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_player_party_entertainment_1"
+    },
+    "father_player_party_celebration_1": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, look at everyone! All gathered here for you, kiddo! Your Other Mother has been keeping this whole thing a surprise. Isn't it wonderful?"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_player_party_celebration_1"
+    },
+    "father_player_party_finish_1": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, what a wonderful party! Lovely people, marvelous entertainment, and that cake was absolutely delicious. We really ought to do this again!"
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_player_party_finish_1"
+    },
+    "father_mother_goes_out_mother_left_1": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Ah, your Other Mother has popped out, has she? Well, she's always got a hundred little things to attend to. Don't mind me, kiddo. I'll be at the piano if you need anything."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_mother_goes_out_mother_left_1"
+    },
+    "father_mother_goes_out_when_return_1": {
+      "direction": "Cheerful, slightly awkward, playful and affectionate.",
+      "emotion": [
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.08,
+        0.5
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "When will she be back? Oh, goodness, I haven't the faintest idea! She tends to return whenever she's finished whatever it is she's doing. Best not to worry about it."
+      ],
+      "filename": "line_01.wav",
+      "source_directory": "father_mother_goes_out_when_return_1"
+    }
+  }
+}

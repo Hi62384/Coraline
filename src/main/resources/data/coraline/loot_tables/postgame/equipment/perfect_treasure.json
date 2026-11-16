@@ -1,0 +1,50 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "coraline:perfect_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:perfect_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:perfect_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:perfect_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:perfect_crossbow",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:perfect_tree_cutter",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:perfect_excavating_tool",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:builders_dream",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

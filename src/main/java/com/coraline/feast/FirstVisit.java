@@ -22,11 +22,11 @@ public final class FirstVisit {
     private static final Set<UUID> listening=new HashSet<>();
     private static final Map<UUID,Long> startupNext=new HashMap<>();
     private static final Map<UUID,String> startupProblems=new HashMap<>();
-    public static VisitData.Scene active(ServerPlayer p){var s=VisitData.get(p.server).scenes.get(p.getUUID());var tag=p.getPersistentData();return s!=null&&s.stage!=DONE&&OtherWorld.isOther(p.level())&&!tag.getBoolean("CoralineInTunnel")&&tag.hasUUID("CoralineVisitDoor")&&s.door.equals(tag.getUUID("CoralineVisitDoor"))?s:null;}
+    public static VisitData.Scene active(ServerPlayer p){var s=OtherMotherLoop.scene(p);var tag=p.getPersistentData();return s!=null&&(!com.coraline.multiplayer.StoryCoop.guest(p)||com.coraline.multiplayer.StorySessionData.get(p.server).admittedOwner(p.getUUID()).isPresent())&&s.stage!=DONE&&OtherWorld.isOther(p.level())&&!tag.getBoolean("CoralineInTunnel")&&tag.hasUUID("CoralineVisitDoor")&&s.door.equals(tag.getUUID("CoralineVisitDoor"))?s:null;}
     public static boolean locked(ServerPlayer p){return active(p)!=null;}
     public static boolean bedAllowed(ServerPlayer p){var s=active(p);return s==null||s.stage==BED;}
     public static String debugComplete(ServerPlayer p){
-        if(!p.isCreative())return "First Visit Complete Debug is Creative-only.";
+        if(!p.isCreative()&&!p.hasPermissions(2))return "First Visit Complete Debug requires Creative mode or operator permission.";
         var family=com.coraline.parents.ParentAccess.family(p.server,p.getUUID());
         if(family==null||family.deathPhase!=0)return "Claim living parents first.";
         FamilyVisitReset.validate(p.server,p.getUUID(),family.id);
@@ -89,6 +89,8 @@ public final class FirstVisit {
             if(table==null||piano==null){var fallback=ScenePlacement.terrace(p.serverLevel(),realm.doorPos,realm.radius);if(fallback!=null){table=fallback[0];piano=fallback[1];}else{startupProblem(p,"The perfected house is still being prepared.");return;}}
         }
         var s=new VisitData.Scene();s.owner=p.getUUID();s.family=family==null?null:family.id;s.door=realm.door;s.mom=mom.getUUID();s.dad=dad.getUUID();s.table=table;s.piano=piano;data.scenes.put(s.owner,s);data.setDirty();
+        MainStoryRebirth.newScene(p,s);
+        OtherMotherLoop.applyEntryTrust(p);
         mom.getPersistentData().putUUID("VisitOwner",s.owner);dad.getPersistentData().putUUID("VisitOwner",s.owner);
         dad.teleportTo(piano.getX()+.5,piano.getY(),piano.getZ()+.5);
         var prop=spawn(p,s,ScenePropEntity.PIANO,piano.getX()+.5,piano.getY(),piano.getZ()+.5,0);dad.startRiding(prop,true);
@@ -115,6 +117,12 @@ public final class FirstVisit {
     private static ParentEntity parent(ServerPlayer p,UUID id){return id!=null&&p.serverLevel().getEntity(id) instanceof ParentEntity e?e:null;}
     private static void hold(ServerLevel level,BlockPos pos){level.getChunkSource().addRegionTicket(TicketType.PORTAL,new net.minecraft.world.level.ChunkPos(pos),2,pos);level.getChunkAt(pos);}
     private static String audio(VisitData.Stage stage){return switch(stage){case MOTHER_INTRO->"other_mother_intro";case FATHER_ENTER->"other_father_enter_scene";case FATHER_INTRO->"other_father_intro";case SONG->"other_father_song";case DINNER_READY->"other_father_dinners_ready";case SUPPER->"mysterious_supper";case WAITING->"other_parents_waiting";case BED->"other_mother_visit_again";default->null;};}
+    static void cutsceneSafety(ServerPlayer p,VisitData.Scene s){
+        String cue=audio(s.stage);if(s.stage==BED||s.stage==FIND_FATHER||s.stage==RETURN_TO_MOTHER||s.stage==SIT||s.stage==DONE)return;
+        int expected=s.stage==SUPPER?SupperDialogue.endTick():s.stage==CAKE?VisitConfig.CAKE_WAIT.get():cue==null?0:VisitAudio.length(cue);
+        if(!StoryCutsceneWatchdog.overdue(p,s,"first_visit",s.stage.name(),Math.max(600,expected+600)))return;
+        switch(s.stage){case MOTHER_INTRO->start(p,s,FIND_FATHER);case FATHER_ENTER->start(p,s,FATHER_INTRO);case FATHER_INTRO->start(p,s,SONG);case SONG->start(p,s,DINNER_READY);case DINNER_READY->{table(p,s);start(p,s,RETURN_TO_MOTHER);}case SUPPER->start(p,s,CAKE);case CAKE->start(p,s,WAITING);case WAITING->start(p,s,BED);default->{}}
+    }
     static void start(ServerPlayer p,VisitData.Scene s,VisitData.Stage stage){
         s.stage=stage;s.elapsed=0;VisitData.get(p.server).setDirty();listening.add(p.getUUID());String cue=audio(stage);if(cue!=null)VisitAudio.play(p,cue,stage==SONG||stage==SUPPER);
         var realm=RealmData.get(p.server).realms.get(s.door);
@@ -123,32 +131,35 @@ public final class FirstVisit {
         if(stage==RETURN_TO_MOTHER){var dad=parent(p,s.dad);if(dad!=null){dad.stopRiding();dad.getNavigation().moveTo(s.table.getX()+2,s.table.getY(),s.table.getZ()+2,1);}}
         if(stage==SUPPER)s.supperMusicEndsAt=p.server.overworld().getGameTime()+VisitAudio.length("mysterious_supper")+10;
         if(stage==CAKE){VisitAudio.stopVoice(p);for(var prop:props(p,s))if(prop.kind()==ScenePropEntity.PLATE||prop.kind()==ScenePropEntity.GLASS)prop.discard();
-            spawn(p,s,ScenePropEntity.CAKE,s.table.getX()+.5,s.table.getY()+.88,s.table.getZ()-.65,0);
+            var cakeAt=SupperSeating.position(s.table,0).add(0,.88,1.35);spawn(p,s,ScenePropEntity.CAKE,cakeAt.x,cakeAt.y,cakeAt.z,0);
         }
         if(stage==BED){p.stopRiding();for(var actor:new ParentEntity[]{parent(p,s.mom),parent(p,s.dad)})if(actor!=null)actor.stopRiding();hint(p,"It's time for bed. Follow the lights to your own bed.");}
         if(stage==SUPPER)hint(p,"Help yourself! Right-click plates and glasses to take food.");
     }
     static void table(ServerPlayer p,VisitData.Scene s){
-        if(props(p,s).stream().anyMatch(e->e.kind()==ScenePropEntity.TABLE))return;
-        spawn(p,s,ScenePropEntity.TABLE,s.table.getX()+.5,s.table.getY(),s.table.getZ()+.5,0);
+        var existingTable=props(p,s).stream().filter(e->e.kind()==ScenePropEntity.TABLE).findFirst().orElse(null);
+        if(existingTable!=null){existingTable.longDining(true);return;}
+        spawn(p,s,ScenePropEntity.TABLE,s.table.getX()+.5,s.table.getY(),s.table.getZ()+.5,0).longDining(true);
         ensureChairs(p,s);
         for(int theme=0;theme<4;theme++){
-            var plate=spawn(p,s,ScenePropEntity.PLATE,s.table.getX()+.5+(theme%2==0?-.98:.98),s.table.getY()+.88,s.table.getZ()+.5+(theme<2?-.32:.34),theme);
+            var plate=spawn(p,s,ScenePropEntity.PLATE,s.table.getX()+.5+(theme%2==0?-.98:.98),s.table.getY()+.88,s.table.getZ()+.5+(theme<2?-1.9:1.9),theme);
             for(int i=0;i<3;i++)plate.food(i,FeastContent.serving(p.level().random,theme));scheduleRefill(plate);
         }
         for(int i=0;i<3;i++){
-            spawn(p,s,ScenePropEntity.PLATE,s.table.getX()+.5+(i==0?0:i==1?-.85:.85),s.table.getY()+.89,s.table.getZ()+.5+(i==0?-.94:.94),4+i);
-            var glass=spawn(p,s,ScenePropEntity.GLASS,s.table.getX()+.5+(i==0?.55:i==1?-1.48:1.48),s.table.getY()+.88,s.table.getZ()+.5+(i==0?-.95:.94),i);
+            spawn(p,s,ScenePropEntity.PLATE,s.table.getX()+.5+(i==0?0:i==1?-.85:.85),s.table.getY()+.89,s.table.getZ()+.5+(i==0?-4.1:4.1),4+i);
+            var glass=spawn(p,s,ScenePropEntity.GLASS,s.table.getX()+.5+(i==0?.55:i==1?-1.48:1.48),s.table.getY()+.88,s.table.getZ()+.5+(i==0?-4.1:4.1),i);
             glass.food(0,FeastContent.random(p.level().random,true));scheduleRefill(glass);
         }
     }
-    private static void ensureChairs(ServerPlayer p,VisitData.Scene s){
+    static void ensureChairs(ServerPlayer p,VisitData.Scene s){
         var existing=props(p,s);
-        for(int slot=0;slot<3;slot++){
+        for(int slot=0;slot<9;slot++){
             final int wanted=slot;
-            if(existing.stream().anyMatch(e->e.kind()==ScenePropEntity.CHAIR&&e.slot==wanted))continue;
-            double x=s.table.getX()+(slot==0?.5:slot==1?-.4:1.4),z=s.table.getZ()+(slot==0?-1.65:2.15);
-            spawn(p,s,ScenePropEntity.CHAIR,x,s.table.getY(),z,slot).setYRot(slot==0?0:180);
+            var at=SupperSeating.position(s.table,slot);
+            var chair=existing.stream().filter(e->e.kind()==ScenePropEntity.CHAIR&&e.slot==wanted).findFirst().orElse(null);
+            if(chair==null)chair=spawn(p,s,ScenePropEntity.CHAIR,at.x,at.y,at.z,slot);
+            else if(chair.position().distanceToSqr(at)>.001)chair.setPos(at);
+            chair.setYRot(SupperSeating.facing(slot));
         }
     }
     private static void scheduleRefill(ScenePropEntity plate){plate.getPersistentData().putLong("NextServingRefill",plate.level().getGameTime()+VisitConfig.REFILL_TICKS.get()+plate.level().random.nextInt(VisitConfig.REFILL_JITTER.get()+1));}
@@ -181,8 +192,9 @@ public final class FirstVisit {
             }
         }return InteractionResult.CONSUME;
     }
-    @SubscribeEvent public static void tick(TickEvent.PlayerTickEvent e){
+    @SubscribeEvent public static void tick(TickEvent.PlayerTickEvent e){if(e.player instanceof net.minecraft.server.level.ServerPlayer coopPlayer&&com.coraline.multiplayer.StoryCoop.directorBlocked(coopPlayer))return;
         if(e.phase!=TickEvent.Phase.END||!(e.player instanceof ServerPlayer p))return;
+        if(com.coraline.postgame.TrueHeartBattle.recoveryPending(p))return;
         if(!p.isAlive())return;
         if(OtherWorld.isOther(p.level())&&!p.getPersistentData().getBoolean("CoralineInTunnel")&&p.getPersistentData().hasUUID("CoralineVisitDoor")&&!VisitData.get(p.server).scenes.containsKey(p.getUUID())){
             var pending=RealmData.get(p.server).realms.get(p.getPersistentData().getUUID("CoralineVisitDoor"));if(pending!=null)entered(p,pending);
@@ -212,13 +224,13 @@ public final class FirstVisit {
         mom.setGlowingTag(s.stage==RETURN_TO_MOTHER);dad.setGlowingTag(s.stage==FIND_FATHER);
         if(s.stage==SUPPER||s.stage==CAKE||s.stage==WAITING){
             if(!(p.getVehicle() instanceof ScenePropEntity seat&&seat.kind()==ScenePropEntity.CHAIR&&seat.slot==0&&p.getUUID().equals(seat.owner))){
-                var chair=props(p,s).stream().filter(prop->prop.kind()==ScenePropEntity.CHAIR&&prop.slot==0).findFirst().orElseGet(()->spawn(p,s,ScenePropEntity.CHAIR,s.table.getX()+.5,s.table.getY(),s.table.getZ()-1.65,0));p.startRiding(chair,true);
+                var chair=props(p,s).stream().filter(prop->prop.kind()==ScenePropEntity.CHAIR&&prop.slot==0).findFirst().orElseGet(()->{var at=SupperSeating.position(s.table,0);return spawn(p,s,ScenePropEntity.CHAIR,at.x,at.y,at.z,0);});p.startRiding(chair,true);
             }
         }
         switch(s.stage){
             case MOTHER_INTRO->{if(s.elapsed>=VisitAudio.length("other_mother_intro"))start(p,s,FIND_FATHER);}
             case FIND_FATHER->{if(p.tickCount%60==0)hint(p,"Find your Other Father — follow his glowing outline.");
-                boolean insideStudy=realm.house==null||p.getX()<realm.house.getX()-2&&p.getZ()<realm.house.getZ()-2;
+                boolean insideStudy=realm.house==null||OtherWorldEstate.insideStudy(realm.house,p.blockPosition());
                 if(insideStudy&&p.distanceToSqr(s.piano.getCenter())<Math.pow(VisitConfig.PIANO_RANGE.get()-1,2))start(p,s,FATHER_ENTER);}
             case FATHER_ENTER->{if(s.elapsed>=VisitAudio.length("other_father_enter_scene"))start(p,s,FATHER_INTRO);}
             case FATHER_INTRO->{if(s.elapsed>=VisitAudio.length("other_father_intro"))start(p,s,SONG);}
@@ -259,7 +271,7 @@ public final class FirstVisit {
         if(!parent.isMom()&&parent.getVehicle() instanceof ScenePropEntity prop&&prop.mode()>0){parent.setYHeadRot(prop.getYRot());parent.setXRot(15);}
         return true;
     }
-    public static void slept(ServerPlayer p){var s=active(p);if(s==null||s.stage!=BED)return;
+    public static void slept(ServerPlayer p){if(com.coraline.multiplayer.StoryCoop.guest(p))return;var s=active(p);if(s==null||s.stage!=BED)return;
         s.stage=DONE;VisitData.get(p.server).setDirty();var d=DoorData.get(p.server).doors.get(s.door);var source=d==null?null:com.coraline.parents.FamilyData.level(p.server,d.dimension);
         if(source!=null){source.setDayTime((Math.floorDiv(source.getDayTime(),24000)+1)*24000);d.activeUntil=0;DoorData.get(p.server).setDirty();var state=source.getBlockState(d.pos);if(state.is(ModBlocks.TINY_DOOR.get()))source.setBlock(d.pos,state.setValue(com.coraline.block.TinyDoorBlock.OPEN,false).setValue(com.coraline.block.TinyDoorBlock.PORTAL,false),3);}
         cleanup(p,s);VisitAudio.stop(p);listening.remove(p.getUUID());

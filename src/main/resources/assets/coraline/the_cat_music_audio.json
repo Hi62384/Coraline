@@ -1,0 +1,13 @@
+{
+  "source": "music/eventbased/TheCat.mp3",
+  "source_sha256": "d5607896ec8c75f9ca501cf2d513193e0804c976e4034dce7106cf8b8108ecaf",
+  "ogg_sha256": "447c80324c928c10223e58565baad9405735f02fd390e1625aa9542d6675d4ec",
+  "export": {
+    "sample_rate": 48000,
+    "channels": 2,
+    "samples": 4804302,
+    "seconds": 100.089625,
+    "ticks": 2002
+  },
+  "role": "other_world_cat_visit_loop"
+}

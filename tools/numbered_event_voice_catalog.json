@@ -1,0 +1,566 @@
+{
+  "version": 1,
+  "generated_audio": false,
+  "duplicate_spec": "2.txt is identical to 1.txt and is not counted twice.",
+  "manifests": [
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "speaker": "mother",
+      "path": "tools/house_party_mother_voice_manifest.json",
+      "lines": 60,
+      "reference": "voicelines/othermother/Sample.wav",
+      "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+      "output": "voicelines/othermother/events/house_party",
+      "generated": false,
+      "validated": false,
+      "exported": false
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "speaker": "father",
+      "path": "tools/house_party_father_voice_manifest.json",
+      "lines": 10,
+      "reference": "voicelines/otherfather/otherfathersample.wav",
+      "reference_sha256": "fd15d075b3704f9661ef3ce3a60961394d8ce980a194aefada5bcf9baaacafa5",
+      "output": "voicelines/otherfather/events/house_party",
+      "generated": false,
+      "validated": false,
+      "exported": false
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "speaker": "mother",
+      "path": "tools/player_party_mother_voice_manifest.json",
+      "lines": 70,
+      "reference": "voicelines/othermother/Sample.wav",
+      "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+      "output": "voicelines/othermother/events/player_party",
+      "generated": false,
+      "validated": false,
+      "exported": false
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "speaker": "father",
+      "path": "tools/player_party_father_voice_manifest.json",
+      "lines": 10,
+      "reference": "voicelines/otherfather/otherfathersample.wav",
+      "reference_sha256": "fd15d075b3704f9661ef3ce3a60961394d8ce980a194aefada5bcf9baaacafa5",
+      "output": "voicelines/otherfather/events/player_party",
+      "generated": false,
+      "validated": false,
+      "exported": false
+    },
+    {
+      "spec": "4.txt",
+      "event": "mother_goes_out",
+      "speaker": "mother",
+      "path": "tools/mother_goes_out_mother_voice_manifest.json",
+      "lines": 60,
+      "reference": "voicelines/othermother/Sample.wav",
+      "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+      "output": "voicelines/othermother/events/mother_goes_out",
+      "generated": false,
+      "validated": false,
+      "exported": false
+    },
+    {
+      "spec": "4.txt",
+      "event": "mother_goes_out",
+      "speaker": "father",
+      "path": "tools/mother_goes_out_father_voice_manifest.json",
+      "lines": 4,
+      "reference": "voicelines/otherfather/otherfathersample.wav",
+      "reference_sha256": "fd15d075b3704f9661ef3ce3a60961394d8ce980a194aefada5bcf9baaacafa5",
+      "output": "voicelines/otherfather/events/mother_goes_out",
+      "generated": false,
+      "validated": false,
+      "exported": false
+    },
+    {
+      "spec": "5.txt",
+      "event": "wybie_adventure",
+      "speaker": "mother",
+      "path": "tools/wybie_adventure_mother_voice_manifest.json",
+      "lines": 50,
+      "reference": "voicelines/othermother/Sample.wav",
+      "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+      "output": "voicelines/othermother/events/wybie_adventure",
+      "generated": false,
+      "validated": false,
+      "exported": false
+    },
+    {
+      "spec": "6.txt",
+      "event": "theatre",
+      "speaker": "mother",
+      "path": "tools/theatre_mother_voice_manifest.json",
+      "lines": 40,
+      "reference": "voicelines/othermother/Sample.wav",
+      "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+      "output": "voicelines/othermother/events/theatre",
+      "generated": false,
+      "validated": false,
+      "exported": false
+    },
+    {
+      "spec": "7.txt",
+      "event": "mouse_circus",
+      "speaker": "mother",
+      "path": "tools/mouse_circus_mother_voice_manifest.json",
+      "lines": 10,
+      "reference": "voicelines/othermother/Sample.wav",
+      "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+      "output": "voicelines/othermother/events/mouse_circus",
+      "generated": false,
+      "validated": false,
+      "exported": false
+    }
+  ],
+  "text_only": [
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "bobinsky_greeting",
+      "speaker": "Other Bobinsky",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "bobinsky_social",
+      "speaker": "Other Bobinsky",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "bobinsky_secret_hint",
+      "speaker": "Other Bobinsky",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "bobinsky_game",
+      "speaker": "Other Bobinsky",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "spink_greeting",
+      "speaker": "Other Spink",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "spink_social",
+      "speaker": "Other Spink",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "spink_secret_hint",
+      "speaker": "Other Spink",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "spink_feast",
+      "speaker": "Other Spink",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "forcible_greeting",
+      "speaker": "Other Forcible",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "forcible_social",
+      "speaker": "Other Forcible",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "forcible_secret_hint",
+      "speaker": "Other Forcible",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "forcible_feast",
+      "speaker": "Other Forcible",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "guest_greeting_1",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "guest_greeting_2",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "guest_social_1",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "guest_social_2",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "guest_warning_outside_1",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "guest_warning_outside_2",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "guest_warning_drawer_1",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "guest_warning_drawer_2",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "guest_warning_forbidden_1",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "guest_warning_forbidden_2",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "guest_report_1",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "1.txt",
+      "event": "house_party",
+      "id": "guest_report_2",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "bobinsky_greeting",
+      "speaker": "Other Bobinsky",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "bobinsky_show_start",
+      "speaker": "Other Bobinsky",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "bobinsky_show_middle",
+      "speaker": "Other Bobinsky",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "bobinsky_show_finish",
+      "speaker": "Other Bobinsky",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "bobinsky_secret_hint",
+      "speaker": "Other Bobinsky",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "bobinsky_gift",
+      "speaker": "Other Bobinsky",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "spink_greeting",
+      "speaker": "Other Spink",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "spink_theatre_start",
+      "speaker": "Other Spink",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "spink_theatre_act",
+      "speaker": "Other Spink",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "spink_theatre_finish",
+      "speaker": "Other Spink",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "spink_secret_hint",
+      "speaker": "Other Spink",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "spink_gift",
+      "speaker": "Other Spink",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "forcible_greeting",
+      "speaker": "Other Forcible",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "forcible_theatre_start",
+      "speaker": "Other Forcible",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "forcible_theatre_act",
+      "speaker": "Other Forcible",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "forcible_theatre_finish",
+      "speaker": "Other Forcible",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "forcible_secret_hint",
+      "speaker": "Other Forcible",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "forcible_gift",
+      "speaker": "Other Forcible",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "guest_greeting_1",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "guest_greeting_2",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "guest_greeting_3",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "guest_greeting_4",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "guest_warning_storage_1",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "guest_warning_storage_2",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "guest_warning_forbidden_1",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "guest_warning_forbidden_2",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "guest_warning_outside_1",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "guest_warning_outside_2",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "guest_report_1",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "guest_report_2",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "guest_cheer_1",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "guest_cheer_2",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "guest_cheer_3",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "guest_cheer_4",
+      "speaker": "Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "counterpart_greeting_1",
+      "speaker": "Other Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "counterpart_greeting_2",
+      "speaker": "Other Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "counterpart_gift_1",
+      "speaker": "Other Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    },
+    {
+      "spec": "3.txt",
+      "event": "player_party",
+      "id": "counterpart_gift_2",
+      "speaker": "Other Guest",
+      "reason": "Own character reference/pipeline not yet audited; no substitute voice authorized."
+    }
+  ],
+  "counts": {
+    "written": 376,
+    "mother": 290,
+    "father": 24,
+    "other": 62
+  }
+}

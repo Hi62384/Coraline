@@ -605,6 +605,7 @@ public final class MagicGardenActivity {
                 st.flyingGardenPhaseUntil=now+DESCENT;OtherMotherLoop.changed(p);}}
             case 4->{recoverSeats(p,s,c);moveFlight(p,s,c,now);if(now>=st.flyingGardenPhaseUntil)land(p,s,c,now);}
             case 5->{
+                for(var member:CooperativeActivities.playing(p,s))if(member.getY()<c.getY()-4||Math.abs(member.getX()-(c.getX()+.5))>48||Math.abs(member.getZ()-(c.getZ()+.5))>48){member.teleportTo(p.serverLevel(),c.getX()+.5,c.getY(),c.getZ()+39.5,member.getYRot(),member.getXRot());member.fallDistance=0;member.setDeltaMovement(Vec3.ZERO);}
                 if(p.tickCount%16==0)for(int[] fountain:new int[][]{{0,-5},{-32,12},{32,12}})
                     p.serverLevel().sendParticles(ParticleTypes.SPLASH,c.getX()+fountain[0]+.5,c.getY()+3.5,c.getZ()+fountain[1]+.5,4,.45,.5,.45,.02);
                 if(p.tickCount%30==0)for(int[] bed:new int[][]{{-29,10},{29,10},{-28,27},{28,27},{-29,-11},{29,-11}})
@@ -628,6 +629,7 @@ public final class MagicGardenActivity {
     }
     public static boolean interactProp(ServerPlayer p,VisitData.Scene s,ScenePropEntity prop){
         if(s.loop.activity!=OtherMotherActivities.Activity.MAGIC_GARDEN||prop.kind()!=ScenePropEntity.GARDEN_PLANT)return false;
+        if(!com.coraline.multiplayer.StoryCoop.canAct(p,s)||!s.owner.equals(prop.owner)||p.distanceToSqr(prop)>36)return true;
         var st=s.loop;if(st.flyingGardenStage!=5){p.displayClientMessage(Component.literal("Wait until the mantis has landed before harvesting."),true);return true;}
         int slot=prop.slot;if(slot<0||slot>=PLANTS||(st.flyingGardenCollectedMask&(1L<<slot))!=0)return true;
         st.flyingGardenCollectedMask|=1L<<slot;st.flyingGardenHarvestCount++;

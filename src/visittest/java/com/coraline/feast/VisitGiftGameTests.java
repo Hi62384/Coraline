@@ -82,13 +82,15 @@ public final class VisitGiftGameTests {
         h.assertFalse(VisitGiftPools.progress(f.p,f.s).perfect(),"Food unlocked perfect gear");
         f.p.getInventory().setItem(0,new ItemStack(com.coraline.registry.ModItems.PERFECT_INGOT.get()));h.assertTrue(VisitGiftPools.progress(f.p,f.s).perfect(),"Perfect material did not unlock gear");h.succeed();
     }
-    @GameTest(template="empty") public static void originalFoodAndTreasurePoolsPreserved(GameTestHelper h){
-        for(int seed=0;seed<100;seed++)for(var kind:List.of(OtherMotherDialogue.Loot.FOOD,OtherMotherDialogue.Loot.TREASURE)){
+    @GameTest(template="empty") public static void authoredFoodPreservedAndEarlyTreasureUsesThemedMaterials(GameTestHelper h){
+        for(int seed=0;seed<100;seed++){
             var r=RandomSource.create(seed);var expected=new ArrayList<ItemStack>();
-            if(kind==OtherMotherDialogue.Loot.FOOD){for(int theme=0;theme<4;theme++)for(int i=0;i<3;i++)expected.add(FeastContent.serving(r,theme));for(int i=0;i<3;i++)expected.add(FeastContent.random(r,true));}
-            else for(var item:new Item[]{Items.IRON_INGOT,Items.GOLD_INGOT,Items.COPPER_INGOT,Items.COAL,Items.LAPIS_LAZULI,Items.REDSTONE,Items.EMERALD,Items.DIAMOND,OtherMaterials.OTHER_IRON.get(),OtherMaterials.OTHER_DIAMOND.get()})expected.add(new ItemStack(item,1+r.nextInt(item==Items.DIAMOND||item==OtherMaterials.OTHER_DIAMOND.get()?3:6)));
-            var actual=VisitGiftPools.generate(kind,RandomSource.create(seed),new VisitGiftPools.Progress(0,false,false,false));
-            h.assertTrue(actual.size()==expected.size(),"Original pool size changed");for(int i=0;i<actual.size();i++)h.assertTrue(ItemStack.matches(actual.get(i),expected.get(i)),"Original pool changed at "+kind+"/"+i);
+            for(int theme=0;theme<4;theme++)for(int i=0;i<3;i++)expected.add(FeastContent.serving(r,theme));for(int i=0;i<3;i++)expected.add(FeastContent.random(r,true));
+            var actual=VisitGiftPools.generate(OtherMotherDialogue.Loot.FOOD,RandomSource.create(seed),new VisitGiftPools.Progress(0,false,false,false));
+            h.assertTrue(actual.size()==expected.size(),"Authored supper serving count changed");for(int i=0;i<actual.size();i++)h.assertTrue(ItemStack.matches(actual.get(i),expected.get(i)),"Authored serving changed at "+i);
+            var treasure=VisitGiftPools.generate(OtherMotherDialogue.Loot.TREASURE,RandomSource.create(seed),new VisitGiftPools.Progress(0,false,false,false));
+            h.assertTrue(treasure.size()==2&&treasure.get(0).is(OtherMaterials.OTHER_IRON.get())&&treasure.get(0).getCount()>=2&&treasure.get(0).getCount()<=4,"Early treasure lacks bounded supernatural resources");
+            h.assertTrue((treasure.get(1).is(Items.AMETHYST_SHARD)||treasure.get(1).is(Items.GOLD_INGOT))&&treasure.get(1).getCount()>=1&&treasure.get(1).getCount()<=3,"Early treasure bypassed material tiers");
         }h.succeed();
     }
     @GameTest(template="empty",timeoutTicks=500) public static void everyCategoryAndVoiceChoiceContinuesVisit(GameTestHelper h){

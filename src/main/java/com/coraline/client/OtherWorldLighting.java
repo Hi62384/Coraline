@@ -6,6 +6,10 @@ import org.joml.Vector3f;
 /** Dimension-local lightmap adjustment, not a screen filter or night vision. */
 public final class OtherWorldLighting {
     public static void apply(Vector3f color,int block,int sky){
+        if(FirstEscapeClient.prison()){float local=com.coraline.feast.FirstEscapeVisualRules.prisonLight(block);color.set(local*.65F,local*.82F,local);return;}
+        float parlor=FirstEscapeClient.parlorLightBlend();
+        if(parlor>0){float dark=com.coraline.feast.FirstEscapeVisualRules.darkHouseLight(block),local=com.coraline.feast.FirstEscapeVisualRules.parlorLight(block);color.set(net.minecraft.util.Mth.lerp(parlor,dark*.76F,local),net.minecraft.util.Mth.lerp(parlor,dark*.82F,local*.97F),net.minecraft.util.Mth.lerp(parlor,dark,local*.94F));return;}
+        if(!ParentRescueClient.active()&&!RescueClient.active()&&(TraditionalClient.darkHouse()&&!FirstEscapeClient.active()||FirstEscapeClient.inheritedDarkHouse())){float local=com.coraline.feast.FirstEscapeVisualRules.darkHouseLight(block);color.set(local*.76F,local*.82F,local);return;}
         float lamp=block/15F;
         float moon=(float)Math.pow(sky/15F,1.65)*OtherWorldVisualConfig.MOONLIGHT.get().floatValue()*(1-lamp*.82F);
         color.set(lift(color.x,moon*.78F),lift(color.y,moon*.89F),lift(color.z,moon));

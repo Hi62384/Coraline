@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "GGG",
+    "EME",
+    "GGG"
+  ],
+  "key": {
+    "E": {
+      "item": "coraline:button_eye"
+    },
+    "G": {
+      "item": "coraline:soulglass"
+    },
+    "M": {
+      "item": "coraline:moonstone"
+    }
+  },
+  "result": {
+    "item": "coraline:unbinding_button_eyes",
+    "count": 1
+  }
+}

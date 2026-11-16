@@ -13,12 +13,14 @@ public final class ParentsBedItem extends BlockItem {
         // A four-block placement depends on server-owned family data. Do not predict a
         // successful single-block placement (and shrink the item) on the client.
         if(context.getLevel().isClientSide)return net.minecraft.world.InteractionResult.SUCCESS;
+        if(context.getPlayer() instanceof net.minecraft.server.level.ServerPlayer owner&&!ParentsBedSafety.allowPlacement(owner,context.getItemInHand()))return net.minecraft.world.InteractionResult.FAIL;
         var result=super.place(context);
         if(!result.consumesAction()&&context.getPlayer() instanceof net.minecraft.server.level.ServerPlayer player)
             player.containerMenu.broadcastFullState();
         return result;
     }
-    public static ItemStack forFamily(UUID id){ItemStack s=new ItemStack(com.coraline.registry.ModItems.PARENTS_BED.get());s.getOrCreateTagElement("BlockEntityTag").putUUID("Family",id);return s;}
+    public static ItemStack forFamily(UUID id){ItemStack s=new ItemStack(com.coraline.registry.ModItems.PARENTS_BED.get());s.getOrCreateTagElement("BlockEntityTag").putUUID("Family",id);ParentsBedSafety.stamp(s,id);return s;}
+    @Override public void inventoryTick(ItemStack stack,net.minecraft.world.level.Level level,net.minecraft.world.entity.Entity holder,int slot,boolean selected){super.inventoryTick(stack,level,holder,slot,selected);if(level instanceof ServerLevel server)ParentsBedSafety.retireRevoked(stack,server);}
     @Override protected boolean canPlace(BlockPlaceContext c,BlockState state){
         if(!super.canPlace(c,state))return false;
         if(c.getLevel() instanceof ServerLevel l){

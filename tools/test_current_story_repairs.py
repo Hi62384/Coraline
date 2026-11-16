@@ -1,0 +1,52 @@
+"""Source/asset regressions, supplementary to native and rendered checks."""
+import hashlib,json,unittest
+from pathlib import Path
+from import_numbered_original_audio import ogg_measure
+
+ROOT=Path(__file__).resolve().parents[1]
+JAVA=ROOT/'src/main/java/com/coraline'
+ASSETS=ROOT/'src/main/resources/assets/coraline'
+def source(name):return (JAVA/name).read_text(encoding='utf-8-sig')
+
+class CurrentStoryRepairs(unittest.TestCase):
+    def test_proposal_dismount_is_stopped_on_server_and_before_client_prediction(self):
+        text=source('feast/BlackIsTraditional.java')
+        self.assertIn('EntityMountEvent event',text);self.assertIn('ClientboundSetPassengersPacket(chair)',text)
+        self.assertIn('tag.getInt("VisitEventSerial")==s.loop.event.getInt("Serial")',text)
+        self.assertIn('Phase.AWAITING_CHOICE.ordinal()',text);self.assertIn('releaseSeat(p,s);BedroomBarricade.clear',text)
+        self.assertIn('event.getInput().shiftKeyDown=false',source('client/TraditionalClient.java'))
+        prop=source('feast/ScenePropEntity.java')
+        self.assertLess(prop.index('refreshProposalSeatLock();\n'),prop.index('if(VisitEvents.propTick(this))return;'))
+    def test_no_old_dark_proposal_packet_on_mother_click(self):
+        text=source('feast/VisitEvents.java').split('public static boolean interact(ServerPlayer p,ParentEntity parent)',1)[1]
+        self.assertLess(text.index('FirstEscapeStory.engaged(major)||ParentRescueStory.started(major)'),text.index('BlackIsTraditional.sync'))
+        self.assertIn('!ParentRescueClient.active()&&!RescueClient.active()',source('client/OtherWorldLighting.java'))
+    def test_temporary_arm_and_dolls_have_scoped_retirement(self):
+        text=source('feast/CinematicPropEntity.java')
+        self.assertIn('retiredCanonicalGhost()||retireFinishedStoryProp()',text)
+        self.assertIn('FirstEscapeStory.retiredGrab(this,s)',text);self.assertIn('MissingParentsCat.retiredDolls(this,s)',text)
+        self.assertIn('FirstEscapeVisualRules.rescueHand(',source('client/renderer/FirstEscapePresentation.java'))
+        self.assertIn('!dollsFinished(s)&&n.contains("BedFoot")',source('feast/MissingParentsCat.java'))
+    def test_bike_uses_actual_story_tick_not_only_riding_pose(self):
+        text=source('feast/FirstEscapeStory.java')
+        self.assertIn('driveStoryBike(bike,p,s,w);',text);self.assertIn('bike.storyDrivenAt==now',text)
+        self.assertIn('expanded==0||System.nanoTime()<deadline',source('feast/StoryBikeRoute.java'))
+        self.assertIn('best=next;',source('feast/StoryBikeRoute.java'))
+    def test_cat_tunnel_is_nonblocking_and_follows_behind(self):
+        text=source('entity/CharacterEntity.java')
+        self.assertIn('boolean canCollideWith(Entity other)',text);self.assertIn('void push(Entity other)',text)
+        guide=source('feast/ParentRescueStory.java').split('static void guideTunnelCat(',1)[1].split('public static void tick(',1)[0]
+        self.assertIn('playerProgress-2.5',guide);self.assertIn('cat.storyCatCrawl(true)',guide);self.assertIn('getBlockCollisions(cat',guide)
+    def test_complete_music_master_timing_and_one_shot_playback(self):
+        receipt=json.loads((ASSETS/'missing_parents_music_audio.json').read_text())
+        self.assertEqual(receipt['source_sha256'],hashlib.sha256((ROOT/receipt['source']).read_bytes()).hexdigest())
+        ogg=ASSETS/'sounds/scenes/missing_parents_music.ogg'
+        self.assertEqual(receipt['ogg_sha256'],hashlib.sha256(ogg.read_bytes()).hexdigest())
+        self.assertEqual(receipt['export'],ogg_measure(ogg.read_bytes()));self.assertGreater(receipt['export']['ticks'],100)
+        sounds=json.loads((ASSETS/'sounds.json').read_text());self.assertTrue(sounds['missing_parents_music']['sounds'][0]['stream'])
+        for table in ('visit_audio_lengths.json','scene_audio_lengths.json'):
+            self.assertEqual(json.loads((ASSETS/table).read_text())['missing_parents_music'],receipt['export']['ticks'])
+        track=source('client/MissingParentsMusic.java');self.assertIn('looping=false',track);self.assertIn('ShowPlaybackClient.observed',track)
+        self.assertIn('return 45*20',source('feast/MissingParentsCat.java'))
+
+if __name__=='__main__':unittest.main()

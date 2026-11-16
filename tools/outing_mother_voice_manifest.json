@@ -1,0 +1,558 @@
+{
+  "reference": "voicelines/othermother/Sample.wav",
+  "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+  "emotion_order": [
+    "happy",
+    "angry",
+    "sad",
+    "afraid",
+    "disgusted",
+    "melancholic",
+    "surprised",
+    "calm"
+  ],
+  "states": {
+    "invitation/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, your Other Father and I thought it might be lovely to get out of the house for a little while! We've planned a special family outing, just for you. I'll tell you where we're going, and you've got five minutes to come meet us. I think you'll have a wonderful time!",
+        "Darling, how would you like a little adventure with your Other Father and me? We've arranged something rather nice outside the house. We'll be waiting for you, so come join us within the next five minutes, won't you?"
+      ]
+    },
+    "invitation/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Well, sweetheart, I thought we might spend a little time together away from the house. Your Other Father and I have planned an outing. You've got five minutes to meet us, so try not to get too distracted along the way.",
+        "Your Other Father and I have something planned for us today, darling. We're going on a little family outing. I'll tell you where to find us. You have five minutes to get there, and I do hope you'll arrive when I ask."
+      ]
+    },
+    "invitation/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, I've been looking forward to this! Your Other Father and I have planned a lovely little outing for the three of us. Come meet us within five minutes, sweetheart. It simply wouldn't be the same without you.",
+        "Sweetheart, I've arranged something special for our little family! We'll be waiting for you at a lovely spot I've picked out. Come join us within five minutes, my love. I can hardly wait to spend some time together."
+      ]
+    },
+    "invitation/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Your Other Father and I are going on a family outing, and I expect you to join us. I'll tell you where we're waiting. You have five minutes to get there, sweetheart. Do try not to make me come looking for you again.",
+        "I thought a little family outing might give you something more pleasant to occupy yourself with. Your Other Father and I will be waiting. Five minutes, darling. I trust you can manage to arrive without wandering somewhere you shouldn't."
+      ]
+    },
+    "invitation/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, I thought we might enjoy a little time together, just the three of us. I've planned a lovely outing, and you've got five minutes to join us. Do try not to let those little curiosities of yours keep you away.",
+        "Sweetheart, your Other Father and I have arranged something special. I know how much you enjoy exploring my world, but I think you'll find spending a little time with your family just as rewarding. Come meet us within five minutes."
+      ]
+    },
+    "ontime/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, there you are, sweetheart! Right on time, too. How wonderful! We've been looking forward to showing you everything. Come along, let's get started!",
+        "Darling! You made it! Your Other Father and I have everything ready, and you've arrived at just the right moment. This is going to be such fun!"
+      ]
+    },
+    "ontime/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Ah, good, you're here. I'm pleased you remembered to come on time, sweetheart. Your Other Father has been getting rather impatient to begin.",
+        "There you are, darling. Right on time, just as I hoped. Now then, let's have ourselves a lovely little outing."
+      ]
+    },
+    "ontime/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling! I knew you wouldn't keep us waiting. Come here, sweetheart. I've been so excited to spend a little time together.",
+        "There's my favorite little one! Right on time, of course. Everything's ready, darling. Let's make some wonderful memories together."
+      ]
+    },
+    "ontime/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Good. You've arrived when I asked. That's a pleasant change, sweetheart. Now, let's see if we can enjoy ourselves without any more trouble.",
+        "Well, you're on time. Very good, darling. I do hope you'll continue being just as cooperative for the rest of our outing."
+      ]
+    },
+    "ontime/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, there you are. Right on time, too. I'm glad you haven't let your curiosity distract you from spending a little time with your family.",
+        "My sweetheart! How lovely to see you arrive when I asked. You do know how to make your mother happy when you want to, don't you?"
+      ]
+    },
+    "late/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, there you are, sweetheart! We were beginning to wonder where you'd gotten to. Never mind, darling. Everything's still ready, so come along and join us.",
+        "Darling! You're a little late, but I'm just glad you've arrived. Your Other Father and I have been waiting for you. Let's get started, shall we?"
+      ]
+    },
+    "late/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Well, there you are. We've been waiting quite some time, sweetheart. I do wish you'd paid a little more attention to the clock. Come along, let's begin.",
+        "Oh, darling, I was beginning to think you'd forgotten about our little outing. It's rather rude to keep everyone waiting, you know. But you're here now."
+      ]
+    },
+    "late/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my love, where have you been? I was beginning to worry about you. Your Other Father and I have been waiting ever so patiently. Come here, sweetheart.",
+        "Darling, you've kept us waiting! I know you love exploring, but I was so looking forward to spending this time together. Never mind. Let's enjoy ourselves now."
+      ]
+    },
+    "late/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "How thoughtful of you to finally arrive. Your Other Father and I have been standing here waiting, sweetheart. I do hope whatever distracted you was terribly important.",
+        "Well, look who decided to join us. I gave you five minutes, darling, and I meant five minutes. Now come along. We've wasted quite enough time."
+      ]
+    },
+    "late/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, you really do lose track of time whenever you're off exploring, don't you? We've been waiting here for you. I wonder what was so interesting that you nearly forgot about us.",
+        "There you are, sweetheart. I was beginning to think you'd found something more interesting than your own family. But I suppose you couldn't stay away forever, could you?"
+      ]
+    },
+    "search/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Sweetheart? Where have you gone? Your Other Father and I have been waiting for such a long time. I hope you haven't gotten yourself lost. I'm coming to find you, darling!",
+        "Darling! We've been waiting and waiting for you. I was so looking forward to our little outing! Never mind, sweetheart. I'll come find you myself."
+      ]
+    },
+    "search/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Alright, sweetheart, that's quite long enough. I've given you plenty of time to come join us. If you won't come when I ask, I suppose I'll have to find you myself.",
+        "Where have you disappeared to this time? Your Other Father and I have been standing here waiting for ages. I'm coming to find you, darling!"
+      ]
+    },
+    "search/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, where are you? I've been waiting for you, and I'm beginning to worry terribly. Never mind, sweetheart. I'll find you, and then we can all enjoy ourselves together.",
+        "Sweetheart! Please come back to us. Your Other Father and I have been waiting, and I can't bear not knowing where you've wandered off to. I'm coming to look for you!"
+      ]
+    },
+    "search/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "That is quite enough. I told you where to meet us, and I've waited more than long enough. I'm coming to find you now, and you'd better have a very good explanation.",
+        "Where are you hiding this time, sweetheart? You've kept us waiting far too long. Well, I'm finished being patient. I'll find you myself."
+      ]
+    },
+    "search/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, you've done it again. I plan something lovely for our family, and you disappear somewhere without a word. I wonder what could possibly be so fascinating. Well, let's find out, shall we?",
+        "Sweetheart, I know how much you love your little adventures, but you've kept your mother waiting quite long enough. I think it's time I came to collect you. Wherever you've wandered off to."
+      ]
+    },
+    "finish/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, wasn't that lovely? I'm so glad we got to spend a little time together. I hope you enjoyed yourself, sweetheart. Now, I think we ought to find something else fun to do!",
+        "There we are! A wonderful little family outing, just as I hoped. I'm so happy you came along, darling. I've still got plenty of lovely things planned for you."
+      ]
+    },
+    "finish/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Well, that was nice, wasn't it? It's good when we can all spend some time together without any interruptions. Now then, sweetheart, let's see what else we might do.",
+        "There, all finished. I do hope you enjoyed our little outing, darling. Your Other Father certainly seemed to have a wonderful time. Perhaps we should find something else to do."
+      ]
+    },
+    "finish/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, I wish we could spend every day doing lovely little things like this together. Doesn't it feel wonderful to have a family that loves you so much? Now, let's have some more fun.",
+        "Wasn't that perfect, sweetheart? Having you here with us makes every little moment so much more special. Come along, my love. I've got another wonderful surprise in mind."
+      ]
+    },
+    "finish/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Well, at least we've managed to have a reasonably pleasant outing. I do hope you'll remember how much nicer things are when everyone behaves themselves. Now, let's move along.",
+        "There. Our little outing is finished. I hope you found it enjoyable, sweetheart. Perhaps our next activity will keep you a little more occupied."
+      ]
+    },
+    "finish/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, isn't it lovely how we can always enjoy ourselves together? Whatever little adventures and mysteries occupy your mind, you still find your way back to us. Now, let's see what else I've planned.",
+        "There we are, sweetheart. Another wonderful little memory for our family. I do wish moments like these could last forever. But never mind. I've got plenty more surprises waiting for you."
+      ]
+    },
+    "destination/picnic": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "We've set up the most beautiful little picnic in the flower meadow. There's a lovely blanket, a basket full of food, and plenty of fresh air. Just follow the path to the meadow, darling. We'll be waiting for you there.",
+        "Your Other Father has carried everything out to the picnic meadow, and I've packed all sorts of delicious things. Come find us beside the flowers, sweetheart. I've saved you the nicest spot on the blanket."
+      ]
+    },
+    "destination/fishing": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Your Other Father has been terribly excited about taking us fishing! We've got our rods ready down at the lakeside dock. Come meet us there, darling. I do hope the fish are feeling cooperative today.",
+        "We're going to spend a little while fishing at the lake, sweetheart. Your Other Father has already taken the equipment down to the dock. Come join us by the water. Perhaps you'll catch something wonderful."
+      ]
+    },
+    "destination/stargazing": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, darling, the stars look absolutely beautiful tonight! Your Other Father has brought his telescope up to the hilltop observatory. Come meet us there. I think you'll find the view rather extraordinary.",
+        "I thought we might spend a little while looking at the stars, sweetheart. We've prepared a lovely spot on the hill, with blankets and a telescope. Come join us at the observation platform. The sky is especially pretty tonight."
+      ]
+    },
+    "destination/woodland": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Your Other Father and I thought we'd take a lovely walk through the woods. There's a beautiful little trail I've been wanting to show you. Come meet us at the forest path entrance, darling, and we'll all go together.",
+        "We're going for a little family walk, sweetheart! The woodland paths are looking particularly lovely, and there are so many beautiful things to see. Come find us at the trailhead, and we'll show you around."
+      ]
+    },
+    "destination/boat": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, your Other Father has prepared a lovely little boat ride for us! We'll be waiting down at the lakeside dock. Come join us, darling. The water looks absolutely beautiful tonight.",
+        "We're going out on the lake for a little while, my love. Your Other Father has the boat all ready, and I've picked out the prettiest route. Come meet us at the boathouse. I think you'll enjoy the view."
+      ]
+    }
+  },
+  "output": "voicelines/othermother/events/family_outing",
+  "prefix": "line"
+}

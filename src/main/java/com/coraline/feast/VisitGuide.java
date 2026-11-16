@@ -18,7 +18,16 @@ public final class VisitGuide {
     private VisitGuide(){}
     @SubscribeEvent public static void commands(RegisterCommandsEvent e){
         e.getDispatcher().register(Commands.literal("coraline")
-            .then(Commands.literal("guide").executes(c->guide(c.getSource().getPlayerOrException()))));
+            .then(Commands.literal("guide").executes(c->guide(c.getSource().getPlayerOrException())))
+            .then(Commands.literal("recover").executes(c->recover(c.getSource().getPlayerOrException()))));
+    }
+    private static int recover(ServerPlayer p){
+        var s=OtherMotherLoop.active(p);if(s==null||!p.getUUID().equals(s.owner)||s.loop.secrets.searching()||com.coraline.secrets.Reconciliation.active(p)){p.sendSystemMessage(Component.literal("Recovery cannot interrupt an active pursuit or another player's story."));return 0;}
+        if(FirstEscapeStory.engaged(s)&&FirstEscapeStory.phase(s)!=FirstEscapeTimeline.Phase.ESCAPE_COMPLETE){FirstEscapeStory.recover(p,s);p.sendSystemMessage(Component.literal("Retrying this story checkpoint with the same actors and inventory; no rewards granted."));return 1;}
+        if(BlackIsTraditional.active(s)){BedroomBarricade.retry(p,s);BlackIsTraditional.recover(p);p.sendSystemMessage(Component.literal("Retrying this story checkpoint; furniture progress and rewards retained."));return 1;}
+        if(HouseParty.active(p)==s){PartyMatches.suspend(p,s);PartyKidsGames.finish(p,s,"Game cancelled safely. You can invite the guest again; any wager is refunded.");return 1;}
+        if(VisitEvents.type(s)==VisitEvents.Type.FAMILY_DINNER){FamilyDinner.ensureTable(p,s);DinnerActivities.close(p);return guide(p);}
+        return guide(p);
     }
     public static void instructions(ServerPlayer p){
         // Recovery is automatic and intentionally silent; story presentation stays out of chat.

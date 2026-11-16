@@ -6,7 +6,12 @@ import net.minecraftforge.registries.RegistryObject;
 
 /** Utility artifacts shared by the sewing, dream and Other World equipment systems. */
 public final class ArtifactItems {
-    public static final RegistryObject<Item> VOID_HEART=ModItems.ITEMS.register("void_heart",()->new Item(new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<Item> VOID_HEART=ModItems.ITEMS.register("void_heart",com.coraline.rebirth.VoidHeartItem::new);
+    public static final RegistryObject<Item> BUTTON_EYE=ModItems.ITEMS.register("button_eye",()->new Item(new Item.Properties()));
+    public static final RegistryObject<Item> OTHER_IRON_LOCKPICK=ModItems.ITEMS.register("other_iron_lockpick",com.coraline.postgame.OtherIronLockpick::new);
+    public static final RegistryObject<Item> OTHER_IRON_THREAD_CUTTER=ModItems.ITEMS.register("other_iron_thread_cutter",com.coraline.postgame.OtherIronThreadCutter::new);
+    public static final RegistryObject<Item> OTHER_IRON_DRILL_DISRUPTOR=ModItems.ITEMS.register("other_iron_drill_disruptor",com.coraline.postgame.OtherIronDrillDisruptor::new);
+    public static final RegistryObject<Item> OTHER_VOID_SWORD=ModItems.ITEMS.register("other_void_sword",OtherVoidSwordItem::new);
     public static final RegistryObject<Item> SOUL_CAPTURER=ModItems.ITEMS.register("soul_capturer",SoulCapturerItem::new);
     public static final RegistryObject<Item> DREAM_STAFF=ModItems.ITEMS.register("dream_staff",DreamStaffItem::new);
     public static final RegistryObject<Item> DREAMSTONE=ModItems.ITEMS.register("dreamstone",DreamstoneItem::new);

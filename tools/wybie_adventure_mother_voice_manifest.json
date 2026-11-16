@@ -1,0 +1,469 @@
+{
+  "reference": "voicelines/othermother/Sample.wav",
+  "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+  "emotion_order": [
+    "happy",
+    "angry",
+    "sad",
+    "afraid",
+    "disgusted",
+    "melancholic",
+    "surprised",
+    "calm"
+  ],
+  "states": {
+    "invitation/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, I've got a lovely surprise for you! Your little friend Wybie has come to visit! I've arranged a couple of bicycles out in the garden so you two can go riding together. You've got twenty minutes to enjoy yourselves, darling. Just remember to come back to me before your time is up!",
+        "Darling, guess who's coming to see you? Your friend Wybie! I thought it would be wonderful if the two of you went for a bicycle ride together. I've got everything ready in the garden. Just be back within twenty minutes, sweetheart, and don't wander too far!"
+      ]
+    },
+    "invitation/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Now then, sweetheart, your friend Wybie has come for a visit. I've prepared two bicycles in the garden, and you may spend the next twenty minutes riding around together. I expect you back when your time is up, and I'd prefer you didn't go wandering into places you shouldn't.",
+        "Well, darling, I've arranged for Wybie to come and play with you. There are bicycles waiting in the garden, so why don't you enjoy a little ride? You have twenty minutes. Do try to remember the time and stay reasonably close to home."
+      ]
+    },
+    "invitation/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, I've got the most wonderful surprise! Your dear little friend Wybie is here! I thought the two of you would love a bicycle adventure together. I've prepared everything in the garden, my love. Have your twenty minutes of fun, and then come straight back to me!",
+        "Sweetheart, isn't this exciting? Wybie's come all this way just to spend time with you! I've arranged two beautiful bicycles for you both. Go on, enjoy yourselves for twenty minutes, darling. Just promise me you'll come home when you're supposed to."
+      ]
+    },
+    "invitation/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Your friend Wybie has arrived, sweetheart. I've prepared bicycles in the garden, and you may spend twenty minutes riding together. That does not mean you have permission to wander into forbidden places. Be back when your time is up, and don't give me another reason to be disappointed.",
+        "Well, I've allowed Wybie to come and visit you. You may go riding together for twenty minutes. I expect you to behave yourselves, remain reasonably close to the house, and return when I tell you. I would strongly advise against using this opportunity to get into trouble."
+      ]
+    },
+    "invitation/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, I've arranged a lovely surprise for you. Your friend Wybie is here, and I've prepared bicycles for a little adventure together. You've got twenty minutes, sweetheart. Do try to spend them having fun rather than getting carried away with those curious little investigations of yours.",
+        "Sweetheart, your little friend has come to see you! Isn't that wonderful? I've even prepared a bicycle ride for you both. Enjoy your twenty minutes together, my love, but remember to come back. I'd hate for your curiosity to spoil something so lovely."
+      ]
+    },
+    "return/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, there you are, sweetheart! Did you have a lovely time with Wybie? I do hope you enjoyed the bicycles. You two looked like you were having such fun!",
+        "Darling, you're back! Wonderful! I hope you and Wybie had a marvelous little adventure. Now then, let's see what else we might do together."
+      ]
+    },
+    "return/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Ah, there you are. I'm pleased you remembered to come back on time, sweetheart. I hope you and Wybie had an enjoyable little ride.",
+        "Well, darling, you've returned right when I expected you. Very good. I trust you and your friend had a pleasant adventure?"
+      ]
+    },
+    "return/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling! You're back! Did you and Wybie have the most wonderful time? I'm so glad I could arrange something special for you, sweetheart!",
+        "Sweetheart, there you are! Oh, I hope you loved every minute of your little adventure. It makes me so happy to see you enjoying yourself with your friend."
+      ]
+    },
+    "return/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Good. You've returned when I asked. I trust you and Wybie managed to behave yourselves while you were out. Now, let's get back to our plans.",
+        "Well, you're back on time. That's a pleasant surprise, sweetheart. I hope there was nothing about your little adventure that I ought to know."
+      ]
+    },
+    "return/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, you've come back! And right on time, too. I hope you and Wybie had a lovely adventure. Nothing too mysterious, I trust?",
+        "Sweetheart, welcome home! I do hope you enjoyed yourself with Wybie. It's so much nicer when you can have fun together without getting into any trouble, isn't it?"
+      ]
+    },
+    "search/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Sweetheart? Your twenty minutes are up! Where have you and Wybie gone? I do hope you haven't gotten yourselves lost. I'm coming to find you, darling!",
+        "Darling! I told you to come back when your time was finished. Oh dear, where have you wandered off to? Never mind, sweetheart. I'll come look for you!"
+      ]
+    },
+    "search/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Alright, sweetheart, your time is up. I specifically asked you to come back, and now you've disappeared somewhere. I suppose I'll have to find you myself.",
+        "Well, darling, I gave you twenty minutes with Wybie, and you've managed to forget all about coming home. That's quite enough. I'm coming to find you."
+      ]
+    },
+    "search/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, where are you? Your twenty minutes are over, and I'm beginning to worry terribly! Please come back, sweetheart. I'm coming to find you!",
+        "Sweetheart! Your mother is waiting! I know you and Wybie must be having a lovely time, but you've been gone too long. Oh, my love, I'll come look for you."
+      ]
+    },
+    "search/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "That is quite enough. I gave you twenty minutes, sweetheart. Twenty. And now you've decided not to return. I'm coming to find you, and you'd better have a good explanation.",
+        "Where have you gone this time? I allowed you and Wybie to have a little adventure, and you've ignored my instructions. I'm finished waiting. I'll find you myself."
+      ]
+    },
+    "search/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, you and Wybie seem to have forgotten all about your mother. I wonder what could possibly be keeping you so occupied. Well, let's find out, shall we?",
+        "Sweetheart, your twenty minutes are over. I trusted you to come back, and instead you've disappeared somewhere. I suppose I'll have to collect my adventurous little darling myself."
+      ]
+    },
+    "caught_normal/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, there you are! I've been looking everywhere for you and Wybie. I asked you to come back on time, darling. Please don't make your mother worry like that.",
+        "Darling! I've finally found you. I know you were having fun, but you really must come home when I ask. Come along, sweetheart. It's time to head back."
+      ]
+    },
+    "caught_normal/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Well, there you are. I specifically told you to return after twenty minutes, sweetheart. I don't think that was a terribly complicated instruction.",
+        "Oh, darling. You and Wybie seem to have lost track of time. I certainly hope you'll remember to be more responsible during your next adventure."
+      ]
+    },
+    "caught_normal/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling! Thank goodness I've found you. I was getting so worried! Please don't stay away longer than I ask, sweetheart. I only want to know you're safe.",
+        "Sweetheart, there you are! I know how much you enjoy spending time with Wybie, but you simply must remember to come home. Now, let's get you back."
+      ]
+    },
+    "caught_normal/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "There you are. Your time was up ages ago, sweetheart. I shouldn't have to hunt you down every time I allow you a little freedom.",
+        "Well, I've finally found you. You were given twenty minutes and told to return. I expect you to follow instructions more carefully next time."
+      ]
+    },
+    "caught_normal/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, what am I going to do with you? I arrange something wonderful for you and your friend, and you can't even remember to come home when I ask.",
+        "Sweetheart, I've been looking for you. I know you enjoy your adventures with Wybie, but you really must learn when it's time to stop."
+      ]
+    },
+    "ban/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart... what have you done? I trusted you and Wybie to have a lovely little adventure, and instead you've been getting into things you know you shouldn't. I'm terribly disappointed, darling. I'm afraid Wybie won't be coming to visit you anymore.",
+        "Darling, I can't believe this. I gave you a wonderful afternoon with your friend, and you've used it to go poking around where you weren't supposed to. Oh, sweetheart. I'm sorry, but I simply can't allow Wybie to visit you again."
+      ]
+    },
+    "ban/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Well, that explains where you've been. I specifically told you to behave while you were with Wybie, and you've done exactly the opposite. I'm afraid this little friendship has become a problem. Wybie won't be visiting anymore.",
+        "Oh, darling. I give you twenty minutes with your friend, and you use that time to investigate things you know are forbidden. I think we've had quite enough of these little adventures. Wybie will not be coming back."
+      ]
+    },
+    "ban/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling... why would you do this? I wanted you to have a wonderful time with your little friend. I trusted you both. But now I see what you've been doing, and it breaks my heart. I'm afraid I can't let Wybie visit you again, sweetheart.",
+        "Sweetheart, I thought spending time with Wybie would make you happy. I never imagined you'd use that opportunity to get into such trouble. Oh, my love, you've left me no choice. Wybie won't be allowed to come and see you anymore."
+      ]
+    },
+    "ban/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "So. This is what you've been doing with Wybie. I give you a little freedom, and you immediately use it to disobey me. Well, that's finished. You will not be seeing Wybie again, sweetheart. Perhaps now you'll learn to follow instructions.",
+        "How dare you. I specifically warned you not to get into trouble, and you've gone straight into places you knew were forbidden. I've had quite enough of this. Wybie will never be invited here again."
+      ]
+    },
+    "ban/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling. I thought Wybie might be a good influence on you. Someone to keep you happy, to help you enjoy yourself. But instead, here you are, chasing after secrets again. I'm afraid your little adventures together have come to an end. He won't be visiting anymore.",
+        "Sweetheart, look what your curiosity has cost you. I arranged a beautiful afternoon with your friend, and you've turned it into another one of your forbidden investigations. I'm so disappointed, my love. Wybie won't be coming back. I think that's for the best."
+      ]
+    }
+  },
+  "output": "voicelines/othermother/events/wybie_adventure",
+  "prefix": "line",
+  "event_directory": "wybie_adventure"
+}

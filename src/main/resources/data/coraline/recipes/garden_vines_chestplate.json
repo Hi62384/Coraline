@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "V V",
+    "SMS",
+    "VVV"
+  ],
+  "key": {
+    "M": {
+      "item": "coraline:moonstone"
+    },
+    "S": {
+      "item": "minecraft:string"
+    },
+    "V": {
+      "item": "minecraft:vine"
+    }
+  },
+  "result": {
+    "item": "coraline:garden_vines_chestplate",
+    "count": 1
+  }
+}

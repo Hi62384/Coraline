@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "phase=0": {
+      "model": "coraline:block/performance_control_0"
+    },
+    "phase=1": {
+      "model": "coraline:block/performance_control_1"
+    },
+    "phase=2": {
+      "model": "coraline:block/performance_control_2"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "BSB",
+    " I ",
+    "BSB"
+  ],
+  "key": {
+    "B": {
+      "item": "coraline:button"
+    },
+    "I": {
+      "item": "coraline:other_iron_ingot"
+    },
+    "S": {
+      "item": "minecraft:string"
+    }
+  },
+  "result": {
+    "item": "coraline:button_eye",
+    "count": 2
+  }
+}

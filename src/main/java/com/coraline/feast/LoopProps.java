@@ -17,6 +17,7 @@ public final class LoopProps {
     public static boolean owned(ScenePropEntity prop){return prop.getPersistentData().contains("LoopGeneration");}
     public static boolean valid(ScenePropEntity prop){
         var s=prop.owner==null?null:VisitData.get(prop.getServer()).scenes.get(prop.owner);
+        if(s!=null&&GhostVictimDirector.active(s))return GhostVictimActivities.valid(prop,s);
         if(s!=null&&prop.kind()==ScenePropEntity.ACTIVITY_PORTAL&&(!(s.loop.phase==WINDOW||s.loop.phase==ARRIVAL||s.loop.phase==READY||s.loop.phase==ACTIVITY)||!prop.blockPosition().equals(s.loop.portal)))return false;
         if(s!=null&&prop.kind()==ScenePropEntity.ACTIVITY_EXIT&&!ActivityWorld.exitReady(s))return false;
         return s!=null&&s.loop.active()&&Objects.equals(s.door,prop.storyDoor)&&prop.getPersistentData().getInt("LoopGeneration")==s.loop.generation
@@ -29,7 +30,17 @@ public final class LoopProps {
     static List<ScenePropEntity> nearby(ServerLevel level,VisitData.Scene s,BlockPos at){
         return level.getEntitiesOfClass(ScenePropEntity.class,new AABB(at).inflate(8),e->owned(e)&&s.owner.equals(e.owner)&&s.door.equals(e.storyDoor));
     }
-    static void hold(ServerLevel level,BlockPos pos){level.getChunkSource().addRegionTicket(TicketType.PORTAL,new net.minecraft.world.level.ChunkPos(pos),2,pos);level.getChunkAt(pos);}
+    private static final java.util.Map<ServerLevel,java.util.Map<Long,Long>> HELD_CHUNKS=new java.util.WeakHashMap<>();
+    public static void hold(ServerLevel level,BlockPos pos){
+        var chunk=new net.minecraft.world.level.ChunkPos(pos);long now=level.getGameTime();var held=HELD_CHUNKS.computeIfAbsent(level,key->new java.util.HashMap<>());
+        var last=held.get(chunk.toLong());if(last!=null&&now>=last&&now-last<20)return;
+        if(held.size()>512)held.entrySet().removeIf(entry->now-entry.getValue()>600);
+        held.put(chunk.toLong(),now);
+        // One stable ticket per chunk, not one ticket for every moving actor block.
+        // Portal tickets live for 300 ticks: a 20-tick refresh keeps the same lease alive.
+        level.getChunkSource().addRegionTicket(TicketType.PORTAL,chunk,2,chunk.getWorldPosition());
+        if(!level.hasChunkAt(pos))level.getChunkAt(pos);
+    }
     static boolean prepareGifts(ServerPlayer p,VisitData.Scene s){
         if(s.loop.giftPrepared)return true;
         var r=RealmData.get(p.server).realms.get(s.door);if(r==null)return false;
@@ -42,13 +53,23 @@ public final class LoopProps {
             s.table=table;
         }
         s.loop.gifts.clear();
-        s.loop.gifts.addAll(com.coraline.secrets.SecretTransactions.gifts(p,VisitGiftPools.generate(s.loop.loot,p.getRandom(),VisitGiftPools.progress(p,s))));
+        s.loop.gifts.addAll(com.coraline.secrets.SecretTransactions.gifts(p,VisitGiftPools.generate(p,s)));
+        VisitGiftPools.remember(s,s.loop.gifts);
         s.loop.giftPrepared=true;
         OtherMotherLoop.changed(p);return true;
     }
     static boolean choosePortal(ServerPlayer p,VisitData.Scene s){
         var r=RealmData.get(p.server).realms.get(s.door);if(r==null||r.house==null)return false;
         BlockPos next=null;var level=p.serverLevel();
+        if(AcceptedButtonEyes.active(s)){
+            var anchor=AcceptedButtonEyesWorld.upstairs(s);
+            for(int radius=2;radius<=6;radius++)for(int x=-radius;x<=radius;x++)for(int z=-radius;z<=radius;z++){
+                var candidate=anchor.offset(x,0,z);level.getChunkAt(candidate);
+                if(portalFits(level,candidate)){removePortals(p.server,s);s.loop.portal=candidate;OtherMotherLoop.changed(p);return true;}
+            }
+            return false;
+        }
+
         // A portal needs a clear standing space, not the old piano-sized footprint
         // and a path from a temporary NPC standing at the player's location.
         for(int distance=55;distance<=85&&next==null;distance+=2)
@@ -60,12 +81,12 @@ public final class LoopProps {
             }
         if(next==null){
             OtherWorldEstate.lockStudy(level,r.house,false);
-            for(int x=-13;x<=-8&&next==null;x++)for(int z=-5;z<=-3&&next==null;z++){
+            for(int x=-13;x<=-8&&next==null;x++)for(int z=14;z<=16&&next==null;z++){
                 var at=r.house.offset(x,1,z);if(portalFits(level,at))next=at;
             }
             // The study entrance is a reserved, unfurnished passage in the estate.
             // An entity portal does not replace blocks or destroy stored items.
-            if(next==null)next=r.house.offset(-11,1,-3);
+            if(next==null)next=r.house.offset(-3,1,13);
         }
         removePortals(p.server,s);s.loop.portal=next;OtherMotherLoop.changed(p);return true;
     }
@@ -79,13 +100,21 @@ public final class LoopProps {
     public static boolean portalSite(BlockPos house,BlockPos at){
         int x=Math.abs(at.getX()-house.getX()),z=at.getZ()-house.getZ();
         return x>=55&&x<=85&&z>=-24&&z<=24||at.getX()>=house.getX()-13&&at.getX()<=house.getX()-8
-            &&z>=-5&&z<=-3&&at.getY()==house.getY()+1;
+            &&z>=14&&z<=16&&at.getY()==house.getY()+1||at.equals(house.offset(-3,1,13));
     }
     static void ensure(ServerPlayer p,VisitData.Scene s){
         var level=p.serverLevel();var l=s.loop;
         if(l.phase==GIFTS){
             hold(level,s.table);var props=nearby(level,s,s.table);Vec3 base=Vec3.atBottomCenterOf(s.table);
-            if(props.stream().noneMatch(e->e.kind()==ScenePropEntity.TABLE))spawn(level,s,ScenePropEntity.TABLE,base,-1);
+            for(int slot=0;slot<9;slot++){
+                int wanted=slot;
+                var chair=props.stream().filter(e->e.kind()==ScenePropEntity.CHAIR&&e.slot==wanted).findFirst().orElse(null);
+                var at=SupperSeating.position(s.table,slot);
+                if(chair==null)chair=spawn(level,s,ScenePropEntity.CHAIR,at,slot);
+                else if(chair.position().distanceToSqr(at)>.001)chair.setPos(at);
+                chair.setYRot(SupperSeating.facing(slot));
+            }
+            var table=props.stream().filter(e->e.kind()==ScenePropEntity.TABLE).findFirst().orElseGet(()->spawn(level,s,ScenePropEntity.TABLE,base,-1));table.longDining(true);if(table.position().distanceToSqr(base)>.001)table.setPos(base);
             if(l.loot!=OtherMotherDialogue.Loot.FOOD){
                 var box=props.stream().filter(e->e.kind()==ScenePropEntity.GIFT).findFirst().orElseGet(()->spawn(level,s,ScenePropEntity.GIFT,base.add(0,.89,0),-1));
                 box.mode(l.opened?1:0);box.treasure(l.loot==OtherMotherDialogue.Loot.MYSTERY&&!l.opened?List.of():l.gifts);
@@ -98,7 +127,7 @@ public final class LoopProps {
             for(int slot=0;slot<count;slot++){
                 int key=slot;boolean drink=l.loot==OtherMotherDialogue.Loot.FOOD&&slot>=4;
                 var prop=props.stream().filter(e->e.slot==key&&(e.kind()==ScenePropEntity.PLATE||e.kind()==ScenePropEntity.GLASS)).findFirst().orElse(null);
-                if(prop==null){double x=drink?(slot-5)*1.1:(slot%2==0?-.98:.98);double z=drink?.99:(slot<2?-.48:.4);prop=spawn(level,s,drink?ScenePropEntity.GLASS:ScenePropEntity.PLATE,base.add(x,.9,z),slot);}
+                if(prop==null){double x=drink?(slot-5)*1.1:(slot%2==0?-.98:.98);double z=drink?4.1:(slot<2?-1.9:1.9);prop=spawn(level,s,drink?ScenePropEntity.GLASS:ScenePropEntity.PLATE,base.add(x,.9,z),slot);}
                 int offset=drink?12+slot-4:slot*3;
                 for(int i=0;i<3;i++)prop.food(i,(!drink||i==0)&&offset+i<l.gifts.size()?l.gifts.get(offset+i):ItemStack.EMPTY);
             }
@@ -113,10 +142,11 @@ public final class LoopProps {
         }
     }
     public static InteractionResult interact(ServerPlayer p,ScenePropEntity prop){
-        var s=OtherMotherLoop.active(p);if(s==null||!valid(prop)||!p.getUUID().equals(prop.owner)||p.distanceToSqr(prop)>36)return InteractionResult.FAIL;
+        var s=OtherMotherLoop.active(p);if(s==null||!valid(prop)||!s.owner.equals(prop.owner)||!com.coraline.multiplayer.StoryCoop.canAct(p,s)||p.distanceToSqr(prop)>36)return InteractionResult.FAIL;
         var l=s.loop;
-        if(prop.kind()==ScenePropEntity.ACTIVITY_PORTAL){if(l.phase==READY)ActivityWorld.enter(p,s);return InteractionResult.CONSUME;}
-        if(prop.kind()==ScenePropEntity.ACTIVITY_EXIT){if(l.phase==ACTIVITY)ActivityWorld.exit(p,s);return InteractionResult.CONSUME;}
+        if(prop.kind()==ScenePropEntity.ACTIVITY_PORTAL){if(l.phase==READY){var director=p.server.getPlayerList().getPlayer(s.owner);if(director!=null)ActivityWorld.enter(director,s);}return InteractionResult.CONSUME;}
+        if(prop.kind()==ScenePropEntity.ACTIVITY_EXIT){if(l.phase==ACTIVITY){var director=p.server.getPlayerList().getPlayer(s.owner);if(!p.getUUID().equals(s.owner)&&!ActivityWorld.groupFinished(s)){var data=com.coraline.multiplayer.StorySessionData.get(p.server);if(data.requestReturn(p)){com.coraline.multiplayer.StoryCoop.clear(p);data.restore(p);p.sendSystemMessage(net.minecraft.network.chat.Component.literal("You left the group. The activity continues for the other players."));}}else if(director!=null)ActivityWorld.exit(director,s);}return InteractionResult.CONSUME;}
+        if(!p.getUUID().equals(s.owner)&&l.phase!=ACTIVITY)return InteractionResult.FAIL;
         if(l.phase==ACTIVITY&&l.activity==OtherMotherActivities.Activity.SHOPPING_MALL&&ShoppingMallActivity.interactProp(p,s,prop))return InteractionResult.CONSUME;
         if(l.phase==ACTIVITY&&l.activity==OtherMotherActivities.Activity.SNOWBALL_BATTLE&&SnowballBattleActivity.interactProp(p,s,prop))return InteractionResult.CONSUME;
         if(l.phase==ACTIVITY&&l.activity==OtherMotherActivities.Activity.TREASURE_HUNT&&TreasureHuntActivity.interactProp(p,s,prop))return InteractionResult.CONSUME;

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "decorations",
+  "pattern": [
+    "DGD",
+    "GPG",
+    "DGD"
+  ],
+  "key": {
+    "D": {
+      "item": "coraline:other_diamond"
+    },
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "P": {
+      "item": "minecraft:polished_deepslate"
+    }
+  },
+  "result": {
+    "item": "coraline:magic_mirror"
+  }
+}

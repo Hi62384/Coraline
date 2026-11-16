@@ -17,20 +17,21 @@ final class MineThreats {
     static final int[][] POOLS={{0,1},{0,1,2,4},{1,2,4,5,6,7},{2,3,5,6,7,8}};
     static final EntityType<?>[] TYPES={EntityType.ZOMBIE,EntityType.SPIDER,EntityType.SKELETON,EntityType.ENDERMAN,EntityType.HUSK,EntityType.STRAY,EntityType.CAVE_SPIDER,EntityType.CREEPER,EntityType.WITHER_SKELETON};
     static final String[] NAMES={"Stitched Miner","Thread Skitter","Shard Watcher","Deep Stalker","Tunnel Charger","Frost Archer","Web Pouncer","Fuse Phantom","Vault Reaper"};
-    static void tick(ServerPlayer p,VisitData.Scene s,BlockPos c,long now){
-        if(p.tickCount%5!=0)return;
-        var n=ExpeditionActivities.state(s);var l=p.serverLevel();int depth=Math.max(0,Math.min(3,(c.getY()-p.blockPosition().getY()+5)/14));
+    static void tick(ServerPlayer director,VisitData.Scene s,BlockPos c,long now){
+        if(director.tickCount%5!=0)return;
+        var focus=CooperativeActivities.playing(director,s).stream().min(java.util.Comparator.comparingDouble(ServerPlayer::getY)).orElse(null);if(focus==null)return;
+        var n=ExpeditionActivities.state(s);var l=focus.serverLevel();int depth=Math.max(0,Math.min(3,(c.getY()-focus.blockPosition().getY()+5)/14));
         var actors=l.getEntitiesOfClass(Mob.class,ExpeditionActivities.bounds(c,s.loop.activity),e->ActivityScenery.owned(e,s)&&e.getPersistentData().getBoolean("MineEnemy"));
         // Returning upstairs must also reduce an already accumulated deep crowd.
-        actors.sort(java.util.Comparator.comparingDouble(e->e.distanceToSqr(p)));
+        actors.sort(java.util.Comparator.comparingDouble(e->e.distanceToSqr(focus)));
         while(actors.size()>limit(depth))actors.remove(actors.size()-1).discard();
-        boolean safe=p.distanceToSqr(Vec3.atBottomCenterOf(c))<225;
+        boolean safe=focus.distanceToSqr(Vec3.atBottomCenterOf(c))<225;
         if(!safe&&actors.size()<limit(depth)&&now>=n.getLong("NextSpawn")){
             n.putLong("NextSpawn",now+spawnInterval(depth));
             for(int attempt=0;attempt<30;attempt++){
-                int dx=p.getRandom().nextInt(25)-12,dz=p.getRandom().nextInt(25)-12;if(dx*dx+dz*dz<49)continue;
-                var at=p.blockPosition().offset(dx,0,dz);int[] pool=POOLS[depth];int kind=pool[p.getRandom().nextInt(pool.length)];
-                if(!safeSpot(p,at,kind==3||kind==8?3:2))continue;
+                int dx=focus.getRandom().nextInt(25)-12,dz=focus.getRandom().nextInt(25)-12;if(dx*dx+dz*dz<49)continue;
+                var at=focus.blockPosition().offset(dx,0,dz);int[] pool=POOLS[depth];int kind=pool[focus.getRandom().nextInt(pool.length)];
+                if(!safeSpot(focus,at,kind==3||kind==8?3:2))continue;
                 var mob=(Mob)TYPES[kind].create(l);if(mob==null)break;
                 mob.goalSelector.removeAllGoals(g->true);mob.targetSelector.removeAllGoals(g->true);
                 mob.setPersistenceRequired();mob.setSilent(true);ActivityScenery.mark(mob,s);
@@ -39,12 +40,13 @@ final class MineThreats {
                 if(kind==2||kind==5)mob.setItemSlot(EquipmentSlot.MAINHAND,new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.BOW));
                 if(kind==8)mob.setItemSlot(EquipmentSlot.MAINHAND,new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.STONE_SWORD));
                 mob.setPos(Vec3.atBottomCenterOf(at));l.addFreshEntity(mob);
-                p.playNotifySound(kind==1||kind==6?SoundEvents.SPIDER_AMBIENT:kind==2||kind==5||kind==8?SoundEvents.SKELETON_AMBIENT:kind==3?SoundEvents.ENDERMAN_AMBIENT:SoundEvents.ZOMBIE_AMBIENT,SoundSource.HOSTILE,.35F,.8F);break;
+                focus.playNotifySound(kind==1||kind==6?SoundEvents.SPIDER_AMBIENT:kind==2||kind==5||kind==8?SoundEvents.SKELETON_AMBIENT:kind==3?SoundEvents.ENDERMAN_AMBIENT:SoundEvents.ZOMBIE_AMBIENT,SoundSource.HOSTILE,.35F,.8F);break;
             }
         }
         for(var mob:actors){
-            var d=mob.getPersistentData();int kind=d.getInt("MineKind");double distance=mob.distanceToSqr(p);
-            if(distance>1600||safe||mob.getY()<c.getY()-50||now-d.getLong("Born")>1600){mob.discard();continue;}
+            var p=CooperativeActivities.playing(director,s).stream().min(java.util.Comparator.comparingDouble(mob::distanceToSqr)).orElse(null);if(p==null){mob.getNavigation().stop();continue;}var personal=MineshaftActivity.personal(p,s);
+            var d=mob.getPersistentData();if(!d.hasUUID("MineTarget")||!d.getUUID("MineTarget").equals(p.getUUID())){d.putUUID("MineTarget",p.getUUID());d.remove("AttackAt");}int kind=d.getInt("MineKind");double distance=mob.distanceToSqr(p);
+            if(distance>1600||p.distanceToSqr(Vec3.atBottomCenterOf(c))<225||mob.getY()<c.getY()-50||now-d.getLong("Born")>1600){mob.discard();continue;}
             mob.setTarget(null);mob.setRemainingFireTicks(0);mob.getLookControl().setLookAt(p,30,30);
             boolean lamp=p.getMainHandItem().is(com.coraline.clothing.UtilityItems.MOONLIT_LANTERN.get());
             if(lamp&&distance<16&&now>=d.getLong("RepelAt")){
@@ -70,7 +72,7 @@ final class MineThreats {
                     var wall=l.clip(new ClipContext(start,aim,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,mob));var end=wall.getType()==HitResult.Type.MISS?aim:wall.getLocation();
                     for(int i=0;i<20;i++){var q=start.lerp(end,i/19.0);l.sendParticles(kind==5?ParticleTypes.SNOWFLAKE:ParticleTypes.CRIT,q.x,q.y,q.z,1,0,0,0,0);}
                     p.playNotifySound(SoundEvents.SKELETON_SHOOT,SoundSource.HOSTILE,.6F,1);
-                    if(p.getBoundingBox().inflate(.12).clip(start,end).isPresent()){hit(p,s,now,1);if(kind==5)n.putLong("ChilledUntil",now+35);}
+                    if(p.getBoundingBox().inflate(.12).clip(start,end).isPresent()){hit(p,s,now,1);if(kind==5)personal.putLong("ChilledUntil",now+35);}
                     d.remove("AttackAt");d.putLong("ReadyAt",now+(kind==5?65:90));
                 }
             }else if((kind==1||kind==6)&&distance>4&&distance<49&&mob.onGround()&&now>=d.getLong("ReadyAt")){
@@ -95,12 +97,12 @@ final class MineThreats {
                     }
                 }
             }
-            if(!ranged&&kind!=7&&kind!=8&&distance<2.3&&mob.hasLineOfSight(p)){hit(p,s,now,1);if(kind==6)n.putLong("ChilledUntil",now+25);}
+            if(!ranged&&kind!=7&&kind!=8&&distance<2.3&&mob.hasLineOfSight(p)){hit(p,s,now,1);if(kind==6)personal.putLong("ChilledUntil",now+25);}
             if(n.getInt("Phase")!=1)return;
         }
-        if(now<n.getLong("ChilledUntil")){var v=p.getDeltaMovement();p.setDeltaMovement(v.x*.6,v.y,v.z*.6);p.hurtMarked=true;l.sendParticles(ParticleTypes.SNOWFLAKE,p.getX(),p.getY()+.2,p.getZ(),3,.25,.15,.25,0);}
+        for(var p:CooperativeActivities.playing(director,s))if(now<MineshaftActivity.personal(p,s).getLong("ChilledUntil")){var v=p.getDeltaMovement();p.setDeltaMovement(v.x*.6,v.y,v.z*.6);p.hurtMarked=true;l.sendParticles(ParticleTypes.SNOWFLAKE,p.getX(),p.getY()+.2,p.getZ(),3,.25,.15,.25,0);}
     }
     private static boolean safeSpot(ServerPlayer p,BlockPos at,int height){var l=p.serverLevel();if(!l.getBlockState(at.below()).isFaceSturdy(l,at.below(),net.minecraft.core.Direction.UP))return false;for(int y=0;y<height;y++)if(!l.isEmptyBlock(at.above(y)))return false;return true;}
-    private static void hit(ServerPlayer p,VisitData.Scene s,long now,int damage){var n=ExpeditionActivities.state(s);if(now<n.getLong("MineHitAt"))return;n.putLong("MineHitAt",now+35);n.putInt("Hearts",Math.max(0,n.getInt("Hearts")-damage));OtherMotherLoop.changed(p);ExpeditionNetwork.mine(p,n.getInt("Hearts"));p.playNotifySound(SoundEvents.PLAYER_HURT,SoundSource.PLAYERS,.7F,.8F);if(n.getInt("Hearts")==0)MineshaftActivity.fail(p,s,"All five hearts lost.");}
+    private static void hit(ServerPlayer p,VisitData.Scene s,long now,int damage){var n=MineshaftActivity.personal(p,s);if(now<n.getLong("MineHitAt"))return;n.putLong("MineHitAt",now+35);n.putInt("Hearts",Math.max(0,n.getInt("Hearts")-damage));OtherMotherLoop.changed(p);ExpeditionNetwork.mine(p,n.getInt("Hearts"));p.playNotifySound(SoundEvents.PLAYER_HURT,SoundSource.PLAYERS,.7F,.8F);if(n.getInt("Hearts")==0)MineshaftActivity.fail(p,s,"All five hearts lost.");}
     private MineThreats(){}
 }

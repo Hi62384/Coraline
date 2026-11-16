@@ -1,0 +1,46 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "coraline:postgame/structures/soul_glass_mine"
+        }
+      ]
+    },
+    {
+      "name": "coraline_equipment_armor",
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.18
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "coraline:postgame/equipment/deep_armor"
+        }
+      ]
+    },
+    {
+      "name": "coraline_equipment_perfect",
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.025
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "coraline:postgame/equipment/perfect_treasure"
+        }
+      ]
+    }
+  ]
+}

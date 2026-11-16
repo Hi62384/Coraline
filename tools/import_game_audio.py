@@ -1,15 +1,27 @@
 """Import supplied scene cues and generate quiet, seamless tunnel ambience."""
 from pathlib import Path
 import json, subprocess, math, wave, struct, tempfile
+from audio_manifest_io import write_json_if_changed
 root=Path(__file__).resolve().parents[1]
 assets=root/'src/main/resources/assets/coraline'
 out=assets/'sounds/scenes';out.mkdir(parents=True,exist_ok=True)
 sounds=json.loads((assets/'sounds.json').read_text())
-lengths={}
+lengths=json.loads((assets/'scene_audio_lengths.json').read_text()) if (assets/'scene_audio_lengths.json').exists() else {}
 files={'mice_intro':'BeforeSpawnMiceForFirstTimeMusic.wav','mice_chase':'MiceChase.wav','door_portal_open':'DoorPortalOpen.wav','tunnel_enter':'TunnelEnter.wav'}
+def encode(source,target):
+    # Avoid ffmpeg opening a destination that Gradle may currently have mapped.
+    # Always derive the export from its original master, never an earlier Ogg.
+    with tempfile.TemporaryDirectory(prefix='coraline-scene-import-') as folder:
+        staging=Path(folder)/target.name
+        subprocess.run(['ffmpeg','-nostdin','-v','error','-y','-threads','1','-filter_threads','1','-i',str(source),'-vn','-c:a','libvorbis','-q:a','5',str(staging)],check=True)
+        import hashlib
+        def digest(path):
+            with path.open('rb') as stream:return hashlib.file_digest(stream,'sha256').digest()
+        if not target.exists() or digest(staging)!=digest(target):
+            staging.replace(target)
 for name,source in files.items():
     target=out/(name+'.ogg')
-    subprocess.run(['ffmpeg','-v','error','-y','-i',str(root/'GameMusics'/source),'-vn','-c:a','libvorbis','-q:a','5',str(target)],check=True)
+    encode(root/'GameMusics'/source,target)
     seconds=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',str(target)],text=True))
     lengths[name]=math.ceil(seconds*20)
     sounds[name]={'sounds':[{'name':'coraline:scenes/'+name,'stream':True}]}
@@ -32,7 +44,9 @@ for name,duration in [('tunnel_hum',16),('mouse_squeak',.32)]:
         with wave.open(str(wav),'wb') as w:
             channels=2 if name=='tunnel_hum' else 1
             w.setparams((channels,2,24000,0,'NONE','not compressed'))
-            frames=[]
+            # Keep identical PCM samples without retaining hundreds of thousands
+            # of tiny Python objects alongside the build JVM.
+            frames=bytearray()
             for i in range(int(duration*24000)):
                 t=i/24000
                 for channel in range(channels):
@@ -40,10 +54,12 @@ for name,duration in [('tunnel_hum',16),('mouse_squeak',.32)]:
                         value=magical_hum(t,channel)
                     else:
                         value=.19*math.sin(2*math.pi*(2200*t+800*t*t))*math.sin(math.pi*t/duration)**2
-                    frames.append(struct.pack('<h',int(max(-.95,min(.95,value))*32767)))
-            w.writeframes(b''.join(frames))
-        subprocess.run(['ffmpeg','-v','error','-y','-i',str(wav),'-c:a','libvorbis','-q:a','5',str(out/(name+'.ogg'))],check=True)
+                    frames.extend(struct.pack('<h',int(max(-.95,min(.95,value))*32767)))
+                if len(frames)>=65536:
+                    w.writeframesraw(frames);frames.clear()
+            w.writeframes(frames)
+        encode(wav,out/(name+'.ogg'))
     sounds[name]={'sounds':[{'name':'coraline:scenes/'+name}]}
-(assets/'sounds.json').write_text(json.dumps(sounds,indent=2)+'\n')
-(assets/'scene_audio_lengths.json').write_text(json.dumps(lengths,indent=2)+'\n')
+write_json_if_changed(assets/'sounds.json',sounds)
+write_json_if_changed(assets/'scene_audio_lengths.json',lengths)
 print('Scene audio lengths (ticks):',lengths)

@@ -200,7 +200,7 @@ public final class ArcheryActivity {
         target.setPos(x,y,z);
     }
     static void tick(ServerPlayer p,VisitData.Scene s,BlockPos c){
-        if(p.tickCount%20==0){prepare(p,s,p.serverLevel(),c);if(s.loop.archeryIssued)reconcile(p,s);}
+        if(p.tickCount%20==0){prepare(p,s,p.serverLevel(),c);if(s.loop.archeryIssued)for(var member:CooperativeActivities.playing(p,s))reconcile(member,s);}
         if(!s.loop.archeryIssued&&OtherMotherLoop.now(p)>=s.loop.archeryGiftAt)grant(p,s);
         movePlatform(p,s,c);
         if(s.loop.archeryIssued&&!exitReady(s))return;
@@ -211,7 +211,7 @@ public final class ArcheryActivity {
         }
     }
     private static ScenePropEntity ensurePlatform(ServerLevel level,VisitData.Scene s,BlockPos c){
-        var existing=level.getEntitiesOfClass(ScenePropEntity.class,new AABB(c.south(2)).inflate(20,5,4),e->e.kind()==ScenePropEntity.ARCHERY_PLATFORM&&s.owner.equals(e.owner)&&s.loop.generation==e.getPersistentData().getInt("LoopGeneration"));
+        var existing=level.getEntitiesOfClass(ScenePropEntity.class,new AABB(c.south(2)).inflate(20,5,4),e->e.kind()==ScenePropEntity.ARCHERY_PLATFORM&&e.slot==-1&&s.owner.equals(e.owner)&&s.loop.generation==e.getPersistentData().getInt("LoopGeneration"));
         if(!existing.isEmpty())return existing.get(0);
         var platform=LoopProps.spawn(level,s,ScenePropEntity.ARCHERY_PLATFORM,new Vec3(c.getX()+.5,c.getY()+.85,c.getZ()+2.5),-1);
         platform.getPersistentData().putUUID(OWNER,s.owner);return platform;
@@ -225,7 +225,12 @@ public final class ArcheryActivity {
         var platform=ensurePlatform(level,s,c);
         platform.setPos(c.getX()+.5+Math.sin(time*.055)*16,c.getY()+.85,c.getZ()+2.5);
         if(!s.loop.archeryIssued)return;
-        if(exitReady(s)){if(p.getVehicle()==platform)p.stopRiding();return;}
+        if(exitReady(s)){for(var member:CooperativeActivities.playing(p,s))if(member.getVehicle() instanceof ScenePropEntity seat&&seat.kind()==ScenePropEntity.ARCHERY_PLATFORM&&s.owner.equals(seat.owner))member.stopRiding();return;}
+        int lane=0;for(var member:CooperativeActivities.playing(p,s))if(member!=p){
+            var seats=level.getEntitiesOfClass(ScenePropEntity.class,new AABB(c).inflate(65,45,65),e->e.kind()==ScenePropEntity.ARCHERY_PLATFORM&&s.owner.equals(e.owner)&&s.door.equals(e.storyDoor)&&e.getPersistentData().hasUUID("CoopPlatformRider")&&e.getPersistentData().getUUID("CoopPlatformRider").equals(member.getUUID()));
+            var seat=seats.isEmpty()?LoopProps.spawn(level,s,ScenePropEntity.ARCHERY_PLATFORM,platform.position(),1000+lane):seats.get(0);seat.getPersistentData().putUUID("CoopPlatformRider",member.getUUID());seat.setPos(c.getX()+.5+Math.sin(time*.055+lane*.5)*16,c.getY()+.85+(lane/6)*2.2,c.getZ()+2.5+(lane%6)*1.2);lane++;
+            if(member.getVehicle()!=seat){member.stopRiding();member.startRiding(seat,true);member.fallDistance=0;}
+        }
         if(p.getVehicle()!=platform){p.stopRiding();p.startRiding(platform,true);p.fallDistance=0;}
     }
     static void clean(ServerLevel level,VisitData.Scene s,BlockPos c){
@@ -247,12 +252,14 @@ public final class ArcheryActivity {
     private static void mark(ItemStack stack,ServerPlayer p,VisitData.Scene s){
         var n=stack.getOrCreateTag();n.putBoolean(ISSUED,true);n.putUUID(OWNER,p.getUUID());n.putInt(GEN,s.loop.generation);
     }
-    private static void give(ServerPlayer p,ItemStack stack){p.getInventory().add(stack);if(!stack.isEmpty())p.drop(stack,false);}
+    private static void give(ServerPlayer p,ItemStack stack){if(AcceptedButtonEyesInventory.locked(p)&&!AcceptedButtonEyesInventory.approvedTool(p,stack))return;p.getInventory().add(stack);if(!stack.isEmpty())p.drop(stack,false);}
     static void grant(ServerPlayer p,VisitData.Scene s){
         if(s.loop.archeryIssued)return;
         removeIssued(p);
-        var bow=new ItemStack(ModItems.ARCHERY_BOW.get());mark(bow,p,s);give(p,bow);
-        var arrows=new ItemStack(ModItems.ARCHERY_ARROW.get(),ARROWS);mark(arrows,p,s);give(p,arrows);
+        for(var member:CooperativeActivities.playing(p,s)){
+            removeIssued(member);var bow=new ItemStack(ModItems.ARCHERY_BOW.get());mark(bow,member,s);give(member,bow);
+            var arrows=new ItemStack(ModItems.ARCHERY_ARROW.get(),ARROWS);mark(arrows,member,s);give(member,arrows);
+        }
         s.loop.archeryIssued=true;OtherMotherLoop.changed(p);
         p.serverLevel().playSound(null,p.blockPosition(),SoundEvents.ITEM_PICKUP,SoundSource.PLAYERS,1,1);
         p.sendSystemMessage(Component.literal("Father gives you his contest bow and 64 arrows. Stay on the moving shooting platform; tougher targets earn better prizes."));
@@ -278,7 +285,7 @@ public final class ArcheryActivity {
         if(!s.loop.archeryIssued||s.loop.archeryShotsRemaining<=0||!event.getBow().is(ModItems.ARCHERY_BOW.get())||
             !matches(event.getBow(),p,s)||!matches(ammo,p,s)){
             event.setCanceled(true);p.displayClientMessage(Component.literal("Only Father's issued bow and arrows count in this contest."),true);
-        }else if(!(p.getVehicle() instanceof ScenePropEntity platform&&platform.kind()==ScenePropEntity.ARCHERY_PLATFORM&&p.getUUID().equals(platform.owner))){
+        }else if(!(p.getVehicle() instanceof ScenePropEntity platform&&platform.kind()==ScenePropEntity.ARCHERY_PLATFORM&&s.owner.equals(platform.owner)&&(!platform.getPersistentData().hasUUID("CoopPlatformRider")?p.getUUID().equals(s.owner):p.getUUID().equals(platform.getPersistentData().getUUID("CoopPlatformRider"))))){
             event.setCanceled(true);p.displayClientMessage(Component.literal("Stand on the moving platform to shoot."),true);
         }
     }
@@ -327,7 +334,7 @@ public final class ArcheryActivity {
         int tier=Math.min(3,row+(target.kind()==ScenePropEntity.TARGET_STATIC?0:1));
         boolean bullseye=accuracy<.11*target.targetScale();
         if(bullseye)tier=Math.min(3,tier+1);
-        var reward=reward(p,tier);String name=reward.getHoverName().getString();give(p,reward);
+        var reward=reward(p,tier);String name=reward.getHoverName().getString();if(!AcceptedButtonEyesInventory.activityReward(p,s,"archery_hit_"+target.getUUID()+"_"+s.loop.archeryShotsRemaining,java.util.List.of(reward)))give(p,reward);
         p.serverLevel().playSound(null,target.blockPosition(),SoundEvents.ARROW_HIT_PLAYER,SoundSource.PLAYERS,.8F,1.1F+tier*.13F);
         p.sendSystemMessage(Component.literal((bullseye?"Bullseye! ":"Hit! ")+"Tier "+(tier+1)+" prize: "+name+"."));
     }

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": {
+    "item": "coraline:perfect_ore"
+  },
+  "result": "coraline:perfect_ingot",
+  "experience": 1.0,
+  "cookingtime": 200
+}

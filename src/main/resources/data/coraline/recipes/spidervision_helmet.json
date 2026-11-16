@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "DGD",
+    "S S"
+  ],
+  "key": {
+    "D": {
+      "item": "coraline:other_diamond"
+    },
+    "G": {
+      "item": "coraline:soulglass"
+    },
+    "S": {
+      "item": "minecraft:string"
+    }
+  },
+  "result": {
+    "item": "coraline:spidervision_helmet",
+    "count": 1
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "clue=0": {
+      "model": "coraline:block/well_scar_clue_0"
+    },
+    "clue=1": {
+      "model": "coraline:block/well_scar_clue_1"
+    },
+    "clue=2": {
+      "model": "coraline:block/well_scar_clue_2"
+    },
+    "clue=3": {
+      "model": "coraline:block/well_scar_clue_3"
+    }
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "coraline:comfy_silk_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:comfy_silk_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:comfy_silk_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:comfy_silk_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:buttonguard_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:buttonguard_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:buttonguard_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:buttonguard_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:dreamweave_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:dreamweave_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:dreamweave_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:dreamweave_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:midnight_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:midnight_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:midnight_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:midnight_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:midnight_cloak_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:midnight_cloak_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:midnight_cloak_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:midnight_cloak_boots",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

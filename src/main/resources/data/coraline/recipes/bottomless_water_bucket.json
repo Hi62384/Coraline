@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "DPD",
+    "PWP",
+    "MPM"
+  ],
+  "key": {
+    "D": {
+      "item": "coraline:other_diamond"
+    },
+    "M": {
+      "item": "coraline:moonstone"
+    },
+    "P": {
+      "item": "coraline:perfect_ingot"
+    },
+    "W": {
+      "item": "minecraft:water_bucket"
+    }
+  },
+  "result": {
+    "item": "coraline:bottomless_water_bucket",
+    "count": 1
+  }
+}

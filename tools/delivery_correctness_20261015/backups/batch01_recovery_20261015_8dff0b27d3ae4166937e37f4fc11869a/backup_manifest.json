@@ -1,0 +1,17 @@
+[
+    {
+        "path":  "src/main/java/com/coraline/feast/MotherGoesOut.java",
+        "bytes":  31294,
+        "sha256":  "0c114d95b26ea14163990cbe718b1a75d55abceac512a2bb0526313b5b96b74f"
+    },
+    {
+        "path":  "src/main/java/com/coraline/feast/OtherMotherLoop.java",
+        "bytes":  26612,
+        "sha256":  "bf43bfdfab3291e1300785bae99cf4938dc4f39b66d49e700461a72547051d23"
+    },
+    {
+        "path":  "src/main/java/com/coraline/feast/TheatreVisit.java",
+        "bytes":  34020,
+        "sha256":  "6744c0555de858cb6243fe76623967e6e93d8ca1c9132073d8e721aebf0b0aba"
+    }
+]

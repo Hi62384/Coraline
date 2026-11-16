@@ -61,7 +61,7 @@ public final class OtherMotherActivityComplete {
         return mother == null || mother instanceof ParentEntity parent && parent.isAlive()
                 && parent.isMom() && parent.isOtherParent();
     }
-    @SubscribeEvent public static void tick(TickEvent.PlayerTickEvent event) {
+    @SubscribeEvent public static void tick(TickEvent.PlayerTickEvent event) {if(event.player instanceof net.minecraft.server.level.ServerPlayer coopPlayer&&com.coraline.multiplayer.StoryCoop.directorBlocked(coopPlayer))return;
         if (event.phase != TickEvent.Phase.END || !(event.player instanceof ServerPlayer player)) return;
         var p = PENDING.get(player.getUUID());
         if (p == null || p.server != player.server) return;

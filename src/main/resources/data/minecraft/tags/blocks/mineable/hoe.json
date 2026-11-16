@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "coraline:buttonwood_leaves",
+    "coraline:paperwood_leaves",
+    "coraline:lanternwood_leaves",
+    "coraline:otherworld_moss"
+  ]
+}

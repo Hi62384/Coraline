@@ -13,8 +13,12 @@ import net.minecraftforge.registries.RegistryObject;
 public final class ModItems {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, CoralineMod.MOD_ID);
+    public static final RegistryObject<Item> CIRCUS_COTTON_CANDY=ITEMS.register("circus_cotton_candy",()->new Item(new Item.Properties().food(new net.minecraft.world.food.FoodProperties.Builder().nutrition(2).saturationMod(.1F).fast().build())));
+    public static final RegistryObject<Item> CIRCUS_POPCORN=ITEMS.register("circus_popcorn",()->new Item(new Item.Properties().food(new net.minecraft.world.food.FoodProperties.Builder().nutrition(2).saturationMod(.2F).fast().build())));
 
     public static final RegistryObject<Item> MIDNIGHT_COAT=clothing(com.coraline.clothing.ClothingItem.Style.MIDNIGHT_COAT);
+    public static final RegistryObject<Item> WRAPPED_PARTY_GIFT=ITEMS.register("wrapped_party_gift",com.coraline.item.WrappedPartyGiftItem::new);
+    public static final RegistryObject<Item> MAGIC_MIRROR=ITEMS.register("magic_mirror",()->new BlockItem(ModBlocks.MAGIC_MIRROR.get(),new Item.Properties()));
     public static final RegistryObject<Item> STAR_SHIRT=clothing(com.coraline.clothing.ClothingItem.Style.STAR_SHIRT);
     public static final RegistryObject<Item> RAINCOAT=clothing(com.coraline.clothing.ClothingItem.Style.RAINCOAT);
     public static final RegistryObject<Item> COMFY_PAJAMAS=clothing(com.coraline.clothing.ClothingItem.Style.COMFY_PAJAMAS);
@@ -43,6 +47,26 @@ public final class ModItems {
     public static final RegistryObject<Item> MOUSE_DEBUG=ITEMS.register("mouse_debug",com.coraline.item.MouseDebugItem::new);
     public static final RegistryObject<Item> DOLL_DEBUG=ITEMS.register("doll_debug",com.coraline.item.DollDebugItem::new);
     public static final RegistryObject<Item> FIRST_VISIT_DEBUG=ITEMS.register("first_visit_debug",com.coraline.item.FirstVisitDebugItem::new);
+    public static final RegistryObject<Item> NEIGHBOR_VISITS_DEBUG=ITEMS.register("neighbor_visits_debug",com.coraline.item.NeighborVisitsDebugItem::new);
+    public static final RegistryObject<Item> FIRST_ESCAPE_DEBUG=ITEMS.register("debug_complete_first_escape",com.coraline.item.FirstEscapeDebugItem::new);
+    public static final RegistryObject<Item> AFTER_FINAL_BOSS_DEBUG=ITEMS.register("debug_after_final_boss",com.coraline.item.AfterFinalBossDebugItem::new);
+    public static final RegistryObject<Item> STORY_SKIP_DEBUG=ITEMS.register("story_skip_debug",com.coraline.item.StorySkipDebugItem::new);
+    public static final RegistryObject<Item> AFTER_GHOST_CONVERSATION_DEBUG=ITEMS.register("debug_after_ghost_conversation",com.coraline.item.AfterGhostConversationDebugItem::new);
+    public static final RegistryObject<Item> AFTER_OTHER_FATHER_DEBUG=ITEMS.register("debug_after_other_father",com.coraline.item.AfterOtherFatherDebugItem::new);
+    public static final RegistryObject<Item> LITTLE_DOOR_STORY_KEY=ITEMS.register("little_door_story_key",()->new Item(new Item.Properties().stacksTo(1)){
+        @Override public net.minecraft.network.chat.Component getName(net.minecraft.world.item.ItemStack stack){return net.minecraft.network.chat.Component.literal("Little Door Key");}
+        @Override public boolean onDroppedByPlayer(net.minecraft.world.item.ItemStack stack,net.minecraft.world.entity.player.Player player){return false;}
+        @Override public boolean canFitInsideContainerItems(){return false;}
+    });
+    public static final RegistryObject<Item> SEEING_STONE=ITEMS.register("seeing_stone",com.coraline.item.SeeingStoneItem::new);
+    public static final RegistryObject<Item> AFTER_NEXT_ACTIVITY_DEBUG=ITEMS.register("after_next_activity_debug",com.coraline.item.AfterNextActivityDebugItem::new);
+    public static final RegistryObject<Item> GHOST_EYE=ITEMS.register("ghost_eye",com.coraline.item.GhostEyeItem::new);
+    public static final RegistryObject<Item> SKIP_EVENT_DEBUG=ITEMS.register("skip_event_debug",com.coraline.item.SkipEventDebugItem::new);
+    public static final RegistryObject<Item> CAMERA=ITEMS.register("camera",com.coraline.wybie.CameraItem::new);
+    public static final RegistryObject<Item> CHEESE_PACKAGE=ITEMS.register("cheese_package",com.coraline.bobinsky.CheesePackageItem::new);
+    public static final RegistryObject<Item> JASMINE_TEA=ITEMS.register("jasmine_tea",com.coraline.tea.JasmineTeaItem::new);
+    public static final RegistryObject<Item> EMPTY_TEACUP=ITEMS.register("empty_teacup",()->new Item(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> BROKEN_GLASS=ITEMS.register("broken_glass",()->new Item(new Item.Properties()));
     public static final RegistryObject<Item> FAMILY_SETUP_DEBUG=ITEMS.register("family_setup_debug",com.coraline.item.FamilySetupDebugItem::new);
     public static final RegistryObject<Item> VILLAGE_ACTIVITY_DEBUG=ITEMS.register("village_activity_debug",com.coraline.item.VillageActivityDebugItem::new);
     public static final RegistryObject<Item> TRUST_UP_DEBUG=ITEMS.register("trust_up_debug",()->new com.coraline.item.RelationshipDebugItem(true,1));
@@ -54,12 +78,14 @@ public final class ModItems {
     public static final RegistryObject<Item> VILLAGE_TOKEN=ITEMS.register("village_token",()->new Item(new Item.Properties().stacksTo(64)));
     public static final RegistryObject<Item> MAGIC_BUTTON_TOKEN=ITEMS.register("magic_button_token",()->new Item(new Item.Properties().stacksTo(64)));
     public static final RegistryObject<Item> PERFECT_INGOT=ITEMS.register("perfect_ingot",()->new Item(new Item.Properties()));
+    public static final RegistryObject<Item> PERFECT_ESSENCE=ITEMS.register("perfect_essence",()->new Item(new Item.Properties()));
     public static final RegistryObject<Item> SOULGLASS=ITEMS.register("soulglass",()->new Item(new Item.Properties()));
     public static final RegistryObject<Item> OTHER_DIAMOND_BLOCK=block("other_diamond_block",ModBlocks.OTHER_DIAMOND_BLOCK);
     public static final RegistryObject<Item> OTHER_IRON_BLOCK=block("other_iron_block",ModBlocks.OTHER_IRON_BLOCK);
     public static final RegistryObject<Item> OTHER_IRON_ORE=block("other_iron_ore",ModBlocks.OTHER_IRON_ORE);
     public static final RegistryObject<Item> OTHER_DIAMOND_ORE=block("other_diamond_ore",ModBlocks.OTHER_DIAMOND_ORE);
     public static final RegistryObject<Item> MOONSTONE_ORE=block("moonstone_ore",ModBlocks.MOONSTONE_ORE);
+    public static final RegistryObject<Item> PERFECT_ORE=block("perfect_ore",ModBlocks.PERFECT_ORE);
     public static final RegistryObject<Item> SOULGLASS_ORE=block("soulglass_ore",ModBlocks.SOULGLASS_ORE);
     public static final RegistryObject<Item> MOONSTONE_BLOCK=block("moonstone_block",ModBlocks.MOONSTONE_BLOCK);
     public static final RegistryObject<Item> PERFECT_BLOCK=block("perfect_block",ModBlocks.PERFECT_BLOCK);

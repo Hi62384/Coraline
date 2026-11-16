@@ -1,0 +1,31 @@
+"""Connect the orphanage's physical investigation and surviving inhabitants."""
+from integrate_endless_carnival import replace
+def main():
+    base='src/main/java/com/coraline/'
+    p=base+'postgame/InfiniteStructurePlan.java'
+    replace(p,'List.of("moving_targets","repeating_routine","troupe","prizes"));','List.of("moving_targets","repeating_routine","troupe","prizes")),\n        ABANDONED_ORPHANAGE(3,Set.of(InfiniteTerrain.Biome.PAPERWOOD_FOREST,InfiniteTerrain.Biome.ROOTBOUND_WILDS,InfiniteTerrain.Biome.PALE_WASTELAND),List.of("investigation","rescue","trapped_inhabitants"));')
+    replace(p,'CARNIVAL_SUPPLIES,CARNIVAL_VAULT }','CARNIVAL_SUPPLIES,CARNIVAL_VAULT,ORPHAN_OFFICE,ORPHAN_RECORD,ORPHAN_DAIS,ORPHAN_VAULT }')
+    replace(p,'            case ENDLESS_CARNIVAL->{','            case ABANDONED_ORPHANAGE->{\n                rooms.add(room(-4,0,-4,9,7,9,Role.ORPHAN_OFFICE));\n                rooms.add(room(-12,0,4,7,7,9,Role.ORPHAN_RECORD));rooms.add(room(6,0,4,7,7,9,Role.ORPHAN_RECORD));rooms.add(room(-3,0,14,7,7,9,Role.ORPHAN_RECORD));\n                rooms.add(room(-5,0,7,11,4,3,Role.CORRIDOR));rooms.add(room(-1,0,5,3,4,9,Role.CORRIDOR));\n                rooms.add(room(-12,0,16,5,6,7,Role.ORPHAN_DAIS));rooms.add(room(8,0,16,5,6,7,Role.ORPHAN_DAIS));\n                rooms.add(room(-7,0,18,4,4,3,Role.CORRIDOR));rooms.add(room(4,0,18,4,4,3,Role.CORRIDOR));\n                rooms.add(room(-3,0,26,7,7,7,Role.ORPHAN_VAULT));rooms.add(room(-1,0,23,3,4,3,Role.CORRIDOR));\n                rooms.add(room(-2,0,-14,5,6,10,Role.APPROACH));\n            }\n            case ENDLESS_CARNIVAL->{')
+    replace(base+'registry/ModBlocks.java','    public static final RegistryObject<Block> CARNIVAL_CONTROL=', '    public static final RegistryObject<Block> ORPHANAGE_REGISTER=BLOCKS.register("orphanage_register",com.coraline.postgame.OrphanageBlock::new);\n    public static final RegistryObject<Block> ORPHANAGE_BINDING=BLOCKS.register("orphanage_binding",com.coraline.postgame.OrphanageBindingBlock::new);\n    public static final RegistryObject<Block> CARNIVAL_CONTROL=')
+    replace(base+'registry/ModBlockEntities.java','    public static final RegistryObject<BlockEntityType<com.coraline.postgame.CarnivalEntity>> CARNIVAL=', '    public static final RegistryObject<BlockEntityType<com.coraline.postgame.OrphanageEntity>> ORPHANAGE=BLOCK_ENTITIES.register("orphanage",()->BlockEntityType.Builder.of(com.coraline.postgame.OrphanageEntity::new,ModBlocks.ORPHANAGE_REGISTER.get()).build(null));\n    public static final RegistryObject<BlockEntityType<com.coraline.postgame.CarnivalEntity>> CARNIVAL=')
+    p=base+'postgame/InfiniteSitePiece.java'
+    replace(p,'        CarnivalLayout.place(level,clip,plan,index);','        CarnivalLayout.place(level,clip,plan,index);\n        OrphanageLayout.place(level,clip,plan,index);')
+    replace(p,'        if(plan.family()==InfiniteStructurePlan.Family.ENDLESS_CARNIVAL)wall=','        if(plan.family()==InfiniteStructurePlan.Family.ABANDONED_ORPHANAGE)wall=Blocks.CRACKED_STONE_BRICKS.defaultBlockState();\n        if(plan.family()==InfiniteStructurePlan.Family.ENDLESS_CARNIVAL)wall=')
+    replace(p,'if(role==InfiniteStructurePlan.Role.CARNIVAL_SUPPLIES||','if(role==InfiniteStructurePlan.Role.ORPHAN_VAULT||role==InfiniteStructurePlan.Role.CARNIVAL_SUPPLIES||')
+    replace(base+'postgame/InfiniteSiteGuards.java','            case ENDLESS_CARNIVAL->','            case ABANDONED_ORPHANAGE->{if(room.role()==InfiniteStructurePlan.Role.ORPHAN_RECORD&&moduleIndex<3)kinds.add(PostgameHostiles.Kind.THREAD_SPINNER);}\n            case ENDLESS_CARNIVAL->')
+    p=base+'postgame/InfiniteSiteResidents.java'
+    replace(p,'static int role(InfiniteStructurePlan.Plan plan,int module){return','static int role(InfiniteStructurePlan.Plan plan,int module){if(plan.family()==InfiniteStructurePlan.Family.ABANDONED_ORPHANAGE)return 5;return')
+    replace(p,'||family==InfiniteStructurePlan.Family.ENDLESS_CARNIVAL;','||family==InfiniteStructurePlan.Family.ENDLESS_CARNIVAL||family==InfiniteStructurePlan.Family.ABANDONED_ORPHANAGE;')
+    replace(p,'private static boolean residence(InfiniteStructurePlan.Plan plan,int module){return','private static boolean residence(InfiniteStructurePlan.Plan plan,int module){return plan.family()==InfiniteStructurePlan.Family.ABANDONED_ORPHANAGE&&plan.modules().get(module).role()==InfiniteStructurePlan.Role.ORPHAN_DAIS||')
+    p=base+'postgame/OtherworldResident.java'
+    replace(p,'role()==4&&freedPose()?"entity.coraline.otherworld_resident.role_4_freed"','role()>=4&&freedPose()?"entity.coraline.otherworld_resident.role_"+role()+"_freed"')
+    replace(p,'return role()==4&&release','return role()>=4&&release')
+    replace(p,'(role()!=4||freedPose())','(role()<4||freedPose())')
+    replace(p,'if(role()==4){if(isAlive()','if(role()>=4){if(isAlive()')
+    replace(p,'&&(residence().getString("Family").equals(InfiniteStructurePlan.Family.ENDLESS_CARNIVAL.name())?CarnivalLayout.freed', '&&(role()==5?OrphanageLayout.freed(level(),residence()):residence().getString("Family").equals(InfiniteStructurePlan.Family.ENDLESS_CARNIVAL.name())?CarnivalLayout.freed')
+    replace(p,':freedPose()?"message.coraline.performer_freed"',':role()==5?(freedPose()?"message.coraline.orphan_freed":"message.coraline.orphan_bound"):freedPose()?"message.coraline.performer_freed"')
+    replace(p,'Math.min(4,record.getInt("Role"))','Math.min(5,record.getInt("Role"))')
+    replace(base+'postgame/SiteCacheBlockEntity.java','&&CarnivalLayout.cacheReady(level,receipt);','&&CarnivalLayout.cacheReady(level,receipt)&&OrphanageLayout.cacheReady(level,receipt);')
+    replace(base+'postgame/SiteCacheBlockEntity.java','String blockedFeedback(){return receipt.getString("Family")','String blockedFeedback(){return receipt.getString("Family").equals(InfiniteStructurePlan.Family.ABANDONED_ORPHANAGE.name())?"message.coraline.orphanage_reward_sealed":receipt.getString("Family")')
+    replace(base+'postgame/SiteCacheReceipt.java','        if(family==InfiniteStructurePlan.Family.ENDLESS_CARNIVAL','        if(family==InfiniteStructurePlan.Family.ABANDONED_ORPHANAGE&&role==InfiniteStructurePlan.Role.ORPHAN_VAULT)return 3;\n        if(family==InfiniteStructurePlan.Family.ENDLESS_CARNIVAL')
+if __name__=='__main__':main()

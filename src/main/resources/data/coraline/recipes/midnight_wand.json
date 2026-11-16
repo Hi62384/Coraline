@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " D ",
+    " M ",
+    " D "
+  ],
+  "key": {
+    "D": {
+      "item": "coraline:other_diamond"
+    },
+    "M": {
+      "item": "coraline:moonstone"
+    }
+  },
+  "result": {
+    "item": "coraline:midnight_wand",
+    "count": 1
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "reference": "voicelines/othermother/Sample.wav",
+  "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+  "emotion_order": [
+    "happy",
+    "angry",
+    "sad",
+    "afraid",
+    "disgusted",
+    "melancholic",
+    "surprised",
+    "calm"
+  ],
+  "states": {
+    "low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, I thought you might like a little time to yourself! You've got the next thirty minutes to relax and do whatever you please. I'll be pottering around the house, so if you get bored, just come find me and I'll think of something lovely for us to do. Just don't wander too far, darling. There's really no need to go poking around where you shouldn't.",
+        "Well, darling, why don't we take a little break from all our wonderful plans? You can have thirty minutes to yourself. Explore a little, have something to eat, or simply enjoy yourself. I'll be somewhere around the house if you want me to find another activity for you. Just stay reasonably close, sweetheart, and remember that some places are better left alone."
+      ]
+    },
+    "mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "I think you've earned a little time to yourself, sweetheart. Thirty minutes should be plenty for you to relax and look around. I'll be keeping myself busy around the house, so come find me if you'd rather do something together. And do try not to wander too far this time, darling. You do have a habit of getting rather carried away.",
+        "Well, I suppose we don't need to fill every minute with activities. Why don't you amuse yourself for the next half hour? I'll be around the house if you need me, or if you decide you'd like something else to do. Just remember what we've discussed about wandering off and exploring places that aren't meant for you."
+      ]
+    },
+    "high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, you deserve a little time to yourself, don't you? Take the next thirty minutes and do whatever makes you happy. I'll be somewhere around the house, so you can come find me whenever you want another lovely activity. Just don't stray too far, sweetheart. I do worry when I can't find my favorite little one.",
+        "Of course you can have some time to yourself, my love! Thirty whole minutes, just for you. I'll be nearby, taking care of a few things around the house. If you get bored, come and see me and we'll find something wonderful to do together. Just promise you won't wander too far or go looking through anything you shouldn't."
+      ]
+    },
+    "low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Very well, sweetheart. You may have thirty minutes to entertain yourself. I'll be moving around the house if you decide you'd rather participate in something I've prepared. But I expect you to stay reasonably nearby, and I certainly don't want to find you poking around in places you have no business visiting. Have I made myself clear?",
+        "I suppose I can trust you to occupy yourself for half an hour. I'll be around the house if you want another activity. You're free to relax and enjoy yourself, provided you remember the rules. Don't go wandering too far, and don't give me another reason to come looking for you. I'd much rather we had a pleasant visit."
+      ]
+    },
+    "high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, you do love having your little adventures, don't you? Well, I'll give you thirty minutes to amuse yourself however you like, within reason, of course. I'll be around the house if you'd rather spend some time with me. Just don't wander too far, sweetheart. You and I both know how your curiosity sometimes gets the better of you.",
+        "Thirty minutes all to yourself, my love. Isn't that nice? You can wander about, enjoy the garden, or find yourself something interesting to do. I'll be somewhere in the house if you decide you want another activity. Just remember, darling, there are some things you're better off not knowing. And I do hope you won't go looking for them."
+      ]
+    }
+  },
+  "output": "voicelines/othermother/events/exploration",
+  "prefix": "line"
+}

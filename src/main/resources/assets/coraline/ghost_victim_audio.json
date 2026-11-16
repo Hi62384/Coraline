@@ -1,0 +1,46 @@
+{
+  "ghost_victim/yada_01": {
+    "resource": "ghost_victim/yada_01",
+    "source": "artwork/audio_masters/ghost_victim/yada_01.wav",
+    "source_sha256": "5fa4930fa4a5acf5d88560ce0870c1f62b59a3c282f34dc7d4376a7882b68c44",
+    "ogg_sha256": "e7ba99a3749ef9af508fb2b7bbb06ce60f7bd27301c9ef40b7c7671cde78bbd4",
+    "sample_rate": 24000,
+    "channels": 1,
+    "samples": 8112,
+    "seconds": 0.338,
+    "ticks": 7
+  },
+  "ghost_victim/yada_02": {
+    "resource": "ghost_victim/yada_02",
+    "source": "artwork/audio_masters/ghost_victim/yada_02.wav",
+    "source_sha256": "2e7f07493ab51452010068cfab75ab78e092c165da960bf7fa96f6036e3fcc0e",
+    "ogg_sha256": "2d6528d1ee96078471a16bd81d08cd2bd6bff4f9c53d9dbfbcd963cde6d4f0cc",
+    "sample_rate": 24000,
+    "channels": 1,
+    "samples": 8689,
+    "seconds": 0.36204166666666665,
+    "ticks": 8
+  },
+  "ghost_victim/yada_03": {
+    "resource": "ghost_victim/yada_03",
+    "source": "artwork/audio_masters/ghost_victim/yada_03.wav",
+    "source_sha256": "11bcbd4aecdc3309e22a9fd28f34d138dec942f7b9d8a3df309fb20052e620af",
+    "ogg_sha256": "396f676883b0c0e5d36ab60e46d81ee402ee71e8bb0d011c16b3b42472a08325",
+    "sample_rate": 24000,
+    "channels": 1,
+    "samples": 8400,
+    "seconds": 0.35,
+    "ticks": 7
+  },
+  "ghost_victim/yada_04": {
+    "resource": "ghost_victim/yada_04",
+    "source": "artwork/audio_masters/ghost_victim/yada_04.wav",
+    "source_sha256": "1e82db10c3157943ab58b6e826716cf8c429b062ab41d793fe19e217ded3061b",
+    "ogg_sha256": "e2978c71afcd6d0c36c704e442308c6ee5692352eca71b2aacc1806b9c238ada",
+    "sample_rate": 24000,
+    "channels": 1,
+    "samples": 8112,
+    "seconds": 0.338,
+    "ticks": 7
+  }
+}

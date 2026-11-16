@@ -120,11 +120,11 @@ public final class Reconciliation {
     }
     public static void cancel(ServerPlayer p){
         var s=SecretTransactions.state(p);if(s==null)return;
-        if(active(p)){String sound=s.dialogue.getString("Playing");if(!sound.isEmpty())VisitAudio.stopVoice(p,sound);s.dialogue.remove("Reconcile");clearPresentation(s);if(s.search==SecretsState.Search.CONFRONTING||s.search==SecretsState.Search.RETURNING_HOME)s.search=SecretsState.Search.NORMAL;SecretTransactions.dirty(p);}
+        if(active(p)){String sound=s.dialogue.getString("Playing");if(!sound.isEmpty())VisitAudio.stopVoice(p,sound);s.dialogue.remove("Reconcile");clearPresentation(s);for(String key:List.of("QueuePool","PlayingPool","ContactPreludeFollowupPool","ContactPreludeFollowupEvent","ContactPreludeFollowupState"))s.dialogue.remove(key);if(s.search==SecretsState.Search.CONFRONTING||s.search==SecretsState.Search.RETURNING_HOME)s.search=SecretsState.Search.NORMAL;SecretTransactions.dirty(p);}
     }
     private static void clearPresentation(SecretsState s){for(String key:new String[]{"Queue","Playing","Pool","Until","Finished"})s.dialogue.remove(key);}
     public static void suspend(ServerPlayer p){var s=SecretTransactions.state(p);if(s==null)return;
-        if(active(p)){s.dialogue.getCompound("Reconcile").putString("Stage","SUSPENDED");clearPresentation(s);s.search=SecretsState.Search.NORMAL;}
+        if(active(p)){String replay=s.dialogue.getString("Queue"),replayPool=s.dialogue.getString("QueuePool");boolean prelude=s.dialogue.contains("ContactPreludeFollowupPool");if(replay.isEmpty()){replay=s.dialogue.getString("Playing");replayPool=s.dialogue.getString("PlayingPool");}s.dialogue.getCompound("Reconcile").putString("Stage","SUSPENDED");clearPresentation(s);if(prelude&&!replay.isEmpty()){s.dialogue.putString("Queue",replay);s.dialogue.putString("QueuePool",replayPool);}s.search=SecretsState.Search.NORMAL;}
         else if(s.dialogue.hasUUID("Offer")&&!s.dialogue.getBoolean("Decided")){var state=OtherMotherWelcome.State.fromId(s.dialogue.getString("TransactionState"));clearPresentation(s);s.dialogue.remove("OfferSpoken");SecretDialogue.queue(p,SecretDialogue.Event.BLACKMAIL_OFFER,state);}
         SecretTransactions.dirty(p);
     }

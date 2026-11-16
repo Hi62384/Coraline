@@ -60,37 +60,81 @@ public final class VisitGiftPools {
         if(items.isEmpty()||items.stream().anyMatch(stack->stack.isEmpty()||stack.getCount()>stack.getMaxStackSize()||ExpeditionActivities.temporary(stack)))throw new IllegalStateException("Invalid visit reward "+kind);
         return items.stream().map(ItemStack::copy).toList();
     }
+    /** Rarity is admitted once. Subsequent candidates can only improve variety
+     * within that same band, never turn an ordinary gift into rare equipment. */
+    public static List<ItemStack> generate(ServerPlayer player,VisitData.Scene scene){
+        var progress=progress(player,scene);var random=player.getRandom();var first=generate(scene.loop.loot,random,progress);
+        if(scene.loop.loot==OtherMotherDialogue.Loot.FOOD||scene.loop.loot==OtherMotherDialogue.Loot.TREASURE||equipmentIds(first).isEmpty())return first;
+        var owned=new HashSet<String>();
+        for(int i=0;i<player.getInventory().getContainerSize();i++) {
+            var stack=player.getInventory().getItem(i);if(!stack.isEmpty())owned.add(id(stack.getItem()));
+        }
+        var recent=VisitGiftHistory.read(scene.loop.story);int band=band(first);
+        var candidates=new ArrayList<List<ItemStack>>();candidates.add(first);
+        for(int i=0;i<5;i++) {
+            var candidate=generate(scene.loop.loot,random,progress);
+            if(band(candidate)==band&&!equipmentIds(candidate).isEmpty())candidates.add(candidate);
+        }
+        int total=0;for(var candidate:candidates)total+=VisitGiftHistory.preference(equipmentIds(candidate),owned::contains,recent);
+        int roll=random.nextInt(total);
+        for(var candidate:candidates) {
+            roll-=VisitGiftHistory.preference(equipmentIds(candidate),owned::contains,recent);
+            if(roll<0)return candidate;
+        }
+        throw new IllegalStateException("Gift preference selection failed");
+    }
+    private static String id(Item item){return Objects.requireNonNull(net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(item)).toString();}
+    private static List<String> equipmentIds(List<ItemStack> items){return items.stream().filter(stack->stack.getMaxStackSize()==1).map(stack->id(stack.getItem())).distinct().toList();}
+    static void remember(VisitData.Scene scene,List<ItemStack> items){VisitGiftHistory.remember(scene.loop.story,scene.loop.generation,items.stream().filter(stack->!stack.isEmpty()).map(stack->id(stack.getItem())).toList());}
+    static int band(List<ItemStack> items){
+        int band=0;
+        for(var stack:items) {
+            var item=stack.getItem();String path=id(item);
+            if(path.startsWith("coraline:perfect_")||item instanceof SetArmorItem armor&&armor.set==ArmorSets.Set.PERFECT)band=Math.max(band,3);
+            else if(path.startsWith("coraline:moonstone_")||path.startsWith("coraline:other_diamond_")||path.equals("coraline:moonblade")||item==ModItems.FEATHER_BOOTS.get()||item==ModItems.MIDNIGHT_GOGGLES.get())band=Math.max(band,2);
+            else if(item instanceof StoryWeapon weapon&&!weapon.id.equals("needle_rapier")||path.equals("coraline:button_mace")||path.equals("coraline:midnight_wand")||item instanceof SetArmorItem armor&&armor.set!=ArmorSets.Set.COMFY_SILK&&armor.set!=ArmorSets.Set.MIDNIGHT||item==ModItems.SILENT_SLIPPERS.get()||item==ModItems.MIDNIGHT_COAT.get())band=Math.max(band,1);
+        }
+        return band;
+    }
     private static Item pick(RandomSource r,Item... items){return items[r.nextInt(items.length)];}
     private static ItemStack equipment(RandomSource r,Progress p,Item item,Enchantment enchantment){
         var stack=new ItemStack(item);if(p.tier>0&&r.nextInt(p.tier==2?2:4)==0&&enchantment.canEnchant(stack))stack.enchant(enchantment,p.tier==2?2:1);return stack;
     }
-    // These are the original Food/Treasure loops, with identical order, quantities and random calls.
+    // Preserve the authored supper servings; treasure now has staged material payouts.
     private static List<ItemStack> food(RandomSource r,Progress p){var items=new ArrayList<ItemStack>();for(int theme=0;theme<4;theme++)for(int i=0;i<3;i++)items.add(FeastContent.serving(r,theme));for(int i=0;i<3;i++)items.add(FeastContent.random(r,true));return items;}
-    private static List<ItemStack> treasure(RandomSource r,Progress p){var items=new ArrayList<ItemStack>();for(var item:new Item[]{Items.IRON_INGOT,Items.GOLD_INGOT,Items.COPPER_INGOT,Items.COAL,Items.LAPIS_LAZULI,Items.REDSTONE,Items.EMERALD,Items.DIAMOND,OtherMaterials.OTHER_IRON.get(),OtherMaterials.OTHER_DIAMOND.get()})items.add(new ItemStack(item,1+r.nextInt(item==Items.DIAMOND||item==OtherMaterials.OTHER_DIAMOND.get()?3:6)));return items;}
+    private static List<ItemStack> treasure(RandomSource r,Progress p){
+        var items=new ArrayList<ItemStack>();items.add(new ItemStack(OtherMaterials.OTHER_IRON.get(),2+r.nextInt(3+p.tier)));
+        items.add(new ItemStack(pick(r,Items.AMETHYST_SHARD,Items.GOLD_INGOT),1+r.nextInt(3)));
+        if(p.tier>=1&&r.nextInt(p.tier==2?4:8)==0)items.add(new ItemStack(OtherMaterials.OTHER_DIAMOND.get()));
+        if(p.tier>=1&&r.nextInt(VisitGiftConfig.MOONSTONE_ONE_IN.get())==0)items.add(new ItemStack(OtherMaterials.MOONSTONE.get()));
+        if(p.tier==2&&r.nextInt(VisitGiftConfig.PERFECT_ONE_IN.get())==0)items.add(new ItemStack(ModItems.PERFECT_INGOT.get()));
+        return items;
+    }
     private static List<ItemStack> weapons(RandomSource r,Progress p){
-        Item item=pick(r,Items.IRON_SWORD,Items.BOW,Items.CROSSBOW);
+        Item item=Weapons.ITEMS.get("needle_rapier").get();
+        if(r.nextInt(12)==0)item=pick(r,Items.BOW,Items.CROSSBOW);
         if(p.tier>=1&&r.nextInt(3)==0)item=pick(r,Weapons.ITEMS.get("needle_rapier").get(),Weapons.ITEMS.get("vine_sword").get(),Weapons.ITEMS.get("thread_whip").get(),OtherMaterials.TOOLS.get("other_iron_sword").get());
-        if(p.tier==2&&r.nextInt(5)==0)item=pick(r,Items.DIAMOND_SWORD,Items.TRIDENT,Weapons.ITEMS.get("moonblade").get(),Weapons.ITEMS.get("button_mace").get(),Weapons.ITEMS.get("midnight_wand").get(),Weapons.ITEMS.get("spidervision_sword").get());
+        if(p.tier==2&&r.nextInt(5)==0)item=pick(r,Weapons.ITEMS.get("button_mace").get(),Weapons.ITEMS.get("midnight_wand").get(),Weapons.ITEMS.get("spidervision_sword").get());
+        if(p.tier==2&&p.moon&&r.nextInt(12)==0)item=Weapons.ITEMS.get("moonblade").get();
         if(p.tier==2&&p.perfect&&r.nextInt(30)==0)item=OtherMaterials.TOOLS.get("perfect_sword").get();
         var items=new ArrayList<ItemStack>();items.add(equipment(r,p,item,item instanceof BowItem?Enchantments.POWER_ARROWS:item instanceof CrossbowItem?Enchantments.QUICK_CHARGE:Enchantments.SHARPNESS));
         if(item instanceof BowItem||item instanceof CrossbowItem)items.add(new ItemStack(p.tier==2&&r.nextBoolean()?Items.SPECTRAL_ARROW:Items.ARROW,16+8*p.tier));
         return items;
     }
     private static List<ItemStack> armor(RandomSource r,Progress p){
-        Item item=pick(r,Items.IRON_HELMET,Items.IRON_CHESTPLATE,Items.IRON_LEGGINGS,Items.IRON_BOOTS,Items.CHAINMAIL_CHESTPLATE);
         var type=ArmorItem.Type.values()[r.nextInt(ArmorItem.Type.values().length)];
+        Item item=ArmorSets.ITEMS.get(r.nextBoolean()?ArmorSets.Set.COMFY_SILK:ArmorSets.Set.MIDNIGHT).get(type).get();
         if(p.tier>=1&&r.nextInt(3)==0)item=ArmorSets.ITEMS.get(r.nextBoolean()?ArmorSets.Set.OTHER_IRON:ArmorSets.Set.DREAMWEAVE).get(type).get();
-        if(p.tier==2&&r.nextInt(5)==0)item=pick(r,Items.DIAMOND_HELMET,Items.DIAMOND_CHESTPLATE,Items.DIAMOND_LEGGINGS,Items.DIAMOND_BOOTS);
+        if(p.tier==2&&r.nextInt(5)==0)item=ArmorSets.ITEMS.get(r.nextBoolean()?ArmorSets.Set.LUCK:ArmorSets.Set.DREAMWEAVE).get(type).get();
         if(p.tier==2&&p.moon&&r.nextInt(8)==0)item=ArmorSets.ITEMS.get(ArmorSets.Set.MOONSTONE).get(type).get();
         if(p.tier==2&&p.diamond&&r.nextInt(16)==0)item=ArmorSets.ITEMS.get(ArmorSets.Set.OTHER_DIAMOND).get(type).get();
         if(p.tier==2&&p.perfect&&r.nextInt(40)==0)item=ArmorSets.ITEMS.get(ArmorSets.Set.PERFECT).get(type).get();
         return List.of(equipment(r,p,item,Enchantments.ALL_DAMAGE_PROTECTION));
     }
     private static List<ItemStack> tools(RandomSource r,Progress p){
-        Item item=pick(r,Items.IRON_PICKAXE,Items.IRON_AXE,Items.IRON_SHOVEL,Items.IRON_HOE,Items.FISHING_ROD,Items.SHEARS,Items.BRUSH);
         String suffix=new String[]{"pickaxe","axe","shovel","hoe"}[r.nextInt(4)];
-        if(p.tier>=1&&r.nextInt(3)==0)item=OtherMaterials.TOOLS.get("other_iron_"+suffix).get();
-        if(p.tier==2&&r.nextInt(5)==0)item=pick(r,Items.DIAMOND_PICKAXE,Items.DIAMOND_AXE,Items.DIAMOND_SHOVEL);
+        Item item=OtherMaterials.TOOLS.get("other_iron_"+suffix).get();
+        if(r.nextInt(12)==0)item=pick(r,Items.FISHING_ROD,Items.SHEARS,Items.BRUSH);
         if(p.tier==2&&p.moon&&r.nextInt(8)==0)item=OtherMaterials.TOOLS.get("moonstone_"+suffix).get();
         if(p.tier==2&&p.diamond&&r.nextInt(16)==0)item=OtherMaterials.TOOLS.get("other_diamond_"+suffix).get();
         if(p.tier==2&&p.perfect&&r.nextInt(30)==0)item=OtherMaterials.TOOLS.get("perfect_"+suffix).get();
@@ -107,8 +151,9 @@ public final class VisitGiftPools {
         case 1->List.of(stack(Items.RAIL,32+16*p.tier),stack(Items.POWERED_RAIL,8+4*p.tier),stack(Items.DETECTOR_RAIL,n),stack(Items.MINECART,1),stack(Items.REDSTONE_TORCH,n),stack(Items.LEVER,n));
         default->List.of(stack(Items.STICKY_PISTON,n),stack(Items.OBSERVER,n),stack(Items.COMPARATOR,n),stack(Items.REPEATER,n),stack(Items.REDSTONE,32+16*p.tier),stack(Items.STONE_BUTTON,n),stack(Items.STONE_PRESSURE_PLATE,n));};}
     private static List<ItemStack> clothing(RandomSource r,Progress p){
-        Item item=pick(r,ModItems.RAINCOAT.get(),ModItems.COMFY_PAJAMAS.get(),ModItems.GARDEN_OVERALLS.get(),ModItems.TOP_HAT.get());
-        if(p.tier>0&&r.nextBoolean())item=pick(r,ModItems.MIDNIGHT_COAT.get(),ModItems.STAR_SHIRT.get(),ModItems.CIRCUS_JACKET.get(),ModItems.SILENT_SLIPPERS.get(),ModItems.FEATHER_BOOTS.get(),ModItems.MIDNIGHT_GOGGLES.get());
+        Item item=pick(r,ModItems.RAINCOAT.get(),ModItems.COMFY_PAJAMAS.get(),ModItems.GARDEN_OVERALLS.get(),ModItems.STAR_SHIRT.get());
+        if(p.tier>0&&r.nextInt(3)==0)item=pick(r,ModItems.MIDNIGHT_COAT.get(),ModItems.CIRCUS_JACKET.get(),ModItems.SILENT_SLIPPERS.get(),ModItems.TOP_HAT.get());
+        if(p.tier==2&&r.nextInt(12)==0)item=pick(r,ModItems.FEATHER_BOOTS.get(),ModItems.MIDNIGHT_GOGGLES.get());
         return List.of(new ItemStack(item));
     }
     private static List<ItemStack> music(RandomSource r,Progress p){
@@ -124,7 +169,7 @@ public final class VisitGiftPools {
         var quality=rarity<70?new Progress(0,false,false,false):rarity<95?new Progress(Math.min(1,p.tier),false,false,false):p;
         var items=new ArrayList<ItemStack>(generate(kinds[r.nextInt(kinds.length)],r,quality));
         if(r.nextInt(4)==0)items.add(FeastContent.random(r,false));
-        if(rarity>=95&&p.tier==2)items.add(stack(Items.DIAMOND,1+r.nextInt(2)));else if(rarity>=70)items.add(stack(Items.EMERALD,2+r.nextInt(3)));
+        if(rarity>=95&&p.tier==2)items.add(stack(OtherMaterials.OTHER_DIAMOND.get(),1));else if(rarity>=70)items.add(stack(OtherMaterials.OTHER_IRON.get(),2+r.nextInt(3)));
         return items;
     }
     private VisitGiftPools(){}

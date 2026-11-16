@@ -19,7 +19,7 @@ public final class PerfectTreeCutterItem extends AxeItem {
     private static final ThreadLocal<Boolean> ACTIVE=ThreadLocal.withInitial(()->false);
     public PerfectTreeCutterItem(){super(OtherMaterials.PERFECT,5,-3F,new Item.Properties());}
     @SubscribeEvent(priority=EventPriority.LOWEST) public static void fell(BlockEvent.BreakEvent event){
-        if(event.isCanceled()||ACTIVE.get()||!(event.getLevel() instanceof ServerLevel level)||!(event.getPlayer() instanceof ServerPlayer player)||!player.getMainHandItem().is(ArtifactItems.PERFECT_TREE_CUTTER.get())||!event.getState().is(BlockTags.LOGS))return;
+        if(event.isCanceled()||ACTIVE.get()||PerfectAbilities.MINING.get()||!(event.getLevel() instanceof ServerLevel level)||!(event.getPlayer() instanceof ServerPlayer player)||!PerfectAbilities.extraToolReady(player)||!player.getMainHandItem().is(ArtifactItems.PERFECT_TREE_CUTTER.get())||!event.getState().is(BlockTags.LOGS))return;
         var start=event.getPos();var queue=new ArrayDeque<BlockPos>();var logs=new HashSet<BlockPos>();queue.add(start);boolean leaves=false;
         while(!queue.isEmpty()&&logs.size()<192){
             var pos=queue.removeFirst();if(!logs.add(pos))continue;
@@ -32,7 +32,13 @@ public final class PerfectTreeCutterItem extends AxeItem {
         }
         if(!leaves)return;
         ACTIVE.set(true);
-        try{for(var pos:logs){if(pos.equals(start)||player.getMainHandItem().isEmpty())continue;if(level.mayInteract(player,pos))player.gameMode.destroyBlock(pos);}}
+        boolean paid=false;
+        try{for(var pos:logs){
+            if(pos.equals(start)||player.getMainHandItem().isEmpty()||!level.mayInteract(player,pos))continue;
+            if(!paid&&!PerfectPower.consume(player,1))break;boolean destroyed=false;
+            try{destroyed=player.gameMode.destroyBlock(pos);}finally{if(!paid&&!destroyed)player.getInventory().placeItemBackInInventory(new net.minecraft.world.item.ItemStack(com.coraline.registry.ModItems.PERFECT_ESSENCE.get()));}
+            if(destroyed&&!paid){paid=true;PerfectAbilities.extraToolPaid(player);}
+        }}
         finally{ACTIVE.set(false);}
     }
 }

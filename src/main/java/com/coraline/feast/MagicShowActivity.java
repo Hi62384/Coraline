@@ -49,7 +49,9 @@ public final class MagicShowActivity {
     };
     private static final Block[] BACKDROPS={Blocks.RED_TERRACOTTA,Blocks.LIME_TERRACOTTA,Blocks.ORANGE_TERRACOTTA,Blocks.GREEN_TERRACOTTA,
         Blocks.POLISHED_BLACKSTONE_BRICKS,Blocks.PURPLE_TERRACOTTA,Blocks.MAGENTA_TERRACOTTA,Blocks.CRIMSON_PLANKS,Blocks.PURPUR_BLOCK,Blocks.MOSS_BLOCK};
-    private static final int[] COST={2,5,9,13,17,20};
+    // A perfect show awards 20 buttons; even the rarest prize leaves room for
+    // several smaller rewards instead of consuming the entire payout.
+    private static final int[] COST={1,2,3,4,6,10,3,4,5,8};
     private MagicShowActivity(){}
 
     static BlockPos center(ServerPlayer p,VisitData.Scene s){return VillageActivity.center(p,s).east(1180);}
@@ -158,10 +160,12 @@ public final class MagicShowActivity {
             s.owner.equals(stack.getTag().getUUID(OWNER))&&stack.getTag().getInt(GEN)==s.loop.generation;
     }
     private static int tokenCount(ServerPlayer p,VisitData.Scene s){
+        if(com.coraline.multiplayer.StorySessionData.get(p.server).groupActivity(s))return s.loop.magicTokens;
         int count=0;for(ItemStack stack:p.getInventory().items)if(showToken(stack,s))count+=stack.getCount();
         for(ItemStack stack:p.getInventory().offhand)if(showToken(stack,s))count+=stack.getCount();return count;
     }
     private static void spendTokens(ServerPlayer p,VisitData.Scene s,int cost){
+        if(com.coraline.multiplayer.StorySessionData.get(p.server).groupActivity(s)){s.loop.magicTokens=Math.max(0,s.loop.magicTokens-cost);return;}
         for(ItemStack stack:p.getInventory().items){if(cost==0)break;if(showToken(stack,s)){int take=Math.min(cost,stack.getCount());stack.shrink(take);cost-=take;}}
         for(ItemStack stack:p.getInventory().offhand){if(cost==0)break;if(showToken(stack,s)){int take=Math.min(cost,stack.getCount());stack.shrink(take);cost-=take;}}
         p.getInventory().setChanged();
@@ -178,6 +182,13 @@ public final class MagicShowActivity {
         LoopProps.hold(l,c);LoopProps.hold(l,c.south(21));build(l,c);ensureFather(p,s,l,c);ensureAudience(p,s,l,c);ensureCurtain(l,s,c);
         if(s.loop.magicStage>=1&&s.loop.magicStage<=6)ensureSpots(l,s,c);
         if(s.loop.magicStage>=7)ensurePrizes(l,s,c);
+    }
+    static void victimPerformance(ServerPlayer p,VisitData.Scene s,ServerLevel l,BlockPos c,long seed,int elapsed){
+        build(l,c);ensureAudience(p,s,l,c);ensureCurtain(l,s,c);s.loop.magicSeed=seed;
+        int round=Math.min(ROUNDS-1,elapsed/200);boolean changed=s.loop.magicRound!=round||elapsed==0;
+        s.loop.magicRound=round;s.loop.magicStage=elapsed%200<100?1:4;
+        if(changed){var scene=generate(seed,round);clearSpots(l,s,c);backdrop(l,c,scene.theme,round);}
+        ensureSpots(l,s,c);setCurtain(l,s,c,elapsed%200<30?1:0);
     }
     private static void ensureFather(ServerPlayer p,VisitData.Scene s,ServerLevel l,BlockPos c){
         if(!l.getEntitiesOfClass(ParentEntity.class,new AABB(c.south(10)).inflate(7),e->owned(e,s)).isEmpty())return;
@@ -333,14 +344,17 @@ public final class MagicShowActivity {
     private static void beginRound(ServerPlayer p,VisitData.Scene s,BlockPos c,long now){
         var st=s.loop;if(st.magicRound>=ROUNDS){openCounter(p,s,c);return;}
         Scene scene=generate(st.magicSeed,st.magicRound);st.magicAnswer=scene.answer;
+        // Set the memorization phase before populating the props. Otherwise a
+        // new round inherits the previous round's changed-item display briefly.
+        st.magicStage=1;
         clearSpots(p.serverLevel(),s,c);backdrop(p.serverLevel(),c,scene.theme,st.magicRound);ensureSpots(p.serverLevel(),s,c);
-        st.magicStage=1;st.magicPhaseUntil=now+16;setCurtain(p.serverLevel(),s,c,1);burst(p.serverLevel(),c.north(9),true);
+        st.magicPhaseUntil=now+16;setCurtain(p.serverLevel(),s,c,1);burst(p.serverLevel(),c.north(9),true);
         p.serverLevel().playSound(null,c,SoundEvents.ILLUSIONER_CAST_SPELL,SoundSource.PLAYERS,.9F,1.15F);
         p.sendSystemMessage(Component.literal("Trick "+(st.magicRound+1)+" / 20 — "+THEMES[scene.theme]+". Watch closely!"));OtherMotherLoop.changed(p);
     }
     private static void feedback(ServerPlayer p,VisitData.Scene s,boolean correct){
         var st=s.loop;if(st.magicStage!=5)return;
-        if(correct){st.magicTokens++;ActivityTokens.give(p,token(s));}
+        if(correct){st.magicTokens++;if(!com.coraline.multiplayer.StorySessionData.get(p.server).groupActivity(s))ActivityTokens.give(p,token(s));}
         st.magicStage=6;st.magicPhaseUntil=OtherMotherLoop.now(p)+18;
         BlockPos c=center(p,s);var props=p.serverLevel().getEntitiesOfClass(ScenePropEntity.class,new AABB(c.north(5)).inflate(13,5,4),e->owned(e,s)&&e.kind()==ScenePropEntity.MAGIC_SPOT&&e.slot==st.magicAnswer);
         if(!props.isEmpty())props.get(0).mode(1);
@@ -380,18 +394,34 @@ public final class MagicShowActivity {
         }
         OtherMotherLoop.changed(p);
     }
-    private static int prizeZ(int tier){return 1+tier*3;}
+    private static BlockPos prizePos(BlockPos c,int tier){return tier<6?c.offset(16,1,1+tier*3):c.offset(-16,1,3+(tier-6)*4);}
     private static ItemStack prize(int tier){return switch(tier){
         case 0->new ItemStack(Items.GOLDEN_CARROT,4);case 1->new ItemStack(Items.EMERALD,8);case 2->new ItemStack(Items.DIAMOND,4);
         case 3->new ItemStack(com.coraline.clothing.OtherMaterials.OTHER_IRON.get(),6);
         case 4->new ItemStack(com.coraline.clothing.OtherMaterials.OTHER_DIAMOND.get(),4);
-        default->new ItemStack(Items.NETHER_STAR);
+        case 5->new ItemStack(Items.NETHER_STAR);
+        case 6->new ItemStack(com.coraline.clothing.OtherMaterials.MOONSTONE.get(),4);
+        case 7->new ItemStack(ModItems.SOULGLASS.get(),4);
+        case 8->new ItemStack(com.coraline.clothing.OtherMaterials.TOOLS.get("other_iron_sword").get());
+        default->new ItemStack(com.coraline.clothing.OtherMaterials.TOOLS.get("other_diamond_pickaxe").get());
     };}
+    private static void ensureSecondCounter(ServerLevel l,BlockPos c){
+        if(l.getBlockState(c.offset(-18,0,1)).is(Blocks.POLISHED_BLACKSTONE_BRICKS))return;
+        for(int z=-1;z<=20;z++){
+            put(l,c.offset(-18,0,z),Blocks.POLISHED_BLACKSTONE_BRICKS);
+            put(l,c.offset(-18,1,z),Blocks.CHERRY_SLAB);
+            put(l,c.offset(-21,0,z),Blocks.PURPLE_CONCRETE);
+            if(z%3==0){put(l,c.offset(-21,1,z),Blocks.GOLD_BLOCK);put(l,c.offset(-21,2,z),Blocks.SEA_LANTERN);}
+            else{put(l,c.offset(-21,1,z),Blocks.MAGENTA_CONCRETE);put(l,c.offset(-21,2,z),Blocks.PURPLE_CONCRETE);}
+            put(l,c.offset(-21,3,z),Blocks.GOLD_BLOCK);
+        }
+    }
     private static void ensurePrizes(ServerLevel l,VisitData.Scene s,BlockPos c){
-        for(int tier=0;tier<6;tier++){
-            int id=tier;var pos=c.offset(16,1,prizeZ(tier));
+        ensureSecondCounter(l,c);
+        for(int tier=0;tier<COST.length;tier++){
+            int id=tier;var pos=prizePos(c,tier);
             var existing=l.getEntitiesOfClass(ScenePropEntity.class,new AABB(pos).inflate(2,3,2),e->owned(e,s)&&e.kind()==ScenePropEntity.MAGIC_PRIZE&&e.slot==id);
-            if(!existing.isEmpty())continue;
+            if(!existing.isEmpty()){var display=existing.get(0);var reward=prize(tier);String label=COST[tier]+" buttons · "+reward.getHoverName().getString();if(!ItemStack.matches(display.food(0),reward))display.food(0,reward);if(display.getCustomName()==null||!label.equals(display.getCustomName().getString()))display.setCustomName(Component.literal(label));display.setCustomNameVisible(true);continue;}
             var display=LoopProps.spawn(l,s,ScenePropEntity.MAGIC_PRIZE,Vec3.atBottomCenterOf(pos),tier);mark(display,s);display.food(0,prize(tier));
             display.setCustomName(Component.literal(COST[tier]+" buttons · "+prize(tier).getHoverName().getString()));display.setCustomNameVisible(true);
         }
@@ -402,11 +432,12 @@ public final class MagicShowActivity {
         ensurePrizes(p.serverLevel(),s,c);burst(p.serverLevel(),c.north(6),true);
         ActivityWorld.ensureExit(p,s);
         p.serverLevel().playSound(null,c,SoundEvents.FIREWORK_ROCKET_BLAST,SoundSource.PLAYERS,1,1.2F);
-        p.sendSystemMessage(Component.literal("The show is over! Your Button Tokens are in your inventory. Visit the prize counter, or use the open portal."));
+        p.sendSystemMessage(Component.literal("The show is over! Your Button Tokens are ready at the prize counter. Groups share one token pool. You can also use the open portal."));
         OtherMotherLoop.changed(p);
     }
     public static boolean interactProp(ServerPlayer p,VisitData.Scene s,ScenePropEntity prop){
         var st=s.loop;if(s.loop.activity!=OtherMotherActivities.Activity.MAGIC_SHOW)return false;
+        if(!com.coraline.multiplayer.StoryCoop.canAct(p,s)||!owned(prop,s)||p.distanceToSqr(prop)>36)return true;
         if(prop.kind()==ScenePropEntity.MAGIC_SPOT){
             if(st.magicStage==5&&prop.slot>=0&&prop.slot<slots(st.magicRound))feedback(p,s,prop.slot==st.magicAnswer);
             else p.displayClientMessage(Component.literal("Wait for the second reveal before choosing."),true);

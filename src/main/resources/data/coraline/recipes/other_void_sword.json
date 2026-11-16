@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " H ",
+    " H ",
+    " T "
+  ],
+  "key": {
+    "H": {
+      "item": "coraline:void_heart"
+    },
+    "T": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "coraline:other_void_sword",
+    "count": 1
+  }
+}

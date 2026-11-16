@@ -59,7 +59,7 @@ public final class OtherMotherTutorial {
     public static void cancel(ServerPlayer player) {
         if (pending(player)) { PENDING.remove(player.getUUID()); VisitAudio.stopVoice(player); }
     }
-    @SubscribeEvent public static void tick(TickEvent.PlayerTickEvent event) {
+    @SubscribeEvent public static void tick(TickEvent.PlayerTickEvent event) {if(event.player instanceof net.minecraft.server.level.ServerPlayer coopPlayer&&com.coraline.multiplayer.StoryCoop.directorBlocked(coopPlayer))return;
         if (event.phase != TickEvent.Phase.END || !(event.player instanceof ServerPlayer player)) return;
         var pending = PENDING.get(player.getUUID());
         if (pending == null || pending.server != player.server) return;

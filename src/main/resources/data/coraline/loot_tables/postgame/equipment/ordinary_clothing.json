@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "coraline:raincoat",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:comfy_pajamas",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:star_shirt",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:garden_overalls",
+          "weight": 2
+        }
+      ]
+    }
+  ]
+}

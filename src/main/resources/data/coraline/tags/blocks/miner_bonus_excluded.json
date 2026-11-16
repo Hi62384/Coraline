@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "coraline:other_iron_ore", "coraline:other_diamond_ore", "coraline:moonstone_ore", "coraline:perfect_ore", "coraline:soulglass_ore",
+    "coraline:other_iron_block", "coraline:other_diamond_block", "coraline:moonstone_block", "coraline:perfect_block", "coraline:soulglass_block"
+  ]
+}

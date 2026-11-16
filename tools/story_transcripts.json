@@ -2,249 +2,239 @@
   "wybie_line_a": [
     {
       "start": 0.0,
-      "end": 5.0,
-      "text": "Oh, let me guess. You're from Texas or Utah. Someplace dried out and barren, right?"
+      "end": 4.72,
+      "text": "Ooh, let me guess, you're from Texas or Utah, someplace dried out and barren, right?"
     },
     {
-      "start": 5.0,
-      "end": 10.0,
-      "text": "I heard about water witching before, but it doesn't make sense. I mean, it's just an ordinary branch."
+      "start": 5.42,
+      "end": 8.42,
+      "text": "I heard about water witching before, but it doesn't make sense."
     },
     {
-      "start": 10.0,
-      "end": 12.0,
+      "start": 8.72,
+      "end": 10.36,
+      "text": "I mean, it's just an ordinary branch."
+    },
+    {
+      "start": 10.58,
+      "end": 11.98,
       "text": "It's a dowsing rod."
     },
     {
-      "start": 12.0,
-      "end": 18.0,
-      "text": "Ow! And I don't like being stalked, not by psycho nerds or their cats!"
+      "start": 12.58,
+      "end": 13.1,
+      "text": "Ow!"
     },
     {
-      "start": 18.0,
-      "end": 22.0,
+      "start": 13.42,
+      "end": 18.32,
+      "text": "And I don't like being stalked, not by psycho nerds or their cats!"
+    },
+    {
+      "start": 18.42,
+      "end": 21.88,
       "text": "He's not really my cat. He's kind of feral. You know, wild."
     },
     {
-      "start": 22.0,
-      "end": 28.0,
-      "text": "Of course I do feed him every night, and sometimes he'll come in my window and bring me little dead things."
+      "start": 22.400000000000002,
+      "end": 27.46,
+      "text": "Of course, I do feed him every night, and sometimes he'll come in my window and bring me little dead things."
     }
   ],
   "wybie_line_b": [
     {
       "start": 0.0,
-      "end": 1.2,
-      "text": "Hey, Jonesy."
+      "end": 5.48,
+      "text": "Hey, Jonesy, look what I found in Grandma's trunk. You look familiar? Wybie."
     },
     {
-      "start": 1.2,
-      "end": 3.04,
-      "text": "Look what I found in grandma's trunk."
-    },
-    {
-      "start": 3.04,
-      "end": 4.7,
-      "text": "You look familiar."
-    },
-    {
-      "start": 4.7,
-      "end": 5.7,
-      "text": "White."
-    },
-    {
-      "start": 5.7,
-      "end": 6.72,
-      "text": "[Laughs]"
-    },
-    {
-      "start": 6.72,
-      "end": 14.0,
+      "start": 8.8,
+      "end": 11.94,
       "text": "Well, great to meet a Michigan water witch."
     },
     {
-      "start": 14.0,
-      "end": 16.44,
+      "start": 13.38,
+      "end": 15.98,
       "text": "But I'd wear gloves next time."
     },
     {
-      "start": 16.44,
-      "end": 19.34,
-      "text": "Cuz that dowsing rod of yours, uhm..."
-    },
-    {
-      "start": 19.34,
-      "end": 20.54,
-      "text": "It's poison oak."
+      "start": 16.580000000000002,
+      "end": 20.16,
+      "text": "Because that dowsing rod of yours, it's poison oak."
     }
   ],
   "wybie_line_c": [
     {
       "start": 0.0,
-      "end": 2.0,
-      "text": "You"
+      "end": 4.361541666666667,
+      "text": "[unclear speech]"
     }
   ],
   "other_mother_intro": [
     {
       "start": 0.0,
-      "end": 2.5,
+      "end": 2.2,
       "text": "What are you doing here in the middle of the night?"
     },
     {
-      "start": 2.5,
-      "end": 5.0,
+      "start": 2.52,
+      "end": 4.48,
       "text": "You're just in time for supper, dear."
     },
     {
-      "start": 8.0,
-      "end": 10.0,
+      "start": 8.28,
+      "end": 9.700000000000001,
       "text": "You're not my mother."
     },
     {
-      "start": 10.0,
-      "end": 12.0,
-      "text": "My mother doesn't have..."
+      "start": 10.38,
+      "end": 14.88,
+      "text": "My mother doesn't have b-b-butt-butt-buttons."
     },
     {
-      "start": 12.0,
-      "end": 15.0,
-      "text": "But...but...but...but...but...buttons?"
-    },
-    {
-      "start": 15.0,
-      "end": 17.0,
+      "start": 15.8,
+      "end": 16.88,
       "text": "Do you like them?"
     },
     {
-      "start": 17.0,
-      "end": 19.0,
-      "text": "I'm your other mother, Silly."
+      "start": 17.38,
+      "end": 19.080000000000002,
+      "text": "I'm your other mother, silly."
     },
     {
-      "start": 19.0,
-      "end": 22.0,
+      "start": 19.66,
+      "end": 22.04,
       "text": "Now go tell your other father that supper's ready."
     },
     {
-      "start": 24.0,
-      "end": 26.0,
-      "text": "What go on?"
+      "start": 24.740000000000002,
+      "end": 25.44,
+      "text": "Well, go on."
     },
     {
-      "start": 26.0,
-      "end": 28.0,
+      "start": 26.28,
+      "end": 27.3,
       "text": "He's in his study."
+    },
+    {
+      "start": 30.0,
+      "end": 59.980000000000004,
+      "text": "Thank you."
     }
   ],
   "other_father_enter_scene": [
     {
       "start": 0.0,
-      "end": 5.0,
+      "end": 4.16,
       "text": "Hello?"
     }
   ],
   "other_father_intro": [
     {
       "start": 0.0,
-      "end": 2.0,
-      "text": "Hello Coraline."
+      "end": 2.2,
+      "text": "Hello, Coraline."
     },
     {
-      "start": 3.0,
-      "end": 5.0,
-      "text": "Wanna hear my new song?"
+      "start": 3.04,
+      "end": 4.6000000000000005,
+      "text": "Want to hear my new song?"
     },
     {
-      "start": 6.0,
-      "end": 8.0,
+      "start": 5.64,
+      "end": 7.5200000000000005,
       "text": "My father can't play piano."
     },
     {
-      "start": 8.0,
-      "end": 9.0,
+      "start": 7.9,
+      "end": 8.76,
       "text": "No need to."
     },
     {
-      "start": 10.0,
-      "end": 12.0,
+      "start": 9.56,
+      "end": 11.92,
       "text": "This piano plays me."
+    },
+    {
+      "start": 12.92,
+      "end": 13.14,
+      "text": "Ugh!"
     }
   ],
   "other_father_dinners_ready": [
     {
       "start": 0.0,
-      "end": 6.0,
-      "text": "I am sorry but she said to tell you the foods ready."
+      "end": 5.98,
+      "text": "I, um, sorry, but she said to tell you the food's ready."
     },
     {
-      "start": 6.0,
-      "end": 9.0,
+      "start": 6.22,
+      "end": 9.040000000000001,
       "text": "Mmm, who's starving? Raise your hand."
     },
     {
-      "start": 9.0,
-      "end": 11.0,
+      "start": 9.26,
+      "end": 9.540000000000001,
       "text": "Whoa!"
+    },
+    {
+      "start": 9.540000000000001,
+      "end": 10.86,
+      "text": "Hey, ho, ho!"
     }
   ],
   "other_father_golden_chicken_breast": [
     {
       "start": 0.0,
-      "end": 10.0,
+      "end": 8.56,
       "text": "We give our thanks and ask to bless our mother's golden chicken breast."
     }
   ],
   "other_parents_waiting": [
     {
       "start": 0.0,
-      "end": 2.56,
+      "end": 2.2800000000000002,
       "text": "We've been waiting for you, Coraline."
     },
     {
-      "start": 2.56,
-      "end": 5.5600000000000005,
+      "start": 2.68,
+      "end": 5.12,
       "text": "Yep, wasn't the same here without you, kiddo."
     }
   ],
   "other_mother_visit_again": [
     {
       "start": 0.0,
-      "end": 5.36,
-      "text": "It's time for bedtime, dear, but promise you'll visit us again every night."
-    },
-    {
-      "start": 5.36,
-      "end": 8.32,
-      "text": "And I'll have special treats ready for you."
+      "end": 8.0,
+      "text": "It's time for bedtime, dear, but promise you'll visit us again every night and I'll have special treats ready for you."
     }
   ],
   "other_mother_supper_0": [
     {
       "start": 0.0,
-      "end": 2.0,
-      "text": "Hungry aren't you?"
+      "end": 1.36,
+      "text": "Hungry, aren't you?"
     }
   ],
   "other_mother_supper_1": [
     {
       "start": 0.0,
-      "end": 2.0,
-      "text": "Well here comes the gravy train"
+      "end": 5.0,
+      "text": "Well here comes the gravy train. Choo-choo!"
     }
   ],
   "other_mother_supper_2": [
     {
       "start": 0.0,
-      "end": 4.0,
-      "text": "Another roll, sweet peas, corn on the cob."
+      "end": 3.58,
+      "text": "Another roll? Sweet peas? Corn on the cob."
     }
   ],
   "see_you_soon": [
     {
       "start": 0.0,
-      "end": 2.0,
-      "text": "See you soon!"
+      "end": 1.7,
+      "text": "See you soon."
     }
   ],
   "other_father_song": [
@@ -276,6 +266,2461 @@
       "start": 3.6,
       "end": 5.2,
       "text": "GO!"
+    }
+  ],
+  "wybie_visit_a": [
+    {
+      "start": 0.0,
+      "end": 2.4,
+      "text": "Great! The village stalker!"
+    },
+    {
+      "start": 2.4,
+      "end": 7.44,
+      "text": "Ow! I wasn't stalking you. We're hunting banana slugs."
+    }
+  ],
+  "wybie_visit_b": [
+    {
+      "start": 0.0,
+      "end": 3.92,
+      "text": "So, that doll, did you make it look like me?"
+    },
+    {
+      "start": 4.22,
+      "end": 10.5,
+      "text": "Oh, no. I found it that way. It's older than Grandma. Old as this house, probably."
+    },
+    {
+      "start": 10.92,
+      "end": 14.620000000000001,
+      "text": "Come on. Blue hair, my swampers, and raincoat?"
+    }
+  ],
+  "wybie_visit_c": [
+    {
+      "start": 0.0,
+      "end": 3.0,
+      "text": "Dang! Check out Slugzilla!"
+    },
+    {
+      "start": 5.0,
+      "end": 7.0,
+      "text": "You're just like them."
+    }
+  ],
+  "wybie_visit_d": [
+    {
+      "start": 0.0,
+      "end": 4.22,
+      "text": "Huh? I meant my parents. They don't listen to me either."
+    }
+  ],
+  "wybie_visit_e": [
+    {
+      "start": 0.0,
+      "end": 1.12,
+      "text": "Uh-huh. You mind?"
+    }
+  ],
+  "wybie_visit_f": [
+    {
+      "start": 0.0,
+      "end": 1.3800000000000001,
+      "text": "No, no, no, no."
+    }
+  ],
+  "wybie_visit_g": [
+    {
+      "start": 0.0,
+      "end": 1.4048333333333334,
+      "text": "[shouting] No!"
+    }
+  ],
+  "wybie_visit_h": [
+    {
+      "start": 0.0,
+      "end": 1.253875,
+      "text": "[laughter]"
+    }
+  ],
+  "wybie_visit_i": [
+    {
+      "start": 0.0,
+      "end": 4.7485,
+      "text": "[indistinct vocalisation]"
+    }
+  ],
+  "wybie_visit_j": [
+    {
+      "start": 0.0,
+      "end": 8.08,
+      "text": "You know, I've never been inside the Pink Palace. Grandma'd kill me. Thinks it's dangerous or something."
+    },
+    {
+      "start": 8.540000000000001,
+      "end": 21.34,
+      "text": "Well, she had a twin sister. When they were kids, Grandma's sister disappeared. She says she was stolen. I don't know. Maybe she just ran away."
+    }
+  ],
+  "wybie_visit_k": [
+    {
+      "start": 0.0,
+      "end": 1.6718333333333333,
+      "text": "[unclear speech]"
+    }
+  ],
+  "wybie_visit_l": [
+    {
+      "start": 0.0,
+      "end": 1.04,
+      "text": "Look, I gotta go."
+    },
+    {
+      "start": 1.32,
+      "end": 1.92,
+      "text": "Wait a minute."
+    },
+    {
+      "start": 4.62,
+      "end": 5.0200000000000005,
+      "text": "Hmm."
+    }
+  ],
+  "bobinsky_visit_a": [
+    {
+      "start": 0.0,
+      "end": 1.3,
+      "text": "Secret!"
+    },
+    {
+      "start": 2.8000000000000003,
+      "end": 5.4,
+      "text": "Famous Jumping Mouse Circus not ready."
+    },
+    {
+      "start": 7.6000000000000005,
+      "end": 8.6,
+      "text": "Little girl."
+    },
+    {
+      "start": 9.700000000000001,
+      "end": 10.8,
+      "text": "Circus?"
+    },
+    {
+      "start": 11.5,
+      "end": 14.9,
+      "text": "Oh, uh, I, uh, brought this for you."
+    }
+  ],
+  "bobinsky_visit_b": [
+    {
+      "start": 0.0,
+      "end": 9.78,
+      "text": "New Cheese Samples?"
+    }
+  ],
+  "bobinsky_visit_c": [
+    {
+      "start": 0.0,
+      "end": 5.5,
+      "text": "Very clever. Using this mix-up to sneak my home and peek at mooshkas."
+    },
+    {
+      "start": 6.0,
+      "end": 7.5,
+      "text": "The mice!"
+    }
+  ],
+  "bobinsky_visit_d": [
+    {
+      "start": 0.0,
+      "end": 2.52,
+      "text": "And I am the amazing Bobinsky."
+    },
+    {
+      "start": 4.5600000000000005,
+      "end": 7.0,
+      "text": "But you, call me Mr. B."
+    },
+    {
+      "start": 7.5600000000000005,
+      "end": 10.46,
+      "text": "Because amazing, I already know that I am."
+    }
+  ],
+  "bobinsky_visit_e": [
+    {
+      "start": 0.0,
+      "end": 9.68,
+      "text": "You see, Caroline, the problem is my new songs go oompa, oompa, but the jumping mice play only toodle-toot like that."
+    },
+    {
+      "start": 9.76,
+      "end": 13.0,
+      "text": "It's nice, but not so much amazing."
+    },
+    {
+      "start": 13.0,
+      "end": 17.46,
+      "text": "So now I switch to stronger cheese and soon watch out."
+    }
+  ],
+  "bobinsky_visit_f": [
+    {
+      "start": 0.0,
+      "end": 3.8000000000000003,
+      "text": "Here, have beet, make you strong."
+    }
+  ],
+  "bobinsky_visit_g": [
+    {
+      "start": 0.0,
+      "end": 3.18,
+      "text": "\u0414\u043e \u0441\u0432\u0438\u0434\u0430\u043d\u0438\u044f, \u041a\u0430\u0440\u043e\u043b\u0430\u0439\u043d."
+    }
+  ],
+  "bobinsky_visit_h": [
+    {
+      "start": 0.0,
+      "end": 3.0534166666666667,
+      "text": "Hey, Caroline! [unclear speech]"
+    }
+  ],
+  "bobinsky_visit_i": [
+    {
+      "start": 0.0,
+      "end": 1.8800000000000001,
+      "text": "Hey! No!"
+    }
+  ],
+  "bobinsky_visit_j": [
+    {
+      "start": 0.0,
+      "end": 18.14,
+      "text": "The mice asked me to give you a message. They are saying, do not go through little door. Do you know such a thing? The one behind the wallpaper? But it's all bricked up."
+    }
+  ],
+  "bobinsky_visit_k": [
+    {
+      "start": 0.0,
+      "end": 6.24,
+      "text": "Bah, so sorry. It's nothing. Sometimes the mice are a little mixed up."
+    },
+    {
+      "start": 9.36,
+      "end": 14.72,
+      "text": "They even get your name wrong, you know. They call you Coraline instead of Caroline."
+    },
+    {
+      "start": 14.72,
+      "end": 18.96,
+      "text": "Not Caroline at all. Maybe I work them too hard."
+    }
+  ],
+  "tea_visit_a": [
+    {
+      "start": 0.0,
+      "end": 9.4,
+      "text": "Oh, cease your infernal yapping. Oh, how nice to see you, Caroline. Would you like to come in? We're playing cards."
+    }
+  ],
+  "tea_visit_b": [
+    {
+      "start": 0.0,
+      "end": 2.16,
+      "text": "Miriam, put the kettle on!"
+    }
+  ],
+  "tea_visit_c": [
+    {
+      "start": 0.0,
+      "end": 2.2,
+      "text": "April, I think you're being followed."
+    },
+    {
+      "start": 2.8000000000000003,
+      "end": 6.16,
+      "text": "It's the new neighbour, Miriam, Caroline."
+    },
+    {
+      "start": 7.12,
+      "end": 9.16,
+      "text": "She'll be having the oolong tea."
+    },
+    {
+      "start": 9.44,
+      "end": 12.44,
+      "text": "Oh, I don't know. I'm sure she'd prefer jasmine."
+    },
+    {
+      "start": 12.98,
+      "end": 14.82,
+      "text": "No, oolong."
+    },
+    {
+      "start": 15.18,
+      "end": 17.3,
+      "text": "Ah, jasmine it is, then."
+    }
+  ],
+  "tea_visit_d": [
+    {
+      "start": 0.0,
+      "end": 1.92,
+      "text": "I'll read them, if you like."
+    },
+    {
+      "start": 3.24,
+      "end": 7.7,
+      "text": "Oh, your tea leaves, dear. They'll tell me your future."
+    },
+    {
+      "start": 8.84,
+      "end": 10.16,
+      "text": "Drink up, then. Go on."
+    }
+  ],
+  "tea_visit_e": [
+    {
+      "start": 0.0,
+      "end": 3.72,
+      "text": "No, not all of it, not all of it. That's right. Now hand it over."
+    }
+  ],
+  "tea_visit_f": [
+    {
+      "start": 0.0,
+      "end": 9.06,
+      "text": "Oh, oh, Caroline, Caroline, Caroline, Caroline, you are in terrible danger."
+    }
+  ],
+  "tea_visit_g": [
+    {
+      "start": 0.0,
+      "end": 3.86,
+      "text": "Oh, give me that cup, April. Your eyes are going."
+    },
+    {
+      "start": 4.04,
+      "end": 6.86,
+      "text": "My eyes? You're blind as a bat."
+    },
+    {
+      "start": 7.44,
+      "end": 12.34,
+      "text": "Oh, now, um, well, not to worry, child. It's good news."
+    },
+    {
+      "start": 12.8,
+      "end": 16.9,
+      "text": "There's a tall, handsome beast in your future."
+    },
+    {
+      "start": 17.18,
+      "end": 20.240000000000002,
+      "text": "Miriam, oh, really, you're holding it wrong."
+    },
+    {
+      "start": 21.6,
+      "end": 26.66,
+      "text": "See? Danger. I see a very peculiar hand."
+    },
+    {
+      "start": 26.66,
+      "end": 29.04,
+      "text": "I see a giraffe."
+    }
+  ],
+  "tea_visit_h": [
+    {
+      "start": 0.0,
+      "end": 3.18,
+      "text": "Giraffes don't just fall from the sky, Miriam."
+    }
+  ],
+  "tea_visit_i": [
+    {
+      "start": 0.0,
+      "end": 1.0,
+      "text": "Oh, no."
+    }
+  ],
+  "tea_visit_j": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "Well, what should I do?"
+    },
+    {
+      "start": 2.46,
+      "end": 4.84,
+      "text": "Never wear green in your dressing room."
+    },
+    {
+      "start": 5.08,
+      "end": 7.46,
+      "text": "Acquire a very tall stepladder."
+    },
+    {
+      "start": 7.72,
+      "end": 10.0,
+      "text": "And be very, very careful."
+    }
+  ],
+  "wybie_adventure_intro": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "Great. Another Wybie."
+    },
+    {
+      "start": 3.0,
+      "end": 5.0,
+      "text": "Hello, Why-Were-You-Born?"
+    },
+    {
+      "start": 7.0,
+      "end": 8.0,
+      "text": "Hello?"
+    },
+    {
+      "start": 9.0,
+      "end": 13.0,
+      "text": "I thought you'd like him more if he spoke a little less. So I fixed him."
+    },
+    {
+      "start": 14.0,
+      "end": 17.0,
+      "text": "So he can't talk at all?"
+    },
+    {
+      "start": 17.0,
+      "end": 20.0,
+      "text": "Nope. Hmm. I like it."
+    },
+    {
+      "start": 20.0,
+      "end": 23.0,
+      "text": "Now run along, you two, and have fun."
+    }
+  ],
+  "theatre_a": [
+    {
+      "start": 0.0,
+      "end": 3.64,
+      "text": "Ready to break a leg, Miriam!"
+    },
+    {
+      "start": 3.96,
+      "end": 6.62,
+      "text": "Our lives for the theatre, April."
+    }
+  ],
+  "theatre_b": [
+    {
+      "start": 0.0,
+      "end": 3.006984126984127,
+      "text": "[unclear speech]"
+    }
+  ],
+  "theatre_c": [
+    {
+      "start": 0.0,
+      "end": 6.0836281179138325,
+      "text": "[nonverbal sounds]"
+    }
+  ],
+  "theatre_d": [
+    {
+      "start": 0.0,
+      "end": 9.113832199546485,
+      "text": "[unclear speech]"
+    }
+  ],
+  "theatre_e": [
+    {
+      "start": 0.0,
+      "end": 20.98,
+      "text": "What a piece of work is man, how noble in reason, how infinite in faculty, in form and moving, how express and admirable, in action like an angel, in apprehension, how like a god."
+    }
+  ],
+  "theatre_f": [
+    {
+      "start": 0.0,
+      "end": 34.43628117913832,
+      "text": "The beauty of the world. The paragon of animals."
+    }
+  ],
+  "theatre_meet_parents": [
+    {
+      "start": 0.0,
+      "end": 0.7000000000000001,
+      "text": "Hey there."
+    },
+    {
+      "start": 1.5,
+      "end": 3.0,
+      "text": "Was it wonderful, dear?"
+    },
+    {
+      "start": 3.5,
+      "end": 4.0,
+      "text": "Oh, yeah."
+    },
+    {
+      "start": 4.14,
+      "end": 6.640000000000001,
+      "text": "They swooped down and pulled me right out of my seat."
+    },
+    {
+      "start": 6.84,
+      "end": 9.16,
+      "text": "Spink and Forcible, only they weren't old ladies."
+    },
+    {
+      "start": 9.3,
+      "end": 10.44,
+      "text": "That was just a disguise."
+    },
+    {
+      "start": 10.68,
+      "end": 14.88,
+      "text": "But then I was flying through the air and it was, oh, it was magic."
+    }
+  ],
+  "mouse_circus_invite": [
+    {
+      "start": 0.0,
+      "end": 4.8,
+      "text": "Coraline, Mr. Bobinsky has invited you to come see the jumping mice perform after dinner."
+    },
+    {
+      "start": 5.3,
+      "end": 9.8,
+      "text": "Your father and I will clean up while you and your friend head upstairs."
+    }
+  ],
+  "mouse_circus_intro": [
+    {
+      "start": 0.0,
+      "end": 24.46,
+      "text": "Ladies and gentlemen, for to tickle your eyes and ears, and making hearts to touch, I, Sergei Alexander Bobinsky, am introducing my astonishing, stupendulous, and amazing, jumping mouse circus."
+    }
+  ],
+  "mouse_circus_end": [
+    {
+      "start": 0.0,
+      "end": 7.0,
+      "text": "We loved it, Mr. B. It was so...so...amazing!"
+    },
+    {
+      "start": 7.0,
+      "end": 12.0,
+      "text": "Very, very thank you, lady and gentleman."
+    },
+    {
+      "start": 12.0,
+      "end": 15.0,
+      "text": "You are very welcome any time you like."
+    },
+    {
+      "start": 15.0,
+      "end": 18.0,
+      "text": "You and also your good friend there."
+    },
+    {
+      "start": 18.0,
+      "end": 20.0,
+      "text": "Do svidaniya, Coraline."
+    }
+  ],
+  "missing_parents_tea_a": [
+    {
+      "start": 0.0,
+      "end": 2.08,
+      "text": "April, aren't you getting ready?"
+    },
+    {
+      "start": 2.3000000000000003,
+      "end": 3.92,
+      "text": "We've lost our ride, Miriam."
+    },
+    {
+      "start": 4.6000000000000005,
+      "end": 8.120000000000001,
+      "text": "Coraline says her parents have vanished quite completely."
+    }
+  ],
+  "missing_parents_tea_b": [
+    {
+      "start": 0.0,
+      "end": 3.3000000000000003,
+      "text": "What? We've waited months for those tickets."
+    },
+    {
+      "start": 3.62,
+      "end": 5.66,
+      "text": "I suppose we could walk."
+    },
+    {
+      "start": 5.84,
+      "end": 10.040000000000001,
+      "text": "With your gammy legs, it's nearly two miles to the theatre."
+    }
+  ],
+  "missing_parents_tea_c": [
+    {
+      "start": 0.0,
+      "end": 8.2,
+      "text": "Oh yes, your missing parents. We know just what you need."
+    }
+  ],
+  "missing_parents_tea_d": [
+    {
+      "start": 0.0,
+      "end": 2.647083,
+      "text": "Miriam, get... Yes, that's right."
+    }
+  ],
+  "missing_parents_tea_e": [
+    {
+      "start": 0.0,
+      "end": 2.2,
+      "text": "How is 100-year-old candy going to help?"
+    }
+  ],
+  "missing_parents_tea_f": [
+    {
+      "start": 0.0,
+      "end": 8.382417,
+      "text": "[nonverbal sounds]"
+    }
+  ],
+  "missing_parents_tea_g": [
+    {
+      "start": 0.0,
+      "end": 2.542583,
+      "text": "[nonverbal sounds]"
+    }
+  ],
+  "missing_parents_tea_h": [
+    {
+      "start": 0.0,
+      "end": 1.22,
+      "text": "There you go, sweetie."
+    }
+  ],
+  "missing_parents_tea_i": [
+    {
+      "start": 0.0,
+      "end": 0.86,
+      "text": "What's it for?"
+    },
+    {
+      "start": 1.3,
+      "end": 4.98,
+      "text": "Well, it might help. They're good for bad things sometimes."
+    },
+    {
+      "start": 4.98,
+      "end": 8.120000000000001,
+      "text": "No, they're good for lost things."
+    },
+    {
+      "start": 8.36,
+      "end": 9.96,
+      "text": "It's bad things, Miriam."
+    },
+    {
+      "start": 10.38,
+      "end": 11.84,
+      "text": "Lost things, April."
+    },
+    {
+      "start": 12.26,
+      "end": 12.72,
+      "text": "Bad."
+    },
+    {
+      "start": 13.02,
+      "end": 13.58,
+      "text": "Lost."
+    },
+    {
+      "start": 14.06,
+      "end": 14.780000000000001,
+      "text": "Bad things."
+    },
+    {
+      "start": 15.06,
+      "end": 15.540000000000001,
+      "text": "Lost."
+    },
+    {
+      "start": 15.8,
+      "end": 16.14,
+      "text": "Bad."
+    },
+    {
+      "start": 16.240000000000002,
+      "end": 16.5,
+      "text": "Lost."
+    },
+    {
+      "start": 16.7,
+      "end": 17.1,
+      "text": "Bad."
+    },
+    {
+      "start": 17.22,
+      "end": 17.5,
+      "text": "Lost."
+    },
+    {
+      "start": 17.68,
+      "end": 18.02,
+      "text": "Bad."
+    },
+    {
+      "start": 18.18,
+      "end": 18.78,
+      "text": "Lost."
+    }
+  ],
+  "missing_parents_cat_a": [
+    {
+      "start": 0.0,
+      "end": 3.54,
+      "text": "Hello. Do you know where Mom and Dad are?"
+    }
+  ],
+  "missing_parents_cat_b": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "Mom? Dad?"
+    }
+  ],
+  "missing_parents_cat_c": [
+    {
+      "start": 0.0,
+      "end": 5.491542,
+      "text": "[struggling]"
+    }
+  ],
+  "missing_parents_cat_d": [
+    {
+      "start": 0.0,
+      "end": 5.26,
+      "text": "How did this happen?"
+    }
+  ],
+  "missing_parents_cat_e": [
+    {
+      "start": 0.0,
+      "end": 5.24,
+      "text": "She's taken them."
+    }
+  ],
+  "missing_parents_cat_f": [
+    {
+      "start": 0.0,
+      "end": 8.02,
+      "text": "They're not coming back, are they? Mom and Dad. Not on their own. Only one thing to do."
+    }
+  ],
+  "parent_rescue_a": [
+    {
+      "start": 0.0,
+      "end": 3.66,
+      "text": "You know you're walking right into her trap."
+    },
+    {
+      "start": 4.1,
+      "end": 7.08,
+      "text": "I have to go back. They are my parents."
+    },
+    {
+      "start": 7.78,
+      "end": 11.4,
+      "text": "Challenge her, then. She may not play fair, but she won't refuse."
+    },
+    {
+      "start": 12.22,
+      "end": 14.48,
+      "text": "She's got a thing for games."
+    },
+    {
+      "start": 15.08,
+      "end": 16.34,
+      "text": "Hmm. Okay."
+    }
+  ],
+  "parent_rescue_b": [
+    {
+      "start": 0.0,
+      "end": 6.16,
+      "text": "Coraline? Mom? Coraline, you came back for us. Mom!"
+    }
+  ],
+  "parent_rescue_c": [
+    {
+      "start": 0.0,
+      "end": 3.18,
+      "text": "Darling, why would you run away from me?"
+    }
+  ],
+  "parent_rescue_d": [
+    {
+      "start": 0.0,
+      "end": 1.26,
+      "text": "Where are my parents?"
+    },
+    {
+      "start": 1.76,
+      "end": 4.94,
+      "text": "Gosh, I have no idea where your old parents are."
+    },
+    {
+      "start": 5.86,
+      "end": 8.38,
+      "text": "Perhaps they've grown bored of you and run away to France."
+    },
+    {
+      "start": 8.74,
+      "end": 10.700000000000001,
+      "text": "They weren't bored of me. You stole them!"
+    },
+    {
+      "start": 11.14,
+      "end": 13.42,
+      "text": "Now don't be difficult, Coraline."
+    },
+    {
+      "start": 14.16,
+      "end": 15.780000000000001,
+      "text": "Have a seat, won't you?"
+    }
+  ],
+  "parent_rescue_e": [
+    {
+      "start": 0.0,
+      "end": 1.68,
+      "text": "Why don't you have your own key?"
+    }
+  ],
+  "parent_rescue_f": [
+    {
+      "start": 0.0,
+      "end": 2.739958,
+      "text": "Only one key."
+    }
+  ],
+  "parent_rescue_g": [
+    {
+      "start": 0.0,
+      "end": 3.92,
+      "text": "The garden squash need tending, don't you think, pumpkin?"
+    },
+    {
+      "start": 3.92,
+      "end": 7.92,
+      "text": "Swish squash, pumpkin sauce."
+    }
+  ],
+  "parent_rescue_h": [
+    {
+      "start": 0.0,
+      "end": 10.379333,
+      "text": "[humming]"
+    }
+  ],
+  "parent_rescue_i": [
+    {
+      "start": 0.0,
+      "end": 1.26,
+      "text": "I know you like them."
+    },
+    {
+      "start": 1.6,
+      "end": 3.38,
+      "text": "Everybody likes games."
+    },
+    {
+      "start": 4.26,
+      "end": 4.5600000000000005,
+      "text": "Uh-huh."
+    }
+  ],
+  "parent_rescue_j": [
+    {
+      "start": 0.0,
+      "end": 5.5,
+      "text": "What kind of game would it be? An exploring game. A finding things game."
+    }
+  ],
+  "parent_rescue_k": [
+    {
+      "start": 0.0,
+      "end": 3.3000000000000003,
+      "text": "And what is it you'd be finding, Coraline?"
+    },
+    {
+      "start": 3.96,
+      "end": 5.36,
+      "text": "My real parents."
+    },
+    {
+      "start": 5.78,
+      "end": 7.18,
+      "text": "Too easy."
+    },
+    {
+      "start": 7.640000000000001,
+      "end": 10.28,
+      "text": "And, and the eyes of the ghost children."
+    },
+    {
+      "start": 11.76,
+      "end": 12.14,
+      "text": "Huh."
+    }
+  ],
+  "parent_rescue_l": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "What if you don't find them?"
+    },
+    {
+      "start": 2.0,
+      "end": 6.0,
+      "text": "If I lose, I'll stay here with you forever and let you love me."
+    },
+    {
+      "start": 6.0,
+      "end": 8.0,
+      "text": "And I'll let you sew buttons into my eyes."
+    },
+    {
+      "start": 8.0,
+      "end": 13.0,
+      "text": "Hmm. And if you somehow win this game?"
+    },
+    {
+      "start": 13.0,
+      "end": 20.0,
+      "text": "Then you let me go. You let everyone go. My real father and mother, the dead children, everyone you've trapped here."
+    },
+    {
+      "start": 20.0,
+      "end": 22.0,
+      "text": "Deal."
+    },
+    {
+      "start": 22.0,
+      "end": 25.0,
+      "text": "Not till you give me a clue."
+    },
+    {
+      "start": 25.0,
+      "end": 26.0,
+      "text": "Oh, right."
+    },
+    {
+      "start": 26.0,
+      "end": 30.0,
+      "text": "In each of three wonders I've made just for you,"
+    },
+    {
+      "start": 30.0,
+      "end": 34.0,
+      "text": "a ghost's eye is lost in plain sight."
+    },
+    {
+      "start": 34.0,
+      "end": 36.0,
+      "text": "And for my parents?"
+    }
+  ],
+  "parent_rescue_m": [
+    {
+      "start": 0.0,
+      "end": 5.38,
+      "text": "Fine. Don't tell me."
+    }
+  ],
+  "parent_rescue_n": [
+    {
+      "start": 0.0,
+      "end": 0.68,
+      "text": "It's a deal."
+    }
+  ],
+  "cocoa_beetles_a": [
+    {
+      "start": 0.0,
+      "end": 5.12,
+      "text": "They say even the proudest spirit can be broken with love."
+    }
+  ],
+  "cocoa_beetles_b": [
+    {
+      "start": 0.0,
+      "end": 9.82,
+      "text": "Of course, chocolate never hurts. Like what? They're cocoa beetles from Zanzibar."
+    }
+  ],
+  "cocoa_beetles_c": [
+    {
+      "start": 0.0,
+      "end": 9.5,
+      "text": "I want to be with my real mom and dad. I want you to let me go."
+    }
+  ],
+  "cocoa_beetles_d": [
+    {
+      "start": 0.0,
+      "end": 3.9,
+      "text": "Is that any way to talk to your mother?"
+    },
+    {
+      "start": 3.9,
+      "end": 6.62,
+      "text": "You aren't my mother."
+    },
+    {
+      "start": 7.32,
+      "end": 11.18,
+      "text": "Apologize at once, Coraline."
+    }
+  ],
+  "cocoa_beetles_e": [
+    {
+      "start": 0.0,
+      "end": 4.92,
+      "text": "No! I'll give you to the count of three."
+    }
+  ],
+  "cocoa_beetles_f": [
+    {
+      "start": 0.0,
+      "end": 6.6000000000000005,
+      "text": "One, two, three."
+    }
+  ],
+  "cocoa_beetles_g": [
+    {
+      "start": 0.0,
+      "end": 9.10225,
+      "text": "[nonverbal sounds]"
+    }
+  ],
+  "mirror_prison_a": [
+    {
+      "start": 0.0,
+      "end": 3.52,
+      "text": "You may come out when you've learned to be a loving daughter."
+    }
+  ],
+  "mirror_prison_b": [
+    {
+      "start": 0.0,
+      "end": 7.3,
+      "text": "Who's there?"
+    }
+  ],
+  "mirror_prison_c": [
+    {
+      "start": 0.0,
+      "end": 5.0,
+      "text": "Hush, and shush, for the Beldam might be listening."
+    },
+    {
+      "start": 6.54,
+      "end": 9.3,
+      "text": "You, you mean the Other Mother?"
+    },
+    {
+      "start": 13.56,
+      "end": 14.8,
+      "text": "Who are you?"
+    }
+  ],
+  "mirror_prison_d": [
+    {
+      "start": 0.0,
+      "end": 6.04,
+      "text": "Don't remember our names, but I remember my true mommy."
+    },
+    {
+      "start": 7.58,
+      "end": 8.78,
+      "text": "Why are you all here?"
+    },
+    {
+      "start": 9.86,
+      "end": 11.02,
+      "text": "The Beldam."
+    },
+    {
+      "start": 12.44,
+      "end": 17.32,
+      "text": "She spied on our lives through the little doll's eyes."
+    },
+    {
+      "start": 17.32,
+      "end": 20.88,
+      "text": "And saw that we weren't happy."
+    },
+    {
+      "start": 21.64,
+      "end": 27.12,
+      "text": "So she lured us away with treasures and treats and games to play."
+    },
+    {
+      "start": 27.12,
+      "end": 32.24,
+      "text": "Gave all that we asked, yet we still wanted more."
+    },
+    {
+      "start": 33.2,
+      "end": 35.88,
+      "text": "So we let her sew the buttons."
+    },
+    {
+      "start": 39.400000000000006,
+      "end": 42.1,
+      "text": "She said that she loved us."
+    },
+    {
+      "start": 42.1,
+      "end": 47.86,
+      "text": "But she locked us here and ate up our lives."
+    }
+  ],
+  "mirror_prison_e": [
+    {
+      "start": 0.0,
+      "end": 11.6,
+      "text": "Well, she can't keep me in the dark forever. Not if she wants to win my love. Beating her is my only chance."
+    },
+    {
+      "start": 12.6,
+      "end": 17.36,
+      "text": "Perhaps if you do win your escape, you could find our eyes."
+    },
+    {
+      "start": 18.240000000000002,
+      "end": 19.54,
+      "text": "Has she taken those too?"
+    },
+    {
+      "start": 20.16,
+      "end": 22.44,
+      "text": "Yes, Miss, and hidden them."
+    },
+    {
+      "start": 23.02,
+      "end": 26.18,
+      "text": "Find our eyes, Mistress, and our souls will be freed."
+    },
+    {
+      "start": 28.18,
+      "end": 29.18,
+      "text": "I'll try."
+    }
+  ],
+  "first_escape_a": [
+    {
+      "start": 0.0,
+      "end": 7.093708,
+      "text": "[nonverbal sounds]"
+    }
+  ],
+  "first_escape_b": [
+    {
+      "start": 0.0,
+      "end": 4.26,
+      "text": "What? Did she do this to you?"
+    }
+  ],
+  "first_escape_c": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "I hope that feels better."
+    }
+  ],
+  "first_escape_d": [
+    {
+      "start": 0.0,
+      "end": 4.78,
+      "text": "Coraline? Is that you?"
+    },
+    {
+      "start": 5.1000000000000005,
+      "end": 5.7,
+      "text": "Let's go!"
+    }
+  ],
+  "first_escape_e": [
+    {
+      "start": 0.0,
+      "end": 4.0,
+      "text": "Coraline!"
+    },
+    {
+      "start": 6.0,
+      "end": 8.0,
+      "text": "Come on, she'll hurt you again."
+    }
+  ],
+  "first_escape_f": [
+    {
+      "start": 0.0,
+      "end": 4.655625,
+      "text": "[nonverbal sounds]"
+    }
+  ],
+  "first_escape_g": [
+    {
+      "start": 0.0,
+      "end": 4.38,
+      "text": "Coraline, how dare you disobey your mother!"
+    }
+  ],
+  "missing_parents_a": [
+    {
+      "start": 0.0,
+      "end": 10.4,
+      "text": "I'm home! Anybody here? Hello? Hello? Hello? Real Dad? Real Mom?"
+    }
+  ],
+  "missing_parents_b": [
+    {
+      "start": 0.0,
+      "end": 2.34,
+      "text": "Oh. The Wybie that talks."
+    },
+    {
+      "start": 2.72,
+      "end": 15.16,
+      "text": "Huh? Yeah. Um, so, you know that old doll I gave you? Um, my grandma's real mad. Says it was her sister's. The one that disappeared."
+    },
+    {
+      "start": 15.36,
+      "end": 17.26,
+      "text": "You stole that doll, didn't you?"
+    },
+    {
+      "start": 17.54,
+      "end": 20.34,
+      "text": "Well, it looked just like you. And I figured..."
+    },
+    {
+      "start": 20.34,
+      "end": 28.34,
+      "text": "It used to look like this pioneer girl. Then Huck Finn Junior Then it was this little rascal's chick with all these ribbons and braids and..."
+    },
+    {
+      "start": 28.34,
+      "end": 30.68,
+      "text": "Grandma's missing sister."
+    },
+    {
+      "start": 31.28,
+      "end": 32.54,
+      "text": "I think I just met her."
+    },
+    {
+      "start": 32.98,
+      "end": 33.38,
+      "text": "Come on."
+    }
+  ],
+  "missing_parents_c": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "She's in there."
+    },
+    {
+      "start": 2.0,
+      "end": 5.0,
+      "text": "Can you unlock it?"
+    },
+    {
+      "start": 5.0,
+      "end": 8.0,
+      "text": "Not in a million years, but it wouldn't matter."
+    },
+    {
+      "start": 8.0,
+      "end": 10.0,
+      "text": "She can't escape without her eyes."
+    },
+    {
+      "start": 10.0,
+      "end": 12.0,
+      "text": "None of the ghosts can."
+    },
+    {
+      "start": 12.0,
+      "end": 14.0,
+      "text": "Ah, yeah."
+    },
+    {
+      "start": 14.0,
+      "end": 17.0,
+      "text": "So, I really need to get that door."
+    },
+    {
+      "start": 17.0,
+      "end": 19.0,
+      "text": "Great. I'd love to get rid of it."
+    }
+  ],
+  "missing_parents_d": [
+    {
+      "start": 0.0,
+      "end": 3.7800000000000002,
+      "text": "Where are you hiding, you little monster?"
+    },
+    {
+      "start": 4.46,
+      "end": 6.26,
+      "text": "You and Grandma been talking?"
+    },
+    {
+      "start": 6.36,
+      "end": 10.98,
+      "text": "The doll's your spy. It's how she watches you. Finds out what's wrong with your life."
+    },
+    {
+      "start": 11.32,
+      "end": 14.08,
+      "text": "The doll is my grandma's spy."
+    },
+    {
+      "start": 14.08,
+      "end": 17.84,
+      "text": "No, the Other Mother. She's got this whole world where everything's better."
+    },
+    {
+      "start": 17.98,
+      "end": 23.04,
+      "text": "The food, the garden, the neighbors. But it's all a trap."
+    },
+    {
+      "start": 24.740000000000002,
+      "end": 28.32,
+      "text": "Yeah, I think I heard someone calling me, Jonesy."
+    },
+    {
+      "start": 28.32,
+      "end": 29.580000000000002,
+      "text": "You don't believe me?"
+    },
+    {
+      "start": 29.580000000000002,
+      "end": 31.36,
+      "text": "You can ask the cat."
+    },
+    {
+      "start": 31.36,
+      "end": 32.6,
+      "text": "The cat?"
+    },
+    {
+      "start": 32.6,
+      "end": 35.82,
+      "text": "I'll just tell Grandma that she couldn't find the doll."
+    }
+  ],
+  "missing_parents_e": [
+    {
+      "start": 0.0,
+      "end": 2.04,
+      "text": "You are not listening to me!"
+    },
+    {
+      "start": 2.2,
+      "end": 4.82,
+      "text": "That's because you're crazy!"
+    }
+  ],
+  "missing_parents_f": [
+    {
+      "start": 0.0,
+      "end": 7.976042,
+      "text": "[shouting]"
+    }
+  ],
+  "missing_parents_g": [
+    {
+      "start": 0.0,
+      "end": 4.0,
+      "text": "Are you crazy? You're the jerkwad that gave me the doll!"
+    }
+  ],
+  "rescue_mantis_intro": [
+    {
+      "start": 0.0,
+      "end": 12.24,
+      "text": "Sorry. So sorry, Mother making me. Don't wanna hurt you."
+    }
+  ],
+  "rescue_mantis_take": [
+    {
+      "start": 0.0,
+      "end": 2.728333,
+      "text": "Take it!"
+    }
+  ],
+  "rescue_mantis_gone": [
+    {
+      "start": 0.0,
+      "end": 2.600625,
+      "text": "[nonverbal sounds]"
+    }
+  ],
+  "rescue_theatre_grab": [
+    {
+      "start": 0.0,
+      "end": 21.130167,
+      "text": "Thief! Give it back! [voices shouting]"
+    }
+  ],
+  "rescue_clothes": [
+    {
+      "start": 0.0,
+      "end": 6.6000000000000005,
+      "text": "[unclear] Evil witch, I'm not scared!"
+    }
+  ],
+  "rescue_bobinsky_a": [
+    {
+      "start": 0.0,
+      "end": 4.22,
+      "text": "Hello, Galobushka."
+    },
+    {
+      "start": 4.46,
+      "end": 5.92,
+      "text": "I'm Coraline."
+    }
+  ],
+  "rescue_bobinsky_b": [
+    {
+      "start": 0.0,
+      "end": 4.0,
+      "text": "Is this what you're looking for?"
+    },
+    {
+      "start": 4.0,
+      "end": 6.0,
+      "text": "Uh-huh."
+    }
+  ],
+  "rescue_bobinsky_c": [
+    {
+      "start": 0.0,
+      "end": 4.0,
+      "text": "You think winning game is good thing?"
+    }
+  ],
+  "rescue_bobinsky_d": [
+    {
+      "start": 0.0,
+      "end": 7.04,
+      "text": "You'll just go home and be bored and neglected, same as always."
+    },
+    {
+      "start": 8.040000000000001,
+      "end": 10.92,
+      "text": "Stay here with us."
+    },
+    {
+      "start": 11.68,
+      "end": 16.080000000000002,
+      "text": "We will listen to you and laugh with you."
+    }
+  ],
+  "rescue_bobinsky_e": [
+    {
+      "start": 0.0,
+      "end": 9.16,
+      "text": "If you stay here, you can have whatever you want, Vsegda. Always."
+    },
+    {
+      "start": 10.46,
+      "end": 11.8,
+      "text": "You don't get it, do you?"
+    },
+    {
+      "start": 12.540000000000001,
+      "end": 14.24,
+      "text": "I don't understand."
+    },
+    {
+      "start": 15.74,
+      "end": 17.32,
+      "text": "Of course you don't understand."
+    },
+    {
+      "start": 17.78,
+      "end": 19.92,
+      "text": "You're just a copy she made of the real Mr. B."
+    },
+    {
+      "start": 19.92,
+      "end": 24.36,
+      "text": "Not even that anymore."
+    }
+  ],
+  "finale_a": [
+    {
+      "start": 0.0,
+      "end": 6.08,
+      "text": "So, you're back, and you brought Vermin with you?"
+    },
+    {
+      "start": 6.98,
+      "end": 8.48,
+      "text": "I brought a friend."
+    }
+  ],
+  "finale_b": [
+    {
+      "start": 0.0,
+      "end": 4.0,
+      "text": "You know I love you."
+    },
+    {
+      "start": 6.0,
+      "end": 10.0,
+      "text": "You have a very funny way of showing it."
+    }
+  ],
+  "finale_c": [
+    {
+      "start": 0.0,
+      "end": 4.38,
+      "text": "So, where are they, the Ghost Eyes?"
+    }
+  ],
+  "finale_d": [
+    {
+      "start": 0.0,
+      "end": 5.54,
+      "text": "Hold on. We aren't finished yet, are we?"
+    },
+    {
+      "start": 5.54,
+      "end": 14.120000000000001,
+      "text": "No, I suppose not. After all, you still need to find your old parents, don't you?"
+    },
+    {
+      "start": 15.14,
+      "end": 17.86,
+      "text": "Too bad you won't have..."
+    }
+  ],
+  "finale_e": [
+    {
+      "start": 0.0,
+      "end": 1.729875,
+      "text": "This!"
+    }
+  ],
+  "finale_f": [
+    {
+      "start": 0.0,
+      "end": 4.551125,
+      "text": "[nonverbal sounds]"
+    }
+  ],
+  "finale_g": [
+    {
+      "start": 0.0,
+      "end": 1.94,
+      "text": "I already know where you've hidden them."
+    },
+    {
+      "start": 4.28,
+      "end": 7.32,
+      "text": "Well, produce them."
+    }
+  ],
+  "finale_h": [
+    {
+      "start": 0.0,
+      "end": 1.32,
+      "text": "They're behind that door."
+    },
+    {
+      "start": 2.42,
+      "end": 5.18,
+      "text": "Oh, they are, are they?"
+    }
+  ],
+  "finale_i": [
+    {
+      "start": 0.0,
+      "end": 2.856042,
+      "text": "[nonverbal sounds]"
+    }
+  ],
+  "finale_j": [
+    {
+      "start": 0.0,
+      "end": 4.5,
+      "text": "Go on. Open it. You'll be there, all right."
+    }
+  ],
+  "finale_k": [
+    {
+      "start": 0.0,
+      "end": 5.0200000000000005,
+      "text": "You're wrong, Coraline. They aren't there."
+    }
+  ],
+  "finale_m": [
+    {
+      "start": 0.0,
+      "end": 3.7,
+      "text": "No, I'm not!"
+    }
+  ],
+  "finale_n": [
+    {
+      "start": 0.0,
+      "end": 17.008625,
+      "text": "[screaming]"
+    }
+  ],
+  "finale_o": [
+    {
+      "start": 0.0,
+      "end": 2.4,
+      "text": "You horrible cheating girl!"
+    }
+  ],
+  "finale_p": [
+    {
+      "start": 0.0,
+      "end": 8.185042,
+      "text": "[nonverbal sounds]"
+    }
+  ],
+  "finale_q": [
+    {
+      "start": 0.0,
+      "end": 12.66,
+      "text": "No! Where are you? You selfish brat!"
+    }
+  ],
+  "finale_s": [
+    {
+      "start": 0.0,
+      "end": 10.0,
+      "text": "Don't leave me! Don't leave me! I'll die without you!"
+    }
+  ],
+  "reunion_a": [
+    {
+      "start": 0.0,
+      "end": 2.32,
+      "text": "Coraline, we're home."
+    },
+    {
+      "start": 2.46,
+      "end": 5.28,
+      "text": "Mom! Dad, I missed you so much."
+    },
+    {
+      "start": 5.78,
+      "end": 9.38,
+      "text": "Missed us? Oh, no, you broke my favorite snow globe."
+    },
+    {
+      "start": 9.86,
+      "end": 12.82,
+      "text": "I didn't break it. It must have broke when you escaped."
+    },
+    {
+      "start": 13.0,
+      "end": 13.88,
+      "text": "And cut your knee."
+    },
+    {
+      "start": 14.18,
+      "end": 18.14,
+      "text": "Coraline, I asked you to count all the windows, not put your knee through them."
+    },
+    {
+      "start": 18.580000000000002,
+      "end": 18.94,
+      "text": "But..."
+    },
+    {
+      "start": 18.94,
+      "end": 22.54,
+      "text": "Well, get yourself cleaned up. We're going out tonight."
+    },
+    {
+      "start": 22.900000000000002,
+      "end": 24.5,
+      "text": "We got a lot to celebrate."
+    },
+    {
+      "start": 25.2,
+      "end": 27.76,
+      "text": "You're talking about your garden catalog?"
+    },
+    {
+      "start": 27.76,
+      "end": 30.720000000000002,
+      "text": "Of course. What else?"
+    }
+  ],
+  "reunion_b": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "But look at the snow on your clothes."
+    },
+    {
+      "start": 2.72,
+      "end": 4.72,
+      "text": "What's gotten into you, Coraline?"
+    }
+  ],
+  "farewell_a": [
+    {
+      "start": 0.0,
+      "end": 12.42,
+      "text": "Oh. Hello again. You still mad? I'm really sorry I threw you at her. The Other Mother. It was all I could think of."
+    }
+  ],
+  "farewell_b": [
+    {
+      "start": 0.0,
+      "end": 19.0,
+      "text": "I think it's time, don't you? To set them free?"
+    },
+    {
+      "start": 30.0,
+      "end": 32.06,
+      "text": "[nonverbal sounds]"
+    }
+  ],
+  "farewell_c": [
+    {
+      "start": 0.7000000000000001,
+      "end": 3.84,
+      "text": "It's a fine, fine thing you did for us, Miss."
+    },
+    {
+      "start": 4.48,
+      "end": 7.0,
+      "text": "Well, I'm glad it's finally over."
+    },
+    {
+      "start": 8.86,
+      "end": 12.4,
+      "text": "It is over and done with for us."
+    },
+    {
+      "start": 12.92,
+      "end": 13.94,
+      "text": "What about me?"
+    },
+    {
+      "start": 14.56,
+      "end": 16.64,
+      "text": "You're in terrible danger, girl."
+    },
+    {
+      "start": 16.9,
+      "end": 19.400000000000002,
+      "text": "But how? I locked the door."
+    },
+    {
+      "start": 19.6,
+      "end": 23.88,
+      "text": "It's the key, Miss. There's only one, and the Beldam will find it."
+    },
+    {
+      "start": 25.02,
+      "end": 27.14,
+      "text": "Ain't all bad, Miss."
+    },
+    {
+      "start": 27.98,
+      "end": 29.68,
+      "text": "Thou art alive."
+    },
+    {
+      "start": 30.0,
+      "end": 32.52,
+      "text": "Thou art still living."
+    }
+  ],
+  "theatre_opening_a": [
+    {
+      "start": 0.0,
+      "end": 2.4961451247165534,
+      "text": "[nonverbal sounds]"
+    }
+  ],
+  "theatre_opening_b": [
+    {
+      "start": 0.0,
+      "end": 6.907936507936508,
+      "text": "[nonverbal sounds]"
+    }
+  ],
+  "theatre_opening_c": [
+    {
+      "start": 0.0,
+      "end": 2.7,
+      "text": "She's practically naked."
+    }
+  ],
+  "theatre_opening_d": [
+    {
+      "start": 0.0,
+      "end": 6.8,
+      "text": "I'm known as the siren of all seven seas, the breaker of hearts by the bay."
+    },
+    {
+      "start": 7.68,
+      "end": 14.52,
+      "text": "So if you go swimming with bow-legged women, I might steal your weak heart away."
+    }
+  ],
+  "theatre_opening_e": [
+    {
+      "start": 0.0,
+      "end": 13.990022675736961,
+      "text": "[nonverbal sounds]"
+    }
+  ],
+  "theatre_opening_f": [
+    {
+      "start": 0.0,
+      "end": 7.4,
+      "text": "A big-bottomed sea witch may bob through the waves and hope to lead sailors astray,"
+    },
+    {
+      "start": 7.4,
+      "end": 17.02,
+      "text": "but a true ocean goddess must fill out a bodice to present an alluring display."
+    }
+  ],
+  "theatre_opening_g": [
+    {
+      "start": 0.0,
+      "end": 10.22,
+      "text": "Beware of old oysters too large in the chest. Let's banish them from the buffet. I'm far more nutritious."
+    }
+  ],
+  "theatre_opening_h": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "You smell like the fishes."
+    }
+  ],
+  "theatre_opening_i": [
+    {
+      "start": 0.0,
+      "end": 2.2639455782312927,
+      "text": "[unclear singing]"
+    }
+  ],
+  "theatre_opening_j": [
+    {
+      "start": 0.0,
+      "end": 2.380045351473923,
+      "text": "[unclear singing]"
+    }
+  ],
+  "theatre_opening_k": [
+    {
+      "start": 0.0,
+      "end": 2.06,
+      "text": "This Mermaid, Enchantress."
+    }
+  ],
+  "theatre_opening_l": [
+    {
+      "start": 0.0,
+      "end": 3.3668934240362813,
+      "text": "[unclear singing]"
+    }
+  ],
+  "theatre_opening_m": [
+    {
+      "start": 0.0,
+      "end": 11.459047619047618,
+      "text": "[unclear singing]"
+    }
+  ],
+  "theatre_opening_n": [
+    {
+      "start": 0.0,
+      "end": 9.195102040816327,
+      "text": "[nonverbal sounds]"
+    }
+  ],
+  "crawling_hand_a": [
+    {
+      "start": 0.0,
+      "end": 7.87156462585034,
+      "text": "[nonverbal sounds]"
+    }
+  ],
+  "crawling_hand_b": [
+    {
+      "start": 0.0,
+      "end": 8.359183673469389,
+      "text": "[nonverbal sounds]"
+    }
+  ],
+  "crawling_hand_c": [
+    {
+      "start": 0.0,
+      "end": 10.367709750566894,
+      "text": "[nonverbal sounds]"
+    }
+  ],
+  "crawling_hand_d": [
+    {
+      "start": 0.0,
+      "end": 2.182675736961451,
+      "text": "[screaming]"
+    }
+  ],
+  "crawling_hand_e": [
+    {
+      "start": 0.0,
+      "end": 5.607619047619048,
+      "text": "No!"
+    }
+  ],
+  "crawling_hand_f": [
+    {
+      "start": 0.0,
+      "end": 6.16,
+      "text": "I'm really sorry I didn't believe you about all this evil stuff, Coraline."
+    },
+    {
+      "start": 7.78,
+      "end": 9.26,
+      "text": "Why did you change your mind?"
+    },
+    {
+      "start": 10.22,
+      "end": 13.4,
+      "text": "Well, Grandma showed me this picture after I called you crazy."
+    }
+  ],
+  "crawling_hand_g": [
+    {
+      "start": 0.0,
+      "end": 3.3200000000000003,
+      "text": "It's her and her sister, before she disappeared."
+    },
+    {
+      "start": 3.66,
+      "end": 5.0,
+      "text": "The sweet ghost girl."
+    }
+  ],
+  "crawling_hand_h": [
+    {
+      "start": 0.0,
+      "end": 4.0,
+      "text": "Come on! Come home!"
+    }
+  ],
+  "crawling_hand_i": [
+    {
+      "start": 0.0,
+      "end": 3.36,
+      "text": "Oh, man. What am I going to tell her?"
+    },
+    {
+      "start": 4.58,
+      "end": 8.700000000000001,
+      "text": "Just bring her by the house tomorrow. We can tell her together."
+    }
+  ],
+  "black_is_traditional_a": [
+    {
+      "start": 0.0,
+      "end": 2.2600000000000002,
+      "text": "You do like it here, don't you, Coraline?"
+    },
+    {
+      "start": 2.6,
+      "end": 2.92,
+      "text": "Uh-huh."
+    }
+  ],
+  "black_is_traditional_b": [
+    {
+      "start": 0.0,
+      "end": 3.46,
+      "text": "You could stay here forever, if you want to."
+    },
+    {
+      "start": 3.96,
+      "end": 4.44,
+      "text": "Really?"
+    },
+    {
+      "start": 4.74,
+      "end": 9.22,
+      "text": "Sure, we'll sing and play games, and Mother will cook your favorite meals."
+    },
+    {
+      "start": 9.44,
+      "end": 11.86,
+      "text": "There's one tiny little thing we need to do."
+    },
+    {
+      "start": 12.120000000000001,
+      "end": 12.620000000000001,
+      "text": "What's that?"
+    },
+    {
+      "start": 12.9,
+      "end": 14.38,
+      "text": "Well, it's a surprise."
+    }
+  ],
+  "black_is_traditional_c": [
+    {
+      "start": 0.0,
+      "end": 2.04,
+      "text": "For you, our little doll."
+    }
+  ],
+  "black_is_traditional_d": [
+    {
+      "start": 0.0,
+      "end": 3.48,
+      "text": "Black is traditional, but if you'd prefer"
+    }
+  ],
+  "black_is_traditional_e": [
+    {
+      "start": 0.0,
+      "end": 2.008542,
+      "text": "Pink... or..."
+    }
+  ],
+  "black_is_traditional_f": [
+    {
+      "start": 0.0,
+      "end": 2.04,
+      "text": "Vermilion? Or..."
+    }
+  ],
+  "black_is_traditional_g": [
+    {
+      "start": 0.0,
+      "end": 0.8,
+      "text": "Chartreuse."
+    },
+    {
+      "start": 2.3000000000000003,
+      "end": 3.96,
+      "text": "Though you might make me jealous."
+    }
+  ],
+  "black_is_traditional_h": [
+    {
+      "start": 0.0,
+      "end": 3.3000000000000003,
+      "text": "No way! You're not sewing buttons in my eyes!"
+    }
+  ],
+  "black_is_traditional_i": [
+    {
+      "start": 0.0,
+      "end": 3.04,
+      "text": "Oh, but we need a yes if you want to stay here."
+    }
+  ],
+  "black_is_traditional_j": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "So sharp you won't feel a thing."
+    },
+    {
+      "start": 2.0,
+      "end": 3.0,
+      "text": "Ow!"
+    }
+  ],
+  "black_is_traditional_k": [
+    {
+      "start": 0.0,
+      "end": 6.6000000000000005,
+      "text": "There now. It's your decision, darling. We only want what's best for you."
+    }
+  ],
+  "black_is_traditional_l": [
+    {
+      "start": 0.0,
+      "end": 1.94,
+      "text": "I'm going to bed. Right now."
+    },
+    {
+      "start": 2.32,
+      "end": 2.8000000000000003,
+      "text": "Bed?"
+    },
+    {
+      "start": 3.06,
+      "end": 3.86,
+      "text": "Before dinner?"
+    },
+    {
+      "start": 4.46,
+      "end": 6.92,
+      "text": "I'm really, really tired. Yeah."
+    },
+    {
+      "start": 7.88,
+      "end": 10.9,
+      "text": "I just need to sleep on things."
+    },
+    {
+      "start": 11.36,
+      "end": 14.3,
+      "text": "Well, of course you do, darling. I'll be happy to tuck you in."
+    },
+    {
+      "start": 14.5,
+      "end": 17.1,
+      "text": "Oh, no thanks. You've done so much already."
+    },
+    {
+      "start": 17.32,
+      "end": 17.96,
+      "text": "You're welcome."
+    },
+    {
+      "start": 17.96,
+      "end": 19.96,
+      "text": "And I..."
+    },
+    {
+      "start": 21.28,
+      "end": 23.88,
+      "text": "We aren't worried at all, darling."
+    },
+    {
+      "start": 24.96,
+      "end": 27.62,
+      "text": "Soon you'll see things our way."
+    }
+  ],
+  "black_is_traditional_m": [
+    {
+      "start": 0.0,
+      "end": 8.36,
+      "text": "What's wrong, Coraline? Don't you want to play?"
+    },
+    {
+      "start": 9.68,
+      "end": 12.120000000000001,
+      "text": "Yeah, I want a hug your face."
+    },
+    {
+      "start": 12.6,
+      "end": 13.8,
+      "text": "Give me a grip, soldier."
+    },
+    {
+      "start": 14.52,
+      "end": 15.0,
+      "text": "Hey!"
+    },
+    {
+      "start": 15.92,
+      "end": 17.44,
+      "text": "Where's your buttons, [unclear]?"
+    },
+    {
+      "start": 18.04,
+      "end": 19.48,
+      "text": "You want to stay, don't you?"
+    },
+    {
+      "start": 20.1,
+      "end": 25.0,
+      "text": "I'm going home tonight, robots, and I won't be back."
+    },
+    {
+      "start": 30.0,
+      "end": 59.980000000000004,
+      "text": "Thank you."
+    }
+  ],
+  "black_is_traditional_n": [
+    {
+      "start": 0.0,
+      "end": 10.9,
+      "text": "[lullaby]"
+    }
+  ],
+  "black_is_traditional_o": [
+    {
+      "start": 0.0,
+      "end": 3.3200000000000003,
+      "text": "Mom! Dad!"
+    },
+    {
+      "start": 5.32,
+      "end": 8.700000000000001,
+      "text": "Oh, God. I'm still here?"
+    }
+  ],
+  "black_is_traditional_p": [
+    {
+      "start": 0.0,
+      "end": 7.44,
+      "text": "Hey, you! Where's the other mother? I want to go home."
+    },
+    {
+      "start": 8.06,
+      "end": 13.16,
+      "text": "All will be swell soon as mother's refreshed. Her strength is ours."
+    }
+  ],
+  "black_is_traditional_q": [
+    {
+      "start": 0.0,
+      "end": 7.44,
+      "text": "Sir, mustn't talk when Mother's not here."
+    },
+    {
+      "start": 7.76,
+      "end": 10.18,
+      "text": "If you won't even talk to me, I'm going to find the Other Wybie."
+    },
+    {
+      "start": 10.96,
+      "end": 11.540000000000001,
+      "text": "He'll help me."
+    }
+  ],
+  "black_is_traditional_r": [
+    {
+      "start": 0.0,
+      "end": 5.78,
+      "text": "No point. He pulled a long face, and Mother didn't like him."
+    }
+  ],
+  "black_is_traditional_s": [
+    {
+      "start": 0.0,
+      "end": 3.296292,
+      "text": "[nonverbal sounds]"
+    }
+  ],
+  "cat_encounter_a": [
+    {
+      "start": 0.0,
+      "end": 6.98,
+      "text": "No, I'm not the other anything. I'm me. I've been coming here for a while."
+    }
+  ],
+  "cat_encounter_b": [
+    {
+      "start": 0.0,
+      "end": 7.7,
+      "text": "It's a game we play. She hates cats and tries to keep me out. But she can't, of course."
+    }
+  ],
+  "cat_encounter_c": [
+    {
+      "start": 0.0,
+      "end": 2.1,
+      "text": "I come and go as I please."
+    },
+    {
+      "start": 2.38,
+      "end": 3.92,
+      "text": "The Other Mother hates cats?"
+    },
+    {
+      "start": 4.24,
+      "end": 7.24,
+      "text": "Not like any mother I've ever known."
+    },
+    {
+      "start": 7.5600000000000005,
+      "end": 9.1,
+      "text": "What do you mean? She's amazing."
+    }
+  ],
+  "cat_encounter_d": [
+    {
+      "start": 0.0,
+      "end": 5.36,
+      "text": "You probably think this world is a dream come true, but you're wrong."
+    },
+    {
+      "start": 5.98,
+      "end": 7.94,
+      "text": "The Other Wybie told me so."
+    },
+    {
+      "start": 8.32,
+      "end": 10.16,
+      "text": "That's nonsense. He can't talk."
+    },
+    {
+      "start": 10.6,
+      "end": 11.96,
+      "text": "Perhaps not to you."
+    },
+    {
+      "start": 12.8,
+      "end": 19.76,
+      "text": "We cats, however, have far superior senses than humans and can see and smell and..."
+    }
+  ],
+  "cat_encounter_e": [
+    {
+      "start": 0.0,
+      "end": 4.0600000000000005,
+      "text": "Huh? Something's wrong. Shouldn't the old well be here?"
+    },
+    {
+      "start": 4.6000000000000005,
+      "end": 12.42,
+      "text": "Nothing out here. It's the empty part of this world. She only made what she knew would impress you."
+    },
+    {
+      "start": 12.42,
+      "end": 15.38,
+      "text": "But why? Why does she want me?"
+    },
+    {
+      "start": 15.92,
+      "end": 26.02,
+      "text": "She wants something to love, I think. Something that isn't her. Or maybe she just loves something to eat."
+    },
+    {
+      "start": 26.02,
+      "end": 30.14,
+      "text": "Eat? That's ridiculous. Mothers don't eat daughters."
+    },
+    {
+      "start": 30.88,
+      "end": 33.4,
+      "text": "I don't know. How do you taste?"
+    }
+  ],
+  "cat_encounter_f": [
+    {
+      "start": 0.0,
+      "end": 6.8,
+      "text": "Huh? But, how can you walk away from something and still come back to it?"
+    },
+    {
+      "start": 8.8,
+      "end": 10.8,
+      "text": "Walk around the world."
+    },
+    {
+      "start": 10.8,
+      "end": 12.8,
+      "text": "Small world."
+    }
+  ],
+  "cat_encounter_g": [
+    {
+      "start": 0.0,
+      "end": 1.4000000000000001,
+      "text": "Hang on."
+    }
+  ],
+  "cat_encounter_h": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "Stop! He's one of the circus mice!"
+    }
+  ],
+  "cat_encounter_i": [
+    {
+      "start": 0.0,
+      "end": 11.1,
+      "text": "I don't like rats at the best of times, but this one was sounding an alarm."
+    },
+    {
+      "start": 11.1,
+      "end": 12.620000000000001,
+      "text": "Good kitty."
+    }
+  ],
+  "magic_garden_hop_on": [
+    {
+      "start": 0.0,
+      "end": 2.46,
+      "text": "Hop on, kiddo. I want to show you something."
+    }
+  ],
+  "magic_garden_mother_said": [
+    {
+      "start": 0.0,
+      "end": 1.7,
+      "text": "I can't believe you did this."
+    },
+    {
+      "start": 2.12,
+      "end": 6.7,
+      "text": "Mother said you'd like it, [unclear] she knows you like the back of her hand."
+    }
+  ],
+  "mirror_prison_e_accepted": [
+    {
+      "start": 1.0,
+      "end": 5.76,
+      "text": "Perhaps if you do win your escape, you could find our eyes."
+    },
+    {
+      "start": 6.64,
+      "end": 7.94,
+      "text": "Has she taken those too?"
+    },
+    {
+      "start": 8.56,
+      "end": 10.84,
+      "text": "Yes, Miss, and hidden them."
+    },
+    {
+      "start": 11.42,
+      "end": 14.58,
+      "text": "Find our eyes, Mistress, and our souls will be freed."
+    },
+    {
+      "start": 16.58,
+      "end": 17.58,
+      "text": "I'll try."
     }
   ]
 }

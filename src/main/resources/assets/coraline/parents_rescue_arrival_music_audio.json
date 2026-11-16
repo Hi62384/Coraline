@@ -1,0 +1,13 @@
+{
+  "source": "music/eventbased/EnterOtherWorldParentsRescue.mp3",
+  "source_sha256": "1f8918bb10fa4f2cd2ddf99afc258ebe6c7cdbaf2e03eb2632580dbc08d4c30a",
+  "ogg_sha256": "6b3e27afc90008c3985e054bf4542372301267df37536852d222fbab5940ad04",
+  "export": {
+    "sample_rate": 48000,
+    "channels": 2,
+    "samples": 2810358,
+    "seconds": 58.549125,
+    "ticks": 1171
+  },
+  "role": "parents_rescue_room_arrival_once"
+}

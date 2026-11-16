@@ -1,10 +1,7 @@
-# Required workflow for ChatGPT and coding assistants
+<!-- ProjectBridge delivery-mode policy v2 -->
+## Important: Codex edits directly; offline ZIPs are opt-in
 
-**Before investigating, editing, or preparing a deliverable for this repository, read the full root file [`PROJECTBRIDGE_PATCH_INSTRUCTIONS.md`](PROJECTBRIDGE_PATCH_INSTRUCTIONS.md).** Treat it as the mandatory packaging and handoff procedure for work on `Hi62384/Coraline`. Read this `AGENTS.md` first, then the linked document, even when the user supplies only a feature request. If that document cannot be accessed, ask for it; do not improvise a patch ZIP.
-
-For normal ChatGPT conversations, the standard delivery method is **a downloadable `ProjectBridge_patch.zip` compatible with ProjectBridge Offline Patcher**, not a full project archive, a bare code listing, or a direct GitHub push. GitHub is **read-only** for the patch workflow unless the user explicitly authorizes a different action. Read current repository sources, find all relevant files yourself, make the edits, and package only changed/new/deleted files with correct exact-byte SHA-256 baselines. Validate the ZIP before sharing it.
-
-This repository convention does not force ChatGPT to fetch files automatically; the assistant must be given repository access and should explicitly load these instructions at the start of each new conversation.
+**Codex and other agents with write access to this checkout MUST edit the actual files directly, run appropriate tests, and report normal code changes. DO NOT generate a `ProjectBridge_patch.zip` just because it is mentioned in this repository.** For normal ChatGPT reading GitHub without a writable checkout, use a ProjectBridge ZIP for coding tasks by default (unless the user requests another output). For Codex or writable coding agents, use the ZIP workflow only if the user explicitly asks. The detailed `PROJECTBRIDGE_PATCH_INSTRUCTIONS.md` is a reference **only for that optional ZIP workflow**. This newer mode-selection rule overrides any older, unconditional ZIP-delivery instruction below.
 
 ---
 

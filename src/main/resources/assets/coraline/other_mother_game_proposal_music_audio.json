@@ -1,0 +1,13 @@
+{
+  "source": "music/eventbased/OtherMotherGameProposal.mp3",
+  "source_sha256": "b6f57997b0370a9a067217f7d1c24f8237b65d262a00f1da45cdf59e8cab1e92",
+  "ogg_sha256": "951cb12e5a3af3753095ca31aca85b5647bab1b386d8df94e481edc05aab810b",
+  "export": {
+    "sample_rate": 48000,
+    "channels": 2,
+    "samples": 4139468,
+    "seconds": 86.23891666666667,
+    "ticks": 1725
+  },
+  "role": "parents_rescue_kitchen_seating_once"
+}

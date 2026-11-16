@@ -1,0 +1,40 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "coraline:silent_slippers",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:feather_boots",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:midnight_goggles",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:moonlit_lantern",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:dream_staff",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "coraline:dreamstone",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

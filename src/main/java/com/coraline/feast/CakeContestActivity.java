@@ -345,7 +345,7 @@ public final class CakeContestActivity {
             case 0->{if(now>=l.cakeVoiceUntil){l.cakeStage=1;OtherMotherLoop.changed(p);p.sendSystemMessage(Component.literal("Father: Your stand is the middle pink-and-white pavilion. Go there to begin!"));}}
             case 1->{
                 if(p.tickCount%20==0)chefsToStands(level,s,c,false);
-                if(p.distanceToSqr(Vec3.atBottomCenterOf(c.south(3)))<6.25){
+                if(CooperativeActivities.near(p,s,Vec3.atBottomCenterOf(c.south(3)),6.25)){
                     chefsToStands(level,s,c,true);l.cakeStage=2;l.cakeCountdownUntil=now+60;OtherMotherLoop.changed(p);
                     p.displayClientMessage(Component.literal("Baking starts in 3 seconds"),true);
                 }else if(p.tickCount%40==0)p.displayClientMessage(Component.literal("Go to the middle baking stand."),true);
@@ -384,7 +384,7 @@ public final class CakeContestActivity {
             }
             case 7->{if(now>=l.cakeAnnounceAt){
                 announce(p,s);l.cakeAnnounceIndex++;l.cakeAnnounceAt=now+24;OtherMotherLoop.changed(p);
-                if(l.cakeAnnounceIndex>=5){givePrize(p,s);l.cakeStage=8;p.stopRiding();OtherMotherLoop.changed(p);ActivityWorld.ensureExit(p,s);
+                if(l.cakeAnnounceIndex>=5){givePrize(p,s);l.cakeStage=8;p.stopRiding();for(var member:com.coraline.multiplayer.StorySessionData.get(p.server).participants(p.server,s.owner,true))if(member.getVehicle() instanceof ScenePropEntity seat&&s.owner.equals(seat.owner)&&seat.slot==42)member.stopRiding();OtherMotherLoop.changed(p);ActivityWorld.ensureExit(p,s);
                     p.sendSystemMessage(Component.literal("Your prize is yours. The return portal has opened behind the audience."));}
             }}
             default->{}
@@ -420,7 +420,7 @@ public final class CakeContestActivity {
         p.displayClientMessage(Component.literal("Picked up "+stack.getHoverName().getString()+". Ingredients "+Integer.bitCount(l.cakeIngredients)+"/3"),true);
     }
     public static boolean interactBlock(ServerPlayer p,BlockPos at){
-        var s=OtherMotherLoop.active(p);if(s==null||s.loop.activity!=OtherMotherActivities.Activity.CAKE_MAKING_CONTEST||!ActivityWorld.isActivity(p.level()))return false;
+        var s=OtherMotherLoop.active(p);if(s==null||s.loop.activity!=OtherMotherActivities.Activity.CAKE_MAKING_CONTEST||!ActivityWorld.isActivity(p.level())||!com.coraline.multiplayer.StoryCoop.canAct(p,s))return false;
         var l=s.loop;var c=center(p,s);long now=OtherMotherLoop.now(p);
         if(l.cakeStage==3)return CakeMaking.interact(p,s,c,at,now);
         /* Legacy station flow removed. Keep stage four's pickup and the
@@ -504,7 +504,7 @@ public final class CakeContestActivity {
         p.getInventory().setChanged();
     }
     public static boolean sit(ServerPlayer p,VisitData.Scene s,ScenePropEntity chair){
-        if(s.loop.activity!=OtherMotherActivities.Activity.CAKE_MAKING_CONTEST||s.loop.cakeStage!=5||chair.kind()!=ScenePropEntity.CHAIR||chair.slot!=42)return false;
+        if(!com.coraline.multiplayer.StoryCoop.canAct(p,s)||p.distanceToSqr(chair)>25||s.loop.activity!=OtherMotherActivities.Activity.CAKE_MAKING_CONTEST||s.loop.cakeStage!=5||chair.kind()!=ScenePropEntity.CHAIR||chair.slot!=42)return false;
         if(!p.startRiding(chair,true))return false;
         chefsToPanel(p.serverLevel(),s,center(p,s),OtherMotherLoop.now(p)+200);
         seatAudience(p.serverLevel(),s,center(p,s));
@@ -538,7 +538,7 @@ public final class CakeContestActivity {
             case 4->new ItemStack[]{new ItemStack(Items.GOLD_INGOT,4),new ItemStack(Items.EMERALD,2)};
             default->new ItemStack[]{new ItemStack(Items.BREAD,4),new ItemStack(Items.SUGAR,8)};
         };
-        for(var item:loot){if(!p.getInventory().add(item))p.drop(item,false);}
+        if(!com.coraline.multiplayer.StoryRewardDelivery.award(p,s,"cake_final",java.util.Arrays.asList(loot)))for(var item:loot){if(!p.getInventory().add(item))p.drop(item,false);}
         p.serverLevel().playSound(null,p.blockPosition(),SoundEvents.UI_TOAST_CHALLENGE_COMPLETE,SoundSource.PLAYERS,1F,1F);
         p.sendSystemMessage(Component.literal("You placed "+s.loop.cakeRank+ordinal(s.loop.cakeRank)+" and received your cake-contest prize!"));
     }

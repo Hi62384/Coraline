@@ -21,6 +21,16 @@ public final class ParentEntity extends PathfinderMob {
     private static final EntityDataAccessor<Boolean> FROZEN=SynchedEntityData.defineId(ParentEntity.class,EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> TRUST=SynchedEntityData.defineId(ParentEntity.class,EntityDataSerializers.FLOAT),SUSPICION=SynchedEntityData.defineId(ParentEntity.class,EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> LOOP_GAZE=SynchedEntityData.defineId(ParentEntity.class,EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> FAMILY_GESTURE=SynchedEntityData.defineId(ParentEntity.class,EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DELIVERY_RESIDENT=SynchedEntityData.defineId(ParentEntity.class,EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> REUNION_FROST=SynchedEntityData.defineId(ParentEntity.class,EntityDataSerializers.FLOAT);
+    public float reunionFrost(){return entityData.get(REUNION_FROST);}
+    public void reunionFrost(float value){entityData.set(REUNION_FROST,isOtherParent()||!Float.isFinite(value)?0:net.minecraft.util.Mth.clamp(value,0,1));}
+    public boolean deliveryResident(){return entityData.get(DELIVERY_RESIDENT);}
+    public void deliveryResident(boolean value){entityData.set(DELIVERY_RESIDENT,value);}
+    private int familyGestureUntil;
+    public int familyGesture(){return entityData.get(FAMILY_GESTURE);}
+    public void familyGesture(int gesture,int ticks){entityData.set(FAMILY_GESTURE,gesture);familyGestureUntil=tickCount+ticks;}
     public float trust(){return entityData.get(TRUST);}public float suspicion(){return entityData.get(SUSPICION);}
     public void relationship(float trust,float suspicion){entityData.set(TRUST,trust);entityData.set(SUSPICION,suspicion);entityData.set(LOOP_GAZE,getPersistentData().hasUUID("LoopOwner"));}
     private net.minecraft.world.phys.Vec3 deathAnchor;
@@ -30,9 +40,10 @@ public final class ParentEntity extends PathfinderMob {
         setNoAi(true);setNoGravity(true);setInvulnerable(true);getNavigation().stop();setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
     }
     public void finishScriptedDeath(){setHealth(0);super.die(damageSources().genericKill());}
-    @Override public boolean hurt(DamageSource source,float amount){return !deathFrozen()&&super.hurt(source,amount);}
-    @Override public boolean isPushable(){return !deathFrozen()&&super.isPushable();}
-    @Override public boolean isPickable(){return !deathFrozen()&&super.isPickable();}
+    @Override public boolean hurt(DamageSource source,float amount){return !deathFrozen()
+        &&(level().isClientSide||!com.coraline.rebirth.StoryRebirth.protectedParent(this))&&super.hurt(source,amount);}
+    @Override public boolean isPushable(){return !deathFrozen()&&!(isInvisible()&&!isOtherParent())&&super.isPushable();}
+    @Override public boolean isPickable(){return !deathFrozen()&&!(isInvisible()&&!isOtherParent())&&super.isPickable();}
     public boolean isOtherParent(){return entityData.get(OTHER);}
     public void makeOtherParent(int skin){entityData.set(OTHER,true);entityData.set(CLAIMED,true);entityData.set(SKIN,skin);setInvulnerable(true);}
     public UUID familyId;
@@ -40,6 +51,20 @@ public final class ParentEntity extends PathfinderMob {
     private int nextInteractionVoice;
     public ParentEntity(EntityType<? extends PathfinderMob> type,Level level){
         super(type,level);setPersistenceRequired();
+        moveControl=new net.minecraft.world.entity.ai.control.MoveControl(this){
+            @Override public void tick(){
+                if(getPersistentData().getBoolean("PursuitDriving")&&hasWanted()){
+                    var toward=new net.minecraft.world.phys.Vec3(getWantedX()-getX(),0,getWantedZ()-getZ());
+                    var velocity=getDeltaMovement();
+                    // Remove sideways inertia on tight corners instead of sliding into the wall.
+                    if(toward.horizontalDistanceSqr()>.01&&velocity.horizontalDistanceSqr()>.001){
+                        var forward=toward.normalize();double along=Math.max(0,velocity.dot(forward));
+                        if(velocity.normalize().dot(forward)<.7)setDeltaMovement(forward.scale(along).add(0,velocity.y,0));
+                    }
+                }
+                super.tick();
+            }
+        };
         lookControl=new net.minecraft.world.entity.ai.control.LookControl(this){
             @Override public void tick(){if(!scriptedGaze()||!getNavigation().isDone())super.tick();}
         };
@@ -62,13 +87,13 @@ public final class ParentEntity extends PathfinderMob {
     }
     public boolean isClaimed(){return entityData.get(CLAIMED);}
     void markClaimedForSetup(){entityData.set(CLAIMED,true);}
-    @Override protected void defineSynchedData(){super.defineSynchedData();entityData.define(SKIN,0);entityData.define(CLAIMED,false);entityData.define(OTHER,false);entityData.define(FROZEN,false);entityData.define(TRUST,0F);entityData.define(SUSPICION,0F);entityData.define(LOOP_GAZE,false);}
+    @Override protected void defineSynchedData(){super.defineSynchedData();entityData.define(SKIN,0);entityData.define(CLAIMED,false);entityData.define(OTHER,false);entityData.define(FROZEN,false);entityData.define(TRUST,0F);entityData.define(SUSPICION,0F);entityData.define(LOOP_GAZE,false);entityData.define(FAMILY_GESTURE,0);entityData.define(DELIVERY_RESIDENT,false);entityData.define(REUNION_FROST,0F);}
     public static AttributeSupplier.Builder attributes(){return Mob.createMobAttributes().add(Attributes.MAX_HEALTH,24).add(Attributes.MOVEMENT_SPEED,0.28).add(Attributes.FOLLOW_RANGE,48);}
     @Override protected void registerGoals(){
         goalSelector.addGoal(0,new FloatGoal(this));
         goalSelector.addGoal(1,new PanicGoal(this,1.4));
         goalSelector.addGoal(2,new OpenDoorGoal(this,true){
-            @Override public boolean canUse(){return scriptedGaze()&&super.canUse();}
+            @Override public boolean canUse(){return (scriptedGaze()||getPersistentData().contains("ReunionFlags"))&&super.canUse();}
         });
         goalSelector.addGoal(6,new LookAtPlayerGoal(this,Player.class,8){
             @Override public boolean canUse(){return !scriptedGaze()&&super.canUse();}
@@ -79,7 +104,8 @@ public final class ParentEntity extends PathfinderMob {
             @Override public boolean canContinueToUse(){return !scriptedGaze()&&super.canContinueToUse();}
         });
     }
-    public boolean scriptedGaze(){return isOtherParent()&&(getPersistentData().hasUUID("VisitOwner")||getPersistentData().hasUUID("LoopOwner")||entityData.get(LOOP_GAZE));}
+    public boolean scriptedGaze(){return isOtherParent()&&(getPersistentData().hasUUID("VisitOwner")||getPersistentData().hasUUID("LoopOwner")||getPersistentData().hasUUID("VisitEventOwner")||entityData.get(LOOP_GAZE));}
+    public void eventGaze(boolean active){entityData.set(LOOP_GAZE,active||getPersistentData().hasUUID("LoopOwner"));}
     /** Apply after AI/body control, which otherwise pulls stationary heads back to the body. */
     public void lookAtStoryPlayer(Player player){
         double dx=player.getX()-getX(),dz=player.getZ()-getZ();
@@ -97,11 +123,15 @@ public final class ParentEntity extends PathfinderMob {
     public FamilyData.Family family(){return level() instanceof ServerLevel sl && familyId!=null?FamilyData.get(sl.getServer()).families.get(familyId):null;}
     @Override public void tick(){
         super.tick();if(level().isClientSide||!isAlive())return;
+        if(com.coraline.rebirth.StoryRebirth.retireOldParent(this))return;
+        if(familyGesture()!=0&&tickCount>=familyGestureUntil)familyGesture(0,0);
         if(deathFrozen()){
             setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);if(deathAnchor!=null)setPos(deathAnchor);
             var dying=family();if(dying==null||dying.deathPhase==0)finishScriptedDeath();return;
         }
+        if(!isOtherParent()&&getPersistentData().hasUUID("CoralineCompleteEndingDormant")){var dormantFamily=family();if(dormantFamily!=null&&!dormantFamily.dead&&(getUUID().equals(dormantFamily.mom)||getUUID().equals(dormantFamily.dad))){getNavigation().stop();stopRiding();setTarget(null);setNoAi(true);setNoGravity(true);noPhysics=true;setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);setInvulnerable(true);setInvisible(true);setSilent(true);return;}}
         if(isOtherParent()){
+            if(com.coraline.feast.SpecialDelivery.residentControl(this))return;
             // Expedition hosts belong to the activity, not to the retired house scene.
             // Handle them before retiredFather/control can discard or reposition them.
             if(getPersistentData().hasUUID("CoralineNewActivityOwner")&&com.coraline.feast.ActivityWorld.isActivity(level())){
@@ -123,6 +153,9 @@ public final class ParentEntity extends PathfinderMob {
                 }
                 return;
             }
+            if(com.coraline.feast.AcceptedButtonEyes.parentControl(this))return;
+            if(com.coraline.feast.ParentRescueStory.parentControl(this))return;
+            if(com.coraline.feast.VisitEvents.fatherControl(this))return;
             if(com.coraline.feast.OtherMotherLoop.retiredFather(this)){discard();return;}
             if(com.coraline.feast.OtherMotherLoop.control(this))return;
             if(com.coraline.feast.FirstVisit.control(this))return;
@@ -139,6 +172,10 @@ public final class ParentEntity extends PathfinderMob {
             tickVoice();return;
         }
         FamilyData.Family f=family();if(f==null)return;
+        if(com.coraline.rebirth.StoryRebirth.controlParent(this))return;
+        if(com.coraline.feast.RescueEpilogue.controlParent(this,f))return;
+        if(f.storyMissing){var saved=getPersistentData();if(!saved.contains("FirstEscapeHidden")){var flags=new CompoundTag();flags.putBoolean("Invisible",isInvisible());flags.putBoolean("NoAI",isNoAi());flags.putBoolean("Silent",isSilent());saved.put("FirstEscapeHidden",flags);}setInvisible(true);setNoAi(true);setSilent(true);getNavigation().stop();setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);return;}
+        if(getPersistentData().contains("FirstEscapeHidden")){var flags=getPersistentData().getCompound("FirstEscapeHidden");setInvisible(flags.getBoolean("Invisible"));setNoAi(flags.getBoolean("NoAI"));setSilent(flags.getBoolean("Silent"));getPersistentData().remove("FirstEscapeHidden");}
         entityData.set(CLAIMED,f.owner!=null);
         if(f.dead){freezeForDeath();if(f.deathPhase==0)finishScriptedDeath();return;}
         if(tickCount%CoralineConfig.HEAL_INTERVAL.get()==0)heal(CoralineConfig.HEAL_AMOUNT.get().floatValue());
@@ -198,8 +235,12 @@ public final class ParentEntity extends PathfinderMob {
     @Override protected InteractionResult mobInteract(Player player,InteractionHand hand){
         if(deathFrozen())return InteractionResult.FAIL;
         if(level().isClientSide)return InteractionResult.SUCCESS;
-        if(isOtherParent())return InteractionResult.CONSUME;
-        FamilyData.Family f=family();if(f==null||f.dead)return InteractionResult.PASS;
+        if(isOtherParent()){
+            if(player instanceof ServerPlayer p&&hand==InteractionHand.MAIN_HAND&&com.coraline.feast.SpecialDelivery.recipientInteract(p,this))return InteractionResult.CONSUME;
+            if(player instanceof ServerPlayer p&&hand==InteractionHand.MAIN_HAND)com.coraline.feast.VisitEvents.interact(p,this);
+            return InteractionResult.CONSUME;
+        }
+        FamilyData.Family f=family();if(f==null||f.dead||f.storyMissing)return InteractionResult.PASS;
         speak();
         if(f.owner==null){
             boolean alreadyHasParents=FamilyData.get(getServer()).families.values().stream().anyMatch(other->!other.dead&&player.getUUID().equals(other.owner));
@@ -213,13 +254,7 @@ public final class ParentEntity extends PathfinderMob {
             player.displayClientMessage(net.minecraft.network.chat.Component.literal("Your parents will follow you. Place their bed to give them a home."),false);
         }else if(!f.owner.equals(player.getUUID()))player.displayClientMessage(net.minecraft.network.chat.Component.literal("These parents already belong to another family."),true);
         else if(player.isShiftKeyDown()&&player.getItemInHand(hand).isEmpty()&&f.bed==null){
-            boolean hasBed=false;
-            for(int slot=0;slot<player.getInventory().getContainerSize();slot++){
-                var stack=player.getInventory().getItem(slot);var tag=stack.getTagElement("BlockEntityTag");
-                if(stack.is(ModItems.PARENTS_BED.get())&&tag!=null&&tag.hasUUID("Family")&&f.id.equals(tag.getUUID("Family"))){hasBed=true;break;}
-            }
-            if(!hasBed){var replacement=ParentsBedItem.forFamily(f.id);if(!player.getInventory().add(replacement))player.drop(replacement,false);}
-            player.displayClientMessage(net.minecraft.network.chat.Component.literal(hasBed?"You already have our bed.":"Here is your parents' replacement bed."),true);
+            if(player instanceof ServerPlayer owner)player.displayClientMessage(net.minecraft.network.chat.Component.literal(ParentsBedSafety.recover(owner,f,false)),true);
         }
         else if(player.getItemInHand(hand).is(ModItems.PARENTS_BED.get()) && !player.getItemInHand(hand).getOrCreateTagElement("BlockEntityTag").hasUUID("Family")){
             player.getItemInHand(hand).getOrCreateTagElement("BlockEntityTag").putUUID("Family",f.id);
@@ -235,24 +270,26 @@ public final class ParentEntity extends PathfinderMob {
     }
     @Override public void die(DamageSource source){
         if(level().isClientSide){super.die(source);return;}
+        if(com.coraline.rebirth.StoryRebirth.protectedParent(this)){setHealth(Math.max(1,getHealth()));return;}
         FamilyData.Family f=family();if(f==null||isOtherParent()){super.die(source);return;}
         if(!f.dead)ParentDeath.begin(this,f);
         else if(f.deathPhase==0)finishScriptedDeath();
     }
     @Override protected SoundEvent getHurtSound(DamageSource source){return SoundEvents.PLAYER_HURT;}
     @Override protected SoundEvent getDeathSound(){return null;}
-    @Override public void addAdditionalSaveData(CompoundTag n){super.addAdditionalSaveData(n);if(familyId!=null)n.putUUID("Family",familyId);n.putInt("Skin",skin());n.putInt("VoiceCountdown",voiceCountdown);n.putBoolean("OtherParent",isOtherParent());n.putBoolean("DeathFrozen",deathFrozen());}
+    @Override public void addAdditionalSaveData(CompoundTag n){super.addAdditionalSaveData(n);if(familyId!=null)n.putUUID("Family",familyId);n.putInt("Skin",skin());n.putInt("VoiceCountdown",voiceCountdown);n.putBoolean("OtherParent",isOtherParent());n.putBoolean("DeliveryResident",deliveryResident());n.putBoolean("DeathFrozen",deathFrozen());n.putFloat("ReunionFrost",reunionFrost());}
     @Override public void remove(RemovalReason reason){
         if(level() instanceof ServerLevel sl){
-            var f=family();if(f!=null){
+            var f=family();if(f!=null&&getUUID().equals(isMom()?f.mom:f.dad)){
                 if(isMom()){f.momPos=blockPosition();f.momDim=sl.dimension().location().toString();}
                 else{f.dadPos=blockPosition();f.dadDim=sl.dimension().location().toString();}
                 FamilyData.get(sl.getServer()).setDirty();
             }
         }super.remove(reason);
     }
-    @Override public void readAdditionalSaveData(CompoundTag n){super.readAdditionalSaveData(n);if(n.hasUUID("Family"))familyId=n.getUUID("Family");entityData.set(SKIN,Math.floorMod(n.getInt("Skin"),SKIN_COUNT));voiceCountdown=n.getInt("VoiceCountdown");entityData.set(OTHER,n.getBoolean("OtherParent"));
+    @Override public void readAdditionalSaveData(CompoundTag n){super.readAdditionalSaveData(n);deliveryResident(n.getBoolean("DeliveryResident")||getPersistentData().hasUUID("DeliveryOwner"));if(n.hasUUID("Family"))familyId=n.getUUID("Family");entityData.set(SKIN,Math.floorMod(n.getInt("Skin"),SKIN_COUNT));voiceCountdown=n.getInt("VoiceCountdown");entityData.set(OTHER,n.getBoolean("OtherParent"));reunionFrost(n.getFloat("ReunionFrost"));
         if(n.getBoolean("DeathFrozen")){entityData.set(FROZEN,true);deathAnchor=position();}
+        else if(!isOtherParent()&&getPersistentData().hasUUID("CoralineCompleteEndingDormant")){noPhysics=true;setNoAi(true);setNoGravity(true);setInvisible(true);setSilent(true);setInvulnerable(true);setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);}
         if(!level().isClientSide&&family()!=null){var f=family();if(isMom())f.momSkin=skin();else f.dadSkin=skin();FamilyData.get(getServer()).setDirty();}
     }
 }

@@ -1,0 +1,576 @@
+{
+  "reference": "voicelines/othermother/Sample.wav",
+  "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+  "emotion_order": [
+    "happy",
+    "angry",
+    "sad",
+    "afraid",
+    "disgusted",
+    "melancholic",
+    "surprised",
+    "calm"
+  ],
+  "states": {
+    "invitation/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, sweetheart, we've got the loveliest little evening planned! Your Other Father, Wybie, and I have set out some games at the family table. Come join us within five minutes, darling. I think you'll have such fun!",
+        "Darling, it's game night! We've saved you a place at the table, and Wybie's already been eyeing the game boxes. Come join us in the next five minutes, won't you? We can't properly begin without you."
+      ]
+    },
+    "invitation/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Your Other Father, Wybie, and I are having a little game night. We'll be waiting by the table. You have five minutes, sweetheart, so do try not to lose track of time.",
+        "I've arranged a family game night for us, darling. Come to the table within five minutes. It would be nice if we could all start together without anyone wandering off."
+      ]
+    },
+    "invitation/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, I've put together a game night just for our little family! Wybie's here, and your Other Father has been fussing over all the pieces. Come sit with us within five minutes, my love.",
+        "Sweetheart, I've saved your favorite seat for game night. We'll all be waiting at the table, and I do want you there within five minutes. Everything's nicer when you're with us."
+      ]
+    },
+    "invitation/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Game night begins in five minutes. Your Other Father and Wybie will be at the table, and I expect you to join us. Don't make us sit there wondering where you've gone.",
+        "We're playing games as a family, sweetheart. Be at the table within five minutes. I would very much prefer not to spend our evening searching the house for you."
+      ]
+    },
+    "invitation/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, perhaps a little game night will give that busy mind of yours something pleasant to solve. Your Other Father, Wybie, and I will be at the table. Five minutes, sweetheart.",
+        "Sweetheart, we've saved you a place for game night. Even Wybie seems excited. Come join us within five minutes, and perhaps for once you can put all those little mysteries of yours aside."
+      ]
+    },
+    "ontime/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, there you are! Right on time, too. How lovely! Come sit down, sweetheart. We've got some wonderful games ready for you.",
+        "Darling! You made it! Everyone's here, and we've saved you a seat. Come along, let's have ourselves a lovely game night!"
+      ]
+    },
+    "ontime/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Ah, good, you're here. Right on time, just as I hoped. Come sit down, sweetheart. Your Other Father is rather eager to begin.",
+        "There you are, darling. I'm glad you remembered to come when I asked. Now take your seat, and let's find something fun to play."
+      ]
+    },
+    "ontime/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling! I knew you wouldn't keep us waiting. Come sit beside me, sweetheart. I've been looking forward to spending this time together.",
+        "There's my favorite little one! Right on time, of course. We've got everything ready, my love. I think you're going to enjoy yourself."
+      ]
+    },
+    "ontime/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Good. You managed to arrive when I asked. How refreshing. Now take your seat, sweetheart, and let's try to enjoy ourselves.",
+        "Well, at least you're on time. That's a good start, darling. Sit down. Your Other Father has been waiting to begin."
+      ]
+    },
+    "ontime/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, there you are. Right on time, too. See? We can have such lovely moments together when you're not distracted by all those little secrets of yours.",
+        "My sweetheart! I wondered whether your curiosity would keep you away, but here you are. Come sit down, darling. Let's see how clever you really are at these games."
+      ]
+    },
+    "late/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, there you are, sweetheart! We've been waiting for you. Never mind, darling, the games aren't going anywhere. Come sit down!",
+        "Darling! You're a little late, but I'm glad you've finally arrived. Wybie's been terribly impatient to start. Come along!"
+      ]
+    },
+    "late/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Well, there you are. We've been sitting here waiting, sweetheart. I do wish you'd remembered the time. Come take your seat.",
+        "Oh, darling, I was beginning to think you'd forgotten all about game night. It's rather rude to keep everyone waiting, you know. But you're here now."
+      ]
+    },
+    "late/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my love, where have you been? I was beginning to worry! Everyone's been waiting for you. Never mind, sweetheart, let's have some fun together.",
+        "Darling, you've kept us waiting! I know you enjoy your little adventures, but we've all been looking forward to playing with you. Come sit down."
+      ]
+    },
+    "late/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "How considerate of you to finally join us. We've been sitting here waiting, sweetheart. I hope whatever kept you away was terribly important.",
+        "Well, look who decided to appear. Game night was ready when I said it would be. Now sit down. We've wasted quite enough time."
+      ]
+    },
+    "late/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, you do lose track of time whenever you're off exploring, don't you? We've been waiting here for you. I wonder what was so interesting that you nearly forgot about us.",
+        "There you are, sweetheart. I was beginning to think you'd found something more interesting than your own family. But I suppose you couldn't stay away forever, could you?"
+      ]
+    },
+    "search/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Sweetheart? Where have you gone? We've been waiting for such a long time now. I hope you haven't gotten yourself lost. I'm coming to find you, darling!",
+        "Darling! Your Other Father, Wybie, and I have been waiting and waiting. We can't start without you! Never mind, sweetheart. I'll come find you myself."
+      ]
+    },
+    "search/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Alright, sweetheart, that's quite long enough. I've given you plenty of time to join us. If you won't come when I ask, I suppose I'll have to find you myself.",
+        "Where have you disappeared to this time? Everyone's been sitting at the table waiting for ages. I'm coming to find you, darling!"
+      ]
+    },
+    "search/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, where are you? We've all been waiting, and I'm beginning to worry terribly. Never mind, sweetheart. I'll find you, and then we can have our lovely evening together.",
+        "Sweetheart! Please come back to the house. Your Other Father and Wybie are waiting, and I can't bear not knowing where you've gone. I'm coming to look for you!"
+      ]
+    },
+    "search/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "That is quite enough. I told you to come to the table, and I've waited more than long enough. I'm coming to find you now, and you'd better have a very good explanation.",
+        "Where are you hiding this time, sweetheart? You've kept your entire family waiting far too long. Well, I'm finished being patient. I'll find you myself."
+      ]
+    },
+    "search/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, you've done it again. I plan something lovely for our family, and you disappear somewhere without a word. I wonder what could possibly be so fascinating. Well, let's find out, shall we?",
+        "Sweetheart, I know how much you love your little adventures, but you've kept your mother waiting quite long enough. I think it's time I came to collect you. Wherever you've wandered off to."
+      ]
+    },
+    "finish/low_low": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, wasn't that wonderful? I do love spending time together like this. I hope you enjoyed yourself, sweetheart. Now, I think we ought to find something else fun to do.",
+        "There we are! A lovely little family game night. Your Other Father and Wybie certainly seemed to enjoy themselves. I've still got plenty more wonderful things planned for you."
+      ]
+    },
+    "finish/mid_mid": {
+      "direction": "Comfortable, familiar, friendly but more authoritative; watching the player's behavior, less eager to impress.",
+      "emotion": [
+        0.18,
+        0.08,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.62
+      ],
+      "temperature": 0.7,
+      "lines": [
+        "Well, that was nice, wasn't it? It's good when we can all sit together and enjoy ourselves. Now then, sweetheart, let's see what else we might do.",
+        "There, all finished. I do hope you had fun, darling. Your Other Father certainly seemed to be enjoying himself. Perhaps it's time we tried something else."
+      ]
+    },
+    "finish/high_low": {
+      "direction": "Deeply affectionate, relaxed, confident and possessive; a mother welcoming her own child home.",
+      "emotion": [
+        0.38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.68
+      ],
+      "temperature": 0.72,
+      "lines": [
+        "Oh, my darling, I wish every evening could be just like this. All of us together, laughing and playing games. Doesn't it feel wonderful to be home? Now, let's have some more fun.",
+        "Wasn't that perfect, sweetheart? Seeing you enjoying yourself with your family makes me happier than you could imagine. Come along, my love. I've got another wonderful surprise in mind."
+      ]
+    },
+    "finish/low_high": {
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.06,
+        0.32,
+        0,
+        0,
+        0.06,
+        0,
+        0,
+        0.5
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Well, at least we've managed to have a reasonably pleasant game night. I do hope you'll remember how much nicer things are when everyone behaves themselves. Now, let's move along.",
+        "There. Game night's finished, and I think we've had quite enough sitting around. Perhaps our next activity will give you something a little more productive to occupy yourself with."
+      ]
+    },
+    "finish/high_high": {
+      "direction": "Calm, affectionate, possessive and unsettling; fascinated curiosity with a restrained threatening undertone.",
+      "emotion": [
+        0.16,
+        0.12,
+        0,
+        0,
+        0.04,
+        0,
+        0.06,
+        0.85
+      ],
+      "temperature": 0.68,
+      "lines": [
+        "Oh, darling, isn't it lovely how we can always come together like this? Whatever little secrets and adventures occupy your mind, you still find your way back to our table. Now, let's see what else I've planned.",
+        "There we are, sweetheart. Another lovely evening with our little family. I do wish moments like these could last forever. But never mind, I've got plenty more surprises waiting for you."
+      ]
+    },
+    "intro/cards": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, how lovely! We're going to play Button Cards. Your Other Father always gets terribly excited about this one. Come on, sweetheart, let's see what you've got.",
+        "Button Cards! One of my favorites. Now, don't go thinking I'll let you win simply because you're my darling little one."
+      ]
+    },
+    "intro/thread": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, this should be fun! You and Wybie can play together against your Other Father and me. Let's see which little team has the cleverer ideas.",
+        "Thread Four! How wonderful. Wybie seems rather excited to be on your team, sweetheart. I do hope the two of you have a good strategy."
+      ]
+    },
+    "intro/tower": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, the Wobbly Tower! This one always makes me a little nervous. Do be careful, darling. I'd hate for the whole thing to come crashing down.",
+        "Let's try the Wobbly Tower, shall we? Your Other Father has been insisting he's rather good at this one. We'll just have to see about that."
+      ]
+    },
+    "intro/mouseboard": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, how delightful! We're going to race our little mice across the board. I do hope yours behaves itself, sweetheart. They can be rather unpredictable.",
+        "Mouseboard Dash! Such a charming little game. Pick your mouse, darling, and we'll see who can make it across the board first."
+      ]
+    },
+    "intro/flick": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, this should be rather exciting! We're going to flick these little buttons across the table. Aim carefully, sweetheart. Your Other Father can be surprisingly competitive.",
+        "Button Flick! How lovely. It's all about having a steady hand, darling. Let's see whether those clever little fingers of yours are up to the challenge."
+      ]
+    },
+    "intro/charades": {
+      "direction": "Extremely welcoming, cheerful, enthusiastic, warm and motherly; eager to impress, no hostility.",
+      "emotion": [
+        0.72,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.12,
+        0.1
+      ],
+      "temperature": 0.78,
+      "lines": [
+        "Oh, I thought we'd play a little charades! Wybie's always been especially good at this one. You'd be amazed how much he can say without making a sound.",
+        "Silent Charades! What fun. Now, we'll all have to pay very close attention. Wybie's already looking rather pleased with himself, isn't he?"
+      ]
+    }
+  },
+  "output": "voicelines/othermother/events/family_game_night",
+  "prefix": "line"
+}

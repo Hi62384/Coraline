@@ -23,26 +23,47 @@ public final class OtherMotherLoop {
     private static final Map<UUID,OtherMotherLoopState.Phase> listening=new HashMap<>();
     private static final Map<UUID,ServerBossEvent> bars=new HashMap<>();
     private OtherMotherLoop(){}
-    public static VisitData.Scene scene(ServerPlayer p){return VisitData.get(p.server).scenes.get(p.getUUID());}
+    public static VisitData.Scene scene(ServerPlayer p){return com.coraline.multiplayer.StorySessionData.get(p.server).scene(p);}
     public static VisitData.Scene active(ServerPlayer p){
+        if(com.coraline.multiplayer.StoryCoop.guest(p)&&com.coraline.multiplayer.StorySessionData.get(p.server).admittedOwner(p.getUUID()).isEmpty())return null;
         var s=scene(p);var n=p.getPersistentData();
         return s!=null&&s.stage==VisitData.Stage.DONE&&s.loop.active()&&n.hasUUID("CoralineVisitDoor")&&s.door.equals(n.getUUID("CoralineVisitDoor"))
             &&(OtherWorld.isOther(p.level())||ActivityWorld.isActivity(p.level()))?s:null;
     }
-    public static boolean locked(ServerPlayer p){var s=active(p);return s!=null&&!s.loop.canLeave();}
+    public static boolean locked(ServerPlayer p){var s=active(p);if(s!=null&&VisitEvents.type(s)==VisitEvents.Type.HOUSE_PARTY&&s.loop.phase.name().startsWith("PARTY_")&&!s.loop.secrets.searching())return false;return s!=null&&!s.loop.canLeave();}
     public static boolean portalOnly(ServerPlayer p){var s=active(p);return s!=null&&(s.loop.phase==ARRIVAL||s.loop.phase==READY);}
-    public static void changed(ServerPlayer p){VisitData.get(p.server).setDirty();}
+    public static void changed(ServerPlayer p){VisitData.get(p.server).setDirty();com.coraline.multiplayer.StorySessionData.get(p.server).touch(p.server);}
     public static long now(ServerPlayer p){return p.server.overworld().getGameTime();}
     static void phase(ServerPlayer p,VisitData.Scene s,OtherMotherLoopState.Phase phase){
         s.loop.phase=phase;s.loop.deadline=0;listening.remove(p.getUUID());changed(p);
     }
     public static void relationship(ServerPlayer p,float trust,float suspicion){
         var s=scene(p);if(s==null)return;s.loop.trust=OtherMotherLoopState.clamp(trust);s.loop.suspicion=OtherMotherLoopState.clamp(suspicion);
-        s.welcomeState=OtherMotherLoopState.classify(s.loop.trust,s.loop.suspicion);changed(p);
+        if(!AcceptedButtonEyes.active(s)&&(BlackIsTraditional.threshold(s.loop.trust)||BlackIsTraditional.threshold(s.loop.suspicion))&&!BlackIsTraditional.data(s).getBoolean("Started"))s.loop.story.putBoolean("BlackIsTraditionalQueued",true);
+        s.welcomeState=AcceptedButtonEyes.active(s)?AcceptedButtonEyes.dialogueState(s):OtherMotherLoopState.classify(s.loop.trust,s.loop.suspicion);changed(p);
+    }
+    /** Award only at the completed inbound tunnel crossing, including the first visit. */
+    public static void rewardEntry(ServerPlayer p,RealmData.Realm realm){
+        var tag=p.getPersistentData();
+        if(!OtherWorld.isOther(p.level())||tag.getBoolean("CoralineInTunnel")||tag.getBoolean("CoralineReturning"))return;
+        if(!tag.hasUUID("CoralineEntryTrustDoor")||!realm.door.equals(tag.getUUID("CoralineEntryTrustDoor")))tag.putInt("CoralineEntryTrustPoints",0);
+        tag.putUUID("CoralineEntryTrustDoor",realm.door);
+        tag.putInt("CoralineEntryTrustPoints",Math.min(100,tag.getInt("CoralineEntryTrustPoints")+8));
+        applyEntryTrust(p);
+    }
+    /** Scene creation can finish after arrival; consume a saved bonus exactly once. */
+    public static void applyEntryTrust(ServerPlayer p){
+        var tag=p.getPersistentData();var s=scene(p);
+        if(s==null||!tag.hasUUID("CoralineEntryTrustDoor")||!s.door.equals(tag.getUUID("CoralineEntryTrustDoor")))return;
+        int points=tag.getInt("CoralineEntryTrustPoints");
+        tag.remove("CoralineEntryTrustDoor");tag.remove("CoralineEntryTrustPoints");
+        if(points>0)relationship(p,s.loop.trust+points/100F,s.loop.suspicion);
     }
     /** Called during tunnel staging, after the copy has spawned this generation of parents. */
     public static boolean prepare(ServerPlayer p,RealmData.Realm realm){
         var s=scene(p);if(s==null||s.stage!=VisitData.Stage.DONE)return true;
+        if(s.loop.event.getBoolean("ShowCleanupDeferred"))return false;
+        if(MotherGoesOut.pending(s))return MotherGoesOut.preserveActor(p,s);
         p.serverLevel().getChunkAt(realm.bed==null?realm.doorPos:realm.bed);
         var parents=p.serverLevel().getEntitiesOfClass(ParentEntity.class,new net.minecraft.world.phys.AABB(realm.doorPos).inflate(realm.radius+16),e->e.isOtherParent()&&e.getPersistentData().hasUUID("RealmDoor")&&realm.door.equals(e.getPersistentData().getUUID("RealmDoor")));
         // Old saves and interrupted staging may contain many copies. Keep one
@@ -65,21 +86,25 @@ public final class OtherMotherLoop {
             mom.setPos(at.getX()+.5,at.getY(),at.getZ()+.5);
             if(!p.serverLevel().addFreshEntity(mom))return false;
         }
-        s.mom=mom.getUUID();s.dad=parents.stream().filter(e->!e.isMom()).map(ParentEntity::getUUID).findFirst().orElse(null);
+        s.mom=mom.getUUID();s.dad=parents.stream().filter(e->!e.isMom()).map(ParentEntity::getUUID).findFirst().orElse(BlackIsTraditional.active(s)?s.dad:null);
         {
             mom.getPersistentData().putUUID("LoopOwner",p.getUUID());ScenePlacement.prepareWalker(mom);
             var spot=OtherWorld.safePlayer(p.serverLevel(),realm.doorPos.offset(2,0,1));mom.teleportTo(spot.getX()+.5,spot.getY(),spot.getZ()+.5);
         }
         s.loop.motherPos=mom.blockPosition();
-        removeFather(p,s);
+        if(!VisitEvents.keepFather(s))removeFather(p,s);
+        else if(s.dad!=null&&p.serverLevel().getEntity(s.dad) instanceof ParentEntity dad){dad.getPersistentData().putUUID("VisitEventOwner",p.getUUID());dad.eventGaze(true);}
         changed(p);return true;
     }
     /** Actual entrance only: staging must never count as another visit. */
     public static boolean entered(ServerPlayer p,RealmData.Realm realm){
         var s=scene(p);if(s==null||!s.door.equals(realm.door))return false;
+        if(AcceptedButtonEyes.active(s)){AcceptedButtonEyes.data(s).putBoolean("Recover",true);changed(p);return true;}
         if(s.stage!=VisitData.Stage.DONE){s.loop.visits++;changed(p);return false;}
+        boolean resumingStory=BlackIsTraditional.restoreOnEntry(p,s);
         if(!prepare(p,realm))return false;
         s.loop.visits++;changed(p);
+        if(resumingStory){BlackIsTraditional.recover(p);return true;}
         if(!s.loop.active()){
             s.loop.generation++;s.loop.loot=VisitGiftPools.choose(p,s);
             s.loop.activityLoot=s.loop.loot.expanded()?(p.getRandom().nextBoolean()?OtherMotherDialogue.Loot.FOOD:OtherMotherDialogue.Loot.TREASURE):s.loop.loot;
@@ -137,18 +162,21 @@ public final class OtherMotherLoop {
         return pool==null?0:OtherMotherDialogue.playActivityArrival(p,pool);
     }
     private static boolean validGiftVoice(OtherMotherDialogue.Pool pool,String sound){for(int i=0;i<pool.size();i++)if(pool.sound(i).equals(sound))return true;return false;}
-    private static void nextActivity(ServerPlayer p,VisitData.Scene s){
+    static void nextActivity(ServerPlayer p,VisitData.Scene s){
+        if(!VisitEvents.cleanup(p,s))return;s.loop.event.putString("Type",VisitEvents.Type.ACTIVITY.name());
+        if(AcceptedButtonEyes.active(s)){s.loop.activity=AcceptedButtonEyes.nextActivity(s);s.loop.generation++;phase(p,s,PROPOSAL);return;}
         var previous=s.loop.activity;var next=OtherMotherActivities.chooseActivity(p.getRandom());for(int i=0;i<32&&next==previous;i++)next=OtherMotherActivities.chooseActivity(p.getRandom());s.loop.activity=next;phase(p,s,PROPOSAL);
     }
-    public static void clearActivityWindow(ServerPlayer p){var s=scene(p);if(s==null)return;LoopProps.removePortals(p.server,s);removeBar(p.getUUID());s.loop.arrivalDeadline=0;phase(p,s,EXPLORING);}
-    public static boolean afterReconciliation(ServerPlayer p){if(!com.coraline.secrets.Reconciliation.permitted(p)||scene(p).loop.suspicion>=1||com.coraline.secrets.SecretDialogue.busy(p))return false;var s=scene(p);s.loop.secrets.dialogue.remove("OpeningActivityWait");clearActivityWindow(p);s.loop.secrets.search=com.coraline.secrets.SecretsState.Search.NORMAL;s.loop.secrets.pendingTicks=0;s.loop.secrets.searchTicks=0;s.loop.secrets.dialogue.putBoolean("ReconciledProposal",true);s.welcomeState=OtherMotherLoopState.classify(s.loop.trust,s.loop.suspicion);nextActivity(p,s);return true;}
+    public static void clearActivityWindow(ServerPlayer p){var s=scene(p);if(s==null)return;VisitEvents.suspend(p,s);LoopProps.removePortals(p.server,s);removeBar(p.getUUID());s.loop.arrivalDeadline=0;phase(p,s,EXPLORING);}
+    public static boolean afterReconciliation(ServerPlayer p){if(!com.coraline.secrets.Reconciliation.permitted(p)||scene(p).loop.suspicion>=1||com.coraline.secrets.SecretDialogue.busy(p))return false;var s=scene(p);s.loop.secrets.dialogue.remove("OpeningActivityWait");clearActivityWindow(p);s.loop.secrets.search=com.coraline.secrets.SecretsState.Search.NORMAL;s.loop.secrets.pendingTicks=0;s.loop.secrets.searchTicks=0;if(VisitEvents.resumeNumberedIntro(p)||VisitEvents.resumeDinner(p)||FamilyOuting.resume(p)||FamilyGameNight.resume(p)||SpecialDelivery.resume(p)||HouseParty.resume(p)||MotherGoesOut.resume(p)||WybieAdventure.resume(p)||TheatreVisit.resume(p)||MouseCircusVisit.resume(p))return true;s.loop.secrets.dialogue.putBoolean("ReconciledProposal",true);s.welcomeState=OtherMotherLoopState.classify(s.loop.trust,s.loop.suspicion);nextActivity(p,s);return true;}
     private static void advance(ServerPlayer p,VisitData.Scene s){
         switch(s.loop.phase){
             case WELCOME->phase(p,s,BEFORE);
             case BEFORE->{if(!LoopProps.prepareGifts(p,s)){fail(p,"There isn't a safe gift-table location. Returning home; try again on another night.");return;}phase(p,s,GIFTS);}
             case AFTER->phase(p,s,s.loop.extra?EXTRA:TUTORIAL);
             case EXTRA->phase(p,s,TUTORIAL);
-            case TUTORIAL,COMPLETE->nextActivity(p,s);
+            case TUTORIAL->VisitEvents.next(p,s,false);
+            case COMPLETE->{if(!AcceptedButtonEyes.afterReaction(p,s))VisitEvents.next(p,s,false);}
             case PROPOSAL->{
                 phase(p,s,WARNING);
                 if(!s.loop.secrets.dialogue.getBoolean("OpeningActivityWait"))advance(p,s);
@@ -156,15 +184,20 @@ public final class OtherMotherLoop {
             case WARNING->{
                 s.loop.secrets.dialogue.remove("OpeningActivityWait");
                 if(!LoopProps.choosePortal(p,s)){fail(p,"No safe activity portal location was found. Returning you home safely.");return;}
-                phase(p,s,WINDOW);s.loop.arrivalDeadline=now(p)+ATTENDANCE_TICKS;s.loop.secrets.world.remove("LateSearchScheduled");changed(p);
+                phase(p,s,WINDOW);s.loop.arrivalDeadline=AcceptedButtonEyes.active(s)?0:now(p)+ATTENDANCE_TICKS;s.loop.secrets.world.remove("LateSearchScheduled");changed(p);
                 s.loop.secrets.dialogue.remove("ReconciledProposal");
             }
             case ARRIVAL->{phase(p,s,READY);p.displayClientMessage(Component.literal("Enter the activity portal."),true);}
             default->{}
         }
     }
-    @SubscribeEvent public static void tick(TickEvent.PlayerTickEvent event){
+    @SubscribeEvent public static void tick(TickEvent.PlayerTickEvent event){if(event.player instanceof net.minecraft.server.level.ServerPlayer coopPlayer&&com.coraline.multiplayer.StoryCoop.directorBlocked(coopPlayer))return;
         if(event.phase!=TickEvent.Phase.END||!(event.player instanceof ServerPlayer p))return;
+        if(com.coraline.postgame.TrueHeartBattle.recoveryPending(p))return;
+        var ending=scene(p);if(GhostEscapeEnding.epilogueActive(ending)){GhostEscapeEnding.tick(p,ending,GhostVictimEntry.data(ending));removeBar(p.getUUID());return;}
+        if(AcceptedButtonEyes.tick(p,scene(p))){removeBar(p.getUUID());return;}
+        if(FirstEscapeStory.tick(p,scene(p))){removeBar(p.getUUID());return;}
+        if(p.tickCount%20==0)MotherGoesOut.recoverDoors(p,scene(p));
         var s=active(p);if(s==null){
             removeBar(p.getUUID());if(ActivityWorld.isActivity(p.level())){OtherWorld.leave(p,false);return;}
             // Migrate a repeat visit already open under the old welcome-only behavior.
@@ -175,10 +208,15 @@ public final class OtherMotherLoop {
             return;
         }
         if(!p.isAlive()){depart(p,false);return;}
+        if(com.coraline.item.SkipEventDebugItem.retry(p))return;
+        if(com.coraline.secrets.CatEncounter.active(p)){removeBar(p.getUUID());return;}
         var realm=RealmData.get(p.server).realms.get(s.door);var door=DoorData.get(p.server).doors.get(s.door);
         if(realm==null||door==null||door.revoked){fail(p,"Your Other World visit has ended.");return;}
-        if(ActivityWorld.isActivity(p.level())){ActivityWorld.tick(p,s);return;}
+        if(ActivityWorld.isActivity(p.level())){if(VisitEvents.venueEvent(s)){if(!s.loop.event.getBoolean("ShowCleanupDeferred")){HouseParty.backgroundTick(p,s);if(!com.coraline.secrets.SecretDialogue.busy(p))VisitEvents.tick(p,s);}else fail(p,"This event is waiting for a safe return. You have returned home.");}else ActivityWorld.tick(p,s);return;}
         if(p.getPersistentData().getBoolean("CoralineInTunnel")){removeBar(p.getUUID());return;}
+        DeliveryRoute.prewarm(p,s);
+        if(!AcceptedButtonEyes.active(s)&&BlackIsTraditional.pending(s)&&BlackIsTraditional.threshold(s.loop.suspicion)&&!BlackIsTraditional.active(s)){if(VisitEvents.cleanup(p,s))BlackIsTraditional.begin(p,s);else{removeBar(p.getUUID());return;}}
+        if(BlackIsTraditional.tick(p,s)){removeBar(p.getUUID());return;}
         // Repair visits saved in an already-locked phase with no loaded mother.
         // If recovery genuinely fails, release the player instead of trapping them.
         if(p.tickCount%20==0&&mother(p,s)==null&&!prepare(p,realm)){
@@ -195,6 +233,7 @@ public final class OtherMotherLoop {
         if(l.phase==WARNING&&!l.secrets.dialogue.getBoolean("OpeningActivityWait")){
             advance(p,s);return;
         }
+        if(!s.loop.event.getBoolean("ShowCleanupDeferred")){HouseParty.backgroundTick(p,s);MotherGoesOut.backgroundTick(p,s);WybieAdventure.backgroundTick(p,s);}
         if(com.coraline.secrets.MotherInterrupts.check(p))return;
         if(l.secrets.dialogue.getBoolean("ReconciledProposal")&&(l.suspicion>=1||l.secrets.search==com.coraline.secrets.SecretsState.Search.SCRIPTED_TRAP)){
             l.secrets.dialogue.remove("ReconciledProposal");VisitAudio.stopVoice(p);
@@ -202,11 +241,19 @@ public final class OtherMotherLoop {
             return;
         }
         if(com.coraline.secrets.SecretsRuntime.active(p)&&com.coraline.secrets.SecretDialogue.busy(p))return;
+        if(VisitEvents.tick(p,s))return;
         if(l.phase==EXPLORING){removeBar(p.getUUID());return;}
         if(l.phase==GIFTS){LoopProps.finishGiftReveal(p,s);if(l.collected())phase(p,s,AFTER);else if(p.tickCount%40==0)VisitGuide.trail(p,s);return;}
         if(l.phase==WINDOW){
             if(p.isSleeping())return;
+            if(AcceptedButtonEyes.active(s)){
+                l.arrivalDeadline=0;l.late=false;removeBar(p.getUUID());
+                if(p.tickCount%40==0)VisitGuide.trail(p,s);
+                if(p.distanceToSqr(Vec3.atBottomCenterOf(l.portal))<=16){com.coraline.secrets.MotherSearch.attended(p);phase(p,s,ARRIVAL);}
+                return;
+            }
             long remaining=Math.max(0,l.arrivalDeadline-now(p));
+            if(remaining==0&&AcceptedButtonEyes.active(s)){LoopProps.removePortals(p.server,s);nextActivity(p,s);return;}
             if(remaining==0)com.coraline.secrets.MotherSearch.attendanceExpired(p);
             var bar=bars.computeIfAbsent(p.getUUID(),id->new ServerBossEvent(Component.empty(),BossEvent.BossBarColor.BLUE,BossEvent.BossBarOverlay.PROGRESS));bar.addPlayer(p);
             bar.setName(Component.literal(activityName(l.activity)+" — "+String.format(Locale.ROOT,"%d:%02d",(remaining+19)/1200,((remaining+19)/20)%60)));
@@ -226,15 +273,20 @@ public final class OtherMotherLoop {
     }
     public static String activityName(OtherMotherActivities.Activity activity){return activity.id().replace('_',' ');}
     public static boolean control(ParentEntity m){
+        if(com.coraline.secrets.CatEncounter.holdMother(m))return true;
         if(!m.isMom()||!m.getPersistentData().hasUUID("LoopOwner"))return false;
         var owner=m.getPersistentData().getUUID("LoopOwner");var s=VisitData.get(m.getServer()).scenes.get(owner);
         if(s==null){m.getPersistentData().remove("LoopOwner");m.relationship(0,0);return false;}
-        m.relationship(s.loop.trust,s.loop.suspicion);
+        MotherGoesOut.recoverActor(m,s);m.relationship(s.loop.trust,s.loop.suspicion);
         var p=m.getServer().getPlayerList().getPlayer(owner);
         if(p==null||p.level()!=m.level()||p.getPersistentData().getBoolean("CoralineInTunnel")){m.getNavigation().stop();return true;}
         if(!s.loop.active()){m.getPersistentData().remove("LoopOwner");m.relationship(s.loop.trust,s.loop.suspicion);return false;}
         if(m.tickCount%20==0){s.loop.motherPos=m.blockPosition();VisitData.get(m.getServer()).setDirty();}
+        if(ParentRescueStory.parentControl(m))return true;
+        if(BlackIsTraditional.parentControl(m,p,s))return true;
+        if(MotherGoesOut.control(m,p,s))return true;
         if(com.coraline.secrets.MotherSearch.control(m,p))return true;
+        if(VisitEvents.motherControl(m,p,s))return true;
         if(s.loop.phase==EXPLORING){if(m.tickCount%40==0)m.getNavigation().stop();return true;}
         boolean wait=s.loop.phase==WINDOW||s.loop.phase==ARRIVAL||s.loop.phase==READY;
         boolean presenting=s.loop.phase==GIFTS&&s.loop.loot.expanded();
@@ -270,8 +322,11 @@ public final class OtherMotherLoop {
     }
     public static BlockPos target(ServerPlayer p,VisitData.Scene s){return switch(s.loop.phase){case GIFTS->s.table.north(2);case WINDOW,ARRIVAL,READY->s.loop.portal.north(2);default->null;};}
     public static void depart(ServerPlayer p,boolean bed){
+        if(AcceptedButtonEyes.active(scene(p)))return;
+        com.coraline.secrets.CatEncounter.cancel(p,false);
         com.coraline.secrets.Reconciliation.cancel(p);
         var s=active(p);if(s==null)return;
+        if(!VisitEvents.cleanup(p,s))ShowLifecycle.deferCleanup(p,s);
         s.loop.secrets.dialogue.remove("ReconciledProposal");
         s.loop.secrets.dialogue.remove("LoopVoice");
         s.loop.secrets.dialogue.remove("LoopFinished");
@@ -287,6 +342,8 @@ public final class OtherMotherLoop {
     }
     /** Creative shortcut leaves the current visit resumable on the next door entry. */
     public static void resetForDebug(ServerPlayer p,VisitData.Scene s){
+        if(AcceptedButtonEyes.active(s)){p.displayClientMessage(Component.literal("Use Accepted Button-Eyes Storyline controls for this checkpoint."),true);return;}
+        if(!VisitEvents.cleanup(p,s))ShowLifecycle.deferCleanup(p,s);
         com.coraline.secrets.Reconciliation.cancel(p);
         s.loop.secrets.dialogue.remove("ReconciledProposal");
         s.loop.secrets.dialogue.remove("LoopVoice");
@@ -297,11 +354,11 @@ public final class OtherMotherLoop {
         s.loop.phase=NONE;s.loop.deadline=0;s.loop.gifts.clear();s.welcomeAfter=0;
         LoopProps.clean(p.server,s);removeBar(p.getUUID());listening.remove(p.getUUID());VisitAudio.stopVoice(p);changed(p);
     }
-    static void fail(ServerPlayer p,String message){depart(p,false);OtherWorld.leave(p,false);p.sendSystemMessage(Component.literal(message));}
+    static void fail(ServerPlayer p,String message){if(AcceptedButtonEyes.active(scene(p))){AcceptedButtonEyes.recoverFailure(p,message);return;}depart(p,false);OtherWorld.leave(p,false);p.sendSystemMessage(Component.literal(message));}
     private static void removeBar(UUID id){var b=bars.remove(id);if(b!=null)b.removeAllPlayers();}
     public static void forget(UUID id){listening.remove(id);removeBar(id);}
     @SubscribeEvent public static void logout(PlayerEvent.PlayerLoggedOutEvent e){forget(e.getEntity().getUUID());}
-    @SubscribeEvent public static void login(PlayerEvent.PlayerLoggedInEvent e){if(e.getEntity() instanceof ServerPlayer p){forget(p.getUUID());var s=scene(p);if(s!=null&&s.loop.active()){s.welcomeAfter=0;changed(p);if(active(p)==null){OceanMonumentActivity.abort(p,s);
+    @SubscribeEvent public static void login(PlayerEvent.PlayerLoggedInEvent e){if(e.getEntity() instanceof ServerPlayer p){forget(p.getUUID());if(com.coraline.multiplayer.StoryCoop.guest(p))return;var s=scene(p);if(AcceptedButtonEyes.active(s)){p.getPersistentData().putUUID("CoralineVisitDoor",s.door);AcceptedButtonEyes.data(s).putBoolean("Recover",true);changed(p);return;}if(s!=null&&s.loop.active()){s.welcomeAfter=0;changed(p);if(active(p)==null){OceanMonumentActivity.abort(p,s);
         if(s.loop.activity==OtherMotherActivities.Activity.MICE_CIRCUS)MiceCircusActivity.refund(p,s);s.loop.phase=NONE;s.loop.gifts.clear();LoopProps.clean(p.server,s);}}}}
     @SubscribeEvent public static void stopped(net.minecraftforge.event.server.ServerStoppedEvent e){listening.clear();bars.values().forEach(ServerBossEvent::removeAllPlayers);bars.clear();}
 }

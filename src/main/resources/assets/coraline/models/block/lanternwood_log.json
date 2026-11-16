@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "coraline:block/postgame/otherwood_end",
+    "side": "coraline:block/postgame/lanternwood_log"
+  }
+}

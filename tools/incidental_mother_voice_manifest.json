@@ -1,0 +1,803 @@
+{
+  "reference": "voicelines/othermother/Sample.wav",
+  "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+  "output": "voicelines/othermother/incidental_dialogue_v1",
+  "prefix": "line",
+  "resource_folder": "incidental/mother",
+  "notice": "src/main/resources/META-INF/INCIDENTAL_PARENT_AUDIO_NOTICE.txt",
+  "max_seconds": 120,
+  "states": {
+    "mother_53b786200560bb87": {
+      "lines": [
+        "Come along, dear. It's time for your new eyes."
+      ],
+      "sound_name": "other_mother_incidental_mother_53b786200560bb87",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_daec9bfb13e1ea70": {
+      "lines": [
+        "There we are, dear. All finished. Come and meet me upstairs."
+      ],
+      "sound_name": "other_mother_incidental_mother_daec9bfb13e1ea70",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_e70aa513e654e519": {
+      "lines": [
+        "Those buttons weren't a gift, dear. They were how I claimed your soul."
+      ],
+      "sound_name": "other_mother_incidental_mother_e70aa513e654e519",
+      "direction": "Quiet, watchful and controlled; a pointed warning, not shouted.",
+      "emotion": [
+        0,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.75
+      ],
+      "temperature": 0.72
+    },
+    "mother_a2143168fdeb4b9c": {
+      "lines": [
+        "You aren't a living child to me any longer. I will feed on what remains of your life."
+      ],
+      "sound_name": "other_mother_incidental_mother_a2143168fdeb4b9c",
+      "direction": "Quiet, watchful and controlled; a pointed warning, not shouted.",
+      "emotion": [
+        0,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.75
+      ],
+      "temperature": 0.72
+    },
+    "mother_4d82080348d9a6ae": {
+      "lines": [
+        "And now there's nothing left for you to do. I think I'll keep what's left of you."
+      ],
+      "sound_name": "other_mother_incidental_mother_4d82080348d9a6ae",
+      "direction": "Quiet, watchful and controlled; a pointed warning, not shouted.",
+      "emotion": [
+        0,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.75
+      ],
+      "temperature": 0.72
+    },
+    "mother_2db239ff1bd049e7": {
+      "lines": [
+        "There. Now everyone has a drink. What a thoughtful host you're becoming."
+      ],
+      "sound_name": "other_mother_incidental_mother_2db239ff1bd049e7",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_fa78a1093df128cb": {
+      "lines": [
+        "Hold it steady, sweetheart. Now click each empty glass."
+      ],
+      "sound_name": "other_mother_incidental_mother_fa78a1093df128cb",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_8827102deb3fc37a": {
+      "lines": [
+        "That's our cider jug. We'll top up everyone's glasses after the first course."
+      ],
+      "sound_name": "other_mother_incidental_mother_8827102deb3fc37a",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_8a837b55f1744cc3": {
+      "lines": [
+        "The bowl smells of warm honey and summer flowers. What do you think I put in it?"
+      ],
+      "sound_name": "other_mother_incidental_mother_8a837b55f1744cc3",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_bf6893f43e32f183": {
+      "lines": [
+        "A sharp, fruity scent rises from the bowl, with little purple berry stains at the rim."
+      ],
+      "sound_name": "other_mother_incidental_mother_bf6893f43e32f183",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_3c817b07a8a14585": {
+      "lines": [
+        "The sauce smells of rich cocoa. There are tiny chocolate shavings on the spoon."
+      ],
+      "sound_name": "other_mother_incidental_mother_3c817b07a8a14585",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_d854d939a96cdace": {
+      "lines": [
+        "Save some room! We'll serve dessert after our little recipe game."
+      ],
+      "sound_name": "other_mother_incidental_mother_d854d939a96cdace",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_7931bd385965424e": {
+      "lines": [
+        "A slice of berry cake for me, please."
+      ],
+      "sound_name": "other_mother_incidental_mother_7931bd385965424e",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_45461fe113ecbfd6": {
+      "lines": [
+        "Thank you, sweetheart. Don't forget your Other Father."
+      ],
+      "sound_name": "other_mother_incidental_mother_45461fe113ecbfd6",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_625fa41d0e6f25fd": {
+      "lines": [
+        "All tidied away. Stay and chat, or tell us when you're ready to finish."
+      ],
+      "sound_name": "other_mother_incidental_mother_625fa41d0e6f25fd",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_4a2d0ea27fcce29c": {
+      "lines": [
+        "How is the first bite? Try the other things on your plate, too."
+      ],
+      "sound_name": "other_mother_incidental_mother_4a2d0ea27fcce29c",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_d5b630c76a4a38bd": {
+      "lines": [
+        "One more taste. Every dish has a little story behind it."
+      ],
+      "sound_name": "other_mother_incidental_mother_d5b630c76a4a38bd",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_5a771ba2311c052e": {
+      "lines": [
+        "Is there anything else you would like, sweetheart?"
+      ],
+      "sound_name": "other_mother_incidental_mother_5a771ba2311c052e",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_72a99e42ceb5f434": {
+      "lines": [
+        "You've smelled the sauce. Which ingredient did you recognise?"
+      ],
+      "sound_name": "other_mother_incidental_mother_72a99e42ceb5f434",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_c3ffe1fb62744db6": {
+      "lines": [
+        "Inspect the little recipe bowl first. A good cook uses their nose as well as their eyes."
+      ],
+      "sound_name": "other_mother_incidental_mother_c3ffe1fb62744db6",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_766c9e324a70a890": {
+      "lines": [
+        "Honey for warmth, berries for sharpness, chocolate for a treat. You'll find a recipe bowl on the table when it's time to guess."
+      ],
+      "sound_name": "other_mother_incidental_mother_766c9e324a70a890",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_09917b2eec90b9ba": {
+      "lines": [
+        "What shall we raise our glasses to?"
+      ],
+      "sound_name": "other_mother_incidental_mother_09917b2eec90b9ba",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_89e91dcb58538ad1": {
+      "lines": [
+        "Perfect? Only because I pay attention to what everyone wants. You do tell me what you want, don't you?"
+      ],
+      "sound_name": "other_mother_incidental_mother_89e91dcb58538ad1",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_e8fc2e8328d283e1": {
+      "lines": [
+        "Let's enjoy the evening we have first. There is always something else waiting for us."
+      ],
+      "sound_name": "other_mother_incidental_mother_e8fc2e8328d283e1",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_8739b747be2432dc": {
+      "lines": [
+        "Exactly right! A fine nose. Now let's get those desserts served."
+      ],
+      "sound_name": "other_mother_incidental_mother_8739b747be2432dc",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_3d579e60714fb609": {
+      "lines": [
+        "You found the secret ingredient. Berry cake for me and cookies for your Other Father, please."
+      ],
+      "sound_name": "other_mother_incidental_mother_3d579e60714fb609",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_af6b9bb016341735": {
+      "lines": [
+        "Not quite. Smell the recipe bowl again and look for the clue before trying another ingredient."
+      ],
+      "sound_name": "other_mother_incidental_mother_af6b9bb016341735",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_d4b2ad46c4e4ee72": {
+      "lines": [
+        "Taste as you go, and never stop paying attention. The smallest ingredient can change everything."
+      ],
+      "sound_name": "other_mother_incidental_mother_d4b2ad46c4e4ee72",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_37538e5ce2ad2da9": {
+      "lines": [
+        "Of course. A little help can make a meal feel like something we've made together."
+      ],
+      "sound_name": "other_mother_incidental_mother_37538e5ce2ad2da9",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_986542a1149ece70": {
+      "lines": [
+        "To a lovely evening. Just your plate left to clear, sweetheart."
+      ],
+      "sound_name": "other_mother_incidental_mother_986542a1149ece70",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_ce4ccd109b096e5b": {
+      "lines": [
+        "To taking very good care of one another. I'll drink to that."
+      ],
+      "sound_name": "other_mother_incidental_mother_ce4ccd109b096e5b",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_2af40e1436c1f636": {
+      "lines": [
+        "To adventures. Though do remember to come back for supper."
+      ],
+      "sound_name": "other_mother_incidental_mother_2af40e1436c1f636",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_52cf08cca27ada57": {
+      "lines": [
+        "Home is where you're wanted, sweetheart. Remember that."
+      ],
+      "sound_name": "other_mother_incidental_mother_52cf08cca27ada57",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_c54a134046300f8d": {
+      "lines": [
+        "Some doors are closed for their own good. Leave them closed."
+      ],
+      "sound_name": "other_mother_incidental_mother_c54a134046300f8d",
+      "direction": "Quiet, watchful and controlled; a pointed warning, not shouted.",
+      "emotion": [
+        0,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.75
+      ],
+      "temperature": 0.72
+    },
+    "mother_25ad3d2edcaf6689": {
+      "lines": [
+        "There are things here too fragile for curious hands."
+      ],
+      "sound_name": "other_mother_incidental_mother_25ad3d2edcaf6689",
+      "direction": "Quiet, watchful and controlled; a pointed warning, not shouted.",
+      "emotion": [
+        0,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.75
+      ],
+      "temperature": 0.72
+    },
+    "mother_2df71b1545bbc2af": {
+      "lines": [
+        "You have been watching everything so carefully. So have I."
+      ],
+      "sound_name": "other_mother_incidental_mother_2df71b1545bbc2af",
+      "direction": "Quiet, watchful and controlled; a pointed warning, not shouted.",
+      "emotion": [
+        0,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.75
+      ],
+      "temperature": 0.72
+    },
+    "mother_c5eb142462bd1381": {
+      "lines": [
+        "Perhaps my presents have spoiled you."
+      ],
+      "sound_name": "other_mother_incidental_mother_c5eb142462bd1381",
+      "direction": "Quiet, watchful and controlled; a pointed warning, not shouted.",
+      "emotion": [
+        0,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.75
+      ],
+      "temperature": 0.72
+    },
+    "mother_1e2de78509aa6fb5": {
+      "lines": [
+        "Is there something missing from what I have given you?"
+      ],
+      "sound_name": "other_mother_incidental_mother_1e2de78509aa6fb5",
+      "direction": "Quiet, watchful and controlled; a pointed warning, not shouted.",
+      "emotion": [
+        0,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.75
+      ],
+      "temperature": 0.72
+    },
+    "mother_a2dcd4562bd70596": {
+      "lines": [
+        "You needn't concern yourself with every locked door."
+      ],
+      "sound_name": "other_mother_incidental_mother_a2dcd4562bd70596",
+      "direction": "Quiet, watchful and controlled; a pointed warning, not shouted.",
+      "emotion": [
+        0,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.75
+      ],
+      "temperature": 0.72
+    },
+    "mother_5e8f0260fccd51f1": {
+      "lines": [
+        "A toast to our guest of honour! Come join the neighbours, darling."
+      ],
+      "sound_name": "other_mother_incidental_mother_5e8f0260fccd51f1",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_b7647c74db56297e": {
+      "lines": [
+        "Our guest of honour! Take your place by the cake, make a wish, and blow out the candles."
+      ],
+      "sound_name": "other_mother_incidental_mother_b7647c74db56297e",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_479160a1785c796e": {
+      "lines": [
+        "We'll do something else while the delivery route is prepared."
+      ],
+      "sound_name": "other_mother_incidental_mother_479160a1785c796e",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_f3a88507d540ac40": {
+      "lines": [
+        "Follow the path, deliver the package, and come back to me, sweetheart."
+      ],
+      "sound_name": "other_mother_incidental_mother_f3a88507d540ac40",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    },
+    "mother_4a77c0d2667be0c2": {
+      "lines": [
+        "Getting bored already, sweetheart? Shall I find something else for us to do?"
+      ],
+      "sound_name": "other_mother_incidental_mother_4a77c0d2667be0c2",
+      "direction": "Natural, warm and conversational; keep every authored word, with clear unhurried delivery.",
+      "emotion": [
+        0.35,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.55
+      ],
+      "temperature": 0.72
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "source": "music/LittleMe.mp3",
+  "source_sha256": "a5f547b9826155f065d34a987d4b1f045fd6fdfd872dcd067e7c13b66779caf0",
+  "ogg_sha256": "31f89d2d4aa33d49a3df4220b3e6f9c83cd66f9b7d271334504b36a5c10dbd18",
+  "export": {
+    "sample_rate": 48000,
+    "channels": 2,
+    "samples": 1151339,
+    "seconds": 23.986229166666668,
+    "ticks": 480
+  },
+  "role": "parents_rescue_room_arrival_once"
+}

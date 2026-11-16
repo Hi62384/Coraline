@@ -12,8 +12,9 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid="coraline")
 public final class DollEvents {
-    @SubscribeEvent public static void tick(TickEvent.PlayerTickEvent event){
+    @SubscribeEvent public static void tick(TickEvent.PlayerTickEvent event){if(event.player instanceof net.minecraft.server.level.ServerPlayer coopPlayer&&com.coraline.multiplayer.StoryCoop.directorBlocked(coopPlayer))return;
         if(event.phase!=TickEvent.Phase.END||!(event.player instanceof ServerPlayer player)||player.tickCount%20!=0)return;
+        if(com.coraline.postgame.TrueHeartBattle.recoveryPending(player))return;
         var data=DollBondData.get(player.server);long now=player.server.overworld().getGameTime();
         data.validateFamily(player.getUUID());
         data.watchdog(player);
@@ -38,7 +39,7 @@ public final class DollEvents {
                 var stack=slot.getItem();if(DollStorage.cleanStack(stack,player.serverLevel()))slot.set(stack.isEmpty()?ItemStack.EMPTY:stack);
             }
         }
-        var b=data.bonds.get(player.getUUID());if(b==null)return;
+        var b=data.bonds.get(player.getUUID());if(b==null||b.storyMissing)return;
         boolean home=false;
         if(!held&&b.placed){
             var level=com.coraline.parents.FamilyData.level(player.server,b.dimension);

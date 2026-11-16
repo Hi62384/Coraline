@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:ores/coal",
+    "#forge:ores/copper",
+    "#forge:ores/gold",
+    "#forge:ores/redstone",
+    "#forge:ores/lapis",
+    "#forge:ores/emerald",
+    "#forge:ores/quartz"
+  ]
+}

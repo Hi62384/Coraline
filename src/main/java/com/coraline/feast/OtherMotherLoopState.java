@@ -7,7 +7,10 @@ import java.util.*;
 
 /** Family-scoped, durable progress. Rewards are authoritative here, never in decorative entities. */
 public final class OtherMotherLoopState {
-    public enum Phase { NONE, WELCOME, BEFORE, GIFTS, AFTER, EXTRA, TUTORIAL, PROPOSAL, WARNING, WINDOW, EXPLORING, ARRIVAL, READY, ACTIVITY, COMPLETE }
+    public enum Phase { NONE, WELCOME, BEFORE, GIFTS, AFTER, EXTRA, TUTORIAL, PROPOSAL, WARNING, WINDOW, EXPLORING, ARRIVAL, READY, ACTIVITY, COMPLETE, EVENT_INTRO, FREE_TIME, EVENT_RETURN, DINNER_WAIT, DINNER_GREETING, DINNER, DINNER_FINISH, OUTING_DESTINATION, OUTING_WAIT, OUTING_GREETING, OUTING_ACTIVE, OUTING_FINISH, OUTING_RETURN, GAME_NIGHT_WAIT,GAME_NIGHT_GREETING,GAME_NIGHT_INSTRUCTIONS,GAME_NIGHT_ACTIVE,GAME_NIGHT_CHOICE,GAME_NIGHT_FINISH, DELIVERY_PREPARING,DELIVERY_ACTIVE,DELIVERY_FINISH, PARTY_SOCIAL,PARTY_FEAST_CALL,PARTY_FEAST,PARTY_ENDING, MOTHER_LEAVING,MOTHER_ABSENT,MOTHER_RETURNING,MOTHER_HOME_CHECK, WYBIE_DOOR,WYBIE_INTRO,WYBIE_ACTIVE,WYBIE_ENDING, THEATRE_WAIT,THEATRE_ACTIVE,THEATRE_RETURN,CIRCUS_WAIT,CIRCUS_ACTIVE,CIRCUS_RETURN,BLACK_IS_TRADITIONAL,ACCEPTED_BUTTON_EYES }
+    public CompoundTag event=new CompoundTag();
+    /** Permanent additive-event progression, retained across ordinary visit resets. */
+    public CompoundTag story=new CompoundTag();
     public com.coraline.secrets.SecretsState secrets=new com.coraline.secrets.SecretsState();
     public CompoundTag ocean=new CompoundTag();
     public CompoundTag festival=new CompoundTag(),temple=new CompoundTag(),endCity=new CompoundTag();
@@ -92,7 +95,7 @@ public final class OtherMotherLoopState {
     public BlockPos motherPos=BlockPos.ZERO;
     public final List<ItemStack> gifts=new ArrayList<>();
     public boolean active(){return phase!=Phase.NONE;}
-    public boolean canLeave(){return (phase==Phase.WINDOW||phase==Phase.EXPLORING)&&!secrets.searching();}
+    public boolean canLeave(){return (phase==Phase.WINDOW||phase==Phase.EXPLORING||phase==Phase.FREE_TIME||phase==Phase.EVENT_RETURN||phase==Phase.DINNER_WAIT||phase==Phase.OUTING_WAIT||phase==Phase.OUTING_RETURN||phase==Phase.GAME_NIGHT_WAIT||phase==Phase.DELIVERY_ACTIVE||phase==Phase.MOTHER_ABSENT||phase==Phase.WYBIE_ACTIVE||phase==Phase.THEATRE_WAIT||phase==Phase.CIRCUS_WAIT)&&!secrets.searching();}
     public boolean collected(){return gifts.stream().allMatch(ItemStack::isEmpty);}
     public static float clamp(float n){return Float.isFinite(n)?Math.max(0,Math.min(1,n)):0;}
     public static OtherMotherWelcome.State classify(float trust,float suspicion){
@@ -103,7 +106,7 @@ public final class OtherMotherLoopState {
     }
     public CompoundTag save(){
         // Activity-specific state travels in the same durable family ledger.
-        var n=new CompoundTag();n.put("Secrets",secrets.save());n.put("Ocean",ocean.copy());n.putInt("Visits",visits);n.putInt("Generation",generation);n.putFloat("Trust",trust);n.putFloat("Suspicion",suspicion);
+        var n=new CompoundTag();n.put("VisitEvent",event.copy());n.put("StoryProgression",story.copy());n.put("Secrets",secrets.save());n.put("Ocean",ocean.copy());n.putInt("Visits",visits);n.putInt("Generation",generation);n.putFloat("Trust",trust);n.putFloat("Suspicion",suspicion);
         n.put("Festival",festival.copy());n.put("Temple",temple.copy());n.put("EndCity",endCity.copy());n.put("Expedition",expedition.copy());
         n.putBoolean("GiftPrepared",giftPrepared);n.putString("GiftBefore",giftBefore);n.putString("GiftAfter",giftAfter);n.putLong("GiftRevealUntil",giftRevealUntil);n.putString("ActivityLoot",activityLoot.name());
         n.putString("Phase",phase.name());n.putString("Loot",loot.name());n.putString("Activity",activity.name());
@@ -219,6 +222,7 @@ public final class OtherMotherLoopState {
         s.circusWager=ItemStack.of(n.getCompound("CircusWager"));
         s.circusPhase=n.getInt("CircusPhase");s.circusBookieMouse=n.contains("CircusBookieMouse")?n.getInt("CircusBookieMouse"):-1;
         s.circusPhaseUntil=n.getLong("CircusPhaseUntil");s.circusGifted=n.getBoolean("CircusGifted");
+        s.event=n.getCompound("VisitEvent").copy();s.story=n.getCompound("StoryProgression").copy();
         s.ocean=n.getCompound("Ocean").copy();
         s.festival=n.getCompound("Festival").copy();s.temple=n.getCompound("Temple").copy();s.endCity=n.getCompound("EndCity").copy();s.expedition=n.getCompound("Expedition").copy();
         s.extra=n.getBoolean("Extra");s.opened=n.getBoolean("Opened");s.late=n.getBoolean("Late");s.deadline=n.getLong("Deadline");s.arrivalDeadline=n.getLong("ArrivalDeadline");s.portal=BlockPos.of(n.getLong("Portal"));

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=y": {
+      "model": "coraline:block/lanternwood_log"
+    },
+    "axis=x": {
+      "model": "coraline:block/lanternwood_log",
+      "x": 90,
+      "y": 90
+    },
+    "axis=z": {
+      "model": "coraline:block/lanternwood_log",
+      "x": 90
+    }
+  }
+}

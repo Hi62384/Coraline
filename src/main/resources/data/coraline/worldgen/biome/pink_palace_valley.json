@@ -1,0 +1,23 @@
+{
+  "has_precipitation": true,
+  "temperature": 0.65,
+  "downfall": 0.45,
+  "effects": {
+    "sky_color": 8964332,
+    "fog_color": 13426145,
+    "water_color": 5017259,
+    "water_fog_color": 3290200,
+    "grass_color": 11775336,
+    "foliage_color": 7179602
+  },
+  "spawners": {
+    "creature": [
+      {"type": "minecraft:sheep", "weight": 8, "minCount": 2, "maxCount": 4},
+      {"type": "minecraft:cow", "weight": 6, "minCount": 2, "maxCount": 3},
+      {"type": "minecraft:rabbit", "weight": 4, "minCount": 2, "maxCount": 3}
+    ]
+  },
+  "spawn_costs": {},
+  "carvers": {},
+  "features": []
+}

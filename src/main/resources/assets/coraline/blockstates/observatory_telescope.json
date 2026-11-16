@@ -1,0 +1,124 @@
+{
+  "variants": {
+    "observed=0,rotation=0": {
+      "model": "coraline:block/observatory_telescope_0_0"
+    },
+    "observed=0,rotation=1": {
+      "model": "coraline:block/observatory_telescope_0_1"
+    },
+    "observed=0,rotation=2": {
+      "model": "coraline:block/observatory_telescope_0_2"
+    },
+    "observed=0,rotation=3": {
+      "model": "coraline:block/observatory_telescope_0_3"
+    },
+    "observed=0,rotation=4": {
+      "model": "coraline:block/observatory_telescope_0_4"
+    },
+    "observed=0,rotation=5": {
+      "model": "coraline:block/observatory_telescope_0_5"
+    },
+    "observed=0,rotation=6": {
+      "model": "coraline:block/observatory_telescope_0_6"
+    },
+    "observed=0,rotation=7": {
+      "model": "coraline:block/observatory_telescope_0_7"
+    },
+    "observed=1,rotation=0": {
+      "model": "coraline:block/observatory_telescope_1_0"
+    },
+    "observed=1,rotation=1": {
+      "model": "coraline:block/observatory_telescope_1_1"
+    },
+    "observed=1,rotation=2": {
+      "model": "coraline:block/observatory_telescope_1_2"
+    },
+    "observed=1,rotation=3": {
+      "model": "coraline:block/observatory_telescope_1_3"
+    },
+    "observed=1,rotation=4": {
+      "model": "coraline:block/observatory_telescope_1_4"
+    },
+    "observed=1,rotation=5": {
+      "model": "coraline:block/observatory_telescope_1_5"
+    },
+    "observed=1,rotation=6": {
+      "model": "coraline:block/observatory_telescope_1_6"
+    },
+    "observed=1,rotation=7": {
+      "model": "coraline:block/observatory_telescope_1_7"
+    },
+    "observed=2,rotation=0": {
+      "model": "coraline:block/observatory_telescope_2_0"
+    },
+    "observed=2,rotation=1": {
+      "model": "coraline:block/observatory_telescope_2_1"
+    },
+    "observed=2,rotation=2": {
+      "model": "coraline:block/observatory_telescope_2_2"
+    },
+    "observed=2,rotation=3": {
+      "model": "coraline:block/observatory_telescope_2_3"
+    },
+    "observed=2,rotation=4": {
+      "model": "coraline:block/observatory_telescope_2_4"
+    },
+    "observed=2,rotation=5": {
+      "model": "coraline:block/observatory_telescope_2_5"
+    },
+    "observed=2,rotation=6": {
+      "model": "coraline:block/observatory_telescope_2_6"
+    },
+    "observed=2,rotation=7": {
+      "model": "coraline:block/observatory_telescope_2_7"
+    },
+    "observed=3,rotation=0": {
+      "model": "coraline:block/observatory_telescope_3_0"
+    },
+    "observed=3,rotation=1": {
+      "model": "coraline:block/observatory_telescope_3_1"
+    },
+    "observed=3,rotation=2": {
+      "model": "coraline:block/observatory_telescope_3_2"
+    },
+    "observed=3,rotation=3": {
+      "model": "coraline:block/observatory_telescope_3_3"
+    },
+    "observed=3,rotation=4": {
+      "model": "coraline:block/observatory_telescope_3_4"
+    },
+    "observed=3,rotation=5": {
+      "model": "coraline:block/observatory_telescope_3_5"
+    },
+    "observed=3,rotation=6": {
+      "model": "coraline:block/observatory_telescope_3_6"
+    },
+    "observed=3,rotation=7": {
+      "model": "coraline:block/observatory_telescope_3_7"
+    },
+    "observed=4,rotation=0": {
+      "model": "coraline:block/observatory_telescope_4_0"
+    },
+    "observed=4,rotation=1": {
+      "model": "coraline:block/observatory_telescope_4_1"
+    },
+    "observed=4,rotation=2": {
+      "model": "coraline:block/observatory_telescope_4_2"
+    },
+    "observed=4,rotation=3": {
+      "model": "coraline:block/observatory_telescope_4_3"
+    },
+    "observed=4,rotation=4": {
+      "model": "coraline:block/observatory_telescope_4_4"
+    },
+    "observed=4,rotation=5": {
+      "model": "coraline:block/observatory_telescope_4_5"
+    },
+    "observed=4,rotation=6": {
+      "model": "coraline:block/observatory_telescope_4_6"
+    },
+    "observed=4,rotation=7": {
+      "model": "coraline:block/observatory_telescope_4_7"
+    }
+  }
+}

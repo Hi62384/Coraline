@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:ravager",
+    "minecraft:elder_guardian",
+    "coraline:rift_soldier",
+    "coraline:clockwork_watcher",
+    "coraline:porcelain_sentinel",
+    "coraline:rootbound_horror",
+    "coraline:void_stalker",
+    "coraline:rift_guardian"
+  ]
+}
