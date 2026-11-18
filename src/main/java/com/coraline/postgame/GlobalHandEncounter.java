@@ -63,6 +63,24 @@ public final class GlobalHandEncounter extends SavedData {
         data.row.putUUID("Session",progress.session());data.row.putUUID("Hand",progress.originalHand());
         return data.checkpoint(server);
     }
+    public static String status(MinecraftServer server,java.util.UUID viewer){
+        if(InfiniteWorldData.get(server).active())return "The original world Hand encounter is complete.";
+        var row=get(server).row;
+        if(row.isEmpty())return "The world Hand encounter is available.";
+        if(row.getBoolean("Blocked")||!row.hasUUID("Owner")||!row.hasUUID("Door")||!row.hasUUID("Hand"))
+            return "The original Hand reservation needs recovery. Its identity and custody records were preserved.";
+        var owner=row.getUUID("Owner");
+        var scene=VisitData.get(server).scenes.get(owner);
+        if(scene==null||!scene.door.equals(row.getUUID("Door")))
+            return "The original owner's well checkpoint is unavailable. The reservation is preserved for recovery.";
+        var root=scene.loop.story.getCompound("PinkPalaceJourney");
+        var well=PalaceWellProgress.load(owner,scene.door,root.getCompound("Well"));
+        if(!well.blocker().isEmpty())return "The original Hand checkpoint needs recovery: "+well.blocker();
+        var player=server.getPlayerList().getPlayer(owner);
+        if(owner.equals(viewer))return "Your original Hand encounter is at "+well.phase()+". Use /coralinepalace well-resume at the well.";
+        String who=player==null?"the offline original owner":player.getGameProfile().getName();
+        return "The original Hand is reserved for "+who+" at "+well.phase()+". Only that owner can resume it.";
+    }
     public static boolean reservedFor(MinecraftServer server,VisitData.Scene scene,PalaceWellProgress progress){
         return get(server).matches(scene,progress);
     }

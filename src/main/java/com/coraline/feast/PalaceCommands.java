@@ -18,6 +18,11 @@ public final class PalaceCommands {
             .then(Commands.literal("register").then(Commands.argument("offer",UuidArgument.uuid()).executes(c->PalaceTransport.register(c.getSource().getPlayerOrException(),UuidArgument.getUuid(c,"offer")))))
             .then(Commands.literal("leave").executes(c->PalaceTransport.leave(c.getSource().getPlayerOrException())))
             .then(Commands.literal("resume").executes(c->PalaceTransport.resume(c.getSource().getPlayerOrException())))
+            .then(Commands.literal("well-status").executes(c->{
+                var player=c.getSource().getPlayerOrException();
+                c.getSource().sendSuccess(()->Component.literal(com.coraline.postgame.GlobalHandEncounter.status(player.server,player.getUUID())),false);
+                return 1;
+            }))
             .then(Commands.literal("well-resume").executes(c->PalaceWellEncounter.resume(c.getSource().getPlayerOrException())))
             .then(Commands.literal("status").requires(c->c.hasPermission(2)).executes(c->{
                 var d=PalaceSiteData.get(c.getSource().getServer());var saved=d.save(new net.minecraft.nbt.CompoundTag());var job=saved.getCompound("Generation");

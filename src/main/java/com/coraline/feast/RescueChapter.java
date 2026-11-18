@@ -48,12 +48,13 @@ public final class RescueChapter {
         if(!s.owner.equals(p.getUUID()))return;
         String interlude=next==Phase.THEATRE_TRAVEL?"garden_ghost_eye_music":next==Phase.ATTIC_TRAVEL?"theatre_ghost_eye_music":next==Phase.EXTERIOR?"circus_ghost_eye_music":"";
         if(!interlude.isEmpty()&&!data(s).getBoolean("Played_"+interlude)){VisitAudio.play(p,interlude,true);data(s).putBoolean("Played_"+interlude,true);}
-        ShowPlayback.transition(p,s,sound(next));var n=data(s);n.putString("Phase",next.name());n.putInt("Ticks",0);n.remove("Audio");n.remove("AudioTail");n.remove("Blocker");n.putUUID("Input",UUID.randomUUID());n.remove("LastInput");RescueWebHearing.reset(p);
+        ShowPlayback.transition(p,s,sound(next));var n=data(s);n.putString("Phase",next.name());n.putInt("Ticks",0);n.remove("Audio");n.remove("AudioTail");n.remove("RecordingFailures");n.remove("RecordingFallbackTicks");n.remove("Blocker");n.putUUID("Input",UUID.randomUUID());n.remove("LastInput");RescueWebHearing.reset(p);
         s.loop.story.putString("MajorStoryPhase","RESCUE_"+next.name());OtherMotherLoop.changed(p);sync(p,s);
     }
     public static boolean begin(ServerPlayer p,VisitData.Scene s){
         var n=ParentRescueStory.data(s);
-        if(!s.owner.equals(p.getUUID())||!FirstEscapeStory.data(s).getBoolean("Complete")||!MissingParentsCat.data(s).getBoolean("Complete")||!MissingParentsCat.tunnelRestored(s)||ParentRescueStory.phase(s)!=ParentRescueStory.Phase.PARENT_RESCUE_KITCHEN_MOTHER_DISAPPEARED||!n.getBoolean("Complete")||!n.getBoolean("KeySwallowed")||!n.getBoolean("WardrobeBlocking")||n.getBoolean("Seated"))return false;
+        if(!s.owner.equals(p.getUUID())||!FirstEscapeStory.data(s).getBoolean("Complete")||!MissingParentsCat.data(s).getBoolean("Complete")||!MissingParentsCat.tunnelRestored(s)||ParentRescueStory.phase(s)!=ParentRescueStory.Phase.PARENT_RESCUE_KITCHEN_MOTHER_DISAPPEARED||!n.getBoolean("Complete")||!n.getBoolean("KeySwallowed")||n.getBoolean("Seated"))return false;
+        if(!ParentRescueStory.placeWardrobe(p,s,true,0))return false;
         data(s).putBoolean("Started",true);go(p,s,Phase.GARDEN_SEARCH);return true;
     }
     public static void tick(ServerPlayer p,VisitData.Scene s){
@@ -119,27 +120,43 @@ public final class RescueChapter {
         }
         String recording=sound(state);boolean done=false;int t=n.getInt("Ticks");
         if(!recording.isEmpty()){
-            if(!n.getBoolean("Audio")){if(!ShowPlayback.start(p,s,recording,false)){n.putString("Blocker","Required supplied recording is unavailable: "+recording);sync(p,s);return;}n.putBoolean("Audio",true);}
-            done=ShowPlayback.tick(p,s);t=ShowPlayback.position(s);
-            if(state.ordinal()>=Phase.BOB_A.ordinal()&&ShowPlayback.data(s).getBoolean("SafetySkipped")){
-                ShowPlayback.stop(p,s);
-                n.remove("Audio");
-                n.remove("AudioTail");
-                n.putString("Blocker","Retrying interrupted story recording: "+recording);
-                sync(p,s);
-                return;
+            boolean fallback=RecordingRecovery.exhausted(n);
+            if(!fallback){
+                if(!n.getBoolean("Audio")&&ShowPlayback.start(p,s,recording,false))n.putBoolean("Audio",true);
+                if(n.getBoolean("Audio"))done=ShowPlayback.tick(p,s);
+                if(!n.getBoolean("Audio")||ShowPlayback.data(s).getBoolean("SafetySkipped")
+                        ||!ShowPlayback.data(s).getString("Blocker").isEmpty()){
+                    ShowPlayback.stop(p,s);
+                    n.remove("Audio");n.remove("AudioTail");
+                    RecordingRecovery.failed(n);OtherMotherLoop.changed(p);
+                    if(RecordingRecovery.exhausted(n))p.displayClientMessage(net.minecraft.network.chat.Component.literal("This recording is unavailable. The scene will continue with its required actions."),true);
+                    sync(p,s);return;
+                }
+                t=ShowPlayback.position(s);
+                if(done){int tail=n.getInt("AudioTail");t+=tail;n.putInt("AudioTail",tail+1);}
+            }else{
+                t=RecordingRecovery.advance(n);
+                done=RecordingRecovery.dialogueWindowEnded(t,ShowRecordings.duration(recording));
             }
-            if(state.ordinal()>=Phase.BOB_A.ordinal()&&ShowPlayback.started(s)&&ShowPlayback.data(s).getString("Blocker").isEmpty())n.remove("Blocker");
-            // A completed recording does not freeze a physical action that has
-            // not arrived yet. No tail time is granted before its real end ACK.
-            if(done){int tail=n.getInt("AudioTail");t+=tail;n.putInt("AudioTail",tail+1);}n.putInt("Ticks",t);
-            if(!ShowPlayback.data(s).getString("Blocker").isEmpty()){n.putString("Blocker",ShowPlayback.data(s).getString("Blocker"));sync(p,s);return;}
+            n.putInt("Ticks",t);
         }else n.putInt("Ticks",++t);
         if(state.ordinal()<=Phase.ROOM_LOCKED.ordinal())RescueEncounters.tick(p,s,state,t,done);
         else if(state.ordinal()<=Phase.BANGING.ordinal())BeldamFinale.tick(p,s,state,t,done);
         else RescueEpilogue.tick(p,s,state,t,done);
         if(n.getBoolean("WebEntered")&&state.ordinal()<=Phase.DOOR_STRUGGLE.ordinal())RescueWebSite.sag(p,s);
         if(p.tickCount%5==0)sync(p,s);if(p.tickCount%20==0)OtherMotherLoop.changed(p);
+    }
+    static final class RecordingRecovery {
+        static boolean exhausted(CompoundTag state){return state.getInt("RecordingFailures")>=3;}
+        static void failed(CompoundTag state){
+            if(!exhausted(state))state.putInt("RecordingFailures",Math.max(0,state.getInt("RecordingFailures"))+1);
+        }
+        static int advance(CompoundTag state){
+            int t=Math.max(0,state.getInt("RecordingFallbackTicks"));
+            if(t<Integer.MAX_VALUE)t++;
+            state.putInt("RecordingFallbackTicks",t);return t;
+        }
+        static boolean dialogueWindowEnded(int ticks,int duration){return ticks>=Math.max(100,duration);}
     }
     static void cutsceneSafety(ServerPlayer p,VisitData.Scene s){
         var state=phase(s);String voice=sound(state);

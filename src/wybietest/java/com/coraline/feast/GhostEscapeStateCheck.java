@@ -14,6 +14,18 @@ public final class GhostEscapeStateCheck {
         require(GhostEscapeProgress.begin(ghost,List.of("storage","attic","archive"),Set.of("ghost_0","ghost_2"),true),"Valid bedtime alliance failed");return ghost;
     }
     public static void main(String[] args)throws Exception{
+        var recording=new CompoundTag();
+        for(int i=0;i<3;i++){
+            require(!RescueChapter.RecordingRecovery.exhausted(recording),"Recording recovery ended before its retry limit");
+            RescueChapter.RecordingRecovery.failed(recording);
+            recording=TagParser.parseTag(recording.toString());
+        }
+        RescueChapter.RecordingRecovery.failed(recording);
+        require(RescueChapter.RecordingRecovery.exhausted(recording)&&recording.getInt("RecordingFailures")==3,"Reload restarted the failed recording budget");
+        for(int i=1;i<=100;i++){
+            int tick=RescueChapter.RecordingRecovery.advance(recording);
+            require(RescueChapter.RecordingRecovery.dialogueWindowEnded(tick,0)==(i==100),"Missing audio completed before the silent dialogue window");
+        }
         var ghost=session();var n=GhostEscapeProgress.data(ghost);String room=n.getString("EyeRoom");
         require(!GhostEscapeProgress.begin(ghost,List.of("storage"),Set.of(),true),"Repeated alliance rerolled the room");
         require(n.getString("EyeRoom").equals(room),"Eye room changed after reload/re-entry");

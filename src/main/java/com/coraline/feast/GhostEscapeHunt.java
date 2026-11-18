@@ -15,7 +15,14 @@ public final class GhostEscapeHunt {
         var e=ghost.getCompound(GhostEscapeProgress.KEY);
         if(!GhostVictimMirrors.owned(p,s,ghost)||!GhostEscapeProgress.owns(ghost,e)||GhostEscapeProgress.phase(e)!=GhostEscapeProgress.Phase.WAGER
             ||!e.getBoolean("WagerAgreed")||!e.getBoolean("PlayerEyesHeld"))return false;
-        var child=GhostVictimActors.find(p,s,ghost);String hide=e.getString("InitialHide");if(child==null||!GhostEscapeHiding.reachable(child,e,hide))return false;
+        var child=GhostVictimActors.find(p,s,ghost);String hide=e.getString("InitialHide");
+        if(child==null)return false;
+        if(!GhostEscapeHiding.reachable(child,e,hide)){
+            hide=alternative(child,AcceptedButtonEyesWorld.mother(p,s),e,hide);
+            if(hide.isEmpty()&&GhostEscapeHiding.refresh(p,s,ghost,child))hide=alternative(child,AcceptedButtonEyesWorld.mother(p,s),e,"");
+            if(hide.isEmpty())return false;
+            e.putString("InitialHide",hide);
+        }
         e.remove("HuntRetryAt");e.remove("Blocker");e.putString("TargetHide",hide);e.putBoolean("InitialHideStaging",true);
         ghost.remove("ChildRoutine");
         child.setInvisible(false);child.setNoAi(false);child.noPhysics=false;child.setNoGravity(false);
@@ -41,12 +48,18 @@ public final class GhostEscapeHunt {
             var stagingChild=GhostVictimActors.find(p,s,ghost);String hide=e.getString("InitialHide");
             if(e.getBoolean("InitialHideStaging")&&stagingChild!=null&&stagingChild.level()==AcceptedButtonEyesWorld.level(p)){
                 var node=GhostEscapeHiding.node(e,hide);var stagingMother=AcceptedButtonEyesWorld.mother(p,s);
-                if(node.contains("Position")&&!node.getBoolean("Compromised")){
+                if(node.contains("Position")&&!node.getBoolean("Compromised")&&GhostEscapeHiding.reachable(stagingChild,e,hide)){
                     stagingChild.setPose(Pose.CROUCHING);stagingChild.refreshDimensions();
-                    if(GhostVictimRoutines.travel(p,s,ghost,stagingChild,BlockPos.of(node.getLong("Position")),false)==GhostVictimNavigation.Result.ARRIVED
+                    var result=GhostVictimRoutines.travel(p,s,ghost,stagingChild,BlockPos.of(node.getLong("Position")),false);
+                    if(result==GhostVictimNavigation.Result.ARRIVED
                         &&GhostEscapeHiding.concealed(stagingChild,stagingMother,e,hide)&&GhostEscapeProgress.hidingArrival(ghost,hide,true)){
                         e.remove("InitialHideStaging");e.remove("Blocker");ghost.remove("ChildRoutine");stagingChild.getNavigation().stop();
                         GhostVictimDirector.words(ghost,"I'm hidden. Tell me when to move.");OtherMotherLoop.changed(p);
+                    }else if(result==GhostVictimNavigation.Result.BLOCKED||result==GhostVictimNavigation.Result.ARRIVED&&clock%80==0){
+                        String next=alternative(stagingChild,stagingMother,e,hide);
+                        if(!next.isEmpty()){
+                            e.putString("InitialHide",next);e.putString("TargetHide",next);ghost.remove("ChildRoutine");OtherMotherLoop.changed(p);
+                        }
                     }
                 }else{e.remove("InitialHideStaging");e.putString("Blocker","The original starting cover has changed; restore its clearance before the hunt can begin.");}
             }
@@ -59,8 +72,15 @@ public final class GhostEscapeHunt {
         if(phase==GhostEscapeProgress.Phase.FINAL_CROSSING){
             child.setPose(Pose.STANDING);child.refreshDimensions();
             var realm=AcceptedButtonEyesWorld.realm(p,s);if(realm==null||realm.doorPos==null||child.level()!=p.server.getLevel(com.coraline.otherworld.OtherWorld.KEY))return true;
-            var approach=GhostVictimNavigation.approach(child,realm.doorPos);if(approach==null){e.putString("Blocker","No clear path reaches the Little Door.");return true;}
-            if(GhostVictimRoutines.travel(p,s,ghost,child,approach,true)==GhostVictimNavigation.Result.ARRIVED&&GhostEscapeProgress.reachedDoor(ghost,true)){
+            var approach=GhostVictimNavigation.approach(child,realm.doorPos);
+            if(approach==null){
+                e.putString("Blocker","No clear path reaches the Little Door. Restore the route or choose cover and try again.");
+                retarget(p,s,ghost,child,target);
+                return true;
+            }
+            var result=GhostVictimRoutines.travel(p,s,ghost,child,approach,true);
+            if(result==GhostVictimNavigation.Result.BLOCKED){retarget(p,s,ghost,child,target);return true;}
+            if(result==GhostVictimNavigation.Result.ARRIVED&&GhostEscapeProgress.reachedDoor(ghost,true)){
                 ghost.remove("ChildRoutine");
                 child.getNavigation().stop();
                 OtherMotherLoop.changed(p);
@@ -169,11 +189,14 @@ public final class GhostEscapeHunt {
                     double distance=child.distanceToSqr(BlockPos.of(candidate.getLong("Position")).getCenter());
                     if(distance<nearest){nearest=distance;selected=candidate;}
                 }
-                if(selected==null){e.putString("Blocker","No reachable covered position is available for the hide signal.");child.getNavigation().stop();return true;}
+                if(selected==null){e.putString("Blocker","No reachable covered position is available for the hide signal.");child.getNavigation().stop();retarget(p,s,ghost,child,target);return true;}
                 target=selected.getString("Id");e.putString("TargetHide",target);
             }
             var node=GhostEscapeHiding.node(e,target);if(!node.contains("Position")||node.getBoolean("Compromised")||!GhostEscapeHiding.reachable(child,e,target)){
-                e.putString("Blocker","The selected hiding route changed. Choose another real hiding position.");child.getNavigation().stop();return true;
+                e.putString("Blocker","The selected hiding route changed. Choose another real hiding position.");
+                child.getNavigation().stop();
+                retarget(p,s,ghost,child,target);
+                return true;
             }
             var at=BlockPos.of(node.getLong("Position"));
             if(GhostVictimRoutines.travel(p,s,ghost,child,at,false)==GhostVictimNavigation.Result.ARRIVED&&GhostEscapeHiding.concealed(child,mother,e,target)){
@@ -192,8 +215,44 @@ public final class GhostEscapeHunt {
                     e.putString("HidingSpot",id);e.putLong("HidingAt",GhostVictimProgress.clock(ghost));break;
                 }
             }
+            if(!GhostEscapeHiding.reachable(child,e,e.getString("HidingSpot")))retarget(p,s,ghost,child,e.getString("HidingSpot"));
         }
         return true;
+    }
+    private static String alternative(com.coraline.tycoon.TycoonNpc child,com.coraline.parents.ParentEntity mother,CompoundTag escape,String previous){
+        String best="";double distance=Double.MAX_VALUE;
+        for(var tag:escape.getList("HidingNodes",net.minecraft.nbt.Tag.TAG_COMPOUND)){
+            var node=(CompoundTag)tag;String id=node.getString("Id");
+            if(id.equals(previous)||!node.contains("Position")||node.getBoolean("Compromised"))continue;
+            var feet=BlockPos.of(node.getLong("Position"));
+            double next=child.distanceToSqr(feet.getCenter());
+            if(next<distance&&GhostEscapeHiding.concealedAt(child,mother,feet)&&GhostEscapeHiding.reachable(child,escape,id)){distance=next;best=id;}
+        }
+        return best;
+    }
+    private static void retarget(ServerPlayer p,VisitData.Scene scene,CompoundTag ghost,com.coraline.tycoon.TycoonNpc child,String previous){
+        var escape=ghost.getCompound(GhostEscapeProgress.KEY);
+        long clock=GhostVictimProgress.clock(ghost);
+        if(clock<escape.getLong("CoverRetryAt"))return;
+        escape.putLong("CoverRetryAt",clock+40);
+        String next=alternative(child,AcceptedButtonEyesWorld.mother(p,scene),escape,previous);
+        if(next.isEmpty()&&GhostEscapeHiding.refresh(p,scene,ghost,child))next=alternative(child,AcceptedButtonEyesWorld.mother(p,scene),escape,"");
+        if(next.isEmpty()){
+            if(!escape.getBoolean("WagerAgreed")||!escape.getBoolean("PlayerEyesHeld"))return;
+            child.getNavigation().stop();child.setSprinting(false);
+            escape.remove("HidingSpot");escape.remove("TargetHide");escape.remove("StopRequested");escape.remove("InitialHideStaging");
+            ghost.remove("ChildRoutine");
+            GhostEscapeProgress.move(escape,GhostEscapeProgress.Phase.WAGER,clock);
+            escape.putLong("HuntRetryAt",clock+40);
+            escape.putString("Blocker","No reachable cover remains. Clear a route so the accepted wager can resume.");
+            GhostVictimDirector.words(ghost,"I can't reach cover yet. Clear a path and I'll try again.");
+            OtherMotherLoop.changed(p);
+            return;
+        }
+        escape.putString("TargetHide",next);escape.remove("StopRequested");ghost.remove("ChildRoutine");
+        GhostEscapeProgress.move(escape,GhostEscapeProgress.Phase.MOVING_HIDE,clock);
+        GhostVictimDirector.words(ghost,"That path is blocked. I'm heading for other cover.");
+        OtherMotherLoop.changed(p);
     }
     private static net.minecraft.world.level.block.state.BlockState openPassage(net.minecraft.server.level.ServerLevel level,BlockPos at,java.util.UUID expected){
         LoopProps.hold(level,at);

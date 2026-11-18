@@ -121,9 +121,28 @@ public final class RescueEpilogue {
 
             }
             case CAT_NOTICE->{
-                var safe=OtherWorld.safePlayer(p.serverLevel(),d.pos.offset(6,0,5));if(safe==null)return;var cat=ShowActors.acquire(p,s,"cat",p.serverLevel(),Vec3.atBottomCenterOf(safe));if(cat==null)return;
-                if(!n.getBoolean("FarewellCatPlaced")){cat.setPos(Vec3.atBottomCenterOf(safe));n.putBoolean("FarewellCatPlaced",true);}cat.setInvisible(false);ShowActors.position(cat,cat.position(),cat.getYRot(),30,t,1);n.putInt("Cat",cat.getId());
-                if(p.distanceToSqr(cat)<25&&RescueEncounters.gaze(p,cat.getEyePosition(),8,.8))RescueChapter.go(p,s,FAREWELL_A);
+                FirstEscapeStory.hint(p,"Approach the Cat and look at it.");
+                var level=p.serverLevel();
+                var cat=ShowActors.actor(p,s,"cat");
+                if(cat==null||cat.level()!=level||!n.getBoolean("FarewellCatPlaced")
+                        ||!level.noCollision(cat,cat.getBoundingBox())
+                        ||p.tickCount%40==0&&p.distanceToSqr(cat)<100&&!p.hasLineOfSight(cat)){
+                    Vec3 candidate=null;
+                    for(var offset:java.util.List.of(d.pos.offset(6,0,5),d.pos.offset(-5,0,4),d.pos.south(4),d.pos.north(4))){
+                        var safe=nearReturn(level,p,Pose.STANDING,offset,2);
+                        if(safe==null||safe.distanceToSqr(p.position())<2)continue;
+                        var hit=level.clip(new net.minecraft.world.level.ClipContext(p.getEyePosition(),safe.add(0,.55,0),
+                                net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,p));
+                        if(hit.getType()==net.minecraft.world.phys.HitResult.Type.MISS){candidate=safe;break;}
+                    }
+                    if(candidate==null){FirstEscapeStory.hint(p,"Move into a clear area near the Little Door so the Cat can approach.");return;}
+                    cat=ShowActors.recoverCat(p,s,level,candidate);
+                    if(cat==null||cat.level()!=level){FirstEscapeStory.hint(p,"Waiting for the original Cat to return.");return;}
+                    cat.setPos(candidate);
+                    n.putBoolean("FarewellCatPlaced",true);OtherMotherLoop.changed(p);
+                }
+                cat.setInvisible(false);ShowActors.position(cat,cat.position(),cat.getYRot(),30,t,1);n.putInt("Cat",cat.getId());
+                if(p.distanceToSqr(cat)<64&&RescueEncounters.gaze(p,cat.getEyePosition(),8,.55))RescueChapter.go(p,s,FAREWELL_A);
             }
             case FAREWELL_A->{if(done)RescueChapter.go(p,s,FAREWELL_B);}
             case FAREWELL_B->{

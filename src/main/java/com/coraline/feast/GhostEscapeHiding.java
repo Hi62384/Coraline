@@ -47,6 +47,29 @@ public final class GhostEscapeHiding {
             escape.put("HidingNodes",nodes);escape.putString("InitialHide",starts.get(Math.floorMod(escape.getUUID("Attempt").hashCode(),starts.size())));escape.putLong("FinalDoor",exit.asLong());OtherMotherLoop.changed(p);return true;
         }finally{probe.discard();}
     }
+    static boolean refresh(net.minecraft.server.level.ServerPlayer player,VisitData.Scene scene,CompoundTag ghost,TycoonNpc child){
+        var escape=ghost.getCompound(GhostEscapeProgress.KEY);
+        long now=GhostVictimProgress.clock(ghost);
+        if(now<escape.getLong("HideReplanAfter"))return false;
+        escape.putLong("HideReplanAfter",now+200);
+        var previous=escape.getList("HidingNodes",Tag.TAG_COMPOUND);
+        String initial=escape.getString("InitialHide");
+        var compromised=new java.util.HashSet<Long>();
+        for(var tag:previous){
+            var row=(CompoundTag)tag;
+            if(row.getBoolean("Compromised"))compromised.add(row.getLong("Position"));
+        }
+        escape.remove("HidingNodes");
+        if(!prepare(player,scene,ghost,child)){
+            escape.put("HidingNodes",previous);escape.putString("InitialHide",initial);
+            return false;
+        }
+        for(var tag:escape.getList("HidingNodes",Tag.TAG_COMPOUND)){
+            var row=(CompoundTag)tag;
+            if(compromised.contains(row.getLong("Position")))row.putBoolean("Compromised",true);
+        }
+        return true;
+    }
     static String coverLabel(int room,String cover){
         String area=switch(room){case 0->"Hall";case 1->"Kitchen";case 2->"Living room";case 3->"Dining room";case 4->"Bedroom";default->"Upstairs corridor";};
         return cover.isBlank()?area+" cover":area+" cover behind "+cover.toLowerCase(java.util.Locale.ROOT);
@@ -56,6 +79,13 @@ public final class GhostEscapeHiding {
     public static boolean reachable(TycoonNpc child,CompoundTag escape,String id){
         var node=node(escape,id);if(!node.contains("Position")||node.getBoolean("Compromised")||!(child.level() instanceof ServerLevel level))return false;
         var at=BlockPos.of(node.getLong("Position"));if(!GhostVictimNavigation.clear(level,child,at))return false;var path=child.getNavigation().createPath(at,0);return path!=null&&path.canReach();
+    }
+    static boolean concealedAt(TycoonNpc child,com.coraline.parents.ParentEntity mother,BlockPos feet){
+        if(mother==null||mother.level()!=child.level())return true;
+        var eye=mother.getEyePosition();
+        var target=Vec3.atBottomCenterOf(feet).add(0,child.getEyeHeight(),0);
+        return eye.distanceToSqr(target)>24*24||child.level().clip(new ClipContext(eye,target,ClipContext.Block.COLLIDER,
+                ClipContext.Fluid.NONE,mother)).getType()!=HitResult.Type.MISS;
     }
     public static boolean concealed(TycoonNpc child,com.coraline.parents.ParentEntity mother,CompoundTag escape,String id){
         var node=node(escape,id);if(!node.contains("Position")||node.getBoolean("Compromised")||!(child.level() instanceof ServerLevel level))return false;

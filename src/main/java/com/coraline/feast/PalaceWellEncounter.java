@@ -91,7 +91,7 @@ public final class PalaceWellEncounter {
             // A failed read-back may still have written this reservation. Keep
             // its previously saved native candidate so reconnect can retry it.
             if(!com.coraline.postgame.GlobalHandEncounter.reservedFor(p.server,s,progress.get())){r.remove("WellStage");r.remove("Well");}
-            startBlocked(p,s,r,"The world Hand encounter is reserved elsewhere or waiting for its saved checkpoint.");return false;
+            startBlocked(p,s,r,com.coraline.postgame.GlobalHandEncounter.status(p.server,p.getUUID()));return false;
         }
         r.remove("WellBlocker");OtherMotherLoop.changed(p);return true;
     }
@@ -226,7 +226,7 @@ public final class PalaceWellEncounter {
     private static void handPosition(VisitData.Scene s,CinematicPropEntity hand){var n=ParentRescueStory.scenery(s);n.putLong("RescueSeveredHandPosition",hand.blockPosition().asLong());n.putString("RescueSeveredHandDimension",hand.level().dimension().location().toString());}
     private static void tick(ServerPlayer p,VisitData.Scene s,CompoundTag n){
         var progress=state(s);if(!progress.blocker().isEmpty()||n.getBoolean("Paused"))return;
-        if(!com.coraline.postgame.GlobalHandEncounter.permits(p.server,s,progress)){pause(p,s,n,"Another story owns the world Hand encounter.");return;}
+        if(!com.coraline.postgame.GlobalHandEncounter.permits(p.server,s,progress)){pause(p,s,n,com.coraline.postgame.GlobalHandEncounter.status(p.server,p.getUUID()));return;}
         if(progress.phase()==COMPLETE){
             com.coraline.multiplayer.StoryCombatSafety.restoreGroup(p,s);
             if(!n.getBoolean("PresentationRetired")){for(String key:new String[]{"WellTongs","WellRock","WellPhoto","WellBundle"}){var prop=RescueProps.find(p,s,key);if(prop!=null)prop.setInvisible(true);}ShowPlayback.stop(p,s);n.putBoolean("PresentationRetired",true);OtherMotherLoop.changed(p);}return;
@@ -405,7 +405,12 @@ public final class PalaceWellEncounter {
     @SubscribeEvent public static void tick(TickEvent.PlayerTickEvent event){if(event.player instanceof net.minecraft.server.level.ServerPlayer coopPlayer&&com.coraline.multiplayer.StoryCoop.directorBlocked(coopPlayer))return;
         if(event.phase!=TickEvent.Phase.END||!(event.player instanceof ServerPlayer p))return;var s=OtherMotherLoop.scene(p);if(s==null)return;var r=root(s);if(r==null)return;
         if(!r.contains("Well")){if(p.tickCount%10==0&&eligible(p,s))start(p,s);return;}
-        var n=control(s);if(n==null)return;try{tick(p,s,n);}catch(RuntimeException failure){pause(p,s,n,"Well scene paused safely: "+failure.getMessage());}
+        var n=control(s);if(n==null)return;
+        try{
+            if(p.tickCount%40==0&&n.getBoolean("Paused")&&n.getString("Blocker").equals("Well encounter paused for reconnect.")
+                    &&com.coraline.postgame.GlobalHandEncounter.reservedFor(p.server,s,state(s)))resume(p);
+            tick(p,s,n);
+        }catch(RuntimeException failure){pause(p,s,n,"Well scene paused safely: "+failure.getMessage());}
     }
     @SubscribeEvent public static void logout(PlayerEvent.PlayerLoggedOutEvent event){if(event.getEntity() instanceof ServerPlayer p){if(com.coraline.multiplayer.StoryCoop.guest(p))return;var s=OtherMotherLoop.scene(p);var n=s==null?null:control(s);if(n!=null&&state(s).phase()!=COMPLETE)pause(p,s,n,"Well encounter paused for reconnect.");}}
     private PalaceWellEncounter(){}

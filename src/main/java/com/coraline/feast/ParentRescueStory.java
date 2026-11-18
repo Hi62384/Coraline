@@ -85,7 +85,16 @@ public final class ParentRescueStory {
             case L->{retireKitchenGift(p,s);m.lookAtStoryPlayer(p);if(done)go(p,s,Phase.M);}
             case M->{retireKitchenGift(p,s);m.lookAtStoryPlayer(p);m.familyGesture(63,5);if(done)go(p,s,Phase.LOOK_AWAY);}
             case LOOK_AWAY->{m.lookAtStoryPlayer(p);FirstEscapeStory.hint(p,"Look away from Other Mother.");if(!gaze(p,m.position().add(0,1.5,0),.20))n.putInt("AwayTicks",n.getInt("AwayTicks")+1);else n.putInt("AwayTicks",0);if(n.getInt("AwayTicks")>=12){n.putLong("MotherVanishedAt",m.blockPosition().asLong());m.setInvisible(true);m.getNavigation().stop();n.putBoolean("MotherAbsent",true);go(p,s,Phase.WAIT_LOOK_BACK);}}
-            case WAIT_LOOK_BACK->{if(gaze(p,BlockPos.of(n.getLong("MotherVanishedAt")).getCenter().add(0,1,0),.80))go(p,s,Phase.N);}
+            case WAIT_LOOK_BACK->{
+                FirstEscapeStory.hint(p,"Turn around and look where Other Mother was standing.");
+                var at=n.contains("MotherVanishedAt",Tag.TAG_LONG)?BlockPos.of(n.getLong("MotherVanishedAt")):m.blockPosition();
+                if(!FirstEscapeScene.inHouseOrPorch(s,at))at=m.blockPosition();
+                var point=at.getCenter().add(0,1,0);
+                if(p.distanceToSqr(point)<144&&gaze(p,point,.55))go(p,s,Phase.N);
+                else for(var offset:List.of(new Vec3(0,.7,0),new Vec3(.6,0,0),new Vec3(-.6,0,0),new Vec3(0,0,.6),new Vec3(0,0,-.6))){
+                    if(p.distanceToSqr(point)<144&&gaze(p,point.add(offset),.65)){go(p,s,Phase.N);break;}
+                }
+            }
             case N->{m.setInvisible(true);if(done){release(p,s);s.loop.story.putString("MajorStoryPhase",Phase.PARENT_RESCUE_KITCHEN_MOTHER_DISAPPEARED.name());n.putBoolean("Complete",true);go(p,s,Phase.PARENT_RESCUE_KITCHEN_MOTHER_DISAPPEARED);}}
             case PARENT_RESCUE_KITCHEN_MOTHER_DISAPPEARED->{m.setInvisible(true);m.getNavigation().stop();}
         }
@@ -108,10 +117,9 @@ public final class ParentRescueStory {
             case KEY_SCENE->{
                 if(!n.getBoolean("KeyTaken")&&!StoryItemCustody.capture(p,s,"Key",stack->key(stack,s))){release(p,s);StoryCutsceneWatchdog.retry(s,"parent_rescue");return;}
                 n.putBoolean("KeyTaken",true);n.putBoolean("KeySwallowed",true);s.loop.story.putString("LittleDoorKeyHolder","EVIL_OTHER_MOTHER");
-                var little=BlockPos.of(scenery(s).getLong("LittleDoor"));FirstEscapeStory.repairLittleDoor(p,s);var door=p.serverLevel().getBlockState(little);if(door.is(com.coraline.registry.ModBlocks.TINY_DOOR.get()))p.serverLevel().setBlock(little,door.setValue(TinyDoorBlock.OPEN,false).setValue(TinyDoorBlock.PORTAL,false),3);
-                n.putBoolean("DoorLocked",true);var wardrobe=FirstEscapeScene.prop(p,s,"Wardrobe");
-                if(wardrobe!=null){wardrobe.setInvisible(false);var facing=door.hasProperty(TinyDoorBlock.FACING)?door.getValue(TinyDoorBlock.FACING):Direction.EAST;wardrobe.setPos(Vec3.atBottomCenterOf(little).add(Vec3.atLowerCornerOf(facing.getNormal()).scale(1.1)));n.putBoolean("WardrobeBlocking",true);}
-                var mom=mother(p,s);if(mom!=null)mom.setItemSlot(EquipmentSlot.MAINHAND,ItemStack.EMPTY);go(p,s,Phase.E);
+                if(!placeWardrobe(p,s,true,0)){StoryCutsceneWatchdog.retry(s,"parent_rescue");return;}
+                var mom=mother(p,s);if(mom!=null)mom.setItemSlot(EquipmentSlot.MAINHAND,ItemStack.EMPTY);
+                go(p,s,Phase.E);
             }
             case E->go(p,s,Phase.F);case F->go(p,s,Phase.G);
             case G->{release(p,s);go(p,s,Phase.KITCHEN);}
@@ -225,13 +233,37 @@ public final class ParentRescueStory {
         if(t==35)m.setItemSlot(EquipmentSlot.MAINHAND,ItemStack.EMPTY);
         if(t>=70){
             m.setItemSlot(EquipmentSlot.MAINHAND,ItemStack.EMPTY);n.putBoolean("KeySwallowed",true);
-            var wardrobe=FirstEscapeScene.prop(p,s,"Wardrobe");if(wardrobe==null){FirstEscapeScene.roomProps(p,s);wardrobe=FirstEscapeScene.prop(p,s,"Wardrobe");}
-            if(wardrobe==null){stageBlocked(p,s,"Waiting for the original wardrobe to load.");return;}
-            var doorState=p.level().getBlockState(little);var facing=doorState.hasProperty(TinyDoorBlock.FACING)?doorState.getValue(TinyDoorBlock.FACING):Direction.EAST;
-            wardrobe.setInvisible(false);var target=Vec3.atBottomCenterOf(little).add(Vec3.atLowerCornerOf(facing.getNormal()).scale(1.1));var delta=target.subtract(wardrobe.position());
-            wardrobe.setPos(wardrobe.position().add(delta.length()<.10?delta:delta.normalize().scale(.10)));wardrobe.frame(1,t,1);
-            if(wardrobe.distanceToSqr(target)<.04){n.putBoolean("WardrobeBlocking",true);n.remove("Blocker");go(p,s,Phase.E);}
+            if(placeWardrobe(p,s,false,t))go(p,s,Phase.E);
         }
+    }
+    static boolean placeWardrobe(ServerPlayer p,VisitData.Scene s,boolean recover,int ticks){
+        var n=data(s);
+        if(!OtherWorld.isOther(p.level())||!scenery(s).contains("LittleDoor",Tag.TAG_LONG)
+                ||!n.getBoolean("KeySwallowed")||!key(StoryItemCustody.held(s,"Key"),s))return false;
+        var little=BlockPos.of(scenery(s).getLong("LittleDoor"));
+        FirstEscapeStory.repairLittleDoor(p,s);
+        var level=p.serverLevel();
+        var door=level.getBlockState(little);
+        if(!door.is(com.coraline.registry.ModBlocks.TINY_DOOR.get())
+                ||!(level.getBlockEntity(little) instanceof com.coraline.otherworld.DoorBlockEntity binding)||!s.door.equals(binding.doorId)){
+            stageBlocked(p,s,"Waiting for the original Little Door.");return false;
+        }
+        var closed=door.setValue(TinyDoorBlock.OPEN,false).setValue(TinyDoorBlock.PORTAL,false);
+        if(!door.equals(closed))level.setBlock(little,closed,3);
+        if(!level.getBlockState(little).equals(closed))return false;
+        var wardrobe=FirstEscapeScene.prop(p,s,"Wardrobe");
+        if(wardrobe==null){FirstEscapeScene.roomProps(p,s);wardrobe=FirstEscapeScene.prop(p,s,"Wardrobe");}
+        if(wardrobe==null||wardrobe.kind()!=CinematicPropEntity.ROACH_WARDROBE||wardrobe.level()!=level){
+            stageBlocked(p,s,"Waiting for the original wardrobe to load.");return false;
+        }
+        var target=Vec3.atBottomCenterOf(little).add(Vec3.atLowerCornerOf(door.getValue(TinyDoorBlock.FACING).getNormal()).scale(1.1));
+        var delta=target.subtract(wardrobe.position());
+        wardrobe.setInvisible(false);
+        wardrobe.setPos(recover||delta.length()<.10?target:wardrobe.position().add(delta.normalize().scale(.10)));
+        wardrobe.frame(1,ticks,1);
+        if(wardrobe.distanceToSqr(target)>=.04)return false;
+        n.putBoolean("DoorLocked",true);n.putBoolean("WardrobeBlocking",true);
+        n.remove("Blocker");OtherMotherLoop.changed(p);return true;
     }
     public static BlockPos cookingStand(net.minecraft.server.level.ServerLevel level,BlockPos stove){var state=level.getBlockState(stove);var facing=state.hasProperty(HorizontalDirectionalBlock.FACING)?state.getValue(HorizontalDirectionalBlock.FACING):Direction.NORTH;return stove.relative(facing);}
     static void tickKitchenArrival(ServerPlayer p,VisitData.Scene s,ParentEntity mother){
