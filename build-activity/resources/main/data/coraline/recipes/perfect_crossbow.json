@@ -1,1 +1,24 @@
-{"type":"minecraft:crafting_shaped","category":"equipment","pattern":["IPI","SPS"," I "],"key":{"I":{"item":"coraline:other_iron_ingot"},"P":{"item":"coraline:perfect_ingot"},"S":{"item":"minecraft:string"}},"result":{"item":"coraline:perfect_crossbow","count":1}}
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "IPI",
+    "SPS",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "item": "coraline:other_iron_ingot"
+    },
+    "P": {
+      "item": "coraline:perfect_ingot"
+    },
+    "S": {
+      "item": "minecraft:string"
+    }
+  },
+  "result": {
+    "item": "coraline:perfect_crossbow",
+    "count": 1
+  }
+}

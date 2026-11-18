@@ -29,11 +29,12 @@ public final class GhostEscapeHiding {
                     var feet=center.offset(dx,0,dz);if(com.coraline.otherworld.OtherWorldEstate.outsideHouse(AcceptedButtonEyesWorld.house(s),feet)||!level.hasChunkAt(feet)||!GhostVictimNavigation.clear(level,probe,feet))continue;
                     boolean near=false;for(Tag entry:nodes)if(BlockPos.of(((CompoundTag)entry).getLong("Position")).distSqr(feet)<9){near=true;break;}if(near)continue;
                     var eye=Vec3.atBottomCenterOf(feet).add(0,probe.getEyeHeight(),0);var sight=Vec3.atBottomCenterOf(center).add(0,probe.getEyeHeight(),0);
-                    if(level.clip(new ClipContext(sight,eye,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,probe)).getType()==HitResult.Type.MISS)continue;
+                    var obstruction=level.clip(new ClipContext(sight,eye,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,probe));
+                    if(obstruction.getType()==HitResult.Type.MISS)continue;
                     // The unspawned probe has no physics tick. clear() proved
                     // real dry footing, so enable grounded path queries here.
                     probe.setPos(Vec3.atBottomCenterOf(feet));probe.setOnGround(true);var toDoor=probe.getNavigation().createPath(exit,0);if(toDoor==null||!toDoor.canReach())continue;
-                    var row=new CompoundTag();row.putString("Id","hide_"+nodes.size());row.putLong("Position",feet.asLong());row.putInt("Room",room);row.putDouble("DistanceToDoor",pathLength(toDoor));nodes.add(row);made++;
+                    var row=new CompoundTag();row.putString("Id","hide_"+nodes.size());row.putLong("Position",feet.asLong());row.putInt("Room",room);row.putString("Label",coverLabel(room,level.getBlockState(obstruction.getBlockPos()).getBlock().getName().getString()));row.putDouble("DistanceToDoor",pathLength(toDoor));nodes.add(row);made++;
                 }
             }
             if(nodes.size()<4){escape.putString("Blocker","The house needs at least four covered, reachable hiding positions; no impossible wager was started.");return false;}
@@ -45,6 +46,10 @@ public final class GhostEscapeHiding {
             if(starts.isEmpty()){escape.putString("Blocker","No distant hiding position has a real route to the Little Door.");return false;}
             escape.put("HidingNodes",nodes);escape.putString("InitialHide",starts.get(Math.floorMod(escape.getUUID("Attempt").hashCode(),starts.size())));escape.putLong("FinalDoor",exit.asLong());OtherMotherLoop.changed(p);return true;
         }finally{probe.discard();}
+    }
+    static String coverLabel(int room,String cover){
+        String area=switch(room){case 0->"Hall";case 1->"Kitchen";case 2->"Living room";case 3->"Dining room";case 4->"Bedroom";default->"Upstairs corridor";};
+        return cover.isBlank()?area+" cover":area+" cover behind "+cover.toLowerCase(java.util.Locale.ROOT);
     }
     private static double pathLength(net.minecraft.world.level.pathfinder.Path path){double length=0;for(int i=1;i<path.getNodeCount();i++)length+=Math.sqrt(path.getNode(i).asBlockPos().distSqr(path.getNode(i-1).asBlockPos()));return length;}
     public static CompoundTag node(CompoundTag escape,String id){for(Tag entry:escape.getList("HidingNodes",Tag.TAG_COMPOUND)){var n=(CompoundTag)entry;if(n.getString("Id").equals(id))return n;}return new CompoundTag();}

@@ -22,8 +22,19 @@ public final class RescueRatGameTests {
     @GameTest(template="empty",timeoutTicks=250) public static void realMountedBallRollsAcrossCarpetAndUpAFullStep(GameTestHelper h){
         var p=player(h);var s=OtherMotherLoop.scene(p);var l=h.getLevel();var start=h.absolutePos(new BlockPos(1,123,1101));var target=start.offset(8,1,0);
         for(int x=-1;x<=10;x++)for(int z=-1;z<=1;z++){int top=x>=4?0:-1;for(int y=-1;y<=3;y++)l.setBlock(start.offset(x,y,z),y<=top?Blocks.STONE.defaultBlockState():Blocks.AIR.defaultBlockState(),2);}l.setBlock(start.east(2),Blocks.RED_CARPET.defaultBlockState(),2);p.setPos(Vec3.atBottomCenterOf(start.south(2)));
-        var rat=ModEntities.MOUSE.get().create(l);rat.getPersistentData().putUUID("RescueOwner",s.owner);rat.refreshDimensions();rat.setNoAi(true);rat.setPos(Vec3.atBottomCenterOf(start));l.addFreshEntity(rat);int[] ticks={0};
-        h.onEachTick(()->{LoopProps.hold(l,start);LoopProps.hold(l,target);if(++ticks[0]<25)return;RescueEncounters.rollRat(p,s,rat,target,ticks[0],2);var ball=RescueProps.find(p,s,"RatBall2");if(ball!=null){h.assertTrue(rat.getVehicle()==ball,"Actual rat lost its ball during movement");h.assertTrue(!l.getBlockCollisions(ball,ball.getBoundingBox().deflate(.001)).iterator().hasNext(),"Moving mounted assembly penetrated terrain: "+ball.position()+" / "+ball.getBoundingBox());if(ball.position().distanceToSqr(Vec3.atBottomCenterOf(target))<.36){RescueProps.retire(p,s,"RatBall2");rat.discard();VisitData.get(p.server).scenes.remove(s.owner);h.succeed();return;}}
+        var rat=ModEntities.MOUSE.get().create(l);rat.getPersistentData().putUUID("RescueOwner",s.owner);rat.refreshDimensions();rat.setNoAi(true);rat.setPos(Vec3.atBottomCenterOf(start));l.addFreshEntity(rat);
+        RescueChapter.data(s).putUUID("ChaseRat",rat.getUUID());
+        int[] ticks={0};
+        java.util.UUID[] discarded={null};
+        h.onEachTick(()->{LoopProps.hold(l,start);LoopProps.hold(l,target);if(++ticks[0]<25)return;RescueEncounters.rollRat(p,s,rat,target,ticks[0],2);var ball=RescueProps.find(p,s,"RatBall2");if(ball!=null){
+                if(discarded[0]==null){
+                    discarded[0]=ball.getUUID();
+                    ball.ejectPassengers();
+                    ball.discard();
+                    return;
+                }
+                h.assertFalse(ball.getUUID().equals(discarded[0]),"Destroyed ball UUID was reused");
+                h.assertTrue(rat.getVehicle()==ball,"Actual rat lost its ball during movement");h.assertTrue(!l.getBlockCollisions(ball,ball.getBoundingBox().deflate(.001)).iterator().hasNext(),"Moving mounted assembly penetrated terrain: "+ball.position()+" / "+ball.getBoundingBox());if(ball.position().distanceToSqr(Vec3.atBottomCenterOf(target))<.36){RescueProps.retire(p,s,"RatBall2");rat.discard();VisitData.get(p.server).scenes.remove(s.owner);h.succeed();return;}}
             if(ticks[0]>225){String detail=RescueChapter.data(s).getString("Blocker")+" at "+rat.position();RescueProps.retire(p,s,"RatBall2");rat.discard();VisitData.get(p.server).scenes.remove(s.owner);h.fail("Physical rat-ball movement stalled: "+detail);}
         });
     }

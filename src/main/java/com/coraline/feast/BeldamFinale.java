@@ -101,10 +101,99 @@ public final class BeldamFinale {
     public static Vec3 catThrowVelocity(Vec3 from,Vec3 aim){var delta=aim.subtract(from);double ticks=Math.max(1,delta.horizontalDistance()/1.2);return new Vec3(delta.x/ticks,delta.y/ticks+.045*(ticks-1)/2,delta.z/ticks);}
     static Vec3 catThrowOrigin(ServerPlayer p){var look=p.getLookAngle().normalize();var eye=p.getEyePosition();var hand=eye.add(look.scale(.65)).add(0,-.45,0);var trace=p.serverLevel().clip(new net.minecraft.world.level.ClipContext(eye,hand,net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,p));return trace.getType()==HitResult.Type.MISS?hand:trace.getLocation().subtract(look.scale(.08));}
     private static void motherAt(ParentEntity m,Vec3 at,ServerPlayer p,int gesture){if(m==null)return;m.stopRiding();m.getNavigation().stop();m.setNoAi(true);m.setNoGravity(true);m.noPhysics=true;m.setInvisible(false);m.setPos(at);m.setYRot(face(at,p.position()));m.setYBodyRot(m.getYRot());m.setYHeadRot(m.getYRot());m.familyGesture(gesture,5);}
+    static boolean roomLocked(VisitData.Scene s){
+        if(!RescueChapter.started(s))return false;
+        var n=RescueChapter.data(s);
+        var phase=RescueChapter.phase(s);
+        return n.getBoolean("RoomLocked")&&phase.ordinal()>=ROOM_LOCKED.ordinal()
+                &&phase.ordinal()<=FINAL_O.ordinal()&&!n.getBoolean("WebEntryReady");
+    }
+    static boolean lockedDoor(VisitData.Scene s,BlockPos at){
+        if(!roomLocked(s)||!ParentRescueStory.scenery(s).contains("LittleDoor",net.minecraft.nbt.Tag.TAG_LONG))return false;
+        var entrance=FirstEscapeScene.entrance(s);
+        var little=little(s);
+        return at.equals(entrance)||at.equals(entrance.above())||at.equals(entrance.south())
+                ||at.equals(entrance.south().above())||at.equals(little)||at.equals(little.above());
+    }
+    static boolean keepPlayerInRoom(ServerPlayer p,VisitData.Scene s){
+        if(!roomLocked(s)||RescueChapter.data(s).getBoolean("FloorOpened"))return true;
+        var level=p.server.getLevel(OtherWorld.KEY);
+        if(level==null)return false;
+        if(p.serverLevel()==level&&FirstEscapeScene.fullyInRoom(s,p.getBoundingBox()))return true;
+        var center=FirstEscapeScene.room(s);
+        LoopProps.hold(level,center);
+        for(int radius=0;radius<=5;radius++)for(int dx=-radius;dx<=radius;dx++)for(int dz=-radius;dz<=radius;dz++){
+            if(Math.max(Math.abs(dx),Math.abs(dz))!=radius)continue;
+            var at=Vec3.atBottomCenterOf(center.offset(dx,0,dz));
+            if(!FirstEscapeScene.fullyInRoom(s,p.getDimensions(Pose.STANDING).makeBoundingBox(at))
+                    ||!RescueEpilogue.safeReturn(level,p,Pose.STANDING,at))continue;
+            p.stopRiding();
+            p.setForcedPose(null);
+            p.setPose(Pose.STANDING);
+            p.teleportTo(level,at.x,at.y,at.z,p.getYRot(),p.getXRot());
+            p.fallDistance=0;
+            p.setDeltaMovement(Vec3.ZERO);
+            return p.serverLevel()==level&&p.position().distanceToSqr(at)<.25;
+        }
+        RescueChapter.data(s).putString("Blocker","Clear a standing space in the locked confrontation room to resume.");
+        return false;
+    }
+    private static final class StageFloor {
+        private static final java.util.Map<BlockPos,net.minecraft.world.level.block.state.BlockState> BLUEPRINT=create();
+        private static java.util.Map<BlockPos,net.minecraft.world.level.block.state.BlockState> create(){
+            var footprint=new java.util.HashSet<BlockPos>();
+            for(int x=14;x<=30;x++)for(int z=37;z<=51;z++)footprint.add(com.coraline.secrets.HouseCabinets.at(BlockPos.ZERO,x,5,z));
+            var result=new java.util.HashMap<BlockPos,net.minecraft.world.level.block.state.BlockState>();
+            for(var cell:RosewoodHouse.palaceCells())if(footprint.contains(cell.offset()))result.put(cell.offset(),cell.state());
+            return java.util.Map.copyOf(result);
+        }
+    }
+    static boolean prepareFall(ServerPlayer p,VisitData.Scene s){
+        var level=p.server.getLevel(OtherWorld.KEY);
+        if(level==null)return false;
+        var n=RescueChapter.data(s);
+        var journal=FirstEscapeScene.context(s).getCompound("Environment");
+        var lookup=level.holderLookup(net.minecraft.core.registries.Registries.BLOCK);
+        var cells=new java.util.ArrayList<BlockPos>(17*15);
+        for(int x=14;x<=30;x++)for(int z=37;z<=51;z++){
+            var pos=FirstEscapeScene.at(s,x,5,z);
+            cells.add(pos);
+            level.getChunkAt(pos);
+            var block=level.getBlockState(pos);
+            if(block.isAir())continue;
+            var existing=journal.getCompound(Long.toString(pos.asLong()));
+            boolean authored=block.equals(StageFloor.BLUEPRINT.get(pos.subtract(RescueEncounters.house(s))));
+            boolean journaled=existing.contains("Placed")&&block.equals(net.minecraft.nbt.NbtUtils.readBlockState(lookup,existing.getCompound("Placed")));
+            if(level.getBlockEntity(pos)!=null||!authored&&!journaled){
+                n.remove("FloorOpened");
+                n.putString("Blocker","The stage floor at "+pos.toShortString()+" contains an obstruction; move it before continuing.");
+                return false;
+            }
+        }
+        for(var pos:cells)if(!level.getBlockState(pos).isAir())FirstEscapeScene.place(p,s,pos,Blocks.AIR.defaultBlockState());
+        for(var pos:cells)if(!level.getBlockState(pos).isAir()){
+            n.remove("FloorOpened");
+            n.putString("Blocker","The floor has not physically opened at "+pos.toShortString()+".");
+            return false;
+        }
+        var room=FirstEscapeScene.room(s);
+        var feet=Vec3.atBottomCenterOf(room.below(2));
+        var clearance=p.getDimensions(Pose.STANDING).makeBoundingBox(feet).expandTowards(0,2,0);
+        if(level.getBlockCollisions(p,clearance).iterator().hasNext()){
+            n.remove("FloorOpened");
+            n.putString("Blocker","Clear the falling space underneath the confrontation room.");
+            return false;
+        }
+        n.putBoolean("FloorOpened",true);
+        return true;
+    }
     public static boolean preflight(ServerPlayer p,VisitData.Scene s){
         var state=RescueChapter.phase(s);var n=RescueChapter.data(s);
         if(state.ordinal()>=FINAL_I.ordinal()&&state.ordinal()<=FINAL_N.ordinal()&&!n.getBoolean("KeyRecovered")&&!StoryItemCustody.recoverSwallowedKey(p,s)){n.putString("Blocker","The swallowed key cannot be recovered: restore its saved custody record or bring the surviving owner-bound original out of storage.");return false;}
         if(state==FINAL_E&&!n.getBoolean("StoneTaken")){if(!StoryItemCustody.capture(p,s,"Stone",stack->StoryItemCustody.stone(stack,s))){n.putString("Blocker","Bring your original Seeing Stone out of storage. Unrelated stones are not substitutes.");return false;}p.stopUsingItem();n.putBoolean("StoneTaken",true);}
+        if(!keepPlayerInRoom(p,s))return false;
+        if(state.ordinal()>=FINAL_P.ordinal()&&state.ordinal()<=WEB_STEALTH.ordinal()
+                &&!enterWeb(p,s,ParentRescueStory.mother(p,s)))return false;
         if(state==TUNNEL_CHASE&&!n.getBoolean("PassageEntered")&&!RescuePassage.enter(p,s))return false;
         n.remove("Blocker");return true;
     }
@@ -142,9 +231,20 @@ public final class BeldamFinale {
             case FIGHT_CHOICE->RescueChapter.hint(p,"Fight back.");
             case FINAL_M->{catAtMantel(p,s);if(done)RescueChapter.go(p,s,CAT_THROW);}
             case CAT_THROW->{
-                var cat=catAtMantel(p,s);if(cat==null)return;moveMother(m,p.position(),.018,p,67);
-                if(n.getBoolean("CatFlying"))catFlight(p,s,cat,m);else if(n.getBoolean("CatHeld")){cat.setPos(p.getEyePosition().add(p.getLookAngle().scale(.65)).add(0,-.45,0));RescueChapter.hint(p,"Aim at Other Mother's face and left-click to throw the Cat.");}else RescueChapter.hint(p,"Right-click the Cat on the mantel, then aim and throw.");
-                if(!n.getBoolean("CatFlying")&&m.distanceToSqr(p)<1.8)AcceptedButtonEyes.begin(p,s,AcceptedButtonEyesProgress.Route.FINAL_BOSS_LOSS);
+                var cat=catAtMantel(p,s);
+                if(cat==null){n.putInt("Ticks",Math.max(0,t-1));n.putString("Blocker","Waiting for the original Cat before the confrontation can resume.");return;}
+                int beat=Math.floorMod(t,100);
+                boolean advancing=beat>=44&&beat<77&&t>=n.getInt("CatRecoverUntil");
+                if(advancing)moveMother(m,p.position(),.044,p,67);
+                else motherAt(m,m.position(),p,beat<44?66:67);
+                if(beat==40)p.serverLevel().playSound(null,m.blockPosition(),net.minecraft.sounds.SoundEvents.SPIDER_AMBIENT,net.minecraft.sounds.SoundSource.HOSTILE,.8F,.85F);
+                if(n.getBoolean("CatFlying"))catFlight(p,s,cat,m);
+                else if(n.getBoolean("CatHeld")){
+                    cat.setPos(p.getEyePosition().add(p.getLookAngle().scale(.65)).add(0,-.45,0));
+                    RescueChapter.hint(p,advancing?"She's coming. Take aim at her face!":"Aim at Other Mother's face and left-click to throw the Cat.");
+                }else RescueChapter.hint(p,"Right-click the Cat on the mantel, then aim and throw.");
+                if(advancing&&!n.getBoolean("CatFlying")&&RescueChapter.phase(s)==CAT_THROW&&m.distanceToSqr(p)<1.8)
+                    AcceptedButtonEyes.begin(p,s,AcceptedButtonEyesProgress.Route.FINAL_BOSS_LOSS);
             }
             case FINAL_N->{
                 int duration=ShowRecordings.duration("finale_n");m.familyGesture(67,5);var cat=ShowActors.actor(p,s,"cat");
@@ -154,19 +254,50 @@ public final class BeldamFinale {
                 if(done&&n.getBoolean("CatEscaped")&&n.getBoolean("KeyRecovered"))RescueChapter.go(p,s,FINAL_O);
             }
             case FINAL_O->{
-                if(RescueWebSite.prepare(p,s)&&t>=30&&!n.getBoolean("FloorOpened")){for(int x=14;x<=30;x++)for(int z=37;z<=51;z++)FirstEscapeScene.place(p,s,FirstEscapeScene.at(s,x,5,z),Blocks.AIR.defaultBlockState());n.putBoolean("FloorOpened",true);}
-                if(n.getBoolean("FloorOpened")&&!n.getBoolean("WebEntered")&&(p.getY()<FirstEscapeScene.room(s).getY()-2||p.serverLevel()==p.server.getLevel(ActivityWorld.KEY))){enterWeb(p,s,m);}
-                if(done&&n.getBoolean("WebEntered"))RescueChapter.go(p,s,FINAL_P);
+                if(t<30||!RescueWebSite.prepare(p,s)||webLanding(p,s)==null||!prepareFall(p,s))return;
+                if((p.getY()<FirstEscapeScene.room(s).getY()-2||p.serverLevel()==p.server.getLevel(ActivityWorld.KEY))
+                        &&enterWeb(p,s,m)&&done)RescueChapter.go(p,s,FINAL_P);
             }
             case FINAL_P->{n.putFloat("BeldamMorph",Math.min(1,t/(float)Math.max(1,ShowRecordings.duration("finale_p"))));if(done)RescueChapter.go(p,s,FINAL_Q);}
             case FINAL_Q->{if(m!=null){m.setInvisible(t<120);motherAt(m,Vec3.atBottomCenterOf(RescueWebSite.center(p,s)),p,67);m.setInvisible(t<120);}if(done){n.remove("NoiseX");rememberPosition(p,n);RescueChapter.go(p,s,WEB_STEALTH);}}
             case WEB_STEALTH->web(p,s,m,t);
             case DOOR_KICK->{RescueChapter.hint(p,"Kick the door open!");if(t==1)p.serverLevel().playSound(null,p.blockPosition(),net.minecraft.sounds.SoundEvents.ZOMBIE_ATTACK_WOODEN_DOOR,net.minecraft.sounds.SoundSource.BLOCKS,.8F,.8F);if(t>=20){n.putFloat("Struggle",0);RescueChapter.go(p,s,DOOR_STRUGGLE);}}
             case DOOR_STRUGGLE->{
-                float progress=RescueChallengeMath.struggle(n.getFloat("Struggle"),n.getBoolean("Press")?1:0,n.getBoolean("AccessibleStruggle"));n.remove("Press");n.putFloat("Struggle",progress);RescueChapter.hint(p,"Rapidly click to pull the door shut — "+Math.round(progress*100)+"%");
-                if(RescueWebLayout.struggleFinished(t,progress)){var hand=RescueProps.ensure(p,s,"SeveredHand",RescueProps.HAND,0,RescueWebSite.at(p,s,1,1).add(0,.15,-.7));if(hand==null){n.putString("Blocker","The original severed Hand could not be staged; retrying this step.");retry(p,s,DOOR_STRUGGLE,"The Hand is not ready yet. Try closing the door again.");return;}hand.frame(1,0,1);n.putBoolean("HandSevered",true);RescueChapter.go(p,s,HAND_FALL);}else if(t>=240)retry(p,s,DOOR_STRUGGLE,"You lost your grip. Try closing the door again.");
+                long now=p.serverLevel().getGameTime();
+                boolean pulling=n.contains("PressUntil")&&now<=n.getLong("PressUntil")&&n.getLong("PressUntil")-now<=6;
+                float progress=n.getFloat("Struggle");
+                if(!n.getBoolean("HandCutPending")){
+                    progress=Math.max(0,Math.min(1,progress+(pulling?(n.getBoolean("AccessibleStruggle")?.017F:.012F):-.002F)));
+                    n.putFloat("Struggle",progress);
+                    if(RescueWebLayout.struggleFinished(t,progress))n.putBoolean("HandCutPending",true);
+                }
+                var door=RescueProps.find(p,s,"WebDoor");
+                if(door!=null)door.frame(2,t,progress);
+                if(pulling&&t%16==0)p.serverLevel().playSound(null,p.blockPosition(),net.minecraft.sounds.SoundEvents.ZOMBIE_ATTACK_WOODEN_DOOR,net.minecraft.sounds.SoundSource.BLOCKS,.45F,.65F+progress*.5F);
+                RescueChapter.hint(p,"Hold to pull the door shut — "+Math.round(progress*100)+"%");
+                if(n.getBoolean("HandCutPending")){
+                    var hand=RescueProps.ensure(p,s,"SeveredHand",RescueProps.HAND,0,RescueWebSite.at(p,s,1,1).add(0,.15,-.7));
+                    if(hand==null){n.putString("Blocker","Waiting to stage the severed Hand.");return;}
+                    hand.frame(1,0,1);
+                    p.serverLevel().playSound(null,hand.blockPosition(),net.minecraft.sounds.SoundEvents.WOOD_BREAK,net.minecraft.sounds.SoundSource.BLOCKS,1.1F,.72F);
+                    n.remove("PressUntil");
+                    n.remove("HandCutPending");
+                    n.putBoolean("HandSevered",true);
+                    RescueChapter.go(p,s,HAND_FALL);
+                }else if(t>=240)retry(p,s,DOOR_STRUGGLE,"You lost your grip. Try closing the door again.");
             }
-            case HAND_FALL->{RescuePassage.prepare(p,s);var hand=RescueProps.find(p,s,"SeveredHand");if(hand!=null){hand.frame(1,t,1);if(t<20)hand.setPos(hand.position().add(0,-.015,0));}if(t>=60&&RescuePassage.prepare(p,s)){n.remove("PassageEntered");RescueChapter.go(p,s,TUNNEL_CHASE);}}
+            case HAND_FALL->{
+                RescuePassage.prepare(p,s);
+                var hand=RescueProps.find(p,s,"SeveredHand");
+                if(hand==null||hand.kind()!=RescueProps.HAND||hand.level()!=p.level()){
+                    n.putInt("Ticks",Math.max(0,t-1));
+                    n.putString("Blocker","Waiting for the original severed Hand.");
+                    return;
+                }
+                hand.frame(1,t,1);
+                if(t<20)hand.setPos(hand.position().add(0,-.015,0));
+                if(t>=60&&RescuePassage.prepare(p,s)){n.remove("PassageEntered");RescueChapter.go(p,s,TUNNEL_CHASE);}
+            }
             case TUNNEL_CHASE->tunnel(p,s,t,done);
             case LOCK_DOOR->RescueChapter.hint(p,"Use your recovered key to lock the Little Door.");
             case BANGING->{if(t<=120&&t%20==0)p.serverLevel().playSound(null,p.blockPosition(),net.minecraft.sounds.SoundEvents.ZOMBIE_ATTACK_WOODEN_DOOR,net.minecraft.sounds.SoundSource.BLOCKS,(1-t/140F)*.8F,.7F);if(t>=120){n.putBoolean("BangingDone",true);RescueEpilogue.begin(p,s);}}
@@ -187,12 +318,103 @@ public final class BeldamFinale {
         var delta=goal.subtract(wardrobe.position());wardrobe.setPos(wardrobe.position().add(delta.length()<.055?delta:delta.normalize().scale(.055)));wardrobe.frame(1,n.getInt("Ticks"),1);
         var portal=new AABB(door).inflate(.3,.1,.3);if(!wardrobe.getBoundingBox().intersects(portal)&&wardrobe.distanceToSqr(goal)<.1){n.putBoolean("WardrobeClear",true);ParentRescueStory.data(s).putBoolean("WardrobeBlocking",false);}
     }
-    static Mob catAtMantel(ServerPlayer p,VisitData.Scene s){var n=RescueChapter.data(s);var at=hearth(s).add(0,.7,0);var cat=ShowActors.acquire(p,s,"cat",p.serverLevel(),at);if(cat==null)return null;if(!n.getBoolean("CatMantel")){cat.stopRiding();cat.setNoAi(true);cat.setNoGravity(true);cat.setDeltaMovement(Vec3.ZERO);cat.setPos(at);n.putBoolean("CatMantel",true);}cat.setInvisible(false);n.putInt("Cat",cat.getId());LoopProps.hold(p.serverLevel(),cat.blockPosition());return cat;}
-    private static void catFlight(ServerPlayer p,VisitData.Scene s,Mob cat,ParentEntity mother){var n=RescueChapter.data(s);int t=n.getInt("CatFlightTick")+1;n.putInt("CatFlightTick",t);var from=cat.position();var v=new Vec3(n.getDouble("CatVX"),n.getDouble("CatVY"),n.getDouble("CatVZ"));var next=from.add(v);var trace=p.serverLevel().clip(new net.minecraft.world.level.ClipContext(from,next,net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,cat));
-        if(catHitBeforeBlock(mother,from,next,trace)){cat.setPos(facePoint(mother));n.remove("CatFlying");n.remove("CatHeld");n.putBoolean("CatHit",true);RescueChapter.go(p,s,FINAL_N);return;}
-        if(trace.getType()!=HitResult.Type.MISS||t>45){cat.setPos(trace.getType()==HitResult.Type.MISS?next:trace.getLocation());retry(p,s,CAT_THROW,"The Cat missed. Pick him up and aim at Other Mother's face.");return;}cat.setPos(next);n.putDouble("CatVY",v.y-.045);ShowPlaybackNetwork.pose(cat,34,t,1);
+    static Mob catAtMantel(ServerPlayer p,VisitData.Scene s){var n=RescueChapter.data(s);var at=hearth(s).add(0,.7,0);var cat=ShowActors.recoverCat(p,s,p.serverLevel(),at);if(cat==null)return null;if(!n.getBoolean("CatMantel")){cat.stopRiding();cat.setNoAi(true);cat.setNoGravity(true);cat.setDeltaMovement(Vec3.ZERO);cat.setPos(at);n.putBoolean("CatMantel",true);}cat.setInvisible(false);n.putInt("Cat",cat.getId());LoopProps.hold(p.serverLevel(),cat.blockPosition());return cat;}
+    private static void catFlight(ServerPlayer p,VisitData.Scene s,Mob cat,ParentEntity mother){
+        var n=RescueChapter.data(s);
+        int ticks=n.getInt("CatFlightTick")+1;
+        n.putInt("CatFlightTick",ticks);
+        var from=cat.position();
+        var velocity=new Vec3(n.getDouble("CatVX"),n.getDouble("CatVY"),n.getDouble("CatVZ"));
+        var next=from.add(velocity);
+        var trace=p.serverLevel().clip(new net.minecraft.world.level.ClipContext(from,next,
+                net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,cat));
+        if(catHitBeforeBlock(mother,from,next,trace)){
+            var face=facePoint(mother);
+            cat.setPos(face);
+            p.serverLevel().sendParticles(net.minecraft.core.particles.ParticleTypes.POOF,face.x,face.y,face.z,16,.2,.2,.2,.05);
+            p.serverLevel().playSound(null,mother.blockPosition(),net.minecraft.sounds.SoundEvents.CAT_HISS,net.minecraft.sounds.SoundSource.HOSTILE,1.1F,.9F);
+            n.remove("CatFlying");
+            n.remove("CatHeld");
+            n.putBoolean("CatHit",true);
+            RescueChapter.go(p,s,FINAL_N);
+            return;
+        }
+        if(trace.getType()!=HitResult.Type.MISS||ticks>45){
+            n.remove("CatFlying");
+            n.remove("CatHeld");
+            n.remove("CatMantel");
+            n.putInt("CatRecoverUntil",n.getInt("Ticks")+42);
+            catAtMantel(p,s);
+            p.serverLevel().playSound(null,cat.blockPosition(),net.minecraft.sounds.SoundEvents.CAT_AMBIENT,net.minecraft.sounds.SoundSource.NEUTRAL,.8F,1.1F);
+            RescueChapter.hint(p,"The Cat missed. Pick him up and aim at her face again.");
+            return;
+        }
+        cat.setPos(next);
+        n.putDouble("CatVY",velocity.y-.045);
+        ShowPlaybackNetwork.pose(cat,34,ticks,1);
     }
-    private static void enterWeb(ServerPlayer p,VisitData.Scene s,ParentEntity mother){var n=RescueChapter.data(s);var l=p.server.getLevel(ActivityWorld.KEY);if(l==null||!RescueWebSite.prepare(p,s))return;var at=RescueWebSite.at(p,s,1,0);l.getChunkAt(BlockPos.containing(at));var web=RescueProps.ensure(p,s,"Web",RescueProps.WEB,0,Vec3.atLowerCornerOf(RescueWebSite.center(p,s)));if(web==null)return;web.frame(0,0,1);p.stopRiding();p.setForcedPose(null);p.setPose(Pose.STANDING);p.teleportTo(l,at.x,at.y+1,at.z,90,0);if(p.serverLevel()!=l||p.position().distanceToSqr(new Vec3(at.x,at.y+1,at.z))>1){n.putString("Blocker","The web arena transfer did not complete; the passage remains available to retry.");return;}p.fallDistance=0;n.putBoolean("WebEntered",true);n.remove("Blocker");if(mother!=null){var moved=ShowTravel.guest(mother,p,s,l,Vec3.atBottomCenterOf(RescueWebSite.center(p,s)),true,"BeldamFinaleReturn");if(moved!=null&&s.mom.equals(moved.getUUID()))n.putLong("BeldamAt",moved.blockPosition().asLong());}}
+    private static Vec3 webLanding(ServerPlayer p,VisitData.Scene s){
+        var level=p.server.getLevel(ActivityWorld.KEY);
+        if(level==null||!RescueWebSite.prepare(p,s))return null;
+        var landing=RescueWebSite.at(p,s,1,0);
+        var block=BlockPos.containing(landing);
+        LoopProps.hold(level,block);
+        for(var support:new BlockPos[]{block.below(),block}){
+            var shape=level.getBlockState(support).getCollisionShape(level,support);
+            if(shape.isEmpty())continue;
+            var feet=Vec3.atBottomCenterOf(block).add(0,support.getY()-block.getY()+shape.max(net.minecraft.core.Direction.Axis.Y),0);
+            if(RescueEpilogue.safeReturn(level,p,Pose.STANDING,feet))return feet;
+        }
+        return null;
+    }
+    static boolean enterWeb(ServerPlayer p,VisitData.Scene s,ParentEntity mother){
+        var n=RescueChapter.data(s);
+        var level=p.server.getLevel(ActivityWorld.KEY);
+        if(level==null)return false;
+        if(n.getBoolean("WebEntryReady")&&p.serverLevel()==level&&mother!=null&&mother.level()==level
+                &&mother.getUUID().equals(s.mom))return true;
+        n.remove("WebEntryReady");
+        n.remove("WebEntered");
+        if(mother==null||!mother.getUUID().equals(s.mom)||!mother.isAlive()){
+            n.putString("Blocker","Waiting for the original Other Mother before entering the web.");
+            return false;
+        }
+        var landing=webLanding(p,s);
+        var motherAt=Vec3.atBottomCenterOf(RescueWebSite.center(p,s));
+        LoopProps.hold(level,BlockPos.containing(motherAt));
+        var motherBody=mother.getDimensions(Pose.STANDING).makeBoundingBox(motherAt);
+        if(landing==null||level.getBlockCollisions(mother,motherBody).iterator().hasNext()||level.containsAnyLiquid(motherBody)){
+            n.putString("Blocker","The player or Other Mother web landing is obstructed.");
+            return false;
+        }
+        n.putUUID("WebEntryMother",mother.getUUID());
+        if(p.serverLevel()!=level){
+            p.stopRiding();
+            p.setForcedPose(null);
+            p.setPose(Pose.STANDING);
+            p.teleportTo(level,landing.x,landing.y,landing.z,90,0);
+            if(p.serverLevel()!=level||p.position().distanceToSqr(landing)>.25)return false;
+        }
+        p.fallDistance=0;
+        var web=RescueProps.ensure(p,s,"Web",RescueProps.WEB,0,Vec3.atLowerCornerOf(RescueWebSite.center(p,s)));
+        if(web==null||web.level()!=level)return false;
+        web.frame(0,0,1);
+        if(mother.level()!=level||mother.distanceToSqr(motherAt)>1){
+            var moved=ShowTravel.guest(mother,p,s,level,motherAt,true,"BeldamFinaleReturn");
+            if(!(moved instanceof ParentEntity original)||original.level()!=level||!original.getUUID().equals(n.getUUID("WebEntryMother"))
+                    ||original.distanceToSqr(motherAt)>1){
+                n.putString("Blocker","Waiting for the original Other Mother to reach the web.");
+                return false;
+            }
+            mother=original;
+        }
+        n.putLong("BeldamAt",mother.blockPosition().asLong());
+        n.putBoolean("WebEntered",true);
+        n.putBoolean("WebEntryReady",true);
+        n.remove("Blocker");
+        OtherMotherLoop.changed(p);
+        return true;
+    }
     private static void rememberPosition(ServerPlayer p,CompoundTag n){n.putDouble("PreviousX",p.getX());n.putDouble("PreviousY",p.getY());n.putDouble("PreviousZ",p.getZ());n.putBoolean("PreviousGround",p.onGround());}
     private static void web(ServerPlayer p,VisitData.Scene s,ParentEntity mother,int t){
         var n=RescueChapter.data(s);var center=RescueWebSite.center(p,s);double moved=Math.hypot(p.getX()-n.getDouble("PreviousX"),p.getZ()-n.getDouble("PreviousZ"));boolean sticky=false;double best=3;for(int lane=0;lane<3;lane++)for(int sample=0;sample<=RescueWebLayout.SAMPLES;sample+=4){var point=RescueWebSite.at(p,s,lane,sample/(double)RescueWebLayout.SAMPLES);double d=p.position().distanceToSqr(point);if(d<best){best=d;sticky=RescueWebLayout.sticky(lane,sample);}}
@@ -222,11 +444,13 @@ public final class BeldamFinale {
     }
     public static void input(ServerPlayer p,VisitData.Scene s,String action){
         var state=RescueChapter.phase(s);var n=RescueChapter.data(s);
+        if(roomLocked(s)&&(p.serverLevel()!=p.server.getLevel(OtherWorld.KEY)||!FirstEscapeScene.fullyInRoom(s,p.getBoundingBox())))return;
         if(state==SHOW_EYES&&action.equals("show_eyes")){if(recoverPresentationEyes(p,s))RescueChapter.go(p,s,FINAL_D);else p.displayClientMessage(net.minecraft.network.chat.Component.literal("Retrieve the original eyes from your helper or make room in your inventory. You can close this screen and try again."),false);}
         else if(state==SHOW_EYES&&action.equals("close_eyes"))RescueChapter.go(p,s,FINAL_C);
         else if(state==HIDING_CHOICE&&action.equals("behind_little_door"))RescueChapter.go(p,s,FINAL_H);
         else if(state==FIGHT_CHOICE&&action.equals("fight"))RescueChapter.go(p,s,FINAL_M);
-        else if(state==DOOR_STRUGGLE&&action.equals("struggle"))n.putBoolean("Press",true);
+        else if(state==DOOR_STRUGGLE&&action.equals("struggle")&&p.serverLevel()==p.server.getLevel(ActivityWorld.KEY)
+                &&p.distanceToSqr(RescueWebSite.at(p,s,1,1))<9)n.putLong("PressUntil",p.serverLevel().getGameTime()+6);
         else if(state==CAT_THROW&&action.equals("throw_cat")&&n.getBoolean("CatHeld")&&!n.getBoolean("CatFlying")){
             var cat=ShowActors.actor(p,s,"cat");if(cat==null)return;
             var look=p.getLookAngle().normalize();var from=catThrowOrigin(p);var v=look.scale(1.25).add(0,.18,0);var mother=ParentRescueStory.mother(p,s);
@@ -235,7 +459,11 @@ public final class BeldamFinale {
         }
     }
     public static boolean interact(ServerPlayer p,VisitData.Scene s,Entity target){var n=RescueChapter.data(s);if(RescueChapter.phase(s)==CAT_THROW&&target==ShowActors.actor(p,s,"cat")&&!n.getBoolean("CatFlying")){n.putBoolean("CatHeld",true);return true;}return false;}
-    public static boolean block(ServerPlayer p,BlockPos at){var s=OtherMotherLoop.scene(p);if(!RescueChapter.owns(p,s)||RescueChapter.phase(s)!=LOCK_DOOR)return false;var n=RescueChapter.data(s);var d=DoorData.get(p.server).doors.get(s.door);if(d==null||!s.owner.equals(d.owner)||p.serverLevel()!=FamilyData.level(p.server,d.dimension)||!at.equals(d.pos)||p.distanceToSqr(at.getCenter())>16)return false;boolean key=false;for(int i=0;i<p.getInventory().getContainerSize();i++)key|=ParentRescueStory.key(p.getInventory().getItem(i),s);if(!key||!n.getBoolean("CrawlReachedOverworld")||!n.getBoolean("KeyRecovered"))return true;var frame=p.serverLevel().getBlockState(at);if(!frame.is(ModBlocks.TINY_DOOR.get()))return true;p.serverLevel().setBlock(at,frame.setValue(TinyDoorBlock.OPEN,false).setValue(TinyDoorBlock.PORTAL,false),3);n.putBoolean("PermanentlySealed",true);ParentRescueStory.data(s).putBoolean("DoorLocked",true);d.activeUntil=0;DoorData.get(p.server).setDirty();RescueChapter.go(p,s,BANGING);return true;}
+    public static boolean block(ServerPlayer p,BlockPos at){var s=OtherMotherLoop.scene(p);if(!RescueChapter.owns(p,s)||RescueChapter.phase(s)!=LOCK_DOOR)return false;var n=RescueChapter.data(s);var d=DoorData.get(p.server).doors.get(s.door);if(d==null||!s.owner.equals(d.owner)||p.serverLevel()!=FamilyData.level(p.server,d.dimension)||!at.equals(d.pos)||p.distanceToSqr(at.getCenter())>16)return false;boolean key=false;for(int i=0;i<p.getInventory().getContainerSize();i++)key|=ParentRescueStory.key(p.getInventory().getItem(i),s);if(!key||!n.getBoolean("CrawlReachedOverworld")||!n.getBoolean("KeyRecovered"))return true;var frame=p.serverLevel().getBlockState(at);if(!frame.is(ModBlocks.TINY_DOOR.get())||!(p.serverLevel().getBlockEntity(at) instanceof DoorBlockEntity tile)||!s.door.equals(tile.doorId))return true;
+        var closed=frame.setValue(TinyDoorBlock.OPEN,false).setValue(TinyDoorBlock.PORTAL,false);
+        p.serverLevel().setBlock(at,closed,3);
+        if(!p.serverLevel().getBlockState(at).equals(closed))return true;
+        n.putBoolean("PermanentlySealed",true);ParentRescueStory.data(s).putBoolean("DoorLocked",true);d.activeUntil=0;DoorData.get(p.server).setDirty();RescueChapter.go(p,s,BANGING);return true;}
     public static void retry(ServerPlayer p,VisitData.Scene s,RescueChapter.Phase state,String reason){
         var n=RescueChapter.data(s);n.putString("LastRetryReason",reason);n.putString("LastRetryPhase",state.name());n.putInt("RetryCount",n.getInt("RetryCount")+1);org.slf4j.LoggerFactory.getLogger(BeldamFinale.class).debug("Rescue retry phase={} reason={} feet={} crouching={} moved={} sticky={} landed={} noiseAge={} lastNoise={} lastNoiseMoved={}",state,reason,p.position(),p.isCrouching(),n.getDouble("LastWebMoved"),n.getBoolean("LastWebSticky"),n.getBoolean("LastWebLanded"),n.getInt("NoiseAge"),n.getString("LastNoiseReason"),n.getDouble("LastNoiseMoved"));RescueChapter.hint(p,reason);p.setHealth(p.getMaxHealth());p.clearFire();p.fallDistance=0;p.setDeltaMovement(Vec3.ZERO);
         if(state==CAT_THROW){
@@ -245,7 +473,7 @@ public final class BeldamFinale {
             var at=RescueWebSite.at(p,s,1,0);if(!RescueChapter.transfer(p,p.server.getLevel(ActivityWorld.KEY),BlockPos.containing(at).above()))return;
             var mother=ParentRescueStory.mother(p,s);if(mother!=null)mother.setPos(Vec3.atBottomCenterOf(RescueWebSite.center(p,s)));n.remove("NoiseX");rememberPosition(p,n);
         }else if(state==DOOR_STRUGGLE){
-            var at=RescueWebSite.at(p,s,1,1);if(!RescueChapter.transfer(p,p.server.getLevel(ActivityWorld.KEY),BlockPos.containing(at).above()))return;n.putFloat("Struggle",0);n.remove("Press");
+            var at=RescueWebSite.at(p,s,1,1);if(!RescueChapter.transfer(p,p.server.getLevel(ActivityWorld.KEY),BlockPos.containing(at).above()))return;if(!n.getBoolean("HandCutPending"))n.putFloat("Struggle",0);n.remove("PressUntil");
         }else if(state==TUNNEL_CHASE){n.remove("PassageEntered");if(!RescuePassage.enter(p,s))return;}
         RescueChapter.go(p,s,state);
     }

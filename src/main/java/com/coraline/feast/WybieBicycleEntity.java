@@ -36,16 +36,20 @@ public final class WybieBicycleEntity extends Entity {
         drive(forward,turn,braking);
     }
     public void drive(float forward,float turn,boolean braking){throttle=Mth.clamp(forward,0,1);steering=Mth.clamp(turn,-1,1);brake=braking;inputAt=tickCount;}
-    public void stop(){drive(0,0,true);if(FirstEscapeStory.storyBike(this)){speed=0;entityData.set(SPEED,0F);setDeltaMovement(Vec3.ZERO);}}
+    public void stop(){drive(0,0,true);if(FirstEscapeStory.storyBike(this)||getPersistentData().hasUUID("PalaceWellOwner")){speed=0;entityData.set(SPEED,0F);setDeltaMovement(Vec3.ZERO);}}
     void storySettle(Vec3 feet){stop();setPos(feet);setBoundingBox(makeBoundingBox());setOnGround(true);}
-    void storyAdvance(Vec3 target){
+    boolean storyAdvance(Vec3 target){
         var delta=target.subtract(position());float heading=StoryBikeRoute.yaw(delta);double distance=delta.horizontalDistance();
         var next=distance<.001?position():position().add(delta.x/distance*Math.min(.72,distance),0,delta.z/distance*Math.min(.72,distance));
         next=StoryBikeRoute.step(this,position(),next.x,next.z,heading);
-        if(next==null){speed=0;entityData.set(SPEED,0F);setDeltaMovement(Vec3.ZERO);return;}
+        if(next==null){speed=0;entityData.set(SPEED,0F);setDeltaMovement(Vec3.ZERO);return false;}
         var before=position();setYRot(heading);setPos(next);setBoundingBox(makeBoundingBox());setOnGround(true);setDeltaMovement(next.subtract(before));speed=next.subtract(before).horizontalDistance();
         wheelRotation+=(float)(speed/.34);entityData.set(SPEED,(float)speed);entityData.set(STEER,0F);
+        return speed>.001;
     }
+    final java.util.Deque<Vec3> wellRoute=new java.util.ArrayDeque<>();
+    long wellReplanAt;
+    int wellStallTicks;
     @Override public boolean isControlledByLocalInstance(){return false;}
     @Override protected AABB makeBoundingBox(){double angle=Math.toRadians(getYRot()),hx=Math.abs(Math.cos(angle))*.45+Math.abs(Math.sin(angle))*1.03,hz=Math.abs(Math.sin(angle))*.45+Math.abs(Math.cos(angle))*1.03;return new AABB(getX()-hx,getY(),getZ()-hz,getX()+hx,getY()+1.15,getZ()+hz);}
     @Override public boolean isPickable(){return true;}
@@ -103,13 +107,13 @@ public final class WybieBicycleEntity extends Entity {
         boolean wellStory=getPersistentData().hasUUID("PalaceWellOwner");
         boolean escapeStory=FirstEscapeStory.storyBike(this);
         if(escapeStory)FirstEscapeStory.driveStoryBike(this);
-        if(wellStory)PalaceWellEncounter.driveBike(this);
         var scene=owner==null?null:VisitData.get(getServer()).scenes.get(owner);
         if(scene==null||!java.util.Objects.equals(door,scene.door)||!escapeStory&&!wellStory&&(!scene.loop.event.getBoolean("WybiePending")||serial!=scene.loop.event.getInt("Serial")||session()==null||!session().equals(WybieAdventure.data(scene).getUUID("Session")))){ejectPassengers();discard();return;}
         if(escapeStory)return; // Exact collision-checked route stepping above; never walker steering.
         var n=wellStory?scene.loop.story.getCompound("PinkPalaceJourney").getCompound("WellStage"):WybieAdventure.data(scene);String key=wellStory?"Bike":friend()?"FriendBike":"PlayerBike";
         if(!escapeStory&&(!n.hasUUID(key)||!getUUID().equals(n.getUUID(key)))){ejectPassengers();discard();return;}
         n.putLong(key+"Position",blockPosition().asLong());
+        if(wellStory){PalaceWellEncounter.driveBike(this);return;}
         var player=getServer().getPlayerList().getPlayer(owner);
         if(player==null||!player.isAlive()||player.level()!=level()){ejectPassengers();throttle=0;brake=true;}
         if(player==null||!player.isAlive()||player.level()!=level()||!escapeStory&&!wellStory&&!WybieAdventureLedger.timed(n)||tickCount-inputAt>10||!isVehicle()){throttle=0;steering=0;brake=true;}

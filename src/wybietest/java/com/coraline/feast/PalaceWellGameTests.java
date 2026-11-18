@@ -51,4 +51,22 @@ public final class PalaceWellGameTests {
             root.put("WellStage",bad);var before=s.loop.story.copy();h.assertTrue(PalaceWellEncounter.control(s)==null&&s.loop.story.equals(before),"Malformed well adapter overwritten");
         }h.succeed();
     }
+    @GameTest(template="empty") public static void mountedBicycleRefusesLowCeilingThenRidesWhenCleared(GameTestHelper h){
+        var bike=com.coraline.registry.ModEntities.WYBIE_BICYCLE.get().create(h.getLevel());
+        h.assertTrue(bike!=null,"Bicycle unavailable");
+        var start=h.absoluteVec(new net.minecraft.world.phys.Vec3(1.5,2,2.5));
+        var goal=start.add(2,0,0);
+        for(int x=0;x<=4;x++)for(int z=1;z<=3;z++)h.setBlock(new BlockPos(x,1,z),Blocks.STONE);
+        bike.setPos(start);
+        var low=new BlockPos(3,4,2);
+        h.setBlock(low,Blocks.STONE);
+        h.assertTrue(StoryBikeRoute.toward(bike,goal)==null,"Route fit a pedestrian but lacked rider clearance");
+        h.setBlock(low,Blocks.AIR);
+        var route=StoryBikeRoute.toward(bike,goal);
+        h.assertTrue(route!=null&&!route.isEmpty(),"Clear ground did not produce a bicycle route");
+        for(var point:route)for(int tick=0;tick<4&&bike.position().distanceToSqr(point)>.02;tick++)
+            h.assertTrue(bike.storyAdvance(point),"Clear route stalled during real movement");
+        h.assertTrue(bike.position().distanceToSqr(goal)<.02,"Bicycle did not actually reach the destination");
+        h.succeed();
+    }
 }

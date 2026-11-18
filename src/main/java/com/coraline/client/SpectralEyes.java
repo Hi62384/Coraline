@@ -54,7 +54,7 @@ public final class SpectralEyes {
             pose.mulPose(Axis.XP.rotationDegrees(camera.getXRot()));
             pose.mulPose(Axis.YP.rotationDegrees(camera.getYRot()+180F));
             var out=buffers.getBuffer(SpectralEyeRenderType.EYES);
-            for(var eye:mc.level.getEntitiesOfClass(CinematicPropEntity.class,mc.player.getBoundingBox().inflate(64),e->(e.kind()==RescueProps.EYE||e.kind()==RescueProps.CONTROL_POINT)&&!e.isInvisible()&&owned(e))){
+            for(var eye:mc.level.getEntitiesOfClass(CinematicPropEntity.class,mc.player.getBoundingBox().inflate(64),e->(e.kind()==RescueProps.EYE&&e.slot()<3||e.kind()==RescueProps.CONTROL_POINT)&&!e.isInvisible()&&owned(e))){
                 pose.pushPose();pose.translate(eye.getX()-origin.x,eye.getY()-origin.y,eye.getZ()-origin.z);pose.mulPose(camera.rotation());pose.mulPose(Axis.YP.rotationDegrees(180));
                 try{float pulse=.5F+.5F*(float)Math.sin((eye.tickCount+event.getPartialTick())*.38F);GhostEyeRenderer.spectral(pose,out,eye.slot(),eye.kind()==RescueProps.CONTROL_POINT,eye.cue()>0,pulse);}finally{pose.popPose();}
             }

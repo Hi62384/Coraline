@@ -66,13 +66,19 @@ public final class CinematicPropEntity extends Entity {
         if(!retired.contains(key,Tag.TAG_INT)||retired.getInt(key)!=slot())return false;
         discard();return true;
     }
+    boolean boundTo(VisitData.Scene s){return s!=null&&Objects.equals(owner,s.owner)&&Objects.equals(door,s.door);}
     public boolean owned(VisitData.Scene s){return s!=null&&Objects.equals(owner,s.owner)&&Objects.equals(door,s.door)&&(serial==s.loop.event.getInt("Serial")||canonicalGhost(s));}
     private boolean retireFinishedStoryProp(){
         if(level().isClientSide||owner==null)return false;var s=VisitData.get(getServer()).scenes.get(owner);
+        if(RescueEncounters.retiredRatBall(this,s)&&getPassengers().stream().noneMatch(passenger->passenger instanceof ServerPlayer)){
+            ejectPassengers();
+            discard();
+            return true;
+        }
         if(!owned(s)||!FirstEscapeStory.retiredGrab(this,s)&&!MissingParentsCat.retiredDolls(this,s)&&!MissingParentsCat.retiredMirror(this,s)&&!GhostVictimWorld.retiredSupperTable(this,s))return false;
         ejectPassengers();discard();return true;
     }
-    @Override public void tick(){super.tick();if(retiredCanonicalGhost()||retireFinishedStoryProp())return;if(com.coraline.rebirth.StoryRebirth.kind(kind())){if(!level().isClientSide&&tickCount%40==0)com.coraline.rebirth.StoryRebirth.reconcileProp(this);return;}if(level().isClientSide&&lerpSteps>0){setPos(getX()+(lerpX-getX())/lerpSteps,getY()+(lerpY-getY())/lerpSteps,getZ()+(lerpZ-getZ())/lerpSteps);setYRot(net.minecraft.util.Mth.rotLerp(1F/lerpSteps,getYRot(),lerpYaw));setXRot(getXRot()+(lerpPitch-getXRot())/lerpSteps);lerpSteps--;}if(!level().isClientSide&&owner!=null){var scene=VisitData.get(getServer()).scenes.get(owner);if(scene==null||!owned(scene)||kind()==TAFFY_BOWL&&!PalaceTransport.legacyMover(this)&&!MissingParentsTea.active(scene)||kind()>=STORY_CANE&&kind()<=STORY_SHOE&&!canonicalGhost(scene)&&!AcceptedButtonEyes.active(scene)&&!ParentRescueStory.started(scene)&&(!FirstEscapeStory.engaged(scene)||FirstEscapeStory.phase(scene)==FirstEscapeTimeline.Phase.ESCAPE_COMPLETE)){ejectPassengers();discard();return;}if(kind()==RescueProps.RAT_BALL&&isVehicle()){setNoGravity(false);noPhysics=false;setMaxUpStep(1);var v=getDeltaMovement();v=new Vec3(v.x,Math.max(-.5,v.y-.08),v.z);moveRatBall(v);setDeltaMovement(v.x*.85,onGround()?0:v.y,v.z*.85);fallDistance=0;}}}
+    @Override public void tick(){super.tick();if(!level().isClientSide&&(kind()==TAFFY_BOWL||kind()==RescueProps.TONGS))PalaceTransport.migrateMover(this);if(retiredCanonicalGhost()||retireFinishedStoryProp())return;if(com.coraline.rebirth.StoryRebirth.kind(kind())){if(!level().isClientSide&&tickCount%40==0)com.coraline.rebirth.StoryRebirth.reconcileProp(this);return;}if(level().isClientSide&&lerpSteps>0){setPos(getX()+(lerpX-getX())/lerpSteps,getY()+(lerpY-getY())/lerpSteps,getZ()+(lerpZ-getZ())/lerpSteps);setYRot(net.minecraft.util.Mth.rotLerp(1F/lerpSteps,getYRot(),lerpYaw));setXRot(getXRot()+(lerpPitch-getXRot())/lerpSteps);lerpSteps--;}if(!level().isClientSide&&owner!=null){var scene=VisitData.get(getServer()).scenes.get(owner);if(scene==null||!owned(scene)||kind()==TAFFY_BOWL&&!MissingParentsTea.active(scene)||kind()>=STORY_CANE&&kind()<=STORY_SHOE&&!canonicalGhost(scene)&&!AcceptedButtonEyes.active(scene)&&!ParentRescueStory.started(scene)&&(!FirstEscapeStory.engaged(scene)||FirstEscapeStory.phase(scene)==FirstEscapeTimeline.Phase.ESCAPE_COMPLETE)){ejectPassengers();discard();return;}if(kind()==RescueProps.RAT_BALL&&isVehicle()){setNoGravity(false);noPhysics=false;setMaxUpStep(1);var v=getDeltaMovement();v=new Vec3(v.x,Math.max(-.5,v.y-.08),v.z);moveRatBall(v);setDeltaMovement(v.x*.85,onGround()?0:v.y,v.z*.85);fallDistance=0;}}}
     @Override public boolean isPickable(){if(com.coraline.rebirth.StoryRebirth.kind(kind()))return !isInvisible()&&kind()!=com.coraline.rebirth.StoryRebirth.CIRCLE;if(isInvisible()&&(kind()==RescueProps.HAND||kind()==RescueProps.KEY_BUNDLE||kind()>=RescueProps.TONGS&&kind()<=RescueProps.PHOTO))return false;return RescueProps.kind(kind())||kind()==PARENT_MIRROR||kind()==SEAT||kind()==TENT||kind()==FERRIS||kind()==CANNON||kind()==BUTTON_GIFT||kind()==STORY_CANE||kind()==ROACH_WARDROBE&&!(cue()==3&&value()>.8F)||kind()==STORY_SHOE;}
     @Override public boolean hurt(net.minecraft.world.damagesource.DamageSource source,float amount){return false;}
     /** Vanilla stepping may leave a custom mounted box overlapping a kerb.
@@ -98,6 +104,12 @@ public final class CinematicPropEntity extends Entity {
             return new AABB(getX()-.18,getY(),getZ()-.18,getX()+.18,getY()+.8,getZ()+.18);
         }
         if(entityData!=null&&entityData.hasItem(KIND)&&RescueProps.kind(kind())){
+            if(kind()==RescueProps.TONGS){
+                double yaw=Math.toRadians(getYRot());
+                double x=.19*Math.abs(Math.cos(yaw))+.67*Math.abs(Math.sin(yaw));
+                double z=.67*Math.abs(Math.cos(yaw))+.19*Math.abs(Math.sin(yaw));
+                return new AABB(getX()-x,getY()-.10,getZ()-z,getX()+x,getY()+.08,getZ()+z);
+            }
             if(kind()==RescueProps.RAT_BALL)return new AABB(getX()-.30,getY(),getZ()-.30,getX()+.30,getY()+1.35,getZ()+.30);
             double radius=kind()==RescueProps.MANTIS?2.2:kind()==RescueProps.SWARM?1.3:kind()==RescueProps.WRAPPER?1.6:.5;
             return new AABB(getX()-radius,getY()-.15,getZ()-radius,getX()+radius,getY()+(kind()==RescueProps.MANTIS?3.8:1.2),getZ()+radius);

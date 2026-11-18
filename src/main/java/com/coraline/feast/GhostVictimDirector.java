@@ -272,13 +272,15 @@ public final class GhostVictimDirector {
                 if(elapsed>=SUPPER_TICKS)finishSupper(p,s,n,child,true);
             }
             case EXPLORATION->{if(child==null)return;GhostVictimWorld.ensureHouseProps(p,s,n);GhostVictimRoutines.explore(p,s,n,child);
-                if(GhostVictimProgress.age(n)>=GhostVictimConfig.EXPLORATION_SECONDS.get()*20L)move(p,s,n,GhostVictimProgress.Phase.BEDTIME);}
+                if(GhostVictimProgress.age(n)>=GhostVictimConfig.EXPLORATION_SECONDS.get()*20L
+                        ||GhostVictimProgress.age(n)>=600&&GhostVictimProgress.child(n).getInt("EvidenceCount")>=2)
+                    move(p,s,n,GhostVictimProgress.Phase.BEDTIME);}
             case BEDTIME->{
                 if(child==null)return;var target=GhostVictimWorld.bedtimeConversationPosition(s,level,child,n);if(target==null){n.putString("Blocker","No clear reachable position is available beside the bedroom mirror. Clear nearby furniture and the child will retry.");return;}
                 if(!n.contains("BedtimeArrived")){
                     if(GhostVictimRoutines.travel(p,s,n,child,target,false)!=GhostVictimNavigation.Result.ARRIVED)return;
                     n.putLong("BedtimeArrived",GhostVictimProgress.clock(n));words(n,"I'd better get to bed. Will you still be here tomorrow?");}
-                var mirror=n.getCompound("Mirrors").getCompound("bedroom");var at=BlockPos.of(mirror.getLong("Position"));child.getLookControl().setLookAt(at.getX()+.5,at.getY()+1.35,at.getZ()+.5,30,30);
+                GhostVictimMirrors.faceMirror(n,"bedroom",child);
                 var mother=AcceptedButtonEyesWorld.mother(p,s);
                 // Give the mother a short chance to walk out naturally, then
                 // start the player's full mirror window even if her route is
@@ -426,6 +428,16 @@ public final class GhostVictimDirector {
         if(value.equals("escape_go")||value.equals("escape_stop")){
             var e=n.getCompound(GhostEscapeProgress.KEY);var child=GhostVictimActors.find(p,s,n);if(child==null||child.level()!=p.level())return;
             var point=child.blockPosition();if(!GhostEscapePerception.signalPoint(p,s,n,child,point))return;
+            if(value.equals("escape_go")&&GhostEscapeProgress.owns(n,e)&&GhostEscapeProgress.phase(e)==GhostEscapeProgress.Phase.WAIT_LURE){
+                if(!GhostEscapeAmbush.distractionReady(n,e,AcceptedButtonEyesWorld.mother(p,s))){
+                    p.displayClientMessage(net.minecraft.network.chat.Component.literal("Flicker a nearby light and wait until Other Mother investigates it."),true);
+                    return;
+                }
+                e.putBoolean("StealSignaled",true);
+                OtherMotherLoop.changed(p);
+                return;
+            }
+            if(value.equals("escape_stop"))e.remove("StealSignaled");
             if(!GhostEscapeProgress.signal(n,!value.equals("escape_stop"),true,false))return;
             if(value.equals("escape_stop")){GhostEscapeCovert.hands(child);child.getNavigation().stop();child.setSprinting(false);child.gesture(0,0);n.remove("ChildRoutine");}
             OtherMotherLoop.changed(p);return;
@@ -433,7 +445,10 @@ public final class GhostVictimDirector {
         if(value.startsWith("mirror:")){
             String id=value.substring(7);var child=GhostVictimActors.find(p,s,n);
             if(!GhostVictimMirrors.childPresent(p,n,id,child)){
-                p.displayClientMessage(net.minecraft.network.chat.Component.literal("Wait until the child is near and looking toward this mirror."),true);
+                String reason=child==null||child.level()!=p.level()?"The child is away from this mirror."
+                        :GhostVictimMirrors.childAtMirror(n,id,child,false)?"Wait for the child to face the mirror, then come close."
+                        :"The child needs a clear path and sightline to the front of the mirror.";
+                p.displayClientMessage(net.minecraft.network.chat.Component.literal(reason),true);
                 return;
             }
             if(GhostVictimMirrors.enter(p,s,n,id))GhostVictimMirrors.open(p,s,n,child);

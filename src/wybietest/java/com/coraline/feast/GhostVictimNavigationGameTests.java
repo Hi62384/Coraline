@@ -68,4 +68,18 @@ public final class GhostVictimNavigationGameTests {
         }finally{observer.discard();target.discard();saved.forEach((at,state)->level.setBlock(at,state,2));}
         h.succeed();
     }
+    @GameTest(template="empty") public static void bedroomMirrorSightlineRejectsBackSideAndObstructions(GameTestHelper h){
+        var level=h.getLevel();
+        var at=h.absolutePos(new BlockPos(2,3,2));
+        var child=com.coraline.tycoon.TycoonContent.NPC.get().create(level);
+        var session=new CompoundTag();
+        GhostVictimMirrors.register(session,"bedroom",at,0);
+        var front=Vec3.atBottomCenterOf(at.north(2));
+        var rear=Vec3.atBottomCenterOf(at.south(2));
+        h.assertTrue(GhostVictimMirrors.childCanSeeMirror(session,"bedroom",child,front),"Mirror rejected valid front-side sightline");
+        h.assertFalse(GhostVictimMirrors.childCanSeeMirror(session,"bedroom",child,rear),"Mirror accepted its back side");
+        level.setBlock(at.north().above(),Blocks.STONE.defaultBlockState(),2);
+        h.assertFalse(GhostVictimMirrors.childCanSeeMirror(session,"bedroom",child,front),"Mirror accepted a conversation through a wall");
+        h.succeed();
+    }
 }

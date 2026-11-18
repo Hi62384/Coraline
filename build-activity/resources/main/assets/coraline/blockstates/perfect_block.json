@@ -1,1 +1,7 @@
-{"variants":{"":{"model":"coraline:block/perfect_block"}}}
+{
+  "variants": {
+    "": {
+      "model": "coraline:block/perfect_block"
+    }
+  }
+}

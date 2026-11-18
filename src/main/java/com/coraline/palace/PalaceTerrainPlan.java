@@ -42,6 +42,19 @@ public final class PalaceTerrainPlan {
         int surface=(int)Math.round(natural+(shaped-natural)*weight);
         return new Sample(Math.max(-64,Math.min(319,surface)),weight,routeDistance<=2.6&&u>0&&u<1,clearing);
     }
+    /** Converts the persisted terrain cursor to world columns in chunk order. */
+    static PalaceSitePlan.Point column(int minX,int minZ,int cursor){
+        int side=EXTENT*2+1;
+        int zChunk=(cursor/side+(minZ&15))/16;
+        int rows=Math.max(0,zChunk*16-(minZ&15));
+        int height=Math.min(16-((minZ+rows)&15),side-rows);
+        int inRows=cursor-rows*side;
+        int xChunk=(inRows/height+(minX&15))/16;
+        int columns=Math.max(0,xChunk*16-(minX&15));
+        int width=Math.min(16-((minX+columns)&15),side-columns);
+        int inChunk=inRows-columns*height;
+        return new PalaceSitePlan.Point(minX+columns+inChunk%width,minZ+rows+inChunk/width);
+    }
     public static boolean vegetation(long seed,PalaceSitePlan.Point palace,PalaceSitePlan.Point well,int x,int z){
         double r=Math.hypot((double)x-palace.x(),(double)z-palace.z());
         if(r<67||Math.hypot((double)x-well.x(),(double)z-well.z())<18)return false;

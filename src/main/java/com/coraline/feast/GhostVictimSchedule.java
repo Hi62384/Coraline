@@ -85,6 +85,11 @@ public final class GhostVictimSchedule {
     public static boolean manifestationAvailable(CompoundTag session,String point){
         if(point==null||!GhostVictimProgress.hasVictim(session))return false;
         var phase=GhostVictimProgress.phase(session);
+        if(java.util.Set.of("house_hall_vase","house_hall_book","house_kitchen_cup","house_bedroom_toy",
+                "house_bedroom_clock","supper_bottle","kitchen_knife","supper_cup").contains(point))return false;
+        var escape=session.getCompound(GhostEscapeProgress.KEY);
+        if(point.startsWith("room_light_")&&GhostEscapeProgress.owns(session,escape)
+                &&GhostEscapeProgress.phase(escape)==GhostEscapeProgress.Phase.WAIT_LURE)return true;
         if(point.startsWith("supper_"))return phase==GhostVictimProgress.Phase.FIRST_SUPPER&&session.contains("SupperSeated");
         if(point.startsWith("gift_"))return phase==GhostVictimProgress.Phase.DAILY_GIFT&&session.getBoolean("GiftPlaced")
             &&point.equals("gift_"+today(session).getString("Gift"));

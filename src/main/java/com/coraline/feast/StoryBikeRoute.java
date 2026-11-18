@@ -77,5 +77,35 @@ final class StoryBikeRoute {
         }
         if(best==start)return new long[0];var path=new ArrayList<Long>();for(var n=best;n.previous!=null;n=n.previous)path.add(n.cell.asLong());Collections.reverse(path);return path.stream().mapToLong(Long::longValue).toArray();
     }
+    /** Bounded search toward an actual staging position. Each edge uses the
+     * same mounted clearance and step rules as the physical ride. */
+    static List<Vec3> toward(WybieBicycleEntity bike,Vec3 goal){
+        var start=new Node(bike.blockPosition(),bike.position(),null,0);
+        var open=new PriorityQueue<Node>(Comparator.comparingDouble(
+                node->node.distance+1.4*node.feet.distanceTo(goal)));
+        var seen=new HashSet<BlockPos>();
+        open.add(start);
+        int expanded=0;
+        while(!open.isEmpty()&&expanded<96){
+            var node=open.remove();
+            if(!seen.add(node.cell))continue;
+            expanded++;
+            if(node.feet.distanceToSqr(goal)<.36){
+                var route=new ArrayList<Vec3>();
+                for(var leg=node;leg.previous!=null;leg=leg.previous)route.add(leg.feet);
+                Collections.reverse(route);
+                return route;
+            }
+            if(node.distance>=64)continue;
+            for(var direction:Direction.Plane.HORIZONTAL){
+                var cell=node.cell.relative(direction);
+                var feet=step(bike,node.feet,cell.getX()+.5,cell.getZ()+.5,direction.toYRot());
+                if(feet==null)continue;
+                var feetCell=BlockPos.containing(feet);
+                if(!seen.contains(feetCell))open.add(new Node(feetCell,feet,node,node.distance+1));
+            }
+        }
+        return null;
+    }
     private StoryBikeRoute(){}
 }

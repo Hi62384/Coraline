@@ -64,7 +64,7 @@ public final class PalaceJourney {
     private static boolean sitesReady(PalaceSiteData sites){
         // The map needs its marked destination, not the distant Palace and
         // well that are still being built by the background world job.
-        return sites.blocker().isEmpty()&&sites.generated(Kind.COMPANY)&&sites.position(Kind.COMPANY).isPresent();
+        return sites.companyMapReady();
     }
     private static void issueNotice(ServerPlayer p,VisitData.Scene scene,CompoundTag root){
         if(root.getBoolean("NoticeIssued"))return;
@@ -200,8 +200,12 @@ public final class PalaceJourney {
             if(!giveMap(p,scene,false)&&p.serverLevel()==p.server.overworld()){
                 root=initialize(scene);
                 if(root!=null&&!root.getBoolean("MapIssued"))issueNotice(p,scene,root);
-                if(p.tickCount%80==0)p.displayClientMessage(Component.literal("Moving Company map pending: "
-                    +(PalaceSiteData.get(p.server).generated(Kind.COMPANY)?"keep your key and a free inventory slot.":"its destination is still being prepared.")),true);
+                if(p.tickCount%80==0){
+                    var sites=PalaceSiteData.get(p.server);
+                    String status=sites.companyMapReady()?"Keep your key and a free inventory slot."
+                            :sites.blocker().isEmpty()?"The destination is still being prepared.":sites.blocker();
+                    p.displayClientMessage(Component.literal("Moving Company map pending. "+status),true);
+                }
             }
             return;
         }

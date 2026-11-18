@@ -20,10 +20,37 @@ public final class GhostEscapeAmbush {
         GhostEscapeCovert.hands(child);
         String id=phase==GhostEscapeProgress.Phase.APPROACH_AMBUSH?e.getString("TargetHide"):e.getString("HidingSpot");
         var node=GhostEscapeHiding.node(e,id);
-        if(!node.contains("Position")){e.putString("Blocker","The assigned hiding position is unavailable.");return true;}
+        if(!node.contains("Position")||node.getBoolean("Compromised")){
+            returnToMirror(p,ghost,e,"This hiding place is gone. Meet me at the bedroom mirror.");
+            return true;
+        }
         var at=BlockPos.of(node.getLong("Position"));
+        long clock=GhostVictimProgress.clock(ghost);
+        if(phase==GhostEscapeProgress.Phase.WAIT_LURE&&clock%100==0
+                &&clock>=e.getLong("DistractionUntil")
+                &&workingLights(ghost,child).stream().noneMatch(light->at.distSqr(light)<=36)){
+            GhostVictimWorld.refreshRoomLights(p,s,ghost);
+            if(workingLights(ghost,child).stream().noneMatch(light->at.distSqr(light)<=36)){
+                String replacement=coverNearLight(ghost,e,child);
+                e.remove("StealSignaled");
+                ghost.remove("ChildRoutine");
+                if(replacement.isEmpty()){
+                    returnToMirror(p,ghost,e,"The light here is gone. Meet me at the bedroom mirror.");
+                    return true;
+                }else{
+                    e.putString("TargetHide",replacement);
+                    GhostEscapeProgress.move(e,GhostEscapeProgress.Phase.APPROACH_AMBUSH,clock);
+                    GhostVictimDirector.words(ghost,"The light here is gone. I'm moving to another hiding place.");
+                }
+                OtherMotherLoop.changed(p);
+                return true;
+            }
+        }
         if(phase==GhostEscapeProgress.Phase.APPROACH_AMBUSH){
-            if(GhostVictimRoutines.travel(p,s,ghost,child,at,false)==GhostVictimNavigation.Result.ARRIVED&&GhostEscapeHiding.concealed(child,mother,e,id)){
+            var arrival=GhostVictimRoutines.travel(p,s,ghost,child,at,false);
+            if(arrival==GhostVictimNavigation.Result.BLOCKED){
+                returnToMirror(p,ghost,e,"I can't reach that hiding place. Meet me at the bedroom mirror.");
+            }else if(arrival==GhostVictimNavigation.Result.ARRIVED&&GhostEscapeHiding.concealed(child,mother,e,id)){
                 GhostEscapeProgress.hiddenForKey(ghost,id,true);ghost.remove("ChildRoutine");child.getNavigation().stop();
                 GhostVictimDirector.words(ghost,"I'm hidden. Lead her close, then keep her looking away from me.");OtherMotherLoop.changed(p);
             }
@@ -32,10 +59,17 @@ public final class GhostEscapeAmbush {
         // The opportunity is broken immediately by lost reach, eye contact,
         // changed dimensions or an interrupted approach; it never accumulates.
         boolean near=mother!=null&&GhostEscapePerception.pair(p,s,ghost,child,mother)&&mother.distanceToSqr(at.getCenter())<=36;
-        boolean away=near&&!GhostVictimNavigation.canSee(mother,child,8,150);
-        if(!near||!away){
-            GhostEscapeProgress.keyOpportunity(ghost,false,false,false);
-            GhostVictimRoutines.travel(p,s,ghost,child,at,false);return true;
+        boolean distracted=near&&distractionReady(ghost,e,mother);
+        boolean away=distracted&&!GhostVictimNavigation.canSee(mother,child,8,150);
+        if(!away||!e.getBoolean("StealSignaled")){
+            if(phase==GhostEscapeProgress.Phase.STEAL_KEY){
+                GhostEscapeProgress.move(e,GhostEscapeProgress.Phase.WAIT_LURE,clock);
+                e.remove("StealSignaled");
+                GhostVictimDirector.words(ghost,"She turned back. Wait for another opening.");
+                OtherMotherLoop.changed(p);
+            }
+            GhostVictimRoutines.travel(p,s,ghost,child,at,false);
+            return true;
         }
         var approach=GhostVictimNavigation.approach(child,mother.blockPosition());
         if(approach!=null)GhostVictimRoutines.travel(p,s,ghost,child,approach,false);
@@ -51,6 +85,52 @@ public final class GhostEscapeAmbush {
             GhostVictimDirector.words(ghost,"I have it. Meet me at the mirror.");OtherMotherLoop.changed(p);
         }
         return true;
+    }
+    private static void returnToMirror(ServerPlayer p,CompoundTag ghost,CompoundTag escape,String message){
+        escape.remove("ReportSpoken");
+        escape.remove("StealSignaled");
+        ghost.remove("ChildRoutine");
+        GhostEscapeProgress.move(escape,GhostEscapeProgress.Phase.ROOM_REPORT,GhostVictimProgress.clock(ghost));
+        GhostVictimDirector.words(ghost,message);
+        OtherMotherLoop.changed(p);
+    }
+    private static java.util.List<BlockPos> workingLights(CompoundTag ghost,com.coraline.tycoon.TycoonNpc child){
+        var level=child.level();
+        var points=ghost.getCompound("Points");
+        var lamps=new java.util.ArrayList<BlockPos>();
+        for(String id:points.getAllKeys()){
+            if(!id.startsWith("room_light_"))continue;
+            var point=points.getCompound(id);
+            if(!level.dimension().location().toString().equals(point.getString("Dimension")))continue;
+            var at=BlockPos.of(point.getLong("Position"));
+            if(level.hasChunkAt(at)&&(point.contains("EffectUntil")
+                    ||GhostVictimManifestations.lightSource(level.getBlockState(at))))lamps.add(at);
+        }
+        return lamps;
+    }
+    static String coverNearLight(CompoundTag ghost,CompoundTag escape,com.coraline.tycoon.TycoonNpc child){
+        if(child==null)return "";
+        var lamps=workingLights(ghost,child);
+        var covers=new java.util.ArrayList<CompoundTag>();
+        for(var tag:escape.getList("HidingNodes",net.minecraft.nbt.Tag.TAG_COMPOUND)){
+            var node=(CompoundTag)tag;
+            if(!node.contains("Position")||node.getBoolean("Compromised"))continue;
+            var feet=BlockPos.of(node.getLong("Position"));
+            if(lamps.stream().anyMatch(lamp->feet.distSqr(lamp)<=36))covers.add(node);
+        }
+        covers.sort(java.util.Comparator.comparingDouble(node->BlockPos.of(node.getLong("Position")).distSqr(child.blockPosition())));
+        for(var node:covers){
+            var id=node.getString("Id");
+            if(GhostEscapeHiding.reachable(child,escape,id))return id;
+        }
+        return "";
+    }
+    static boolean distractionReady(CompoundTag ghost,CompoundTag escape,com.coraline.parents.ParentEntity mother){
+        if(mother==null||!escape.contains("Distraction")||GhostVictimProgress.clock(ghost)>=escape.getLong("DistractionUntil"))return false;
+        var point=BlockPos.of(escape.getLong("Distraction"));
+        if(!ghost.contains("MotherInvestigation")||ghost.getLong("MotherInvestigation")!=point.asLong())return false;
+        var direction=point.getCenter().subtract(mother.getEyePosition());
+        return mother.distanceToSqr(point.getCenter())<=36&&GhostVictimNavigation.view(mother).dot(direction.normalize())>.65;
     }
     private GhostEscapeAmbush(){}
 }

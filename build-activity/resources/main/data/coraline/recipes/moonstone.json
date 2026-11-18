@@ -1,1 +1,10 @@
-{"type":"minecraft:smelting","category":"misc","ingredient":{"item":"coraline:moonstone_ore"},"result":"coraline:moonstone","experience":0.7,"cookingtime":200}
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": {
+    "item": "coraline:moonstone_ore"
+  },
+  "result": "coraline:moonstone",
+  "experience": 0.7,
+  "cookingtime": 200
+}

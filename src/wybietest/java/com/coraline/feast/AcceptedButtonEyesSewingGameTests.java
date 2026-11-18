@@ -59,7 +59,7 @@ public final class AcceptedButtonEyesSewingGameTests {
             var foot=Blocks.BLUE_BED.defaultBlockState().setValue(BedBlock.FACING,Direction.NORTH).setValue(BedBlock.PART,BedPart.FOOT);
             level.setBlock(realm.bed,foot,2);level.setBlock(realm.bed.north(),foot.setValue(BedBlock.PART,BedPart.HEAD),2);
             for(var type:List.of(ModEntities.MOM.get(),ModEntities.DAD.get())){
-                var actor=type.create(level);h.assertTrue(actor!=null,"Parent creation failed");actor.makeOtherParent(0);actor.setPos(center.getCenter());h.assertTrue(level.addFreshEntity(actor),"Parent could not join warmed fixture");actors.add(actor);
+                var actor=type.create(level);h.assertTrue(actor!=null,"Parent creation failed");actor.makeOtherParent(0);actor.getPersistentData().putUUID("RealmDoor",s.door);actor.setPos(center.getCenter());h.assertTrue(level.addFreshEntity(actor),"Parent could not join warmed fixture");actors.add(actor);
                 h.assertTrue(level.getEntity(actor.getUUID())==actor,"Parent is not live in warmed fixture");
                 if(actor.isMom())s.mom=actor.getUUID();else s.dad=actor.getUUID();
             }

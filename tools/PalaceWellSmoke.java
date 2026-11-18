@@ -63,7 +63,7 @@ public final class PalaceWellSmoke {
         }
         state=reload(state);
         check(state.phase()==COMPLETE&&state.recording().isEmpty(),"Ending not terminal");
-        check(state.wybieLife()==(alive?ALIVE:state.originalWybie().isPresent()?DEAD_AT_WELL:DEAD_BEFORE_WELL),"Completion changed canonical life state");
+        check(state.wybieLife()==(alive?ALIVE:state.originalWybie().isPresent()?LOST_AT_WELL:DEAD_BEFORE_WELL),"Completion changed canonical life state");
         check(!state.resume(OWNER)&&!state.retryBoss(OWNER,state.session())&&!state.activeTick(OWNER,state.session(),999999),"Terminal state restarted");
     }
     private static void blocked(CompoundTag root,String reason){
@@ -109,12 +109,17 @@ public final class PalaceWellSmoke {
                 state=rescue(length);token=state.session();
                 for(int i=1;i<window;i++)check(state.activeTick(OWNER,token,100+i),"Pre-deadline clock failed");
                 if(attackFirst)check(!state.rescueHit(OWNER,token,HAND,100+window,true,true,true),"Pre-tick deadline hit won");
-                check(state.activeTick(OWNER,token,100+window)&&state.phase()==BOSS&&state.wybieLife()==DEAD_AT_WELL,"Deadline did not permanently record well death");
+                check(state.activeTick(OWNER,token,100+window)&&state.phase()==BOSS&&state.wybieLife()==LOST_AT_WELL,"Deadline did not record the original Wybie as lost");
                 check(!state.rescueHit(OWNER,token,HAND,100+window,true,true,true),"Post-tick deadline hit resurrected Wybie");
                 state=reload(state);
+                var legacy=state.save();
+                legacy.putString("WybieLife","DEAD_AT_WELL");
+                var historical=PalaceWellProgress.load(OWNER,DOOR,legacy);
+                check(historical.blocker().isEmpty()&&historical.wybieLife()==DEAD_AT_WELL
+                        &&!historical.wybieCanAssist(),"Legacy recorded death was overwritten or could assist");
                 for(int retry=0;retry<10;retry++){
                     token=state.session();check(state.retryBoss(OWNER,token),"Boss retry failed");check(!state.defeated(OWNER,token,HAND),"Stale attempt accepted after retry");
-                    state=reload(state);check(state.wybieLife()==DEAD_AT_WELL&&!state.wybieCanAssist()&&state.recording().isEmpty(),"Retry resurrected Wybie or replayed A-D");
+                    state=reload(state);check(state.wybieLife()==LOST_AT_WELL&&!state.wybieCanAssist()&&state.recording().isEmpty(),"Retry resurrected Wybie or replayed A-D");
                 }
                 finishFight(state,false);
             }

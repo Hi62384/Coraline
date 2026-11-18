@@ -1,1 +1,7 @@
-{"variants":{"":{"model":"coraline:block/soulglass_ore"}}}
+{
+  "variants": {
+    "": {
+      "model": "coraline:block/soulglass_ore"
+    }
+  }
+}

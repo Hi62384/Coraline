@@ -30,7 +30,7 @@ public final class PalaceKeyCustody {
         return bundle!=null&&bundle.isAlive()&&bundle.owned(s)&&bundle.kind()==RescueProps.KEY_BUNDLE
                 &&bundle.level()==p.server.overworld()&&root.hasUUID("BundleEntity")&&root.getUUID("BundleEntity").equals(bundle.getUUID());
     }
-    private static CompoundTag read(Path file,long limit)throws java.io.IOException{
+    static CompoundTag read(Path file,long limit)throws java.io.IOException{
         if(!Files.isRegularFile(file,LinkOption.NOFOLLOW_LINKS)||Files.size(file)>limit)throw new java.io.IOException("Missing/oversized save checkpoint");
         try(var input=new java.io.DataInputStream(new java.io.BufferedInputStream(new java.util.zip.GZIPInputStream(Files.newInputStream(file))))){
             return NbtIo.read(input,new NbtAccounter(64L*1024*1024));
@@ -58,20 +58,54 @@ public final class PalaceKeyCustody {
     /** Called only by a real owner interaction with the already wrapped bundle.
      * The boss driver must supply that entity after actual smash/wrap animation.
      */
+    private static final String INVENTORY_RETRY="Could not verify original-key inventory checkpoint; no custody committed.";
+
+    private static final String PREPARED_RETRY="Could not verify prepared original-key journal; original retained.";
+    private static final String RETRY="KeyInventoryCheckpointPending";
+
+    private static boolean originalKeyConflict(ServerPlayer p,VisitData.Scene s,ItemStack expected){
+        int amount=0;
+        for(int i=0;i<p.getInventory().getContainerSize();i++){
+            var stack=p.getInventory().getItem(i);
+            if(ParentRescueStory.key(stack,s)){
+                if(stack!=expected)return true;
+                amount+=stack.getCount();
+            }
+        }
+        for(int i=0;i<p.getEnderChestInventory().getContainerSize();i++)
+            if(ParentRescueStory.key(p.getEnderChestInventory().getItem(i),s))return true;
+        return ParentRescueStory.key(p.containerMenu.getCarried(),s)||amount!=(expected==null?0:1);
+    }
+
     public static boolean place(ServerPlayer p,VisitData.Scene s,CinematicPropEntity bundle){
         if(!PalaceJourney.owns(p,s)||!p.isAlive()||p.isSpectator()||p.serverLevel()!=p.server.overworld()
                 ||p.containerMenu!=p.inventoryMenu||!p.containerMenu.getCarried().isEmpty())return false;
-        var root=PalaceJourney.existing(s);if(root==null||root.contains(JOURNAL)||root.contains("KeyCustodyBlocker")
+        var root=PalaceJourney.existing(s);if(root==null||root.contains(JOURNAL)
+                ||root.contains("KeyCustodyBlocker")&&!root.getString("KeyCustodyBlocker").equals(INVENTORY_RETRY)
                 ||!boundBundle(p,s,root,bundle)||p.distanceToSqr(bundle)>9||!p.hasLineOfSight(bundle))return false;
         var state=well(s,root);if(!state.blocker().isEmpty()||state.phase()!=PalaceWellProgress.Phase.WRAPPED)return false;
         var original=p.getMainHandItem();if(!ParentRescueStory.key(original,s)||original.getCount()!=1)return false;
+        if(originalKeyConflict(p,s,original)){
+            blocked(p,root,"Multiple or contradictory original-key stacks; review required.");
+            return false;
+        }
         if(original.getOrCreateTag().contains(IDENTITY)&&!original.getOrCreateTag().hasUUID(IDENTITY))return false;
         if(!original.getOrCreateTag().hasUUID(IDENTITY))original.getOrCreateTag().putUUID(IDENTITY,UUID.randomUUID());
-        if(!saveInventory(p)){blocked(p,root,"Could not verify original-key inventory checkpoint; no custody committed.");return false;}
+        if(!saveInventory(p)){
+            root.putBoolean(RETRY,true);
+            OtherMotherLoop.changed(p);
+            p.displayClientMessage(net.minecraft.network.chat.Component.literal("Could not save the original key. Try placing it again."),true);
+            return false;
+        }
+        root.remove(RETRY);
+        if(INVENTORY_RETRY.equals(root.getString("KeyCustodyBlocker"))){
+            root.remove("KeyCustodyBlocker");
+            OtherMotherLoop.changed(p);
+        }
         var prepared=PalaceKeyTransaction.prepare(s.owner,s.door,bundle.getUUID(),original.save(new CompoundTag()));
         if(prepared.isEmpty())return false;
         root.put(JOURNAL,prepared.get().save());
-        if(!saveStory(p,s)){blocked(p,root,"Could not verify prepared original-key journal; original retained.");return false;}
+        if(!saveStory(p,s)){blocked(p,root,PREPARED_RETRY);return false;}
         return reconcile(p,s);
     }
     /** No catch-up rewards, key synthesis or refunds. Runs before input on login
@@ -84,7 +118,7 @@ public final class PalaceKeyCustody {
         // blockers. Re-run the journal reconciliation now that storage may be
         // available; identity conflicts remain quarantined.
         String oldBlocker=root.getString("KeyCustodyBlocker");
-        if(oldBlocker.startsWith("Could not verify original-key inventory checkpoint")||oldBlocker.startsWith("Could not verify prepared original-key journal")){
+        if(PREPARED_RETRY.equals(oldBlocker)){
             root.remove("KeyCustodyBlocker");OtherMotherLoop.changed(p);
         }
         if(root.contains("KeyCustodyBlocker"))return false;
@@ -97,7 +131,7 @@ public final class PalaceKeyCustody {
         // this inventory. An external/container copy is ambiguous, never a refund.
         boolean external=identifies(p.containerMenu.getCarried(),tx);
         for(int i=0;i<p.getEnderChestInventory().getContainerSize();i++)external|=identifies(p.getEnderChestInventory().getItem(i),tx);
-        if(external||count>1){blocked(p,root,"Original-key identity appears outside its prepared slot or more than once; review required.");return false;}
+        if(external||count>1||originalKeyConflict(p,s,found<0?null:p.getInventory().getItem(found))){blocked(p,root,"Original-key identity appears outside its prepared slot or more than once; review required.");return false;}
         if(tx.stage()!=PalaceKeyTransaction.Stage.PREPARED){
             if(count!=0){blocked(p,root,"Held/disposed original key unexpectedly present; no duplicate consumed or returned.");return false;}
             boolean valid=state.save().hasUUID("BundleReceipt")&&tx.receipt().equals(state.save().getUUID("BundleReceipt"))
@@ -131,7 +165,7 @@ public final class PalaceKeyCustody {
      */
     public static boolean dispose(ServerPlayer p,VisitData.Scene s,CinematicPropEntity bundle){
         if(!PalaceJourney.owns(p,s)||!p.isAlive()||p.isSpectator()||p.serverLevel()!=p.server.overworld())return false;var root=PalaceJourney.existing(s);
-        if(root==null||root.contains("KeyCustodyBlocker")||!boundBundle(p,s,root,bundle)||!reconcile(p,s))return false;
+        if(root==null||!boundBundle(p,s,root,bundle)||!reconcile(p,s))return false;
         var tx=journal(s,root);var state=well(s,root);var sites=PalaceSiteData.get(p.server);var at=sites.position(Kind.WELL);
         if(tx.stage()!=PalaceKeyTransaction.Stage.HELD||state.phase()!=PalaceWellProgress.Phase.KEY_BUNDLED
                 ||!sites.blocker().isEmpty()||!sites.generated(Kind.WELL)||at.isEmpty())return false;
@@ -139,7 +173,7 @@ public final class PalaceKeyCustody {
         if(dx*dx+dz*dz>2.25||bundle.getY()>rim.getY()-12||p.distanceToSqr(rim.getCenter())>48*48)return false;
         boolean heard=state.wybieLife()!=PalaceWellProgress.WybieLife.ALIVE
                 ||ShowPlayback.ownsSession(p,s)&&!ShowPlayback.debugSeeking(s)&&ShowPlayback.finished(s)
-                &&ShowPlayback.data(s).getString("Sound").equals("crawling_hand_e");
+                &&ShowPlayback.data(s).getString("Sound").equals("crawling_hand_e")&&!ShowPlayback.data(s).getBoolean("SafetySkipped");
         var beforeTx=tx.save();var beforeWell=state.save();
         if(!state.disposed(s.owner,state.session(),tx.receipt(),true,heard)||!tx.dispose(s.owner,tx.receipt(),bundle.getUUID()))return false;
         root.put(JOURNAL,tx.save());root.put("Well",state.save());

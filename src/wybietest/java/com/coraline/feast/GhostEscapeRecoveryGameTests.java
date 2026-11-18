@@ -83,6 +83,101 @@ public final class GhostEscapeRecoveryGameTests {
         }finally{AcceptedBranchPlayers.remove(p,s);}h.succeed();
     }
 
+    @GameTest(template="empty") public static void alreadyCrossedChildFinishesWithoutAnOverworldCopyOfTheOtherDoor(GameTestHelper h){
+        var p=AcceptedBranchPlayers.fixture(h);
+        var s=OtherMotherLoop.scene(p);
+        var level=p.serverLevel();
+        var n=session();
+        n.putUUID("Owner",s.owner);n.putUUID("Door",s.door);
+        AcceptedButtonEyes.data(s).put(GhostVictimProgress.KEY,n);
+        var source=new com.coraline.otherworld.DoorData.Door();
+        source.id=s.door;source.owner=s.owner;
+        source.pos=h.absolutePos(new BlockPos(140,118,80));
+        source.dimension=level.dimension().location().toString();
+        var doors=com.coraline.otherworld.DoorData.get(p.server).doors;
+        doors.put(s.door,source);
+        var realm=new com.coraline.otherworld.RealmData.Realm();
+        realm.door=s.door;realm.sourceDoor=source.pos;realm.doorPos=source.pos.offset(30,0,0);
+        com.coraline.otherworld.RealmData.get(p.server).realms.put(s.door,realm);
+        for(var at:BlockPos.betweenClosed(source.pos.offset(-5,-1,-2),source.pos.offset(4,2,2))){
+            level.getChunkAt(at);
+            level.setBlock(at,(at.getY()<source.pos.getY()?Blocks.STONE:Blocks.AIR).defaultBlockState(),2);
+        }
+        level.setBlock(source.pos,com.coraline.registry.ModBlocks.TINY_DOOR.get().defaultBlockState()
+                .setValue(com.coraline.block.TinyDoorBlock.FACING,net.minecraft.core.Direction.EAST),2);
+        var door=(com.coraline.otherworld.DoorBlockEntity)level.getBlockEntity(source.pos);
+        door.doorId=s.door;
+        var child=com.coraline.tycoon.TycoonContent.NPC.get().create(level);
+        child.owner=s.owner;child.resident=GhostVictimProgress.child(n).getUUID("Id");
+        child.setPos(Vec3.atBottomCenterOf(source.pos.east(2)));
+        child.setOnGround(true);child.setNoAi(true);
+        var lease=new CompoundTag();lease.putUUID("Owner",s.owner);lease.putUUID("Door",s.door);lease.putUUID("Session",n.getUUID("Session"));
+        child.getPersistentData().put(GhostVictimActors.LEASE,lease);
+        child.getPersistentData().putUUID("ShowTravelOwner",s.owner);
+        child.getPersistentData().put("GhostEscapeChild",new CompoundTag());
+        n.putUUID("VictimActor",child.getUUID());
+        h.assertTrue(level.addFreshEntity(child),"Could not stage the saved Overworld child");
+        var e=GhostEscapeProgress.data(n);
+        e.putUUID("Attempt",UUID.randomUUID());e.putUUID("Session",n.getUUID("Session"));e.putUUID("Victim",child.resident);
+        e.putBoolean("PlayerEyesHeld",true);
+        GhostEscapeProgress.move(e,GhostEscapeProgress.Phase.CRAWL,0);
+        GhostVictimActors.remember(n,child);
+        h.succeedWhen(()->{
+            h.assertTrue(GhostVictimActors.find(p,s,n)==child,"The original child is not visible in the loaded entity chunk");
+            h.assertTrue(GhostEscapeHunt.tick(p,s,n),"The current crossing was not handled");
+            h.assertTrue(GhostEscapeProgress.phase(e)==GhostEscapeProgress.Phase.SAFE&&e.contains("HomeLanding"),
+                    "Already-crossed child could not commit room-side arrival: "+e.getString("Blocker"));
+            h.assertTrue(level.getEntity(child.getUUID())==child,"Crossing reconciliation replaced the child");
+            child.discard();com.coraline.otherworld.TunnelPassage.restore(level,door);
+            com.coraline.otherworld.RealmData.get(p.server).realms.remove(s.door);
+            AcceptedBranchPlayers.remove(p,s);
+        });
+    }
+
+    @GameTest(template="empty") public static void authoredCabinetUsesSupportedSlotAndPreservesObstruction(GameTestHelper h){
+        var p=AcceptedBranchPlayers.fixture(h);
+        var s=OtherMotherLoop.scene(p);
+        var level=p.server.getLevel(com.coraline.otherworld.OtherWorld.KEY);
+        h.assertTrue(level!=null,"Other World is unavailable");
+        var realms=com.coraline.otherworld.RealmData.get(p.server).realms;
+        var realm=new com.coraline.otherworld.RealmData.Realm();
+        realm.door=s.door;realm.house=h.absolutePos(new BlockPos(180,155,110));
+        realms.put(s.door,realm);
+        AcceptedButtonEyesProgress.scenery(s).putLong("House",realm.house.asLong());
+        var n=session();
+        n.putUUID("Owner",s.owner);n.putUUID("Door",s.door);
+        var cabinet=GhostVictimWorld.at(s,48,15,64);
+        var door=GhostEscapeRooms.door(s,"storage");
+        var child=com.coraline.tycoon.TycoonContent.NPC.get().create(level);
+        child.owner=s.owner;child.resident=GhostVictimProgress.child(n).getUUID("Id");
+        var lease=new CompoundTag();lease.putUUID("Owner",s.owner);lease.putUUID("Door",s.door);lease.putUUID("Session",n.getUUID("Session"));
+        child.getPersistentData().put(GhostVictimActors.LEASE,lease);
+        n.putUUID("VictimActor",child.getUUID());
+        var saved=new java.util.HashMap<BlockPos,net.minecraft.world.level.block.state.BlockState>();
+        try{
+            for(var cell:BlockPos.betweenClosed(cabinet.offset(-1,-1,-1),cabinet.offset(1,2,1))){
+                var at=cell.immutable();level.getChunkAt(at);saved.put(at,level.getBlockState(at));
+                level.setBlock(at,(at.getY()<cabinet.getY()?Blocks.STONE:Blocks.AIR).defaultBlockState(),2);
+            }
+            level.getChunkAt(door);
+            saved.put(door,level.getBlockState(door));
+            level.setBlock(door,Blocks.OAK_DOOR.defaultBlockState(),2);
+            child.setPos(Vec3.atBottomCenterOf(cabinet.east()));
+            level.setBlock(cabinet,Blocks.OBSIDIAN.defaultBlockState(),2);
+            h.assertFalse(GhostEscapeRooms.prepare(p,s,n,child).contains("storage"),"An obstructed slot was accepted");
+            h.assertTrue(level.getBlockState(cabinet).is(Blocks.OBSIDIAN),"Preparation overwrote the obstruction");
+            level.setBlock(cabinet,Blocks.AIR.defaultBlockState(),2);
+            h.assertTrue(GhostEscapeRooms.prepare(p,s,n,child).contains("storage"),"Supported original cabinet slot did not become searchable");
+            h.assertTrue(cabinet.equals(GhostEscapeRooms.container(n,"storage")),"The cabinet was created outside its authored slot");
+        }finally{
+            child.discard();
+            saved.forEach((at,state)->level.setBlock(at,state,2));
+            realms.remove(s.door);
+            AcceptedBranchPlayers.remove(p,s);
+        }
+        h.succeed();
+    }
+
     private static CompoundTag session(){
         var n=new CompoundTag();GhostVictimProgress.begin(n,"ACCEPTED_PROPOSAL");n.putUUID("Session",UUID.randomUUID());
         GhostVictimProgress.leavePrison(n);var c=new CompoundTag();c.putString("Name","Robin");

@@ -95,8 +95,11 @@ public final class GhostVictimActivities {
         }else if(!a.getBoolean("Returning")){
             child.getNavigation().stop();
             if(step==2||step>=stations.length){
-                var focus=step>=stations.length?Vec3.atBottomCenterOf(stations[stations.length-1]).add(-.75,1,0):Vec3.atBottomCenterOf(stations[Math.min(1,stations.length-1)]).add(.75,1,0);
-                child.getLookControl().setLookAt(focus.x,focus.y,focus.z,30,30);
+                var point=n.getCompound("Points").getCompound("outing_"+id+(step>=stations.length?"_rattle":"_secret"));
+                if(point.hasUUID("Entity")) {
+                    var focus=GhostVictimManifestations.interactionPoint(point);
+                    child.getLookControl().setLookAt(focus.x,focus.y,focus.z,30,30);
+                }
             }else GhostVictimRoutines.lookAtMirror(n,child);
         }
         boolean completed=a.getInt("Station")>=stations.length&&age>=GhostVictimConfig.ACTIVITY_SECONDS.get()*20;
@@ -130,8 +133,8 @@ public final class GhostVictimActivities {
         var opportunity=GhostVictimSchedule.activity(id);String secret="outing_"+id+"_secret",risk="outing_"+id+"_rattle";
         var stops=stations(c,id,seed);var secretStop=stops[Math.min(1,stops.length-1)];var riskStop=stops[stops.length-1];
         ItemStack normal=new ItemStack(switch(id){case "magic_garden"->Items.BLUE_ORCHID;case "mice_circus"->Items.STRING;case "other_village"->Items.EMERALD;case "magic_show"->Items.PAINTING;case "treasure_hunt"->Items.PAPER;case "fishing_contest"->Items.COD;case "cake_making_contest"->Items.SUGAR;case "carnival"->Items.RABBIT_FOOT;default->Items.COOKED_CHICKEN;});
-        GhostVictimManifestations.displayAt(p,s,n,level,secret,Vec3.atBottomCenterOf(secretStop).add(.75,1,0),GhostVictimProgress.Disturbance.ILLUSION,normal);
-        GhostVictimManifestations.displayAt(p,s,n,level,risk,Vec3.atBottomCenterOf(riskStop).add(-.75,1,0),id.equals("cake_making_contest")||id.equals("grand_feast")?GhostVictimProgress.Disturbance.KNIFE:GhostVictimProgress.Disturbance.OBJECT,new ItemStack(id.equals("cake_making_contest")||id.equals("grand_feast")?Items.IRON_SWORD:Items.GLASS_BOTTLE));
+        groundedPoint(p,s,n,level,secret,Vec3.atBottomCenterOf(secretStop).add(.75,0,0),GhostVictimProgress.Disturbance.ILLUSION,normal);
+        groundedPoint(p,s,n,level,risk,Vec3.atBottomCenterOf(riskStop).add(-.75,0,0),id.equals("cake_making_contest")||id.equals("grand_feast")?GhostVictimProgress.Disturbance.KNIFE:GhostVictimProgress.Disturbance.OBJECT,new ItemStack(id.equals("cake_making_contest")||id.equals("grand_feast")?Items.IRON_SWORD:Items.GLASS_BOTTLE));
         var row=n.getCompound("Points").getCompound(secret);row.putString("Label","Reveal "+opportunity.useful().replace('_',' '));
         row.put("RevealedItem",new ItemStack(switch(id){case "magic_garden"->Items.DEAD_BUSH;case "mice_circus","magic_show","carnival"->Items.COBWEB;case "other_village"->Items.PAPER;case "treasure_hunt"->Items.SPIDER_EYE;case "fishing_contest"->Items.STRING;default->Items.ROTTEN_FLESH;}).save(new CompoundTag()));
         n.getCompound("Points").getCompound(risk).putString("Label","Disturb "+opportunity.risk().replace('_',' '));
@@ -139,6 +142,23 @@ public final class GhostVictimActivities {
             var at=c.offset(-3,0,4);var mirror=FirstEscapeScene.ensure(p,s,"VictimGardenMirror",CinematicPropEntity.STORY_MIRROR,120,level,Vec3.atBottomCenterOf(at));
             if(mirror!=null){mirror.setYRot(90);GhostVictimMirrors.register(n,"magic_garden_reflection",at,90,level.dimension().location().toString());n.getCompound("Mirrors").getCompound("magic_garden_reflection").putUUID("Entity",mirror.getUUID());}
         }
+    }
+    private static void groundedPoint(ServerPlayer p,VisitData.Scene s,CompoundTag n,ServerLevel level,
+                                      String id,Vec3 at,GhostVictimProgress.Disturbance kind,ItemStack item){
+        level.getChunkAt(BlockPos.containing(at));
+        var support=level.clip(new net.minecraft.world.level.ClipContext(at.add(0,1.5,0),at.add(0,-1.5,0),
+                net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,p));
+        if(support.getType()==net.minecraft.world.phys.HitResult.Type.BLOCK
+                &&support.getDirection()==net.minecraft.core.Direction.UP){
+            var surface=support.getLocation();
+            var volume=new net.minecraft.world.phys.AABB(surface.x-.15,surface.y+.01,surface.z-.15,
+                    surface.x+.15,surface.y+.25,surface.z+.15);
+            if(level.noCollision(volume)){
+                GhostVictimManifestations.displayAt(p,s,n,level,id,surface,kind,item);
+                return;
+            }
+        }
+        GhostVictimManifestations.retireDisplay(p,s,n,id);
     }
     private static BlockPos[] stations(BlockPos c,String id,long seed){return switch(id){
         case "magic_garden"->new BlockPos[]{c.south(30),c.south(15),c.south(4),c.north(20)};
@@ -189,14 +209,21 @@ public final class GhostVictimActivities {
      * No child is spawned and no minigame result is awarded by scouting. */
     public static void prepareScouting(ServerPlayer p,VisitData.Scene s,CompoundTag n){
         GhostVictimWorld.prepareGiftPreview(p,s,n);
-        if(n.contains("ScoutSites"))return;var level=AcceptedButtonEyesWorld.level(p);if(level==null)return;
+        if(n.contains("ScoutSites")){
+            if(n.getInt("ScoutEntranceVersion")>=1||n.contains("ScoutActivity"))return;
+            for(Tag entry:n.getList("ScoutSites",Tag.TAG_COMPOUND))remove(p,(CompoundTag)entry,"Portal");
+            n.remove("ScoutSites");
+        }
+        var level=AcceptedButtonEyesWorld.level(p);if(level==null)return;
         var sites=new ListTag();var planned=GhostVictimSchedule.tomorrow(n).getList("Activities",Tag.TAG_STRING);
-        for(int i=0;i<planned.size();i++){
-            String id=planned.getString(i);var row=new CompoundTag();var at=housePortal(s).east(i*3);
+        for(int i=0;i<Math.min(1,planned.size());i++){
+            String id=planned.getString(i);var row=new CompoundTag();var at=housePortal(s);
+            LoopProps.hold(level,at);
+            if(!RescueEpilogue.safeReturn(level,p,net.minecraft.world.entity.Pose.STANDING,Vec3.atBottomCenterOf(at)))return;
             row.putString("Id",id);row.putLong("Center",center(p,s,id).asLong());row.putLong("Entrance",at.asLong());
             var portal=LoopProps.spawn(level,s,ScenePropEntity.ACTIVITY_PORTAL,Vec3.atBottomCenterOf(at),-510-i);row.putUUID("Portal",portal.getUUID());sites.add(row);
         }
-        n.put("ScoutSites",sites);OtherMotherLoop.changed(p);
+        n.put("ScoutSites",sites);n.putInt("ScoutEntranceVersion",1);OtherMotherLoop.changed(p);
     }
     public static void scout(ServerPlayer p,VisitData.Scene s,CompoundTag n,String id){
         if(GhostVictimProgress.phase(n)!=GhostVictimProgress.Phase.NIGHT_PREPARATION||!com.coraline.otherworld.OtherWorld.isOther(p.level())||GhostVictimProgress.imprisoned(n))return;

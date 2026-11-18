@@ -67,6 +67,10 @@ public final class GhostVictimProgress {
     public static double attention(CompoundTag n){return unit(n.getDouble("Attention"));}
     public static double motherTrust(CompoundTag n){return unit(child(n).getDouble("MotherTrust"));}
     public static double ghostTrust(CompoundTag n){return unit(child(n).getDouble("GhostTrust"));}
+    static boolean readyToHelp(CompoundTag n){
+        return motherTrust(n)<.6&&(ghostTrust(n)>=1||ghostTrust(n)>=.40
+                &&child(n).getInt("EvidenceCount")>=2&&remembers(n,"explained_the_trap"));
+    }
     public static void trust(CompoundTag n,double mother,double ghost){
         if(!hasVictim(n))return;var c=child(n);double m=unit(mother),g=unit(ghost);
         c.putDouble("MotherTrust",m);c.putDouble("GhostTrust",m>=.60?Math.min(.99,g):g);
@@ -149,7 +153,7 @@ public final class GhostVictimProgress {
         boolean frightening=kind==Disturbance.KNIFE||kind==Disturbance.GIFT_FRIGHT;
         boolean evidence=kind==Disturbance.FOOD||kind==Disturbance.ILLUSION||kind==Disturbance.GIFT_SECRET;
         boolean fresh=seen.childSaw()&&remember(n,point+":"+kind.name());
-        if(fresh&&evidence){var c=child(n);c.putInt("EvidenceVersion",c.getInt("EvidenceVersion")+1);c.putInt("EvidenceCount",c.getInt("EvidenceCount")+1);}
+        if(fresh&&evidence){var c=child(n);c.putInt("EvidenceVersion",c.getInt("EvidenceVersion")+1);c.putInt("EvidenceCount",c.getInt("EvidenceCount")+1);c.putString("LastEvidenceKind",kind.name());}
         double m=motherTrust(n),g=ghostTrust(n);String reaction="A quiet disturbance.";
         if(seen.childSaw()){
             reaction=frightening?"What was that? Please make it stop!":evidence?"That wasn't what it looked like before...":"Did you see that move?";
@@ -174,7 +178,7 @@ public final class GhostVictimProgress {
         double m=motherTrust(n),g=ghostTrust(n);boolean evidence=c.getInt("EvidenceCount")>0;
         switch(choice){
             case FRIENDLY,HELP->g+=.06;
-            case TRAPPED->g+=evidence?.10:.025;
+            case TRAPPED->{g+=evidence?.10:.025;remember(n,"explained_the_trap");}
             case EVIDENCE->{if(evidence){g+=.12*(1-m*.75);m-=.025;}else g-=.015;}
             case ACCUSATION->{if(evidence){g+=.08*(1-m*.85);m-=.015;}else g-=.03*(.5+m);}
             case THREAT->{g-=.08;m+=.025;remember(n,"ghost_threat");c.putBoolean("PendingGhostReport",true);}

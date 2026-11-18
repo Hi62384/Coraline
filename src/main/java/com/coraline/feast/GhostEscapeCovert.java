@@ -13,7 +13,7 @@ public final class GhostEscapeCovert {
     public static boolean tryBegin(ServerPlayer p,VisitData.Scene s,CompoundTag ghost){
         var child=GhostVictimActors.find(p,s,ghost);
         if(!GhostVictimMirrors.owned(p,s,ghost)||child==null||GhostVictimProgress.phase(ghost)!=GhostVictimProgress.Phase.BEDTIME
-            ||!ghost.contains("BedtimeWindowStarted")||GhostVictimProgress.ghostTrust(ghost)<1||GhostVictimProgress.motherTrust(ghost)>=.6
+            ||!ghost.contains("BedtimeWindowStarted")||!GhostVictimProgress.readyToHelp(ghost)
             ||!GhostVictimMirrors.childPresent(p,ghost,ghost.getString("Mirror"),child))return false;
         var rooms=GhostEscapeRooms.prepare(p,s,ghost,child);
         if(!GhostEscapeProgress.begin(ghost,rooms,GhostEscapeEyes.unresolved(s),true))return false;
@@ -56,16 +56,21 @@ public final class GhostEscapeCovert {
                 if(!ghost.getBoolean("ChildAtHome"))return false;
                 var source=com.coraline.otherworld.DoorData.get(p.server).doors.get(s.door);
                 if(source==null||!s.owner.equals(source.owner)||!source.dimension.equals(child.level().dimension().location().toString())||!child.isInvisible())return false;
-                if(!e.contains("ErrandHomeAt"))e.putLong("ErrandHomeAt",clock);
-                if(clock-e.getLong("ErrandHomeAt")<100)return true;
-                var item=new ItemStack(ModItems.SEEING_STONE.get());item.getOrCreateTag().putUUID("StoryOwner",s.owner);item.getTag().putUUID("StoryDoor",s.door);
-                var inventory=e.getCompound("QuestInventory");inventory.put("Stone",item.save(new CompoundTag()));e.put("QuestInventory",inventory);e.putString("StoneSource","SPINK_AND_FORCIBLE_OFFSCREEN_HOME_VISIT");
+                if(!retrieveStoneFromVisitors(p,s,e,child))return true;
                 GhostEscapeProgress.homeErrand(ghost,true);OtherMotherLoop.changed(p);return false;
             }
             case STONE_REPORT,ROOM_REPORT,KEY_REPORT->{
                 if(child.level()!=level||ghost.getBoolean("ChildAtHome")||GhostVictimProgress.phase(ghost)==GhostVictimProgress.Phase.DAILY_ARRIVAL)return false;
-                if(GhostVictimRoutines.travel(p,s,ghost,child,GhostVictimWorld.bedroom(s),false)==GhostVictimNavigation.Result.ARRIVED){
-                    hands(child);GhostVictimRoutines.lookAtMirror(ghost,child);
+                var destination=GhostVictimWorld.bedtimeConversationPosition(s,level,child,ghost);
+                if(destination==null){
+                    e.putString("Blocker","Clear the floor and sightline in front of the bedroom mirror.");
+                    return true;
+                }
+                if(GhostVictimRoutines.travel(p,s,ghost,child,destination,false)==GhostVictimNavigation.Result.ARRIVED){
+                    GhostVictimMirrors.faceMirror(ghost,"bedroom",child);
+                    if(!GhostVictimMirrors.childAtMirror(ghost,"bedroom",child,true))return true;
+                    e.remove("Blocker");
+                    hands(child);
                     if(!e.getBoolean("ReportSpoken")){GhostVictimDirector.words(ghost,switch(GhostEscapeProgress.phase(e)){case STONE_REPORT->"I have the Seeing Stone. Tell me where to look.";case KEY_REPORT->"I got her key. We have to be careful.";default->e.getBoolean("KeyStolen")?"Tell me when it's safe to get the eyes.":"I found the eyes, but the container is locked.";});e.putBoolean("ReportSpoken",true);}
                 }
                 return true;
@@ -95,10 +100,21 @@ public final class GhostEscapeCovert {
             case SCAN->{
                 var room=selectedRoom(e.getString("AssignedRoom"));if(room==null||child.level()!=level)return true;
                 child.gesture(8,5);child.setItemSlot(EquipmentSlot.MAINHAND,stone(e));var center=GhostEscapeRooms.container(ghost,e.getString("AssignedRoom"));if(center==null)return true;
-                int turn=(int)(GhostEscapeProgress.age(e,clock)/50)%4;var direction=net.minecraft.core.Direction.from2DDataValue(turn);var at=center.relative(direction,2);
-                if(com.coraline.secrets.HouseCabinets.contains(AcceptedButtonEyesWorld.house(s),room,at)&&GhostVictimNavigation.clear(level,child,at))GhostVictimRoutines.travel(p,s,ghost,child,at,false);
-                child.getLookControl().setLookAt(center.getX()+direction.getStepX()*3+.5,center.getY()+1,center.getZ()+direction.getStepZ()*3+.5,25,25);
-                if(GhostEscapeProgress.scanned(ghost,com.coraline.secrets.HouseCabinets.contains(AcceptedButtonEyesWorld.house(s),room,child.blockPosition()))){hands(child);ghost.remove("ChildRoutine");GhostVictimDirector.words(ghost,e.getBoolean("EyeRoomKnown")?"They're here, but I can't open the container.":"I don't see the eyes in here.");}
+                String assigned=e.getString("AssignedRoom");
+                if(!GhostEscapeRooms.validContainer(p,s,ghost,assigned))return true;
+                var at=GhostEscapeRooms.approachContainer(child,center);
+                if(at==null||GhostVictimRoutines.travel(p,s,ghost,child,at,false)!=GhostVictimNavigation.Result.ARRIVED)return true;
+                var focus=center.getCenter();
+                child.getLookControl().setLookAt(focus.x,focus.y,focus.z,25,25);
+                var delta=focus.subtract(child.getEyePosition());
+                if(delta.lengthSqr()>16||GhostVictimNavigation.view(child).dot(delta.normalize())<.6)return true;
+                var hit=level.clip(new net.minecraft.world.level.ClipContext(child.getEyePosition(),focus,
+                        net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,child));
+                if(hit.getType()!=net.minecraft.world.phys.HitResult.Type.MISS&&!center.equals(hit.getBlockPos()))return true;
+                if(GhostEscapeProgress.scanned(ghost,com.coraline.secrets.HouseCabinets.contains(AcceptedButtonEyesWorld.house(s),room,child.blockPosition()))){
+                    hands(child);ghost.remove("ChildRoutine");
+                    GhostVictimDirector.words(ghost,e.getBoolean("EyeRoomKnown")?"The Stone showed the ghost eyes in this cabinet. I need the key.":"The Stone doesn't show any eyes in this cabinet.");
+                }
                 return true;
             }
             case COLLECT_EYES->{
@@ -143,6 +159,43 @@ public final class GhostEscapeCovert {
             }
             default->{return false;}
         }
+    }
+    private static boolean retrieveStoneFromVisitors(ServerPlayer p,VisitData.Scene s,CompoundTag escape,
+                                                   com.coraline.tycoon.TycoonNpc child){
+        if(!stone(escape).isEmpty())return true;
+        var home=(net.minecraft.server.level.ServerLevel)child.level();
+        var front=child.blockPosition();
+        var first=com.coraline.otherworld.OtherWorld.safePlayer(home,front.east(2));
+        var second=com.coraline.otherworld.OtherWorld.safePlayer(home,front.west(2));
+        if(first==null||second==null||first.equals(second)||first.distSqr(front)>25||second.distSqr(front)>25)return false;
+        var spink=ShowActors.acquire(p,s,"miss_spink",home,net.minecraft.world.phys.Vec3.atBottomCenterOf(first));
+        var forcible=ShowActors.acquire(p,s,"miss_forcible",home,net.minecraft.world.phys.Vec3.atBottomCenterOf(second));
+        if(spink==null||forcible==null||spink.level()!=home||forcible.level()!=home
+                ||spink.distanceToSqr(child)>25||forcible.distanceToSqr(child)>25)return false;
+        if(!escape.hasUUID("StoneReceipt")){
+            escape.putUUID("StoneReceipt",java.util.UUID.randomUUID());
+            escape.putUUID("StoneSpink",spink.getUUID());
+            escape.putUUID("StoneForcible",forcible.getUUID());
+        }
+        if(!spink.getUUID().equals(escape.getUUID("StoneSpink"))||!forcible.getUUID().equals(escape.getUUID("StoneForcible")))return false;
+        var item=new ItemStack(ModItems.SEEING_STONE.get());
+        var tag=item.getOrCreateTag();
+        tag.putUUID("StoryOwner",s.owner);
+        tag.putUUID("StoryDoor",s.door);
+        tag.putUUID("GhostStoneReceipt",escape.getUUID("StoneReceipt"));
+        var originalHeld=forcible.getMainHandItem();
+        forcible.setItemSlot(EquipmentSlot.MAINHAND,item);
+        child.getLookControl().setLookAt(forcible,30,30);
+        forcible.getLookControl().setLookAt(child,30,30);
+        var inventory=escape.getCompound("QuestInventory");
+        inventory.put("Stone",forcible.getMainHandItem().save(new CompoundTag()));
+        escape.put("QuestInventory",inventory);
+        forcible.setItemSlot(EquipmentSlot.MAINHAND,originalHeld);
+        escape.putString("StoneSource","SPINK_AND_FORCIBLE_HANDOFF");
+        ShowActors.releaseHidden(p,s,"miss_spink");
+        ShowActors.releaseHidden(p,s,"miss_forcible");
+        OtherMotherLoop.changed(p);
+        return true;
     }
     private static com.coraline.secrets.HouseCabinets.Room selectedRoom(String id){for(var room:com.coraline.secrets.HouseCabinets.ROOMS)if(room.id().equals(id))return room;return null;}
     static ItemStack stone(CompoundTag e){return ItemStack.of(e.getCompound("QuestInventory").getCompound("Stone"));}

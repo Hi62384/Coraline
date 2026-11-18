@@ -47,7 +47,8 @@ public final class GhostVictimRoutines {
         var ids=n.getCompound("Mirrors").getAllKeys().stream()
             .filter(id->GhostVictimMirrors.available(n,id,child.level().dimension().location().toString())).sorted().toList();
         if(ids.isEmpty())return null;
-        var mirror=n.getCompound("Mirrors").getCompound(ids.get(Math.floorMod(index,ids.size())));
+        String id=ids.get(Math.floorMod(index,ids.size()));
+        var mirror=n.getCompound("Mirrors").getCompound(id);
         var center=net.minecraft.world.phys.Vec3.atBottomCenterOf(BlockPos.of(mirror.getLong("Position")));
         var normal=net.minecraft.world.phys.Vec3.directionFromRotation(0,mirror.getFloat("Yaw")).scale(-1);
         var destination=BlockPos.containing(center.add(normal.scale(2)));

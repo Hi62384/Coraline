@@ -12,7 +12,30 @@ public final class GhostEscapeRestoration {
         if(GhostEscapeProgress.phase(e)==GhostEscapeProgress.Phase.COMPLETE){GhostEscapeEnding.tick(p,s,ghost);return true;}
         var door=com.coraline.otherworld.DoorData.get(p.server).doors.get(s.door);
         if(door==null||!s.owner.equals(door.owner))return false;
-        var home=com.coraline.parents.FamilyData.level(p.server,door.dimension);if(home==null||p.serverLevel()!=home)return false;
+        var home=com.coraline.parents.FamilyData.level(p.server,door.dimension);if(home==null)return false;
+        var phase=GhostEscapeProgress.phase(e);
+        if(p.serverLevel()!=home&&(phase==GhostEscapeProgress.Phase.SAFE||phase==GhostEscapeProgress.Phase.RESTORING)){
+            var child=GhostVictimActors.find(p,s,ghost);
+            if(child==null||child.level()!=home)return true;
+            LoopProps.hold(home,door.pos);
+            var state=home.getBlockState(door.pos);
+            if(!state.is(com.coraline.registry.ModBlocks.TINY_DOOR.get())
+                    ||!(home.getBlockEntity(door.pos) instanceof com.coraline.otherworld.DoorBlockEntity tile)
+                    ||!s.door.equals(tile.doorId))return true;
+            var room=door.pos.relative(state.getValue(com.coraline.block.TinyDoorBlock.FACING),2);
+            var at=e.contains("HomeLanding")?net.minecraft.core.BlockPos.of(e.getLong("HomeLanding")):room;
+            if(at.distSqr(room)>64)at=room;
+            var landing=net.minecraft.world.phys.Vec3.atBottomCenterOf(at);
+            if(!RescueEpilogue.safeReturn(home,p,net.minecraft.world.entity.Pose.STANDING,landing)){
+                landing=RescueEpilogue.nearReturn(home,p,net.minecraft.world.entity.Pose.STANDING,room,4);
+                if(landing==null)return true;
+            }
+            p.setCamera(p);p.stopRiding();p.setForcedPose(null);
+            p.teleportTo(home,landing.x,landing.y,landing.z,p.getYRot(),p.getXRot());
+            if(p.serverLevel()!=home||p.position().distanceToSqr(landing)>.25)return true;
+            p.setDeltaMovement(0,0,0);
+        }
+        if(p.serverLevel()!=home)return false;
         if(GhostEscapeProgress.phase(e)==GhostEscapeProgress.Phase.SAFE||GhostEscapeProgress.phase(e)==GhostEscapeProgress.Phase.RESTORING){
             var snapshot=AcceptedButtonEyesProgress.data(s).getCompound("InventoryEscrow");
             if(GhostEscapeProgress.phase(e)==GhostEscapeProgress.Phase.SAFE){

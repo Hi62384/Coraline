@@ -115,7 +115,11 @@ public final class AcceptedButtonEyes {
             case APPROACH_CHAIR->{holdSeat(p,s);var m=AcceptedButtonEyesWorld.mother(p,s);if(m!=null)walk(m,AcceptedButtonEyesWorld.chair(s).east(),age);if(sewingBeat(p,s,.12))go(p,s,TAKE_BUTTONS);}
             case TAKE_BUTTONS->{holdSeat(p,s);props(p,s,phase,(int)age);if(sewingBeat(p,s,.26))go(p,s,TAKE_NEEDLE);}
             case TAKE_NEEDLE->{holdSeat(p,s);props(p,s,phase,(int)age);if(sewingBeat(p,s,.40))go(p,s,RAISE_NEEDLE);}
-            case RAISE_NEEDLE->{holdSeat(p,s);props(p,s,phase,(int)age);if(sewingBeat(p,s,.58)){n.putBoolean("NeedleReached",true);go(p,s,BLACKOUT);}}
+            case RAISE_NEEDLE->{holdSeat(p,s);props(p,s,phase,(int)age);
+                var needle=FirstEscapeScene.prop(p,s,"SewingNeedle");
+                if(needle!=null&&needle.grabTarget().lengthSqr()>.9
+                        &&needle.position().add(needle.grabTarget().scale(.33)).distanceToSqr(p.getEyePosition())<.04
+                        &&sewingBeat(p,s,.58)){n.putBoolean("NeedleReached",true);go(p,s,BLACKOUT);}}
             case BLACKOUT->{
                 holdSeat(p,s);if(sewingFinale(p,s)){if(!AcceptedButtonEyesInventory.capture(p,s))return true;n.putBoolean("SewingCompleted",true);AcceptedButtonEyesWorld.sealAndRemoveBed(p,s);go(p,s,PROCEDURE_COMPLETE);}
             }

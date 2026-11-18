@@ -93,7 +93,14 @@ public final class RescueEpilogue {
     private static void releaseParents(ServerPlayer p,FamilyData.Family family){for(boolean mom:new boolean[]{true,false}){var actor=parent(p,family,mom);if(actor==null)continue;actor.reunionFrost(0);actor.familyGesture(0,0);actor.getNavigation().stop();var tag=actor.getPersistentData();if(!tag.contains("ReunionFlags"))continue;var flags=tag.getCompound("ReunionFlags");actor.setInvisible(flags.getBoolean("Invisible"));actor.setNoAi(flags.getBoolean("NoAI"));actor.setSilent(flags.getBoolean("Silent"));if(flags.getBoolean("PhysicalFlags")){actor.setNoGravity(flags.getBoolean("NoGravity"));actor.noPhysics=flags.getBoolean("NoPhysics");}if(flags.getBoolean("NavigationFlags")){actor.getNavigation().getNodeEvaluator().setCanOpenDoors(flags.getBoolean("OpenDoors"));actor.getNavigation().getNodeEvaluator().setCanPassDoors(flags.getBoolean("PassDoors"));}tag.remove("ReunionFlags");}}
     public static void tick(ServerPlayer p,VisitData.Scene s,RescueChapter.Phase state,int t,boolean done){
         var n=RescueChapter.data(s);var d=source(p,s);if(d==null&&(state==REUNION_A||state==REUNION_B||state==CAT_NOTICE))return;
-        if(protectedVision(s)){if(!n.contains("VisionReturn"))saveVision(p,s);holdVision(p,s);if(p.serverLevel()!=p.server.getLevel(ActivityWorld.KEY)&&state!=EYES_CLOSE){recoverVision(p,s);return;}}
+        if(protectedVision(s)&&!n.getBoolean("DreamDialogueComplete")&&!n.getBoolean("VisionRestored")){
+            if(!n.contains("VisionReturn"))saveVision(p,s);
+            holdVision(p,s);
+            if(p.serverLevel()!=p.server.getLevel(ActivityWorld.KEY)&&state!=EYES_CLOSE){
+                enterVision(p,s);
+                return;
+            }
+        }
         switch(state){
             case REUNION_A,REUNION_B->{
                 if(!reunionReady(s))return;
@@ -121,15 +128,33 @@ public final class RescueEpilogue {
             case FAREWELL_A->{if(done)RescueChapter.go(p,s,FAREWELL_B);}
             case FAREWELL_B->{
                 if(ShowPlayback.audiblePosition(s)>=460&&!n.getBoolean("FarewellEyesClosing")){saveVision(p,s);n.putBoolean("FarewellEyesClosing",true);OtherMotherLoop.changed(p);}
-                if(done){saveVision(p,s);if(p.server.getLevel(ActivityWorld.KEY)!=null){enterVision(p,s);RescueChapter.go(p,s,CELESTIAL_OPEN);}else RescueChapter.go(p,s,EYES_CLOSE);}
+                if(done){saveVision(p,s);RescueChapter.go(p,s,EYES_CLOSE);}
             }
-            case EYES_CLOSE->{if(t>=40&&(visionReady(p,s)||t>=200)){if(p.server.getLevel(ActivityWorld.KEY)!=null){enterVision(p,s);RescueChapter.go(p,s,CELESTIAL_OPEN);}else if(restoreVision(p,s))RescueChapter.go(p,s,RELEASED_SPIRITS);}}
+            case EYES_CLOSE->{
+                if(t>=40&&enterVision(p,s))RescueChapter.go(p,s,CELESTIAL_OPEN);
+            }
             case CELESTIAL_OPEN->{if(t>=40)RescueChapter.go(p,s,ORBS);}
-            case ORBS->{for(int i=0;i<3;i++){var ghost=ghost(p,s,i);if(ghost==null){n.putBoolean("MissingVisionActors",true);continue;}ghost.setInvisible(t<60);ghost.frame(3,t,Math.max(0,Math.min(1,(t-60)/40F)));}if(t>=100)RescueChapter.go(p,s,FAREWELL_C);}
+            case ORBS->{
+                var actors=visionActors(p,s);
+                if(actors==null){n.putInt("Ticks",0);return;}
+                for(var actor:actors){
+                    actor.setInvisible(t<60);
+                    actor.frame(3,t,Math.max(0,Math.min(1,(t-60)/40F)));
+                }
+                if(t>=100)RescueChapter.go(p,s,FAREWELL_C);
+            }
             case FAREWELL_C->{
                 n.putBoolean("GhostsSad",t>=240);n.putFloat("VisionBlur",Math.max(0,(t-(ShowRecordings.duration("farewell_c")-100))/100F));
-                for(int i=0;i<3;i++){var ghost=ghost(p,s,i);if(ghost!=null){ghost.setInvisible(false);ghost.frame(t>=240?5:4,t,1);}}
-                if(done){
+                if(!n.getBoolean("VisionRestored")&&!n.getBoolean("DreamDialogueComplete")){
+                    var actors=visionActors(p,s);
+                    if(actors==null)return;
+                    for(var actor:actors){actor.setInvisible(false);actor.frame(t>=240?5:4,t,1);}
+                    if(done){
+                        n.putBoolean("DreamDialogueComplete",true);
+                        OtherMotherLoop.changed(p);
+                    }
+                }
+                if(n.getBoolean("DreamDialogueComplete")||n.getBoolean("VisionRestored")){
                     if(!restoreVision(p,s))return;
                     for(int i=0;i<3;i++){
                         var ghost=findGhost(p,s,i);
@@ -172,9 +197,20 @@ public final class RescueEpilogue {
         p.setInvulnerable(true);p.setNoGravity(true);p.setDeltaMovement(Vec3.ZERO);
     }
     private static BlockPos visionCenter(ServerPlayer p,VisitData.Scene s){return ShowSiteData.get(p.server).center(s.owner,false).offset(150,90,100);}
-    private static boolean visionReady(ServerPlayer p,VisitData.Scene s){var l=p.server.getLevel(ActivityWorld.KEY);if(l==null)return false;var c=visionCenter(p,s);l.getChunkAt(c);for(int i=0;i<3;i++)if(findGhost(p,s,i)==null)return false;return true;}
-    private static void enterVision(ServerPlayer p,VisitData.Scene s){var c=visionCenter(p,s);var l=p.server.getLevel(ActivityWorld.KEY);l.getChunkAt(c);p.stopRiding();p.setForcedPose(null);p.setPose(Pose.STANDING);LoopProps.hold(l,c);p.teleportTo(l,c.getX()+.5,c.getY(),c.getZ()+.5,0,0);RescueChapter.data(s).putLong("VisionAt",c.asLong());}
-    private static void holdVision(ServerPlayer p,VisitData.Scene s){p.setInvulnerable(true);p.setNoGravity(true);p.fallDistance=0;p.setDeltaMovement(Vec3.ZERO);var n=RescueChapter.data(s);n.putBoolean("VisionRestored",false);if(p.serverLevel()==p.server.getLevel(ActivityWorld.KEY)&&n.contains("VisionAt")&&RescueChapter.phase(s)!=EYES_CLOSE){var at=BlockPos.of(n.getLong("VisionAt"));if(p.distanceToSqr(at.getCenter())>1)p.teleportTo(p.serverLevel(),at.getX()+.5,at.getY(),at.getZ()+.5,p.getYRot(),p.getXRot());}}
+    private static boolean enterVision(ServerPlayer p,VisitData.Scene s){
+        var c=visionCenter(p,s);
+        var level=p.server.getLevel(ActivityWorld.KEY);
+        if(level==null)return false;
+        LoopProps.hold(level,c);
+        p.stopRiding();
+        p.setForcedPose(null);
+        p.setPose(Pose.STANDING);
+        p.teleportTo(level,c.getX()+.5,c.getY(),c.getZ()+.5,0,0);
+        if(p.serverLevel()!=level||p.distanceToSqr(Vec3.atBottomCenterOf(c))>.25)return false;
+        RescueChapter.data(s).putLong("VisionAt",c.asLong());
+        return true;
+    }
+    private static void holdVision(ServerPlayer p,VisitData.Scene s){p.setInvulnerable(true);p.setNoGravity(true);p.fallDistance=0;p.setDeltaMovement(Vec3.ZERO);var n=RescueChapter.data(s);if(p.serverLevel()==p.server.getLevel(ActivityWorld.KEY)&&n.contains("VisionAt")&&RescueChapter.phase(s)!=EYES_CLOSE){var at=BlockPos.of(n.getLong("VisionAt"));if(p.distanceToSqr(at.getCenter())>1)p.teleportTo(p.serverLevel(),at.getX()+.5,at.getY(),at.getZ()+.5,p.getYRot(),p.getXRot());}}
     static java.util.UUID savedGhostReference(CompoundTag original,CompoundTag current,int index){
         if(index<0||index>2)return null;String key="Ghost"+index;
         return original.hasUUID(key)?original.getUUID(key):current.hasUUID(key)?current.getUUID(key):null;
@@ -188,30 +224,141 @@ public final class RescueEpilogue {
         for(var level:p.server.getAllLevels())if(level.getEntity(id) instanceof CinematicPropEntity entity&&entity.canonicalGhost(s))return entity;
         return null;
     }
-    private static CinematicPropEntity ghost(ServerPlayer p,VisitData.Scene s,int index){var old=findGhost(p,s,index);
-        if(old==null){
-            // A legacy saved UUID can outlive its entity. Project the vision
-            // without replacing that canonical identity or its quest ledger.
-            var stage=p.server.getLevel(ActivityWorld.KEY);
-            if(stage==null)return null;
-            var at=Vec3.atBottomCenterOf(visionCenter(p,s)).add((index-1)*1.45,0,4);
-            return FirstEscapeScene.ensure(p,s,"FarewellProjection"+index,CinematicPropEntity.GHOST_CHILD,index,stage,at);
+    static CinematicPropEntity[] visionActors(ServerPlayer p,VisitData.Scene s){
+        var actors=new CinematicPropEntity[3];
+        boolean ready=true;
+        for(int i=0;i<actors.length;i++){
+            actors[i]=ghost(p,s,i);
+            ready&=actors[i]!=null;
         }
-
-        if(old==null)return null;var l=p.server.getLevel(ActivityWorld.KEY);if(l==null)return null;var c=visionCenter(p,s);var at=Vec3.atBottomCenterOf(c).add((index-1)*2,0,4);Entity result=old;if(old.level()!=l)result=old.changeDimension(l,new net.minecraftforge.common.util.ITeleporter(){@Override public Entity placeEntity(Entity entity,ServerLevel current,ServerLevel destination,float yaw,java.util.function.Function<Boolean,Entity> reposition){var moved=reposition.apply(false);if(moved!=null)moved.setPos(at);return moved;}});if(!(result instanceof CinematicPropEntity ghost))return null;if(!ghost.getUUID().equals(old.getUUID()))throw new IllegalStateException("Ghost identity changed during farewell");LoopProps.hold(l,BlockPos.containing(at));ghost.setPos(at);FirstEscapeScene.context(s).putLong("Ghost"+index+"Position",ghost.blockPosition().asLong());return ghost;}
+        var n=RescueChapter.data(s);
+        if(ready){n.remove("MissingVisionActors");return actors;}
+        n.putBoolean("MissingVisionActors",true);
+        for(var actor:actors)if(actor!=null)actor.setInvisible(true);
+        return null;
+    }
+    private static CinematicPropEntity ghost(ServerPlayer p,VisitData.Scene s,int index){
+        var stage=p.server.getLevel(ActivityWorld.KEY);
+        if(stage==null)return null;
+        String key="FarewellProjection"+index;
+        var context=FirstEscapeScene.context(s);
+        var at=Vec3.atBottomCenterOf(visionCenter(p,s)).add((index-1)*2,0,4);
+        var chunk=new net.minecraft.world.level.ChunkPos(BlockPos.containing(at));
+        LoopProps.hold(stage,BlockPos.containing(at));
+        var old=findGhost(p,s,index);
+        var projection=FirstEscapeScene.prop(p,s,key);
+        if(projection!=null&&(projection.level()!=stage||projection.kind()!=CinematicPropEntity.GHOST_CHILD
+                ||projection.slot()!=index||projection.canonicalGhost(s)))return null;
+        if(old==null){
+            if(projection!=null){
+                projection.setPos(at);
+                return projection;
+            }
+            if(context.hasUUID(key)){
+                var savedAt=context.contains(key+"Position")?BlockPos.of(context.getLong(key+"Position")):BlockPos.containing(at);
+                if(savedAt.distSqr(BlockPos.containing(at))>16||!stage.areEntitiesLoaded(new net.minecraft.world.level.ChunkPos(savedAt).toLong()))return null;
+                for(var level:p.server.getAllLevels())if(level.getEntity(context.getUUID(key))!=null)return null;
+                context.remove(key);
+                context.remove(key+"Position");
+                OtherMotherLoop.changed(p);
+            }
+            if(!stage.areEntitiesLoaded(chunk.toLong()))return null;
+            return FirstEscapeScene.ensure(p,s,key,CinematicPropEntity.GHOST_CHILD,index,stage,at);
+        }
+        if(projection!=null)projection.discard();
+        var l=stage;Entity result=old;if(old.level()!=l)result=old.changeDimension(l,new net.minecraftforge.common.util.ITeleporter(){@Override public Entity placeEntity(Entity entity,ServerLevel current,ServerLevel destination,float yaw,java.util.function.Function<Boolean,Entity> reposition){var moved=reposition.apply(false);if(moved!=null)moved.setPos(at);return moved;}});if(!(result instanceof CinematicPropEntity ghost))return null;if(!ghost.getUUID().equals(old.getUUID()))throw new IllegalStateException("Ghost identity changed during farewell");LoopProps.hold(l,BlockPos.containing(at));ghost.setPos(at);FirstEscapeScene.context(s).putLong("Ghost"+index+"Position",ghost.blockPosition().asLong());return ghost;}
     private static boolean restoreVision(ServerPlayer p,VisitData.Scene s){
-        var n=RescueChapter.data(s);var saved=n.getCompound("VisionReturn");var l=FamilyData.level(p.server,saved.getString("Dimension"));if(l==null)return false;
+        var n=RescueChapter.data(s);
+        if(n.getBoolean("VisionRestored")&&p.serverLevel()==p.server.overworld())return true;
+        if(n.getBoolean("VisionLandingPending")&&p.serverLevel()==p.server.overworld())return verifyVisionLanding(p,n);
+        var saved=n.getCompound("VisionReturn");
+        var l=p.server.overworld();
+        if(!saved.getString("Dimension").equals(l.dimension().location().toString()))return false;
         var original=new Vec3(saved.getDouble("X"),saved.getDouble("Y"),saved.getDouble("Z"));if(!Double.isFinite(original.x)||!Double.isFinite(original.y)||!Double.isFinite(original.z)){n.putString("Blocker","The saved farewell return anchor is invalid.");return false;}
         Pose pose;try{pose=Pose.valueOf(saved.getString("Pose"));}catch(IllegalArgumentException bad){pose=Pose.STANDING;}
-        l.getChunkAt(BlockPos.containing(original));Vec3 target=original;
-        if(!safeReturn(l,p,pose,target)){var safe=OtherWorld.safePlayer(l,BlockPos.containing(original));if(safe==null||!safeReturn(l,p,pose,Vec3.atBottomCenterOf(safe))){n.putString("Blocker","Your saved farewell return has insufficient body clearance or safe footing.");return false;}target=Vec3.atBottomCenterOf(safe);}
+        Vec3 target=safeReturn(l,p,pose,original)?original:nearReturn(l,p,pose,BlockPos.containing(original),4);
+        var door=DoorData.get(p.server).doors.get(s.door);
+        if(target==null&&door!=null&&door.placed&&s.owner.equals(door.owner)&&FamilyData.level(p.server,door.dimension)==l){
+            target=nearReturn(l,p,pose,door.pos,6);
+            if(target==null){
+                var family=ParentAccess.family(p.server,s.owner);
+                if(family!=null&&family.bed!=null&&FamilyData.level(p.server,family.homeDim)==l
+                        &&family.bed.distSqr(door.pos)<=32*32)target=nearReturn(l,p,pose,family.bed,6);
+            }
+        }
+        if(target==null){
+            n.putString("Blocker","Clear safe footing and standing space near your original Little Door.");
+            return false;
+        }
         p.teleportTo(l,target.x,target.y,target.z,saved.getFloat("Yaw"),saved.getFloat("Pitch"));
         if(p.serverLevel()!=l||p.position().distanceToSqr(target)>.25||!safeReturn(l,p,pose,p.position())){
             n.putString("Blocker","Your saved return is still being prepared. Your dream state is preserved and will retry safely.");OtherMotherLoop.changed(p);return false;
         }
-        p.setInvulnerable(saved.getBoolean("Invulnerable"));p.setNoGravity(saved.getBoolean("NoGravity"));p.setHealth(Math.min(p.getMaxHealth(),saved.getFloat("Health")));p.getFoodData().setFoodLevel(saved.getInt("Food"));p.getFoodData().setSaturation(saved.getFloat("Saturation"));p.setForcedPose(null);if(saved.contains("ForcedPose"))try{p.setForcedPose(Pose.valueOf(saved.getString("ForcedPose")));}catch(IllegalArgumentException ignored){}p.setPose(pose);n.remove("VisionAt");n.putBoolean("VisionRestored",true);p.fallDistance=0;p.setDeltaMovement(Vec3.ZERO);OtherMotherLoop.changed(p);return true;
+        p.setInvulnerable(saved.getBoolean("Invulnerable"));p.setNoGravity(saved.getBoolean("NoGravity"));p.setHealth(Math.min(p.getMaxHealth(),saved.getFloat("Health")));p.getFoodData().setFoodLevel(saved.getInt("Food"));p.getFoodData().setSaturation(saved.getFloat("Saturation"));p.setForcedPose(null);if(saved.contains("ForcedPose"))try{p.setForcedPose(Pose.valueOf(saved.getString("ForcedPose")));}catch(IllegalArgumentException ignored){}p.setPose(pose);p.fallDistance=0;p.setDeltaMovement(Vec3.ZERO);
+        n.putBoolean("VisionLandingPending",true);
+        OtherMotherLoop.changed(p);
+        return verifyVisionLanding(p,n);
     }
-    private static boolean safeReturn(ServerLevel level,ServerPlayer player,Pose pose,Vec3 at){var body=player.getDimensions(pose).makeBoundingBox(at);return level.noCollision(player,body)&&level.getBlockCollisions(player,new AABB(body.minX,body.minY-.10,body.minZ,body.maxX,body.minY,body.maxZ)).iterator().hasNext();}
-    public static void recoverVision(ServerPlayer p,VisitData.Scene s){if(!RescueChapter.owns(p,s)||!RescueChapter.data(s).contains("VisionReturn"))return;holdVision(p,s);if(restoreVision(p,s))RescueChapter.go(p,s,EYES_CLOSE);}
+    private static boolean verifyVisionLanding(ServerPlayer p,CompoundTag n){
+        long now=p.server.overworld().getGameTime();
+        if(n.contains("VisionSaveAfter")&&now<n.getLong("VisionSaveAfter")&&n.getLong("VisionSaveAfter")-now<=20)return false;
+        try{
+            p.server.getPlayerList().saveAll();
+            var world=p.server.getWorldPath(net.minecraft.world.level.storage.LevelResource.PLAYER_DATA_DIR);
+            var saved=PalaceKeyCustody.read(world.resolve(p.getUUID()+".dat"),16L*1024*1024);
+            var position=saved.getList("Pos",Tag.TAG_DOUBLE);
+            if(!saved.getString("Dimension").equals(p.server.overworld().dimension().location().toString())
+                    ||position.size()!=3||p.distanceToSqr(position.getDouble(0),position.getDouble(1),position.getDouble(2))>.25)
+                throw new java.io.IOException("Return position was not confirmed");
+        }catch(java.io.IOException|RuntimeException unavailable){
+            n.putLong("VisionSaveAfter",now+20);
+            n.putString("Blocker","Waiting for storage to confirm your safe return.");
+            OtherMotherLoop.changed(p);
+            return false;
+        }
+        n.remove("VisionAt");
+        n.remove("VisionSaveAfter");
+        n.remove("VisionLandingPending");
+        n.remove("Blocker");
+        n.putBoolean("VisionRestored",true);
+        OtherMotherLoop.changed(p);
+        return true;
+    }
+    static Vec3 nearReturn(ServerLevel level,ServerPlayer player,Pose pose,BlockPos anchor,int radius){
+        LoopProps.hold(level,anchor);
+        for(int r=0;r<=radius;r++)for(int dx=-r;dx<=r;dx++)for(int dz=-r;dz<=r;dz++){
+            if(Math.max(Math.abs(dx),Math.abs(dz))!=r)continue;
+            for(int dy:new int[]{0,1,-1,2,-2,3,-3}){
+                var at=Vec3.atBottomCenterOf(anchor.offset(dx,dy,dz));
+                if(safeReturn(level,player,pose,at))return at;
+            }
+        }
+        return null;
+    }
+    static boolean safeReturn(ServerLevel level,ServerPlayer player,Pose pose,Vec3 at){
+        var body=player.getDimensions(pose).makeBoundingBox(at);
+        var low=BlockPos.containing(body.minX,body.minY-.10,body.minZ);
+        var high=BlockPos.containing(body.maxX,body.maxY,body.maxZ);
+        if(low.getY()<level.getMinBuildHeight()||high.getY()>=level.getMaxBuildHeight()
+                ||!level.getWorldBorder().isWithinBounds(low)||!level.getWorldBorder().isWithinBounds(high)
+                ||!level.hasChunksAt(low,high)||!level.noCollision(player,body)||level.containsAnyLiquid(body))return false;
+        for(var pos:BlockPos.betweenClosed(low,high)){
+            var state=level.getBlockState(pos);
+            if(state.is(net.minecraft.tags.BlockTags.FIRE)||state.is(net.minecraft.world.level.block.Blocks.MAGMA_BLOCK)
+                    ||state.is(net.minecraft.world.level.block.Blocks.CACTUS)||state.is(net.minecraft.world.level.block.Blocks.POWDER_SNOW)
+                    ||state.is(net.minecraft.world.level.block.Blocks.SWEET_BERRY_BUSH)||state.is(net.minecraft.world.level.block.Blocks.WITHER_ROSE)
+                    ||state.is(net.minecraft.tags.BlockTags.CAMPFIRES))return false;
+        }
+        var support=new AABB(body.minX,body.minY-.10,body.minZ,body.maxX,body.minY,body.maxZ);
+        return level.getBlockCollisions(player,support).iterator().hasNext();
+    }
+    public static void recoverVision(ServerPlayer p,VisitData.Scene s){
+        var n=RescueChapter.data(s);
+        if(!RescueChapter.owns(p,s)||!n.contains("VisionReturn")||n.getBoolean("VisionRestored")||n.getBoolean("DreamDialogueComplete"))return;
+        holdVision(p,s);
+        n.remove("Audio");
+        n.remove("AudioTail");
+        if(RescueChapter.phase(s)!=EYES_CLOSE&&p.serverLevel()!=p.server.getLevel(ActivityWorld.KEY))enterVision(p,s);
+    }
     private RescueEpilogue(){}
 }

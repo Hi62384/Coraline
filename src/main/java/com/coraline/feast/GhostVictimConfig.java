@@ -15,7 +15,7 @@ public final class GhostVictimConfig {
     public static final ForgeConfigSpec.IntValue PUNISHMENT_SECONDS=B.defineInRange("ghostPunishmentSeconds",60,1,600);
     public static final ForgeConfigSpec.IntValue REBUILD_DELAY_SECONDS=B.defineInRange("reconstructionDelaySeconds",3,1,600);
     public static final ForgeConfigSpec.IntValue REBUILD_SECONDS=B.comment("Owner-local gradual reverse deterioration; shared structures are never deleted.").defineInRange("reconstructionSeconds",60,10,600);
-    public static final ForgeConfigSpec.IntValue EXPLORATION_SECONDS=B.defineInRange("victimExplorationSeconds",600,30,600);
+    public static final ForgeConfigSpec.IntValue EXPLORATION_SECONDS=B.defineInRange("victimExplorationSeconds",90,30,600);
     public static final ForgeConfigSpec.IntValue PREPARATION_SECONDS=B.defineInRange("ghostNightPreparationSeconds",45,10,300);
     public static final ForgeConfigSpec.IntValue BEDTIME_SECONDS=B.defineInRange("victimBedtimeConversationSeconds",30,5,60);
     public static final ForgeConfigSpec.IntValue ACTIVITY_SECONDS=B.comment("NPC activity pacing; no ghost physical minigame input. Hard maximum ten minutes.").defineInRange("ghostVictimActivitySeconds",180,30,600);

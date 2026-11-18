@@ -67,7 +67,9 @@ public final class GhostVictimSnapshot {
             boolean preview=GhostVictimProgress.phase(n)==GhostVictimProgress.Phase.NIGHT_PREPARATION;
             if(!(preview?GhostVictimMirrors.previewAvailable(n,key,p.level().dimension().location().toString()):GhostVictimMirrors.available(n,key,p.level().dimension().location().toString())))continue;
             var mirror=n.getCompound("Mirrors").getCompound(key);point(points,GhostVictimMirrors.surface(mirror),(preview?"inspect_mirror:":"mirror:")+key);
-            if(preview)points.getCompound(points.size()-1).putString("Label","Tomorrow's mirror");
+            String label=key.equals("bedroom")?"Bedroom mirror":key.replace('_',' ')+" mirror";
+            points.getCompound(points.size()-1).putString("Label",preview?"Tomorrow: "+label:
+                    label+(GhostVictimMirrors.childPresent(p,n,key,child)?" — child ready":" — waiting for the child"));
         }
         for(String key:n.getCompound("Points").getAllKeys()){
             boolean preview=GhostVictimSchedule.previewAvailable(n,key);
@@ -100,10 +102,10 @@ public final class GhostVictimSnapshot {
         var escape=n.getCompound(GhostEscapeProgress.KEY);if(GhostEscapeProgress.owns(n,escape)){
             var phase=GhostEscapeProgress.phase(escape);
             if(child!=null&&child.level()==p.level()&&(GhostEscapeProgress.stopSignalAvailable(phase)||phase==GhostEscapeProgress.Phase.HIDDEN)){
-                if(phase!=GhostEscapeProgress.Phase.HIDDEN){boolean stopOnly=phase!=GhostEscapeProgress.Phase.WAIT_GO;point(points,child.blockPosition().getCenter(),stopOnly?"escape_stop":"escape_go");var signal=points.getCompound(points.size()-1);signal.putString("Alternate","escape_stop");signal.putString("Label",stopOnly?"Signal the child to stop and hide":"Signal Go; sneak to signal Stop");}
+                if(phase!=GhostEscapeProgress.Phase.HIDDEN){boolean stopOnly=phase!=GhostEscapeProgress.Phase.WAIT_GO&&phase!=GhostEscapeProgress.Phase.WAIT_LURE;point(points,child.blockPosition().getCenter(),stopOnly?"escape_stop":"escape_go");var signal=points.getCompound(points.size()-1);signal.putString("Alternate","escape_stop");signal.putString("Label",stopOnly?"Signal the child to stop and hide":"Signal Go; sneak to signal Stop");}
                 if(phase==GhostEscapeProgress.Phase.HIDDEN){
                     for(Tag raw:escape.getList("HidingNodes",Tag.TAG_COMPOUND)){var node=(CompoundTag)raw;if(node.getBoolean("Compromised")||node.getString("Id").equals(escape.getString("HidingSpot")))continue;
-                        point(points,net.minecraft.core.BlockPos.of(node.getLong("Position")).getCenter(),"escape_hide:"+node.getString("Id"));points.getCompound(points.size()-1).putString("Label","Move to "+node.getString("Id").replace('_',' '));}
+                        point(points,net.minecraft.core.BlockPos.of(node.getLong("Position")).getCenter(),"escape_hide:"+node.getString("Id"));points.getCompound(points.size()-1).putString("Label","Move to "+(node.contains("Label")?node.getString("Label"):GhostEscapeHiding.coverLabel(node.getInt("Room"),"")));}
                     if(escape.contains("FinalDoor")){point(points,net.minecraft.core.BlockPos.of(escape.getLong("FinalDoor")).getCenter(),"escape_door");points.getCompound(points.size()-1).putString("Label","Signal the final run to the Little Door");}
                 }
             }

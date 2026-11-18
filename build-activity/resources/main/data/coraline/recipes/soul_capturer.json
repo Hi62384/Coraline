@@ -1,1 +1,24 @@
-{"type":"minecraft:crafting_shaped","category":"equipment","pattern":["IKI","IHI","III"],"key":{"H":{"item":"coraline:void_heart"},"I":{"item":"coraline:other_iron_ingot"},"K":{"item":"coraline:soulglass_block"}},"result":{"item":"coraline:soul_capturer","count":1}}
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "IKI",
+    "IHI",
+    "III"
+  ],
+  "key": {
+    "H": {
+      "item": "coraline:void_heart"
+    },
+    "I": {
+      "item": "coraline:other_iron_ingot"
+    },
+    "K": {
+      "item": "coraline:soulglass_block"
+    }
+  },
+  "result": {
+    "item": "coraline:soul_capturer",
+    "count": 1
+  }
+}

@@ -49,8 +49,14 @@ public final class GhostEscapeMother {
             walk(mother,s,route,BlockPos.of(escape.getLong("LastKnownChild")),clock,1.5);return true;
         }
         if(ghost.contains("MotherInvestigation")&&clock<ghost.getLong("MotherInvestigateUntil")){
-            var target=standingNear(mother,s,BlockPos.of(ghost.getLong("MotherInvestigation")));
-            if(target!=null){walk(mother,s,route,target,clock,hunt?1.3:1);mother.getLookControl().setLookAt(target.getX()+.5,target.getY()+1,target.getZ()+.5,25,25);return true;}
+            var fixture=BlockPos.of(ghost.getLong("MotherInvestigation"));
+            var target=standingNear(mother,s,fixture);
+            if(target!=null){
+                walk(mother,s,route,target,clock,hunt?1.3:1);
+                var focus=fixture.getCenter();
+                mother.getLookControl().setLookAt(focus.x,focus.y,focus.z,25,25);
+                return true;
+            }
         }
         if(clock<route.getLong("PauseUntil")){mother.getNavigation().stop();mother.setSprinting(false);return true;}
         if(!route.contains("PatrolTarget")){

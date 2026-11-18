@@ -42,6 +42,12 @@ public final class GhostVictimMirrors {
         return mirror.getBoolean("WallMounted")?center.add(normal(mirror).scale(-.29)):center;
     }
     private static Vec3 normal(CompoundTag mirror){return Vec3.directionFromRotation(0,mirror.getFloat("Yaw")).scale(-1);}
+    private static boolean hasBacking(net.minecraft.world.level.Level level,CompoundTag mirror){
+        if(!mirror.getBoolean("WallMounted"))return true;
+        var front=net.minecraft.core.Direction.fromYRot(mirror.getFloat("Yaw")).getOpposite();
+        var backing=BlockPos.of(mirror.getLong("Position")).relative(front.getOpposite()).above();
+        return level.getBlockState(backing).isFaceSturdy(level,backing,front);
+    }
     private static CompoundTag point(CompoundTag n,String id){return n.getCompound("Mirrors").getCompound(id);}
     public static boolean available(CompoundTag n,String id,String dimension){
         if(!GhostVictimProgress.hasVictim(n))return false;
@@ -66,28 +72,41 @@ public final class GhostVictimMirrors {
     }
     public static boolean childPresent(ServerPlayer p,CompoundTag n,String id,TycoonNpc child){
         var mirror=point(n,id);
-        if(!available(n,id,p.level().dimension().location().toString())||child==null||!child.isAlive()||child.isInvisible()||child.level()!=p.level()
-            ||!GhostVictimProgress.hasVictim(n)||child.owner==null||!n.hasUUID("Owner")||!child.owner.equals(n.getUUID("Owner"))
-            ||!GhostVictimProgress.child(n).getUUID("Id").equals(child.resident)
-            ||!n.hasUUID("VictimActor")||!child.getUUID().equals(n.getUUID("VictimActor"))
-            ||!mirror.contains("Position"))return false;
-        Vec3 center=surface(mirror);
-        Vec3 delta=center.subtract(child.getEyePosition());
-        // STORY_MIRROR's authored face is local -Z, rotated by -entity yaw.
-        Vec3 normal=normal(mirror);
-        if(delta.lengthSqr()>25||delta.lengthSqr()<.01||p.distanceToSqr(center)>16
-            ||child.position().subtract(center).dot(normal)<.1)return false;
-        if(GhostVictimNavigation.view(child).dot(delta.normalize())<Math.cos(Math.toRadians(65)))return false;
-        // Ray ends just in front of the surface, so the authored backing wall
-        // does not make the mirror itself count as an obstruction.
-        Vec3 surface=center.subtract(delta.normalize().scale(.16));
-        return p.level().clip(new ClipContext(child.getEyePosition(),surface,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,child)).getType()==HitResult.Type.MISS;
+        if(child==null||child.level()!=p.level()||!available(n,id,p.level().dimension().location().toString())
+                ||p.distanceToSqr(surface(mirror))>16)return false;
+        return childAtMirror(n,id,child,true);
+    }
+    static boolean childAtMirror(CompoundTag n,String id,TycoonNpc child,boolean requireFacing){
+        return child!=null&&child.isAlive()&&!child.isInvisible()&&GhostVictimProgress.hasVictim(n)
+                &&child.owner!=null&&n.hasUUID("Owner")&&child.owner.equals(n.getUUID("Owner"))
+                &&GhostVictimProgress.child(n).getUUID("Id").equals(child.resident)
+                &&n.hasUUID("VictimActor")&&child.getUUID().equals(n.getUUID("VictimActor"))
+                &&childCanSeeMirror(n,id,child,child.position())
+                &&(!requireFacing||GhostVictimNavigation.view(child).dot(surface(point(n,id)).subtract(child.getEyePosition()).normalize())
+                        >=Math.cos(Math.toRadians(65)));
+    }
+    static boolean childCanSeeMirror(CompoundTag n,String id,net.minecraft.world.entity.LivingEntity child,Vec3 feet){
+        var mirror=point(n,id);
+        if(!mirror.contains("Position")||!hasBacking(child.level(),mirror))return false;
+        var center=surface(mirror);
+        var eye=feet.add(0,child.getEyeHeight(),0);
+        var delta=center.subtract(eye);
+        if(delta.lengthSqr()>25||delta.lengthSqr()<.01||feet.subtract(center).dot(normal(mirror))<.1)return false;
+        var end=center.subtract(delta.normalize().scale(.16));
+        return child.level().clip(new ClipContext(eye,end,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,child)).getType()==HitResult.Type.MISS;
+    }
+    static void faceMirror(CompoundTag n,String id,TycoonNpc child){
+        var target=surface(point(n,id));
+        child.getLookControl().setLookAt(target.x,target.y,target.z,30,30);
     }
     public static boolean enter(ServerPlayer p,VisitData.Scene s,CompoundTag n,String id){
         if(!participant(p,s,n)||id==null||GhostVictimProgress.phase(n)==GhostVictimProgress.Phase.NIGHT_PREPARATION||!available(n,id,p.level().dimension().location().toString())||!p.isSpectator())return false;
         var mirror=point(n,id);var center=surface(mirror);var delta=center.subtract(p.getEyePosition());
-        if(delta.lengthSqr()>16||delta.lengthSqr()<.001||p.getLookAngle().dot(delta.normalize())<.8
+        if(!hasBacking(p.level(),mirror)||delta.lengthSqr()>16||delta.lengthSqr()<.001||p.getLookAngle().dot(delta.normalize())<.8
             ||p.getEyePosition().subtract(center).dot(normal(mirror))<0)return false;
+        var end=center.subtract(delta.normalize().scale(.16));
+        if(p.level().clip(new ClipContext(p.getEyePosition(),end,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,p))
+                .getType()!=HitResult.Type.MISS)return false;
         if(GhostVictimProgress.energy(n)<GhostVictimConfig.MIRROR_ENTRY.get()){
             p.displayClientMessage(net.minecraft.network.chat.Component.literal("Not enough manifestation energy."),true);return false;
         }
@@ -109,19 +128,34 @@ public final class GhostVictimMirrors {
         int selected;try{selected=Integer.parseInt(action);}catch(NumberFormatException invalid){return false;}
         if(selected<0)return false;
         if(selected>=CHOICES.length){var extras=n.getList("EscapeOptions",Tag.TAG_COMPOUND);int extra=selected-CHOICES.length;if(extra>=extras.size())return false;return escapeChoice(p,s,n,child,nonce,extras.getCompound(extra).getString("Action"));}
-        if(!GhostVictimProgress.dialogue(n,nonce,CHOICES[selected],childPresent(p,n,n.getString("Mirror"),child)))return false;
+        var choice=CHOICES[selected];
+        if(!childPresent(p,n,n.getString("Mirror"),child))return false;
+        if(!GhostVictimProgress.dialogue(n,nonce,choice,true)){
+            String feedback=GhostVictimProgress.clock(n)<n.getLong("ConversationAfter")
+                    ?"Give me a moment to think.":"We already spoke about that. Show me something else she is hiding.";
+            screen(p,n,feedback);
+            return false;
+        }
         OtherMotherLoop.changed(p);
         if(!GhostVictimProgress.mirror(n)){close(p);return true;}
         String response=switch(CHOICES[selected]){
             case FRIENDLY->"Who are you? Why are you in there?";
             case HELP->"What can I do to help?";
             case TRAPPED->"Trapped? But she said this was a happy place.";
-            case EVIDENCE->GhostVictimProgress.child(n).getInt("EvidenceCount")>0?"I saw it too. Something here is wrong.":"I haven't seen anything like that.";
+            case EVIDENCE->switch(GhostVictimProgress.child(n).getString("LastEvidenceKind")){
+                case "FOOD"->"I saw what was really on the plate. I don't want to eat here again.";
+                case "GIFT_SECRET"->"I remember what was inside her gift. Why would she hide that?";
+                case "ILLUSION"->"I saw her trick wear off. What else has she changed?";
+                default->GhostVictimProgress.child(n).getInt("EvidenceCount")>0
+                        ?"I saw it too. Something here is wrong.":"Show me something she is hiding. I need to see it for myself.";
+            };
             case ACCUSATION->GhostVictimProgress.child(n).getInt("EvidenceCount")>0?"Maybe you're right. I need to be careful.":"Why should I believe that?";
             case THREAT->"Leave me alone! I'm going to tell her!";
             default->"Goodbye.";
         };
         n.putString("ChildWords",response);n.putLong("ChildTalkingUntil",GhostVictimProgress.clock(n)+Math.max(40,response.length()*2));
+        if(GhostVictimProgress.readyToHelp(n)&&!GhostEscapeProgress.active(n.getCompound(GhostEscapeProgress.KEY)))
+            response+=" I'll help you. Can we talk in the bedroom tonight?";
         screen(p,n,response);return true;
     }
     private static boolean escapeChoice(ServerPlayer p,VisitData.Scene s,CompoundTag n,TycoonNpc child,UUID nonce,String action){
@@ -143,8 +177,14 @@ public final class GhostVictimMirrors {
                 if(!GhostEscapeProgress.assignedRoom(n,room,true,retrieve))return false;
                 response=retrieve?"I'll retrieve the eyes from that room.":"I'll search that room for the eyes.";
             }else if(action.equals("ambush")){
-                String hide=e.getString("InitialHide");if(hide.isBlank())hide="hide_0";
-                if(!GhostEscapeProgress.assignAmbush(n,hide,true))return false;response="I'll hide near her. Wait for the right moment to steal the key.";
+                GhostVictimWorld.refreshRoomLights(p,s,n);
+                String hide=GhostEscapeAmbush.coverNearLight(n,e,child);
+                if(hide.isEmpty()){
+                    screen(p,n,"I need a reachable hiding place near a working light.");
+                    return false;
+                }
+                if(!GhostEscapeProgress.assignAmbush(n,hide,true))return false;
+                response="I'll hide near a light. Make it flicker, then signal when her back is turned.";
             }else if(action.startsWith("hide:")){
                 String hide=action.substring(5);if(!GhostEscapeHiding.node(e,hide).contains("Position")||GhostEscapeHiding.node(e,hide).getBoolean("Compromised"))return false;
                 e.putString("TargetHide",hide);response="I'll move to that hiding place.";
@@ -157,8 +197,20 @@ public final class GhostVictimMirrors {
     private static void screen(ServerPlayer p,CompoundTag n,String words){
         var packet=new CompoundTag();packet.putBoolean("VisitConversation",true);packet.putUUID("Nonce",n.getUUID("Conversation"));
         packet.putString("Speaker",GhostVictimProgress.child(n).getString("Name"));packet.putString("Text",words);
-        var options=new ListTag();for(String option:OPTIONS)options.add(StringTag.valueOf(option));var extraActions=new ListTag();var escape=n.getCompound(GhostEscapeProgress.KEY);
-        if(p.getUUID().equals(n.getUUID("Owner"))&&GhostVictimProgress.phase(n)==GhostVictimProgress.Phase.BEDTIME&&!escape.hasUUID("Attempt")&&GhostVictimProgress.ghostTrust(n)>=1&&GhostVictimProgress.motherTrust(n)<.6)
+        var options=new ListTag();
+        String evidence=GhostVictimProgress.child(n).getString("LastEvidenceKind");
+        for(int i=0;i<OPTIONS.size();i++){
+            String option=OPTIONS.get(i);
+            if(CHOICES[i]==GhostVictimProgress.Dialogue.EVIDENCE)option=switch(evidence){
+                case "FOOD"->"What did you see on your plate?";
+                case "GIFT_SECRET"->"Let's talk about what was inside her gift.";
+                case "ILLUSION"->"Tell me what you saw when her trick wore off.";
+                default->option;
+            };
+            options.add(StringTag.valueOf(option));
+        }
+        var extraActions=new ListTag();var escape=n.getCompound(GhostEscapeProgress.KEY);
+        if(p.getUUID().equals(n.getUUID("Owner"))&&GhostVictimProgress.phase(n)==GhostVictimProgress.Phase.BEDTIME&&!escape.hasUUID("Attempt")&&GhostVictimProgress.readyToHelp(n))
             addOption(options,extraActions,"escape:begin","I believe you. I'll help you escape.");
         if(p.getUUID().equals(n.getUUID("Owner"))&&GhostEscapeProgress.active(escape)){
             switch(GhostEscapeProgress.phase(escape)){

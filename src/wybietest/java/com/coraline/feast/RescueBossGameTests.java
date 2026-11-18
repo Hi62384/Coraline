@@ -25,7 +25,7 @@ public final class RescueBossGameTests {
         h.runAfterDelay(25,()->{try{for(var state:states){int epoch=0;
             RescueBosses.begin(p,s,state);var center=RescueEncounters.center(p,s);p.setPos(center.add(0,0,8));var n=RescueChapter.data(s);float maximum=n.getFloat("BossMaximum");
             for(int tier=0;tier<3;tier++){epoch+=state==RescueChapter.Phase.MANTIS_FIGHT?3840:3600;n.putFloat("BossHealth",maximum*(tier==0?.9F:tier==1?.5F:.2F));if(tier==0)n.putInt("BossCycleStart",epoch);RescueBosses.tick(p,s,epoch);h.assertTrue(n.getInt("BossTier")==tier&&n.getInt("BossBeat")==0&&!n.getBoolean("Vulnerable"),"Tier change began mid-attack: "+state+" tier "+tier);int patterns=state==RescueChapter.Phase.MANTIS_FIGHT?4:5,period=state==RescueChapter.Phase.MANTIS_FIGHT?240:state==RescueChapter.Phase.THEATRE_FIGHT?300:180-tier*20;
-                for(int pattern=0;pattern<patterns;pattern++){int time=epoch+pattern*period;RescueBosses.tick(p,s,time);h.assertTrue(n.getInt("BossPattern")==pattern&&n.getInt("BossBeat")==0&&!n.getBoolean("Vulnerable"),"Pattern skipped its warning: "+state+" / "+tier+" / "+pattern);RescueBosses.tick(p,s,time+(state==RescueChapter.Phase.THEATRE_FIGHT?200:100));h.assertTrue((state==RescueChapter.Phase.MANTIS_FIGHT?n.getInt("BossBeat")>=100:n.getBoolean("Vulnerable"))&&RescueProps.find(p,s,"WeakPoint")!=null,"Pattern never reached its reveal opportunity");}
+                for(int pattern=0;pattern<patterns;pattern++){int time=epoch+pattern*period;RescueBosses.tick(p,s,time);h.assertTrue(n.getInt("BossPattern")== (state==RescueChapter.Phase.SWARM_FIGHT?RescueBosses.ratPattern(tier,pattern):pattern)&&n.getInt("BossBeat")==0&&!n.getBoolean("Vulnerable"),"Pattern skipped its warning: "+state+" / "+tier+" / "+pattern);RescueBosses.tick(p,s,time+(state==RescueChapter.Phase.THEATRE_FIGHT?200:100));h.assertTrue((state==RescueChapter.Phase.MANTIS_FIGHT?n.getInt("BossBeat")>=100:n.getBoolean("Vulnerable"))&&RescueProps.find(p,s,"WeakPoint")!=null,"Pattern never reached its reveal opportunity");}
                 var phase=RescueChapter.phase(s);float health=n.getFloat("BossHealth");s.loop=OtherMotherLoopState.load(s.loop.save());n=RescueChapter.data(s);h.assertTrue(RescueChapter.phase(s)==phase&&n.getFloat("BossHealth")==health&&n.getInt("BossLastTier")==tier,"Saved director lost fight/tier state");
             }
         }}finally{for(var at:changed)p.serverLevel().removeBlock(at,false);clean(p);}h.succeed();});
@@ -48,9 +48,20 @@ public final class RescueBossGameTests {
             h.assertTrue(RescueProps.find(p,s,"WeakPoint")==point,"Weak-point fixture entity was not registered under its actual UUID");
             h.assertTrue(point.owned(s)&&RescueChapter.owns(p,s)&&RescueBosses.fighting(RescueChapter.phase(s))&&p.distanceToSqr(point)<=30,"Weak-point fixture lacks actual owner/phase/reach");
             h.assertFalse(com.coraline.multiplayer.StoryCoop.canAct(p,s),"Unregistered fixture owner bypassed native input authority");ownerLookup(p,true);h.assertTrue(com.coraline.multiplayer.StorySessionData.get(p.server).observe(p,s)&&com.coraline.multiplayer.StoryCoop.canAct(p,s),"Registered owner phase not authorized");
-            n.putBoolean("Vulnerable",false);n.putLong("WeakUntil",p.serverLevel().getGameTime()+100);RescueBosses.hit(p,point);h.assertTrue(n.getFloat("BossHealth")==health,"Closed control point took damage");n.putBoolean("Vulnerable",true);n.putLong("WeakUntil",p.serverLevel().getGameTime()-1);RescueBosses.hit(p,point);h.assertTrue(n.getFloat("BossHealth")==health,"Unrevealed weakness took damage");n.putLong("WeakUntil",p.serverLevel().getGameTime()+100);RescueBosses.hit(p,point);h.assertTrue(n.getFloat("BossHealth")==health,"Empty fist damaged the control point");p.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.IRON_SWORD));p.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE).setBaseValue(7);p.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_SPEED).setBaseValue(100);p.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES,at.add(2,0,0));RescueBosses.hit(p,body);RescueBosses.hit(foreign,point);h.assertTrue(n.getFloat("BossHealth")==health,"Boss body/foreign owner bypassed the exact weak point");h.assertFalse(n.getBoolean("Vulnerable"),"A missed body strike left the opening active");
+            n.putBoolean("Vulnerable",false);n.putLong("WeakUntil",p.serverLevel().getGameTime()+100);RescueBosses.hit(p,point);h.assertTrue(n.getFloat("BossHealth")==health,"Closed control point took damage");n.putBoolean("Vulnerable",true);n.putLong("WeakUntil",p.serverLevel().getGameTime()-1);RescueBosses.hit(p,point);h.assertTrue(n.getFloat("BossHealth")==health,"Unrevealed weakness took damage");n.putLong("WeakUntil",p.serverLevel().getGameTime()+100);RescueBosses.hit(p,point);h.assertTrue(n.getFloat("BossHealth")==health,"A strike without attack cooldown damaged the control point");p.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.IRON_SWORD));p.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE).setBaseValue(7);p.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_SPEED).setBaseValue(100);p.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES,at.add(2,0,0));RescueBosses.hit(p,body);RescueBosses.hit(foreign,point);h.assertTrue(n.getFloat("BossHealth")==health,"Boss body/foreign owner bypassed the exact weak point");h.assertFalse(n.getBoolean("Vulnerable"),"A missed body strike left the opening active");
             p.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES,at);RescueBosses.hit(p,point);h.assertTrue(n.getFloat("BossHealth")==health,"Miss could be corrected by spamming in the same opening");
-            n.putBoolean("Vulnerable",true);n.putLong("WeakUntil",p.serverLevel().getGameTime()+80);RescueBosses.hit(p,point);float after=n.getFloat("BossHealth");h.assertTrue(after<health,"Owner could not strike the actual revealed weak point");RescueBosses.hit(p,point);h.assertTrue(n.getFloat("BossHealth")==after,"Same-tick attack flood bypassed cooldown");
+            p.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,net.minecraft.world.item.ItemStack.EMPTY);
+            n.putBoolean("Vulnerable",true);n.putLong("WeakUntil",p.serverLevel().getGameTime()+80);
+            RescueBosses.hit(p,point);
+            float after=n.getFloat("BossHealth");
+            h.assertTrue(after==health-2,"A cooled unarmed strike did not damage the revealed weak point");
+            n.putBoolean("Vulnerable",true);n.putLong("WeakUntil",p.serverLevel().getGameTime()+80);
+            RescueBosses.hit(p,point);
+            h.assertTrue(n.getFloat("BossHealth")==after,"Same-tick unarmed attack bypassed cooldown");
+            p.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.IRON_SWORD));
+            n.putLong("HitAt",p.serverLevel().getGameTime()-15);
+            RescueBosses.hit(p,point);
+            h.assertTrue(after-n.getFloat("BossHealth")>2,"A cooled weapon strike did not deal more than an unarmed strike");
         }finally{ownerLookup(p,false);clean(p);clean(foreign);for(var chunk:forced)p.serverLevel().setChunkForced(chunk.x,chunk.z,false);}h.succeed();});}
     @GameTest(template="empty") public static void offeredEyeCanBeCollectedFromAnOldHandoffWithoutRepeatingOrDuplicating(GameTestHelper h){
         var p=player(h);var s=OtherMotherLoop.scene(p);var n=RescueChapter.data(s);var at=Vec3.atBottomCenterOf(TheatreSite.center(p,s)).add(0,1.6,0);var forced=warmActorChunks(p,s);
@@ -63,4 +74,99 @@ public final class RescueBossGameTests {
         }finally{clean(p);for(var chunk:forced)p.serverLevel().setChunkForced(chunk.x,chunk.z,false);}h.succeed();});
     }
     private RescueBossGameTests(){}
+    @GameTest(template="empty") public static void ratmasterWarningsAndHitboxesUseTheSameEdges(GameTestHelper h){
+        double[][] inside={{0,8},{10,0},{3,0},{-3,0},{5,0}};
+        double[][] outside={{1.7,8},{10,4},{3,2.2},{3,0},{8,0}};
+        for(int tier=0;tier<3;tier++)for(int pattern=0;pattern<5;pattern++){
+            var region=RatmasterRegion.attack(pattern,tier,Vec3.ZERO,Vec3.ZERO,0);
+            h.assertTrue(region.hits(body(inside[pattern],0)),"Inside attack region was marked safe: "+tier+"/"+pattern);
+            h.assertFalse(region.hits(body(outside[pattern],0)),"Outside boundary was hit: "+tier+"/"+pattern);
+            h.assertFalse(region.hits(body(inside[pattern],3)),"Jump outside vertical danger extent was hit");
+            h.assertFalse(region.hits(body(inside[pattern],-3)),"Player below the arena was hit");
+            h.assertTrue(region.warning().size()>10,"Shared attack model produced no readable contour");
+        }
+        var wave=RatmasterRegion.attack(0,0,Vec3.ZERO,Vec3.ZERO,0);
+        h.assertTrue(wave.hits(new net.minecraft.world.phys.AABB(1.5,0,15.8,1.9,1.8,16.2)),"Player body overlap at strip corner was missed");
+        h.assertFalse(wave.hits(new net.minecraft.world.phys.AABB(1.7,0,15.8,2.1,1.8,16.2)),"Dodging beyond the marked corner still took damage");
+        h.succeed();
+    }
+    private static net.minecraft.world.phys.AABB body(double[] at,double y){
+        return new net.minecraft.world.phys.AABB(at[0]-.03,y,at[1]-.03,at[0]+.03,y+1.8,at[1]+.03);
+    }
+    @GameTest(template="empty") public static void finalRoomDoorsAreLockedAcrossConfrontationButReleaseInTheWeb(GameTestHelper h){
+        var p=player(h);
+        var s=OtherMotherLoop.scene(p);
+        ParentRescueStory.scenery(s).putLong("LittleDoor",new BlockPos(-17,110,18).asLong());
+        var n=RescueChapter.data(s);
+        n.putBoolean("RoomLocked",true);
+        try{
+            var entrance=FirstEscapeScene.entrance(s);
+            var little=BlockPos.of(ParentRescueStory.scenery(s).getLong("LittleDoor"));
+            for(var phase:RescueChapter.Phase.values()){
+                n.putString("Phase",phase.name());
+                boolean locked=phase.ordinal()>=RescueChapter.Phase.ROOM_LOCKED.ordinal()&&phase.ordinal()<=RescueChapter.Phase.FINAL_O.ordinal();
+                for(var at:java.util.List.of(entrance,entrance.above(),entrance.south(),entrance.south().above(),little,little.above()))
+                    h.assertTrue(BeldamFinale.lockedDoor(s,at)==locked,"Wrong protection in "+phase+" for "+at);
+                h.assertFalse(BeldamFinale.lockedDoor(s,entrance.north()),"Unrelated door was locked");
+            }
+        }finally{clean(p);}
+        h.succeed();
+    }
+    @GameTest(template="empty") public static void falseFloorReceiptIsClearedAndObstructingBlockEntityIsPreserved(GameTestHelper h){
+        var p=player(h);
+        var s=OtherMotherLoop.scene(p);
+        var level=p.server.getLevel(com.coraline.otherworld.OtherWorld.KEY);
+        var house=new BlockPos(200,130,200);
+        ParentRescueStory.scenery(s).putLong("House",house.asLong());
+        var original=FirstEscapeScene.at(s,23,5,44);
+        var obstruction=FirstEscapeScene.at(s,20,5,42);
+        var expected=com.coraline.otherworld.RosewoodHouse.palaceCells().stream()
+                .filter(cell->cell.offset().equals(original.subtract(house))).findFirst().orElseThrow().state();
+        level.getChunkAt(obstruction);
+        level.getChunkAt(original);
+        level.setBlock(obstruction,Blocks.BARREL.defaultBlockState(),2);
+        level.setBlock(original,expected,2);
+        try{
+            var n=RescueChapter.data(s);
+            n.putBoolean("FloorOpened",true);
+            h.assertFalse(BeldamFinale.prepareFall(p,s),"Obstructed floor trusted a legacy success receipt");
+            h.assertTrue(!n.getBoolean("FloorOpened")&&level.getBlockEntity(obstruction)!=null
+                    &&level.getBlockState(original).equals(expected),"Validation modified the floor before checking the whole footprint");
+            level.removeBlock(obstruction,false);
+            h.assertTrue(BeldamFinale.prepareFall(p,s)&&n.getBoolean("FloorOpened")&&level.isEmptyBlock(original),
+                    "Cleared floor could not commit actual falling clearance");
+        }finally{clean(p);level.removeBlock(obstruction,false);level.removeBlock(original,false);}
+        h.succeed();
+    }
+    @GameTest(template="empty") public static void legacyWebEntryCannotCommitWithoutTheOriginalMother(GameTestHelper h){
+        var p=player(h);
+        var s=OtherMotherLoop.scene(p);
+        var n=RescueChapter.data(s);
+        n.putString("Phase","FINAL_P");
+        n.putBoolean("WebEntered",true);
+        try{
+            h.assertFalse(BeldamFinale.enterWeb(p,s,null),"Missing Mother allowed the web confrontation to start");
+            h.assertTrue(!n.getBoolean("WebEntered")&&!n.getBoolean("WebEntryReady")&&n.contains("Blocker"),
+                    "Legacy partial transfer retained a misleading ready receipt");
+        }finally{clean(p);}
+        h.succeed();
+    }
+    @GameTest(template="empty") public static void lostCatPausesCollapseInsteadOfConsumingTheEscapeClock(GameTestHelper h){
+        var p=player(h);
+        var s=OtherMotherLoop.scene(p);
+        var other=p.server.getLevel(com.coraline.otherworld.OtherWorld.KEY);
+        var body=new ServerPlayer(p.server,other,p.getGameProfile());
+        body.connection=p.connection;
+        var n=RescueChapter.data(s);
+        n.putString("Phase","COLLAPSE");
+        n.putInt("CollapseElapsed",123);
+        n.putInt("CollapseDuration",1500);
+        n.putDouble("CollapseRadius",82);
+        try{
+            RescueEncounters.tick(body,s,RescueChapter.Phase.COLLAPSE,1600,false);
+            h.assertTrue(n.getInt("CollapseElapsed")==123&&n.getDouble("CollapseRadius")==82
+                    &&!n.getBoolean("CatRescued")&&n.contains("Blocker"),"Missing Cat spent the clock or granted a rescue");
+        }finally{clean(p);}
+        h.succeed();
+    }
 }

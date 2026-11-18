@@ -30,7 +30,7 @@ public final class RescueSoftlockGameTests {
         var target=new net.minecraft.core.BlockPos(0,0,0);
         helper.assertFalse(GhostVictimNavigation.arrived(new net.minecraft.world.phys.Vec3(1.16,0,.5),target), "Navigation must not stop outside the .65 concealment radius");
         helper.assertTrue(GhostVictimNavigation.arrived(new net.minecraft.world.phys.Vec3(.5,0,.5),target), "The center of the validated hiding position is a successful arrival");
-        helper.assertTrue(PalaceTransport.MOVER!=CinematicPropEntity.TAFFY_BOWL, "Transport movers and the tea bowl must have separate kinds");
+        helper.assertTrue(PalaceTransport.MOVER!=CinematicPropEntity.TAFFY_BOWL && !RescueProps.kind(PalaceTransport.MOVER), "Moving Company workers must not share a kind with tea or rescue props");
         helper.succeed();
     }
 

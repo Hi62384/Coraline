@@ -58,6 +58,21 @@ public final class GhostVictimManifestations {
         return tag.hasUUID("GhostManifestationOwner")&&s.owner.equals(tag.getUUID("GhostManifestationOwner"))&&tag.hasUUID("GhostManifestationDoor")&&s.door.equals(tag.getUUID("GhostManifestationDoor"))
             &&n.hasUUID("Session")&&tag.hasUUID("GhostManifestationSession")&&n.getUUID("Session").equals(tag.getUUID("GhostManifestationSession"))?display:null;
     }
+    static void retireDisplay(ServerPlayer p,VisitData.Scene s,CompoundTag n,String id){
+        var all=points(n);
+        if(!all.contains(id))return;
+        var row=all.getCompound(id);
+        var level=level(p,row);
+        if(level==null||!row.hasUUID("Entity")||!row.contains("Position",Tag.TAG_LONG))return;
+        var at=BlockPos.of(row.getLong("Position"));
+        LoopProps.hold(level,at);
+        var display=actor(level,row,s,n);
+        if(display!=null)display.discard();
+        else if(level.getEntity(row.getUUID("Entity"))!=null
+                ||!level.areEntitiesLoaded(new net.minecraft.world.level.ChunkPos(at).toLong()))return;
+        all.remove(id);
+        OtherMotherLoop.changed(p);
+    }
     private static void item(Display.ItemDisplay actor,ItemStack item){var saved=actor.saveWithoutId(new CompoundTag());saved.put("item",item.save(new CompoundTag()));actor.load(saved);}
     static Vec3 interactionPoint(CompoundTag row){
         return row.contains("X")?new Vec3(row.getDouble("X"),row.getDouble("Y")+.12,row.getDouble("Z")):BlockPos.of(row.getLong("Position")).getCenter();
@@ -81,7 +96,13 @@ public final class GhostVictimManifestations {
         if(delta.lengthSqr()>36||delta.lengthSqr()<.001||p.getLookAngle().dot(delta.normalize())<.92)return false;
         var phase=GhostVictimProgress.phase(n);
         if(!GhostVictimSchedule.manifestationAvailable(n,id))return false;
-        GhostVictimProgress.Disturbance kind;try{kind=GhostVictimProgress.Disturbance.valueOf(row.getString("Kind"));}catch(IllegalArgumentException invalid){return false;}
+        GhostVictimProgress.Disturbance kind;
+        try{kind=GhostVictimProgress.Disturbance.valueOf(row.getString("Kind"));}
+        catch(IllegalArgumentException invalid){return false;}
+        var sight=level.clip(new net.minecraft.world.level.ClipContext(p.getEyePosition(),target,
+                net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,p));
+        if(sight.getType()!=net.minecraft.world.phys.HitResult.Type.MISS
+                &&(kind!=GhostVictimProgress.Disturbance.LIGHT||!position.equals(sight.getBlockPos())))return false;
         var display=actor(level,row,s,n);
         if(kind==GhostVictimProgress.Disturbance.LIGHT){if(!lightSource(level.getBlockState(position))||row.contains("EffectUntil"))return false;}
         else if(display==null||display.isInvisible()||row.contains("EffectUntil"))return false;
@@ -109,6 +130,19 @@ public final class GhostVictimManifestations {
             n.putLong("ReactionLook",position.asLong());n.putLong("ReactionLookUntil",GhostVictimProgress.clock(n)+80);
             if(result.investigate()&&phase!=GhostVictimProgress.Phase.FIRST_SUPPER)GhostVictimRoutines.investigate(n,position);}
         if(motherSaw||motherHeard||reports){n.putLong("MotherInvestigation",position.asLong());n.putLong("MotherInvestigateUntil",GhostVictimProgress.clock(n)+200);}
+        var escape=n.getCompound(GhostEscapeProgress.KEY);
+        if(kind==GhostVictimProgress.Disturbance.LIGHT&&mother!=null&&mother.level()==level
+                &&GhostEscapeProgress.owns(n,escape)&&GhostEscapeProgress.phase(escape)==GhostEscapeProgress.Phase.WAIT_LURE
+                &&mother.distanceToSqr(target)<18*18){
+            escape.putLong("Distraction",position.asLong());
+            escape.putLong("DistractionUntil",GhostVictimProgress.clock(n)+240);
+            escape.remove("StealSignaled");
+            n.putLong("MotherInvestigation",position.asLong());
+            n.putLong("MotherInvestigateUntil",escape.getLong("DistractionUntil"));
+            p.displayClientMessage(net.minecraft.network.chat.Component.literal("Other Mother is investigating the light. Signal the child when her back is turned."),true);
+        }else if(motherSaw||motherHeard){
+            p.displayClientMessage(net.minecraft.network.chat.Component.literal("Other Mother noticed the disturbance."),true);
+        }
         if(witnessed&&blame&&!reports)GhostVictimProgress.child(n).putBoolean("PendingGhostReport",true);
         OtherMotherLoop.changed(p);return true;
     }

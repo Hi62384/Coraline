@@ -66,6 +66,9 @@ public final class GhostVictimProgressGameTests {
                 h.assertFalse(GhostVictimProgress.dialogue(n,nonce,choice,true),"Same statement farmed friendship");
                 h.assertTrue(after==GhostVictimProgress.ghostTrust(n),"Rejected repeat changed trust");
             }
+            h.assertTrue(GhostVictimProgress.readyToHelp(n)==(discovery>=1),
+                "Alliance must follow two witnessed discoveries and a conversation about the trap");
+            if(discovery==1)h.assertTrue(GhostVictimProgress.ghostTrust(n)<1,"Alliance still needs every trust point");
             GhostVictimProgress.leaveMirror(n);
         }
         h.assertTrue(GhostVictimProgress.ghostTrust(n)==1&&GhostVictimProgress.motherTrust(n)>0&&GhostVictimProgress.motherTrust(n)<.6,"Balanced evidence route cannot form an alliance before an automatic solo escape");

@@ -9,9 +9,8 @@ import net.minecraft.server.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.phys.*;
 
-/** Physical room adapters over the existing Other House. Every candidate room
- * has an identical locked, empty presentation chest; the eye identity stays in
- * the server quest journal until the authentic Seeing Stone reveals it. */
+/** Owner-bound investigations use authored Rosewood storage. Legacy prepared
+ * chests remain valid for their original attempts. */
 public final class GhostEscapeRooms {
     private static CompoundTag sites(CompoundTag ghost){if(!ghost.contains("EscapeRoomSites"))ghost.put("EscapeRoomSites",new CompoundTag());return ghost.getCompound("EscapeRoomSites");}
     private static HouseCabinets.Room room(String id){for(var room:HouseCabinets.ROOMS)if(room.id().equals(id))return room;return null;}
@@ -22,27 +21,36 @@ public final class GhostEscapeRooms {
             var all=sites(ghost);var row=all.getCompound(room.id());var d=room.doors()[0];var door=GhostVictimWorld.at(s,d[0],d[1],d[2]);level.getChunkAt(door);
             var state=level.getBlockState(door);if(!(state.getBlock() instanceof DoorBlock))continue;
             if(!row.contains("Container")){
-                var min=GhostVictimWorld.at(s,room.min()[0]+1,room.min()[1],room.min()[2]+1);var max=GhostVictimWorld.at(s,room.max()[0]-1,room.min()[1],room.max()[2]-1);
-                BlockPos selected=null;
-                for(var at:BlockPos.betweenClosed(min,max)){
-                    if(!level.hasChunkAt(at)||!level.getBlockState(at).isAir()||!level.getBlockState(at.above()).isAir()||level.getBlockEntity(at)!=null||!level.getBlockState(at.below()).isFaceSturdy(level,at.below(),Direction.UP))continue;
-                    boolean adjacentChest=false;for(var direction:Direction.Plane.HORIZONTAL)if(level.getBlockState(at.relative(direction)).getBlock() instanceof ChestBlock){adjacentChest=true;break;}if(adjacentChest)continue;
-                    boolean standing=false;for(var direction:Direction.Plane.HORIZONTAL)if(GhostVictimNavigation.clear(level,child,at.relative(direction))){standing=true;break;}
-                    if(standing){selected=at.immutable();break;}
+                for(int i=0;i<HouseCabinets.CABINETS.length;i++){
+                    var cabinet=HouseCabinets.CABINETS[i];
+                    if(!room.id().equals(cabinet.room()))continue;
+                    var at=GhostVictimWorld.at(s,cabinet.x(),cabinet.y(),cabinet.z());
+                    level.getChunkAt(at);
+                    Direction front=null;
+                    for(var direction:Direction.Plane.HORIZONTAL){
+                        var step=at.relative(direction);
+                        if(HouseCabinets.contains(AcceptedButtonEyesWorld.house(s),room,step)
+                                &&GhostVictimNavigation.clear(level,child,step)
+                                &&(front==null||step.distSqr(door)<at.relative(front).distSqr(door)))front=direction;
+                    }
+                    if(front==null)continue;
+                    var storage=level.getBlockState(at);
+                    if(storage.isAir()&&level.getBlockState(at.below()).isFaceSturdy(level,at.below(),Direction.UP)){
+                        FirstEscapeScene.place(p,s,at,HouseCabinets.storageBlock(i).defaultBlockState()
+                                .setValue(com.coraline.secrets.HouseStorageBlock.FACING,front));
+                        storage=level.getBlockState(at);
+                    }
+                    if(!(storage.getBlock() instanceof com.coraline.secrets.HouseStorageBlock))continue;
+                    row.putBoolean("AuthoredCabinet",true);
+                    row.putString("Label",cabinet.name());
+                    row.putLong("Container",at.asLong());
+                    row.putLong("Door",door.asLong());
+                    all.put(room.id(),row);
+                    OtherMotherLoop.changed(p);
+                    break;
                 }
-                if(selected==null)continue;
-                FirstEscapeScene.place(p,s,selected,Blocks.CHEST.defaultBlockState());var container=level.getBlockEntity(selected);if(container==null)continue;
-                String lock="ghost_container_"+ghost.getUUID("Session");var saved=container.saveWithFullMetadata();saved.putString("Lock",lock);container.load(saved);
-                var marker=container.getPersistentData();marker.putUUID("GhostEscapeOwner",s.owner);marker.putUUID("GhostEscapeDoor",s.door);marker.putUUID("GhostEscapeSession",ghost.getUUID("Session"));container.setChanged();
-                row.put("Placed",NbtUtils.writeBlockState(level.getBlockState(selected)));
-                row.putLong("Container",selected.asLong());row.putLong("Door",door.asLong());row.putString("Lock",lock);all.put(room.id(),row);OtherMotherLoop.changed(p);
             }
-            var at=BlockPos.of(row.getLong("Container"));level.getChunkAt(at);
-            if(level.getBlockState(at).is(Blocks.CHEST)&&level.getBlockEntity(at)!=null){
-                var marker=level.getBlockEntity(at).getPersistentData();
-                if(marker.hasUUID("GhostEscapeOwner")&&s.owner.equals(marker.getUUID("GhostEscapeOwner"))&&marker.hasUUID("GhostEscapeDoor")&&s.door.equals(marker.getUUID("GhostEscapeDoor"))
-                    &&marker.hasUUID("GhostEscapeSession")&&ghost.getUUID("Session").equals(marker.getUUID("GhostEscapeSession")))valid.add(room.id());
-            }
+            if(validContainer(p,s,ghost,room.id()))valid.add(room.id());
         }
         return List.copyOf(valid);
     }
@@ -76,8 +84,24 @@ public final class GhostEscapeRooms {
         return HouseCabinets.contains(AcceptedButtonEyesWorld.house(s),room,front)?back:front;
     }
     public static BlockPos container(CompoundTag ghost,String id){var row=sites(ghost).getCompound(id);return row.contains("Container")?BlockPos.of(row.getLong("Container")):null;}
+    static BlockPos approachContainer(TycoonNpc child,BlockPos at){
+        var level=(ServerLevel)child.level();
+        var state=level.getBlockState(at);
+        if(state.getBlock() instanceof com.coraline.secrets.HouseStorageBlock){
+            var front=at.relative(state.getValue(com.coraline.secrets.HouseStorageBlock.FACING));
+            if(GhostVictimNavigation.clear(level,child,front))return front;
+        }
+        return GhostVictimNavigation.approach(child,at);
+    }
     public static boolean validContainer(ServerPlayer p,VisitData.Scene s,CompoundTag ghost,String id){
         if(!GhostVictimMirrors.owned(p,s,ghost))return false;var at=container(ghost,id);var level=AcceptedButtonEyesWorld.level(p);if(at==null||level==null)return false;level.getChunkAt(at);
+        var row=sites(ghost).getCompound(id);
+        if(row.getBoolean("AuthoredCabinet")){
+            if(!(level.getBlockState(at).getBlock() instanceof com.coraline.secrets.HouseStorageBlock))return false;
+            for(var cabinet:HouseCabinets.CABINETS)
+                if(id.equals(cabinet.room())&&at.equals(GhostVictimWorld.at(s,cabinet.x(),cabinet.y(),cabinet.z())))return true;
+            return false;
+        }
         if(!(level.getBlockEntity(at) instanceof net.minecraft.world.level.block.entity.ChestBlockEntity chest)||!level.getBlockState(at).is(Blocks.CHEST))return false;
         var marker=chest.getPersistentData();return marker.hasUUID("GhostEscapeOwner")&&s.owner.equals(marker.getUUID("GhostEscapeOwner"))&&marker.hasUUID("GhostEscapeDoor")&&s.door.equals(marker.getUUID("GhostEscapeDoor"))
             &&marker.hasUUID("GhostEscapeSession")&&ghost.getUUID("Session").equals(marker.getUUID("GhostEscapeSession"));

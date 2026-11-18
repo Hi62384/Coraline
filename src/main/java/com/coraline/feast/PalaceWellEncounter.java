@@ -29,7 +29,7 @@ public final class PalaceWellEncounter {
         var r=root(s);if(r==null||!r.contains("WellStage",Tag.TAG_COMPOUND))return null;var n=r.getCompound("WellStage");
         if(!n.contains("Version",Tag.TAG_INT)||n.getInt("Version")!=1||!n.hasUUID("Owner")||!s.owner.equals(n.getUUID("Owner"))||!n.hasUUID("Door")||!s.door.equals(n.getUUID("Door")))return null;
         if(!n.contains("Ticks",Tag.TAG_INT)||n.getInt("Ticks")<0||!n.contains("LastTick",Tag.TAG_LONG)||n.getLong("LastTick")< -1)return null;
-        for(String key:new String[]{"Paused","CueStarted","ThrowRequested","SmashRequested","HandAtWell","Falling","PresentationRetired"})if(n.contains(key)&&(!n.contains(key,Tag.TAG_BYTE)||n.getByte(key)<0||n.getByte(key)>1))return null;
+        for(String key:new String[]{"Paused","CueStarted","ThrowRequested","SmashRequested","HandAtWell","Falling","PresentationRetired","BikeArrived"})if(n.contains(key)&&(!n.contains(key,Tag.TAG_BYTE)||n.getByte(key)<0||n.getByte(key)>1))return null;
         for(String key:new String[]{"Bike"})if(n.contains(key)&&!n.hasUUID(key))return null;
         for(String key:new String[]{"BikePosition","Entry","Departure"})if(n.contains(key)&&!n.contains(key,Tag.TAG_LONG))return null;
         if(n.contains("Combat")&&!n.contains("Combat",Tag.TAG_COMPOUND))return null;
@@ -115,43 +115,109 @@ public final class PalaceWellEncounter {
             var raw=p.server.overworld().getEntity(n.getUUID("Bike"));return raw instanceof WybieBicycleEntity b&&b.getPersistentData().hasUUID("PalaceWellOwner")&&s.owner.equals(b.getPersistentData().getUUID("PalaceWellOwner"))?b:null;
         }
         if(w==null)return null;var c=center(p);var palace=PalaceSiteData.get(p.server).position(PalaceSitePlan.Kind.PALACE).orElseThrow();var away=c.subtract(Vec3.atBottomCenterOf(palace)).multiply(1,0,1).normalize();
-        var spawn=PalaceWellMotion.ground(p.serverLevel(),w,c.add(away.scale(18)),12);if(spawn==null)return null;
-        for(var viewer:p.server.getPlayerList().getPlayers())if(viewer.level()==p.level()&&viewer.distanceToSqr(spawn)<128*128&&viewer.getLookAngle().dot(spawn.subtract(viewer.getEyePosition()).normalize())>.15&&p.serverLevel().clip(new ClipContext(viewer.getEyePosition(),spawn.add(0,1,0),ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,viewer)).getType()==HitResult.Type.MISS)return null;
-        w=bring(p,s,w,spawn);if(w==null)return null;
-        var b=com.coraline.registry.ModEntities.WYBIE_BICYCLE.get().create(p.serverLevel());if(b==null)return null;b.configure(s.owner,s.door,progress.session(),s.loop.event.getInt("Serial"),w.getUUID(),true);b.getPersistentData().putUUID("PalaceWellOwner",s.owner);b.setPos(spawn);
-        var target=PalaceWellMotion.ground(p.serverLevel(),w,c.add(4.5,0,-4.5),8);if(target==null)return null;var delta=target.subtract(spawn);b.setYRot((float)Math.toDegrees(Math.atan2(-delta.x,delta.z)));
-        if(!p.serverLevel().addFreshEntity(b))return null;n.putUUID("Bike",b.getUUID());n.putLong("BikePosition",b.blockPosition().asLong());n.putLong("Entry",BlockPos.containing(target).asLong());w.startRiding(b,true);OtherMotherLoop.changed(p);return b;
+        if(away.lengthSqr()<.1)away=new Vec3(0,0,1);
+        var b=com.coraline.registry.ModEntities.WYBIE_BICYCLE.get().create(p.serverLevel());
+        if(b==null)return null;
+        long now=p.serverLevel().getGameTime();
+        if(now<n.getLong("BikeSpawnRetryAt"))return null;
+        int attempt=n.getInt("BikeSpawnSearch");
+        n.putInt("BikeSpawnSearch",attempt==Integer.MAX_VALUE?0:attempt+1);
+        n.putLong("BikeSpawnRetryAt",now+5);
+        var direction=away.yRot((float)Math.toRadians(45*Math.floorMod(attempt,8)));
+        var column=c.add(direction.scale(18+4*Math.floorMod(attempt/8,3)));
+        var ground=PalaceWellMotion.ground(p.serverLevel(),w,column,6);
+        if(ground==null)return null;
+        float heading=StoryBikeRoute.yaw(c.subtract(ground));
+        var spawn=StoryBikeRoute.floor(b,ground.x,ground.z,ground.y,heading);
+        if(spawn==null)return null;
+        for(var viewer:p.serverLevel().players()){
+            if(viewer.distanceToSqr(spawn)<128*128
+                    &&viewer.getLookAngle().dot(spawn.subtract(viewer.getEyePosition()).normalize())>.15
+                    &&p.serverLevel().clip(new ClipContext(viewer.getEyePosition(),spawn.add(0,1.25,0),ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,viewer)).getType()==HitResult.Type.MISS)return null;
+        }
+        b.setYRot(heading);
+        b.setPos(spawn);
+        var target=entryTarget(p,w,c,attempt/24);
+        if(target==null)return null;
+        var route=StoryBikeRoute.toward(b,target);
+        if(route==null||route.isEmpty())return null;
+        b.configure(s.owner,s.door,progress.session(),s.loop.event.getInt("Serial"),w.getUUID(),true);
+        b.getPersistentData().putUUID("PalaceWellOwner",s.owner);
+        if(!p.serverLevel().addFreshEntity(b))return null;
+        n.putUUID("Bike",b.getUUID());
+        n.putLong("BikePosition",b.blockPosition().asLong());
+        n.putLong("Entry",BlockPos.containing(target).asLong());
+        b.wellRoute.addAll(route);
+        OtherMotherLoop.changed(p);
+        w=bring(p,s,w,spawn);
+        if(w!=null)w.startRiding(b,true);
+        return b;
+    }
+    private static Vec3 entryTarget(ServerPlayer p,CharacterEntity w,Vec3 center,int attempt){
+        var offset=new Vec3(4.5,0,-4.5).yRot((float)Math.toRadians(45*Math.floorMod(attempt,8)));
+        var at=PalaceWellMotion.ground(p.serverLevel(),w,center.add(offset),8);
+        return at==null?null:Vec3.atBottomCenterOf(BlockPos.containing(at));
     }
     public static void driveBike(WybieBicycleEntity b){
         var owner=b.getPersistentData().getUUID("PalaceWellOwner");var s=VisitData.get(b.getServer()).scenes.get(owner);var p=b.getServer().getPlayerList().getPlayer(owner);var n=s==null?null:control(s);
         if(p==null||n==null||n.getBoolean("Paused")||!n.hasUUID("Bike")||!b.getUUID().equals(n.getUUID("Bike"))||!eligible(p,s)){b.stop();return;}
         var progress=state(s);var w=wybie(p,s,progress);if(w==null||w.getVehicle()!=b){b.stop();return;}
-        n.putLong("BikePosition",b.blockPosition().asLong());boolean entry=progress.phase()==INTRO_A&&ShowPlayback.started(s)&&ShowPlayback.position(s)>=40;
+        boolean entry=progress.phase()==INTRO_A&&ShowPlayback.started(s)&&ShowPlayback.position(s)>=40;
         boolean departing=progress.phase()==DEPARTING;
         if(!entry&&!departing){b.stop();return;}
-        var target=BlockPos.of(n.getLong(departing?"Departure":"Entry"));var path=w.getNavigation().createPath(target,0);
-        if((path==null||!path.canReach())&&departing){
-            // The authored first choice can become unreachable after terrain
-            // edits. Try other grounded destinations around the same site,
-            // choosing only a route the real navigator can reach.
-            var center=center(p);Vec3 away=center.subtract(p.position()).multiply(1,0,1).normalize();
-            if(away.lengthSqr()<.1)away=new Vec3(0,0,1);
-            search: for(int turn:new int[]{0,45,-45,90,-90,135,-135,180})for(double distance:new double[]{28,36,44}){
-                var candidate=PalaceWellMotion.ground(p.serverLevel(),w,center.add(away.yRot((float)-Math.toRadians(turn)).scale(distance)),18);
-                if(candidate==null)continue;var block=BlockPos.containing(candidate);var route=w.getNavigation().createPath(block,0);
-                if(route==null||!route.canReach())continue;
-                target=block;path=route;n.putLong("Departure",block.asLong());n.remove("MotionBlocker");OtherMotherLoop.changed(p);break search;
-            }
+        String key=departing?"Departure":"Entry";
+        if(!n.contains(key)){b.stop();return;}
+        var goal=Vec3.atBottomCenterOf(BlockPos.of(n.getLong(key)));
+        if(b.distanceToSqr(goal)<.36){
+            b.wellRoute.clear();
+            b.stop();
+            if(entry)n.putBoolean("BikeArrived",true);
+            return;
         }
-        if(path==null||!path.canReach()){b.stop();n.putString("MotionBlocker","No physically reachable bicycle route; the departure will retry after the path changes.");return;}
-        Vec3 next=Vec3.atBottomCenterOf(target);for(int i=0;i<path.getNodeCount();i++){var node=Vec3.atBottomCenterOf(path.getNodePos(i));if(node.distanceToSqr(b.position())>2.25){next=node;break;}}
-        if(b.distanceToSqr(Vec3.atBottomCenterOf(target))<2.25){b.stop();return;}
-        var delta=next.subtract(b.position());float yaw=(float)Math.toDegrees(Math.atan2(-delta.x,delta.z));float turn=net.minecraft.util.Mth.wrapDegrees(yaw-b.getYRot());b.drive(Math.abs(turn)>70?.15F:.6F,net.minecraft.util.Mth.clamp(turn/35,-1,1),false);
+        if(b.wellRoute.isEmpty()){
+            long now=p.serverLevel().getGameTime();
+            if(now<b.wellReplanAt)return;
+            b.wellReplanAt=now+10;
+            int attempt=n.getInt("BikeRouteSearch");
+            n.putInt("BikeRouteSearch",attempt==Integer.MAX_VALUE?0:attempt+1);
+            var route=StoryBikeRoute.toward(b,goal);
+            if(route==null){
+                Vec3 alternative;
+                var c=center(p);
+                if(entry)alternative=entryTarget(p,w,c,attempt);
+                else{
+                    var away=new Vec3(0,0,44).yRot((float)Math.toRadians(45*Math.floorMod(attempt,8)));
+                    var ground=PalaceWellMotion.ground(p.serverLevel(),w,c.add(away),18);
+                    alternative=ground==null?null:Vec3.atBottomCenterOf(BlockPos.containing(ground));
+                }
+                if(alternative!=null&&!alternative.equals(goal)){
+                    route=StoryBikeRoute.toward(b,alternative);
+                    if(route!=null)n.putLong(key,BlockPos.containing(alternative).asLong());
+                }
+            }
+            if(route==null||route.isEmpty()){
+                b.stop();
+                n.putString("MotionBlocker","No clear bicycle route. Clear the path around Wybie to continue.");
+                return;
+            }
+            n.remove("MotionBlocker");
+            b.wellRoute.addAll(route);
+        }
+        var next=b.wellRoute.peek();
+        if(b.storyAdvance(next))b.wellStallTicks=0;
+        else if(++b.wellStallTicks>=3){b.wellRoute.clear();b.wellStallTicks=0;return;}
+        if(b.position().distanceToSqr(next)<.02)b.wellRoute.remove();
+        n.putLong("BikePosition",b.blockPosition().asLong());
     }
     private static boolean cue(ServerPlayer p,VisitData.Scene s,CompoundTag n,char letter){
         String sound="crawling_hand_"+Character.toLowerCase(letter);
         if(!n.getBoolean("CueStarted")||!sound.equals(n.getString("Cue"))){if(!ShowPlayback.start(p,s,sound,false)){pause(p,s,n,"Original well recording is unavailable.");return false;}n.putBoolean("CueStarted",true);n.putString("Cue",sound);}
-        boolean done=ShowPlayback.tick(p,s);if(!ShowPlayback.data(s).getString("Blocker").isEmpty())pause(p,s,n,ShowPlayback.data(s).getString("Blocker"));return done&&!ShowPlayback.debugSeeking(s);
+        boolean done=ShowPlayback.tick(p,s);
+        if(ShowPlayback.data(s).getBoolean("SafetySkipped")||!ShowPlayback.data(s).getString("Blocker").isEmpty()){
+            pause(p,s,n,"The original well recording was interrupted. Use /coralinepalace well-resume to retry.");
+            return false;
+        }
+        return done&&!ShowPlayback.debugSeeking(s);
     }
     private static boolean move(ServerPlayer p,Entity e,Vec3 target,double speed){return PalaceWellMotion.move(p.serverLevel(),e,target,speed);}
     private static boolean arrived(Entity e,Vec3 at){return e.position().distanceToSqr(at)<.035;}
@@ -185,8 +251,13 @@ public final class PalaceWellEncounter {
                 move(p,h,p.position().add(0,.17,0),.30);h.frame(10,t,1);progress.activeTick(s.owner,progress.session(),now);
             }
             case INTRO_A->{
-                var b=bike(p,s,n,progress,w);if(b==null)return;w=wybie(p,s,progress);if(w==null)return;boolean done=cue(p,s,n,'A');if(!ShowPlayback.started(s))return;
-                var target=Vec3.atBottomCenterOf(BlockPos.of(n.getLong("Entry")));boolean at=b.distanceToSqr(target)<4;
+                var b=bike(p,s,n,progress,w);if(b==null){if(t%80==0)p.displayClientMessage(Component.literal("Wybie is looking for a clear, hidden approach to the well."),true);return;}w=wybie(p,s,progress);if(w==null)return;boolean done=cue(p,s,n,'A');if(!ShowPlayback.started(s))return;
+                var target=Vec3.atBottomCenterOf(BlockPos.of(n.getLong("Entry")));boolean at=n.getBoolean("BikeArrived")&&b.distanceToSqr(target)<.36;
+                if(!at&&w.getVehicle()!=b&&w.distanceToSqr(b)>32*32){
+                    if(PalaceWellMotion.seen(p,b))return;
+                    w=bring(p,s,w,b.position());
+                    if(w==null)return;
+                }
                 if(!at&&w.getVehicle()!=b){var near=PalaceWellMotion.ground(p.serverLevel(),w,b.position().add(1.3,0,0),4);if(near!=null)move(p,w,near,.10);if(w.distanceToSqr(b)<5)w.startRiding(b,true);}
                 w.gameGesture(at?70:77,5);
                 if(at){b.stop();w.stopRiding();w.setNoGravity(true);w.noPhysics=false;w.setNoAi(true);w.gameGesture(70,5);face(w,h.position());
@@ -235,9 +306,11 @@ public final class PalaceWellEncounter {
                 boolean heard=w==null||cue(p,s,n,'E');int cursor=w==null?t:ShowPlayback.position(s);int duration=w==null?60:ShowRecordings.duration("crawling_hand_e");
                 if(w!=null){w.gameGesture(75,5);if(cursor>=Math.max(0,duration-40))n.putBoolean("ThrowRequested",true);}
                 if(n.getBoolean("ThrowRequested")){
-                    int leg=n.getInt("ThrowStage");Vec3 target=leg==0?new Vec3(bundle.getX(),c.y+3.5,bundle.getZ()):leg==1?c.add(0,3.5,0):new Vec3(c.x,Math.max(c.y-16,bundle.getY()-.45),c.z);
-                    if(move(p,bundle,target,.30)&&arrived(bundle,target)&&leg<2)n.putInt("ThrowStage",leg+1);
-                    bundle.frame(1,t,1);if(heard&&PalaceKeyCustody.dispose(p,s,bundle))progress=state(s);
+                    int leg=PalaceWellMotion.throwBundle(p.serverLevel(),bundle,c,n.getInt("ThrowStage"));
+                    n.putInt("ThrowStage",leg);
+                    ParentRescueStory.scenery(s).putLong("RescueWellBundlePosition",bundle.blockPosition().asLong());
+                    bundle.frame(1,t,1);
+                    if(heard&&leg==2&&PalaceKeyCustody.dispose(p,s,bundle))progress=state(s);
                 }else if(w==null&&t%80==0)p.displayClientMessage(Component.literal("Throw the sealed bundle into the well."),true);
             }
             case DISPOSED->{ShowPlayback.stop(p,s);progress.beginFarewell(s.owner,progress.session());}

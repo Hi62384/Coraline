@@ -9,7 +9,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /** Registration requires a live desk offer, not operator/debug progression.
- * Status is operator-only. Resume/leave cannot create a ride or grant a key.
+ * Status is operator-only. Resume and leave act only on an existing owner-bound ride.
  */
 @Mod.EventBusSubscriber(modid="coraline")
 public final class PalaceCommands {
@@ -27,6 +27,8 @@ public final class PalaceCommands {
                 if(scene!=null){
                     var original=CanonicalRealWybie.identity(scene);c.getSource().sendSuccess(()->Component.literal("Original real Wybie: "+(original==null?"no canonical record (not proof of death)":original.blocker().isEmpty()?original.entity()+" / "+original.fate()+" / stored="+original.stored():"incompatible: "+original.blocker())),false);
                     var journey=PalaceJourney.existing(scene);if(journey!=null){
+                        var ride=journey.getCompound("Transport");
+                        if(!ride.isEmpty())c.getSource().sendSuccess(()->Component.literal("Ride: "+ride.getCompound("Progress").getString("Phase")+". "+ride.getString("Blocker")),false);
                         c.getSource().sendSuccess(()->Component.literal("Well: "+journey.getCompound("Well").getString("Phase")+". "+journey.getString("WellBlocker")+" "+journey.getCompound("WellStage").getString("Blocker")+" "+journey.getString("KeyCustodyBlocker")),false);
                     }
                 }

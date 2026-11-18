@@ -30,7 +30,7 @@ import static com.coraline.palace.PalaceSitePlan.Kind;
  * preload, player-position random roll, unbounded build queue or weather lock.
  * Real chunks/blocks are surveyed, placed and read back incrementally. All
  * modification is confined to the virgin footprint claimed BEFORE chunk loads.
- * Player entry/edit after claiming stops the job instead of overwriting a build.
+ * Player proximity pauses work. An edit abandons a survey or protects a partial build.
  */
 @Mod.EventBusSubscriber(modid="coraline")
 public final class PalaceWorldGeneration {
@@ -43,6 +43,10 @@ public final class PalaceWorldGeneration {
     private static LevelChunk currentChunk;
     private static long currentChunkId=Long.MIN_VALUE;
     private static int loadedThisTick;
+    private static long retryAt;
+    private static final class RetryableGeneration extends RuntimeException {
+        RetryableGeneration(String message){super(message);}
+    }
     private static final UUID GENERATION_TICKET=UUID.randomUUID();
     private static ServerLevel pendingLevel;
     private static ChunkPos pendingPosition;
@@ -75,7 +79,7 @@ public final class PalaceWorldGeneration {
         if(!pendingChunk.isDone())return null;
         if(pendingLevel!=l||!pendingPosition.equals(position)){releasePending();return null;}
         var result=pendingChunk.getNow(null);
-        if(result==null||result.left().isEmpty())throw new IllegalStateException("Landmark chunk request failed safely");
+        if(result==null||result.left().isEmpty())throw new RetryableGeneration("Landmark chunk unavailable");
         currentChunk=(LevelChunk)result.left().get();currentChunkId=id;releasePending();return currentChunk;
     }
     private static boolean put(ServerLevel l,BlockPos at,BlockState expected){
@@ -88,7 +92,7 @@ public final class PalaceWorldGeneration {
         var n=d.generation();int buffer=l.getServer().getPlayerList().getViewDistance()*16+64;
         for(var p:l.players()){
             if(n.getBoolean("PalaceClaimed")&&Math.abs(p.getX()-n.getInt("CandidateX"))<=R+buffer&&Math.abs(p.getZ()-n.getInt("CandidateZ"))<=R+buffer)return true;
-            if(n.getBoolean("CompanyClaimed")&&Math.abs(p.getX()-n.getInt("CompanyX"))<=48+buffer&&Math.abs(p.getZ()-n.getInt("CompanyZ"))<=48+buffer)return true;
+            if(n.getBoolean("CompanyClaimed")&&!d.generated(Kind.COMPANY)&&Math.abs(p.getX()-n.getInt("CompanyX"))<=48+buffer&&Math.abs(p.getZ()-n.getInt("CompanyZ"))<=48+buffer)return true;
         }
         return false;
     }
@@ -181,7 +185,7 @@ public final class PalaceWorldGeneration {
             if(low<64||high>180||high-low>10){d.reject(Kind.COMPANY,p);n.putBoolean("CompanyClaimed",false);enter(d,SELECT_COMPANY);return;}
             int y=(low+high)/2+1;n.putInt("CompanyY",y);
             if(!d.reserveGenerationPlan(Kind.COMPANY,new BlockPos(x,y,z)))throw new IllegalStateException("Company reservation changed");
-            enter(d,TERRAIN);save(l,d);return;
+            n.putBoolean("CompanyFirst",true);enter(d,COMPANY_PREPARE);save(l,d);return;
         }
         int cx=Math.floorDiv(x,16)-3+cursor%7,cz=Math.floorDiv(z,16)-3+cursor/7;var c=chunk(l,cx*16,cz*16);if(c==null)return;
         var boxes=structures(l,c);if(boxes==null)return;if(!boxes.isEmpty()||!c.getBlockEntities().isEmpty()){
@@ -217,14 +221,18 @@ public final class PalaceWorldGeneration {
         var n=d.generation();if(n.getBoolean("ColumnActive")){column(l,d,false);return;}
         int i=n.getInt("Cursor");if(i>SIDE*SIDE)throw new IllegalStateException("Invalid terrain cursor");
         if(i==SIDE*SIDE){enter(d,DETAILS);save(l,d);return;}
-        var palace=d.position(Kind.PALACE).orElseThrow();int x=palace.getX()-R+i%SIDE,z=palace.getZ()-R+i/SIDE;var c=chunk(l,x,z);if(c==null)return;
+        var palace=d.position(Kind.PALACE).orElseThrow();
+        int minX=palace.getX()-R,minZ=palace.getZ()-R;
+        var cell=n.getBoolean("CompanyFirst")?PalaceTerrainPlan.column(minX,minZ,i):new PalaceSitePlan.Point(minX+i%SIDE,minZ+i/SIDE);
+        int x=cell.x(),z=cell.z();
+        var c=chunk(l,x,z);if(c==null)return;
         int old=natural(c,x,z),top=c.getHeight(Heightmap.Types.WORLD_SURFACE,x&15,z&15);
         var sample=PalaceTerrainPlan.sample(l.getSeed(),point(palace),point(d.position(Kind.WELL).orElseThrow()),n.getInt("ProfileBase"),x,z,old);
-        if((i%SIDE)%16==0&&(i/SIDE)%16==0){
+        if(n.getBoolean("CompanyFirst")?(x==minX||(x&15)==0)&&(z==minZ||(z&15)==0):(i%SIDE)%16==0&&(i/SIDE)%16==0){
             var biome=l.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(BIOME);
             c.fillBiomesFromNoise((qx,qy,qz,sampler)->PalaceSitePlan.regionWeight(l.getSeed(),point(palace),QuartPos.toBlock(qx)+2,QuartPos.toBlock(qz)+2)>0?biome:c.getNoiseBiome(qx,qy,qz),l.getChunkSource().randomState().sampler());c.setUnsaved(true);
         }
-        if(sample.weight()==0){n.putInt("Cursor",i+1);return;}
+        if(sample.weight()==0){n.putInt("Cursor",i+1);d.setDirty();return;}
         // Protect any actual subterranean structure intersecting excavation.
         var boxes=structures(l,c);if(boxes==null)return;
         if(intersects(boxes,x,Math.min(old,sample.surface())-3,z,Math.max(top,sample.surface())+1))throw new IllegalStateException("Terrain alteration would touch an unrelated structure");
@@ -264,7 +272,7 @@ public final class PalaceWorldGeneration {
         var n=d.generation();int i=n.getInt("Cursor");var cells=RosewoodHouse.palaceCells();if(i>cells.size())throw new IllegalStateException("Invalid original house cursor");
         if(i==cells.size()){
             if(verify&&!d.generationVerified(Kind.PALACE,d.position(Kind.PALACE).orElseThrow(),n.getInt("Verified"),cells.size()))throw new IllegalStateException("House readback incomplete");
-            enter(d,verify?COMPANY_PREPARE:HOUSE_VERIFY);save(l,d);return;
+            enter(d,verify?(d.generated(Kind.COMPANY)?WELL:COMPANY_PREPARE):HOUSE_VERIFY);save(l,d);return;
         }
         var cell=cells.get(i);var p=d.position(Kind.PALACE).orElseThrow().offset(cell.offset());if(chunk(l,p.getX(),p.getZ())==null)return;
         if(!verify)put(l,p,cell.state());
@@ -286,7 +294,7 @@ public final class PalaceWorldGeneration {
         if(i>bounds.size())throw new IllegalStateException("Invalid secondary landmark cursor");
         if(i==bounds.size()){
             if(verify&&!d.generationVerified(kind,d.position(kind).orElseThrow(),n.getInt("Verified"),bounds.size()))throw new IllegalStateException("Landmark readback incomplete");
-            enter(d,company?verify?WELL:COMPANY_VERIFY:verify?SIGNS:WELL_VERIFY);save(l,d);return;
+            enter(d,company?verify?(n.getBoolean("CompanyFirst")?TERRAIN:WELL):COMPANY_VERIFY:verify?SIGNS:WELL_VERIFY);save(l,d);return;
         }
         var cell=bounds.cell(i);var p=d.position(kind).orElseThrow().offset(cell[0],cell[1],cell[2]);if(chunk(l,p.getX(),p.getZ())==null)return;
         var expected=material(company?PalaceLandmarkPlan.company(cell[0],cell[1],cell[2]):PalaceLandmarkPlan.well(cell[0],cell[1],cell[2]));
@@ -325,7 +333,10 @@ public final class PalaceWorldGeneration {
         var n=d.generation();int index=n.getInt("Cursor");if(index>2)throw new IllegalStateException("Invalid shared sign cursor");
         if(index==2){enter(d,FINISH);save(l,d);return;}
         String key=index==0?"PalaceSign":"CompanySign";var base=d.position(index==0?Kind.PALACE:Kind.COMPANY).orElseThrow().offset(index==0?28:-15,0,index==0?-48:-14);
-        if(chunk(l,base.getX(),base.getZ())==null)return;
+        if(l.players().stream().anyMatch(player->player.distanceToSqr(Vec3.atCenterOf(base))<16*16))return;
+        var signChunk=new ChunkPos(base);
+        l.getChunkSource().addRegionTicket(net.minecraft.server.level.TicketType.PORTAL,signChunk,2,signChunk.getWorldPosition());
+        if(chunk(l,base.getX(),base.getZ())==null||!l.areEntitiesLoaded(signChunk.toLong()))return;
         com.coraline.feast.CinematicPropEntity sign=null;
         if(n.hasUUID(key)){
             var e=l.getEntity(n.getUUID(key));if(!(e instanceof com.coraline.feast.CinematicPropEntity existing)||existing.kind()!=com.coraline.feast.CinematicPropEntity.WORLD_SIGN||existing.slot()!=index)throw new IllegalStateException("Original shared sign unavailable; no duplicate created");sign=existing;
@@ -333,7 +344,7 @@ public final class PalaceWorldGeneration {
             var found=l.getEntitiesOfClass(com.coraline.feast.CinematicPropEntity.class,new AABB(base).inflate(1),e->e.kind()==com.coraline.feast.CinematicPropEntity.WORLD_SIGN&&e.slot()==index);
             if(found.size()>1)throw new IllegalStateException("Duplicate shared sign identities need review");
             if(found.size()==1)sign=found.get(0);
-            else{sign=com.coraline.feast.CinematicPropEntity.TYPE.get().create(l);if(sign==null)throw new IllegalStateException("Shared sign creation unavailable");sign.worldSign(index);sign.setPos(Vec3.atBottomCenterOf(base));if(!l.addFreshEntity(sign))throw new IllegalStateException("Shared sign spawn refused");}
+            else{sign=com.coraline.feast.CinematicPropEntity.TYPE.get().create(l);if(sign==null)throw new RetryableGeneration("Shared sign creation unavailable");sign.worldSign(index);sign.setPos(Vec3.atBottomCenterOf(base));if(!l.addFreshEntity(sign))throw new RetryableGeneration("Shared sign spawn refused");}
             n.putUUID(key,sign.getUUID());save(l,d);
         }
         n.putInt("Cursor",index+1);d.setDirty();
@@ -360,33 +371,49 @@ public final class PalaceWorldGeneration {
         // landmark generation; do not run two generation pipelines together.
         if(com.coraline.otherworld.OtherWorld.weavingEntrance(server))return;
         if(server instanceof net.minecraft.gametest.framework.GameTestServer&&!Boolean.getBoolean("coraline.palaceWorldgenQa"))return;
-        if(currentServer!=server){releasePending();currentServer=server;currentChunk=null;currentChunkId=Long.MIN_VALUE;STRUCTURES.clear();}
+        if(currentServer!=server){releasePending();currentServer=server;retryAt=0;currentChunk=null;currentChunkId=Long.MIN_VALUE;STRUCTURES.clear();}
 
-        var l=server.overworld();var d=PalaceSiteData.get(server);if(!d.initialized()||!d.blocker().isEmpty()){releasePending();return;}
+        var l=server.overworld();var d=PalaceSiteData.get(server);
+        if(l.getGameTime()<retryAt)return;
+        d.retryLegacyPause();
+        if(!d.initialized()||!d.blocker().isEmpty()){releasePending();return;}
         if(d.generation().isEmpty()&&Arrays.stream(Kind.values()).allMatch(d::generated))return;
         try{
             var stage=PalaceGenerationRules.stage(d.generation());if(stage==DONE)return;
-            if(occupied(l,d)){releasePending();d.stopGeneration("Player exploration reached the pending region; job stopped to preserve explored terrain/builds. No replacement Palace allocated.");save(l,d);return;}
+            if(occupied(l,d)){releasePending();return;}
             loadedThisTick=0;long deadline=System.nanoTime()+2_000_000;
             for(int count=0;count<128&&System.nanoTime()<deadline&&freeMemory()>=STOP_FREE;count++){
-                stage=PalaceGenerationRules.stage(d.generation());
+                stage=d.generation().isEmpty()?SELECT_PALACE:PalaceGenerationRules.Stage.valueOf(d.generation().getString("Stage"));
                 switch(stage){
                     case SELECT_PALACE->selectPalace(l,d);case SURVEY_REGION->surveyRegion(l,d);case SELECT_WELL->selectWell(l,d);case SELECT_COMPANY->selectCompany(l,d);case SURVEY_COMPANY->surveyCompany(l,d);
                     case TERRAIN->terrain(l,d);case DETAILS->details(l,d);case HOUSE_PREPARE->prepareHouse(l,d);case HOUSE->house(l,d,false);case HOUSE_VERIFY->house(l,d,true);case COMPANY_PREPARE->prepareCompany(l,d);
                     case COMPANY->landmark(l,d,Kind.COMPANY,false);case COMPANY_VERIFY->landmark(l,d,Kind.COMPANY,true);case WELL->landmark(l,d,Kind.WELL,false);case WELL_VERIFY->landmark(l,d,Kind.WELL,true);case SIGNS->signs(l,d);case FINISH->finish(l,d);case DONE->{return;}
                 }
-                if(!d.blocker().isEmpty()||loadedThisTick>0)break;
+                if(!d.blocker().isEmpty()||loadedThisTick>0||stage==SIGNS)break;
             }
-        }catch(Exception failure){releasePending();d.stopGeneration("Palace generation stopped safely: "+failure.getClass().getSimpleName()+": "+failure.getMessage());save(l,d);}
+        }catch(RetryableGeneration|java.io.IOException|java.util.concurrent.CompletionException failure){
+            releasePending();
+            retryAt=l.getGameTime()+100;
+            d.setDirty();
+        }catch(RuntimeException failure){
+            releasePending();
+            d.stopGeneration("Palace generation needs review at "+d.generation().getString("Stage")
+                    +" cursor "+d.generation().getInt("Cursor")+": "+failure.getMessage());
+            save(l,d);
+        }
     }
     private static void edited(BlockEvent event){
         if(!(event.getLevel() instanceof ServerLevel l)||l!=l.getServer().overworld())return;var d=PalaceSiteData.get(l.getServer());var n=d.generation();
         if(!d.blocker().isEmpty()||n.isEmpty()||PalaceGenerationRules.stage(n)==DONE)return;var p=event.getPos();
         if(n.getBoolean("PalaceClaimed")&&Math.abs(p.getX()-n.getInt("CandidateX"))<=R+128&&Math.abs(p.getZ()-n.getInt("CandidateZ"))<=R+128
-                ||n.getBoolean("CompanyClaimed")&&Math.abs(p.getX()-n.getInt("CompanyX"))<=80&&Math.abs(p.getZ()-n.getInt("CompanyZ"))<=80){d.stopGeneration("Player/world edit inside pending landmark footprint; original edit preserved and generation stopped.");save(l,d);}
+                ||n.getBoolean("CompanyClaimed")&&!d.generated(Kind.COMPANY)&&Math.abs(p.getX()-n.getInt("CompanyX"))<=80&&Math.abs(p.getZ()-n.getInt("CompanyZ"))<=80){
+            releasePending();
+            if(!d.reselectUnbuiltSite())d.stopGeneration("Player edit at "+p.toShortString()+" intersects the partially built landmark. Inspect the original generation checkpoint before resuming.");
+            save(l,d);
+        }
     }
-    @SubscribeEvent public static void placed(BlockEvent.EntityPlaceEvent event){edited(event);}
-    @SubscribeEvent public static void broken(BlockEvent.BreakEvent event){edited(event);}
+    @SubscribeEvent(priority=net.minecraftforge.eventbus.api.EventPriority.LOWEST) public static void placed(BlockEvent.EntityPlaceEvent event){edited(event);}
+    @SubscribeEvent(priority=net.minecraftforge.eventbus.api.EventPriority.LOWEST) public static void broken(BlockEvent.BreakEvent event){edited(event);}
     @SubscribeEvent public static void stopped(ServerStoppedEvent event){releasePending();currentServer=null;currentChunk=null;currentChunkId=Long.MIN_VALUE;STRUCTURES.clear();}
     private PalaceWorldGeneration(){}
 }

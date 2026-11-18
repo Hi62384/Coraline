@@ -1,1 +1,52 @@
-{"required":true,"minVersion":"0.8","package":"com.coraline.mixin","compatibilityLevel":"JAVA_17","refmap":"coraline.refmap.json","mixins":["ChunkFutureAccess","MirrorPlayerSaveAccess","InfiniteServerAccess","InfectedGoalAccess","PerfectMendingMixin","PerfectEnchantingMixin","ClothingArmorValueMixin","SpiderWebMovementMixin","RescueWebMovementMixin","ArtifactCrossbowChargeMixin","IceBoatCountdownMixin","ActivityGuardianAccess","ActivityGuardianPeacefulMixin","DeliveryContainerMixin","AcceptedInventoryDropMixin","GhostVictimSpectatorMixin","RapierPrimaryHurtMixin","StoryGroupCollisionMixin","StoryGroupInputMixin","OtherWorldWeatherMixin","ParentsBedLossMixin","ParentsBedProtectionMixin"],"client":["ClothingBlockLightMixin","ClothingEntityLightMixin","ButtonEyesGlowMixin","ActivityMobEyesMixin","DreamMouseMixin","RemoteBodyInputMixin","StoryAudioChannelMixin","StoryDimensionScreenMixin","StoryDimensionSoundMixin","PrisonLightmapMixin","AcceptedPlayerHandMixin","AcceptedPlayerBodyMixin","GhostVictimPlayerModelMixin","InfectionHeadPartsAccess","InfectionModelPartAccess","StoryGroupClientCollisionMixin"],"injectors":{"defaultRequire":1}}
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.coraline.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "coraline.refmap.json",
+  "mixins": [
+    "ChunkFutureAccess",
+    "MirrorPlayerSaveAccess",
+    "InfiniteServerAccess",
+    "InfectedGoalAccess",
+    "PerfectMendingMixin",
+    "PerfectEnchantingMixin",
+    "ClothingArmorValueMixin",
+    "SpiderWebMovementMixin",
+    "RescueWebMovementMixin",
+    "ArtifactCrossbowChargeMixin",
+    "IceBoatCountdownMixin",
+    "ActivityGuardianAccess",
+    "ActivityGuardianPeacefulMixin",
+    "DeliveryContainerMixin",
+    "AcceptedInventoryDropMixin",
+    "GhostVictimSpectatorMixin",
+    "RapierPrimaryHurtMixin",
+    "StoryGroupCollisionMixin",
+    "StoryGroupInputMixin",
+    "OtherWorldWeatherMixin",
+    "ParentsBedLossMixin",
+    "ParentsBedProtectionMixin"
+  ],
+  "client": [
+    "ClothingBlockLightMixin",
+    "ClothingEntityLightMixin",
+    "ButtonEyesGlowMixin",
+    "ActivityMobEyesMixin",
+    "DreamMouseMixin",
+    "RemoteBodyInputMixin",
+    "StoryAudioChannelMixin",
+    "StoryDimensionScreenMixin",
+    "StoryDimensionSoundMixin",
+    "PrisonLightmapMixin",
+    "AcceptedPlayerHandMixin",
+    "AcceptedPlayerBodyMixin",
+    "GhostVictimPlayerModelMixin",
+    "InfectionHeadPartsAccess",
+    "InfectionModelPartAccess",
+    "StoryGroupClientCollisionMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

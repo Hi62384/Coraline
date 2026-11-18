@@ -36,6 +36,11 @@ public final class ShowActors {
         tag.putUUID("ShowActorOwner",s.owner);tag.putInt("ShowActorSerial",s.loop.event.getInt("Serial"));tag.putUUID("RealmDoor",s.door);
         var moved=ShowTravel.guest(actor,p,s,level,at,true,"ShowActorReturn");if(moved!=null){n.putUUID("Entity",moved.getUUID());remember(n,moved);control(moved);}OtherMotherLoop.changed(p);return moved;
     }
+    static Mob recoverCat(ServerPlayer p,VisitData.Scene s,ServerLevel level,Vec3 at){
+        if(!root(s).getCompound("cat").hasUUID("Entity")&&!canonicalCat(s).hasUUID("Entity"))return null;
+        var actor=acquire(p,s,"cat",level,at);
+        return actor instanceof CharacterEntity cat&&cat.characterId().equals("cat")&&cat.isAlive()?cat:null;
+    }
     public static Mob acquire(ServerPlayer p,VisitData.Scene s,String id,ServerLevel level,Vec3 at){
         if(!s.owner.equals(p.getUUID()))return null;var all=root(s);if(all.contains(id)){var bound=actor(p,s,id);if(bound==null||!owned(bound,s))return null;if(bound.level()!=level){bound=ShowTravel.guest(bound,p,s,level,at,true,"ShowActorReturn");if(bound==null)return null;all.getCompound(id).putUUID("Entity",bound.getUUID());}remember(all.getCompound(id),bound);if(id.equals("cat"))rememberCat(s,bound);control(bound);return bound;}
         if(!CharacterCast.ENTITIES.containsKey(id))return null;Mob chosen=null;

@@ -1,1 +1,6 @@
-{"parent":"minecraft:block/block","textures":{"particle":"minecraft:block/brown_wool"}}
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "minecraft:block/brown_wool"
+  }
+}

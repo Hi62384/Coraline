@@ -97,12 +97,39 @@ public final class RescueChapter {
         // Retire the legacy rescue Theatre.mp3 stream; the client owns one continuous boss loop.
         if(n.getBoolean("TheatreMusic")){VisitAudio.stopMusic(p,"rescue_theatre_music");n.remove("TheatreMusic");}
         if(state==Phase.COMPLETE){RescueBosses.hideBar(p);RescueEpilogue.departAfterWaking(p,s);if(p.tickCount%20==0)PalaceJourney.afterWake(p,s);return;}
-        if(n.getBoolean("Recover")){n.remove("Recover");recover(p,s);state=phase(s);}
+        if(n.getBoolean("Recover")){n.remove("Recover");recover(p,s);if(n.getBoolean("Recover"))return;state=phase(s);}
+        if(!RescueEncounters.presentationReady(p,s,state)){if(p.tickCount%5==0)sync(p,s);return;}
+        if(state==Phase.ROOM_LOCKED&&!BeldamFinale.keepPlayerInRoom(p,s)){sync(p,s);return;}
         if(state.ordinal()>=Phase.FINAL_A.ordinal()&&state.ordinal()<=Phase.BANGING.ordinal()&&!BeldamFinale.preflight(p,s)){sync(p,s);return;}
+        if(state==Phase.FAREWELL_C){
+            if(n.getBoolean("DreamDialogueComplete")||n.getBoolean("VisionRestored")){
+                RescueEpilogue.tick(p,s,state,n.getInt("Ticks"),true);
+                if(p.tickCount%5==0)sync(p,s);
+                return;
+            }
+            if(p.serverLevel()!=p.server.getLevel(ActivityWorld.KEY)){
+                RescueEpilogue.recoverVision(p,s);
+                return;
+            }
+            if(RescueEpilogue.visionActors(p,s)==null){
+                if(n.getBoolean("Audio")){ShowPlayback.stop(p,s);n.remove("Audio");n.remove("AudioTail");}
+                if(p.tickCount%5==0)sync(p,s);
+                return;
+            }
+        }
         String recording=sound(state);boolean done=false;int t=n.getInt("Ticks");
         if(!recording.isEmpty()){
             if(!n.getBoolean("Audio")){if(!ShowPlayback.start(p,s,recording,false)){n.putString("Blocker","Required supplied recording is unavailable: "+recording);sync(p,s);return;}n.putBoolean("Audio",true);}
             done=ShowPlayback.tick(p,s);t=ShowPlayback.position(s);
+            if(state.ordinal()>=Phase.BOB_A.ordinal()&&ShowPlayback.data(s).getBoolean("SafetySkipped")){
+                ShowPlayback.stop(p,s);
+                n.remove("Audio");
+                n.remove("AudioTail");
+                n.putString("Blocker","Retrying interrupted story recording: "+recording);
+                sync(p,s);
+                return;
+            }
+            if(state.ordinal()>=Phase.BOB_A.ordinal()&&ShowPlayback.started(s)&&ShowPlayback.data(s).getString("Blocker").isEmpty())n.remove("Blocker");
             // A completed recording does not freeze a physical action that has
             // not arrived yet. No tail time is granted before its real end ACK.
             if(done){int tail=n.getInt("AudioTail");t+=tail;n.putInt("AudioTail",tail+1);}n.putInt("Ticks",t);
@@ -118,7 +145,7 @@ public final class RescueChapter {
         var state=phase(s);String voice=sound(state);
         // Fights, choices, retrievals, travel and stealth are gameplay, not
         // cinematics. A watchdog never pretends these challenges were won.
-        if(state==Phase.TUNNEL_CHASE||RescueBosses.fighting(state))return;
+        if(RescueBosses.fighting(state)||state.ordinal()>=Phase.BOB_A.ordinal())return;
         boolean motion=java.util.EnumSet.of(Phase.MANTIS_RELEASE,Phase.THEATRE_GRAB,Phase.ATTIC_SEARCH,Phase.FURNACE,Phase.BOB_TENT,Phase.SWARM_TRANSFORM,Phase.WARDROBE_ASIDE,Phase.DOOR_KICK,Phase.HAND_FALL,Phase.BANGING,Phase.EYES_CLOSE,Phase.CELESTIAL_OPEN,Phase.ORBS).contains(state);
         if(voice.isEmpty()&&!motion)return;
         // Custodied quest items and a valid destination are real prerequisites,
@@ -133,8 +160,17 @@ public final class RescueChapter {
         sync(p,s);
     }
     public static void recover(ServerPlayer p,VisitData.Scene s){
-        var state=phase(s);if(RescueBosses.fighting(state)){RescueBosses.retry(p,s,"The challenge resumes from its checkpoint.");return;}
-        if(state==Phase.RAT_CHASE||state==Phase.COLLAPSE){RescueEncounters.retry(p,s,state);return;}
+        var state=phase(s);
+        if(RescueBosses.fighting(state)){
+            if(!RescueBosses.resume(p,s))data(s).putBoolean("Recover",true);
+            return;
+        }
+        if(state==Phase.RAT_CHASE){RescueEncounters.retry(p,s,state);return;}
+        if(state==Phase.COLLAPSE){
+            var level=p.server.getLevel(OtherWorld.KEY);
+            if(p.serverLevel()!=level&&!transfer(p,level,BlockPos.of(data(s).getLong("CollapseStart"))))data(s).putBoolean("Recover",true);
+            return;
+        }
         if(state==Phase.CAT_THROW||state==Phase.WEB_STEALTH||state==Phase.DOOR_STRUGGLE||state==Phase.TUNNEL_CHASE){BeldamFinale.retry(p,s,state,"Retrying this challenge.");return;}
         if(state.ordinal()>=Phase.EYES_CLOSE.ordinal()&&state!=Phase.RELEASED_SPIRITS&&state!=Phase.COMPLETE){RescueEpilogue.recoverVision(p,s);return;}
         go(p,s,state);
@@ -172,12 +208,27 @@ public final class RescueChapter {
         p.stopRiding();p.setForcedPose(null);p.setPose(Pose.STANDING);p.teleportTo(level,target.x,target.y,target.z,p.getYRot(),p.getXRot());p.fallDistance=0;p.setDeltaMovement(Vec3.ZERO);return p.serverLevel()==level&&p.position().distanceToSqr(target)<.000001;
     }
     @SubscribeEvent(priority=net.minecraftforge.eventbus.api.EventPriority.HIGHEST) public static void interact(net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract event){if(event.getEntity() instanceof ServerPlayer p&&event.getHand()==net.minecraft.world.InteractionHand.MAIN_HAND&&interact(p,event.getTarget())){event.setCanceled(true);event.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);}}
-    @SubscribeEvent(priority=net.minecraftforge.eventbus.api.EventPriority.HIGHEST) public static void block(net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock event){if(event.getEntity() instanceof ServerPlayer p&&event.getHand()==net.minecraft.world.InteractionHand.MAIN_HAND&&BeldamFinale.block(p,event.getPos())){event.setCanceled(true);event.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);}}
+    private static boolean protectedFinalDoor(ServerLevel level,BlockPos at){
+        if(!OtherWorld.isOther(level))return false;
+        return VisitData.get(level.getServer()).scenes.values().stream().anyMatch(scene->BeldamFinale.lockedDoor(scene,at));
+    }
+    @SubscribeEvent(priority=net.minecraftforge.eventbus.api.EventPriority.HIGHEST)
+    public static void block(net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock event){
+        if(event.getEntity() instanceof ServerPlayer p&&(protectedFinalDoor(p.serverLevel(),event.getPos())
+                ||event.getHand()==net.minecraft.world.InteractionHand.MAIN_HAND&&BeldamFinale.block(p,event.getPos()))){
+            event.setCanceled(true);
+            event.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);
+        }
+    }
+    @SubscribeEvent(priority=net.minecraftforge.eventbus.api.EventPriority.HIGHEST)
+    public static void preventFinalDoorBreak(net.minecraftforge.event.level.BlockEvent.BreakEvent event){
+        if(event.getLevel() instanceof ServerLevel level&&protectedFinalDoor(level,event.getPos()))event.setCanceled(true);
+    }
     @SubscribeEvent(priority=net.minecraftforge.eventbus.api.EventPriority.HIGHEST) public static void attack(net.minecraftforge.event.entity.player.AttackEntityEvent event){if(event.getEntity() instanceof ServerPlayer p&&RescueBosses.hit(p,event.getTarget()))event.setCanceled(true);}
     @SubscribeEvent public static void damage(net.minecraftforge.event.entity.living.LivingDamageEvent event){
         if(event.getEntity() instanceof ServerPlayer p){var s=OtherMotherLoop.scene(p);if(!owns(p,s)||finished(s))return;
             if(RescueEpilogue.protectedVision(s)){event.setCanceled(true);return;}
-            if(event.getAmount()>=p.getHealth()){event.setCanceled(true);p.setHealth(p.getMaxHealth());p.clearFire();if(RescueBosses.fighting(phase(s)))RescueBosses.lose(p,s);else if(phase(s)==Phase.CAT_THROW||phase(s)==Phase.WEB_STEALTH)AcceptedButtonEyes.begin(p,s,AcceptedButtonEyesProgress.Route.FINAL_BOSS_LOSS);else recover(p,s);}
+            if(event.getAmount()>=p.getHealth()){event.setCanceled(true);p.setHealth(p.getMaxHealth());p.clearFire();if(RescueBosses.fighting(phase(s)))RescueBosses.lose(p,s);else if(phase(s)==Phase.CAT_THROW||phase(s)==Phase.WEB_STEALTH)AcceptedButtonEyes.begin(p,s,AcceptedButtonEyesProgress.Route.FINAL_BOSS_LOSS);else if(phase(s)==Phase.COLLAPSE)RescueEncounters.retry(p,s,phase(s));else recover(p,s);}
         }else if(event.getSource().getEntity() instanceof ServerPlayer p&&RescueBosses.hit(p,event.getEntity()))event.setCanceled(true);
     }
     @SubscribeEvent public static void logout(net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent event){if(event.getEntity() instanceof ServerPlayer p){var s=OtherMotherLoop.scene(p);if(owns(p,s)&&!finished(s)){data(s).putBoolean("Recover",true);VisitAudio.stopMusic(p,"other_father_boss_music");data(s).remove("MantisMusic");if(data(s).getBoolean("TheatreMusic")){VisitAudio.stopMusic(p,"rescue_theatre_music");data(s).remove("TheatreMusic");}ShowPlayback.stop(p,s);RescueBosses.hideBar(p);OtherMotherLoop.changed(p);}}}

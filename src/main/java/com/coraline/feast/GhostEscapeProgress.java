@@ -23,7 +23,7 @@ public final class GhostEscapeProgress {
     public static long age(CompoundTag n,long clock){return Math.max(0,clock-n.getLong("PhaseAt"));}
     public static boolean begin(CompoundTag ghost,List<String> validRooms,Set<String> unresolvedGhosts,boolean actualBedtimeMirror){
         if(!actualBedtimeMirror||GhostVictimProgress.phase(ghost)!=GhostVictimProgress.Phase.BEDTIME
-            ||!GhostVictimProgress.hasVictim(ghost)||GhostVictimProgress.ghostTrust(ghost)<1||GhostVictimProgress.motherTrust(ghost)>=.6
+            ||!GhostVictimProgress.hasVictim(ghost)||!GhostVictimProgress.readyToHelp(ghost)
             ||!GhostVictimProgress.mirror(ghost)||validRooms==null||validRooms.isEmpty()||unresolvedGhosts!=null&&(unresolvedGhosts.size()>3||unresolvedGhosts.stream().anyMatch(Objects::isNull)))return false;
         var old=ghost.getCompound(KEY);if(old.hasUUID("Attempt"))return false;
         var rooms=new TreeSet<String>();for(String room:validRooms)if(room!=null&&room.matches("[a-z_]{1,40}"))rooms.add(room);

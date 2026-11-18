@@ -9,7 +9,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.*;
 import net.minecraft.server.level.*;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
@@ -27,14 +26,15 @@ public final class GhostVictimWorld {
     static BlockPos bedtimeConversationPosition(VisitData.Scene s,ServerLevel level,net.minecraft.world.entity.PathfinderMob child,CompoundTag n){
         var mirror=n.getCompound("Mirrors").getCompound("bedroom");if(!mirror.contains("Position",Tag.TAG_LONG))return null;
         var stored=GhostVictimNavigationGoal(n);if(stored!=null&&GhostVictimNavigation.clear(level,child,stored)){
-            var eye=Vec3.atBottomCenterOf(stored).add(0,child.getEyeHeight(),0);
-            if(eye.distanceTo(GhostVictimMirrors.surface(mirror))<4.95)return stored;
+            var path=child.getNavigation().createPath(stored,0);
+            if(GhostVictimMirrors.childCanSeeMirror(n,"bedroom",child,Vec3.atBottomCenterOf(stored))
+                    &&(child.blockPosition().equals(stored)||path!=null&&path.canReach()))return stored;
         }
         var anchor=BlockPos.of(mirror.getLong("Position"));BlockPos best=null;double bestDistance=Double.MAX_VALUE;
         for(int dx=-5;dx<=5;dx++)for(int dz=-5;dz<=5;dz++){
             var candidate=anchor.offset(dx,0,dz);if(OtherWorldEstate.outsideHouse(AcceptedButtonEyesWorld.house(s),candidate))continue;
             if(!level.hasChunkAt(candidate)||!GhostVictimNavigation.clear(level,child,candidate))continue;
-            var eye=Vec3.atBottomCenterOf(candidate).add(0,child.getEyeHeight(),0);double distance=eye.distanceTo(GhostVictimMirrors.surface(mirror));if(distance>=4.95)continue;
+            var eye=Vec3.atBottomCenterOf(candidate).add(0,child.getEyeHeight(),0);double distance=eye.distanceTo(GhostVictimMirrors.surface(mirror));if(distance>=4.95||!GhostVictimMirrors.childCanSeeMirror(n,"bedroom",child,Vec3.atBottomCenterOf(candidate)))continue;
             var path=child.getNavigation().createPath(candidate,0);if(path==null||!path.canReach())continue;
             double score=distance+eye.distanceToSqr(child.getEyePosition())*.01;if(score<bestDistance){best=candidate;bestDistance=score;}
         }
@@ -96,35 +96,49 @@ public final class GhostVictimWorld {
             if(!mirrors(p,s,n))return false;
             n.putBoolean("WallMirrorsPrepared",true);
         }
-        if(n.getBoolean("ExtraHouseObjectsPrepared"))return true;
-        if(!object(p,s,n,"house_hall_vase",hall(s).east(),"Rattle the vase",Items.FLOWER_POT)
-            ||!object(p,s,n,"house_hall_book",hall(s).north(2),"Lift the storybook",Items.BOOK)
-            ||!object(p,s,n,"house_kitchen_cup",kitchen(s).west(2),"Rattle the cup",Items.GLASS_BOTTLE)
-            ||!object(p,s,n,"house_bedroom_toy",bedroom(s).south(2),"Move the toy",com.coraline.tycoon.TycoonContent.BALL.get())
-            ||!object(p,s,n,"house_bedroom_clock",bedroom(s).west(2),"Shake the clock",Items.CLOCK))return false;
-        n.putBoolean("ExtraHouseObjectsPrepared",true);
-        OtherMotherLoop.changed(p);return true;
-    }
-    private static boolean object(ServerPlayer p,VisitData.Scene s,CompoundTag n,String id,BlockPos pos,String label,Item item){
-        var level=AcceptedButtonEyesWorld.level(p);level.getChunkAt(pos);
-        var at=Vec3.atBottomCenterOf(pos).add(0,level.getBlockState(pos).getCollisionShape(level,pos).isEmpty()?.48:1.12,0);
-        if(!GhostVictimManifestations.display(p,s,n,id,at,GhostVictimProgress.Disturbance.OBJECT,new ItemStack(item)))return false;
-        n.getCompound("Points").getCompound(id).putString("Label",label);
+        for(String id:new String[]{"house_hall_vase","house_hall_book","house_kitchen_cup","house_bedroom_toy",
+                "house_bedroom_clock","supper_bottle","kitchen_knife","supper_cup"})
+            GhostVictimManifestations.retireDisplay(p,s,n,id);
         return true;
     }
     private static boolean points(ServerPlayer p,VisitData.Scene s,CompoundTag n){
-        if(n.getBoolean("HousePointsPrepared"))return true;var table=diningTable(p,s);
-        if(!GhostVictimManifestations.display(p,s,n,"supper_bottle",Vec3.atBottomCenterOf(table).add(.7,1,.2),GhostVictimProgress.Disturbance.OBJECT,new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.GLASS_BOTTLE)))return false;
-        if(!ensureSupperPoints(p,s,n))return false;
-        if(!GhostVictimManifestations.display(p,s,n,"kitchen_knife",Vec3.atBottomCenterOf(kitchen(s)).add(.5,1,.2),GhostVictimProgress.Disturbance.KNIFE,new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.IRON_SWORD)))return false;
-        var level=AcceptedButtonEyesWorld.level(p);BlockPos[] rooms={hall(s),supper(s),bedroom(s)};
+        if(!n.getBoolean("HousePointsPrepared")&&!ensureSupperPoints(p,s,n))return false;
+        refreshRoomLights(p,s,n);
+        n.putBoolean("HousePointsPrepared",true);
+        return true;
+    }
+
+    static void refreshRoomLights(ServerPlayer p,VisitData.Scene s,CompoundTag n){
+        var level=AcceptedButtonEyesWorld.level(p);
+        if(level==null)return;
+        BlockPos[] rooms={hall(s),supper(s),bedroom(s),kitchen(s),at(s,28,6,51),at(s,35,15,48)};
+        var points=n.getCompound("Points");
         for(int room=0;room<rooms.length;room++){
-            boolean found=false;
-            for(int y=0;y<=7&&!found;y++)for(int x=-6;x<=6&&!found;x++)for(int z=-6;z<=6;z++){
-                var at=rooms[room].offset(x,y,z);if(level.hasChunkAt(at)&&GhostVictimManifestations.lightSource(level.getBlockState(at))&&GhostVictimManifestations.light(p,s,n,"room_light_"+room,at)){found=true;break;}
+            String id="room_light_"+room;
+            var previous=points.getCompound(id);
+            if(previous.contains("EffectUntil"))continue;
+            if(previous.contains("Position")){
+                var at=BlockPos.of(previous.getLong("Position"));
+                if(!level.hasChunkAt(at))continue;
+                if(GhostVictimManifestations.lightSource(level.getBlockState(at))
+                        &&!level.getBlockState(at).is(Blocks.LIGHT))continue;
+            }
+            var center=rooms[room];
+            BlockPos best=null;
+            double nearest=Double.MAX_VALUE;
+            for(var cell:BlockPos.betweenClosed(center.offset(-6,0,-6),center.offset(6,7,6))){
+                double distance=cell.distSqr(center);
+                if(distance>=nearest||!level.hasChunkAt(cell))continue;
+                var state=level.getBlockState(cell);
+                if(state.is(Blocks.LIGHT)||!GhostVictimManifestations.lightSource(state)||level.getBlockEntity(cell)!=null)continue;
+                best=cell.immutable();
+                nearest=distance;
+            }
+            if(best!=null){
+                points.remove(id);
+                if(GhostVictimManifestations.light(p,s,n,id,best))OtherMotherLoop.changed(p);
             }
         }
-        n.putBoolean("HousePointsPrepared",true);return true;
     }
     /** Also called at supper so an already-prepared saved house receives the
      * new interaction points without rebuilding rooms or duplicating props. */
@@ -146,8 +160,7 @@ public final class GhostVictimWorld {
         if(!GhostVictimManifestations.display(p,s,n,"supper_knife",Vec3.atBottomCenterOf(table).add(.4,1,.6),GhostVictimProgress.Disturbance.KNIFE,new net.minecraft.world.item.ItemStack(FeastContent.STORY_TABLE_KNIFE.get())))return false;
         var base=Vec3.atBottomCenterOf(table);
         if(!GhostVictimManifestations.display(p,s,n,"supper_bread",base.add(-.95,1.08,-.55),GhostVictimProgress.Disturbance.FOOD,new ItemStack(Items.BREAD))
-            ||!GhostVictimManifestations.display(p,s,n,"supper_dessert",base.add(.92,1.08,-.72),GhostVictimProgress.Disturbance.ILLUSION,new ItemStack(Items.PUMPKIN_PIE))
-            ||!GhostVictimManifestations.display(p,s,n,"supper_cup",base.add(.92,1.08,.82),GhostVictimProgress.Disturbance.OBJECT,new ItemStack(Items.GLASS_BOTTLE)))return false;
+            ||!GhostVictimManifestations.display(p,s,n,"supper_dessert",base.add(.92,1.08,-.72),GhostVictimProgress.Disturbance.ILLUSION,new ItemStack(Items.PUMPKIN_PIE)))return false;
         n.putBoolean("SupperObjectsPrepared",true);n.putInt("SupperObjectsRevision",1);OtherMotherLoop.changed(p);return true;
     }
     public static void configureGiftSecret(CompoundTag n,String gift){

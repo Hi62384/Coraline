@@ -36,6 +36,19 @@ final class PalaceWellMotion {
         }
         actor.setPos(end);actor.setDeltaMovement(Vec3.ZERO);actor.fallDistance=0;return true;
     }
+    /** Raise, swing over the rim, then lower the original bundle into the shaft. */
+    static int throwBundle(ServerLevel level,CinematicPropEntity bundle,Vec3 well,int leg){
+        double height=well.y+3.5;
+        double horizontal=bundle.position().subtract(well).horizontalDistanceSqr();
+        if(leg==2&&horizontal>.04||leg==1&&Math.abs(bundle.getY()-height)>.35)leg=0;
+        var target=switch(leg){
+            case 0->new Vec3(bundle.getX(),height,bundle.getZ());
+            case 1->well.add(0,3.5,0);
+            default->new Vec3(well.x,Math.max(well.y-16,bundle.getY()-.45),well.z);
+        };
+        if(move(level,bundle,target,.30)&&bundle.position().distanceToSqr(target)<.035&&leg<2)return leg+1;
+        return leg;
+    }
     static boolean seen(net.minecraft.server.level.ServerPlayer owner,Entity actor){
         for(var viewer:owner.server.getPlayerList().getPlayers())if(viewer.level()==actor.level()&&viewer.distanceToSqr(actor)<128*128&&viewer.hasLineOfSight(actor)
                 &&viewer.getLookAngle().dot(actor.getEyePosition().subtract(viewer.getEyePosition()).normalize())>.15)return true;return false;

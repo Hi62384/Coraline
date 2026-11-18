@@ -24,14 +24,38 @@ public final class RescueBosses {
     }
     public static boolean fighting(RescueChapter.Phase state){return state==MANTIS_FIGHT||state==THEATRE_FIGHT||state==SWARM_FIGHT;}
     public static void hideBar(ServerPlayer p){var bar=BARS.remove(p.getUUID());if(bar!=null)bar.removeAllPlayers();}
-    public static void begin(ServerPlayer p,VisitData.Scene s,RescueChapter.Phase state){var n=RescueChapter.data(s);n.putFloat("BossHealth",state==MANTIS_FIGHT?48:state==THEATRE_FIGHT?240:216);n.putFloat("BossMaximum",state==MANTIS_FIGHT?48:state==THEATRE_FIGHT?240:216);n.putFloat("SpinkHealth",120);n.putFloat("ForcibleHealth",120);n.remove("WeakUntil");n.remove("HitAt");n.remove("SocketCycle");n.remove("SocketTier");n.remove("MantisAttemptSpent");n.remove("TheatreCycle");n.putInt("BossCycleStart",0);n.putInt("BossLastTier",0);n.putInt("WeakCycle",-1);RescueChapter.go(p,s,state);}
+    public static void begin(ServerPlayer p,VisitData.Scene s,RescueChapter.Phase state){var n=RescueChapter.data(s);n.putFloat("BossHealth",state==MANTIS_FIGHT?48:state==THEATRE_FIGHT?240:72);n.putFloat("BossMaximum",state==MANTIS_FIGHT?48:state==THEATRE_FIGHT?240:72);n.putFloat("SpinkHealth",120);n.putFloat("ForcibleHealth",120);n.remove("WeakUntil");n.remove("HitAt");n.remove("SocketCycle");n.remove("SocketTier");n.remove("MantisAttemptSpent");n.remove("TheatreCycle");n.remove("RatAttackCycle");n.remove("RatStrikeSpent");n.putInt("BossCycleStart",0);n.putInt("BossLastTier",0);n.putInt("WeakCycle",-1);RescueChapter.go(p,s,state);}
     public static void tick(ServerPlayer p,VisitData.Scene s,int time){
         var n=RescueChapter.data(s);var state=RescueChapter.phase(s);
         if(state==MANTIS_FIGHT&&n.getFloat("BossMaximum")>48){float fraction=n.getFloat("BossHealth")/n.getFloat("BossMaximum");n.putFloat("BossMaximum",48);n.putFloat("BossHealth",48*fraction);}
+        if(state==SWARM_FIGHT){
+            var swarm=RescueEncounters.prop(p,s,"Swarm",RescueProps.SWARM,0,RescueEncounters.center(p,s));
+            if(swarm==null||swarm.level()!=p.level()){
+                n.putInt("Ticks",Math.max(0,time-1));
+                n.putString("Blocker","Waiting for the original Ratmaster swarm.");
+                return;
+            }
+            if(n.getFloat("BossMaximum")>72){
+                float fraction=n.getFloat("BossHealth")/n.getFloat("BossMaximum");
+                n.putFloat("BossMaximum",72);
+                n.putFloat("BossHealth",72*fraction);
+                n.remove("RatAttackCycle");
+            }
+            n.remove("Blocker");
+        }
         float hp=n.getFloat("BossHealth"),maximum=n.getFloat("BossMaximum");int tier=RescueChallengeMath.tier(hp,maximum);
         // Entering a faster health tier starts a fresh telegraph, not the middle
         // of an attack computed with a suddenly shorter modulo period.
-        if(n.getInt("BossLastTier")!=tier){n.putInt("BossLastTier",tier);n.putInt("BossCycleStart",time);if(state!=MANTIS_FIGHT)n.remove("WeakUntil");}int clock=Math.max(0,time-n.getInt("BossCycleStart")),beat=RescueChallengeMath.beat(clock,tier),pattern=RescueChallengeMath.attack(clock,tier,state==MANTIS_FIGHT?4:5),cycle=clock/(state==MANTIS_FIGHT?240:180-tier*20);
+        if(n.getInt("BossLastTier")!=tier){n.putInt("BossLastTier",tier);n.putInt("BossCycleStart",time);if(state!=MANTIS_FIGHT)n.remove("WeakUntil");n.remove("RatAttackCycle");}int clock=Math.max(0,time-n.getInt("BossCycleStart")),beat=RescueChallengeMath.beat(clock,tier),pattern=RescueChallengeMath.attack(clock,tier,state==MANTIS_FIGHT?4:5),cycle=clock/(state==MANTIS_FIGHT?240:180-tier*20);
+        if(state==SWARM_FIGHT){
+            if(!n.contains("RatAttackCycle")&&beat>1){
+                n.putInt("BossCycleStart",time);
+                clock=0;
+                beat=0;
+                cycle=0;
+            }
+            pattern=ratPattern(tier,cycle);
+        }
         if(state==MANTIS_FIGHT){beat=clock%240;pattern=(clock/240)%4;}
         if(state==THEATRE_FIGHT){if(n.getFloat(n.getInt("WeakActress")==0?"SpinkHealth":"ForcibleHealth")<=0)n.putInt("WeakActress",1-n.getInt("WeakActress"));cycle=clock/300;beat=clock%300;pattern=cycle%5;
             if(!n.contains("TheatreCycle")||n.getInt("TheatreCycle")!=cycle){n.putInt("TheatreCycle",cycle);n.putInt("WeakActress",n.getFloat("SpinkHealth")<=0?1:n.getFloat("ForcibleHealth")<=0?0:p.getRandom().nextInt(2));n.putInt("TheatreSocket",p.getRandom().nextInt(4));}
@@ -47,29 +71,64 @@ public final class RescueBosses {
             if(beat>=100&&beat<180&&!n.getBoolean("MantisAttemptSpent")&&!n.contains("WeakUntil"))n.putLong("WeakUntil",p.serverLevel().getGameTime()+180-beat);
             if(beat>=180)n.remove("WeakUntil");
         }
-        n.putInt("BossTier",tier);n.putInt("BossBeat",beat);n.putInt("BossPattern",pattern);n.putBoolean("Vulnerable",state==MANTIS_FIGHT?n.contains("WeakUntil")&&n.getLong("WeakUntil")>=p.serverLevel().getGameTime():state==THEATRE_FIGHT?beat>=200:RescueChallengeMath.vulnerable(clock,tier));
+        n.putInt("BossTier",tier);n.putInt("BossBeat",beat);n.putInt("BossPattern",pattern);n.putBoolean("Vulnerable",state==MANTIS_FIGHT?n.contains("WeakUntil")&&n.getLong("WeakUntil")>=p.serverLevel().getGameTime():state==THEATRE_FIGHT?beat>=200:ratOpening(tier,beat));
         String name=state==MANTIS_FIGHT?"The Mechanical Mantis":state==THEATRE_FIGHT?"The Other Actresses":"The Ratmaster";
         var bar=BARS.computeIfAbsent(p.getUUID(),id->{var b=new ServerBossEvent(Component.literal(name),BossEvent.BossBarColor.PURPLE,BossEvent.BossBarOverlay.PROGRESS);b.addPlayer(p);return b;});bar.setName(Component.literal(name+" · "+(tier+1)+"/3"));bar.setProgress(Math.max(0,Math.min(1,hp/maximum)));
         Vec3 center=RescueEncounters.center(p,s);boolean group=com.coraline.multiplayer.StorySessionData.get(p.server).hasGuests(s.owner);
         for(var member:players(p,s)){bar.addPlayer(member);var delta=member.position().subtract(center);if(delta.horizontalDistanceSqr()>40*40||member.getY()<center.y-8){if(group)com.coraline.multiplayer.StoryCombatSafety.eliminate(member);else{lose(p,s);return;}}}
         var participants=players(p,s);if(participants.isEmpty()){com.coraline.multiplayer.StoryCombatSafety.restoreGroup(p,s);lose(p,s);return;}
         var aim=participants.get(Math.floorMod(cycle,participants.size()));var toPlayer=aim.position().subtract(center);
-        if(beat<=1||state==MANTIS_FIGHT&&beat==35){n.putDouble("AttackX",aim.getX());n.putDouble("AttackZ",aim.getZ());n.putDouble("AttackAngle",Math.atan2(toPlayer.z,toPlayer.x));}
+        boolean newRatAttack=state==SWARM_FIGHT&&(!n.contains("RatAttackCycle")||n.getInt("RatAttackCycle")!=cycle);
+        if(newRatAttack||state!=SWARM_FIGHT&&(beat<=1||state==MANTIS_FIGHT&&beat==35)){
+            n.putDouble("AttackX",aim.getX());
+            n.putDouble("AttackZ",aim.getZ());
+            n.putDouble("AttackAngle",Math.atan2(toPlayer.z,toPlayer.x));
+            if(newRatAttack){
+                n.putInt("RatAttackCycle",cycle);
+                n.putInt("RatRealCarrier",p.getRandom().nextInt(4));
+                n.remove("WeakUntil");
+                n.remove("RatStrikeSpent");
+                p.serverLevel().playSound(null,BlockPos.containing(center),net.minecraft.sounds.SoundEvents.RAVAGER_STEP,
+                        net.minecraft.sounds.SoundSource.HOSTILE,.75F,1.2F-tier*.16F);
+            }
+        }
         var locked=new Vec3(n.getDouble("AttackX"),aim.getY(),n.getDouble("AttackZ"));
-        Vec3 weak=state==MANTIS_FIGHT?mantis(p,s,time,3):state==THEATRE_FIGHT?actresses(p,s,time,false):swarm(p,s,time,pattern,beat);
+        Vec3 weak=state==MANTIS_FIGHT?mantis(p,s,time,3):state==THEATRE_FIGHT?actresses(p,s,time,false):swarm(p,s,time,pattern,beat,tier);
+        if(state==SWARM_FIGHT&&weak==null){
+            n.putInt("Ticks",Math.max(0,time-1));
+            n.putString("Blocker","Waiting for a required Ratmaster attack prop.");
+            return;
+        }
         if(weak!=null){n.putDouble("WeakX",weak.x);n.putDouble("WeakY",weak.y);n.putDouble("WeakZ",weak.z);
-            var eye=RescueEncounters.prop(p,s,"WeakPoint",state==MANTIS_FIGHT||state==THEATRE_FIGHT?RescueProps.CONTROL_POINT:RescueProps.EYE,state==MANTIS_FIGHT?0:state==THEATRE_FIGHT?1:2,weak);if(eye!=null){eye.setPos(weak);eye.frame(n.getBoolean("Vulnerable")&&n.getLong("WeakUntil")>=p.serverLevel().getGameTime()?1:0,time,0);}
-            for(var member:participants)if(state==SWARM_FIGHT&&RescueEncounters.seeing(member)&&RescueEncounters.gaze(member,weak,30,.975)){n.putLong("WeakUntil",p.serverLevel().getGameTime()+180);n.putInt("WeakCycle",cycle);}
+            var eye=RescueEncounters.prop(p,s,"WeakPoint",state==MANTIS_FIGHT||state==THEATRE_FIGHT?RescueProps.CONTROL_POINT:RescueProps.EYE,state==MANTIS_FIGHT?0:state==THEATRE_FIGHT?1:2,weak);if(eye!=null){eye.setPos(weak);eye.frame(state==SWARM_FIGHT&&pattern==4||n.getBoolean("Vulnerable")&&n.getLong("WeakUntil")>=p.serverLevel().getGameTime()?1:0,time,0);}
+            for(var member:participants)if(state==SWARM_FIGHT&&n.getBoolean("Vulnerable")&&!n.getBoolean("RatStrikeSpent")&&RescueEncounters.seeing(member)&&RescueEncounters.gaze(member,weak,30,.975)){n.putLong("WeakUntil",p.serverLevel().getGameTime()+180);n.putInt("WeakCycle",cycle);}
         }
         if(state==MANTIS_FIGHT&&(beat==0||beat==40||beat==60)&&(!n.contains("MantisSoundClock")||n.getInt("MantisSoundClock")!=clock)){
             n.putInt("MantisSoundClock",clock);var sound=beat==0?net.minecraft.sounds.SoundEvents.IRON_GOLEM_STEP:beat==40?net.minecraft.sounds.SoundEvents.IRON_GOLEM_ATTACK:net.minecraft.sounds.SoundEvents.ANVIL_LAND;
             p.serverLevel().playSound(null,BlockPos.containing(center),sound,net.minecraft.sounds.SoundSource.HOSTILE,.75F,beat==60?.8F:1.1F);
         }
-        if(beat<40){if(state!=MANTIS_FIGHT)RescueChapter.hint(p,warning(state,pattern));if(time%5==0)telegraph(p,locked,pattern,center,n.getDouble("AttackAngle"));}
-        if(state==THEATRE_FIGHT?beat<200&&beat%10==0:beat==60||tier==2&&beat==82)for(var member:participants){boolean hit=state==THEATRE_FIGHT?actressContact(p,s,member):hazard(member,state,pattern,center,locked,n.getDouble("AttackAngle"));if(hit&&member.invulnerableTime<=0&&RescueCombat.bossHarm(member,pattern==1?10:8)){member.setDeltaMovement(member.getDeltaMovement().add(member.position().subtract(center).multiply(1,0,1).normalize().scale(.18)).add(0,.12,0));}}
+        boolean impact=state==THEATRE_FIGHT?beat<200&&beat%10==0:beat==60||tier==2&&beat==82;
+        if(state==SWARM_FIGHT){
+            var region=RatmasterRegion.attack(pattern,tier,center,locked,n.getDouble("AttackAngle"));
+            if(beat<=60||tier==2&&beat<=82){
+                if(beat<60)RescueChapter.hint(p,warning(state,pattern));
+                if(beat%8==0||impact){
+                    var particle=impact?net.minecraft.core.particles.ParticleTypes.FLAME:net.minecraft.core.particles.ParticleTypes.END_ROD;
+                    for(var member:participants)for(var point:region.warning())
+                        p.serverLevel().sendParticles(member,particle,true,point.x,point.y,point.z,1,0,0,0,0);
+                }
+            }
+            boolean rolling=pattern==2&&beat>=38&&beat<=78;
+            var contact=rolling?RatmasterRegion.ballImpact(tier,center,n.getDouble("AttackAngle"),beat):region;
+            if(rolling||pattern!=2&&impact)for(var member:participants)
+                if(contact.hits(member.getBoundingBox())&&member.invulnerableTime<=0)RescueCombat.bossHarm(member,tier==2?10:8);
+        }else{
+            if(beat<40){if(state!=MANTIS_FIGHT)RescueChapter.hint(p,warning(state,pattern));if(time%5==0)telegraph(p,locked,pattern,center,n.getDouble("AttackAngle"));}
+            if(impact)for(var member:participants){boolean hit=state==THEATRE_FIGHT?actressContact(p,s,member):hazard(member,state,pattern,center,locked,n.getDouble("AttackAngle"));if(hit&&member.invulnerableTime<=0&&RescueCombat.bossHarm(member,pattern==1?10:8)){member.setDeltaMovement(member.getDeltaMovement().add(member.position().subtract(center).multiply(1,0,1).normalize().scale(.18)).add(0,.12,0));}}
+        }
         if(state==MANTIS_FIGHT&&beat>=100)RescueChapter.hint(p,n.getBoolean("Vulnerable")?"ATTACK NOW — one weapon strike! Find the yellow socket with the Seeing Stone.":"Opening closed. Dodge the next attack, then try the yellow socket again.");
         else if(beat>=100)RescueChapter.hint(p,n.getLong("WeakUntil")>=p.serverLevel().getGameTime()?"Strike the revealed weak point while it is exposed!":"Raise the Seeing Stone to find the exposed control point.");
-        if(hp<=0){com.coraline.multiplayer.StoryCombatSafety.restoreGroup(p,s);hideBar(p);RescueProps.hide(p,s,"WeakPoint");if(state==MANTIS_FIGHT){RescueEyes.eye(s,0).putBoolean("Defeated",true);RescueChapter.go(p,s,MANTIS_RELEASE);}else if(state==THEATRE_FIGHT){RescueEyes.eye(s,1).putBoolean("Defeated",true);n.putBoolean("TheatreDead",true);actresses(p,s,time,true);RescueChapter.go(p,s,THEATRE_EYE);}else{RescueEyes.eye(s,2).putBoolean("Defeated",true);RescueProps.hide(p,s,"Swarm");RescueEncounters.startChase(p,s);}}
+        if(hp<=0){com.coraline.multiplayer.StoryCombatSafety.restoreGroup(p,s);hideBar(p);RescueProps.hide(p,s,"WeakPoint");if(state==MANTIS_FIGHT){RescueEyes.eye(s,0).putBoolean("Defeated",true);RescueChapter.go(p,s,MANTIS_RELEASE);}else if(state==THEATRE_FIGHT){RescueEyes.eye(s,1).putBoolean("Defeated",true);n.putBoolean("TheatreDead",true);actresses(p,s,time,true);RescueChapter.go(p,s,THEATRE_EYE);}else{RescueEyes.eye(s,2).putBoolean("Defeated",true);RescueProps.hide(p,s,"Swarm");for(int i=0;i<4;i++)RescueProps.hide(p,s,"RatDecoy"+i);for(int i=0;i<3;i++)RescueProps.hide(p,s,"RatmasterBall"+i);RescueEncounters.startChase(p,s);}}
     }
     private static String warning(RescueChapter.Phase phase,int attack){if(phase==MANTIS_FIGHT)return new String[]{"Forearm rising — dodge sideways!","Mantis lowering — clear its charge!","Legs rising — jump the shockwave!","Restraints reaching — move away from the marked spot!"}[attack];if(phase==THEATRE_FIGHT)return new String[]{"Spink reaches — dodge the long hands!","Wrapper opening beneath you — move!","Both actresses rush — find the open side!","Illusions gathering — inspect with the Seeing Stone!","Stage lights converge — leave the marked spot!"}[attack];return new String[]{"Rat wave — jump or move aside!","Rat tower tilting — clear its fall!","Circus balls incoming — dodge!","Swarm closing — find the spectral gap!","False eye carriers — use the Seeing Stone!"}[attack];}
     private static boolean hazard(ServerPlayer p,RescueChapter.Phase phase,int attack,Vec3 c,Vec3 locked,double angle){double distance=p.position().distanceTo(locked),r=p.position().subtract(c).horizontalDistance();double current=Math.atan2(p.getZ()-c.z,p.getX()-c.x),difference=Math.atan2(Math.sin(current-angle),Math.cos(current-angle));return switch(attack){case 0->phase==SWARM_FIGHT?p.onGround()&&Math.abs(p.getZ()-locked.z)<1.8:distance<3.4;case 1->Math.abs(difference)<.30&&r<24;case 2->phase==MANTIS_FIGHT?p.onGround()&&r<20:distance<2.1;case 3->phase==SWARM_FIGHT?r<7&&Math.abs(difference)>.5:distance<3.2;default->distance<3.2;};}
@@ -77,6 +136,8 @@ public final class RescueBosses {
     public static boolean hit(ServerPlayer p,Entity target){var s=OtherMotherLoop.scene(p);if(s==null||!RescueChapter.started(s)||!com.coraline.multiplayer.StoryCoop.canAct(p,s)||!fighting(RescueChapter.phase(s)))return false;
         var n=RescueChapter.data(s);boolean ours=target instanceof CinematicPropEntity prop&&prop.owned(s)&&(prop.kind()==RescueProps.MANTIS||prop.kind()==RescueProps.SWARM||prop.kind()==RescueProps.CONTROL_POINT||prop.kind()==RescueProps.EYE)||RescueChapter.phase(s)==MANTIS_FIGHT&&target==ShowActors.actor(p,s,"evil_other_father")||target==ShowActors.actor(p,s,"other_miss_spink")||target==ShowActors.actor(p,s,"other_miss_forcible");if(!ours)return false;
         long now=p.serverLevel().getGameTime();if(p.level()!=target.level()||!withinMeleeReach(p,target.getBoundingBox())||n.contains("HitAt")&&now-n.getLong("HitAt")<15)return true;
+        boolean rats=RescueChapter.phase(s)==SWARM_FIGHT;
+        if(rats&&(n.getBoolean("RatStrikeSpent")||target!=RescueProps.find(p,s,"WeakPoint")))return true;
         if(!n.getBoolean("Vulnerable")||n.getLong("WeakUntil")<now){RescueChapter.hint(p,"find weak spot with seeing stone");return true;}
         var weak=new Vec3(n.getDouble("WeakX"),n.getDouble("WeakY"),n.getDouble("WeakZ"));
         boolean mantis=RescueChapter.phase(s)==MANTIS_FIGHT;
@@ -87,13 +148,17 @@ public final class RescueBosses {
         }
         boolean unarmed=p.getMainHandItem().isEmpty();double attack=p.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE);float strength=p.getAttackStrengthScale(.5F);
         if(!validStrike(unarmed,attack,strength)){RescueChapter.hint(p,mantis?"find weak spot with seeing stone":"attack now!");return true;}
+        if(rats){
+            n.putBoolean("RatStrikeSpent",true);
+            n.remove("WeakUntil");
+        }
         n.putLong("HitAt",now);float damage=strikeDamage(unarmed,attack,RescueChapter.phase(s));int tier=RescueChallengeMath.tier(n.getFloat("BossHealth"),n.getFloat("BossMaximum"));
         if(RescueChapter.phase(s)==THEATRE_FIGHT){String key=n.getInt("WeakActress")==1?"ForcibleHealth":"SpinkHealth";n.putFloat(key,Math.max(0,n.getFloat(key)-damage));n.putFloat("BossHealth",n.getFloat("SpinkHealth")+n.getFloat("ForcibleHealth"));}else n.putFloat("BossHealth",Math.max(0,n.getFloat("BossHealth")-damage));
         int nextTier=RescueChallengeMath.tier(n.getFloat("BossHealth"),n.getFloat("BossMaximum"));if(nextTier!=tier&&RescueChapter.phase(s)!=MANTIS_FIGHT)n.remove("WeakUntil");
         p.serverLevel().sendParticles(net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK,weak.x,weak.y,weak.z,12,.22,.22,.22,.04);p.serverLevel().playSound(null,BlockPos.containing(weak),net.minecraft.sounds.SoundEvents.IRON_GOLEM_HURT,net.minecraft.sounds.SoundSource.HOSTILE,.9F,1.2F);p.displayClientMessage(Component.literal("Weak point hit! Health: "+Math.round(n.getFloat("BossHealth"))+" / "+Math.round(n.getFloat("BossMaximum"))),true);OtherMotherLoop.changed(p);return true;
     }
     static boolean validStrike(boolean unarmed,double attackDamage,float strength){return strength>=.8F&&(unarmed||attackDamage>1.0);}
-    static float strikeDamage(boolean unarmed,double attackDamage,RescueChapter.Phase phase){if(unarmed)return 2.0F;return (float)Math.max(phase==MANTIS_FIGHT?6:3,Math.min(phase==MANTIS_FIGHT?20:8,attackDamage));}
+    static float strikeDamage(boolean unarmed,double attackDamage,RescueChapter.Phase phase){if(unarmed)return phase==SWARM_FIGHT?4.0F:2.0F;return (float)Math.max(phase==MANTIS_FIGHT?6:3,Math.min(phase==MANTIS_FIGHT?20:8,attackDamage));}
     /** Match ordinary survival melee reach to the surface, not the entity origin. */
     static Optional<Vec3> weakContact(Vec3 eye,Vec3 look,Vec3 weak){
         var box=new AABB(weak.add(-.45,-.45,-.45),weak.add(.45,.45,.45));
@@ -163,13 +228,66 @@ public final class RescueBosses {
     private static boolean actressContact(ServerPlayer director,VisitData.Scene s,ServerPlayer target){
         for(String id:new String[]{"other_miss_spink","other_miss_forcible"}){var actor=ShowActors.actor(director,s,id);String hp=id.equals("other_miss_spink")?"SpinkHealth":"ForcibleHealth";if(actor!=null&&RescueChapter.data(s).getFloat(hp)>0&&actor.position().distanceToSqr(target.position())<2.8*2.8)return true;}return false;
     }
-    private static Vec3 swarm(ServerPlayer p,VisitData.Scene s,int time,int attack,int beat){var center=RescueEncounters.center(p,s);var prop=RescueEncounters.prop(p,s,"Swarm",RescueProps.SWARM,0,center);RescueProps.frame(prop,attack,time,beat/180F);double angle=time*.016;var weak=center.add(Math.cos(angle)*4,.6,Math.sin(angle)*4);if(prop!=null)prop.grabTarget(p.position().subtract(center));return weak;}
+    static int ratPattern(int tier,int cycle){
+        return switch(tier){
+            case 0->cycle%2==0?0:2;
+            case 1->new int[]{1,2,4,3}[cycle%4];
+            default->new int[]{3,1,4,2,0}[cycle%5];
+        };
+    }
+    static boolean ratOpening(int tier,int beat){
+        return beat>=(tier==2?100:90)&&beat<(tier==2?136:160);
+    }
+    private static Vec3 swarm(ServerPlayer p,VisitData.Scene s,int time,int attack,int beat,int tier){
+        var center=RescueEncounters.center(p,s);
+        var n=RescueChapter.data(s);
+        var swarm=RescueProps.find(p,s,"Swarm");
+        if(swarm==null)return null;
+        swarm.setPos(center);
+        RescueProps.frame(swarm,tier==2&&beat<90?7:attack,time,beat/180F);
+        double attackAngle=n.getDouble("AttackAngle");
+        var forward=new Vec3(Math.cos(attackAngle),0,Math.sin(attackAngle));
+        var lanes=RatmasterRegion.lanes(center,attackAngle,tier);
+        for(int i=0;i<3;i++){
+            String key="RatmasterBall"+i;
+            if(attack!=2||beat>78||i>=lanes.size()){RescueProps.hide(p,s,key);continue;}
+            var ballAt=RatmasterRegion.ballPosition(lanes.get(i),forward,beat);
+            var ball=RescueEncounters.prop(p,s,key,RescueProps.RAT_BALL,0,ballAt);
+            if(ball==null)return null;
+            ball.setPos(ballAt);
+            ball.frame(0,beat,1);
+        }
+        var candidates=RatmasterRegion.carriers(center,attackAngle);
+        int real=n.getInt("RatRealCarrier");
+        for(int i=0;i<candidates.size();i++){
+            if(attack!=4||i==real){RescueProps.hide(p,s,"RatDecoy"+i);continue;}
+            var at=candidates.get(i);
+            var decoy=RescueEncounters.prop(p,s,"RatDecoy"+i,RescueProps.EYE,5+3*i,at);
+            if(decoy!=null){decoy.setPos(at);decoy.frame(1,time,0);}
+        }
+        if(attack==4)return candidates.get(Math.floorMod(real,candidates.size()));
+        double angle=beat*.017+n.getDouble("AttackAngle");
+        return center.add(Math.cos(angle)*4,.6,Math.sin(angle)*4);
+    }
     public static void lose(ServerPlayer p,VisitData.Scene s){
         hideBar(p);com.coraline.multiplayer.StoryCombatSafety.restoreGroup(p,s);
         if(!AcceptedButtonEyes.begin(p,s,AcceptedButtonEyesProgress.Route.FINAL_BOSS_LOSS)){
             RescueChapter.data(s).putBoolean("BossLossPending",true);OtherMotherLoop.changed(p);
             FirstEscapeStory.hint(p,"Other Mother is preparing the button-eye procedure.");
         }else RescueChapter.data(s).remove("BossLossPending");
+    }
+    static boolean resume(ServerPlayer p,VisitData.Scene s){
+        var phase=RescueChapter.phase(s);
+        var level=p.server.getLevel(phase==MANTIS_FIGHT?OtherWorld.KEY:ActivityWorld.KEY);
+        var center=RescueEncounters.center(p,s);
+        if(level==null)return false;
+        if((p.serverLevel()!=level||p.distanceToSqr(center)>38*38)&&!RescueChapter.transfer(p,level,BlockPos.containing(center).south(10)))return false;
+        var n=RescueChapter.data(s);
+        n.putBoolean("Vulnerable",false);
+        n.putInt("BossCycleStart",n.getInt("Ticks")+1);
+        for(String key:new String[]{"WeakUntil","SocketCycle","SocketTier","TheatreCycle","RatAttackCycle","RatStrikeSpent"})n.remove(key);
+        OtherMotherLoop.changed(p);
+        return true;
     }
     public static void retry(ServerPlayer p,VisitData.Scene s,String reason){hideBar(p);FirstEscapeStory.hint(p,reason);var state=RescueChapter.phase(s);p.setHealth(p.getMaxHealth());p.getFoodData().setFoodLevel(20);p.clearFire();var at=BlockPos.containing(RescueEncounters.center(p,s)).south(10);if(RescueChapter.transfer(p,p.serverLevel(),at))begin(p,s,state);}
     private RescueBosses(){}

@@ -21,6 +21,29 @@ public final class PalaceSiteData extends SavedData {
     private CompoundTag generation=new CompoundTag();
     CompoundTag generation(){return generation;}
     void stopGeneration(String reason){if(blocker.isEmpty()){blocker=reason;setDirty();}}
+    boolean reselectUnbuiltSite(){
+        if(incompatibleOriginal!=null||PalaceGenerationRules.stage(generation).ordinal()>PalaceGenerationRules.Stage.SURVEY_COMPANY.ordinal()
+                ||Arrays.stream(Kind.values()).anyMatch(this::generated))return false;
+        var palace=sites.get(Kind.PALACE);
+        int next=palace==null?0:palace.getInt("Candidate");
+        sites.clear();
+        if(next>0){var cursor=new CompoundTag();cursor.putInt("Candidate",next);sites.put(Kind.PALACE,cursor);}
+        generation=new CompoundTag();
+        blocker="";
+        setDirty();
+        return true;
+    }
+    void retryLegacyPause(){
+        if(incompatibleOriginal!=null)return;
+        if(blocker.equals("Palace generation stopped safely: IllegalStateException: Landmark chunk request failed safely")){
+            blocker="";
+            setDirty();
+        }else if(blocker.startsWith("Player exploration reached the pending region; job stopped")
+                ||blocker.startsWith("Player/world edit inside pending landmark footprint;")){
+            reselectUnbuiltSite();
+        }
+    }
+    public boolean companyMapReady(){return incompatibleOriginal==null&&generated(Kind.COMPANY)&&position(Kind.COMPANY).isPresent();}
     /** Only the real streamed builder calls this after its complete readback pass. */
     boolean generationVerified(Kind kind,BlockPos at,int verified,int expected){
         if(!blocker.isEmpty()||expected<=0||verified!=expected||position(kind).isEmpty()||!position(kind).get().equals(at))return false;

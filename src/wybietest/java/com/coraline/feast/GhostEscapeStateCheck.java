@@ -137,7 +137,7 @@ public final class GhostEscapeStateCheck {
         var conversation=new CompoundTag();UUID wagerToken=UUID.randomUUID();conversation.putUUID("WagerConversation",wagerToken);conversation.putLong("WagerConversationUntil",700);conversation.putLong("WagerConversationReadyAt",120);
         require(GhostEscapeWager.conversationPending(conversation,101)&&GhostEscapeWager.conversationPending(conversation,700),"Visible wager token expired before its response deadline");
         require(!GhostEscapeWager.responseMatches(conversation,wagerToken,"0",119)&&GhostEscapeWager.responseMatches(conversation,wagerToken,"0",120),"Wager did not enforce its actual presentation delay");
-        require(GhostEscapeWager.responseMatches(conversation,wagerToken,"1",120)&&!GhostEscapeWager.responseMatches(conversation,wagerToken,"junk",120),"Malformed wager choice consumed the refusal branch");
+        require(!GhostEscapeWager.responseMatches(conversation,wagerToken,"1",120)&&!GhostEscapeWager.responseMatches(conversation,wagerToken,"junk",120),"Removed refusal or malformed wager response was accepted");
         require(!GhostEscapeWager.responseMatches(conversation,UUID.randomUUID(),"0",120)&&!GhostEscapeWager.responseMatches(conversation,null,"0",120),"Foreign or missing token accepted a wager");
         require(!GhostEscapeWager.conversationPending(conversation,701)&&!GhostEscapeWager.responseMatches(conversation,wagerToken,"0",701),"Expired wager response remained valid");
         conversation=TagParser.parseTag(conversation.toString());require(GhostEscapeWager.responseMatches(conversation,wagerToken,"0",150),"Save/load lost the outstanding wager response");

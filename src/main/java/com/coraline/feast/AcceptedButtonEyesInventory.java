@@ -208,11 +208,20 @@ public final class AcceptedButtonEyesInventory {
         if(door==null||!p.getUUID().equals(door.owner)||p.serverLevel()!=com.coraline.parents.FamilyData.level(p.server,door.dimension))return false;
         com.coraline.multiplayer.StorySessionData.get(p.server).authorizeInventoryReturn(p.server,scene);
         var backup=p.getPersistentData().getCompound(BACKUP);var snapshot=backup.getCompound("Snapshot");
-        if(!reconcileSnapshots(p,scene,n,backup)||!backup.hasUUID("Door")||!scene.door.equals(backup.getUUID("Door"))||!n.getBoolean("EscrowStored"))return false;snapshot=backup.getCompound("Snapshot");
-        if(!validSnapshot(snapshot,p,scene.door)||!escape.hasUUID("OriginalEscrow")||!escape.getUUID("OriginalEscrow").equals(snapshot.getUUID("Transaction")))return false;
-        if(backup.getBoolean("Restored")&&backup.hasUUID("RestoredTransaction")&&backup.getUUID("RestoredTransaction").equals(snapshot.getUUID("Transaction"))){
-            restoredFlags(n,backup,snapshot.getUUID("Transaction"));OtherMotherLoop.changed(p);return true;
+        if(!backup.hasUUID("Door")||!scene.door.equals(backup.getUUID("Door"))
+                ||!validSnapshot(snapshot,p,scene.door)||!escape.hasUUID("OriginalEscrow")
+                ||!escape.getUUID("OriginalEscrow").equals(snapshot.getUUID("Transaction")))return false;
+        if(backup.getBoolean("Restored")&&backup.hasUUID("RestoredTransaction")
+                &&backup.getUUID("RestoredTransaction").equals(snapshot.getUUID("Transaction"))){
+            if(n.contains("InventoryEscrow")&&!sameBase(n.getCompound("InventoryEscrow"),snapshot))return false;
+            n.put("InventoryEscrow",snapshot.copy());
+            n.putBoolean("EscrowStored",true);
+            restoredFlags(n,backup,snapshot.getUUID("Transaction"));
+            OtherMotherLoop.changed(p);
+            return true;
         }
+        if(!reconcileSnapshots(p,scene,n,backup)||!n.getBoolean("EscrowStored"))return false;
+        snapshot=backup.getCompound("Snapshot");
         if(!backup.getBoolean("Stored")||!n.getBoolean("EscrowStored")||!"CLEARED".equals(backup.getString("CaptureState"))||!n.getCompound("InventoryEscrow").equals(snapshot))return false;
         p.closeContainer();var visible=p.getInventory().save(new ListTag());var carried=p.inventoryMenu.getCarried().copy();
         var oldCrafting=new java.util.ArrayList<ItemStack>();for(int slot=0;slot<=4;slot++)oldCrafting.add(p.inventoryMenu.getSlot(slot).getItem().copy());
