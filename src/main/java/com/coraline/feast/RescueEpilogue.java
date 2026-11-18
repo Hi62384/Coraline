@@ -303,7 +303,7 @@ public final class RescueEpilogue {
         long now=p.server.overworld().getGameTime();
         if(n.contains("VisionSaveAfter")&&now<n.getLong("VisionSaveAfter")&&n.getLong("VisionSaveAfter")-now<=20)return false;
         try{
-            p.server.getPlayerList().saveAll();
+            ((com.coraline.mixin.MirrorPlayerSaveAccess)p.server.getPlayerList()).coraline$saveMirrorPlayer(p);
             var world=p.server.getWorldPath(net.minecraft.world.level.storage.LevelResource.PLAYER_DATA_DIR);
             var saved=PalaceKeyCustody.read(world.resolve(p.getUUID()+".dat"),16L*1024*1024);
             var position=saved.getList("Pos",Tag.TAG_DOUBLE);

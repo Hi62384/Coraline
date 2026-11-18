@@ -162,7 +162,13 @@ public final class OtherMotherLoopState {
     }
     public static OtherMotherLoopState load(CompoundTag n){
         var s=new OtherMotherLoopState();s.secrets=com.coraline.secrets.SecretsState.load(n.getCompound("Secrets"));s.visits=n.getInt("Visits");s.generation=n.getInt("Generation");s.trust=clamp(n.getFloat("Trust"));s.suspicion=clamp(n.getFloat("Suspicion"));
-        try{s.phase=Phase.valueOf(n.getString("Phase"));s.loot=OtherMotherDialogue.Loot.valueOf(n.getString("Loot"));s.activity=OtherMotherActivities.Activity.valueOf(n.getString("Activity"));}catch(IllegalArgumentException ignored){s.phase=Phase.NONE;}
+        try{s.phase=Phase.valueOf(n.getString("Phase"));}catch(IllegalArgumentException ignored){}
+        try{s.loot=OtherMotherDialogue.Loot.valueOf(n.getString("Loot"));}catch(IllegalArgumentException ignored){}
+        try{s.activity=OtherMotherActivities.Activity.valueOf(n.getString("Activity"));}
+        catch(IllegalArgumentException ignored){
+            if(EnumSet.of(Phase.PROPOSAL,Phase.WARNING,Phase.WINDOW,Phase.ARRIVAL,Phase.READY,Phase.ACTIVITY,Phase.COMPLETE).contains(s.phase))
+                s.phase=Phase.NONE;
+        }
         s.giftPrepared=n.getBoolean("GiftPrepared")||s.phase==Phase.GIFTS||s.phase==Phase.AFTER||!n.getList("Gifts",10).isEmpty();
         s.giftBefore=n.getString("GiftBefore");s.giftAfter=n.getString("GiftAfter");s.giftRevealUntil=n.getLong("GiftRevealUntil");
         try{s.activityLoot=OtherMotherDialogue.Loot.valueOf(n.getString("ActivityLoot"));}catch(IllegalArgumentException ignored){s.activityLoot=s.loot.expanded()?OtherMotherDialogue.Loot.TREASURE:s.loot;}

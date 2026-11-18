@@ -86,7 +86,20 @@ public final class PalaceWorldGeneration {
         if(at.getY()<l.getMinBuildHeight()||at.getY()>=l.getMaxBuildHeight()||!l.getWorldBorder().isWithinBounds(at))throw new IllegalStateException("Landmark outside world/build bounds");
         var actual=l.getBlockState(at);if(actual.equals(expected))return false;
         if(actual.hasBlockEntity())throw new IllegalStateException("Existing block entity preserved at "+at.toShortString());
-        l.setBlock(at,expected,2);if(!l.getBlockState(at).equals(expected))throw new IllegalStateException("Actual block placement was refused at "+at.toShortString());return true;
+        l.setBlock(at,expected,2);if(!l.getBlockState(at).equals(expected))throw new RetryableGeneration("Block placement did not commit at "+at.toShortString());return true;
+    }
+    public static String travelStatus(MinecraftServer server){
+        var data=PalaceSiteData.get(server);
+        if(data.ready())return "Palace transportation is ready.";
+        var world=server.overworld();
+        if(!data.blocker().isEmpty())return data.blocker();
+        var job=data.generation();
+        String stage=PalaceGenerationRules.stage(job).name().toLowerCase(java.util.Locale.ROOT).replace('_',' ');
+        if(com.coraline.otherworld.OtherWorld.weavingEntrance(server))return "Palace preparation is paused while a Little Door is weaving.";
+        if(freeMemory()<STOP_FREE)return "Palace preparation is paused for available server memory. It will retry automatically.";
+        if(occupied(world,data))return "Palace preparation is paused while players are near the construction area. It will resume when the area clears.";
+        if(currentServer==server&&world.getGameTime()<retryAt)return "Palace preparation is retrying a temporary interruption at "+stage+".";
+        return "The Moving Company is open. Palace preparation is at "+stage+" (section "+job.getInt("Cursor")+").";
     }
     private static boolean occupied(ServerLevel l,PalaceSiteData d){
         var n=d.generation();int buffer=l.getServer().getPlayerList().getViewDistance()*16+64;

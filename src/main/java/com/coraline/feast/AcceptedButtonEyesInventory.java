@@ -254,13 +254,36 @@ public final class AcceptedButtonEyesInventory {
         if(scene==null||!p.server.isSameThread()||!p.getUUID().equals(scene.owner))return false;
         var n=inventoryState(p,scene);if(n==null)return false;var snapshot=n.getCompound("InventoryEscrow");var backup=p.getPersistentData().getCompound(BACKUP);
         if(!validSnapshot(snapshot,p,scene.door)||!backup.getBoolean("Restored")||!backup.hasUUID("RestoredTransaction")||!backup.getUUID("RestoredTransaction").equals(snapshot.getUUID("Transaction")))return false;
-        p.server.getPlayerList().saveAll();
+        var file=p.server.getWorldPath(net.minecraft.world.level.storage.LevelResource.PLAYER_DATA_DIR).resolve(p.getUUID()+".dat");
+        var transaction=snapshot.getUUID("Transaction");
+        var escape=GhostVictimEntry.data(scene).getCompound(GhostEscapeProgress.KEY);
+        long now=p.server.overworld().getGameTime();
+        long after=escape.getLong("RestoreSaveRetryAt");
+        if(after>now&&after-now<=40)return false;
+        if(matchesRestoration(p,file,transaction))return true;
+        escape.putLong("RestoreSaveRetryAt",now+40);
         try{
-            var saved=com.coraline.rebirth.StoryRunStore.read(p.server.getWorldPath(net.minecraft.world.level.storage.LevelResource.PLAYER_DATA_DIR).resolve(p.getUUID()+".dat"));
+            ((com.coraline.mixin.MirrorPlayerSaveAccess)p.server.getPlayerList()).coraline$saveMirrorPlayer(p);
+            if(matchesRestoration(p,file,transaction)){
+                escape.remove("RestoreSaveRetryAt");
+                return true;
+            }
+        }catch(RuntimeException failure){
+            // Keep the in-memory receipt so retry never reapplies inventory.
+        }
+        escape.putString("Blocker","Restored inventory is waiting for its saved-player checkpoint.");
+        OtherMotherLoop.changed(p);
+        return false;
+    }
+    private static boolean matchesRestoration(ServerPlayer p,java.nio.file.Path file,java.util.UUID transaction){
+        try{
+            var saved=com.coraline.rebirth.StoryRunStore.read(file);
             var receipt=saved.getCompound("ForgeData").getCompound(BACKUP);
-            return receipt.getBoolean("Restored")&&!receipt.getBoolean("Stored")&&receipt.hasUUID("RestoredTransaction")&&receipt.getUUID("RestoredTransaction").equals(snapshot.getUUID("Transaction"))
-                &&com.coraline.palace.PalaceKeyCheckpoint.inventory(saved,p.getInventory().save(new ListTag()));
-        }catch(java.io.IOException failure){n.putString("Blocker","Restored inventory is waiting for its saved-player checkpoint; the original escrow remains intact.");return false;}
+            return receipt.getBoolean("Restored")&&!receipt.getBoolean("Stored")&&receipt.hasUUID("RestoredTransaction")
+                    &&receipt.getUUID("RestoredTransaction").equals(transaction)
+                    &&saved.contains("playerGameType",Tag.TAG_INT)&&saved.getInt("playerGameType")==p.gameMode.getGameModeForPlayer().getId()
+                    &&com.coraline.palace.PalaceKeyCheckpoint.inventory(saved,p.getInventory().save(new ListTag()));
+        }catch(java.io.IOException failure){return false;}
     }
     @SubscribeEvent public static void returnOverflow(net.minecraftforge.event.TickEvent.PlayerTickEvent event){
         if(event.phase!=net.minecraftforge.event.TickEvent.Phase.END||!(event.player instanceof ServerPlayer p)||p.tickCount%20!=0||locked(p))return;

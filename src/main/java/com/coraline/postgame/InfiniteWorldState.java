@@ -90,7 +90,22 @@ public final class InfiniteWorldState {
         if(active()&&gameTime<data.getLong("ActivatedAt"))return Activation.REFUSED;
         var retired=data.getCompound("RetiredWitnesses");if(retired.contains(witness.keyReceipt().toString())||retired.contains(witness.wellSession().toString()))return Activation.REFUSED;
         var history=data.getCompound("RecordedWitnesses").copy();if(history.contains(witness.keyReceipt().toString())||history.contains(witness.wellSession().toString()))return Activation.REFUSED;
-        boolean returningOwner=completedBy(witness.owner());if(returningOwner){var old=data.getCompound("Owners").getCompound(witness.owner().toString());boolean sameKey=old.getUUID("KeyReceipt").equals(witness.keyReceipt()),sameWell=old.getUUID("WellSession").equals(witness.wellSession());if(sameKey&&sameWell)return Activation.ALREADY_RECORDED;if(sameKey||sameWell||gameTime<old.getLong("RecordedAt")||old.hasUUID("Wybie")&&(witness.wybie()==null||!old.getUUID("Wybie").equals(witness.wybie()))||history.size()>32766)return Activation.REFUSED;history.putUUID(old.getUUID("KeyReceipt").toString(),witness.owner());history.putUUID(old.getUUID("WellSession").toString(),witness.owner());}
+        boolean returningOwner=completedBy(witness.owner());
+        if(returningOwner){
+            var old=data.getCompound("Owners").getCompound(witness.owner().toString());
+            boolean sameKey=old.getUUID("KeyReceipt").equals(witness.keyReceipt());
+            boolean sameWell=old.getUUID("WellSession").equals(witness.wellSession());
+            UUID originalWybie=old.hasUUID("Wybie")?old.getUUID("Wybie"):null;
+            if(sameKey&&sameWell){
+                return old.getUUID("Door").equals(witness.door())
+                        &&Objects.equals(originalWybie,witness.wybie())&&old.getString("WybieLife").equals(witness.wybieLife().name())
+                        ?Activation.ALREADY_RECORDED:Activation.REFUSED;
+            }
+            if(sameKey||sameWell||gameTime<old.getLong("RecordedAt")
+                    ||originalWybie!=null&&!originalWybie.equals(witness.wybie())||history.size()>32766)return Activation.REFUSED;
+            history.putUUID(old.getUUID("KeyReceipt").toString(),witness.owner());
+            history.putUUID(old.getUUID("WellSession").toString(),witness.owner());
+        }
         if(!returningOwner&&data.getCompound("Owners").size()>=4096)return Activation.REFUSED;
         // A copied disposal receipt cannot authorize a second player's unlock.
         for(String name:data.getCompound("Owners").getAllKeys()){

@@ -62,14 +62,14 @@ public final class FirstEscapeStory {
         if(AcceptedButtonEyes.active(s))return false;
         if(!engaged(s)||!p.getUUID().equals(s.owner))return false;var n=data(s);if(!p.isAlive())return true;var state=phase(s);p.fallDistance=0;payChaseReward(p,s);
         refreshLittleDoorPassage(p,s);
-        if(n.getBoolean("Recover"))recoverCheckpoint(p,s,state);
+        if(n.getBoolean("Recover")&&!recoverCheckpoint(p,s,state))return true;
         if(state==FIND_CANE||state==CANE_COLLECTED||state==PRY_DOOR)prepareSealedRoom(p,s);
         if(state==ESCAPE_COMPLETE){if(ParentRescueStory.started(s)){ParentRescueStory.tick(p,s);return true;}if(p.tickCount%40==0){missing(p,s);if(!MissingParentsCat.tunnelRestored(s))brickDoor(p,s);sync(p,s);}MissingParentsTea.tick(p,s);MissingParentsCat.tick(p,s);StoryTunnel.tickSource(p,s);return true;}
         if(!FirstEscapeTimeline.overworld(state)&&!OtherWorld.isOther(p.level())){n.putString("Blocker","Story owner is outside the current scene; use safe recovery.");return true;}
         if(FirstEscapeTimeline.overworld(state)&&OtherWorld.isOther(p.level())){n.putString("Blocker","Waiting for Overworld return.");return true;}
         if(p.tickCount%20==0){BlackIsTraditional.retirePresentation(p,s);FirstEscapeScene.removeHallMirror(p,s);holdActors(p,s);if(state.ordinal()>=ROOM_DARK.ordinal()&&state.ordinal()<=ESCAPE_PUSH.ordinal())repairLittleDoor(p,s);if(state.ordinal()>=ROOM_DARK.ordinal()&&state.ordinal()<OPEN_LITTLE_DOOR.ordinal())openLittleDoor(p,s,state.ordinal()<MIRROR_A.ordinal());if(!FirstEscapeTimeline.overworld(state))LoopProps.hold(p.serverLevel(),FirstEscapeScene.room(s));}
         if(!FirstEscapeTimeline.prison(state)&&state!=ESCAPE_A&&state!=ESCAPE_TUNNEL&&!FirstEscapeTimeline.overworld(state)&&!((state==COCOA_G||state==MIRROR_THROW)&&n.getBoolean("MirrorPrisonEntered"))){
-            if(!FirstEscapeScene.inHouseOrPorch(s,p.blockPosition())){safeTransfer(p,p.serverLevel(),BlockPos.of(n.getLong("SafePlayer")));hint(p,"The garden is beyond reach. Return to the house.");}
+            if(!FirstEscapeScene.inHouseOrPorch(s,p.blockPosition())){verifiedTransfer(p,s,p.serverLevel(),safeHouseAnchor(s));hint(p,"The garden is beyond reach. Return to the house.");}
             else if(p.onGround()&&!p.isPassenger())n.putLong("SafePlayer",p.blockPosition().asLong());
         }
         int ticks=n.getInt("Ticks");String sound=FirstEscapeTimeline.sound(state);boolean done=false;
@@ -170,8 +170,42 @@ public final class FirstEscapeStory {
     static void safeTransfer(ServerPlayer p,ServerLevel level,BlockPos at){if(level==null)return;level.getChunkAt(at);var safe=OtherWorld.safePlayer(level,at);p.fallDistance=0;p.teleportTo(level,safe.getX()+.5,safe.getY(),safe.getZ()+.5,p.getYRot(),p.getXRot());}
     static void setDoor(ServerPlayer p,BlockPos at,boolean open){var l=p.server.getLevel(OtherWorld.KEY);var s=OtherMotherLoop.scene(p);if(l!=null&&s!=null&&l.getBlockState(at).getBlock() instanceof DoorBlock){for(var cell:List.of(at,at.above()))FirstEscapeScene.place(p,s,cell,l.getBlockState(cell));AuthoritativeHouseDoors.setOpen(l,at,open);for(var cell:List.of(at,at.above()))FirstEscapeScene.place(p,s,cell,l.getBlockState(cell));}}
     private static void setRoomDoors(ServerPlayer p,VisitData.Scene s,boolean open){for(int z:new int[]{41,42})setDoor(p,FirstEscapeScene.at(s,31,6,z),open);}
-    private static void recoverCheckpoint(ServerPlayer p,VisitData.Scene s,FirstEscapeTimeline.Phase state){
-        var n=data(s);n.remove("Recover");n.remove("AudioStarted");n.putInt("Ticks",0);ShowPlayback.stop(p,s);
+    private static BlockPos safeHouseAnchor(VisitData.Scene scene){
+        var state=data(scene);
+        if(state.contains("SafePlayer",Tag.TAG_LONG)){
+            var saved=BlockPos.of(state.getLong("SafePlayer"));
+            if(FirstEscapeScene.inHouseOrPorch(scene,saved))return saved;
+        }
+        return FirstEscapeScene.entrance(scene);
+    }
+    private static boolean verifiedTransfer(ServerPlayer player,VisitData.Scene scene,ServerLevel level,BlockPos anchor){
+        if(level==null)return false;
+        var target=RescueEpilogue.nearReturn(level,player,Pose.STANDING,anchor,6);
+        if(target==null)return false;
+        var state=data(scene);
+        state.putBoolean("InternalTransfer",true);
+        try{
+            player.stopRiding();
+            player.setForcedPose(null);
+            player.teleportTo(level,target.x,target.y,target.z,player.getYRot(),player.getXRot());
+        }finally{state.remove("InternalTransfer");}
+        if(player.serverLevel()!=level||player.position().distanceToSqr(target)>.25)return false;
+        player.fallDistance=0;
+        return true;
+    }
+    private static boolean recoverCheckpoint(ServerPlayer p,VisitData.Scene s,FirstEscapeTimeline.Phase state){
+        var n=data(s);
+        var level=p.server.getLevel(OtherWorld.KEY);
+        boolean prison=FirstEscapeTimeline.prison(state)||state==ESCAPE_A
+                ||(state==COCOA_G||state==MIRROR_THROW)&&n.getBoolean("MirrorPrisonEntered");
+        if(prison){
+            if(level==null)return false;
+            FirstEscapeScene.preparePrison(p,s);
+            if(!verifiedTransfer(p,s,level,FirstEscapeScene.prison(s)))return false;
+        }else if(!FirstEscapeTimeline.overworld(state)&&state!=ESCAPE_TUNNEL&&p.serverLevel()!=level
+                &&!verifiedTransfer(p,s,level,safeHouseAnchor(s)))return false;
+        if(state==ESCAPE_TUNNEL&&level==null)return false;
+        n.remove("Recover");n.remove("AudioStarted");n.putInt("Ticks",0);ShowPlayback.stop(p,s);
         n.putBoolean("InternalTransfer",true);p.stopRiding();n.remove("InternalTransfer");p.setForcedPose(null);
         boolean inThrowPrison=(state==COCOA_G||state==MIRROR_THROW)&&n.getBoolean("MirrorPrisonEntered");
         if(state==COCOA_G||state==MIRROR_THROW){
@@ -179,8 +213,7 @@ public final class FirstEscapeStory {
         }
         if(state==ESCAPE_TUNNEL){ensureDecayedTunnel(p,s);spawnInEscapeTunnel(p,s,Math.max(1,Math.min(19,n.getDouble("TunnelProgress"))));}
         if(state==ESCAPE_A)n.remove("Rescued");
-        if(FirstEscapeTimeline.prison(state)||state==ESCAPE_A||inThrowPrison){FirstEscapeScene.preparePrison(p,s);safeTransfer(p,p.server.getLevel(OtherWorld.KEY),FirstEscapeScene.prison(s));}
-        else if(!FirstEscapeTimeline.overworld(state)&&state!=ESCAPE_TUNNEL){var l=p.server.getLevel(OtherWorld.KEY);if(l!=null&&p.level()!=l)safeTransfer(p,l,BlockPos.of(n.getLong("SafePlayer")));}
+        return true;
     }
     private static void prepareSealedRoom(ServerPlayer p,VisitData.Scene s){
         // Prepare while the owner is fetching the porch cane, never after the
@@ -356,9 +389,11 @@ private static boolean openLittleDoor(ServerPlayer p,VisitData.Scene s,boolean o
     private static void enterPrison(ServerPlayer p,VisitData.Scene s){
         var n=data(s);var c=FirstEscapeScene.prison(s);var l=p.server.getLevel(OtherWorld.KEY);
         if(n.getBoolean("MirrorPrisonEntered")&&p.level()==l&&p.distanceToSqr(c.getCenter())<100)return;
+        if(l==null)return;
         FirstEscapeScene.preparePrison(p,s);var m=mother(p,s);if(m!=null){m.setNoGravity(false);m.setInvisible(true);m.getNavigation().stop();}
         n.putBoolean("InternalTransfer",true);p.stopRiding();p.setForcedPose(null);p.setPose(Pose.STANDING);n.remove("InternalTransfer");
-        retireGrab(p,s,"Carrier");safeTransfer(p,l,c);p.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES,Vec3.atBottomCenterOf(c.north(4)).add(0,1.7,.2));n.putBoolean("MirrorPrisonEntered",true);prison(p,s,MIRROR_A,0);sync(p,s);
+        if(!verifiedTransfer(p,s,l,c)){n.putString("Blocker","The mirror prison landing is obstructed.");return;}
+        retireGrab(p,s,"Carrier");p.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES,Vec3.atBottomCenterOf(c.north(4)).add(0,1.7,.2));n.putBoolean("MirrorPrisonEntered",true);prison(p,s,MIRROR_A,0);sync(p,s);
     }
     private static void mirrorThrow(ServerPlayer p,VisitData.Scene s,int ticks){var carrier=FirstEscapeScene.prop(p,s,"Carrier");if(carrier!=null)moveProp(carrier,FirstEscapeScene.mirror(s).getCenter().add(0,.4,.8),.13);var mirror=FirstEscapeScene.prop(p,s,"HallMirror");if(mirror!=null)mirror.frame(1,ticks,Math.min(1,ticks/20F));if(ticks==1)sfx(p,FirstEscapeScene.mirror(s),SoundEvents.GLASS_BREAK,.6F,.6F);}
     static void acceptedPrisonFrame(ServerPlayer p,VisitData.Scene s,FirstEscapeTimeline.Phase state,int ticks){prison(p,s,state,ticks);}
@@ -426,7 +461,7 @@ private static boolean openLittleDoor(ServerPlayer p,VisitData.Scene s,boolean o
         if(ticks<25){var delta=little.getCenter().subtract(p.position());if(delta.lengthSqr()>.5){p.setDeltaMovement(delta.normalize().scale(.12));p.hurtMarked=true;}}
         else{ensureDecayedTunnel(p,s);p.stopRiding();spawnInEscapeTunnel(p,s,1);openLittleDoor(p,s,false);go(p,s,ESCAPE_TUNNEL);}
     }
-    private static void tunnel(ServerPlayer p,VisitData.Scene s){var origin=BlockPos.of(data(s).getLong("EscapeTunnel"));p.setForcedPose(net.minecraft.world.entity.Pose.SWIMMING);p.setPose(net.minecraft.world.entity.Pose.SWIMMING);var forward=escapeDirection(s);double progress=p.position().subtract(Vec3.atBottomCenterOf(origin)).dot(new Vec3(forward.getStepX(),0,forward.getStepZ()));data(s).putDouble("TunnelProgress",Math.max(1,Math.min(20,progress)));hint(p,"Escape through the tunnel.");if(progress>=20){var d=sourceDoor(p,s);if(d==null){data(s).putString("Blocker","The original Overworld door record is unavailable.");return;}var source=FamilyData.level(p.server,d.dimension);if(source==null)return;safeTransfer(p,source,d.pos);p.getPersistentData().remove("CoralineInTunnel");p.getPersistentData().remove("CoralineReturning");p.setForcedPose(null);p.setPose(net.minecraft.world.entity.Pose.STANDING);p.getPersistentData().remove("CoralineAutoCrawl");go(p,s,MISSING_A);} }
+    private static void tunnel(ServerPlayer p,VisitData.Scene s){var origin=BlockPos.of(data(s).getLong("EscapeTunnel"));p.setForcedPose(net.minecraft.world.entity.Pose.SWIMMING);p.setPose(net.minecraft.world.entity.Pose.SWIMMING);var forward=escapeDirection(s);double progress=p.position().subtract(Vec3.atBottomCenterOf(origin)).dot(new Vec3(forward.getStepX(),0,forward.getStepZ()));data(s).putDouble("TunnelProgress",Math.max(1,Math.min(20,progress)));hint(p,"Escape through the tunnel.");if(progress>=20){var d=sourceDoor(p,s);if(d==null){data(s).putString("Blocker","The original Overworld door record is unavailable.");return;}var source=FamilyData.level(p.server,d.dimension);if(!verifiedTransfer(p,s,source,d.pos)){data(s).putString("Blocker","The original Little Door return landing is obstructed.");return;}p.getPersistentData().remove("CoralineInTunnel");p.getPersistentData().remove("CoralineReturning");p.setForcedPose(null);p.setPose(net.minecraft.world.entity.Pose.STANDING);p.getPersistentData().remove("CoralineAutoCrawl");go(p,s,MISSING_A);} }
     private static void missing(ServerPlayer p,VisitData.Scene s){var family=ParentAccess.family(p.server,p.getUUID());if(family!=null){family.storyMissing=true;FamilyData.get(p.server).setDirty();}com.coraline.doll.DollBondData.get(p.server).markStoryMissing(p.getUUID());}
     /** Skip the escape itself, but retain the real Overworld Wybie/neighbor/Cat
      * cutscenes. Older skips jumped over this handoff as well. */
@@ -543,9 +578,12 @@ private static boolean openLittleDoor(ServerPlayer p,VisitData.Scene s,boolean o
         var before=bike.position();bike.storyAdvance(target);if(bike.position().distanceToSqr(before)<.0001){n.putInt("BikeStallTicks",n.getInt("BikeStallTicks")+1);n.remove("BikeRoute");}else n.putInt("BikeStallTicks",0);
     }
     public static boolean parentControl(ParentEntity m,ServerPlayer p,VisitData.Scene s){if(!engaged(s))return false;if(!m.isMom())return true;var state=phase(s);if(state.ordinal()<COCOA_E.ordinal()){var couch=FirstEscapeScene.prop(p,s,"BugCouch");if(couch!=null){if(m.getVehicle()!=couch){if(m.distanceToSqr(couch)<3)m.startRiding(couch,true);else walk(m,couch.position(),1);}m.lookAtStoryPlayer(p);}}return true;}
-    public static boolean choice(ServerPlayer p,UUID nonce,String action){var s=OtherMotherLoop.scene(p);if(!engaged(s)||phase(s)!=APOLOGY_CHOICE||!data(s).getUUID("Choice").equals(nonce))return false;if(action.equals("escape:apologize"))return AcceptedButtonEyes.begin(p,s,AcceptedButtonEyesProgress.Route.ACCEPTED_PROPOSAL);
+    public static boolean choice(ServerPlayer p,UUID nonce,String action){var s=OtherMotherLoop.scene(p);if(!engaged(s)||phase(s)!=APOLOGY_CHOICE||!data(s).hasUUID("Choice")||!data(s).getUUID("Choice").equals(nonce))return false;if(action.equals("escape:apologize"))return AcceptedButtonEyes.begin(p,s,AcceptedButtonEyesProgress.Route.ACCEPTED_PROPOSAL);
         if(action.equals("escape:reject"))go(p,s,COCOA_E);else return false;return true;}
-    private static void sync(ServerPlayer p,VisitData.Scene s){var n=data(s);var packet=new CompoundTag();packet.putBoolean("FirstEscapeStory",true);packet.putString("Phase",phase(s).name());packet.putInt("Ticks",n.getInt("Ticks"));packet.putBoolean("ClockRunning",FirstEscapeTimeline.sound(phase(s)).isEmpty()||ShowPlayback.started(s));packet.putString("Sound",FirstEscapeTimeline.sound(phase(s)));packet.putInt("Duration",ShowRecordings.duration(FirstEscapeTimeline.sound(phase(s))));packet.putUUID("Choice",n.getUUID("Choice"));packet.putUUID("Door",s.door);packet.putLong("RoomMin",FirstEscapeScene.roomMin(s).asLong());packet.putLong("RoomMax",FirstEscapeScene.roomMax(s).asLong());packet.putInt("Mother",s.mom!=null&&p.server.getLevel(OtherWorld.KEY).getEntity(s.mom)!=null?p.server.getLevel(OtherWorld.KEY).getEntity(s.mom).getId():-1);packet.putInt("OtherWybie",n.getInt("OtherWybieId"));packet.putInt("RealWybie",n.getInt("RealWybieId"));for(String key:List.of("MaskRemoved","StitchesRemoved","HandMissing","BeetleEaten","DecayedTunnel","CocoaMusic","Rescued","MirrorPrisonEntered"))packet.putBoolean(key,n.getBoolean(key));if(n.contains("KnockdownAt"))packet.putInt("KnockdownAge",(int)Math.max(0,OtherMotherLoop.now(p)-n.getLong("KnockdownAt")));packet.putBoolean("Completed",phase(s)==ESCAPE_COMPLETE);var tunnel=FirstEscapeStory.data(s);if(tunnel.contains("EscapeTunnel")){packet.putLong("EscapeTunnel",tunnel.getLong("EscapeTunnel"));packet.putString("EscapeDirection",tunnel.getString("EscapeDirection"));}SecretsNetwork.send(p,packet);}
+    private static void sync(ServerPlayer p,VisitData.Scene s){var n=data(s);
+        if(!n.hasUUID("Choice")){n.putUUID("Choice",UUID.randomUUID());OtherMotherLoop.changed(p);}
+        var level=p.server.getLevel(OtherWorld.KEY);var mother=level==null||s.mom==null?null:level.getEntity(s.mom);
+        var packet=new CompoundTag();packet.putBoolean("FirstEscapeStory",true);packet.putString("Phase",phase(s).name());packet.putInt("Ticks",n.getInt("Ticks"));packet.putBoolean("ClockRunning",FirstEscapeTimeline.sound(phase(s)).isEmpty()||ShowPlayback.started(s));packet.putString("Sound",FirstEscapeTimeline.sound(phase(s)));packet.putInt("Duration",ShowRecordings.duration(FirstEscapeTimeline.sound(phase(s))));packet.putUUID("Choice",n.getUUID("Choice"));packet.putUUID("Door",s.door);packet.putLong("RoomMin",FirstEscapeScene.roomMin(s).asLong());packet.putLong("RoomMax",FirstEscapeScene.roomMax(s).asLong());packet.putInt("Mother",mother==null?-1:mother.getId());packet.putInt("OtherWybie",n.getInt("OtherWybieId"));packet.putInt("RealWybie",n.getInt("RealWybieId"));for(String key:List.of("MaskRemoved","StitchesRemoved","HandMissing","BeetleEaten","DecayedTunnel","CocoaMusic","Rescued","MirrorPrisonEntered"))packet.putBoolean(key,n.getBoolean(key));if(n.contains("KnockdownAt"))packet.putInt("KnockdownAge",(int)Math.max(0,OtherMotherLoop.now(p)-n.getLong("KnockdownAt")));packet.putBoolean("Completed",phase(s)==ESCAPE_COMPLETE);var tunnel=FirstEscapeStory.data(s);if(tunnel.contains("EscapeTunnel")){packet.putLong("EscapeTunnel",tunnel.getLong("EscapeTunnel"));packet.putString("EscapeDirection",tunnel.getString("EscapeDirection"));}SecretsNetwork.send(p,packet);}
     @SubscribeEvent(priority=net.minecraftforge.eventbus.api.EventPriority.HIGHEST) public static void click(net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract e){if(!(e.getEntity() instanceof ServerPlayer p))return;var s=OtherMotherLoop.scene(p);if(!engaged(s)||p.distanceToSqr(e.getTarget())>16)return;var w=ShowActors.actor(p,s,"other_wybie");if(e.getTarget()!=w){if(e.getTarget() instanceof CinematicPropEntity prop&&interact(p,prop)){e.setCanceled(true);e.setCancellationResult(InteractionResult.SUCCESS);}return;}e.setCanceled(true);e.setCancellationResult(InteractionResult.SUCCESS);if(phase(s)==MASK_REMOVAL){p.swing(InteractionHand.MAIN_HAND,true);go(p,s,MASK_ANIMATION);}else if(phase(s)==STITCH_REMOVAL){p.swing(InteractionHand.MAIN_HAND,true);go(p,s,STITCH_ANIMATION);}}
     @SubscribeEvent(priority=net.minecraftforge.eventbus.api.EventPriority.HIGHEST) public static void punch(net.minecraftforge.event.entity.player.AttackEntityEvent e){if(!(e.getEntity() instanceof ServerPlayer p))return;var s=OtherMotherLoop.scene(p);if(!engaged(s))return;if(e.getTarget()==ShowActors.actor(p,s,"wybie")&&FirstEscapeTimeline.overworld(phase(s))){e.setCanceled(true);return;}if(e.getTarget()!=ShowActors.actor(p,s,"other_wybie"))return;e.setCanceled(true);if((phase(s)==ESCAPE_A||phase(s)==MASK_REMOVAL)&&p.distanceToSqr(e.getTarget())<16){data(s).putBoolean("Punched",true);data(s).putLong("KnockdownAt",OtherMotherLoop.now(p));((CharacterEntity)e.getTarget()).gameGesture(51,25);sfx(p,e.getTarget().blockPosition(),SoundEvents.PLAYER_ATTACK_WEAK,.5F,.8F);OtherMotherLoop.changed(p);}}
     @SubscribeEvent public static void mount(net.minecraftforge.event.entity.EntityMountEvent e){if(e.isDismounting()&&e.getEntityMounting() instanceof ServerPlayer p){var s=OtherMotherLoop.scene(p);if(!AcceptedButtonEyes.active(s)&&engaged(s)&&!data(s).getBoolean("InternalTransfer")&&(FirstEscapeTimeline.seated(phase(s))||phase(s)==MIRROR_DRAG||phase(s)==MIRROR_THROW)&&e.getEntityBeingMounted() instanceof CinematicPropEntity prop&&prop.owned(s))e.setCanceled(true);}}

@@ -133,9 +133,10 @@ public final class GhostVictimManifestations {
         var escape=n.getCompound(GhostEscapeProgress.KEY);
         if(kind==GhostVictimProgress.Disturbance.LIGHT&&mother!=null&&mother.level()==level
                 &&GhostEscapeProgress.owns(n,escape)&&GhostEscapeProgress.phase(escape)==GhostEscapeProgress.Phase.WAIT_LURE
+                &&(!escape.contains("AmbushLamp",Tag.TAG_LONG)||escape.getLong("AmbushLamp")==position.asLong())
                 &&mother.distanceToSqr(target)<18*18){
             escape.putLong("Distraction",position.asLong());
-            escape.putLong("DistractionUntil",GhostVictimProgress.clock(n)+240);
+            escape.putLong("DistractionUntil",GhostVictimProgress.clock(n)+GhostEscapeAmbush.DISTRACTION_TICKS);
             escape.remove("StealSignaled");
             n.putLong("MotherInvestigation",position.asLong());
             n.putLong("MotherInvestigateUntil",escape.getLong("DistractionUntil"));

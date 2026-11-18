@@ -24,11 +24,30 @@ public final class SiteCacheReceiptStateCheck {
             var p=plan(family);
             for(int i=0;i<p.modules().size();i++){
                 var room=p.modules().get(i);var made=SiteCacheReceipt.create(p,i);
-                if(room.role()!=InfiniteStructurePlan.Role.STORAGE&&room.role()!=InfiniteStructurePlan.Role.CONTROL&&room.role()!=InfiniteStructurePlan.Role.ORE_VAULT){require(made.isEmpty(),"Ordinary room received a protected-cache receipt");continue;}
+                int expected=switch(room.role()){
+                    case STORAGE->switch(family){
+                        case DOLL_WORKSHOP->1;
+                        case CLOCKWORK_FACTORY,RIFT_SOLDIER_OUTPOST,ROOTBOUND_TEMPLE->2;
+                        case RIFT_DRILL_CENTER,DIMENSIONAL_SEAM->3;
+                        default->0;
+                    };
+                    case CONTROL->switch(family){
+                        case DOLL_WORKSHOP->2;
+                        case CLOCKWORK_FACTORY,RIFT_DRILL_CENTER,RIFT_SOLDIER_OUTPOST,ABANDONED_VILLAGE->3;
+                        default->0;
+                    };
+                    case ORE_VAULT,MANSION_HALL,RUIN_CHAMBER,ROOT_SANCTUM,DEFENSE_VAULT,FALSE_PALACE_HALL->4;
+                    case ORPHAN_VAULT,CARNIVAL_VAULT,PERFORMANCE_VAULT,RESEARCH_VAULT,MIRROR_SHAFT->3;
+                    default->0;
+                };
+                if(expected==0){require(made.isEmpty(),"Ordinary room received a protected-cache receipt");continue;}
                 require(made.isPresent(),"Actual guarded room has no receipt");var n=made.orElseThrow();
-                int x=p.x()+room.x()+1,y=p.y()+room.y()+1,z=p.z()+room.z()+1;
+                var at=SiteCacheReceipt.position(p,i);
+                int x=at.getX(),y=at.getY(),z=at.getZ();
+                require(x>p.x()+room.x()&&x<p.x()+room.maxX()&&z>p.z()+room.z()&&z<p.z()+room.maxZ(),
+                        "Protected cache is outside its authored interior");
                 var decoded=SiteCacheReceipt.read(n,x,y,z).orElseThrow();
-                require(decoded.site().equals(p.site())&&decoded.generation().equals(EPOCH)&&decoded.seed()==124119&&decoded.locked(),"Receipt lost site/generation binding");tiers.add(decoded.tier());
+                require(decoded.tier()==expected&&decoded.site().equals(p.site())&&decoded.generation().equals(EPOCH)&&decoded.seed()==124119&&decoded.locked(),"Receipt lost site/generation binding");tiers.add(decoded.tier());
                 var extension=new CompoundTag();extension.putUUID("UnrecognizedFutureId",UUID.randomUUID());n.put("Extension",extension);var before=n.copy();
                 require(SiteCacheReceipt.read(n,x,y,z).isPresent()&&n.equals(before),"Read mutated preserved extension data");
                 var disk=directory.resolve("receipt-"+files+++".dat");NbtIo.writeCompressed(n,disk.toFile());var reloaded=NbtIo.readCompressed(disk.toFile());

@@ -63,6 +63,10 @@ public final class GhostEscapeCovert {
                 if(child.level()!=level||ghost.getBoolean("ChildAtHome")||GhostVictimProgress.phase(ghost)==GhostVictimProgress.Phase.DAILY_ARRIVAL)return false;
                 var destination=GhostVictimWorld.bedtimeConversationPosition(s,level,child,ghost);
                 if(destination==null){
+                    if(clock%40==0){
+                        ghost.remove("WallMirrorsPrepared");
+                        GhostVictimWorld.ensureHouseProps(p,s,ghost);
+                    }
                     e.putString("Blocker","Clear the floor and sightline in front of the bedroom mirror.");
                     return true;
                 }
@@ -162,7 +166,12 @@ public final class GhostEscapeCovert {
     }
     private static boolean retrieveStoneFromVisitors(ServerPlayer p,VisitData.Scene s,CompoundTag escape,
                                                    com.coraline.tycoon.TycoonNpc child){
-        if(!stone(escape).isEmpty())return true;
+        var held=stone(escape);
+        if(!held.isEmpty()){
+            boolean authentic=authenticStone(s,escape,held);
+            if(!authentic)escape.putString("Blocker","The saved Seeing Stone conflicts with this child's handoff. Its original record was preserved.");
+            return authentic;
+        }
         var home=(net.minecraft.server.level.ServerLevel)child.level();
         var front=child.blockPosition();
         var first=com.coraline.otherworld.OtherWorld.safePlayer(home,front.east(2));
@@ -172,17 +181,33 @@ public final class GhostEscapeCovert {
         var forcible=ShowActors.acquire(p,s,"miss_forcible",home,net.minecraft.world.phys.Vec3.atBottomCenterOf(second));
         if(spink==null||forcible==null||spink.level()!=home||forcible.level()!=home
                 ||spink.distanceToSqr(child)>25||forcible.distanceToSqr(child)>25)return false;
-        if(!escape.hasUUID("StoneReceipt")){
-            escape.putUUID("StoneReceipt",java.util.UUID.randomUUID());
-            escape.putUUID("StoneSpink",spink.getUUID());
-            escape.putUUID("StoneForcible",forcible.getUUID());
+        var issuance=escape.getCompound("StoneIssuance");
+        if(!escape.contains("StoneIssuance")){
+            if(escape.contains("StoneReceipt")&&(!escape.hasUUID("StoneReceipt")
+                    ||!matches(escape,"StoneSpink",spink.getUUID())||!matches(escape,"StoneForcible",forcible.getUUID())))return false;
+            var receipt=escape.hasUUID("StoneReceipt")?escape.getUUID("StoneReceipt"):java.util.UUID.randomUUID();
+            issuance.putUUID("Owner",s.owner);
+            issuance.putUUID("Door",s.door);
+            issuance.putUUID("Child",child.getUUID());
+            issuance.putUUID("Spink",spink.getUUID());
+            issuance.putUUID("Forcible",forcible.getUUID());
+            issuance.putUUID("Receipt",receipt);
+            issuance.putString("Stage","ISSUED");
+            var authorized=new ItemStack(ModItems.SEEING_STONE.get());
+            var tag=authorized.getOrCreateTag();
+            tag.putUUID("StoryOwner",s.owner);tag.putUUID("StoryDoor",s.door);tag.putUUID("GhostStoneReceipt",receipt);
+            issuance.put("SourceStack",authorized.save(new CompoundTag()));
+            escape.put("StoneIssuance",issuance);
+            OtherMotherLoop.changed(p);
+            p.server.overworld().getDataStorage().save();
+            return false;
         }
-        if(!spink.getUUID().equals(escape.getUUID("StoneSpink"))||!forcible.getUUID().equals(escape.getUUID("StoneForcible")))return false;
-        var item=new ItemStack(ModItems.SEEING_STONE.get());
-        var tag=item.getOrCreateTag();
-        tag.putUUID("StoryOwner",s.owner);
-        tag.putUUID("StoryDoor",s.door);
-        tag.putUUID("GhostStoneReceipt",escape.getUUID("StoneReceipt"));
+        if(!"ISSUED".equals(issuance.getString("Stage"))||!matches(issuance,"Owner",s.owner)
+                ||!matches(issuance,"Door",s.door)||!matches(issuance,"Child",child.getUUID())
+                ||!matches(issuance,"Spink",spink.getUUID())||!matches(issuance,"Forcible",forcible.getUUID())
+                ||!issuance.hasUUID("Receipt"))return false;
+        var item=ItemStack.of(issuance.getCompound("SourceStack"));
+        if(!stoneMatches(s,item,issuance.getUUID("Receipt"))||!savedIssuance(p,s,escape,issuance))return false;
         var originalHeld=forcible.getMainHandItem();
         forcible.setItemSlot(EquipmentSlot.MAINHAND,item);
         child.getLookControl().setLookAt(forcible,30,30);
@@ -191,11 +216,59 @@ public final class GhostEscapeCovert {
         inventory.put("Stone",forcible.getMainHandItem().save(new CompoundTag()));
         escape.put("QuestInventory",inventory);
         forcible.setItemSlot(EquipmentSlot.MAINHAND,originalHeld);
+        issuance.remove("SourceStack");
+        issuance.putString("Stage","TRANSFERRED");
+        escape.remove("Blocker");
         escape.putString("StoneSource","SPINK_AND_FORCIBLE_HANDOFF");
         ShowActors.releaseHidden(p,s,"miss_spink");
         ShowActors.releaseHidden(p,s,"miss_forcible");
         OtherMotherLoop.changed(p);
         return true;
+    }
+    private static boolean savedIssuance(ServerPlayer p,VisitData.Scene scene,CompoundTag escape,CompoundTag issuance){
+        long now=p.server.overworld().getGameTime(),after=escape.getLong("StoneSaveRetryAt");
+        if(after>now&&after-now<=40)return false;
+        var file=p.server.getWorldPath(net.minecraft.world.level.storage.LevelResource.ROOT).resolve("data/coraline_first_visits.dat");
+        try{
+            var saved=VisitData.load(com.coraline.rebirth.StoryRunStore.read(file).getCompound("data")).scenes.get(scene.owner);
+            if(saved!=null&&scene.door.equals(saved.door)){
+                var disk=GhostVictimEntry.data(saved).getCompound(GhostEscapeProgress.KEY);
+                if(matches(disk,"Attempt",escape.getUUID("Attempt"))&&issuance.equals(disk.getCompound("StoneIssuance"))){
+                    escape.remove("StoneSaveRetryAt");
+                    return true;
+                }
+            }
+        }catch(java.io.IOException|RuntimeException unavailable){
+            // The source capability remains in issuance custody while storage recovers.
+        }
+        escape.putLong("StoneSaveRetryAt",now+40);
+        escape.putString("Blocker","Waiting for the Seeing Stone issuance to be saved.");
+        OtherMotherLoop.changed(p);
+        p.server.overworld().getDataStorage().save();
+        return false;
+    }
+    private static boolean matches(CompoundTag n,String key,java.util.UUID id){
+        return n.hasUUID(key)&&id.equals(n.getUUID(key));
+    }
+    private static boolean stoneMatches(VisitData.Scene scene,ItemStack item,java.util.UUID receipt){
+        var tag=item.getTag();
+        return item.is(ModItems.SEEING_STONE.get())&&item.getCount()==1&&tag!=null
+                &&matches(tag,"StoryOwner",scene.owner)&&matches(tag,"StoryDoor",scene.door)
+                &&matches(tag,"GhostStoneReceipt",receipt);
+    }
+    private static boolean authenticStone(VisitData.Scene scene,CompoundTag escape,ItemStack item){
+        if(!item.is(ModItems.SEEING_STONE.get())||item.getCount()!=1)return false;
+        if(!escape.contains("StoneIssuance")){
+            if(escape.hasUUID("StoneReceipt"))return stoneMatches(scene,item,escape.getUUID("StoneReceipt"));
+            return escape.getBoolean("StoneObtained")
+                    &&(item.getTag()==null||!item.getTag().contains("StoryOwner")||matches(item.getTag(),"StoryOwner",scene.owner))
+                    &&(item.getTag()==null||!item.getTag().contains("StoryDoor")||matches(item.getTag(),"StoryDoor",scene.door));
+        }
+        var issuance=escape.getCompound("StoneIssuance");
+        return "TRANSFERRED".equals(issuance.getString("Stage"))&&issuance.hasUUID("Receipt")
+                &&matches(issuance,"Owner",scene.owner)&&matches(issuance,"Door",scene.door)
+                &&escape.hasUUID("Victim")&&matches(issuance,"Child",escape.getUUID("Victim"))
+                &&issuance.hasUUID("Spink")&&issuance.hasUUID("Forcible")&&stoneMatches(scene,item,issuance.getUUID("Receipt"));
     }
     private static com.coraline.secrets.HouseCabinets.Room selectedRoom(String id){for(var room:com.coraline.secrets.HouseCabinets.ROOMS)if(room.id().equals(id))return room;return null;}
     static ItemStack stone(CompoundTag e){return ItemStack.of(e.getCompound("QuestInventory").getCompound("Stone"));}

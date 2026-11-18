@@ -35,7 +35,9 @@ public final class PalaceSiteData extends SavedData {
     }
     void retryLegacyPause(){
         if(incompatibleOriginal!=null)return;
-        if(blocker.equals("Palace generation stopped safely: IllegalStateException: Landmark chunk request failed safely")){
+        if(blocker.equals("Palace generation stopped safely: IllegalStateException: Landmark chunk request failed safely")
+                ||blocker.startsWith("Palace generation needs review at ")
+                &&blocker.contains(": Actual block placement was refused at ")){
             blocker="";
             setDirty();
         }else if(blocker.startsWith("Player exploration reached the pending region; job stopped")

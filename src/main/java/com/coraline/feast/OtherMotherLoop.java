@@ -223,7 +223,10 @@ public final class OtherMotherLoop {
             fail(p,"Your Other Mother could not be restored. You have returned home safely.");return;
         }
         if(p.tickCount%100==0)pruneDuplicateMothers(p,s,realm);
-        if(s.loop.phase==ACTIVITY){phase(p,s,COMPLETE);} // Safe recovery from interrupted dimension transfer.
+        if(s.loop.phase==ACTIVITY){
+            ActivityWorld.recoverInterruptedReturn(p,s);
+            return;
+        }
         if(p.tickCount%20==0){
             if(!s.loop.motherPos.equals(BlockPos.ZERO))LoopProps.hold(p.serverLevel(),s.loop.motherPos);
             var m=mother(p,s);if(m!=null){m.getPersistentData().putUUID("LoopOwner",p.getUUID());m.relationship(s.loop.trust,s.loop.suspicion);}

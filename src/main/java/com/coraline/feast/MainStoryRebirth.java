@@ -72,7 +72,7 @@ public final class MainStoryRebirth {
         p.getCooldowns().removeCooldown(com.coraline.registry.ModItems.DOWSING_ROD.get());
         retireInventory(p,run.id("Door"));
         p.stopRiding();p.stopUsingItem();p.setCamera(p);
-        p.server.overworld().getDataStorage().save();p.server.getPlayerList().saveAll();
+        p.server.overworld().getDataStorage().save();((com.coraline.mixin.MirrorPlayerSaveAccess)p.server.getPlayerList()).coraline$saveMirrorPlayer(p);
     }
     /** DataStorage logs IO failures internally; independent disk read-back is required before next-run advancement. */
     public static boolean verified(ServerPlayer p,StoryRun run)throws java.io.IOException{

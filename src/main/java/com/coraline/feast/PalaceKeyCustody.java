@@ -46,7 +46,7 @@ public final class PalaceKeyCustody {
     }
     private static boolean saveInventory(ServerPlayer p){
         try{
-            p.getInventory().setChanged();p.inventoryMenu.broadcastChanges();p.server.getPlayerList().saveAll();
+            p.getInventory().setChanged();p.inventoryMenu.broadcastChanges();((com.coraline.mixin.MirrorPlayerSaveAccess)p.server.getPlayerList()).coraline$saveMirrorPlayer(p);
             return PalaceKeyCheckpoint.inventory(read(p.server.getWorldPath(LevelResource.PLAYER_DATA_DIR).resolve(p.getUUID()+".dat"),16L*1024*1024),p.getInventory().save(new ListTag()));
         }
         catch(java.io.IOException|RuntimeException unavailable){return false;}

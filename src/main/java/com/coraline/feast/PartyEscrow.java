@@ -22,10 +22,10 @@ public final class PartyEscrow {
     private static final Set<Item> STAKES=Set.of(Items.DIAMOND,Items.EMERALD,Items.GOLD_INGOT,Items.IRON_INGOT,Items.COPPER_INGOT);
     private static CompoundTag root(ServerPlayer p){
         var data=p.getPersistentData();
-        if(!data.contains(KEY,Tag.TAG_COMPOUND)){var n=new CompoundTag();n.putUUID("Owner",p.getUUID());n.put("Transactions",new CompoundTag());data.put(KEY,n);}
+        if(!data.contains(KEY)){var n=new CompoundTag();n.putUUID("Owner",p.getUUID());n.put("Transactions",new CompoundTag());data.put(KEY,n);}
+        if(!data.contains(KEY,Tag.TAG_COMPOUND))return null;
         var n=data.getCompound(KEY);
-        if(!n.hasUUID("Owner")||!p.getUUID().equals(n.getUUID("Owner")))throw new IllegalStateException("Party escrow owner mismatch");
-        return n;
+        return n.hasUUID("Owner")&&p.getUUID().equals(n.getUUID("Owner"))&&n.contains("Transactions",Tag.TAG_COMPOUND)?n:null;
     }
     public static boolean safeStake(ItemStack stack){
         // A narrow vanilla-material allowlist excludes every key, journal, secret,
@@ -34,8 +34,10 @@ public final class PartyEscrow {
     }
     public static boolean outstanding(ServerPlayer p){
         if(!p.getPersistentData().contains(KEY))return false;
-        for(String key:root(p).getCompound("Transactions").getAllKeys()){
-            String state=root(p).getCompound("Transactions").getCompound(key).getString("State");
+        var r=root(p);if(r==null)return true;
+        var transactions=r.getCompound("Transactions");
+        for(String key:transactions.getAllKeys()){
+            String state=transactions.getCompound(key).getString("State");
             if(state.equals("HELD")||state.equals("PAYOUT"))return true;
         }
         return false;
@@ -55,7 +57,7 @@ public final class PartyEscrow {
         return n.copy();
     }
     public static UUID accept(ServerPlayer p,int serial,UUID nonce){
-        var r=root(p);if(outstanding(p)||!r.contains("Offer"))return null;
+        var r=root(p);if(r==null||nonce==null||outstanding(p)||!r.contains("Offer"))return null;
         var offer=r.getCompound("Offer");
         if(!offer.hasUUID("Nonce")||!nonce.equals(offer.getUUID("Nonce"))||offer.getInt("Serial")!=serial)return null;
         int slot=offer.getInt("Slot");if(slot<0||slot>=p.getInventory().items.size())return null;
@@ -71,7 +73,9 @@ public final class PartyEscrow {
     }
     private static CompoundTag transaction(ServerPlayer p,UUID token){
         if(token==null||!p.getPersistentData().contains(KEY))return null;
-        var transactions=root(p).getCompound("Transactions");return transactions.contains(token.toString(),Tag.TAG_COMPOUND)?transactions.getCompound(token.toString()):null;
+        var r=root(p);if(r==null)return null;
+        var record=r.getCompound("Transactions").getCompound(token.toString());
+        return record.hasUUID("Id")&&token.equals(record.getUUID("Id"))?record:null;
     }
     public static boolean settle(ServerPlayer p,UUID token,Outcome outcome){
         var n=transaction(p,token);if(n==null||!n.getString("State").equals("HELD"))return false;
@@ -84,10 +88,12 @@ public final class PartyEscrow {
         return true;
     }
     public static int deliverPending(ServerPlayer p){
-        if(!p.getPersistentData().contains(KEY))return 0;int delivered=0;boolean changed=false;
-        for(String key:root(p).getCompound("Transactions").getAllKeys()){
-            var n=root(p).getCompound("Transactions").getCompound(key);
-            if(!n.getString("State").equals("PAYOUT"))continue;
+        if(!p.getPersistentData().contains(KEY))return 0;
+        var r=root(p);if(r==null)return 0;
+        int delivered=0;boolean changed=false;
+        for(String key:r.getCompound("Transactions").getAllKeys()){
+            var n=transaction(p,transactionId(key));
+            if(n==null||!n.getString("State").equals("PAYOUT")||!n.contains("Payout",Tag.TAG_LIST))continue;
             var list=n.getList("Payout",Tag.TAG_COMPOUND);
             for(int i=0;i<list.size();i++){
                 var item=ItemStack.of(list.getCompound(i));int before=item.getCount();if(item.isEmpty())continue;
@@ -102,22 +108,30 @@ public final class PartyEscrow {
     }
     public static void cancelSerial(ServerPlayer p,int serial){
         if(!p.getPersistentData().contains(KEY))return;
-        var r=root(p);r.remove("Offer");
+        var r=root(p);if(r==null)return;r.remove("Offer");
         for(String key:new ArrayList<>(r.getCompound("Transactions").getAllKeys())){
             var n=r.getCompound("Transactions").getCompound(key);
-            if(n.getInt("Serial")==serial&&n.getString("State").equals("HELD"))settle(p,UUID.fromString(key),Outcome.CANCEL);
+            var id=transactionId(key);
+            if(id!=null&&n.getInt("Serial")==serial&&n.getString("State").equals("HELD"))settle(p,id,Outcome.CANCEL);
         }
         deliverPending(p);
     }
     /** Caller supplies only currently persisted live matches, never guesses a winner after restart. */
     public static void recover(ServerPlayer p,Set<UUID> liveMatches){
         if(!p.getPersistentData().contains(KEY))return;
-        var r=root(p);r.remove("Offer");
+        var r=root(p);if(r==null)return;r.remove("Offer");
         for(String key:new ArrayList<>(r.getCompound("Transactions").getAllKeys())){
             var n=r.getCompound("Transactions").getCompound(key);
-            if(n.getString("State").equals("HELD")&&!liveMatches.contains(UUID.fromString(key)))settle(p,UUID.fromString(key),Outcome.CANCEL);
+            var id=transactionId(key);
+            if(id!=null&&n.getString("State").equals("HELD")&&!liveMatches.contains(id))settle(p,id,Outcome.CANCEL);
         }
         deliverPending(p);save(p);
+    }
+    static UUID transactionId(String key){
+        try{
+            var id=UUID.fromString(key);
+            return id.toString().equals(key)?id:null;
+        }catch(IllegalArgumentException malformed){return null;}
     }
     /** Preserves overflow even if the player changed to creative after accepting. */
     static void insert(ServerPlayer p,ItemStack stack){
@@ -130,17 +144,21 @@ public final class PartyEscrow {
     }
     private static void save(ServerPlayer p){
         if(p.getPersistentData().contains(KEY)){
-            var transactions=root(p).getCompound("Transactions");
+            var r=root(p);if(r==null)return;
+            var transactions=r.getCompound("Transactions");
             var settled=transactions.getAllKeys().stream().filter(k->transactions.getCompound(k).getString("State").equals("SETTLED")).sorted(Comparator.comparingInt(k->transactions.getCompound(k).getInt("Serial"))).toList();
             for(int i=0;i<settled.size()-128;i++)transactions.remove(settled.get(i));
         }
         p.getInventory().setChanged();p.inventoryMenu.broadcastChanges();
-        // Public existing save API; active player's inventory and Forge persistent data are one file.
-        p.server.getPlayerList().saveAll();
+        ((com.coraline.mixin.MirrorPlayerSaveAccess)p.server.getPlayerList()).coraline$saveMirrorPlayer(p);
     }
     @SubscribeEvent public static void died(LivingDeathEvent e){
         if(!(e.getEntity() instanceof ServerPlayer p)||!p.getPersistentData().contains(KEY))return;
-        for(String key:new ArrayList<>(root(p).getCompound("Transactions").getAllKeys()))settle(p,UUID.fromString(key),Outcome.CANCEL);
+        var r=root(p);if(r==null)return;
+        for(String key:new ArrayList<>(r.getCompound("Transactions").getAllKeys())){
+            var id=transactionId(key);
+            if(id!=null)settle(p,id,Outcome.CANCEL);
+        }
     }
     @SubscribeEvent public static void cloned(PlayerEvent.Clone e){
         if(e.getOriginal().getPersistentData().contains(KEY))e.getEntity().getPersistentData().put(KEY,e.getOriginal().getPersistentData().getCompound(KEY).copy());

@@ -93,6 +93,9 @@ public final class AcceptedButtonEyes {
         }
         if(phase==ACTIVITY_RUNNING||phase==ACTIVITY_REACTION||phase==ACTIVITY_INVITATION){
             if(phase==ACTIVITY_RUNNING&&ActivityWorld.isActivity(p.level()))return false;
+            if(phase==ACTIVITY_RUNNING&&OtherWorld.isOther(p.level())&&s.loop.event.contains("ActivityReturn",Tag.TAG_COMPOUND)){
+                if(ActivityWorld.recoverCompletedReturn(p,s))return true;
+            }
             if(s.loop.phase==OtherMotherLoopState.Phase.COMPLETE)return false;
             if(phase==ACTIVITY_INVITATION){
                 if(!Set.of(OtherMotherLoopState.Phase.PROPOSAL,OtherMotherLoopState.Phase.WARNING,OtherMotherLoopState.Phase.WINDOW,OtherMotherLoopState.Phase.ARRIVAL,OtherMotherLoopState.Phase.READY).contains(s.loop.phase))OtherMotherLoop.nextActivity(p,s);

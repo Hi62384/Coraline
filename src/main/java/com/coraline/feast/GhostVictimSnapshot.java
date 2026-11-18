@@ -79,6 +79,10 @@ public final class GhostVictimSnapshot {
             point(points,GhostVictimManifestations.interactionPoint(row),(preview?"inspect:":"manifest:")+key);
             var point=points.getCompound(points.size()-1);point.putString("Label",row.getString("Kind").toLowerCase(java.util.Locale.ROOT).replace('_',' '));
             if(!row.getString("Label").isBlank())point.putString("Label",row.getString("Label"));
+            var plan=n.getCompound(GhostEscapeProgress.KEY);
+            if(key.startsWith("room_light_")&&GhostEscapeProgress.phase(plan)==GhostEscapeProgress.Phase.WAIT_LURE
+                    &&plan.contains("AmbushLamp",Tag.TAG_LONG)&&row.getLong("Position")==plan.getLong("AmbushLamp"))
+                point.putString("Label","Flicker this light to draw Other Mother away");
             if(preview)point.putString("Label","Tomorrow: "+point.getString("Label"));
             else if(row.getString("Kind").equals("GIFT_SECRET")){point.putString("Alternate","manifest_fright:"+key);point.putString("Label",(row.getString("Label").isBlank()?"Reveal the gift's secret":row.getString("Label"))+"; sneak to move the gift");}
         }

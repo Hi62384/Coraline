@@ -120,24 +120,26 @@ public final class ActivityWorld {
         if(s.loop.activity==OtherMotherActivities.Activity.MUSIC_FESTIVAL)s.loop.festival.remove("Pool");
         FestivalNetwork.clear(p);
         ActivitySoundscape.stop(p,s);
+        var venue=p.server.getLevel(KEY);
+        if(venue==null)return;
         switch(s.loop.activity){
             case TREASURE_HUNT,SHOPPING_MALL,SNOWBALL_BATTLE,OTHER_MINESHAFT,OTHER_NETHER_FORTRESS,OTHER_WOODLAND_MANSION->ExpeditionActivities.clean(p,s);
-            case MUSIC_FESTIVAL->{MusicFestivalActivity.clean(p.serverLevel(),s,center(p,s));MusicFestivalActivity.removeBuild(p.serverLevel(),center(p,s));}
-            case OTHER_DESERT_TEMPLE->{DesertTempleActivity.clean(p.serverLevel(),s,center(p,s));DesertTempleActivity.removeBuild(p.serverLevel(),center(p,s));}
-            case OTHER_END_CITY->{EndCityActivity.restore(p,s);EndCityActivity.clean(p.serverLevel(),s,center(p,s));EndCityActivity.removeBuild(p.serverLevel(),center(p,s));}
-            case ARCHERY_CONTEST->{ArcheryActivity.clean(p.serverLevel(),s,center(p,s));ArcheryActivity.removeBuild(p.serverLevel(),center(p,s));ArcheryActivity.removeIssued(p);}
-            case CAKE_MAKING_CONTEST->{CakeContestActivity.clearTimer(p);CakeContestActivity.clean(p.serverLevel(),s,center(p,s));CakeContestActivity.removeBuild(p.serverLevel(),center(p,s));CakeContestActivity.removeCake(p);}
-            case CARNIVAL->{CarnivalActivity.clean(p.serverLevel(),s,center(p,s));CarnivalActivity.removeBuild(p.serverLevel(),center(p,s));CarnivalActivity.removeTokens(p);}
-            case DREAM_PARKOUR->{DreamParkourActivity.clean(p.serverLevel(),s,center(p,s));DreamParkourActivity.removeBuild(p.serverLevel(),center(p,s));}
-            case FISHING_CONTEST->{FishingContestActivity.clean(p.serverLevel(),s,center(p,s));FishingContestActivity.removeBuild(p.serverLevel(),center(p,s));FishingContestActivity.removeIssued(p);}
-            case GARDEN_MAZE->{GardenMazeActivity.clean(p.serverLevel(),s,center(p,s));GardenMazeActivity.removeBuild(p.serverLevel(),center(p,s));}
-            case GRAND_FEAST->{GrandFeastActivity.clean(p.serverLevel(),s,center(p,s));GrandFeastActivity.removeBuild(p.serverLevel(),center(p,s));}
-            case ICE_BOAT_RACE->{IceBoatRaceActivity.clean(p.serverLevel(),s,center(p,s));IceBoatRaceActivity.removeBuild(p.serverLevel(),center(p,s));}
-            case MAGIC_SHOW->{MagicShowActivity.clean(p.serverLevel(),s,center(p,s));MagicShowActivity.removeBuild(p.serverLevel(),center(p,s));}
-            case MAGIC_GARDEN->{MagicGardenActivity.stopMusic(p);MagicGardenActivity.clean(p.serverLevel(),s,center(p,s));MagicGardenActivity.removeBuild(p.serverLevel(),center(p,s));}
-            case OTHER_OCEAN_MONUMENT->{OceanMonumentActivity.restoreBreathing(p,s);OceanMonumentActivity.clean(p.serverLevel(),s,center(p,s));OceanMonumentActivity.removeBuild(p.serverLevel(),center(p,s));}
-            case MICE_CIRCUS->{MiceCircusActivity.refund(p,s);MiceCircusActivity.clean(p.serverLevel(),s,center(p,s));MiceCircusActivity.removeBuild(p.serverLevel(),center(p,s));}
-            default->{VillageActivity.clean(p.serverLevel(),s,center(p,s));VillageActivity.removeBuild(p.serverLevel(),center(p,s));VillageActivity.removeTokens(p);}
+            case MUSIC_FESTIVAL->{MusicFestivalActivity.clean(venue,s,center(p,s));MusicFestivalActivity.removeBuild(venue,center(p,s));}
+            case OTHER_DESERT_TEMPLE->{DesertTempleActivity.clean(venue,s,center(p,s));DesertTempleActivity.removeBuild(venue,center(p,s));}
+            case OTHER_END_CITY->{EndCityActivity.restore(p,s);EndCityActivity.clean(venue,s,center(p,s));EndCityActivity.removeBuild(venue,center(p,s));}
+            case ARCHERY_CONTEST->{ArcheryActivity.clean(venue,s,center(p,s));ArcheryActivity.removeBuild(venue,center(p,s));ArcheryActivity.removeIssued(p);}
+            case CAKE_MAKING_CONTEST->{CakeContestActivity.clearTimer(p);CakeContestActivity.clean(venue,s,center(p,s));CakeContestActivity.removeBuild(venue,center(p,s));CakeContestActivity.removeCake(p);}
+            case CARNIVAL->{CarnivalActivity.clean(venue,s,center(p,s));CarnivalActivity.removeBuild(venue,center(p,s));CarnivalActivity.removeTokens(p);}
+            case DREAM_PARKOUR->{DreamParkourActivity.clean(venue,s,center(p,s));DreamParkourActivity.removeBuild(venue,center(p,s));}
+            case FISHING_CONTEST->{FishingContestActivity.clean(venue,s,center(p,s));FishingContestActivity.removeBuild(venue,center(p,s));FishingContestActivity.removeIssued(p);}
+            case GARDEN_MAZE->{GardenMazeActivity.clean(venue,s,center(p,s));GardenMazeActivity.removeBuild(venue,center(p,s));}
+            case GRAND_FEAST->{GrandFeastActivity.clean(venue,s,center(p,s));GrandFeastActivity.removeBuild(venue,center(p,s));}
+            case ICE_BOAT_RACE->{IceBoatRaceActivity.clean(venue,s,center(p,s));IceBoatRaceActivity.removeBuild(venue,center(p,s));}
+            case MAGIC_SHOW->{MagicShowActivity.clean(venue,s,center(p,s));MagicShowActivity.removeBuild(venue,center(p,s));}
+            case MAGIC_GARDEN->{MagicGardenActivity.stopMusic(p);MagicGardenActivity.clean(venue,s,center(p,s));MagicGardenActivity.removeBuild(venue,center(p,s));}
+            case OTHER_OCEAN_MONUMENT->{OceanMonumentActivity.restoreBreathing(p,s);OceanMonumentActivity.clean(venue,s,center(p,s));OceanMonumentActivity.removeBuild(venue,center(p,s));}
+            case MICE_CIRCUS->{MiceCircusActivity.refund(p,s);MiceCircusActivity.clean(venue,s,center(p,s));MiceCircusActivity.removeBuild(venue,center(p,s));}
+            default->{VillageActivity.clean(venue,s,center(p,s));VillageActivity.removeBuild(venue,center(p,s));VillageActivity.removeTokens(p);}
         }
     }
     private static void prepare(ServerPlayer p,VisitData.Scene s,ServerLevel level){
@@ -296,14 +298,59 @@ public final class ActivityWorld {
             p.sendSystemMessage(Component.literal("Activity debug trip complete. Returned to your starting point."));return;
         }
         var level=p.server.getLevel(OtherWorld.KEY);if(level==null){OtherMotherLoop.fail(p,"The Other World is unavailable. Returning home.");return;}
+        LoopProps.hold(level,s.loop.portal);
+        var target=RescueEpilogue.nearReturn(level,p,net.minecraft.world.entity.Pose.STANDING,s.loop.portal,6);
+        if(target==null){
+            p.displayClientMessage(Component.literal("The activity return landing is blocked. The exit remains available."),true);
+            return;
+        }
+        var receipt=new net.minecraft.nbt.CompoundTag();
+        receipt.putUUID("Door",s.door);receipt.putInt("Generation",s.loop.generation);
+        receipt.putString("Activity",s.loop.activity.name());receipt.putLong("Portal",s.loop.portal.asLong());
+        s.loop.event.put("ActivityReturn",receipt);
+        OtherMotherLoop.changed(p);
+        p.stopRiding();p.setForcedPose(null);
+        p.teleportTo(level,target.x,target.y,target.z,p.getYRot(),p.getXRot());
+        if(p.serverLevel()!=level||p.position().distanceToSqr(target)>.25)return;
+        finishActivityReturn(p,s,level);
+    }
+    private static void finishActivityReturn(ServerPlayer p,VisitData.Scene s,ServerLevel level){
         AcceptedButtonEyes.activityReturning(p,s);clean(p,s);
-        LoopProps.hold(level,s.loop.portal);var at=OtherWorld.safePlayer(level,s.loop.portal);
-        p.teleportTo(level,at.getX()+.5,at.getY(),at.getZ()+.5,p.getYRot(),p.getXRot());p.fallDistance=0;p.setDeltaMovement(Vec3.ZERO);
+        p.fallDistance=0;p.setDeltaMovement(Vec3.ZERO);
+        var at=p.blockPosition();
         com.coraline.multiplayer.StoryCoop.transferGroup(p,s);
         AcceptedButtonEyes.activityReturned(p,s);
         ShoppingMallActivity.deliver(p);MineshaftActivity.deliver(p);
+        s.loop.event.remove("ActivityReturn");
         LoopProps.removePortals(p.server,s);OtherMotherLoop.phase(p,s,OtherMotherLoopState.Phase.COMPLETE);
         if(s.mom!=null&&level.getEntity(s.mom) instanceof com.coraline.parents.ParentEntity mom){var safe=OtherWorld.safePlayer(level,at.east(2));mom.teleportTo(safe.getX()+.5,safe.getY(),safe.getZ()+.5);}
+    }
+    static boolean recoverCompletedReturn(ServerPlayer p,VisitData.Scene s){
+        if(!s.owner.equals(p.getUUID())||!OtherWorld.isOther(p.level())||s.loop.phase!=OtherMotherLoopState.Phase.ACTIVITY)return false;
+        var receipt=s.loop.event.getCompound("ActivityReturn");
+        if(ReturnReceipt.matches(receipt,s.door,s.loop.generation,s.loop.activity.name(),s.loop.portal.asLong())
+                &&p.distanceToSqr(s.loop.portal.getCenter())<=144&&exitReady(s)){
+            finishActivityReturn(p,s,p.serverLevel());
+            return true;
+        }
+        return false;
+    }
+    static final class ReturnReceipt {
+        static boolean matches(CompoundTag receipt,java.util.UUID door,int generation,String activity,long portal){
+            return receipt.hasUUID("Door")&&door.equals(receipt.getUUID("Door"))
+                    &&receipt.contains("Generation",net.minecraft.nbt.Tag.TAG_INT)&&receipt.getInt("Generation")==generation
+                    &&activity.equals(receipt.getString("Activity"))
+                    &&receipt.contains("Portal",net.minecraft.nbt.Tag.TAG_LONG)&&receipt.getLong("Portal")==portal;
+        }
+    }
+    static void recoverInterruptedReturn(ServerPlayer p,VisitData.Scene s){
+        if(!s.owner.equals(p.getUUID())||!OtherWorld.isOther(p.level())||s.loop.phase!=OtherMotherLoopState.Phase.ACTIVITY
+                ||recoverCompletedReturn(p,s))return;
+        s.loop.event.remove("ActivityReturn");
+        clean(p,s);
+        LoopProps.removePortals(p.server,s);
+        OtherMotherLoop.phase(p,s,OtherMotherLoopState.Phase.EXPLORING);
+        p.displayClientMessage(Component.literal("The activity was interrupted. You are back in the house."),true);
     }
     /** Recover only the accepted branch's own activity; no completion or rewards. */
     static boolean abortAccepted(ServerPlayer p,VisitData.Scene s){
@@ -311,6 +358,7 @@ public final class ActivityWorld {
         AcceptedButtonEyesInventory.confiscateActivityLoot(p,s);
         if(!AcceptedButtonEyesWorld.transfer(p,s,AcceptedButtonEyesWorld.upstairs(s)))return false;
         clean(p,s);LoopProps.removePortals(p.server,s);AcceptedButtonEyesInventory.cleanTemporary(p);
+        s.loop.event.remove("ActivityReturn");
         AcceptedButtonEyesProgress.abortActivity(AcceptedButtonEyes.data(s),OtherMotherLoop.now(p));
         s.loop.phase=OtherMotherLoopState.Phase.ACCEPTED_BUTTON_EYES;OtherMotherLoop.changed(p);return true;
     }

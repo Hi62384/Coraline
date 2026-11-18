@@ -9,7 +9,14 @@ import net.minecraft.world.level.GameType;
 public final class GhostEscapeRestoration {
     public static boolean tick(ServerPlayer p,VisitData.Scene s,CompoundTag ghost){
         var e=ghost.getCompound(GhostEscapeProgress.KEY);if(!GhostVictimMirrors.owned(p,s,ghost)||!GhostEscapeProgress.owns(ghost,e))return false;
-        if(GhostEscapeProgress.phase(e)==GhostEscapeProgress.Phase.COMPLETE){GhostEscapeEnding.tick(p,s,ghost);return true;}
+        if(GhostEscapeProgress.phase(e)==GhostEscapeProgress.Phase.COMPLETE){
+            if(!e.getBoolean("RoomStorageRetired")&&p.tickCount%100==0&&GhostEscapeRooms.retire(p,s,ghost)){
+                e.putBoolean("RoomStorageRetired",true);
+                OtherMotherLoop.changed(p);
+            }
+            GhostEscapeEnding.tick(p,s,ghost);
+            return true;
+        }
         var door=com.coraline.otherworld.DoorData.get(p.server).doors.get(s.door);
         if(door==null||!s.owner.equals(door.owner))return false;
         var home=com.coraline.parents.FamilyData.level(p.server,door.dimension);if(home==null)return false;
@@ -42,12 +49,12 @@ public final class GhostEscapeRestoration {
                 if(!GhostEscapeProgress.beginRestoration(ghost,snapshot,true))return true;
                 e.putBoolean("RestorationStarted",true);
             }
-            if(!AcceptedButtonEyesInventory.restoreAfterGhostEscape(p,s)||!AcceptedButtonEyesInventory.restorationSaved(p,s))return true;
+            if(!AcceptedButtonEyesInventory.restoreAfterGhostEscape(p,s))return true;
             String saved=ghost.getString("BodyGameMode");if(saved.isBlank())saved=GhostVictimEntry.data(s).getString("BodyGameMode");
             GameType original=null;for(GameType type:GameType.values())if(type.getName().equals(saved)){original=type;break;}
             if(original==null){e.putString("Blocker","The original game mode is unavailable in this save; inventory remains safely restored.");return true;}
-            p.setGameMode(original);p.setCamera(p);p.stopRiding();p.setForcedPose(null);p.fallDistance=0;
-            if(!AcceptedButtonEyesInventory.restorationSaved(p,s)||!gameModeSaved(p,original)){
+            if(p.gameMode.getGameModeForPlayer()!=original)p.setGameMode(original);p.setCamera(p);p.stopRiding();p.setForcedPose(null);p.fallDistance=0;
+            if(!AcceptedButtonEyesInventory.restorationSaved(p,s)){
                 e.putString("Blocker","The rescued player's original game mode is waiting for its saved-player checkpoint; the rescue remains recoverable.");return true;
             }
             if(!GhostEscapeProgress.restorationCommitted(ghost,snapshot.getUUID("Transaction"),true,true))return true;
@@ -57,6 +64,10 @@ public final class GhostEscapeRestoration {
         if(GhostEscapeProgress.phase(e)==GhostEscapeProgress.Phase.FAREWELL){
             if(!GhostEscapeEyes.prepareFarewell(p,s))return true;
             var child=GhostVictimActors.find(p,s,ghost);if(child!=null&&child.level()==home){
+                if(e.getBoolean("ChildDepartureWitnessed")){
+                    finishFarewell(p,s,ghost,child);
+                    return true;
+                }
                 child.setNoAi(false);child.noPhysics=false;child.setNoGravity(false);
                 if(!e.getBoolean("FarewellStarted")){
                     GhostVictimDirector.words(ghost,"We made it. I'll find my way home. You can find me at the agency if you want me to join your family.");
@@ -72,17 +83,26 @@ public final class GhostEscapeRestoration {
                     e.putLong("DepartureTarget",target.asLong());
                 }
                 var target=net.minecraft.core.BlockPos.of(e.getLong("DepartureTarget"));
-                if(GhostVictimRoutines.travel(p,s,ghost,child,target,false)!=GhostVictimNavigation.Result.ARRIVED)return true;
+                var departure=GhostVictimRoutines.travel(p,s,ghost,child,target,false);
+                if(departure==GhostVictimNavigation.Result.BLOCKED){
+                    e.remove("DepartureTarget");ghost.remove("ChildRoutine");
+                    OtherMotherLoop.changed(p);
+                    return true;
+                }
+                if(departure!=GhostVictimNavigation.Result.ARRIVED)return true;
                 if(child.distanceToSqr(source.pos.getCenter())>36){
-                    if(!GhostEscapeProgress.childDeparture(ghost,true))return true;
-                    if(!com.coraline.tycoon.GhostRescueCandidates.register(p,s))return true;
-                    ShowTravel.forgetDiscarded(p,s,child,"GhostEscapeChild");
-                    GhostEscapeProgress.finishFarewell(ghost,true,true);OtherMotherLoop.changed(p);return true;
+                    if(GhostEscapeProgress.childDeparture(ghost,true))finishFarewell(p,s,ghost,child);
+                    return true;
                 }
             }
             return true;
         }
         return false;
+    }
+    private static void finishFarewell(ServerPlayer p,VisitData.Scene scene,CompoundTag ghost,com.coraline.tycoon.TycoonNpc child){
+        if(!com.coraline.tycoon.GhostRescueCandidates.register(p,scene))return;
+        ShowTravel.forgetDiscarded(p,scene,child,"GhostEscapeChild");
+        if(GhostEscapeProgress.finishFarewell(ghost,true,true))OtherMotherLoop.changed(p);
     }
     static net.minecraft.core.BlockPos departureTarget(com.coraline.tycoon.TycoonNpc child,net.minecraft.core.BlockPos door,net.minecraft.core.Direction facing){
         var side=facing.getClockWise();
@@ -91,12 +111,6 @@ public final class GhostEscapeRestoration {
             if(at!=null&&at.distSqr(door)>=64&&(at.getX()-door.getX())*facing.getStepX()+(at.getZ()-door.getZ())*facing.getStepZ()>=2)return at;
         }
         return null;
-    }
-    private static boolean gameModeSaved(ServerPlayer p,GameType expected){
-        try{
-            var saved=com.coraline.rebirth.StoryRunStore.read(p.server.getWorldPath(net.minecraft.world.level.storage.LevelResource.PLAYER_DATA_DIR).resolve(p.getUUID()+".dat"));
-            return saved.contains("playerGameType",net.minecraft.nbt.Tag.TAG_INT)&&saved.getInt("playerGameType")==expected.getId();
-        }catch(java.io.IOException failure){return false;}
     }
     private GhostEscapeRestoration(){}
 }

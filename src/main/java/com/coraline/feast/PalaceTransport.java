@@ -88,21 +88,41 @@ public final class PalaceTransport {
         return true;
     }
     private static boolean freeBay(ServerPlayer p,VisitData.Scene own,CompoundTag n,boolean arrived){
-        int bay=arrived?n.getInt("DestinationBay"):n.getInt("Bay");var at=parked(p,n,arrived);
-        for(var other:VisitData.get(p.server).scenes.values())if(!other.owner.equals(own.owner)){
-            var reservation=data(other);if(reservation==null)continue;
-            var state=progress(other,reservation);
-            if(state.phase()==COMPLETE){
-                boolean usesBay=arrived==reservation.getBoolean("Arrived")
-                        &&bay==(arrived?reservation.getInt("DestinationBay"):reservation.getInt("Bay"));
-                if(usesBay&&!reapCompleted(p.server,other,reservation))return false;
+        int bay=PalaceTransportProgress.savedBay(n,arrived);if(bay<0)return false;
+        var at=parked(p,n,arrived);
+        var volume=new AABB(at.add(-2.1,-1,-5),at.add(2.1,4,5));
+        for(var other:VisitData.get(p.server).scenes.values()){
+            if(other.owner.equals(own.owner))continue;
+            var root=PalaceJourney.existing(other);
+            if(root==null||!root.contains("Transport",Tag.TAG_COMPOUND))continue;
+            var raw=root.getCompound("Transport");
+            if(!PalaceTransportProgress.matchesRide(raw,other.owner,other.door)||PalaceTransportProgress.savedBay(raw,arrived)!=bay)continue;
+            var reservation=data(other);
+            var state=progress(other,raw);
+            if(reservation==null||!state.blocker().isEmpty()){
+                if(!raw.hasUUID("Truck")||!raw.hasUUID("ActorSession")||!raw.contains("TruckPosition",Tag.TAG_LONG))continue;
+                var saved=BlockPos.of(raw.getLong("TruckPosition"));
+                if(volume.contains(saved.getCenter())&&(!p.server.overworld().areEntitiesLoaded(new net.minecraft.world.level.ChunkPos(saved).toLong())
+                        ||find(p.server,other,raw,"Truck")!=null))return false;
                 continue;
             }
-            if(!state.blocker().isEmpty())return false;
-            int reserved=arrived&&reservation.contains("DestinationBay")?reservation.getInt("DestinationBay"):reservation.getInt("Bay");
-            if(reserved==bay&&(arrived||!reservation.getBoolean("Arrived")))return false;
+            if(state.phase()==COMPLETE){
+                if(arrived==reservation.getBoolean("Arrived")&&!reapCompleted(p.server,other,reservation))return false;
+            }else if(arrived||!reservation.getBoolean("Arrived"))return false;
         }
-        return p.server.overworld().getEntitiesOfClass(CinematicPropEntity.class,new AABB(at.add(-2.1,-1,-5),at.add(2.1,4,5)),e->e.kind()==TRUCK&&(!n.hasUUID("Truck")||!n.getUUID("Truck").equals(e.getUUID()))).isEmpty();
+        return p.server.overworld().getEntitiesOfClass(CinematicPropEntity.class,volume,e->e.kind()==TRUCK
+                &&(!n.hasUUID("Truck")||!n.getUUID("Truck").equals(e.getUUID()))).isEmpty();
+    }
+    private static boolean recoverRegistration(ServerPlayer p,VisitData.Scene scene,CompoundTag root){
+        if(!root.contains("Transport",Tag.TAG_COMPOUND))return false;
+        var raw=root.getCompound("Transport");
+        if(!PalaceTransportProgress.unstartedRegistration(raw,scene.owner,scene.door))return false;
+        if(root.contains("RetiredIncompleteTransport"))return false;
+        root.put("RetiredIncompleteTransport",raw.copy());
+        root.remove("Transport");
+        OtherMotherLoop.changed(p);
+        p.server.overworld().getDataStorage().save();
+        return true;
     }
     private static void rememberActors(ServerPlayer p,VisitData.Scene s,CompoundTag n){
         for(String key:new String[]{"Truck","Carrier","Mover0","Mover1","Mover2","Mover3"})if(n.hasUUID(key)){
@@ -313,7 +333,18 @@ public final class PalaceTransport {
         n.put("Progress",state.save());rememberActors(p,s,n);OtherMotherLoop.changed(p);
     }
     public static int leave(ServerPlayer p){
-        var s=OtherMotherLoop.scene(p);var n=s==null?null:data(s);if(n==null||!p.isAlive()||p.serverLevel()!=p.server.overworld()||progress(s,n).phase()==COMPLETE)return 0;
+        var s=OtherMotherLoop.scene(p);var n=s==null?null:data(s);
+        var root=PalaceJourney.existing(s);
+        if(root!=null&&root.contains("Transport")&&(n==null||!progress(s,n).blocker().isEmpty())
+                &&p.isAlive()&&p.serverLevel()==p.server.overworld()&&PalaceJourney.owns(p,s)){
+            if(recoverRegistration(p,s,root)){
+                p.sendSystemMessage(Component.literal("Your incomplete registration was archived. You can sign up again."));
+                return 1;
+            }
+            p.sendSystemMessage(Component.literal("The saved ride needs recovery before it can be canceled. Its original actors and journal were preserved."));
+            return 0;
+        }
+        if(n==null||!p.isAlive()||p.serverLevel()!=p.server.overworld()||progress(s,n).phase()==COMPLETE)return 0;
         var state=progress(s,n);
         if(!state.blocker().isEmpty()||!PalaceJourney.owns(p,s))return 0;
         if(state.phase()==NOTICE&&PalaceSiteData.get(p.server).ready()&&p.distanceToSqr(desk(p).getCenter())<=25){
@@ -332,7 +363,14 @@ public final class PalaceTransport {
         n.putBoolean("Paused",true);UNLOCKED.add(p.getUUID());try{p.stopRiding();p.teleportTo(p.server.overworld(),safe.x,safe.y,safe.z,p.getYRot(),p.getXRot());p.fallDistance=0;}finally{UNLOCKED.remove(p.getUUID());}OtherMotherLoop.changed(p);return 1;
     }
     public static int resume(ServerPlayer p){
-        var s=OtherMotherLoop.scene(p);var n=s==null?null:data(s);if(n==null||!eligible(p,s)||!n.getBoolean("Paused"))return 0;var state=progress(s,n);
+        var s=OtherMotherLoop.scene(p);var n=s==null?null:data(s);
+        var root=PalaceJourney.existing(s);
+        if(root!=null&&root.contains("Transport")&&(n==null||!progress(s,n).blocker().isEmpty())){
+            if(p.tickCount%40==0)p.displayClientMessage(Component.literal("This ride has an incompatible checkpoint. Use /coralinepalace leave to check safe cancellation."),true);
+            return 0;
+        }
+        if(n==null||!eligible(p,s)||!n.getBoolean("Paused"))return 0;
+        var state=progress(s,n);
         if(!state.blocker().isEmpty()||state.phase()==COMPLETE)return 0;
         var vehicle=find(p,s,n,state.phase().ordinal()>=CLOSE.ordinal()||state.phase()==NOTICE?"Truck":"Carrier");
         if(state.phase()==NOTICE){
@@ -380,8 +418,11 @@ public final class PalaceTransport {
         var root=PalaceJourney.existing(s);
         if(!PalaceJourney.owns(p,s)||root==null||!root.getBoolean("MapIssued"))return;
         if(!sites.ready()){
-            p.displayClientMessage(Component.literal(sites.blocker().isEmpty()
-                    ?"The Pink Palace arrival route is still being prepared.":sites.blocker()),true);
+            p.displayClientMessage(Component.literal(PalaceWorldGeneration.travelStatus(p.server)),true);
+            return;
+        }
+        if(root.contains("Transport")&&(data(s)==null||!progress(s,data(s)).blocker().isEmpty())){
+            p.displayClientMessage(Component.literal("Your saved ride needs recovery. Use /coralinepalace leave to check whether incomplete signup can be canceled."),true);
             return;
         }
         if(!eligible(p,s))return;

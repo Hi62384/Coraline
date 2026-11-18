@@ -29,7 +29,7 @@ public final class StorySessionData extends SavedData {
         },NAME);
     }
     private static boolean uuidKey(String key){try{return UUID.fromString(key).toString().equals(key);}catch(IllegalArgumentException bad){return false;}}
-    private static StorySessionData load(CompoundTag root){
+    static StorySessionData load(CompoundTag root){
         var d=new StorySessionData();
         if((root.getInt("Version")!=1&&root.getInt("Version")!=2)||root.getBoolean("Blocked")||!root.contains("Sessions",Tag.TAG_LIST)){d.blocked=true;return d;}
         var rows=root.getList("Sessions",Tag.TAG_COMPOUND);
@@ -45,6 +45,7 @@ public final class StorySessionData extends SavedData {
                 var member=members.getCompound(player);String mode=member.getString("State");
                 if(!Set.of("ACTIVE","PENDING","SPECTATOR","RETURNING").contains(mode))throw new IllegalArgumentException();
                 if(!player.equals(owner.toString())&&(!member.contains("Return",Tag.TAG_COMPOUND)||!validReturn(member.getCompound("Return"))))throw new IllegalArgumentException();
+                if(n.getBoolean("Archived")&&!player.equals(owner.toString()))member.putString("State","RETURNING");
             }
             for(String collection:List.of("Permits","Resources","Custody","Rewards"))if(n.contains(collection)&&!n.contains(collection,Tag.TAG_COMPOUND))throw new IllegalArgumentException();
             if(n.getCompound("Permits").size()>4096||n.getCompound("Resources").size()>64||n.getCompound("Custody").size()>64||n.getCompound("Rewards").size()>65536)throw new IllegalArgumentException();
@@ -58,7 +59,7 @@ public final class StorySessionData extends SavedData {
         }
         return d;
     }
-    private static boolean validReturn(CompoundTag n){return net.minecraft.resources.ResourceLocation.tryParse(n.getString("Dimension"))!=null&&n.contains("X",Tag.TAG_DOUBLE)&&n.contains("Y",Tag.TAG_DOUBLE)&&n.contains("Z",Tag.TAG_DOUBLE)&&Double.isFinite(n.getDouble("X"))&&Double.isFinite(n.getDouble("Y"))&&Double.isFinite(n.getDouble("Z"))&&n.getInt("Mode")>=0&&n.getInt("Mode")<=3;}
+    private static boolean validReturn(CompoundTag n){return net.minecraft.resources.ResourceLocation.tryParse(n.getString("Dimension"))!=null&&n.contains("X",Tag.TAG_DOUBLE)&&n.contains("Y",Tag.TAG_DOUBLE)&&n.contains("Z",Tag.TAG_DOUBLE)&&Double.isFinite(n.getDouble("X"))&&Double.isFinite(n.getDouble("Y"))&&Double.isFinite(n.getDouble("Z"))&&n.contains("Mode",Tag.TAG_INT)&&n.getInt("Mode")>=0&&n.getInt("Mode")<=3&&Float.isFinite(n.getFloat("Yaw"))&&Float.isFinite(n.getFloat("Pitch"));}
     private boolean thread(MinecraftServer server){return !blocked&&server.isSameThread();}
     public boolean blocked(){return blocked;}
     public boolean guest(UUID player){return !blocked&&membership.containsKey(player);}
@@ -220,7 +221,7 @@ public final class StorySessionData extends SavedData {
         if(m==null||!m.hasUUID("SpectatorActivity"))return;int mode=m.getInt("SpectatorMode");if(mode<0||mode>3)return;
         p.setCamera(p);p.setForcedPose(null);p.setGameMode(net.minecraft.world.level.GameType.byId(mode));p.fallDistance=0;
         p.getPersistentData().remove("CoralineCoopSpectatorMode");p.getPersistentData().remove("CoralineCoopSpectatorSession");
-        try{p.server.getPlayerList().saveAll();var saved=com.coraline.rebirth.StoryRunStore.read(p.server.getWorldPath(net.minecraft.world.level.storage.LevelResource.PLAYER_DATA_DIR).resolve(p.getUUID()+".dat"));if(saved.getInt("playerGameType")!=mode||saved.getCompound("ForgeData").hasUUID("CoralineCoopSpectatorSession"))return;
+        try{((com.coraline.mixin.MirrorPlayerSaveAccess)p.server.getPlayerList()).coraline$saveMirrorPlayer(p);var saved=com.coraline.rebirth.StoryRunStore.read(p.server.getWorldPath(net.minecraft.world.level.storage.LevelResource.PLAYER_DATA_DIR).resolve(p.getUUID()+".dat"));if(saved.getInt("playerGameType")!=mode||saved.getCompound("ForgeData").hasUUID("CoralineCoopSpectatorSession"))return;
             m.remove("SpectatorActivity");m.remove("SpectatorMode");if(m.getString("State").equals("SPECTATOR"))m.putString("State","ACTIVE");setDirty();checkpoint(p.server);
         }catch(java.io.IOException|RuntimeException unavailable){/* Retain the original mode until native readback succeeds. */}
     }
@@ -298,12 +299,17 @@ public final class StorySessionData extends SavedData {
             var original=net.minecraft.core.BlockPos.containing(back.getDouble("X"),back.getDouble("Y"),back.getDouble("Z"));if(!level.getWorldBorder().isWithinBounds(original))return false;level.getChunkAt(original);
             var at=com.coraline.tycoon.TycoonWorld.safeFeet(level,original)?original:com.coraline.tycoon.TycoonWorld.landing(level,original);if(at==null)return false;
             p.getPersistentData().putBoolean("CoralineRecovering",true);
-            try{p.closeContainer();p.stopRiding();p.stopUsingItem();p.setCamera(p);p.setForcedPose(null);p.setGameMode(net.minecraft.world.level.GameType.byId(back.getInt("Mode")));p.fallDistance=0;p.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
-                p.teleportTo(level,at.equals(original)?back.getDouble("X"):at.getX()+.5,at.equals(original)?back.getDouble("Y"):at.getY(),at.equals(original)?back.getDouble("Z"):at.getZ()+.5,back.getFloat("Yaw"),back.getFloat("Pitch"));
+            try{p.closeContainer();p.stopRiding();p.stopUsingItem();p.setCamera(p);p.setForcedPose(null);p.fallDistance=0;p.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
+                var target=at.equals(original)?new net.minecraft.world.phys.Vec3(back.getDouble("X"),back.getDouble("Y"),back.getDouble("Z"))
+                        :net.minecraft.world.phys.Vec3.atBottomCenterOf(at);
+                p.teleportTo(level,target.x,target.y,target.z,back.getFloat("Yaw"),back.getFloat("Pitch"));
+                if(p.serverLevel()!=level||p.position().distanceToSqr(target)>.25)return false;
+                p.setGameMode(net.minecraft.world.level.GameType.byId(back.getInt("Mode")));
+                if(p.gameMode.getGameModeForPlayer().getId()!=back.getInt("Mode"))return false;
                 if(member.hasUUID("OriginalDoor"))p.getPersistentData().putUUID("CoralineVisitDoor",member.getUUID("OriginalDoor"));else p.getPersistentData().remove("CoralineVisitDoor");
                 com.coraline.feast.CooperativeActivities.cleanPersonal(p);p.getPersistentData().remove("CoralineCoopSpectatorMode");p.getPersistentData().remove("CoralineCoopSpectatorSession");p.getPersistentData().remove("CoralineInTunnel");p.getPersistentData().remove("CoralineReturning");p.getPersistentData().putUUID("CoralineCoopReturnedSession",n.getUUID("Id"));
             }finally{p.getPersistentData().remove("CoralineRecovering");}
-            try{p.server.getPlayerList().saveAll();var proof=com.coraline.rebirth.StoryRunStore.read(file).getCompound("ForgeData");if(!proof.hasUUID("CoralineCoopReturnedSession")||!proof.getUUID("CoralineCoopReturnedSession").equals(n.getUUID("Id")))return false;}catch(java.io.IOException|RuntimeException unavailable){return false;}
+            try{((com.coraline.mixin.MirrorPlayerSaveAccess)p.server.getPlayerList()).coraline$saveMirrorPlayer(p);var proof=com.coraline.rebirth.StoryRunStore.read(file).getCompound("ForgeData");if(!proof.hasUUID("CoralineCoopReturnedSession")||!proof.getUUID("CoralineCoopReturnedSession").equals(n.getUUID("Id")))return false;}catch(java.io.IOException|RuntimeException unavailable){return false;}
             member.putBoolean("ReturnApplied",true);setDirty();
         }
         // Releasing controls/position does not bypass the accepted route's
@@ -311,7 +317,11 @@ public final class StorySessionData extends SavedData {
         // this later without teleporting the returned player again.
         if(GroupInventoryEscrow.held(p)&&!GroupInventoryEscrow.restore(p))return false;
         if(GroupInventoryEscrow.held(p))return false;
-        members.remove(p.getUUID().toString());membership.remove(p.getUUID());setDirty();return checkpoint(p.server);
+        var player=p.getUUID();
+        members.remove(player.toString());membership.remove(player);setDirty();
+        if(checkpoint(p.server))return true;
+        members.put(player.toString(),member);membership.put(player,n.getUUID("Id"));setDirty();
+        return false;
     }
     public boolean debugPause(ServerPlayer operator,ServerPlayer owner,boolean pause){
         if(!operator.hasPermissions(2)||operator.server!=owner.server)return false;var n=current(owner.getUUID());var scene=VisitData.get(owner.server).scenes.get(owner.getUUID());if(n==null||scene==null)return false;

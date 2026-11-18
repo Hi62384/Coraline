@@ -9,6 +9,19 @@ public final class VisitGiftHistoryStateCheck {
     private static int checks;
     private static void require(boolean valid,String message){checks++;if(!valid)throw new AssertionError(message);}
     public static void main(String[] args) throws Exception {
+        var door=UUID.randomUUID();
+        var receipt=new CompoundTag();
+        receipt.putUUID("Door",door);receipt.putInt("Generation",3);
+        receipt.putString("Activity","MICE_CIRCUS");receipt.putLong("Portal",1234);
+        var serialized=new ByteArrayOutputStream();NbtIo.writeCompressed(receipt,serialized);
+        var restored=NbtIo.readCompressed(new ByteArrayInputStream(serialized.toByteArray()));
+        require(ActivityWorld.ReturnReceipt.matches(restored,door,3,"MICE_CIRCUS",1234),"Saved completed return lost its identity");
+        require(!ActivityWorld.ReturnReceipt.matches(restored,UUID.randomUUID(),3,"MICE_CIRCUS",1234),"Foreign door accepted a completed return");
+        require(!ActivityWorld.ReturnReceipt.matches(restored,door,4,"MICE_CIRCUS",1234),"New generation reused a prior completion");
+        require(!ActivityWorld.ReturnReceipt.matches(restored,door,3,"MAGIC_GARDEN",1234),"Different activity reused a completion");
+        require(!ActivityWorld.ReturnReceipt.matches(restored,door,3,"MICE_CIRCUS",1235),"Different portal reused a completion");
+        restored.putLong("Generation",3);
+        require(!ActivityWorld.ReturnReceipt.matches(restored,door,3,"MICE_CIRCUS",1234),"Malformed generation advanced activity return");
         var story=new CompoundTag();story.putBoolean("UnrelatedStoryFlag",true);
         require(VisitGiftHistory.read(story).isEmpty(),"Legacy empty history failed");
         require(!story.contains("VisitGiftHistory"),"Read mutated old story state");

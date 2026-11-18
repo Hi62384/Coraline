@@ -20,6 +20,23 @@ public final class PalaceTransportSmoke {
         }
     }
     public static int run(){
+        var savedRide=new CompoundTag();
+        UUID owner=UUID.randomUUID(),door=UUID.randomUUID();
+        savedRide.putUUID("Owner",owner);savedRide.putUUID("Door",door);savedRide.putInt("Version",1);
+        check(PalaceTransportProgress.savedBay(savedRide,false)==-1,"Missing bay became bay zero");
+        savedRide.putInt("Bay",1);savedRide.putInt("DestinationBay",0);
+        check(PalaceTransportProgress.savedBay(savedRide,false)==1&&PalaceTransportProgress.savedBay(savedRide,true)==0,"Bay routing mixed both sides");
+        savedRide.putString("DestinationBay","0");
+        check(PalaceTransportProgress.savedBay(savedRide,true)==-1,"Malformed destination claimed a bay");
+        check(PalaceTransportProgress.unstartedRegistration(savedRide,owner,door),"Empty bound registration could not retire");
+        check(!PalaceTransportProgress.unstartedRegistration(savedRide,UUID.randomUUID(),door),"Foreign registration admitted");
+        savedRide.put("Progress",PalaceTransportProgress.start(owner,door).save());
+        check(PalaceTransportProgress.unstartedRegistration(savedRide,owner,door),"NOTICE without actors was not recoverable");
+        savedRide.putUUID("Truck",UUID.randomUUID());
+        check(!PalaceTransportProgress.unstartedRegistration(savedRide,owner,door),"Registration discarded a recorded original truck");
+        savedRide.remove("Truck");
+        savedRide.getCompound("Progress").putString("Phase","UNKNOWN");
+        check(!PalaceTransportProgress.unstartedRegistration(savedRide,owner,door),"Corrupt phase admitted as unstarted");
         for(int attempt=0;attempt<64;attempt++){
             var state=PalaceTransportProgress.start(OWNER,DOOR);var token=state.session();
             check(!state.motionFinished(OWNER,token,LIFT,true,true),"New registration skips the worker approach");ticks(state,40,false);

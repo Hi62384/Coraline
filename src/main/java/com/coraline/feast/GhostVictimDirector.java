@@ -322,13 +322,30 @@ public final class GhostVictimDirector {
                 child.setPose(Pose.STANDING);child.gesture(0,0);child.refreshDimensions();words(n,"I'm back! What are we doing today?");move(p,s,n,GhostVictimProgress.Phase.DAILY_GIFT);
             }
             case DAILY_GIFT->{
-                if(child==null)return;var gift=GhostVictimWorld.hall(s);
+                if(child==null)return;
                 String giftName=GhostVictimSchedule.today(n).getString("Gift"),point="gift_"+giftName;
+                var existing=n.getCompound("Points").getCompound(point);
+                var gift=n.getBoolean("GiftPlaced")&&existing.hasUUID("Entity")&&GhostVictimProgress.clock(n)%20!=0
+                        ?new GhostVictimWorld.GiftSurface(GhostVictimManifestations.interactionPoint(existing).add(0,-.12,0),null)
+                        :GhostVictimWorld.giftSurface(p,s,child);
+                if(gift==null){
+                    GhostVictimManifestations.show(p,s,n,point,false);
+                    n.putString("Blocker","Clear a reachable table or shelf so the child can receive the gift.");
+                    n.remove("GiftPlaced");n.remove("GiftPresentedAt");
+                    return;
+                }
+                if(!n.getBoolean("GiftPlaced")&&GhostVictimRoutines.travel(p,s,n,child,gift.approach(),false)!=GhostVictimNavigation.Result.ARRIVED)return;
+                if(gift.approach()!=null){
+                    if(!GhostVictimManifestations.display(p,s,n,point,gift.display(),GhostVictimProgress.Disturbance.GIFT_SECRET,gift(giftName)))return;
+                    GhostVictimManifestations.show(p,s,n,point,true);
+                }
                 if(!n.getBoolean("GiftPlaced")){
-                    if(GhostVictimRoutines.travel(p,s,n,child,gift.south(),false)!=GhostVictimNavigation.Result.ARRIVED)return;
-                    if(!GhostVictimManifestations.display(p,s,n,point,Vec3.atBottomCenterOf(gift).add(0,1,0),GhostVictimProgress.Disturbance.GIFT_SECRET,gift(giftName)))return;
-                    GhostVictimManifestations.show(p,s,n,point,true);n.putBoolean("GiftPlaced",true);n.putLong("GiftPresentedAt",GhostVictimProgress.clock(n));words(n,"You got this for me? Thank you!");}
-                GhostVictimWorld.configureGiftSecret(n,giftName);child.getLookControl().setLookAt(gift.getX()+.5,gift.getY()+1,gift.getZ()+.5,30,30);
+                    n.remove("Blocker");
+                    n.putBoolean("GiftPlaced",true);n.putLong("GiftPresentedAt",GhostVictimProgress.clock(n));
+                    words(n,"You got this for me? Thank you!");
+                }
+                GhostVictimWorld.configureGiftSecret(n,giftName);
+                child.getLookControl().setLookAt(gift.display().x,gift.display().y+.12,gift.display().z,30,30);
                 if(GhostVictimProgress.clock(n)-n.getLong("GiftPresentedAt")>=GhostVictimConfig.GIFT_SECONDS.get()*20L){
                     GhostVictimManifestations.show(p,s,n,point,false);n.remove("GiftPlaced");n.remove("GiftPresentedAt");GhostVictimProgress.trust(n,GhostVictimProgress.motherTrust(n)+.08,GhostVictimProgress.ghostTrust(n));
                     move(p,s,n,GhostVictimProgress.Phase.BETWEEN_ACTIVITIES);}

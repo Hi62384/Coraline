@@ -27,7 +27,15 @@ public final class InfiniteWorldStateCheck {
         saved.putLong("Seed",999);require(state.seed().orElseThrow()==seed,"External snapshot changed the live generation");
         require(state.activate(original,11,5,entropy)==ALREADY_RECORDED&&entropyCalls.get()==1,"Repeated ending rerolled entropy");
         var replay=new InfiniteWorldState.Witness(original.owner(),UUID.randomUUID(),UUID.randomUUID(),UUID.randomUUID(),UUID.randomUUID(),WybieLife.DEAD_AT_WELL);
-        require(state.activate(replay,12,5,entropy)==ALREADY_RECORDED&&state.save().getCompound("Owners").getCompound(original.owner().toString()).getUUID("Door").equals(original.door()),"Ordinary story replay rewrote the original unlock receipt");
+        require(state.activate(replay,12,5,entropy)==REFUSED&&state.save().getCompound("Owners").getCompound(original.owner().toString()).getUUID("Door").equals(original.door()),"A conflicting Wybie replaced the original unlock receipt");
+        var forgedReplay=new InfiniteWorldState.Witness(original.owner(),UUID.randomUUID(),original.wellSession(),original.keyReceipt(),original.wybie(),original.wybieLife());
+        require(state.activate(forgedReplay,12,5,entropy)==REFUSED,"Matching key and well bypassed the original door binding");
+        var replayState=InfiniteWorldState.load(state.save());
+        var legitimateReplay=new InfiniteWorldState.Witness(original.owner(),UUID.randomUUID(),UUID.randomUUID(),UUID.randomUUID(),original.wybie(),WybieLife.DEAD_AT_WELL);
+        require(replayState.activate(legitimateReplay,13,5,entropy)==OWNER_RECORDED&&entropyCalls.get()==1,"A legitimate replay rerolled or lost its latest completion");
+        require(replayState.canonicalCompletion().getUUID("Door").equals(original.door())
+                &&replayState.canonicalCompletion().getString("WybieLife").equals("ALIVE"),"Replay changed the world's first canonical completion");
+        require(replayState.activate(original,14,5,entropy)==REFUSED,"Retired receipt was accepted as the latest completed replay");
         var originalRow=state.save().getCompound("Owners").getCompound(original.owner().toString());require(originalRow.getUUID("Wybie").equals(original.wybie())&&originalRow.getString("WybieLife").equals("ALIVE"),"Main-story replay changed the original postgame Wybie identity/fate");
         state=InfiniteWorldState.load(TagParser.parseTag(state.save().toString()));
         require(state.blocker().isEmpty()&&state.generation().orElseThrow().equals(generation)&&state.seed().orElseThrow()==seed,"Server restart lost independent seed/epoch");

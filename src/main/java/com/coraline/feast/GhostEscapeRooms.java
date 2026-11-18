@@ -140,6 +140,11 @@ public final class GhostEscapeRooms {
         if(!GhostVictimMirrors.owned(p,s,ghost))return false;var level=AcceptedButtonEyesWorld.level(p);if(level==null)return false;boolean complete=true;
         for(String id:sites(ghost).getAllKeys()){
             var row=sites(ghost).getCompound(id);if(row.getBoolean("Retired")||!row.contains("Container"))continue;
+            if(row.getBoolean("AuthoredCabinet")){
+                row.putBoolean("Retired",true);
+                ghost.getCompound(GhostEscapeProgress.KEY).getCompound("UnlockedRooms").remove(id);
+                continue;
+            }
             var at=BlockPos.of(row.getLong("Container"));level.getChunkAt(at);var block=level.getBlockEntity(at);
             if(block==null&&level.getBlockState(at).isAir()){row.putBoolean("Retired",true);continue;}
             if(!(block instanceof net.minecraft.world.level.block.entity.ChestBlockEntity chest)||!chest.isEmpty()){complete=false;continue;}

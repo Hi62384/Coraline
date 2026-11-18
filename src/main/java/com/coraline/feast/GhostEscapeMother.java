@@ -50,7 +50,9 @@ public final class GhostEscapeMother {
         }
         if(ghost.contains("MotherInvestigation")&&clock<ghost.getLong("MotherInvestigateUntil")){
             var fixture=BlockPos.of(ghost.getLong("MotherInvestigation"));
-            var target=standingNear(mother,s,fixture);
+            var target=escape.contains("AmbushLamp",Tag.TAG_LONG)&&escape.getLong("AmbushLamp")==fixture.asLong()
+                    &&escape.contains("AmbushInvestigation",Tag.TAG_LONG)
+                    ?BlockPos.of(escape.getLong("AmbushInvestigation")):standingNear(mother,s,fixture);
             if(target!=null){
                 walk(mother,s,route,target,clock,hunt?1.3:1);
                 var focus=fixture.getCenter();
@@ -89,7 +91,7 @@ public final class GhostEscapeMother {
         }
         return null;
     }
-    private static BlockPos standingNear(ParentEntity mother,VisitData.Scene s,BlockPos point){
+    static BlockPos standingNear(ParentEntity mother,VisitData.Scene s,BlockPos point){
         int floor=GhostVictimWorld.at(s,26,-1,20).getY();for(int y:new int[]{6,15,24}){int candidate=GhostVictimWorld.at(s,34,y,35).getY();if(candidate<=point.getY()&&candidate>floor)floor=candidate;}
         return GhostVictimNavigation.approach(mother,new BlockPos(point.getX(),floor,point.getZ()));
     }

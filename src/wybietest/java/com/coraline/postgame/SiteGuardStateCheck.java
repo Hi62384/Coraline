@@ -25,12 +25,23 @@ public final class SiteGuardStateCheck {
             for(int module=0;module<plan.modules().size();module++){
                 var assignments=InfiniteSiteGuards.assignments(plan,module);var room=plan.modules().get(module);
                 require(assignments.equals(InfiniteSiteGuards.assignments(plan,module)),"Reload/order changed assignment identity");
-                require(assignments.size()<=2,"Unbounded per-module defender count");total+=assignments.size();
+                require(assignments.size()<=(room.role()==InfiniteStructurePlan.Role.MANSION_HALL?4:3),"Unbounded per-module defender count");total+=assignments.size();
                 var journal=new CompoundTag();require(InfiniteSiteGuards.validJournal(journal,assignments),"Fresh assignment journal rejected");
                 journal.putInt("Version",1);var issued=new ListTag();journal.put("Issued",issued);
                 for(var guard:assignments){
                     require(all.add(guard.id()),"Guard UUID collided across module/family");var at=guard.at();
-                    require(at.getX()>plan.x()+room.x()&&at.getX()<plan.x()+room.maxX()&&at.getZ()>plan.z()+room.z()&&at.getZ()<plan.z()+room.maxZ()&&at.getY()==plan.y()+room.y()+(room.role()==InfiniteStructurePlan.Role.TOWER?9:1),"Defender placed in wall/outside room/floor");
+                    int ordinal=issued.size();
+                    int height=switch(room.role()){
+                        case TOWER->9;
+                        case MIRROR_SHAFT->6+10*ordinal;
+                        case MANSION_HALL->ordinal==3?9:1;
+                        case OBSERVATORY_HALL->6;
+                        case FALSE_PALACE_HALL->ordinal==2?9:1;
+                        default->1;
+                    };
+                    require(at.getX()>plan.x()+room.x()&&at.getX()<plan.x()+room.maxX()
+                            &&at.getZ()>plan.z()+room.z()&&at.getZ()<plan.z()+room.maxZ()
+                            &&at.getY()==plan.y()+room.y()+height,"Defender placed in wall/outside room/floor for "+family);
                     issued.add(NbtUtils.createUUID(guard.id()));require(InfiniteSiteGuards.validJournal(journal,assignments),"Partial issuance could not resume");
                 }
                 journal.putString("UnknownExtension","preserve");var before=journal.copy();
@@ -46,7 +57,15 @@ public final class SiteGuardStateCheck {
                     reject(journal,assignments,n->{var wrong=new ListTag();wrong.add(new IntArrayTag(new int[]{1,2,3}));n.put("Issued",wrong);});
                 }
             }
-            require(total==(family==InfiniteStructurePlan.Family.DOLL_WORKSHOP?2:family==InfiniteStructurePlan.Family.RIFT_DRILL_CENTER?10:3),"Family defender budget changed unexpectedly");
+            int expected=switch(family){
+                case DOLL_WORKSHOP,FORGOTTEN_OBSERVATORY,ABANDONED_ORPHANAGE->2;
+                case CLOCKWORK_FACTORY,SOUL_GLASS_MINE,MIRROR_TOWER,DIMENSIONAL_SEAM,ROOTBOUND_TEMPLE,FALSE_PINK_PALACE->3;
+                case PORCELAIN_MANSION,ABANDONED_VILLAGE->4;
+                case RIFT_DRILL_CENTER->10;
+                case RIFT_SOLDIER_OUTPOST->8;
+                case SUNKEN_OTHERWORLD_RUINS,OTHER_VILLAGE,ANCIENT_BOUNDARY_SHRINE,RESISTANCE_SANCTUARY,ENTITY_HEART_CHAMBER,ENDLESS_CARNIVAL,GRAND_THEATRE->0;
+            };
+            require(total==expected,"Family defender budget changed for "+family+": "+total);
         }
         System.out.println("GUARD_FILES="+files+" UNIQUE_GUARDS="+all.size()+" DIRECTORY="+directory);
         System.out.println("SITE_GUARD_STATE_NBT_OK checks="+checks);

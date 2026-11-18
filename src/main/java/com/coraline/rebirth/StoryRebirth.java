@@ -100,7 +100,7 @@ public final class StoryRebirth {
         run.details(d);save(p,run);if(old!=null)old.discard();
     }
     private static boolean checkpointInventory(ServerPlayer p)throws IOException{
-        p.getInventory().setChanged();p.inventoryMenu.broadcastChanges();p.server.getPlayerList().saveAll();
+        p.getInventory().setChanged();p.inventoryMenu.broadcastChanges();((com.coraline.mixin.MirrorPlayerSaveAccess)p.server.getPlayerList()).coraline$saveMirrorPlayer(p);
         var n=StoryRunStore.read(p.server.getWorldPath(LevelResource.PLAYER_DATA_DIR).resolve(p.getUUID()+".dat"));
         return PalaceKeyCheckpoint.inventory(n,p.getInventory().save(new ListTag()));
     }

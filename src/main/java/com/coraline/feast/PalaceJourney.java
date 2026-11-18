@@ -43,7 +43,7 @@ public final class PalaceJourney {
                 ||root.contains("Company")&&!root.contains("Company",Tag.TAG_LONG)
                 ||root.contains("MapRecoveryAfter")&&(!root.contains("MapRecoveryAfter",Tag.TAG_LONG)||root.getLong("MapRecoveryAfter")<0)
                 ||root.getBoolean("MapIssued")&&(!root.contains("MapId",Tag.TAG_INT)||!root.contains("Company",Tag.TAG_LONG)))return null;
-        for(String key:new String[]{"Well","WellStage","KeyCustody","Transport"})if(root.contains(key)&&!root.contains(key,Tag.TAG_COMPOUND))return null;
+        for(String key:new String[]{"Well","WellStage","KeyCustody"})if(root.contains(key)&&!root.contains(key,Tag.TAG_COMPOUND))return null;
         if(root.contains("BundleEntity")&&!root.hasUUID("BundleEntity"))return null;
         return root;
     }

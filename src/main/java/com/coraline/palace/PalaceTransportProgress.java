@@ -39,6 +39,24 @@ public final class PalaceTransportProgress {
         if(original!=null){var n=original.copy();n.putString("Blocker",blocker);return n;}
         var n=new CompoundTag();n.putInt("Version",1);n.putUUID("Owner",owner);n.putUUID("Door",door);n.putUUID("Session",session);n.putString("Phase",phase.name());n.putInt("Ticks",ticks);n.putLong("Last",last);return n;
     }
+    public static boolean matchesRide(CompoundTag ride,UUID owner,UUID door){
+        return ride.hasUUID("Owner")&&owner.equals(ride.getUUID("Owner"))
+                &&ride.hasUUID("Door")&&door.equals(ride.getUUID("Door"));
+    }
+    public static int savedBay(CompoundTag ride,boolean destination){
+        String key=destination&&ride.contains("DestinationBay")?"DestinationBay":"Bay";
+        return ride.contains(key,Tag.TAG_INT)&&ride.getInt(key)>=0&&ride.getInt(key)<2?ride.getInt(key):-1;
+    }
+    public static boolean unstartedRegistration(CompoundTag ride,UUID owner,UUID door){
+        if(!matchesRide(ride,owner,door)||!ride.contains("Version",Tag.TAG_INT)
+                ||ride.getInt("Version")!=1||ride.contains("Arrived"))return false;
+        for(String key:List.of("Truck","Carrier","Mover0","Mover1","Mover2","Mover3"))
+            if(ride.contains(key)||ride.contains(key+"Position"))return false;
+        if(!ride.contains("Progress"))return !ride.contains("ActorSession");
+        var saved=load(owner,door,ride.getCompound("Progress"));
+        return saved.blocker().isEmpty()&&saved.phase()==Phase.NOTICE
+                &&(!ride.contains("ActorSession")||ride.hasUUID("ActorSession")&&saved.session().equals(ride.getUUID("ActorSession")));
+    }
     public static PalaceTransportProgress load(UUID owner,UUID door,CompoundTag n){
         var s=new PalaceTransportProgress(owner,door);
         try{

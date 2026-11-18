@@ -42,7 +42,7 @@ public final class GhostVictimMirrors {
         return mirror.getBoolean("WallMounted")?center.add(normal(mirror).scale(-.29)):center;
     }
     private static Vec3 normal(CompoundTag mirror){return Vec3.directionFromRotation(0,mirror.getFloat("Yaw")).scale(-1);}
-    private static boolean hasBacking(net.minecraft.world.level.Level level,CompoundTag mirror){
+    static boolean hasBacking(net.minecraft.world.level.Level level,CompoundTag mirror){
         if(!mirror.getBoolean("WallMounted"))return true;
         var front=net.minecraft.core.Direction.fromYRot(mirror.getFloat("Yaw")).getOpposite();
         var backing=BlockPos.of(mirror.getLong("Position")).relative(front.getOpposite()).above();
@@ -178,7 +178,7 @@ public final class GhostVictimMirrors {
                 response=retrieve?"I'll retrieve the eyes from that room.":"I'll search that room for the eyes.";
             }else if(action.equals("ambush")){
                 GhostVictimWorld.refreshRoomLights(p,s,n);
-                String hide=GhostEscapeAmbush.coverNearLight(n,e,child);
+                String hide=GhostEscapeAmbush.plan(p,s,n,e,child);
                 if(hide.isEmpty()){
                     screen(p,n,"I need a reachable hiding place near a working light.");
                     return false;

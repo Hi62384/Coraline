@@ -92,7 +92,11 @@ public final class GhostVictimWorld {
         return prop.kind()==CinematicPropEntity.VICTIM_SUPPER_TABLE&&!GhostVictimDirector.active(s);
     }
     static boolean ensureHouseProps(ServerPlayer p,VisitData.Scene s,CompoundTag n){
-        if(!n.getBoolean("WallMirrorsPrepared")){
+        var level=AcceptedButtonEyesWorld.level(p);
+        if(level==null)return false;
+        var bedroomMirror=n.getCompound("Mirrors").getCompound("bedroom");
+        if(!n.getBoolean("WallMirrorsPrepared")||!bedroomMirror.contains("Position",Tag.TAG_LONG)
+                ||!GhostVictimMirrors.hasBacking(level,bedroomMirror)){
             if(!mirrors(p,s,n))return false;
             n.putBoolean("WallMirrorsPrepared",true);
         }
@@ -179,11 +183,33 @@ public final class GhostVictimWorld {
         row.put("RevealedItem",new net.minecraft.world.item.ItemStack(item).save(new CompoundTag()));row.putString("Label","Reveal "+detail);
         row.putInt("GiftRevealVersion",1);
     }
+    record GiftSurface(Vec3 display,BlockPos approach){}
+    static GiftSurface giftSurface(ServerPlayer p,VisitData.Scene s,net.minecraft.world.entity.PathfinderMob child){
+        var level=AcceptedButtonEyesWorld.level(p);
+        if(level==null)return null;
+        for(var center:java.util.List.of(hall(s),diningTable(p,s),at(s,28,6,51))){
+            for(var pos:BlockPos.betweenClosed(center.offset(-5,0,-5),center.offset(5,1,5))){
+                if(!level.hasChunkAt(pos))continue;
+                var state=level.getBlockState(pos);
+                if(!state.is(ModBlocks.ROSEWOOD_TABLE.get())&&!state.is(ModBlocks.ROSEWOOD_CABINET.get())
+                        &&!state.is(ModBlocks.ROSEWOOD_DRAWER.get()))continue;
+                var shape=state.getCollisionShape(level,pos);
+                if(shape.isEmpty())continue;
+                var top=Vec3.atBottomCenterOf(pos).add(0,shape.max(Direction.Axis.Y),0);
+                var space=new net.minecraft.world.phys.AABB(top.x-.2,top.y+.01,top.z-.2,top.x+.2,top.y+.32,top.z+.2);
+                if(!level.noCollision(space)||level.containsAnyLiquid(space))continue;
+                var approach=child==null?null:GhostVictimNavigation.approach(child,pos.immutable());
+                if(child==null||approach!=null)return new GiftSurface(top,approach);
+            }
+        }
+        return null;
+    }
     public static void prepareGiftPreview(ServerPlayer p,VisitData.Scene s,CompoundTag n){
         if(!GhostVictimProgress.hasVictim(n)||GhostVictimProgress.phase(n)!=GhostVictimProgress.Phase.NIGHT_PREPARATION)return;
         var plan=GhostVictimSchedule.tomorrow(n);String gift=plan.getString("Gift"),point="gift_"+gift;
-        if(n.getInt("PreviewGiftDay")==plan.getInt("Day")&&point.equals(n.getString("PreviewGiftPoint")))return;
-        if(!GhostVictimManifestations.display(p,s,n,point,Vec3.atBottomCenterOf(hall(s)).add(0,1,0),GhostVictimProgress.Disturbance.GIFT_SECRET,GhostVictimDirector.gift(gift)))return;
+        var surface=giftSurface(p,s,null);
+        if(surface==null){GhostVictimManifestations.show(p,s,n,point,false);return;}
+        if(!GhostVictimManifestations.display(p,s,n,point,surface.display(),GhostVictimProgress.Disturbance.GIFT_SECRET,GhostVictimDirector.gift(gift)))return;
         configureGiftSecret(n,gift);GhostVictimManifestations.show(p,s,n,point,true);
         n.putInt("PreviewGiftDay",plan.getInt("Day"));n.putString("PreviewGiftPoint",point);OtherMotherLoop.changed(p);
     }
@@ -192,7 +218,16 @@ public final class GhostVictimWorld {
         int[][] cells={{35,6,31},{28,6,51},{50,15,23},{35,15,49}};float[] yaw={270,0,270,270};
         var level=AcceptedButtonEyesWorld.level(p);
         for(int i=0;i<ids.length;i++){
-            var position=at(s,cells[i][0],cells[i][1],cells[i][2]);
+            var anchor=at(s,cells[i][0],cells[i][1],cells[i][2]);
+            var position=mirrorPosition(p,s,level,anchor,yaw[i]);
+            if(position==null){
+                n.getCompound("Mirrors").remove(ids[i]);
+                if(ids[i].equals("bedroom")){
+                    n.putString("Blocker","The bedroom mirror needs a clear wall and a walkable space in front of it.");
+                    return false;
+                }
+                continue;
+            }
             var prop=FirstEscapeScene.ensure(p,s,"VictimMirror_"+ids[i],CinematicPropEntity.STORY_MIRROR,i,level,Vec3.atBottomCenterOf(position));
             if(prop==null)return false;
             // These anchors are the walkable cells immediately in front of
@@ -206,6 +241,31 @@ public final class GhostVictimWorld {
             mirror.putUUID("Entity",prop.getUUID());mirror.putBoolean("WallMounted",true);
         }
         return true;
+    }
+    private static BlockPos mirrorPosition(ServerPlayer player,VisitData.Scene scene,ServerLevel level,BlockPos anchor,float yaw){
+        var front=Direction.fromYRot(yaw).getOpposite();
+        var side=front.getClockWise();
+        for(int offset:new int[]{0,-1,1,-2,2,-3,3}){
+            var at=anchor.relative(side,offset);
+            var stand=at.relative(front);
+            if(OtherWorldEstate.outsideHouse(AcceptedButtonEyesWorld.house(scene),stand)
+                    ||!level.hasChunkAt(at)||!level.hasChunkAt(stand))continue;
+            var trial=new CompoundTag();
+            trial.putLong("Position",at.asLong());trial.putFloat("Yaw",yaw);trial.putBoolean("WallMounted",true);
+            if(!GhostVictimMirrors.hasBacking(level,trial)
+                    ||!level.getBlockState(stand.below()).isFaceSturdy(level,stand.below(),Direction.UP))continue;
+            var surface=GhostVictimMirrors.surface(trial);
+            var area=new net.minecraft.world.phys.AABB(
+                    Vec3.atBottomCenterOf(stand).add(-.26,.13,-.26),Vec3.atBottomCenterOf(stand).add(.26,1.75,.26));
+            if(!level.noCollision(area)||level.containsAnyLiquid(area))continue;
+            var eye=Vec3.atBottomCenterOf(stand).add(0,1.45,0);
+            var end=surface.add(Vec3.atBottomCenterOf(stand).subtract(surface).normalize().scale(.16));
+            if(level.clip(new net.minecraft.world.level.ClipContext(eye,end,
+                    net.minecraft.world.level.ClipContext.Block.COLLIDER,
+                    net.minecraft.world.level.ClipContext.Fluid.NONE,player)).getType()
+                    ==net.minecraft.world.phys.HitResult.Type.MISS)return at;
+        }
+        return null;
     }
     public static double deterioration(CompoundTag n){
         return switch(GhostVictimProgress.phase(n)){
