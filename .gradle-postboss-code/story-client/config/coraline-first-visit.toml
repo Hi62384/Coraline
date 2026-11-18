@@ -1,0 +1,108 @@
+#Completed activities before the accepted button-eyes world fully collapses.
+#Range: 1 ~ 20
+acceptedButtonEyesActivityCount = 5
+#Functional activities reused by the accepted button-eyes branch, in order; repeat if the configured count is longer.
+acceptedButtonEyesActivities = ["other_village", "other_woodland_mansion", "other_desert_temple", "magic_show", "dream_parkour", "grand_feast", "mice_circus", "carnival", "magic_garden", "music_festival", "shopping_mall", "snowball_battle", "cake_making_contest", "fishing_contest", "archery_contest", "ice_boat_race", "garden_maze", "treasure_hunt", "other_mineshaft", "other_ocean_monument", "other_nether_fortress", "other_end_city"]
+#Chance of an immediate post First Escape Spink / Forcible invitation. A missed roll queues it after 30 seconds, preserving required story progression.
+#Range: 0.0 ~ 1.0
+missingParentsSpinkForcibleChance = 0.35
+#Range: 0 ~ 1000
+activityEventWeight = 10
+#Range: 0 ~ 1000
+explorationEventWeight = 10
+#Range: 0 ~ 1000
+dinnerEventWeight = 10
+#Range: 0 ~ 1000
+outingEventWeight = 10
+#Range: 0.0 ~ 0.1
+outingOnTimeTrust = 0.04
+#Range: 0.0 ~ 0.1
+outingLateTrust = 0.015
+#Range: 0.0 ~ 0.1
+outingLateSuspicion = 0.015
+#Range: 0.0 ~ 0.05
+outingCompleteTrust = 0.02
+#Range: 0.0 ~ 0.025
+outingPositiveInteractionTrust = 0.005
+#Range: 0 ~ 1000
+gameNightEventWeight = 10
+#Range: 0.0 ~ 0.1
+gameNightOnTimeTrust = 0.04
+#Range: 0.0 ~ 0.1
+gameNightLateTrust = 0.015
+#Range: 0.0 ~ 0.1
+gameNightLateSuspicion = 0.015
+#Range: 0.0 ~ 0.05
+gameNightCompleteTrust = 0.02
+#Range: 0 ~ 1000
+playerPartyEventWeight = 10
+#Range: 0 ~ 1000
+wybieAdventureEventWeight = 1
+#Range: 0 ~ 1000
+theatreEventWeight = 1
+#Range: 0 ~ 1000
+mouseCircusEventWeight = 1
+#Range: 0 ~ 1000
+motherGoesOutEventWeight = 10
+#Range: 0 ~ 1000
+housePartyEventWeight = 10
+#Range: 0 ~ 1000
+specialDeliveryEventWeight = 10
+#Range: 0.0 ~ 0.1
+deliveryCompletionTrust = 0.05
+#Range: 0.0 ~ 0.3
+deliveryBetrayalTrustLoss = 0.18
+#Range: 0.0 ~ 0.3
+deliveryBetrayalSuspicion = 0.18
+#Range: 1.0 ~ 5.0
+deliveryRouteProtectionMargin = 3.0
+#Optional active delivery ticks; zero disables the timeout. Never a five-minute deadline.
+#Range: 0 ~ 144000
+deliveryMaximumTicks = 0
+#Range: 0.0 ~ 0.1
+dinnerOnTimeTrust = 0.04
+#Range: 0.0 ~ 0.1
+dinnerLateTrust = 0.015
+#Range: 0.0 ~ 0.1
+dinnerLateSuspicion = 0.015
+#Range: 0.0 ~ 0.025
+dinnerPassTrust = 0.005
+#Range: 0.0 ~ 0.05
+dinnerCompleteTrust = 0.01
+#Range: 0.0 ~ 0.025
+dinnerFriendlyAnswerTrust = 0.005
+#Range: 0.0 ~ 0.025
+dinnerHomesickAnswerTrustLoss = 0.005
+#Range: 100 ~ 12000
+feastTicks = 1200
+#Pause between supper dialogue recordings; supper extends if needed to finish them.
+#Range: 20 ~ 600
+supperDialogueGapTicks = 100
+#Range: 100 ~ 2400
+servingRefillMinimumTicks = 300
+#Range: 0 ~ 2400
+servingRefillRandomExtraTicks = 200
+#Range: 20 ~ 1200
+cakeRevealTicks = 60
+#Range: 4.0 ~ 12.0
+pianoSceneRadius = 6.0
+#Range: 10 ~ 80
+pianoStagingMinimumDistance = 40
+#Range: 18 ~ 100
+pianoStagingMaximumDistance = 72
+#Range: 20 ~ 1200
+startupRetryTicks = 100
+#Range: 40 ~ 1200
+supperSeatStallRecoveryTicks = 200
+#Maximum walk to supper before safe seat recovery; capped at 20 seconds.
+#Range: 100 ~ 400
+supperSeatMaximumTravelTicks = 400
+#Range: 64 ~ 2048
+placementSearchAttempts = 512
+#Range: 2 ~ 48
+placementVerticalRange = 16
+#Range: 0.0 ~ 1.0
+musicVolume = 0.65
+#Range: 0.0 ~ 2.0
+voiceVolume = 1.0
+

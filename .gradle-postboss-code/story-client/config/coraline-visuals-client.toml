@@ -1,0 +1,54 @@
+enabled = true
+
+[palette]
+	#Vivid Other World color richness; 1 disables the pass. Replaces the older palette.saturation setting so existing worlds receive the stronger facade.
+	#Range: 1.0 ~ 3.0
+	facadeSaturation = 2.15
+	#Range: 0 ~ 16777215
+	zenith = 1056329
+	#Range: 0 ~ 16777215
+	horizon = 4545671
+	#Range: 0 ~ 16777215
+	haze = 4545671
+	#Range: 0 ~ 16777215
+	underwater = 1588576
+
+[sky]
+	#Range: 0.5 ~ 3.0
+	moonScale = 1.55
+	#Range: 0.0 ~ 2.0
+	starIntensity = 0.85
+	#Range: 0.0 ~ 0.3
+	twinkle = 0.09
+	shootingStars = true
+	#Range: 0.0 ~ 0.3
+	auroraIntensity = 0.075
+
+[light]
+	#Range: 0.0 ~ 0.8
+	moonlightStrength = 0.53
+	#Range: 0.0 ~ 0.25
+	lampWarmth = 0.1
+
+[fog]
+	#Range: 0.15 ~ 0.9
+	startFraction = 0.43
+	#Range: 48 ~ 320
+	distance = 180
+	#Range: 12 ~ 96
+	underwaterDistance = 44
+
+[nature]
+	#Range: 12 ~ 64
+	radius = 36
+	#Range: 2 ~ 48
+	columnsPerTick = 12
+	#Range: 0 ~ 600
+	maximumDecorations = 220
+	#Range: 0.0 ~ 1.0
+	flowerClusterDensity = 0.32
+	#Range: 0 ~ 250
+	maximumMotes = 100
+	#Range: 0.0 ~ 1.0
+	fireflyDensity = 0.7
+

@@ -18,7 +18,7 @@ import re
 import struct
 from PIL import Image, ImageChops, ImageStat
 
-VERSION = '7'
+VERSION = '8'
 
 
 def verified_speech_masters(root):
@@ -106,6 +106,8 @@ def optimize_png(data, limit, animated=False, palette_budget=False):
         if max(image.size) > limit:
             image = image.convert('RGBA')
             image.thumbnail((limit, limit), Image.Resampling.LANCZOS)
+        if image.mode == 'RGBA' and image.getextrema()[3] == (255, 255):
+            image = image.convert('RGB')
         output = io.BytesIO()
         image.save(output, format='PNG', optimize=True, compress_level=9)
         result = output.getvalue()
@@ -338,10 +340,11 @@ def prune_archived_voice_exports(assets):
 
 
 def runtime_texture_limit(relative):
-    if relative == 'assets/coraline/textures/sky/celestial_panorama_v1.png':
-        return 2048  # Full-screen panorama exception; never upscale the master.
     if relative == 'assets/coraline/textures/block/insect_parlor_wallpaper.png':
         return 512  # Authored wall detail required by the first-escape scene.
+    if relative in ('assets/coraline/textures/entity/festival_cake_frosting_atlas.png',
+                    'assets/coraline/textures/entity/festival_cake_sponge_atlas.png'):
+        return 256
     return 128 if any(part in relative for part in ('/textures/item/', '/textures/block/')) else 256 if '/textures/models/sculpted/' in relative else 512
 
 
@@ -368,7 +371,9 @@ def optimize(resources, cache, report):
         key = hashlib.sha256(data + f'{VERSION}:{limit}:{animated}'.encode()).hexdigest()
         cached = cache / (key + '.png')
         if not cached.exists():
-            cached.write_bytes(optimize_png(data, limit, animated, palette_budget=limit <= 256))
+            palette_budget = (limit <= 256 or
+                              relative == 'assets/coraline/textures/block/insect_parlor_wallpaper.png')
+            cached.write_bytes(optimize_png(data, limit, animated, palette_budget=palette_budget))
         result = cached.read_bytes()
         if result != data:
             path.write_bytes(result)

@@ -1,0 +1,33 @@
+#Give every enabled visit-gift category equal chances, including with old saved weights. Set false only to opt into custom weighted odds.
+equal_category_chances = true
+
+#Zero disables a category. Positive values are equally likely when equal_category_chances is true; otherwise these are relative weights. All zero falls back to Food and Treasure.
+[weights]
+	#Range: 0 ~ 10000
+	food = 10
+	#Range: 0 ~ 10000
+	treasure = 10
+	#Range: 0 ~ 10000
+	weapons = 10
+	#Range: 0 ~ 10000
+	armor = 10
+	#Range: 0 ~ 10000
+	tools = 10
+	#Range: 0 ~ 10000
+	building_materials = 10
+	#Range: 0 ~ 10000
+	redstone = 10
+	#Range: 0 ~ 10000
+	clothing = 10
+	#Range: 0 ~ 10000
+	music = 10
+	#Range: 0 ~ 10000
+	mystery = 10
+
+#Material chances in a Treasure gift. Moonstone starts on mid-story visits; Perfect starts on late visits. Inventory/recent-gift preference never rerolls these material payouts.
+[materials]
+	#Range: 4 ~ 10000
+	moonstone_one_in = 16
+	#Range: 40 ~ 10000
+	perfect_ingot_one_in = 160
+
