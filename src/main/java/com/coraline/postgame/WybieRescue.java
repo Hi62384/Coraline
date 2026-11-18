@@ -199,8 +199,8 @@ public final class WybieRescue {
     private static void reward(ServerPlayer p,WybieRescueData d,CompoundTag n){
         if(!n.hasUUID("Completion"))return;
         var receipt=n.getUUID("Completion");
-        String key="CoralineWybieRescueReward";
-        String persistedKey=net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG;
+        String key=WybieRewardClaim.KEY;
+        String persistedKey=WybieRewardClaim.PERSISTED;
         var persisted=p.getPersistentData().getCompound(persistedKey);
         var receipts=persisted.getCompound(key);
         var action=WybieRewardClaim.action(n,receipts,p.getUUID());
@@ -208,12 +208,24 @@ public final class WybieRescue {
 
         var realm=generation(p.server).map(id->p.server.getLevel(InfiniteRealm.key(id))).orElse(null);
         if(realm!=null)BreachWorldData.get(p.server).resolveWybieRescue(realm,p);
+        if(action==WybieRewardClaim.Action.COMPLETE)return;
+        var path=p.server.getWorldPath(net.minecraft.world.level.storage.LevelResource.PLAYER_DATA_DIR).resolve(p.getUUID()+".dat");
+        var nativeReceipt=WybieRewardClaim.nativeReceipt(path,p.getUUID(),receipt);
         if(action==WybieRewardClaim.Action.LEGACY_UNVERIFIED){
-            p.sendSystemMessage(net.minecraft.network.chat.Component.literal("This older rescue save recorded the reward as issued but has no delivery receipt."));
+            if(nativeReceipt!=WybieRewardClaim.NativeReceipt.PRESENT)
+                p.sendSystemMessage(net.minecraft.network.chat.Component.literal("This older rescue save recorded the reward as issued without a verifiable delivery receipt."));
             return;
         }
-        if(action==WybieRewardClaim.Action.COMPLETE)return;
+        if(nativeReceipt==WybieRewardClaim.NativeReceipt.PRESENT){
+            n.putBoolean("RewardIssued",true);
+            d.checkpoint(p.server);
+            return;
+        }
         if(action==WybieRewardClaim.Action.DELIVER){
+            if(nativeReceipt!=WybieRewardClaim.NativeReceipt.ABSENT){
+                p.sendSystemMessage(net.minecraft.network.chat.Component.literal("The rescue reward is pending while your player save is checked."));
+                return;
+            }
             var inventory=p.getInventory();
             var snapshot=inventory.save(new ListTag());
             var moonstone=new net.minecraft.world.item.ItemStack(com.coraline.clothing.OtherMaterials.MOONSTONE.get(),2);
@@ -233,7 +245,6 @@ public final class WybieRescue {
             p.inventoryMenu.broadcastChanges();
         }
         try{
-            var path=p.server.getWorldPath(net.minecraft.world.level.storage.LevelResource.PLAYER_DATA_DIR).resolve(p.getUUID()+".dat");
             if(java.nio.file.Files.isSymbolicLink(path)||java.nio.file.Files.isSymbolicLink(path.getParent()))return;
             ((com.coraline.mixin.MirrorPlayerSaveAccess)p.server.getPlayerList()).coraline$saveMirrorPlayer(p);
             var disk=com.coraline.rebirth.StoryRunStore.read(path);
