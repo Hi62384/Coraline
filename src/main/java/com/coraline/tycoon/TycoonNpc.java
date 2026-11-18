@@ -37,7 +37,24 @@ public final class TycoonNpc extends PathfinderMob {
     @Override public EntityDimensions getDimensions(Pose pose){return pose==Pose.SWIMMING&&gesture()==6?EntityDimensions.scalable(.55F,.55F):super.getDimensions(pose);}
     public boolean staff(){return entityData.get(STAFF);}public int appearance(){return entityData.get(APPEARANCE);}public int gesture(){return entityData.get(GESTURE);}
     public void gesture(int id,int ticks){entityData.set(GESTURE,id);gestureUntil=tickCount+ticks;}
-    @Override public void tick(){super.tick();if(!level().isClientSide){var current=owner==null?null:TycoonData.get(getServer()).homes.get(owner);if(current!=null&&current.state.hasUUID("CapabilityEpoch")&&(!getPersistentData().hasUUID("TycoonEpoch")||!current.state.getUUID("CapabilityEpoch").equals(getPersistentData().getUUID("TycoonEpoch")))){discard();return;}if(gesture()!=0&&tickCount>gestureUntil)gesture(0,0);if(tickCount%20==0)TycoonCare.tickNpc(this);}}
+    private void reconcileArrival(){
+        var marker=getPersistentData();
+        if(!marker.contains("TycoonPendingArrival",net.minecraft.nbt.Tag.TAG_LONG)||owner==null||resident==null)return;
+        var home=TycoonData.get(getServer()).homes.get(owner);
+        var row=home==null?null:home.residents.get(resident);
+        if(row==null||!row.n.hasUUID("Entity")||!getUUID().equals(row.n.getUUID("Entity")))return;
+        if(row.n.getBoolean("SpawnPending")){
+            var at=net.minecraft.core.BlockPos.of(marker.getLong("TycoonPendingArrival"));
+            setPos(at.getX()+.5,at.getY(),at.getZ()+.5);
+            setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
+        }else{
+            marker.remove("TycoonPendingArrival");
+            setNoAi(false);
+            setNoGravity(false);
+            setInvulnerable(false);
+        }
+    }
+    @Override public void tick(){super.tick();if(!level().isClientSide){var current=owner==null?null:TycoonData.get(getServer()).homes.get(owner);if(current!=null&&current.state.hasUUID("CapabilityEpoch")&&(!getPersistentData().hasUUID("TycoonEpoch")||!current.state.getUUID("CapabilityEpoch").equals(getPersistentData().getUUID("TycoonEpoch")))){discard();return;}reconcileArrival();if(gesture()!=0&&tickCount>gestureUntil)gesture(0,0);if(tickCount%20==0&&!getPersistentData().contains("TycoonPendingArrival"))TycoonCare.tickNpc(this);}}
     @Override protected InteractionResult mobInteract(Player player,InteractionHand hand){
         if(hand!=InteractionHand.MAIN_HAND)return InteractionResult.PASS;
         if(player instanceof ServerPlayer p&&p.isAlive()&&!p.isSpectator()&&p.distanceToSqr(this)<=25)TycoonScope.run(p,owner,()->{if(staff()){if(p.isShiftKeyDown())TycoonAgency.request(p);else TycoonNetwork.open(p,"phone",null);}else if(TycoonWelcomeCake.give(p,this)){}else if(TycoonDolls.give(p,this)){}else if(TycoonGifts.manual(p,this)){}else if(TycoonCare.resident(this)!=null&&TycoonVisits.inside(TycoonCare.resident(this)))TycoonNetwork.visitor(p,this);else if(!TycoonCare.serve(p,this))TycoonNetwork.child(p,this);});

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
@@ -18,7 +19,7 @@ public final class TycoonPlacements {
     public static String commit(ServerPlayer p,TycoonData.Resident chosen,BlockPos bed,BlockPos arrival,int fee){
         var h=TycoonWorld.home(p);if(TycoonReceiptRecovery.actorBusy(p,h))return "Finish recovery of your earlier household transaction first.";if(h.state.contains("PendingPlacement")||h.state.contains("PendingTransaction"))return "A saved placement is still arriving; no second fee charged.";
         var actor=chosen.n.getBoolean("OriginalGhostHelper")?GhostRescueCandidates.placementActor(p,chosen):TycoonContent.NPC.get().create(p.server.overworld());if(actor==null)return "Waiting for the original resident to load; no fee charged.";
-        var row=chosen.save();row.putString("Status","ACTIVE");row.putUUID("Entity",actor.getUUID());row.putLong("Bed",bed.asLong());row.putLong("ArrivedAt",h.clock());row.putLong("LastPosition",arrival.asLong());row.putLong("Arrival",arrival.asLong());row.putString("Task","ARRIVING");row.putBoolean("SpawnPending",true);row.putInt("BodyAdmissionVersion",1);
+        var row=chosen.save();row.putString("Status","ACTIVE");row.putUUID("Entity",actor.getUUID());row.putLong("Bed",bed.asLong());row.putLong("ArrivedAt",h.clock());row.putLong("LastPosition",arrival.asLong());row.putLong("Arrival",arrival.asLong());row.putString("Task","ARRIVING");row.putBoolean("SpawnPending",true);row.putInt("BodyAdmissionVersion",2);
         var pending=new CompoundTag();pending.putUUID("Receipt",UUID.randomUUID());pending.putUUID("Actor",p.getUUID());pending.putUUID("Owner",h.owner);pending.put("Resident",row);pending.putInt("Fee",fee);pending.putLong("PlacementAfter",h.clock()+TycoonConfig.PLACEMENT_TICKS.get());boolean warehouse=TycoonShop.sharedFunds(p,Items.EMERALD);if(warehouse){var stock=h.state.getCompound("Warehouse").copy();String key=TycoonWarehouse.key(Items.EMERALD);if(stock.getLong(key)<fee)return "Not enough household supply emeralds.";stock.putLong(key,stock.getLong(key)-fee);pending.put("WarehouseAfter",stock);}TycoonReceiptRecovery.prepare(p,h,pending,"TycoonPlacementReceipt");h.state.put("PendingPlacement",pending);
         var inventory=p.getInventory().save(new net.minecraft.nbt.ListTag());var oldReceipt=receipt(p);boolean paid=false,committed=false,saveAttempted=false;
         try{
@@ -37,7 +38,7 @@ public final class TycoonPlacements {
     public static boolean reconcile(ServerPlayer p){return TycoonReceiptRecovery.recover(p.server,TycoonWorld.home(p),"PendingPlacement");}
 
     private static void spawn(ServerPlayer p,TycoonData.Resident r,TycoonNpc actor)throws IOException{
-        if(r==null||!r.active()||!r.n.getBoolean("SpawnPending"))return;
+        if(r==null||!r.active()||!r.n.getBoolean("SpawnPending")||!r.n.hasUUID("Entity")||!r.n.contains("Arrival",Tag.TAG_LONG))return;
         var at=BlockPos.of(r.n.getLong("Arrival"));var l=p.server.overworld();l.getChunkAt(at);
         var existing=l.getEntity(r.n.getUUID("Entity"));if(!r.n.getBoolean("OriginalGhostHelper")&&existing!=null&&(!(existing instanceof TycoonNpc body)||!body.isAlive()||!TycoonWorld.owner(p).equals(body.owner)||!r.id.equals(body.resident))){r.n.putString("ArrivalBlocker","Original resident identity mismatch; admission paused.");TycoonWorld.dirty(p);return;}
         if(r.n.getBoolean("OriginalGhostHelper")){
@@ -62,31 +63,51 @@ public final class TycoonPlacements {
             com.coraline.feast.GhostVictimActors.release(actor);actor.configure(TycoonWorld.owner(p),r.id,false,r.n.getInt("Appearance"));actor.setPos(at.getX()+.5,at.getY(),at.getZ()+.5);
             r.n.putString("GhostHelperDimension",l.dimension().location().toString());r.n.putLong("GhostHelperPosition",at.asLong());
         }else if(l.getEntity(r.n.getUUID("Entity"))==null){
-            if(r.n.getBoolean("ActorIssued")||r.n.getInt("BodyAdmissionVersion")!=1){r.n.putString("ArrivalBlocker","Waiting for the original resident body; no substitute issued.");TycoonWorld.dirty(p);return;}
+            int admission=r.n.getInt("BodyAdmissionVersion");
+            if(admission!=1&&admission!=2&&r.n.contains("BodyAdmissionVersion"))return;
+            if(admission!=2&&(admission!=1||r.n.getBoolean("ActorIssued"))){
+                var proof=com.coraline.rebirth.LegacyActorRecovery.check(p.server,r.n.getUUID("Entity"));
+                if(proof!=com.coraline.rebirth.LegacyActorRecovery.Result.ABSENT){
+                    String blocker="Checking native saves for the original resident: "+proof.name().toLowerCase(java.util.Locale.ROOT);
+                    if(!blocker.equals(r.n.getString("ArrivalBlocker"))){r.n.putString("ArrivalBlocker",blocker);TycoonWorld.dirty(p);}
+                    return;
+                }
+            }
             for(var world:p.server.getAllLevels())if(world.getEntity(r.n.getUUID("Entity"))!=null){r.n.putString("ArrivalBlocker","The original resident is in another world; waiting for native custody recovery.");TycoonWorld.dirty(p);return;}
+            if(!l.areEntitiesLoaded(new net.minecraft.world.level.ChunkPos(at).toLong())||!TycoonWorld.safeFeet(l,at))return;
             if(actor==null)actor=TycoonContent.NPC.get().create(l);if(actor==null)return;
             actor.setUUID(r.n.getUUID("Entity"));actor.configure(TycoonWorld.owner(p),r.id,false,r.n.getInt("Appearance"));actor.setPos(at.getX()+.5,at.getY(),at.getZ()+.5);
-            r.n.putBoolean("ActorIssued",true);TycoonWorld.dirty(p);if(!TycoonCheckpoints.home(p))return;
+            r.n.putInt("BodyAdmissionVersion",2);
+            r.n.putBoolean("ActorIssued",true);
+            actor.getPersistentData().putLong("TycoonPendingArrival",at.asLong());
+            actor.setNoAi(true);
+            actor.setNoGravity(true);
+            actor.setInvulnerable(true);
+            TycoonWorld.dirty(p);if(!TycoonCheckpoints.home(p))return;
             if(!l.addFreshEntity(actor)){r.n.putString("ArrivalBlocker","Native body admission was refused; no second body issued.");TycoonWorld.dirty(p);return;}
         }
         // Placement is rare (one active hour): flush entity/chunk state before
         // retiring the recovery marker, rather than saving every AI tick.
-        p.server.saveEverything(true,true,true);r.n.putBoolean("SpawnPending",false);TycoonWorld.dirty(p);if(!TycoonCheckpoints.home(p)){r.n.putBoolean("SpawnPending",true);throw new IOException("Arrival checkpoint needs retry");}
+        if(!p.server.saveEverything(true,true,true))return;
+        r.n.remove("ArrivalBlocker");r.n.putBoolean("SpawnPending",false);TycoonWorld.dirty(p);if(!TycoonCheckpoints.home(p)){r.n.putBoolean("SpawnPending",true);throw new IOException("Arrival checkpoint needs retry");}
     }
 
     public static void tick(ServerPlayer p){
         var h=TycoonWorld.home(p);reconcile(p);
-        for(var r:h.residents.values())if(r.active()&&r.n.getBoolean("SpawnPending")){
-            var at=BlockPos.of(r.n.getLong("Arrival"));p.server.overworld().getChunkAt(at);
-            // Give vanilla's asynchronous persistent-entity loader time to finish.
-            int wait=r.n.getInt("SpawnWait")+20;r.n.putInt("SpawnWait",wait);if(wait<100)continue;
-            try{spawn(p,r,null);}catch(IOException failure){r.n.putString("ArrivalBlocker",failure.getMessage());}break;
-        }
+        var pending=h.residents.values().stream()
+                .filter(r->r.active()&&r.n.getBoolean("SpawnPending")&&r.n.hasUUID("Entity")&&r.n.contains("Arrival",Tag.TAG_LONG))
+                .sorted(java.util.Comparator.comparing(r->r.id)).toList();
+        if(pending.isEmpty())return;
+        var resident=pending.get(Math.floorMod(h.clock()/20,pending.size()));
+        var at=BlockPos.of(resident.n.getLong("Arrival"));
+        p.server.overworld().getChunkAt(at);
+        if(!p.server.overworld().areEntitiesLoaded(new net.minecraft.world.level.ChunkPos(at).toLong()))return;
+        try{spawn(p,resident,null);}catch(IOException failure){resident.n.putString("ArrivalBlocker",failure.getMessage());}
     }
     private TycoonPlacements(){}
     static String commitSupplied(ServerPlayer p,TycoonData.Resident chosen,BlockPos bed,BlockPos arrival,int fee){
         var h=TycoonWorld.home(p);if(h.state.contains("PendingPlacement")||h.state.contains("PendingTransaction")||h.residents.containsKey(chosen.id)||h.cooldown()>0||TycoonWarehouse.count(h,Items.EMERALD)<fee)return "Placement resources or cooldown unavailable.";
-        var actor=chosen.n.getBoolean("OriginalGhostHelper")?GhostRescueCandidates.placementActor(p,chosen):TycoonContent.NPC.get().create(p.server.overworld());if(actor==null)return "Waiting for the original resident to load; no supplies charged.";var row=chosen.save();row.putString("Status","ACTIVE");row.putUUID("Entity",actor.getUUID());row.putLong("Bed",bed.asLong());row.putLong("ArrivedAt",h.clock());row.putLong("LastPosition",arrival.asLong());row.putLong("Arrival",arrival.asLong());row.putString("Task","ARRIVING");row.putBoolean("SpawnPending",true);row.putInt("BodyAdmissionVersion",1);
+        var actor=chosen.n.getBoolean("OriginalGhostHelper")?GhostRescueCandidates.placementActor(p,chosen):TycoonContent.NPC.get().create(p.server.overworld());if(actor==null)return "Waiting for the original resident to load; no supplies charged.";var row=chosen.save();row.putString("Status","ACTIVE");row.putUUID("Entity",actor.getUUID());row.putLong("Bed",bed.asLong());row.putLong("ArrivedAt",h.clock());row.putLong("LastPosition",arrival.asLong());row.putLong("Arrival",arrival.asLong());row.putString("Task","ARRIVING");row.putBoolean("SpawnPending",true);row.putInt("BodyAdmissionVersion",2);
         TycoonWarehouse.take(h,Items.EMERALD,fee);h.residents.put(chosen.id,new TycoonData.Resident(chosen.id,row));h.state.getCompound("Candidates").remove(chosen.id.toString());h.state.putLong("PlacementAfter",h.clock()+TycoonConfig.PLACEMENT_TICKS.get());h.milestone("first_resident",50);TycoonWorld.dirty(p);
         try{if(!TycoonCheckpoints.home(p))return "Paid supply placement is pending its durable checkpoint.";spawn(p,h.residents.get(chosen.id),actor);}catch(IOException failure){return "Same paid resident arrival will recover; no second fee.";}return chosen.name()+" is arriving from the agency. Normal one-hour placement cooldown applies.";
     }

@@ -105,7 +105,7 @@ final class InfiniteSitePiece extends StructurePiece {
                 // callback is repeated, instead of refilling its lazy loot.
                 if(level.getBlockEntity(at)!=null)continue;
                 boolean edge=x==0||z==0||x==module.width()-1||z==module.depth()-1;
-                boolean doorway=(x==0||x==module.width()-1)&&Math.abs(z-module.depth()/2)<=1||(z==0||z==module.depth()-1)&&Math.abs(x-module.width()/2)<=1;
+                boolean doorway=InfiniteStructurePlan.doorway(module,x,z);
                 BlockState state;
                 if(y<walk)state=foundation;
                 else if(y==walk)state=role==InfiniteStructurePlan.Role.APPROACH&&module.depth()-1-z<=approachRise?Blocks.STONE_BRICK_STAIRS.defaultBlockState().setValue(StairBlock.FACING,net.minecraft.core.Direction.SOUTH):wall;

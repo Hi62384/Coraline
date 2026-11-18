@@ -91,8 +91,34 @@ public final class InfectionColonies {
         while(!queue.isEmpty()&&examined++<16&&changes.size()<amount&&cells.size()<512&&d.raw.getCompound("Originals").size()<4096){long value=queue.removeFirst();var at=BlockPos.of(value);if(d.raw.getCompound("Originals").contains(Long.toString(value))||at.distSqr(heart)>12*12||!level.hasChunkAt(at)||!fresh(d,at)||level.getBlockEntity(at)!=null||!level.getFluidState(at).isEmpty())continue;var old=level.getBlockState(at);var type=kind(old);if(type==null)continue;var replacement=com.coraline.registry.ModBlocks.INFECTION_VARIANTS.get(type).get().defaultBlockState();var memory=new CompoundTag();memory.putInt(VERSION,1);memory.putString("Dimension","minecraft:overworld");memory.putLong("Position",value);memory.putUUID("Colony",colony);memory.put("Original",NbtUtils.writeBlockState(old));memory.put("Expected",NbtUtils.writeBlockState(replacement));memory.putBoolean("Changed",false);memory.putBoolean("Restored",false);d.raw.getCompound("Originals").put(Long.toString(value),memory);cells.add(value);changes.put(at,replacement);for(var dir:Direction.values()){long next=at.relative(dir).asLong();if(queue.size()<256&&!queue.contains(next)&&bounded(next))queue.addLast(next);}}
         row.putLongArray("Frontier",queue.stream().mapToLong(Long::longValue).toArray());row.putLongArray("Cells",cells.stream().mapToLong(Long::longValue).toArray());d.setDirty();if(changes.isEmpty()||!d.commit(level.getServer()))return;for(var entry:changes.entrySet()){var memory=d.raw.getCompound("Originals").getCompound(Long.toString(entry.getKey().asLong()));var original=decode(level,memory.getCompound("Original"));if(original!=null&&level.getBlockEntity(entry.getKey())==null&&level.getBlockState(entry.getKey()).equals(original))level.setBlock(entry.getKey(),entry.getValue(),3);else{memory.putBoolean("Changed",true);d.setDirty();}}
     }
-    private static void restore(ServerLevel level,Data d,UUID colony,CompoundTag row){var cells=row.getLongArray("Cells");if(cells.length>0){int cursor=row.getInt("Cursor")%cells.length;for(int i=0;i<Math.min(8,cells.length);i++){long pos=cells[cursor];cursor=(cursor+1)%cells.length;var cell=d.raw.getCompound("Originals").getCompound(Long.toString(pos));var at=BlockPos.of(pos);if(cell.getBoolean("Restored")||!level.hasChunkAt(at))continue;var expected=decode(level,cell.getCompound("Expected"));var original=decode(level,cell.getCompound("Original"));if(expected==null||original==null)continue;if(!cell.getBoolean("Changed")&&level.getBlockEntity(at)==null&&level.getBlockState(at).equals(expected))level.setBlock(at,original,3);cell.putBoolean("Restored",true);row.putInt("Pending",Math.max(0,row.getInt("Pending")-1));d.setDirty();}row.putInt("Cursor",cursor);}
-        if(row.getInt("Pending")!=0)return;var heart=BlockPos.of(row.getLong("Heart"));if(!level.hasChunkAt(heart))return;if(level.getBlockState(heart).is(com.coraline.registry.ModBlocks.INFECTION_HEART.get()))level.removeBlock(heart,false);for(long pos:cells)d.raw.getCompound("Originals").remove(Long.toString(pos));d.raw.getCompound("Colonies").remove(colony.toString());d.setDirty();
+    private static void restore(ServerLevel level,Data d,UUID colony,CompoundTag row){var cells=row.getLongArray("Cells");if(cells.length>0){int cursor=row.getInt("Cursor")%cells.length;for(int i=0;i<Math.min(8,cells.length);i++){long pos=cells[cursor];cursor=(cursor+1)%cells.length;var cell=d.raw.getCompound("Originals").getCompound(Long.toString(pos));var at=BlockPos.of(pos);if(cell.getBoolean("Restored")||!level.hasChunkAt(at))continue;var expected=decode(level,cell.getCompound("Expected"));var original=decode(level,cell.getCompound("Original"));if(expected==null||original==null)continue;if(!cell.getBoolean("Changed")&&level.getBlockEntity(at)==null&&level.getBlockState(at).equals(expected)){
+                level.setBlock(at,original,3);
+                if(!level.getBlockState(at).equals(original))continue;
+            }
+            cell.putBoolean("Restored",true);row.putInt("Pending",Math.max(0,row.getInt("Pending")-1));d.setDirty();}row.putInt("Cursor",cursor);}
+        if(row.getInt("Pending")!=0)return;
+        var originals=d.raw.getCompound("Originals");
+        for(long pos:cells){
+            var at=BlockPos.of(pos);
+            if(!level.hasChunkAt(at))return;
+            var cell=originals.getCompound(Long.toString(pos));
+            var expected=decode(level,cell.getCompound("Expected"));
+            if(expected==null)return;
+            if(!cell.getBoolean("Changed")&&level.getBlockEntity(at)==null&&level.getBlockState(at).equals(expected)){
+                cell.putBoolean("Restored",false);
+                row.putInt("Pending",row.getInt("Pending")+1);
+                d.setDirty();
+            }
+        }
+        if(row.getInt("Pending")!=0)return;
+        var heart=BlockPos.of(row.getLong("Heart"));
+        if(!level.hasChunkAt(heart))return;
+        var infectionHeart=com.coraline.registry.ModBlocks.INFECTION_HEART.get();
+        if(level.getBlockState(heart).is(infectionHeart))level.removeBlock(heart,false);
+        if(level.getBlockState(heart).is(infectionHeart)||!level.getServer().saveEverything(true,true,true))return;
+        for(long pos:cells)originals.remove(Long.toString(pos));
+        d.raw.getCompound("Colonies").remove(colony.toString());
+        d.setDirty();
     }
     @SubscribeEvent public static void tick(TickEvent.ServerTickEvent event){var server=event.getServer();if(event.phase!=TickEvent.Phase.END||server.getTickCount()%20!=0)return;restoreRetired(server);var d=data(server);if(d==null||!d.problem.isEmpty())return;var level=server.overworld();var view=BreachWorldData.get(server).view();boolean contained=TrueHeartBattle.resetting(server)||!view.active()||!view.blocker().isEmpty()||view.millionths()<1000000;for(String key:new HashSet<>(d.raw.getCompound("Colonies").getAllKeys())){var row=d.raw.getCompound("Colonies").getCompound(key);var heart=BlockPos.of(row.getLong("Heart"));if(contained||level.hasChunkAt(heart)&&!level.getBlockState(heart).is(com.coraline.registry.ModBlocks.INFECTION_HEART.get()))stop(d,row);if(!row.getBoolean("Active")){restore(level,d,UUID.fromString(key),row);continue;}if(!level.hasChunkAt(heart)||level.getGameTime()<row.getLong("Next"))continue;row.putLong("Next",level.getGameTime()+(view.millionths()>=1500000?100:200));grow(level,d,UUID.fromString(key),row,view.millionths()>=1500000?4:2);}}
     @SubscribeEvent public static void command(AvatarInfectionPulse event){if(!event.avatar.authentic()||event.level!=event.level.getServer().overworld())return;var d=data(event.level.getServer());if(d==null||!d.problem.isEmpty())return;for(String key:d.raw.getCompound("Colonies").getAllKeys()){var row=d.raw.getCompound("Colonies").getCompound(key);if(row.getBoolean("Active"))row.putLong("Next",Math.min(row.getLong("Next"),event.level.getGameTime()+40));}d.setDirty();}

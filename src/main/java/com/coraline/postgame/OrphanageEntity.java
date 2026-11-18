@@ -19,15 +19,64 @@ public final class OrphanageEntity extends BlockEntity {
     }
     boolean questAvailable(){return authentic();}
     boolean complete(){return authentic()&&data().getInt("Slot")==3&&data().getBoolean("Released");}
+    boolean bindingsCleared(){return authentic()&&data().getInt("Slot")==3&&(data().getBoolean("BindingsCleared")||complete());}
     void read(ServerPlayer p){
         if(!authentic()||!p.isAlive()||p.isCreative()||p.isSpectator()||p.level()!=level||p.distanceToSqr(worldPosition.getCenter())>36||!level.mayInteract(p,worldPosition)||!InfiniteWorldData.get(p.server).accessible())return;
         var at=OrphanageLayout.register(plan,3);if(!level.hasChunkAt(at)||!(level.getBlockEntity(at) instanceof OrphanageEntity root)||!root.authentic()||!root.plan.site().equals(plan.site()))return;int slot=data().getInt("Slot");
         if(slot<3){root.data().putInt("Evidence",root.data().getInt("Evidence")|1<<slot);root.setChanged();p.sendSystemMessage(net.minecraft.network.chat.Component.translatable("message.coraline.orphanage_record_"+slot));return;}
         if(root.data().getInt("Evidence")!=7){p.sendSystemMessage(net.minecraft.network.chat.Component.translatable("message.coraline.orphanage_missing"));return;}
-        if(!root.complete()){root.data().putBoolean("Released",true);root.data().putUUID("Investigator",p.getUUID());root.setChanged();PostgameQuests.completed(p,plan);}root.release();p.sendSystemMessage(net.minecraft.network.chat.Component.translatable("message.coraline.orphanage_released"));
+        if(!root.data().hasUUID("Investigator")){
+            root.data().putUUID("Investigator",p.getUUID());
+            root.setChanged();
+        }
+        root.release();
+        if(root.complete())p.sendSystemMessage(net.minecraft.network.chat.Component.translatable("message.coraline.orphanage_released"));
     }
-    private void release(){if(!complete())return;for(var at:OrphanageLayout.bars(plan))if(level.hasChunkAt(at)&&level.getBlockState(at).is(com.coraline.registry.ModBlocks.ORPHANAGE_BINDING.get()))level.removeBlock(at,false);for(int i=0;i<plan.modules().size();i++)if(plan.modules().get(i).role()==InfiniteStructurePlan.Role.ORPHAN_VAULT){var at=SiteCacheReceipt.position(plan,i);if(level.hasChunkAt(at)&&level.getBlockEntity(at) instanceof SiteCacheBlockEntity cache)cache.unlock(plan.site());}}
-    static void tick(Level l,BlockPos at,BlockState state,OrphanageEntity root){if(l.getGameTime()%20==0&&root.complete())root.release();}
+    private void release(){
+        if(!authentic()||data().getInt("Slot")!=3||data().getInt("Evidence")!=7||!data().hasUUID("Investigator"))return;
+        boolean bindingsClear=true;
+        var binding=com.coraline.registry.ModBlocks.ORPHANAGE_BINDING.get();
+        for(var at:OrphanageLayout.bars(plan)){
+            if(!level.hasChunkAt(at)){
+                bindingsClear=false;
+                continue;
+            }
+            if(level.getBlockState(at).is(binding))level.removeBlock(at,false);
+            if(level.getBlockState(at).is(binding))bindingsClear=false;
+        }
+        if(!bindingsClear)return;
+        if(!data().getBoolean("BindingsCleared")){
+            data().putBoolean("BindingsCleared",true);
+            setChanged();
+        }
+        boolean vaultsOpen=true;
+        for(int i=0;i<plan.modules().size();i++)if(plan.modules().get(i).role()==InfiniteStructurePlan.Role.ORPHAN_VAULT){
+            var at=SiteCacheReceipt.position(plan,i);
+            if(!level.hasChunkAt(at)||!(level.getBlockEntity(at) instanceof SiteCacheBlockEntity cache)||!plan.site().equals(cache.site())||!cache.authentic()){
+                vaultsOpen=false;
+                continue;
+            }
+            cache.unlock(plan.site());
+            if(cache.locked())vaultsOpen=false;
+        }
+        if(!vaultsOpen)return;
+        if(!complete()){
+            data().putBoolean("Released",true);
+            data().putBoolean("CreditPending",true);
+            setChanged();
+        }
+        if(data().getBoolean("CreditPending")&&level instanceof ServerLevel serverLevel){
+            var investigator=serverLevel.getServer().getPlayerList().getPlayer(data().getUUID("Investigator"));
+            if(investigator!=null&&investigator.level()==level&&PostgameQuests.eligible(investigator)){
+                PostgameQuests.completed(investigator,plan);
+                data().remove("CreditPending");
+                setChanged();
+            }
+        }
+    }
+    static void tick(Level l,BlockPos at,BlockState state,OrphanageEntity root){
+        if(l instanceof ServerLevel&&l.getGameTime()%20==0&&root.data().hasUUID("Investigator"))root.release();
+    }
     @Override protected void saveAdditional(CompoundTag n){super.saveAdditional(n);n.put("CoralineOrphanage",raw.copy());}
     @Override public void load(CompoundTag n){super.load(n);raw=n.contains("CoralineOrphanage")?n.get("CoralineOrphanage").copy():new CompoundTag();plan=null;if(raw instanceof CompoundTag tag)OrphanageLayout.read(tag).ifPresent(p->plan=p);}
 }

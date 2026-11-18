@@ -72,6 +72,11 @@ public final class InfiniteStructurePlan {
         long b=mix(seed^generation.getLeastSignificantBits()^(long)z*0x632be59bd9b4e019L^family.ordinal());
         return Optional.of(new Plan(new UUID(a,b),generation,seed,family,center.biome(),x,high+1,z,variation,modules));
     }
+    static boolean doorway(Module module,int x,int z){
+        if(module.role()==Role.THEATRE_HALL&&x==module.width()-1&&Math.abs(module.z()+z-4)<=1)return true;
+        return (x==0||x==module.width()-1)&&Math.abs(z-module.depth()/2)<=1
+                ||(z==0||z==module.depth()-1)&&Math.abs(x-module.width()/2)<=1;
+    }
     private static Module room(int x,int y,int z,int w,int h,int d,Role role){return new Module(x,y,z,w,h,d,role);}
     static List<Module> layout(Family family,int variation){
         var rooms=new ArrayList<Module>();

@@ -56,7 +56,7 @@ public final class WybieRescue {
             if(scene==null||!scene.door.equals(witness.door())||original==null||!original.blocker().isEmpty()||!original.matches(witness.wybie())||original.fate()!=com.coraline.palace.PalaceWybieIdentity.Fate.LOST||!original.stored()||original.lostWellSession().filter(witness.wellSession()::equals).isEmpty())return;
             // Preserve the original reward receipt, but require a fresh native
             // trail, cage and escort after an actual new fall in a replay.
-            if(n.getString("Origin").equals("SURVIVED")){n.remove("Origin");n.remove("Completion");n.remove("RewardIssued");}
+            if(n.getString("Origin").equals("SURVIVED")){n.remove("Origin");n.remove("Completion");n.remove("RewardIssued");n.remove("RewardRecipient");}
             n.putString("Stage","SEARCH");n.putUUID("Door",witness.door());n.putUUID("WellSession",witness.wellSession());n.putString("Dimension",original.dimension());n.putLong("Position",original.position().asLong());
             for(String key:List.of("LoanDoor","LoanFinished","Site","Seed","AnchorX","AnchorZ","Generation","PreviousDimension","PreviousPosition"))n.remove(key);
             d.checkpoint(server);return;
@@ -121,7 +121,57 @@ public final class WybieRescue {
         if(escort){if(actor.level()==p.level()){actor.getLookControl().setLookAt(p,30,30);if(actor.distanceToSqr(p)>6.25)actor.getNavigation().moveTo(p,actor.distanceToSqr(p)>64?1.5:1.15);else actor.getNavigation().stop();if(actor.tickCount%200==0&&actor.distanceToSqr(p)>64&&actor.getNavigation().isDone())say(p,"clear_route");}else actor.getNavigation().stop();}
         if(complete){var coraline=d.coraline();if(coraline!=null){var home=BlockPos.of(coraline.getLong("Home"));actor.restrictTo(home,12);if(actor.distanceToSqr(home.getCenter())>144)actor.getNavigation().moveTo(home.getX()+.5,home.getY(),home.getZ()+.5,1);}}
     }
-    private static void coraline(MinecraftServer server,WybieRescueData d){if(!d.problem().isEmpty())return;if(d.coraline()!=null){var record=d.coraline();if(server.overworld().getEntity(record.getUUID("Actor")) instanceof CharacterEntity guide&&guide(guide)&&InfiniteWorldData.get(server).matchesGeneration(guide.getPersistentData().getUUID(CORALINE))){guide.setNoAi(false);guide.restrictTo(BlockPos.of(record.getLong("Home")),12);}return;}var drive=BreachWorldData.get(server).drivePosition().orElse(null);if(drive==null||!server.overworld().hasChunkAt(drive))return;var home=com.coraline.tycoon.TycoonWorld.landing(server.overworld(),drive.east(3));if(home==null)return;var actor=com.coraline.registry.CharacterCast.ENTITIES.get("coraline").get().create(server.overworld());if(actor==null)return;actor.moveTo(home.getX()+.5,home.getY(),home.getZ()+.5,180,0);if(!server.overworld().noCollision(actor))return;if(!d.admitCoraline(server,actor.getUUID(),home))return;actor.getPersistentData().putUUID(CORALINE,generation(server).orElseThrow());actor.setNoAi(false);actor.restrictTo(home,12);actor.setInvulnerable(true);actor.setPersistenceRequired();server.overworld().addFreshEntity(actor);}
+    private static void coraline(MinecraftServer server,WybieRescueData data){
+        if(!data.problem().isEmpty())return;
+        var generation=generation(server).orElse(null);
+        if(generation==null)return;
+        var level=server.overworld();
+        var record=data.coraline();
+        BlockPos home;
+        UUID actorId;
+        if(record!=null){
+            home=BlockPos.of(record.getLong("Home"));
+            actorId=record.getUUID("Actor");
+            var existing=level.getEntity(actorId);
+            if(existing instanceof CharacterEntity actor&&guide(actor)&&generation.equals(actor.getPersistentData().getUUID(CORALINE))){
+                if((!record.contains("Pending")||record.getBoolean("Pending"))&&(!server.saveEverything(true,true,true)||!data.finishCoraline(server)))return;
+                actor.setNoAi(false);
+                actor.setNoGravity(false);
+                actor.restrictTo(home,12);
+                return;
+            }
+            if(existing!=null||record.contains("Pending")&&!record.getBoolean("Pending"))return;
+            if(!record.getBoolean("Pending")){
+                if(!level.hasChunkAt(home)||!level.areEntitiesLoaded(new net.minecraft.world.level.ChunkPos(home).toLong()))return;
+                if(com.coraline.rebirth.LegacyActorRecovery.check(server,actorId)!=com.coraline.rebirth.LegacyActorRecovery.Result.ABSENT
+                        ||!data.reopenCoraline(server,actorId))return;
+            }
+            for(var world:server.getAllLevels())if(world.getEntity(actorId)!=null)return;
+        }else{
+            var drive=BreachWorldData.get(server).drivePosition().orElse(null);
+            if(drive==null||!level.hasChunkAt(drive))return;
+            home=com.coraline.tycoon.TycoonWorld.landing(level,drive.east(3));
+            if(home==null)return;
+            actorId=UUID.randomUUID();
+        }
+        if(!level.hasChunkAt(home)||!level.areEntitiesLoaded(new net.minecraft.world.level.ChunkPos(home).toLong())
+                ||!com.coraline.tycoon.TycoonWorld.safeFeet(level,home))return;
+        var actor=com.coraline.registry.CharacterCast.ENTITIES.get("coraline").get().create(level);
+        if(actor==null)return;
+        actor.setUUID(actorId);
+        actor.moveTo(home.getX()+.5,home.getY(),home.getZ()+.5,180,0);
+        if(!level.noCollision(actor)||record==null&&!data.admitCoraline(server,actorId,home))return;
+        actor.getPersistentData().putUUID(CORALINE,generation);
+        actor.setNoAi(true);
+        actor.setNoGravity(true);
+        actor.setInvulnerable(true);
+        actor.setPersistenceRequired();
+        if(level.addFreshEntity(actor)&&server.saveEverything(true,true,true)&&data.finishCoraline(server)){
+            actor.setNoAi(false);
+            actor.setNoGravity(false);
+            actor.restrictTo(home,12);
+        }
+    }
     private static ServerPlayer driver(MinecraftServer server,WybieRescueData d,CompoundTag n){
         if(n.getString("Stage").equals("STORY_LOAN")){var original=server.getPlayerList().getPlayer(d.sharedOwner(server));return original!=null&&eligible(original)?original:null;}
         var actual=n.hasUUID("Driver")?server.getPlayerList().getPlayer(n.getUUID("Driver")):null;if(actual!=null&&eligible(actual))return actual;
@@ -129,8 +179,71 @@ public final class WybieRescue {
         if(candidate!=null){n.putUUID("Driver",candidate.getUUID());d.setDirty();}else if(actor!=null)actor.getNavigation().stop();return candidate;
     }
     @SubscribeEvent public static void tick(TickEvent.ServerTickEvent event){if(event.phase!=TickEvent.Phase.END||event.getServer().getTickCount()%20!=0)return;var d=data(event.getServer());if(d==null||!d.migrateLegacy(event.getServer()))return;coraline(event.getServer(),d);for(var p:event.getServer().getPlayerList().getPlayers())welcomeSurvivor(p,d);var n=d.shared(event.getServer());if(n!=null){var driver=driver(event.getServer(),d,n);if(driver!=null)tick(driver,d,n);}}
-    @SubscribeEvent public static void interact(PlayerInteractEvent.EntityInteract event){if(!(event.getEntity() instanceof ServerPlayer p)||event.getHand()!=net.minecraft.world.InteractionHand.MAIN_HAND||!(event.getTarget() instanceof CharacterEntity actor)||TrueHeartBattle.recoveryPending(p)||!p.isAlive()||p.isCreative()||p.isSpectator()||!InfiniteWorldData.get(p.server).accessible()||p.distanceToSqr(actor)>36)return;var d=data(p.server);if(d==null)return;var guide=d.coraline();if(guide!=null&&actor.getUUID().equals(guide.getUUID("Actor"))&&actor.getPersistentData().hasUUID(CORALINE)&&InfiniteWorldData.get(p.server).matchesGeneration(actor.getPersistentData().getUUID(CORALINE))){if(eligible(p)){welcomeSurvivor(p,d);var rescue=d.shared(p.server);if(rescue==null)start(p);else if(rescue.getString("Stage").equals("RETURNING"))acknowledge(p,d);}PostgameQuests.coraline(p);event.setCanceled(true);event.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);return;}var shared=record(actor);if(shared!=null&&shared.getString("Stage").equals("COMPLETE")){PostgameQuests.wybie(p);event.setCanceled(true);event.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);return;}var n=d.shared(p.server);if(n!=null&&n.getUUID("Actor").equals(actor.getUUID())&&record(actor)==n){if(n.getString("Stage").equals("COMPLETE")){PostgameQuests.wybie(p);event.setCanceled(true);event.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);return;}var plan=plan(n);if(n.getString("Stage").equals("ESCORT")||n.getString("Stage").equals("RETURNING")){n.putUUID("Driver",p.getUUID());d.setDirty();}if(n.getString("Stage").equals("CAGE")&&plan!=null&&FalsePalaceLayout.open(actor.level(),plan)){n.putUUID("Driver",p.getUUID());n.putString("Stage","ESCORT");if(d.checkpoint(p.server))say(p,"escort");}else say(p,"status_"+n.getString("Stage").toLowerCase(Locale.ROOT));event.setCanceled(true);event.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);}}
-    private static void acknowledge(ServerPlayer p,WybieRescueData d){var n=d.shared(p.server);if(n==null||!n.getString("Stage").equals("RETURNING")||p.level()!=p.server.overworld())return;var actor=find(p.server,n);var guide=d.coraline();if(actor==null||guide==null||actor.level()!=p.level()||actor.distanceToSqr(BlockPos.of(guide.getLong("Home")).getCenter())>144||actor.distanceToSqr(p)>144)return;boolean rewarded=n.getBoolean("RewardIssued");n.putString("Stage","COMPLETE");if(!rewarded){n.putUUID("Completion",UUID.randomUUID());n.putBoolean("RewardIssued",true);}if(!d.checkpoint(p.server))return;if(rewarded){say(p,"complete");return;}var realm=generation(p.server).map(id->p.server.getLevel(InfiniteRealm.key(id))).orElse(null);if(realm!=null)BreachWorldData.get(p.server).resolveWybieRescue(realm,p);for(var stack:List.of(new net.minecraft.world.item.ItemStack(com.coraline.clothing.OtherMaterials.MOONSTONE.get(),2),new net.minecraft.world.item.ItemStack(com.coraline.registry.ModItems.SOULGLASS.get(),3)))if(!p.getInventory().add(stack))p.drop(stack,false);say(p,"complete");}
+    @SubscribeEvent public static void interact(PlayerInteractEvent.EntityInteract event){if(!(event.getEntity() instanceof ServerPlayer p)||event.getHand()!=net.minecraft.world.InteractionHand.MAIN_HAND||!(event.getTarget() instanceof CharacterEntity actor)||TrueHeartBattle.recoveryPending(p)||!p.isAlive()||p.isCreative()||p.isSpectator()||!InfiniteWorldData.get(p.server).accessible()||p.distanceToSqr(actor)>36)return;var d=data(p.server);if(d==null)return;var guide=d.coraline();if(guide!=null&&actor.getUUID().equals(guide.getUUID("Actor"))&&actor.getPersistentData().hasUUID(CORALINE)&&InfiniteWorldData.get(p.server).matchesGeneration(actor.getPersistentData().getUUID(CORALINE))){if(eligible(p)){welcomeSurvivor(p,d);var rescue=d.shared(p.server);if(rescue==null)start(p);else if(rescue.getString("Stage").equals("RETURNING"))acknowledge(p,d);else if(rescue.getString("Stage").equals("COMPLETE"))reward(p,d,rescue);}PostgameQuests.coraline(p);event.setCanceled(true);event.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);return;}var shared=record(actor);if(shared!=null&&shared.getString("Stage").equals("COMPLETE")){PostgameQuests.wybie(p);event.setCanceled(true);event.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);return;}var n=d.shared(p.server);if(n!=null&&n.getUUID("Actor").equals(actor.getUUID())&&record(actor)==n){if(n.getString("Stage").equals("COMPLETE")){PostgameQuests.wybie(p);event.setCanceled(true);event.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);return;}var plan=plan(n);if(n.getString("Stage").equals("ESCORT")||n.getString("Stage").equals("RETURNING")){n.putUUID("Driver",p.getUUID());d.setDirty();}if(n.getString("Stage").equals("CAGE")&&plan!=null&&FalsePalaceLayout.open(actor.level(),plan)){n.putUUID("Driver",p.getUUID());n.putString("Stage","ESCORT");if(d.checkpoint(p.server))say(p,"escort");}else say(p,"status_"+n.getString("Stage").toLowerCase(Locale.ROOT));event.setCanceled(true);event.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);}}
+    private static void acknowledge(ServerPlayer p,WybieRescueData d){
+        var n=d.shared(p.server);
+        if(n==null||!n.getString("Stage").equals("RETURNING")||p.level()!=p.server.overworld())return;
+        var actor=find(p.server,n);
+        var guide=d.coraline();
+        if(actor==null||guide==null||actor.level()!=p.level()||actor.distanceToSqr(BlockPos.of(guide.getLong("Home")).getCenter())>144||actor.distanceToSqr(p)>144)return;
+        n.putString("Stage","COMPLETE");
+        if(!n.getBoolean("RewardIssued")){
+            n.putUUID("Completion",UUID.randomUUID());
+            n.putUUID("RewardRecipient",p.getUUID());
+            n.putBoolean("RewardIssued",false);
+        }
+        if(!d.checkpoint(p.server))return;
+        say(p,"complete");
+        reward(p,d,n);
+    }
+    private static void reward(ServerPlayer p,WybieRescueData d,CompoundTag n){
+        if(!n.hasUUID("Completion"))return;
+        var receipt=n.getUUID("Completion");
+        String key="CoralineWybieRescueReward";
+        String persistedKey=net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG;
+        var persisted=p.getPersistentData().getCompound(persistedKey);
+        var receipts=persisted.getCompound(key);
+        var action=WybieRewardClaim.action(n,receipts,p.getUUID());
+        if(action==WybieRewardClaim.Action.NONE)return;
+
+        var realm=generation(p.server).map(id->p.server.getLevel(InfiniteRealm.key(id))).orElse(null);
+        if(realm!=null)BreachWorldData.get(p.server).resolveWybieRescue(realm,p);
+        if(action==WybieRewardClaim.Action.LEGACY_UNVERIFIED){
+            p.sendSystemMessage(net.minecraft.network.chat.Component.literal("This older rescue save recorded the reward as issued but has no delivery receipt."));
+            return;
+        }
+        if(action==WybieRewardClaim.Action.COMPLETE)return;
+        if(action==WybieRewardClaim.Action.DELIVER){
+            var inventory=p.getInventory();
+            var snapshot=inventory.save(new ListTag());
+            var moonstone=new net.minecraft.world.item.ItemStack(com.coraline.clothing.OtherMaterials.MOONSTONE.get(),2);
+            var soulglass=new net.minecraft.world.item.ItemStack(com.coraline.registry.ModItems.SOULGLASS.get(),3);
+            inventory.add(moonstone);
+            inventory.add(soulglass);
+            if(!moonstone.isEmpty()||!soulglass.isEmpty()){
+                inventory.load(snapshot);
+                p.inventoryMenu.broadcastChanges();
+                p.sendSystemMessage(net.minecraft.network.chat.Component.literal("Make room for the rescue reward, then speak to Coraline again."));
+                return;
+            }
+            receipts.putBoolean(receipt.toString(),true);
+            persisted.put(key,receipts);
+            p.getPersistentData().put(persistedKey,persisted);
+            inventory.setChanged();
+            p.inventoryMenu.broadcastChanges();
+        }
+        try{
+            var path=p.server.getWorldPath(net.minecraft.world.level.storage.LevelResource.PLAYER_DATA_DIR).resolve(p.getUUID()+".dat");
+            if(java.nio.file.Files.isSymbolicLink(path)||java.nio.file.Files.isSymbolicLink(path.getParent()))return;
+            ((com.coraline.mixin.MirrorPlayerSaveAccess)p.server.getPlayerList()).coraline$saveMirrorPlayer(p);
+            var disk=com.coraline.rebirth.StoryRunStore.read(path);
+            if(!disk.getCompound("ForgeData").getCompound(persistedKey).getCompound(key).getBoolean(receipt.toString()))return;
+            n.putBoolean("RewardIssued",true);
+            d.checkpoint(p.server);
+        }catch(java.io.IOException|RuntimeException unavailable){
+            // Inventory and its receipt are serialized together by the next save.
+        }
+    }
     static Optional<UUID> completion(ServerPlayer p){var d=data(p.server);var n=d==null?null:d.shared(p.server);if(n==null||n.getString("Origin").equals("SURVIVED")||!n.getString("Stage").equals("COMPLETE")||!n.hasUUID("Completion"))return Optional.empty();var actor=find(p.server,n);return actor!=null&&record(actor)==n&&actor.level()==p.server.overworld()&&actor.distanceToSqr(p)<=144?Optional.of(n.getUUID("Completion")):Optional.empty();}
     static boolean nearReturnedWybie(ServerPlayer p){
         if(!InfiniteWorldData.get(p.server).accessible())return false;

@@ -11,19 +11,28 @@ public final class InfiniteStructurePlanCheck {
     private static List<Door> doors(InfiniteStructurePlan.Module m){
         var result=new ArrayList<Door>();
         for(int x=m.x();x<=m.maxX();x++)for(int z=m.z();z<=m.maxZ();z++){
-            boolean door=(x==m.x()||x==m.maxX())&&Math.abs(z-(m.z()+m.depth()/2))<=1||(z==m.z()||z==m.maxZ())&&Math.abs(x-(m.x()+m.width()/2))<=1;
+            boolean open=m.role()==InfiniteStructurePlan.Role.VILLAGE_SQUARE||m.role()==InfiniteStructurePlan.Role.APPROACH;
+            boolean edge=x==m.x()||x==m.maxX()||z==m.z()||z==m.maxZ();
+            boolean door=open&&edge||InfiniteStructurePlan.doorway(m,x-m.x(),z-m.z());
             if(door)result.add(new Door(x,floor(m,z),z));
         }return result;
     }
     private static boolean adjacent(InfiniteStructurePlan.Module a,InfiniteStructurePlan.Module b){
+        if(interiorDais(a,b)||interiorDais(b,a))return true;
         for(var x:doors(a))for(var y:doors(b))if(Math.abs(x.x-y.x)+Math.abs(x.z-y.z)==1&&Math.abs(x.y-y.y)<=1)return true;return false;
+    }
+    private static boolean interiorDais(InfiniteStructurePlan.Module dais,InfiniteStructurePlan.Module room){
+        return dais.role()==InfiniteStructurePlan.Role.PERFORMER_DAIS
+                &&(room.role()==InfiniteStructurePlan.Role.THEATRE_HALL||room.role()==InfiniteStructurePlan.Role.CARNIVAL_GALLERY)
+                &&dais.x()>room.x()&&dais.maxX()<room.maxX()&&dais.z()>room.z()&&dais.maxZ()<room.maxZ()
+                &&Math.abs(dais.y()-room.y())<=1;
     }
     private static void layout(InfiniteStructurePlan.Plan p){
         var modules=p.modules();require(modules.size()<=InfiniteStructurePlan.MAX_PIECES,"Unbounded piece count");
         var seen=new HashSet<Integer>();seen.add(0);boolean changed;
         do{changed=false;for(int i=0;i<modules.size();i++)if(!seen.contains(i)&&modules.get(i).role()!=InfiniteStructurePlan.Role.CHIMNEY)for(int j:new ArrayList<>(seen))if(adjacent(modules.get(i),modules.get(j))){seen.add(i);changed=true;break;}}while(changed);
         for(int i=0;i<modules.size();i++){
-            var m=modules.get(i);require(m.role()==InfiniteStructurePlan.Role.CHIMNEY||seen.contains(i),"Disconnected module/entrance: "+p.family()+" / "+m.role());
+            var m=modules.get(i);require(m.role()==InfiniteStructurePlan.Role.CHIMNEY||m.role()==InfiniteStructurePlan.Role.TOWER||seen.contains(i),"Disconnected module/entrance: "+p.family()+" / "+m.role());
             require(p.y()+m.y()-8>=InfiniteTerrain.MIN_Y&&p.y()+m.y()+m.height()<InfiniteTerrain.MIN_Y+InfiniteTerrain.HEIGHT,"Module outside build height");
             require(m.width()*m.height()*m.depth()<14000,"One unbounded synchronous piece");
         }
@@ -36,7 +45,10 @@ public final class InfiniteStructurePlanCheck {
         for(long seed:new long[]{124119,-742971,0,981377123})for(int x=-12288;x<=12288;x+=1536)for(int z=-12288;z<=12288;z+=1536)for(var family:InfiniteStructurePlan.Family.values()){
             candidates++;var planned=InfiniteStructurePlan.at(epoch,seed,family,x,z);if(planned.isEmpty())continue;
             var p=planned.orElseThrow();counts.merge(family,1,Integer::sum);examples.putIfAbsent(family,p);layout(p);
-            require(p.family().biomes.contains(p.biome()),"Wrong climate family");require(p.y()>InfiniteTerrain.SEA_LEVEL+2,"Flooded surface entrance");
+            require(p.family().biomes.contains(p.biome()),"Wrong climate family");
+            if(p.family()==InfiniteStructurePlan.Family.SUNKEN_OTHERWORLD_RUINS){
+                require(p.y()>=InfiniteTerrain.SEA_LEVEL-39&&p.y()<=InfiniteTerrain.SEA_LEVEL-11,"Sunken ruins outside their intended depth");
+            }else require(p.y()>InfiniteTerrain.SEA_LEVEL+2,"Flooded surface entrance");
         }
         for(var family:InfiniteStructurePlan.Family.values())require(counts.getOrDefault(family,0)>0,"No admissible generated sites across independent seed sample: "+family+" / "+counts);
         for(var p:examples.values()){

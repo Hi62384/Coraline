@@ -165,7 +165,7 @@ public final class PalaceWellEncounter {
         var owner=b.getPersistentData().getUUID("PalaceWellOwner");var s=VisitData.get(b.getServer()).scenes.get(owner);var p=b.getServer().getPlayerList().getPlayer(owner);var n=s==null?null:control(s);
         if(p==null||n==null||n.getBoolean("Paused")||!n.hasUUID("Bike")||!b.getUUID().equals(n.getUUID("Bike"))||!eligible(p,s)){b.stop();return;}
         var progress=state(s);var w=wybie(p,s,progress);if(w==null||w.getVehicle()!=b){b.stop();return;}
-        boolean entry=progress.phase()==INTRO_A&&ShowPlayback.started(s)&&ShowPlayback.position(s)>=40;
+        boolean entry=progress.phase()==INTRO_A&&cuePosition(s,n)>=40;
         boolean departing=progress.phase()==DEPARTING;
         if(!entry&&!departing){b.stop();return;}
         String key=departing?"Departure":"Entry";
@@ -214,13 +214,60 @@ public final class PalaceWellEncounter {
     }
     private static boolean cue(ServerPlayer p,VisitData.Scene s,CompoundTag n,char letter){
         String sound="crawling_hand_"+Character.toLowerCase(letter);
-        if(!n.getBoolean("CueStarted")||!sound.equals(n.getString("Cue"))){if(!ShowPlayback.start(p,s,sound,false)){pause(p,s,n,"Original well recording is unavailable.");return false;}n.putBoolean("CueStarted",true);n.putString("Cue",sound);}
+        var recovery=n.getCompound("WellRecording");
+        if(!sound.equals(recovery.getString("Sound"))||!n.getString("Phase").equals(recovery.getString("Phase"))){
+            recovery=new CompoundTag();
+            recovery.putString("Sound",sound);
+            recovery.putString("Phase",n.getString("Phase"));
+            n.put("WellRecording",recovery);
+        }
+        if(ShowPlayback.debugSeeking(s))return false;
+        if(RescueChapter.RecordingRecovery.exhausted(recovery)){
+            int ticks=RescueChapter.RecordingRecovery.advance(recovery);
+            return RescueChapter.RecordingRecovery.dialogueWindowEnded(ticks,ShowRecordings.duration(sound));
+        }
+        if(!n.getBoolean("CueStarted")||!sound.equals(n.getString("Cue"))){
+            if(n.getInt("Ticks")<recovery.getInt("RetryAt"))return false;
+            if(!ShowPlayback.start(p,s,sound,false)){
+                cueFailed(p,s,n,recovery);
+                return false;
+            }
+            n.putBoolean("CueStarted",true);
+            n.putString("Cue",sound);
+        }
         boolean done=ShowPlayback.tick(p,s);
         if(ShowPlayback.data(s).getBoolean("SafetySkipped")||!ShowPlayback.data(s).getString("Blocker").isEmpty()){
-            pause(p,s,n,"The original well recording was interrupted. Use /coralinepalace well-resume to retry.");
+            cueFailed(p,s,n,recovery);
             return false;
         }
         return done&&!ShowPlayback.debugSeeking(s);
+    }
+    private static void cueFailed(ServerPlayer p,VisitData.Scene s,CompoundTag n,CompoundTag recovery){
+        ShowPlayback.stop(p,s);
+        n.putBoolean("CueStarted",false);
+        RescueChapter.RecordingRecovery.failed(recovery);
+        recovery.putInt("RetryAt",(int)Math.min(Integer.MAX_VALUE,n.getInt("Ticks")+20L));
+        if(RescueChapter.RecordingRecovery.exhausted(recovery)){
+            p.displayClientMessage(Component.literal("The well recording is unavailable. The encounter will continue with its required actions."),true);
+        }
+    }
+    private static boolean cueStarted(VisitData.Scene s,CompoundTag n){
+        return cuePosition(s,n)>0||n.getBoolean("CueStarted")&&ShowPlayback.started(s);
+    }
+    private static int cuePosition(VisitData.Scene s,CompoundTag n){
+        var recovery=n.getCompound("WellRecording");
+        if(n.getString("Phase").equals(recovery.getString("Phase"))&&RescueChapter.RecordingRecovery.exhausted(recovery)){
+            return recovery.getInt("RecordingFallbackTicks");
+        }
+        return n.getBoolean("CueStarted")?ShowPlayback.position(s):0;
+    }
+    static boolean disposalCueRecovered(VisitData.Scene s){
+        var n=control(s);
+        if(n==null||!KEY_BUNDLED.name().equals(n.getString("Phase"))||ShowPlayback.debugSeeking(s))return false;
+        var recovery=n.getCompound("WellRecording");
+        return KEY_BUNDLED.name().equals(recovery.getString("Phase"))&&"crawling_hand_e".equals(recovery.getString("Sound"))
+                &&RescueChapter.RecordingRecovery.exhausted(recovery)
+                &&RescueChapter.RecordingRecovery.dialogueWindowEnded(recovery.getInt("RecordingFallbackTicks"),ShowRecordings.duration("crawling_hand_e"));
     }
     private static boolean move(ServerPlayer p,Entity e,Vec3 target,double speed){return PalaceWellMotion.move(p.serverLevel(),e,target,speed);}
     private static boolean arrived(Entity e,Vec3 at){return e.position().distanceToSqr(at)<.035;}
@@ -254,7 +301,7 @@ public final class PalaceWellEncounter {
                 move(p,h,p.position().add(0,.17,0),.30);h.frame(10,t,1);progress.activeTick(s.owner,progress.session(),now);
             }
             case INTRO_A->{
-                var b=bike(p,s,n,progress,w);if(b==null){if(t%80==0)p.displayClientMessage(Component.literal("Wybie is looking for a clear, hidden approach to the well."),true);return;}w=wybie(p,s,progress);if(w==null)return;boolean done=cue(p,s,n,'A');if(!ShowPlayback.started(s))return;
+                var b=bike(p,s,n,progress,w);if(b==null){if(t%80==0)p.displayClientMessage(Component.literal("Wybie is looking for a clear, hidden approach to the well."),true);return;}w=wybie(p,s,progress);if(w==null)return;boolean done=cue(p,s,n,'A');if(!cueStarted(s,n))return;
                 var target=Vec3.atBottomCenterOf(BlockPos.of(n.getLong("Entry")));boolean at=n.getBoolean("BikeArrived")&&b.distanceToSqr(target)<.36;
                 if(!at&&w.getVehicle()!=b&&w.distanceToSqr(b)>32*32){
                     if(PalaceWellMotion.seen(p,b))return;
@@ -269,7 +316,7 @@ public final class PalaceWellEncounter {
                 progress.finishIntro(s.owner,progress.session(),'A',done,at,0);
             }
             case INTRO_B,INTRO_C,INTRO_D->{
-                char letter=progress.phase().name().charAt(6);boolean done=cue(p,s,n,letter);if(!ShowPlayback.started(s))return;
+                char letter=progress.phase().name().charAt(6);boolean done=cue(p,s,n,letter);if(!cueStarted(s,n))return;
                 Vec3 target=letter=='B'?c.add(0,2.3,-4):letter=='C'?c.add(0,2.3,0):c.add(0,-.45,0);
                 boolean motion=move(p,w,target,.075)&&arrived(w,target);w.gameGesture(letter=='D'?71:70,5);face(w,p.position());
                 var grip=letter=='D'?c.add(0,2.18,-2):w.position().add(forward(w).scale(1.1)).add(0,1.4,0);move(p,h,grip,.20);h.frame(11,t,1);
@@ -306,7 +353,7 @@ public final class PalaceWellEncounter {
             case WRAPPED->{if(w!=null)w.gameGesture(74,5);if(t%80==0)p.displayClientMessage(Component.literal("Place the original Little Door key into the wrapped bundle."),true);}
             case KEY_BUNDLED->{
                 var bundle=RescueProps.find(p,s,"WellBundle");if(bundle==null||!root(s).hasUUID("BundleEntity")||!root(s).getUUID("BundleEntity").equals(bundle.getUUID()))return;
-                boolean heard=w==null||cue(p,s,n,'E');int cursor=w==null?t:ShowPlayback.position(s);int duration=w==null?60:ShowRecordings.duration("crawling_hand_e");
+                boolean heard=w==null||cue(p,s,n,'E');int cursor=w==null?t:cuePosition(s,n);int duration=w==null?60:ShowRecordings.duration("crawling_hand_e");
                 if(w!=null){w.gameGesture(75,5);if(cursor>=Math.max(0,duration-40))n.putBoolean("ThrowRequested",true);}
                 if(n.getBoolean("ThrowRequested")){
                     int leg=PalaceWellMotion.throwBundle(p.serverLevel(),bundle,c,n.getInt("ThrowStage"));
@@ -318,9 +365,9 @@ public final class PalaceWellEncounter {
             }
             case DISPOSED->{ShowPlayback.stop(p,s);progress.beginFarewell(s.owner,progress.session());}
             case FAREWELL_F,FAREWELL_G,FAREWELL_H,FAREWELL_I->{
-                char letter=progress.phase().name().charAt(9);boolean done=cue(p,s,n,letter);if(!ShowPlayback.started(s))return;w.gameGesture(letter=='I'?77:letter=='H'?76:74,5);face(w,letter=='I'?c:p.position());
-                var held=w.position().add(forward(w).scale(.65)).add(0,1.1,0);var photo=prop(p,s,"Photo",RescueProps.PHOTO,held);if(photo==null)return;photo.setInvisible(letter>='H'&&ShowPlayback.position(s)>20);photo.setPos(held);photo.setYRot(w.getYRot()+180);
-                progress.finishFarewell(s.owner,progress.session(),letter,done,ShowPlayback.started(s));
+                char letter=progress.phase().name().charAt(9);boolean done=cue(p,s,n,letter);if(!cueStarted(s,n))return;w.gameGesture(letter=='I'?77:letter=='H'?76:74,5);face(w,letter=='I'?c:p.position());
+                var held=w.position().add(forward(w).scale(.65)).add(0,1.1,0);var photo=prop(p,s,"Photo",RescueProps.PHOTO,held);if(photo==null)return;photo.setInvisible(letter>='H'&&cuePosition(s,n)>20);photo.setPos(held);photo.setYRot(w.getYRot()+180);
+                progress.finishFarewell(s.owner,progress.session(),letter,done,cueStarted(s,n));
             }
             case DEPARTING->{
                 var b=bike(p,s,n,progress,w);if(b==null)return;

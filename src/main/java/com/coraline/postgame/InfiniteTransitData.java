@@ -13,12 +13,13 @@ import net.minecraft.world.level.storage.LevelResource;
 final class InfiniteTransitData extends SavedData {
     private final UUID generation;
     private CompoundTag state;
+    static final int ARRIVAL_CANDIDATES=1024;
     private String problem="";
     private InfiniteTransitData(UUID id){generation=id;state=new CompoundTag();state.putInt("Version",1);state.putUUID("Generation",id);state.put("Entries",new CompoundTag());state.putInt("Candidate",0);}
     private InfiniteTransitData(UUID id,CompoundTag n){
         generation=id;state=n.copy();
         try{
-            if(!n.contains("Version",Tag.TAG_INT)||n.getInt("Version")!=1||!n.hasUUID("Generation")||!id.equals(n.getUUID("Generation"))||!n.contains("Entries",Tag.TAG_COMPOUND)||!n.contains("Candidate",Tag.TAG_INT)||n.getInt("Candidate")<0||n.getInt("Candidate")>128)throw new IllegalArgumentException("Invalid transit identity");
+            if(!n.contains("Version",Tag.TAG_INT)||n.getInt("Version")!=1||!n.hasUUID("Generation")||!id.equals(n.getUUID("Generation"))||!n.contains("Entries",Tag.TAG_COMPOUND)||!n.contains("Candidate",Tag.TAG_INT)||n.getInt("Candidate")<0||n.getInt("Candidate")>ARRIVAL_CANDIDATES)throw new IllegalArgumentException("Invalid transit identity");
             if(n.contains("Anchor")&&!n.contains("Anchor",Tag.TAG_LONG)||n.contains("Built")&&(!n.contains("Built",Tag.TAG_BYTE)||n.getByte("Built")<0||n.getByte("Built")>1)||n.getBoolean("Built")&&!n.contains("Anchor",Tag.TAG_LONG))throw new IllegalArgumentException("Invalid arrival construction receipt");
             if(n.contains("Anchor")&&!bounded(BlockPos.of(n.getLong("Anchor"))))throw new IllegalArgumentException("Invalid arrival position");
             if(n.contains("PalaceDoor")&&!n.contains("PalaceDoor",Tag.TAG_LONG))throw new IllegalArgumentException("Invalid Palace portal receipt");
@@ -33,7 +34,8 @@ final class InfiniteTransitData extends SavedData {
     static InfiniteTransitData get(MinecraftServer server,UUID id){var file=server.getWorldPath(LevelResource.ROOT).resolve("data/"+name(id)+".dat");return server.overworld().getDataStorage().computeIfAbsent(n->new InfiniteTransitData(id,n),()->Files.notExists(file,LinkOption.NOFOLLOW_LINKS)?new InfiniteTransitData(id):new InfiniteTransitData(id,new CompoundTag()),name(id));}
     String problem(){return problem;}
     int candidate(){return state.getInt("Candidate");}
-    void rejectCandidate(){if(problem.isEmpty()&&!state.contains("Anchor")&&candidate()<128){state.putInt("Candidate",candidate()+1);setDirty();}}
+    void rejectCandidate(){if(problem.isEmpty()&&!state.contains("Anchor")&&candidate()<ARRIVAL_CANDIDATES){state.putInt("Candidate",candidate()+1);setDirty();}}
+    void restartCandidates(){if(problem.isEmpty()&&!state.contains("Anchor")&&candidate()==ARRIVAL_CANDIDATES){state.putInt("Candidate",0);setDirty();}}
     Optional<BlockPos> anchor(){return problem.isEmpty()&&state.contains("Anchor",Tag.TAG_LONG)?Optional.of(BlockPos.of(state.getLong("Anchor"))):Optional.empty();}
     boolean built(){return problem.isEmpty()&&state.getBoolean("Built");}
     boolean plan(MinecraftServer server,BlockPos at){if(!problem.isEmpty()||!bounded(at))return false;if(anchor().isPresent())return anchor().orElseThrow().equals(at);state.putLong("Anchor",at.asLong());state.putBoolean("Built",false);return checkpoint(server);}

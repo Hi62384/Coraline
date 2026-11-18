@@ -38,19 +38,100 @@ public final class TycoonAgency {
         if(n.getBoolean("AgencySearch")){int index=n.getInt("AgencySearchIndex");if(index>=192){n.remove("AgencySearch");TycoonWorld.message(p,"No safe agency site found. Use the phone from a flatter natural area to resume the search; nothing overwritten.");n.remove("AgencySearchOrigin");n.putInt("AgencySearchIndex",0);return;}var origin=BlockPos.of(n.getLong("AgencySearchOrigin"));double angle=index*2.399963;int radius=64+(index/16)*24;int x=origin.getX()+(int)(Math.cos(angle)*radius),z=origin.getZ()+(int)(Math.sin(angle)*radius);l.getChunk(x>>4,z>>4);var c=new BlockPos(x,l.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,x,z),z);n.putInt("AgencySearchIndex",index+1);if(clearSite(l,c)){n.putLong("Agency",c.asLong());n.putBoolean("AgencyBuilding",true);n.remove("AgencySearch");TycoonWorld.message(p,"Agency site approved: "+c.toShortString()+". Construction begins.");}TycoonWorld.dirty(p);}
         if(n.getBoolean("AgencyBuilding")){var plan=building(BlockPos.of(n.getLong("Agency")));int cursor=n.getInt("AgencyBuildCursor");for(int limit=0;limit<32&&cursor<plan.size();limit++,cursor++){var cell=plan.get(cursor);l.getChunkAt(cell.at);var old=l.getBlockState(cell.at);if(old.equals(cell.state))continue;if(!(old.isAir()||natural(old)||old.is(Blocks.GRASS)||old.is(Blocks.TALL_GRASS))){n.putString("AgencyBlocker","Construction stopped at changed footprint "+cell.at.toShortString());TycoonWorld.dirty(p);return;}l.setBlock(cell.at,cell.state,2);}n.putInt("AgencyBuildCursor",cursor);if(cursor>=plan.size()){n.remove("AgencyBuilding");n.putBoolean("AgencyBuilt",true);TycoonWorld.message(p,"The agency is open. Visit reception or request an inspection by phone.");}TycoonWorld.dirty(p);}
         if(n.getBoolean("AgencyBuilt"))clerk(p);
-        if(n.getBoolean("InspectionRequested")||(n.getBoolean("EverApproved")||n.getBoolean("Approved"))&&h.clock()>=n.getLong("NextInspection"))inspection(p);
+        if(n.hasUUID("Inspector")||n.getBoolean("InspectionRequested")||(n.getBoolean("EverApproved")||n.getBoolean("Approved"))&&h.clock()>=n.getLong("NextInspection"))inspection(p);
     }
-    public static void clerk(ServerPlayer p){var h=TycoonWorld.home(p);var l=p.server.overworld();var at=BlockPos.of(h.state.getLong("Agency")).offset(-4,1,-3);if(!l.hasChunkAt(at))return;if(h.state.hasUUID("Clerk"))return;var actor=TycoonContent.NPC.get().create(l);if(actor==null)return;actor.configure(h.owner,UUID.randomUUID(),true,17);actor.setPos(at.getCenter().add(0,-.5,0));if(l.addFreshEntity(actor)){h.state.putUUID("Clerk",actor.getUUID());TycoonWorld.dirty(p);}}
+    private static boolean staffChunkReady(ServerPlayer p,BlockPos at){
+        var level=p.server.overworld();
+        return level.hasChunkAt(at)&&level.areEntitiesLoaded(new net.minecraft.world.level.ChunkPos(at).toLong());
+    }
+    private static boolean staffElsewhere(ServerPlayer p,UUID id){
+        for(var level:p.server.getAllLevels())if(level!=p.server.overworld()&&level.getEntity(id)!=null)return true;
+        return false;
+    }
+    public static void clerk(ServerPlayer p){
+        var h=TycoonWorld.home(p);var l=p.server.overworld();
+        var origin=BlockPos.of(h.state.getLong("Agency")).offset(-4,1,-3);
+        if(!h.state.hasUUID("Clerk")){
+            if(!staffChunkReady(p,origin))return;
+            h.state.putUUID("Clerk",UUID.randomUUID());
+            h.state.putLong("ClerkAt",origin.asLong());
+            TycoonWorld.dirty(p);
+        }
+        var id=h.state.getUUID("Clerk");
+        var existing=l.getEntity(id);
+        if(existing instanceof TycoonNpc npc&&h.owner.equals(npc.owner)&&npc.staff()&&!npc.getPersistentData().getBoolean("Inspector")){
+            long at=npc.blockPosition().asLong();
+            if(!h.state.contains("ClerkAt")||h.state.getLong("ClerkAt")!=at){h.state.putLong("ClerkAt",at);TycoonWorld.dirty(p);}
+            return;
+        }
+        var at=h.state.contains("ClerkAt")?BlockPos.of(h.state.getLong("ClerkAt")):origin;
+        if(existing!=null||staffElsewhere(p,id)||!staffChunkReady(p,at)||!staffChunkReady(p,origin)||!TycoonWorld.safeFeet(l,origin))return;
+        admitStaff(p,h,id,origin,false);
+    }
+    private static TycoonNpc admitStaff(ServerPlayer p,TycoonData.Home h,UUID id,BlockPos at,boolean inspector){
+        var level=p.server.overworld();
+        var actor=TycoonContent.NPC.get().create(level);
+        if(actor==null)return null;
+        actor.setUUID(id);
+        actor.configure(h.owner,id,true,inspector?29:17);
+        actor.setPos(at.getX()+.5,at.getY(),at.getZ()+.5);
+        actor.getPersistentData().putBoolean("Inspector",inspector);
+        try{if(!TycoonCheckpoints.home(p))return null;}catch(java.io.IOException unavailable){return null;}
+        return level.addFreshEntity(actor)?actor:null;
+    }
     public static void request(ServerPlayer p){var h=TycoonWorld.home(p);if(!h.state.getBoolean("AgencyBuilt")||h.entrance()==null){TycoonWorld.message(p,"Wait for the agency to open and place your Special Door first.");return;}if(h.state.getBoolean("InspectionRequested")||h.state.hasUUID("Inspector")){TycoonWorld.message(p,"An inspection or departure is already in progress.");return;}h.state.putBoolean("InspectionRequested",true);h.state.putBoolean("Approved",false);h.state.remove("InspectionRoute");h.state.putInt("InspectionNode",0);h.state.putLong("InspectionStart",h.clock());TycoonWorld.dirty(p);TycoonWorld.message(p,"An inspector is coming to your registered entrance. Keep a clear path inside.");}
-    private static void inspection(ServerPlayer p){var h=TycoonWorld.home(p);var n=h.state;if(h.entrance()==null)return;var l=p.server.overworld();var survey=TycoonRooms.survey(p);TycoonNpc agent=null;if(n.hasUUID("Inspector")){if(n.contains("InspectorAt"))l.getChunkAt(BlockPos.of(n.getLong("InspectorAt")));var e=l.getEntity(n.getUUID("Inspector"));if(e instanceof TycoonNpc npc){agent=npc;n.putLong("InspectorAt",agent.blockPosition().asLong());if(agent.getPersistentData().getBoolean("Leaving"))return;}else return;}
-        if(agent==null){var at=arrival(p,h);if(at==null){n.putString("InspectionReport","Waiting for an unobtrusive safe approach outside the entrance. Clear a path and look back inside.");return;}agent=TycoonContent.NPC.get().create(l);agent.configure(h.owner,UUID.randomUUID(),true,29);agent.setPos(at.getX()+.5,at.getY(),at.getZ()+.5);agent.getPersistentData().putBoolean("Inspector",true);if(!l.addFreshEntity(agent))return;n.putUUID("Inspector",agent.getUUID());n.putLong("InspectorAt",at.asLong());n.putLong("InspectionStart",h.clock());}
+    private static void inspection(ServerPlayer p){
+        var h=TycoonWorld.home(p);var n=h.state;if(h.entrance()==null)return;
+        var l=p.server.overworld();
+        TycoonNpc agent=null;
+        if(n.hasUUID("Inspector")){
+            var id=n.getUUID("Inspector");
+            var at=n.contains("InspectorAt")?BlockPos.of(n.getLong("InspectorAt")):h.entrance();
+            l.getChunkAt(at);
+            var entity=l.getEntity(id);
+            if(entity instanceof TycoonNpc npc&&h.owner.equals(npc.owner)&&npc.staff()&&npc.getPersistentData().getBoolean("Inspector")){
+                agent=npc;
+                n.putLong("InspectorAt",agent.blockPosition().asLong());
+                if(n.contains("InspectorLeavingAt")||agent.getPersistentData().getBoolean("Leaving")){
+                    if(!n.contains("InspectorLeavingAt"))n.putLong("InspectorLeavingAt",h.clock());
+                    agent.getPersistentData().putBoolean("Leaving",true);
+                    if(h.clock()-n.getLong("InspectorLeavingAt")>=1200)retireInspector(p,agent);
+                    return;
+                }
+            }else{
+                if(entity!=null||staffElsewhere(p,id)||!staffChunkReady(p,at))return;
+                if(n.contains("InspectorLeavingAt")){
+                    if(h.clock()-n.getLong("InspectorLeavingAt")>=1200)retireInspector(p,null);
+                    return;
+                }
+                if(!TycoonWorld.safeFeet(l,at))return;
+                agent=admitStaff(p,h,id,at,true);
+                if(agent==null)return;
+            }
+        }else{
+            var at=arrival(p,h);
+            if(at==null){n.putString("InspectionReport","Waiting for an unobtrusive safe approach outside the entrance. Clear a path and look back inside.");return;}
+            if(!staffChunkReady(p,at))return;
+            var id=UUID.randomUUID();
+            n.putUUID("Inspector",id);n.putLong("InspectorAt",at.asLong());n.putLong("InspectionStart",h.clock());TycoonWorld.dirty(p);
+            agent=admitStaff(p,h,id,at,true);
+            if(agent==null)return;
+        }
+        var survey=TycoonRooms.survey(p);
         if(!n.contains("InspectionRoute")){var route=new ArrayList<BlockPos>();var enter=TycoonWorld.landing(l,h.entrance());if(enter!=null)route.add(enter);for(String id:List.of("orphan_bed","orphan_fridge","water_station","orphan_food_table"))for(var object:survey.furniture().getOrDefault(id,List.of())){var at=TycoonRooms.approach(survey.reachable(),object);if(at!=null)route.add(at);}n.putLongArray("InspectionRoute",route.stream().mapToLong(BlockPos::asLong).toArray());}
         var route=n.getLongArray("InspectionRoute");int index=n.getInt("InspectionNode");if(index<route.length){var at=BlockPos.of(route[index]);if(TycoonCare.move(agent,at,.8)){agent.gesture(2,30);n.putInt("InspectionNode",index+1);n.putLong("InspectionStart",h.clock());}else{if(Boolean.getBoolean("coraline.tycoonPhaseOneCheck")&&h.clock()%100==0){var path=agent.getNavigation().getPath();com.mojang.logging.LogUtils.getLogger().info("TYCOON_INSPECT_ROUTE node={} from={} to={} reachable={} done={} noAI={}",index,agent.position(),at,path!=null&&path.canReach(),agent.getNavigation().isDone(),agent.isNoAi());}if(h.clock()-n.getLong("InspectionStart")>1200){finish(p,survey,"Inspection could not reach a facility. Clear doors/stairs and request again.",false);agent.getPersistentData().putBoolean("Leaving",true);}}return;}
         boolean severe=h.residents.values().stream().filter(TycoonData.Resident::active).anyMatch(r->r.need("Neglect")>=TycoonConfig.SEVERE.get()||r.need("Hunger")<8||r.need("Thirst")<8);
         String report=survey.approved()?"Approved: reachable beds, dining, stocked fridge, water and safe rooms.":String.join(" ",survey.problems());finish(p,survey,report,survey.approved()&&!severe);if(severe){for(var child:h.residents.values())if(child.active())TycoonCare.depart(p,child,"AGENCY_CUSTODY");n.putLong("SuspendedUntil",h.clock()+48000);h.reputation(-25);TycoonWorld.message(p,"Severe welfare concerns: the agency is returning all placements to custody.");}agent.getPersistentData().putBoolean("Leaving",true);
     }
+    static void retireInspector(ServerPlayer p,TycoonNpc agent){
+        var state=TycoonWorld.home(p).state;
+        if(!state.hasUUID("Inspector")||agent!=null&&!state.getUUID("Inspector").equals(agent.getUUID()))return;
+        if(agent!=null)agent.discard();
+        state.remove("Inspector");state.remove("InspectorAt");state.remove("InspectorLeavingAt");
+        TycoonWorld.dirty(p);
+    }
     public static void finish(ServerPlayer p,TycoonRooms.Survey survey,String report,boolean pass){
-        var h=TycoonWorld.home(p);var n=h.state;n.remove("InspectionRequested");n.remove("InspectionRoute");n.putInt("InspectionNode",0);n.putBoolean("Approved",pass);n.putString("InspectionReport",report);h.reputation(pass?5:-5);
+        var h=TycoonWorld.home(p);var n=h.state;if(n.hasUUID("Inspector"))n.putLong("InspectorLeavingAt",h.clock());n.remove("InspectionRequested");n.remove("InspectionRoute");n.putInt("InspectionNode",0);n.putBoolean("Approved",pass);n.putString("InspectionReport",report);h.reputation(pass?5:-5);
         if(pass){n.putBoolean("EverApproved",true);n.remove("WarningDeadline");h.milestone("first_inspection",50);}else n.putLong("WarningDeadline",h.clock()+24000);
         // A warning never removes the household from the recurring inspection roster.
         // Reputation changes frequency; failed homes receive a next-day follow-up.

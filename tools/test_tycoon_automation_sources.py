@@ -26,7 +26,7 @@ class Automation(unittest.TestCase):
         text=src('TycoonWorkers')
         for check in ('worker.getInt("Operating")','worker.getInt("Unlocked")','w.getBoolean("Break")','SalaryRemainder','sum/60','LastTick','TycoonSoulLedger.debit(h,due','UNPAID_PAUSED'):
             self.assertIn(check,text)
-        self.assertLess(text.index('boolean paid=bill(h,w)'),text.index('TycoonWorkerJobs.step('))
+        self.assertLess(text.index('boolean paid=actor!=null&&bill(h,w)'),text.index('TycoonWorkerJobs.step('))
         self.assertIn('finally{CONTEXT.remove();}',text)
         self.assertIn('WorkerReservations',text)
 

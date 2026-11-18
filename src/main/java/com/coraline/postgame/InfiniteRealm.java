@@ -83,7 +83,19 @@ public final class InfiniteRealm {
         var level=target.orElseThrow();var id=identity(level).orElseThrow();var data=InfiniteTransitData.get(p.server,id);
         InfiniteArrival.request(level);
         if(!data.problem().isEmpty()){message(p,"save_paused");return;}
-        if(!InfiniteArrival.ready(level,data)||!BreachWorldData.get(p.server).view().active()){message(p,"preparing");return;}
+        if(!InfiniteArrival.ready(level,data)){
+            String blocker=InfiniteArrival.blocker(p.server);
+            if(blocker.isEmpty())message(p,"preparing");else p.displayClientMessage(Component.literal(blocker),true);
+            return;
+        }
+        var breach=BreachWorldData.get(p.server);
+        if(!breach.view().active()){
+            if(!breach.view().blocker().isEmpty())p.displayClientMessage(Component.literal(breach.view().blocker()),true);
+            else if(breach.drivePosition().filter(at->BreachDriveController.obstructed(p.server.overworld(),at)).isPresent())
+                p.displayClientMessage(Component.literal("The claimed Breach Drive site is obstructed. Preparing another safe garden site."),true);
+            else message(p,"preparing");
+            return;
+        }
         var arrival=data.anchor().orElseThrow().above().south();
         if(!com.coraline.tycoon.TycoonWorld.safeFeet(level,arrival)){message(p,"arrival_blocked");return;}
         var back=entrance==Entrance.PALACE&&!p.blockPosition().equals(source.orElseThrow())&&com.coraline.tycoon.TycoonWorld.safeFeet(p.server.overworld(),p.blockPosition())?p.blockPosition():com.coraline.tycoon.TycoonWorld.landing(p.server.overworld(),entrance==Entrance.WELL?source.orElseThrow().above(2):source.orElseThrow().east(2));

@@ -84,11 +84,19 @@ public final class BreachWorldData extends SavedData {
         if(!candidate.activate(expected.id(),server.overworld().getGameTime(),BreachConfig.rules()))return false;
         state=candidate;return checkpoint(server);
     }
-    /** Persist the single location before placing anything. A missing or
-     * obstructed device never allocates a replacement location. */
+    /** Persist the single location before placing anything. */
     boolean claimDrive(ServerLevel bound,BlockPos at){
         if(!owns(bound)||drive!=null||state.active()||!bound.getServer().overworld().getWorldBorder().isWithinBounds(at))return false;
         var n=new CompoundTag();n.putInt("Version",1);n.putUUID("Binding",UUID.randomUUID());n.putUUID("Generation",((InfiniteChunkGenerator)bound.getChunkSource().getGenerator()).structureGeneration().id());n.putLong("Position",at.asLong());n.putString("Dimension","minecraft:overworld");drive=n;return checkpoint(bound.getServer());
+    }
+    boolean relocateUninstalledDrive(ServerLevel bound,BlockPos old,BlockPos replacement){
+        var level=bound.getServer().overworld();
+        if(!owns(bound)||state.active()||!drivePosition().filter(old::equals).isPresent()
+                ||!BreachDriveController.obstructed(level,old)||!BreachDriveController.clear(level,replacement))return false;
+        var record=((CompoundTag)drive).copy();
+        record.putLong("Position",replacement.asLong());
+        drive=record;
+        return checkpoint(bound.getServer());
     }
     /** Vanilla menu transfers put real items in this one shared slot. The
      * slot and its resulting fuel are persisted together, never in a chunk. */

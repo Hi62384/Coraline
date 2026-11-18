@@ -74,20 +74,31 @@ public final class TycoonBuildJob {
             var e=entries.get(cursor);l.getChunkAt(e.getKey());var old=l.getBlockState(e.getKey());if(old.equals(e.getValue()))continue;
             boolean repairCell=job.getString("Name").startsWith("attraction repair ")&&old.isAir();
             if(!old.equals(before.get(e.getKey()))||h.state.getCompound("PlayerEdits").contains(Long.toString(e.getKey().asLong()))&&!repairCell){rollback(p,"Construction interrupted by a changed footprint; nothing spent.");return;}
-            if(job.getBoolean("Removal")&&l.getBlockEntity(e.getKey()) instanceof TycoonBlockEntity be&&(!TycoonWorld.owner(p).equals(be.owner)||!be.isEmpty())){rollback(p,"A cabinet changed during removal; nothing spent.");return;}
+            var blockEntity=l.getBlockEntity(e.getKey());
+            if(blockEntity!=null&&(!(blockEntity instanceof TycoonBlockEntity be)||!TycoonWorld.owner(p).equals(be.owner)||!be.isEmpty())){
+                rollback(p,"A block entity changed during construction; nothing spent.");
+                return;
+            }
             if(!e.getValue().getCollisionShape(l,e.getKey()).isEmpty()&&!l.getEntities((net.minecraft.world.entity.Entity)null,new net.minecraft.world.phys.AABB(e.getKey()),actor->actor instanceof net.minecraft.world.entity.LivingEntity).isEmpty()){
                 job.putInt("Cursor",cursor);TycoonWorld.message(p,"Construction paused: move away from the next block before work resumes.");return;
             }
             l.setBlock(e.getKey(),e.getValue(),2|16);
+            if(!l.getBlockState(e.getKey()).equals(e.getValue()))break;
         }
         job.putInt("Cursor",cursor);TycoonWorld.dirty(p);if(cursor<entries.size())return;
-        p.server.saveEverything(true,true,true);
+        for(var entry:entries){
+            if(!l.getBlockState(entry.getKey()).equals(entry.getValue())){
+                rollback(p,"Construction interrupted by a changed footprint; nothing spent.");
+                return;
+            }
+        }
+        if(!p.server.saveEverything(true,true,true))return;
         if(!TycoonSoulFarms.constructionValid(h,job.getCompound("Patch"))){rollback(p,"Containment changed during construction; secure the breach first. Nothing spent.");return;}
         var patch=job.getCompound("Patch").copy();long soulCost=job.getLong("SoulCost");if(soulCost>0){long balance=h.state.getLong("SoulEssence");if(balance<soulCost){rollback(p,"Soul Essence changed before construction payment; nothing spent.");return;}patch.putLong("SoulEssence",balance-soulCost);}patch.putUUID("CompletedBuild",job.getUUID("Id"));patch.putString("LastBuildReceipt",job.getString("Name"));String result=job.hasUUID("Worker")?TycoonWorkers.payConstruction(p,job.getUUID("Worker"),job.getInt("Cost"),soulCost,patch):TycoonTransactions.purchase(p,job.getInt("Cost"),ItemStack.of(job.getCompound("Refund")),patch,null,new CompoundTag());
         if(!result.startsWith("Purchased")&&!result.startsWith("Purchase receipt")){rollback(p,result);return;}
         if(job.getString("Name").startsWith("attraction repair "))for(var at:after.keySet())h.state.getCompound("PlayerEdits").remove(Long.toString(at.asLong()));
         h.state.remove("BuildJob");RUNNING.remove(TycoonWorld.owner(p));TycoonLandscape.recalculate(h);h.milestone("world_scenery",25);TycoonWorld.message(p,"Completed "+job.getString("Name")+". "+result);TycoonWorld.dirty(p);
     }
-    public static void rollback(ServerPlayer p,String reason){var h=TycoonWorld.home(p);var job=h.state.getCompound("BuildJob");var l=p.server.getLevel(TycoonWorld.KEY);if(l!=null){var before=TycoonLandscape.decode(l,job.getCompound("Before"));var after=TycoonLandscape.decode(l,job.getCompound("After"));for(var e:before.entrySet())if(l.getBlockState(e.getKey()).equals(after.get(e.getKey()))&&(!h.state.getCompound("PlayerEdits").contains(Long.toString(e.getKey().asLong()))||job.getString("Name").startsWith("attraction repair ")&&e.getValue().isAir()))l.setBlock(e.getKey(),e.getValue(),2|16);}h.state.remove("BuildJob");TycoonWorld.dirty(p);TycoonWorld.message(p,reason);}
+    public static void rollback(ServerPlayer p,String reason){var h=TycoonWorld.home(p);var job=h.state.getCompound("BuildJob");var l=p.server.getLevel(TycoonWorld.KEY);if(l!=null){var before=TycoonLandscape.decode(l,job.getCompound("Before"));var after=TycoonLandscape.decode(l,job.getCompound("After"));for(var e:before.entrySet())if(l.getBlockState(e.getKey()).equals(after.get(e.getKey()))&&(l.getBlockEntity(e.getKey())==null||l.getBlockEntity(e.getKey()) instanceof TycoonBlockEntity be&&TycoonWorld.owner(p).equals(be.owner)&&be.isEmpty())&&(!h.state.getCompound("PlayerEdits").contains(Long.toString(e.getKey().asLong()))||job.getString("Name").startsWith("attraction repair ")&&e.getValue().isAir()))l.setBlock(e.getKey(),e.getValue(),2|16);}h.state.remove("BuildJob");TycoonWorld.dirty(p);TycoonWorld.message(p,reason);}
     private TycoonBuildJob(){}
 }

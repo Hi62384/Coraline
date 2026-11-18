@@ -174,6 +174,7 @@ public final class PalaceKeyCustody {
         var rim=at.get();double dx=bundle.getX()-rim.getX()-.5,dz=bundle.getZ()-rim.getZ()-.5;
         if(dx*dx+dz*dz>2.25||bundle.getY()>rim.getY()-12||p.distanceToSqr(rim.getCenter())>48*48)return false;
         boolean heard=state.wybieLife()!=PalaceWellProgress.WybieLife.ALIVE
+                ||PalaceWellEncounter.disposalCueRecovered(s)
                 ||ShowPlayback.ownsSession(p,s)&&!ShowPlayback.debugSeeking(s)&&ShowPlayback.finished(s)
                 &&ShowPlayback.data(s).getString("Sound").equals("crawling_hand_e")&&!ShowPlayback.data(s).getBoolean("SafetySkipped");
         var beforeTx=tx.save();var beforeWell=state.save();

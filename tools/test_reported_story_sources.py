@@ -49,7 +49,7 @@ class ReportedSourceGuards(unittest.TestCase):
         self.assertIn('pendingChunk.isDone()', helper)
         self.assertNotIn('l.getChunk(', helper)
         self.assertNotIn('.join()', helper)
-        self.assertIn('OtherWorld.weaving(server)', text)
+        self.assertIn('OtherWorld.weavingEntrance(server)', text)
 
     def test_snapshot_surface_is_cached_outside_section_loop(self):
         text = source('otherworld/RealmCopy.java').split('private void copy(', 1)[1]
