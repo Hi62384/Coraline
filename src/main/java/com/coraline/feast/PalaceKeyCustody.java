@@ -83,7 +83,8 @@ public final class PalaceKeyCustody {
         var root=PalaceJourney.existing(s);if(root==null||root.contains(JOURNAL)
                 ||root.contains("KeyCustodyBlocker")&&!root.getString("KeyCustodyBlocker").equals(INVENTORY_RETRY)
                 ||!boundBundle(p,s,root,bundle)||p.distanceToSqr(bundle)>9||!p.hasLineOfSight(bundle))return false;
-        var state=well(s,root);if(!state.blocker().isEmpty()||state.phase()!=PalaceWellProgress.Phase.WRAPPED)return false;
+        var state=well(s,root);if(!com.coraline.postgame.GlobalHandEncounter.holds(p.server,s,state)
+                ||state.phase()!=PalaceWellProgress.Phase.WRAPPED)return false;
         var original=p.getMainHandItem();if(!ParentRescueStory.key(original,s)||original.getCount()!=1)return false;
         if(originalKeyConflict(p,s,original)){
             blocked(p,root,"Multiple or contradictory original-key stacks; review required.");
@@ -113,7 +114,8 @@ public final class PalaceKeyCustody {
      */
     public static boolean reconcile(ServerPlayer p,VisitData.Scene s){
         if(!PalaceJourney.owns(p,s))return false;
-        var root=PalaceJourney.existing(s);if(root==null||!root.contains(JOURNAL))return false;
+        var root=PalaceJourney.existing(s);if(root==null||!root.contains(JOURNAL)
+                ||!com.coraline.postgame.GlobalHandEncounter.holds(p.server,s,well(s,root)))return false;
         // Older builds persisted transient checkpoint failures as permanent
         // blockers. Re-run the journal reconciliation now that storage may be
         // available; identity conflicts remain quarantined.

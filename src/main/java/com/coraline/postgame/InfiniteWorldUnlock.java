@@ -22,6 +22,7 @@ public final class InfiniteWorldUnlock {
         var witness=new InfiniteWorldState.Witness(scene.owner,scene.door,well.session(),key.receipt(),well.originalWybie().orElse(null),well.wybieLife());
         var data=InfiniteWorldData.get(player.server);
         if(data.record(player.server,witness)==InfiniteWorldState.Activation.REFUSED||data.checkpointSeed(player.server).isEmpty())return false;
+        GlobalHandEncounter.releaseCompleted(player.server,scene,well);
         InfiniteWorldGeneration.bindAvailable(player.server);return true;
     }
     @SubscribeEvent public static void login(PlayerEvent.PlayerLoggedInEvent event){

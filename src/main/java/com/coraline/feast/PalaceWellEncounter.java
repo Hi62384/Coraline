@@ -70,6 +70,9 @@ public final class PalaceWellEncounter {
     }
     private static boolean start(ServerPlayer p,VisitData.Scene s){
         var r=root(s);if(r==null||r.contains("Well")||!r.getBoolean("MapIssued")||!PalaceTransport.completed(s)||!eligible(p,s)||!p.onGround()||p.isPassenger()||p.distanceToSqr(center(p))>8*8||p.getY()<center(p).y)return false;
+        if(!com.coraline.postgame.GlobalHandEncounter.available(p.server,s.owner)){
+            startBlocked(p,s,r,com.coraline.postgame.GlobalHandEncounter.status(p.server,p.getUUID()));return false;
+        }
         boolean key=false;for(int i=0;i<p.getInventory().getContainerSize();i++)key|=ParentRescueStory.key(p.getInventory().getItem(i),s);if(!key)return false;
         // No ensure/spawn until the actual severed-hand UUID is proven.
         if(!ParentRescueStory.scenery(s).hasUUID("RescueSeveredHand")){startBlocked(p,s,r,"The original severed hand record is missing; no substitute has been created.");return false;}
@@ -226,12 +229,12 @@ public final class PalaceWellEncounter {
     private static void handPosition(VisitData.Scene s,CinematicPropEntity hand){var n=ParentRescueStory.scenery(s);n.putLong("RescueSeveredHandPosition",hand.blockPosition().asLong());n.putString("RescueSeveredHandDimension",hand.level().dimension().location().toString());}
     private static void tick(ServerPlayer p,VisitData.Scene s,CompoundTag n){
         var progress=state(s);if(!progress.blocker().isEmpty()||n.getBoolean("Paused"))return;
-        if(!com.coraline.postgame.GlobalHandEncounter.permits(p.server,s,progress)){pause(p,s,n,com.coraline.postgame.GlobalHandEncounter.status(p.server,p.getUUID()));return;}
         if(progress.phase()==COMPLETE){
             com.coraline.multiplayer.StoryCombatSafety.restoreGroup(p,s);
             if(!n.getBoolean("PresentationRetired")){for(String key:new String[]{"WellTongs","WellRock","WellPhoto","WellBundle"}){var prop=RescueProps.find(p,s,key);if(prop!=null)prop.setInvisible(true);}ShowPlayback.stop(p,s);n.putBoolean("PresentationRetired",true);OtherMotherLoop.changed(p);}return;
         }
         if(!eligible(p,s)||p.distanceToSqr(center(p))>48*48){pause(p,s,n,"Well encounter paused while its owner is away.");return;}
+        if(!com.coraline.postgame.GlobalHandEncounter.permits(p.server,s,progress)){pause(p,s,n,com.coraline.postgame.GlobalHandEncounter.status(p.server,p.getUUID()));return;}
         long now=p.serverLevel().getGameTime();if(now<=n.getLong("LastTick"))return;n.putLong("LastTick",now);
         if(!progress.phase().name().equals(n.getString("Phase"))){n.putString("Phase",progress.phase().name());n.putInt("Ticks",0);n.putBoolean("CueStarted",false);}
         int t=n.getInt("Ticks");if(t==Integer.MAX_VALUE){pause(p,s,n,"Well clock reached its safety bound.");return;}n.putInt("Ticks",t+1);
@@ -379,6 +382,7 @@ public final class PalaceWellEncounter {
     public static boolean interact(ServerPlayer p,CinematicPropEntity prop){
         var s=OtherMotherLoop.scene(p);var n=s==null?null:control(s);if(n==null||interactionDirector(p,s)==null||n.getBoolean("Paused")||!prop.owned(s)||p.distanceToSqr(prop)>9||!p.hasLineOfSight(prop))return false;
         var progress=state(s);
+        if(!com.coraline.postgame.GlobalHandEncounter.holds(p.server,s,progress))return false;
         var actualRock=RescueProps.find(p,s,"WellRock");
         if(prop.kind()==RescueProps.ROCK&&prop==actualRock&&progress.phase()==DEFEATED)n.putBoolean("SmashRequested",true);
         else if(p.getUUID().equals(s.owner)&&prop.kind()==RescueProps.KEY_BUNDLE&&root(s).hasUUID("BundleEntity")&&prop.getUUID().equals(root(s).getUUID("BundleEntity"))&&progress.phase()==KEY_BUNDLED&&progress.wybieLife()!=PalaceWellProgress.WybieLife.ALIVE)n.putBoolean("ThrowRequested",true);
@@ -387,7 +391,9 @@ public final class PalaceWellEncounter {
     @SubscribeEvent(priority=EventPriority.HIGHEST) public static void attack(AttackEntityEvent event){
         if(!(event.getEntity() instanceof ServerPlayer p)||!(event.getTarget() instanceof CinematicPropEntity h)||h.kind()!=RescueProps.HAND)return;
         var s=OtherMotherLoop.scene(p);var n=s==null?null:control(s);var director=interactionDirector(p,s);if(n==null||director==null||n.getBoolean("Paused")||!h.owned(s)||!com.coraline.multiplayer.StoryCoop.canAct(p,s))return;var progress=state(s);
-        if(!h.getUUID().equals(progress.originalHand()))return;event.setCanceled(true);long now=p.serverLevel().getGameTime();boolean reach=p.distanceToSqr(h)<=9,visible=p.hasLineOfSight(h);
+        if(!h.getUUID().equals(progress.originalHand()))return;
+        event.setCanceled(true);
+        if(!com.coraline.postgame.GlobalHandEncounter.holds(p.server,s,progress))return;long now=p.serverLevel().getGameTime();boolean reach=p.distanceToSqr(h)<=9,visible=p.hasLineOfSight(h);
         if(progress.phase()==RESCUE){if(progress.rescueHit(s.owner,progress.session(),h.getUUID(),now,true,reach,visible)){h.frame(12,0,0);save(director,s,progress);}}
         else if(progress.phase()==BOSS&&n.contains("Combat",Tag.TAG_COMPOUND)){
             var fight=PalaceHandCombat.load(s.owner,s.door,h.getUUID(),n.getCompound("Combat"));if(fight.hit(s.owner,progress.session(),h.getUUID(),now,true,reach,visible,p.getAttackStrengthScale(.5F)>=.85F)){
@@ -397,8 +403,17 @@ public final class PalaceWellEncounter {
     }
     public static int resume(ServerPlayer p){
         var s=OtherMotherLoop.scene(p);var n=s==null?null:control(s);if(n==null||!eligible(p,s)||p.distanceToSqr(center(p))>32*32||!n.getBoolean("Paused"))return 0;var progress=state(s);
-        if(!progress.resume(s.owner))return 0;var h=hand(p,s,progress);if(h==null)return 0;
+        if(progress.phase()==COMPLETE||!progress.blocker().isEmpty())return 0;
+        var h=hand(p,s,progress);if(h==null)return 0;
         if(progress.wybieLife()==PalaceWellProgress.WybieLife.ALIVE&&wybie(p,s,progress)==null){p.sendSystemMessage(Component.literal("The original living Wybie has not loaded. His recorded chunk was requested; no replacement or resurrection was performed."));return 0;}
+        if(!com.coraline.postgame.GlobalHandEncounter.reservedFor(p.server,s,progress)){
+            if(!com.coraline.postgame.GlobalHandEncounter.available(p.server,s.owner)){
+                p.sendSystemMessage(Component.literal(com.coraline.postgame.GlobalHandEncounter.status(p.server,p.getUUID())));
+                return 0;
+            }
+            p.server.overworld().getDataStorage().save();
+        }
+        if(!com.coraline.postgame.GlobalHandEncounter.claim(p.server,s,progress)||!progress.resume(s.owner))return 0;
         if(n.contains("Combat")){var fight=PalaceHandCombat.load(s.owner,s.door,h.getUUID(),n.getCompound("Combat"));if(!fight.complete()&&!fight.resume(s.owner,progress.session()))return 0;n.put("Combat",fight.save());}
         n.remove("Paused");n.remove("Blocker");n.putLong("LastTick",-1);n.putBoolean("CueStarted",false);ShowPlayback.stop(p,s);save(p,s,progress);return 1;
     }
