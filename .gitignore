@@ -39,3 +39,8 @@ run-tests-*
 # Files from Forge MDK
 forge*changelog.txt
 forge-*-mdk.zip
+
+.gradle-postboss-code/
+.gradle-story-release/
+.gradle-repository-audit/
+run-new-activities/
