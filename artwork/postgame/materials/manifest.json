@@ -1,0 +1,203 @@
+{
+  "tool": "Built-in image_gen",
+  "purpose": "Original postgame terrain masters; normal processResources optimizes copied runtime textures. Full JAR size optimization remains last.",
+  "records": [
+    {
+      "name": "stitched_grass_top",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-bea675ee-5a19-4dc3-ab90-967a7038e2a2.png",
+      "master": "artwork/postgame/materials/stitched_grass_top.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/stitched_grass_top.png",
+      "prompt": "Create one production game texture asset, not a mockup. A flat, seamless, tileable square diffuse texture for the TOP of a Minecraft-inspired 'Stitched Grass' terrain block in a supernatural handcrafted world. Orthographic top-down material only, filling the entire square edge to edge. Lush but restrained moss/grass green short woven fibers, with a subtle irregular network of tiny cream and muted dark-green hand stitches sewn into the turf. Crisp deliberately placed pixel-art clusters at the scale of a 64x64 texture; limited cohesive palette, high readability at small scale, soft baked ambient variation but no directional shadows. Seamless left-right and top-bottom edges. No border, frame, isolated objects, text, labels, perspective, cube preview, or transparency. Output a single square texture, preferably 512 by 512 pixels. This is original material artwork for a Coraline-inspired mod, not an image of a landscape.",
+      "transparent_background": false
+    },
+    {
+      "name": "other_soil",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-78aa6f96-9108-4ab4-b31b-0f6f2fc70864.png",
+      "master": "artwork/postgame/materials/other_soil.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/other_soil.png",
+      "prompt": "Create one production game texture asset, not a mockup. A flat seamless tileable square diffuse texture for an 'Other Soil' Minecraft-inspired terrain block in a supernatural handmade world. Fill the whole square edge to edge with earthy warm umber soil made of felted organic clumps and fine dark fibers; occasional muted copper-brown thread strands woven through the dirt, small irregular flecks, no distinct big objects. Calm readable clustered pixel-art material, 64x64-style pixel clusters, cohesive brown palette, subtle depth variation, no directional cast shadows. Seamless left/right and top/bottom edges. No grass band, roots dangling outside the texture, cube preview, perspective, borders, text or transparency. Prefer a square 512 by 512 output. Original material artwork suitable under green stitched grass.",
+      "transparent_background": false
+    },
+    {
+      "name": "porcelain_stone",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-cd620658-cc3b-4ff1-a71c-0e45502516c6.png",
+      "master": "artwork/postgame/materials/porcelain_stone.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/porcelain_stone.png",
+      "prompt": "Create one seamless square diffuse terrain texture for 'Porcelain Stone' in a Minecraft-inspired handmade supernatural world. Flat orthographic material filling the square edge to edge: warm ivory glazed ceramic stone with subtle blue-gray mineral specks and a quiet irregular network of very fine hairline glaze cracks. A few small chipped dull ceramic areas embedded flush, not loose objects. Stylized crisp clustered game-texture detail, restrained readable pattern at block scale, matte-to-satin painted appearance, gentle uniform ambient shading, no reflections of a scene and no directional cast shadows. Seamless wrap on both axes, no straight tile grout grid, no border, no text, no perspective, no cube preview, no transparency. Prefer square 512 by 512 output. Original material, suitable for pale plains and underground porcelain caverns.",
+      "transparent_background": false
+    },
+    {
+      "name": "voidstone",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-0e355b3a-9913-4ee1-a164-2598d4f9d486.png",
+      "master": "artwork/postgame/materials/voidstone.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/voidstone.png",
+      "prompt": "One original seamless tileable square diffuse block texture for 'Voidstone', a supernatural underground rock in a handcrafted Minecraft-style world. Flat orthographic edge-to-edge material: dense charcoal and deep desaturated indigo stone, irregular blunt mineral fragments with very sparse thin pale-lilac threadlike seams inside the rock. Dark but readable, not pure black; subtle tactile matte rock, controlled crisp clustered stylized game detail. No glowing neon, no stars, no galaxy, no floating shapes, no scene reflections, no text, no border, no cube preview or perspective. Uniform ambient shading, no directional cast shadows. Perfectly wrapping material across left-right and top-bottom edges. Single square texture, preferably 512 by 512 pixels.",
+      "transparent_background": false
+    },
+    {
+      "name": "candy_stone",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-83f855b3-35e5-4005-b7cc-e66b9f4395d5.png",
+      "master": "artwork/postgame/materials/candy_stone.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/candy_stone.png",
+      "prompt": "One seamless square diffuse block texture: Candy Stone for a handmade supernatural voxel world. Flat edge-to-edge pink coral and pale-cream compressed sugar rock, little angular translucent sugar flecks and irregular soft rose layered mineral bands. Tactile stylized clustered game material, readable at block scale, no isolated sweets or wrapped candy, no logos/text, no cube, no perspective, no borders. Uniform ambient shading, no shadows or scene reflection. Wrap seamlessly on both axes. Single original square texture, preferably 512x512.",
+      "transparent_background": false
+    },
+    {
+      "name": "velvet_mycelium",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-83b8b60d-5b29-42dd-a9b8-233ebb0f38cc.png",
+      "master": "artwork/postgame/materials/velvet_mycelium.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/velvet_mycelium.png",
+      "prompt": "One seamless square diffuse TOP block texture: Velvet Mycelium for a handmade supernatural voxel forest. Edge-to-edge deep plum-purple velvety fungal mat, fine soft interlaced lilac hyphae with scattered small rounded dark-violet mycelial patches, restrained tiny cool lavender specks. Tactile stylized clustered game material, readable at block scale, no separate mushroom objects, no perspective/cube/text/borders. Uniform ambient shading, no cast shadows, wrap seamlessly left-right and top-bottom. Original single square texture, preferably 512x512.",
+      "transparent_background": false
+    },
+    {
+      "name": "clockwork_stone",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-2333570e-40c9-4f8b-82dc-1b770086623f.png",
+      "master": "artwork/postgame/materials/clockwork_stone.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/clockwork_stone.png",
+      "prompt": "One seamless square diffuse block texture: Clockwork Stone for a handmade supernatural voxel highland. Flat edge-to-edge slate gray and weathered warm bronze mineral rock. Occasional small embedded broken cog-tooth arcs and rivet-like mineral inclusions flush within the stone, mostly natural rocky matrix, not an actual machine, not a tiled metal panel. Stylized crisp clustered game material, subdued readable palette. Uniform ambient lighting, no directional cast shadows, no perspective, cube preview, text, borders or loose objects. Seamless on both axes. Single original square texture, preferably 512x512.",
+      "transparent_background": false
+    },
+    {
+      "name": "mirrorstone",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-3fd9b50f-e80d-494f-ba19-2e844b2d46c4.png",
+      "master": "artwork/postgame/materials/mirrorstone.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/mirrorstone.png",
+      "prompt": "One original seamless square diffuse block texture for Mirrorstone in a supernatural handmade voxel world. Flat edge-to-edge pale blue-silver mineral with irregular flush angular glassy facets, fine dark teal hairline divisions and soft pearly highlights. Reflective-looking stone, but absolutely no reflected objects, sky or scene. Tactile stylized clustered game material, readable at block scale, uniform ambient light, restrained cool palette. No perspective/cube preview, text, borders or isolated objects. Seamless wrap on both axes, square texture preferably 512x512.",
+      "transparent_background": false
+    },
+    {
+      "name": "threadbound_rock",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-b0794fd5-67dd-45c0-817c-d7b0cf719d07.png",
+      "master": "artwork/postgame/materials/threadbound_rock.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/threadbound_rock.png",
+      "prompt": "One original seamless square diffuse block texture: Threadbound Rock in a handmade supernatural voxel mountain. Flat edge-to-edge muted gray-brown mineral rock tightly threaded with irregular cream and dusty ochre fibers; a few fine fibers cross fractures like tiny stitches holding the stone together. Mostly opaque rough rock, no dangling strings beyond the image. Tactile stylized clustered game detail, uniform ambient shading, no cast shadows. No perspective, cube, text, labels or borders. Seamless on left/right and top/bottom; square preferably 512x512.",
+      "transparent_background": false
+    },
+    {
+      "name": "stitched_clay",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-4ca0a333-296f-4985-be3c-ef494dd55cbe.png",
+      "master": "artwork/postgame/materials/stitched_clay.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/stitched_clay.png",
+      "prompt": "One original seamless square block material texture: Stitched Clay for a supernatural handmade voxel badlands. Flat edge-to-edge eroded terracotta with muted rust-red, ochre and dusty mauve thin horizontal sediment layers, a few tiny cream stitch marks following cracks. Solid matte clay, readable stylized clustered game detail. No perspective, cube preview, isolated objects, text or border. Even ambient light, no cast shadows. Seamless left-right and top-bottom. Single square texture preferably 512x512.",
+      "transparent_background": false
+    },
+    {
+      "name": "rootbound_soil",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-f2ab17d7-a880-4186-b095-b593e14be6c5.png",
+      "master": "artwork/postgame/materials/rootbound_soil.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/rootbound_soil.png",
+      "prompt": "One original seamless square diffuse block texture: Rootbound Soil for a supernatural handmade voxel forest. Flat edge-to-edge dark warm earth densely but naturally threaded with tan twisted woody root fibers and occasional fine green moss specks. Root strands are embedded flush in the soil, varied directions, no loose objects or dangling edge roots. Stylized tactile game material, evenly lit, readable low-frequency clumps, no directional cast shadows. Seamless on both axes, no perspective, cube, text or border. Single square preferably 512x512.",
+      "transparent_background": false
+    },
+    {
+      "name": "otherworld_moss",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-8e4bcfc3-482d-4788-a54d-bf11514a3038.png",
+      "master": "artwork/postgame/materials/otherworld_moss.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/otherworld_moss.png",
+      "prompt": "One original seamless square diffuse TOP block texture: Otherworld Moss for a handmade supernatural voxel garden. Flat edge-to-edge rich jade and muted emerald cushion moss with small rounded tufts and a few pale green feltlike curled tendrils, a low soft dense mat distinct from grass. Calm readable tactile stylized game material, uniform ambient illumination, no directional cast shadows, no flowers or distinct objects. Seamless on both axes. No perspective/cube preview/text/borders. Single square preferably 512x512.",
+      "transparent_background": false
+    },
+    {
+      "name": "pale_rift_stone",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-7c276128-2881-4679-9f37-47747dc087f4.png",
+      "master": "artwork/postgame/materials/pale_rift_stone.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/pale_rift_stone.png",
+      "prompt": "One original seamless square diffuse block texture: Pale Rift Stone for a supernatural unfinished white-void voxel wasteland. Flat edge-to-edge chalk-white matte stone, fractured in irregular soft angular regions with very thin cool gray fissures and occasional faint pearl-lavender seams. Quiet high-key material, distinct from glazed porcelain: dry powdery surface, no gloss, no blue mineral flecks. Uniform ambient illumination, no cast shadows, no scene reflections, no stars. Seamless both axes, no perspective/cube/text/border. Single square preferably 512x512.",
+      "transparent_background": false
+    },
+    {
+      "name": "mirror_sand",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-db097ad9-8f6f-45b1-b865-7b67e6b2faed.png",
+      "master": "artwork/postgame/materials/mirror_sand.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/mirror_sand.png",
+      "prompt": "One original seamless square diffuse terrain texture for Mirror Sand in a supernatural handcrafted voxel coast and marsh. Flat edge-to-edge fine powdery pale blue-gray sand with subtle tiny silver and muted teal glass-mineral grains. Soft shallow granular variation, mostly matte with restrained pearly specks, readable at block scale. Not a scene or beach, no shells, no objects, no water, no directional shadows, no perspective, cube, text or border. Wrap seamlessly on both axes. Single square material preferably 512x512.",
+      "transparent_background": false
+    },
+    {
+      "name": "otherwood_end",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-0a25aedc-9c72-4d08-b161-96aa637afa6b.png",
+      "master": "artwork/postgame/materials/otherwood_end.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/otherwood_end.png",
+      "prompt": "One original seamless square diffuse texture for the CUT END of a supernatural handcrafted voxel wood log. Flat orthographic edge-to-edge warm muted tan end grain, irregular rounded growth rings with subtle fine threadlike fibers embedded in the wood; multiple broad meandering ring segments, calm readable stylized game material. No bark border, no isolated circular log on a background, no perspective or cube preview, no text, no directional shadows. Square fills entirely with end-grain wood and tiles on both axes. Prefer 512x512.",
+      "transparent_background": false
+    },
+    {
+      "name": "buttonwood_log",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-7b3a26dd-2d49-4db2-abd4-432d919e94d6.png",
+      "master": "artwork/postgame/materials/buttonwood_log.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/buttonwood_log.png",
+      "prompt": "One original seamless square diffuse texture for the SIDE/BARK of a Buttonwood log in a supernatural handmade voxel forest. Flat edge-to-edge vertically oriented dark warm brown ridged bark, with a few small black four-hole button knots embedded flush like natural tree knots and occasional fine cream thread lines within cracks. Mostly bark, only a few visible button motifs. Tactile stylized game material, readable at block scale, uniform ambient shading. No separate log object, perspective, cube, border, text or cast shadow. Seamless both axes, vertical grain, single square preferably 512x512.",
+      "transparent_background": false
+    },
+    {
+      "name": "paperwood_log",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-85267d99-0152-4182-985b-6e3e4a905401.png",
+      "master": "artwork/postgame/materials/paperwood_log.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/paperwood_log.png",
+      "prompt": "One original seamless square diffuse texture for the SIDE/BARK of a Paperwood log in a supernatural handmade voxel forest. Flat edge-to-edge pale cream and warm gray bark made of vertically layered thin folded paper fibers, a few softly curling strips lying flush, delicate faint ochre grain. Distinctively papery and dry, no writing or printed letters, no detached objects. Tactile stylized readable game material, uniform ambient light, no cast shadows or perspective/cube/border. Seamless both axes with vertical grain. Single square preferably 512x512.",
+      "transparent_background": false
+    },
+    {
+      "name": "lanternwood_log",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-aac2a220-d201-4ae5-a345-3364dba71d6b.png",
+      "master": "artwork/postgame/materials/lanternwood_log.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/lanternwood_log.png",
+      "prompt": "One original seamless square diffuse texture for the SIDE/BARK of Lanternwood in a supernatural handmade voxel forest. Flat edge-to-edge deeply ridged vertical bark in charcoal brown and muted midnight teal, with sparse narrow warm amber luminous sap seams tucked inside a few cracks. Mostly dark readable bark, gentle small warm highlights, not neon and not a machine. Tactile stylized game material, uniform ambient shading, no directional shadows, no perspective, cube, text or border. Wrap on both axes with vertical grain. Square preferably 512x512.",
+      "transparent_background": false
+    },
+    {
+      "name": "buttonwood_planks",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-a86b8db5-92c5-44bc-b6a2-f75a3345da4a.png",
+      "master": "artwork/postgame/materials/buttonwood_planks.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/buttonwood_planks.png",
+      "prompt": "One original seamless square diffuse block texture: Buttonwood Planks in a supernatural handcrafted voxel world. Flat edge-to-edge several horizontal warm walnut brown wooden boards with tactile grain, narrow dark joints and a few tiny ivory stitch fasteners across small cracks. Neat handmade construction, restrained readable material, no actual buttons or large hardware. Uniform ambient lighting, no directional cast shadows, no perspective/cube/text/border. Seamless on both axes. Single square preferably 512x512.",
+      "transparent_background": false
+    },
+    {
+      "name": "paperwood_planks",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-dd0f274b-b69e-4dd5-8005-4736e77863d1.png",
+      "master": "artwork/postgame/materials/paperwood_planks.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/paperwood_planks.png",
+      "prompt": "One original seamless square diffuse block texture: Paperwood Planks for a handmade supernatural voxel world. Flat edge-to-edge several horizontal ivory and pale warm-gray boards composed of dense laminated paper fibers, narrow soft gray joints, subtle fine horizontal grain and a few tiny folded fiber edges. Clearly crafted boards, not loose sheets, no writing. Tactile stylized readable game material, uniform ambient light, no perspective, cube preview, cast shadows, text or borders. Seamless both axes, single square preferably 512x512.",
+      "transparent_background": false
+    },
+    {
+      "name": "lanternwood_planks",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-b4ecd747-478c-40bb-9401-ea7110b772fc.png",
+      "master": "artwork/postgame/materials/lanternwood_planks.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/lanternwood_planks.png",
+      "prompt": "One original seamless square diffuse block texture: Lanternwood Planks for a handmade supernatural voxel world. Flat edge-to-edge several horizontal dark charcoal-brown wooden boards with muted deep teal grain and extremely sparse thin warm amber sap threads inside a few knots. Narrow dark board joints, mostly subdued readable wood; not neon, not a machine. Uniform ambient illumination, no directional cast shadows, no perspective, cube, text or borders. Seamless on both axes, single square preferably 512x512.",
+      "transparent_background": false
+    },
+    {
+      "name": "buttonwood_leaves",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-507c42ea-7500-4f1f-93a3-3f11717c8f95.png",
+      "master": "artwork/postgame/materials/buttonwood_leaves.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/buttonwood_leaves.png",
+      "prompt": "One original square CUTOUT foliage block texture for Buttonwood in a handmade supernatural voxel forest. Dense flat overlapping small dusky green oval fabric-like leaves with subtle stitched veins and very occasional tiny black button-shaped leaf knots. Foliage fills the tile with about 15-25 percent small irregular gaps showing genuinely transparent alpha, not white/black/checkerboard color. Flat orthographic material, no branches extending beyond edges, no perspective, cube, border, text or cast shadow. Tileable left-right/top-bottom with leaves touching edges, not an isolated plant. Readable stylized game material, single square preferably 512x512.",
+      "transparent_background": true
+    },
+    {
+      "name": "paperwood_leaves",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-0b99f598-94ae-4b47-b4cb-a72157ae843f.png",
+      "master": "artwork/postgame/materials/paperwood_leaves.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/paperwood_leaves.png",
+      "prompt": "One original square CUTOUT foliage block texture for Paperwood in a handmade supernatural voxel forest. Dense flat overlapping pale cream and faint sage-green folded paperlike pointed leaves, delicate soft vein creases, no writing. Foliage fills the tile, with 15-25 percent small irregular genuinely transparent alpha gaps, not white/black/checkerboard color. Flat orthographic evenly lit material, leaves touch edges for seamless tiling on both axes, no isolated plant, perspective, cube preview, border, text or cast shadow. Readable stylized game texture, single square preferably 512x512.",
+      "transparent_background": true,
+      "edit_prompt": "Correct this game foliage texture's alpha only. Keep the pale cream and sage folded paper leaves, their arrangement, tactile paper detail, colors and seamless square composition. REMOVE every checkerboard/background patch between the leaves. Those gaps must be completely transparent with alpha exactly zero, with no gray or white squares baked into RGB. Leaf interiors should be opaque alpha 255, not semi-transparent; only very thin antialiased leaf edges may be partial alpha. This is a cutout leaf block texture, no solid background, no drop shadows. Do not replace the leaves or add text, borders, cubes or scenery.",
+      "edit_reference": {
+        "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-9d9d2167-8fd3-41d9-a4df-8fe9dad61284.png",
+        "master": "artwork/postgame/materials/references/paperwood_leaves_alpha_reference.png"
+      }
+    },
+    {
+      "name": "lanternwood_leaves",
+      "generated_source": "C:\\Users\\User1\\.codex\\generated_images\\01a0e5a1-6507-7363-8a26-a56f9f230b40\\exec-75ed8624-cbcb-4bd0-b87d-82217e72db2c.png",
+      "master": "artwork/postgame/materials/lanternwood_leaves.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/block/postgame/lanternwood_leaves.png",
+      "prompt": "One original square CUTOUT leaf-block texture for Lanternwood in a supernatural handmade voxel forest. Dense flat overlapping small deep midnight-teal and blue-green soft fabriclike leaves, with a few tiny warm amber luminous vein tips scattered sparingly among them. Mostly subdued leaves, not neon. Leaves touch the tile edges and fill the square, with small irregular holes between leaves that have genuine alpha ZERO transparency. Opaque leaf interiors alpha 255; no background color, no checkerboard, no starfield, no lantern objects, no text, borders, perspective or cube preview. Uniform ambient shading, seamless repeating material on both axes. Single square preferably 512x512.",
+      "transparent_background": true
+    }
+  ]
+}

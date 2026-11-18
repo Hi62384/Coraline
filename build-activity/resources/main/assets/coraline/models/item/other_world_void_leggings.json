@@ -1,6 +1,1 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "coraline:item/other_world_void_leggings"
-  }
-}
+{"parent":"minecraft:item/generated","textures":{"layer0":"coraline:item/other_world_void_leggings"}}

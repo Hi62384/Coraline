@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "min_free_gib": 1.2731285095214844,
+  "peak_working_set_bytes": 655077376,
+  "peak_pagefile_bytes": 879644672,
+  "peak_sampled_private_bytes": 879636480,
+  "memory_samples": 163,
+  "exit_code": 0,
+  "memory_measurement_available": true
+}

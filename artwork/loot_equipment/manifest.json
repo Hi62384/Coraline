@@ -1,0 +1,21 @@
+{
+  "method": "Built-in image_gen",
+  "assets": [
+    {
+      "id": "other_void_sword",
+      "generated_source": "C:/Users/User1/.codex/generated_images/01a0e5a1-6507-7363-8a26-a56f9f230b40/exec-5fb90153-6e9b-4c15-aa81-36ca3f907803.png",
+      "master": "artwork/loot_equipment/other_void_sword.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/item/other_void_sword.png",
+      "prompt": "Create one original Minecraft fantasy inventory item sprite for an 'Other Void Sword'. Transparent background with real alpha. Single imposing heavy sword diagonally from lower left grip to upper right blade tip, full object visible with 8% empty margin. Clear compact pixel-art silhouette on a conceptual 64 by 64 pixel grid, hard square pixels, no blurry gradients. Wide black obsidian blade with jagged inward notches and sparse cyan spectral cracks, dark violet edge highlights, short black crossguard shaped like stitched claw branches, leather-wrapped dark grip, small pale blue soul gem in pommel. Handmade sinister storybook mood. This is a 2D game item icon, isolated, no scene, no drop shadow, no frame, no lettering, no logo, no text, no extra objects, no white background. Readable at small inventory size."
+    },
+    {
+      "id": "button_eye",
+      "generated_source": "C:/Users/User1/.codex/generated_images/01a0e5a1-6507-7363-8a26-a56f9f230b40/exec-46a3e047-3d51-4735-8768-6f86841899b6.png",
+      "master": "artwork/loot_equipment/button_eye.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/item/button_eye.png",
+      "prompt": "One isolated Minecraft inventory material sprite, a single 'Button Eye': a black round four-hole sewing button with a thick raised dark-blue rim and four true transparent holes in a square arrangement. A small pale cream thread loop is sewn neatly across two central holes, leaving the four holes visibly recognizable. Flat face toward camera with a very slight illustrated bevel, crisp chunky square pixel art at a conceptual 64 by 64 pixel grid. Deep charcoal, navy highlights, pale thread, no bright magical glow. Sinister handmade storybook sewing material, distinct readable silhouette. Centered full object, generous 12 percent transparent margin, genuine alpha transparent background. No eye iris, no human face, no second button, no scenery, no lettering, no logo, no shadow behind the object, no white background."
+    }
+  ],
+  "export": "Source PNGs copied exactly. Normal processResources optimizer produces inventory-sized runtime copies; no master re-encoding.",
+  "qa": "Generated output inspected inline; in-game render and export QA pending."
+}

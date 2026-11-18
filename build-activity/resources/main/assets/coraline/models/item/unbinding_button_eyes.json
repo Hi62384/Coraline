@@ -1,6 +1,1 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "coraline:item/unbinding_button_eyes"
-  }
-}
+{"parent":"minecraft:item/generated","textures":{"layer0":"coraline:item/unbinding_button_eyes"}}

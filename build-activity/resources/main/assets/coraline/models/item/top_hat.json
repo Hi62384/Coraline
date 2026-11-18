@@ -1,6 +1,1 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "coraline:item/top_hat"
-  }
-}
+{"parent":"minecraft:item/generated","textures":{"layer0":"coraline:item/top_hat"}}

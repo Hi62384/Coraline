@@ -1,6 +1,1 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "coraline:item/silent_slippers"
-  }
-}
+{"parent":"minecraft:item/generated","textures":{"layer0":"coraline:item/silent_slippers"}}

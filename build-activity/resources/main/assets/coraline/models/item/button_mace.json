@@ -1,6 +1,1 @@
-{
-  "parent": "minecraft:item/handheld",
-  "textures": {
-    "layer0": "coraline:item/button_mace"
-  }
-}
+{"parent":"minecraft:item/handheld","textures":{"layer0":"coraline:item/button_mace"}}

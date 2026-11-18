@@ -1,0 +1,33 @@
+{
+  "MissingParentsSpinkAndForcible/A.wav": {
+    "source_sha256": "e6d4d501cca75d9318e3d6beaa56f27699517fb3aff04b90c813edd550cc11b1",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " April? Aren't you getting ready? We've lost our ride, Miriam. Caroline says her parents have vanished quite completely.",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 2.24,
+        "text": " April? Aren't you getting ready?",
+        "avg_logprob": -0.37242883624452533,
+        "no_speech_prob": 0.02239845134317875,
+        "compression_ratio": 1.1121495327102804
+      },
+      {
+        "start": 2.24,
+        "end": 4.4,
+        "text": " We've lost our ride, Miriam.",
+        "avg_logprob": -0.37242883624452533,
+        "no_speech_prob": 0.02239845134317875,
+        "compression_ratio": 1.1121495327102804
+      },
+      {
+        "start": 4.4,
+        "end": 8.16,
+        "text": " Caroline says her parents have vanished quite completely.",
+        "avg_logprob": -0.37242883624452533,
+        "no_speech_prob": 0.02239845134317875,
+        "compression_ratio": 1.1121495327102804
+      }
+    ]
+  }
+}

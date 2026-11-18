@@ -1,0 +1,8 @@
+Built-in image generation, 23 October 2026. Design reference supplied by user:
+codex-clipboard-2810a5d2-f244-4e6f-816a-c72741bb4ef2.png.
+Prompt: Flat front-view pixel-art Little Door Key, black/charcoal, round sewing
+button head with exactly four transparent holes, long thin shaft, small notched
+bit, diagonal bottom-left to upper-right, transparent background, restrained
+gray highlights. No text, gold, hand, floor, shadow or 3D perspective.
+Master: master.png (1280px). Runtime export: 256px, nearest-neighbor, alpha
+preserved. Consumed by minecraft:item/generated, no custom 3D geometry.

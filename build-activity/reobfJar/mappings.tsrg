@@ -1,4 +1,26 @@
 tsrg2 left right
+com/coraline/mixin/GhostVictimSpectatorMixin com/coraline/mixin/GhostVictimSpectatorMixin
+	player f_9743_
+com/coraline/mixin/PartyPacketMixin com/coraline/mixin/PartyPacketMixin
+	player f_9743_
+com/coraline/mixin/PartyRandomLootReadMixin com/coraline/mixin/PartyRandomLootReadMixin
+	getItems ()Lnet/minecraft/core/NonNullList; m_7086_
+com/coraline/mixin/RescueWebMovementMixin com/coraline/mixin/RescueWebMovementMixin
+	player f_9743_
+com/coraline/mixin/StoryAudioChannelMixin com/coraline/mixin/StoryAudioChannelMixin
+	source f_83642_
+com/coraline/mixin/StoryDimensionScreenMixin com/coraline/mixin/StoryDimensionScreenMixin
+	updateScreenAndTick (Lnet/minecraft/client/gui/screens/Screen;)V m_91362_
+com/coraline/mixin/StoryDimensionSoundMixin com/coraline/mixin/StoryDimensionSoundMixin
+	instanceBySource f_120227_
+	instanceToChannel f_120226_
+	loaded f_120219_
+	queuedSounds f_120229_
+	queuedTickableSounds f_120232_
+	soundDeleteTime f_120230_
+	tickingSounds f_120228_
+com/coraline/mixin/StoryGroupInputMixin com/coraline/mixin/StoryGroupInputMixin
+	player f_9743_
 com/mojang/blaze3d/Blaze3D com/mojang/blaze3d/Blaze3D
 	<init> ()V <init>
 	getTime ()D m_83640_

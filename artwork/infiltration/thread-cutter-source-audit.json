@@ -1,0 +1,31 @@
+{
+  "method": "Built-in image_gen; exact source copies; no pixel editing",
+  "sha256": "1dbfd0d34d1dc27bea38b66fa9adb6533d46b8ee14ff0b7cb1e2b3068adf8014",
+  "master": "artwork/infiltration/other_iron_thread_cutter.png",
+  "runtime_source": "src/main/resources/assets/coraline/textures/item/other_iron_thread_cutter.png",
+  "source_size": [
+    1269,
+    1240
+  ],
+  "source_mode": "RGBA",
+  "alpha_extrema": [
+    0,
+    255
+  ],
+  "prompt_manifest": "artwork/infiltration/manifest.json",
+  "optimized_runtime_export": {
+    "path": "build-character-cast/resources/main/assets/coraline/textures/item/other_iron_thread_cutter.png",
+    "size": [
+      256,
+      250
+    ],
+    "mode": "RGBA",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "sha256": "d1b0e9e0a78a0a69d133087e97cfc2937b51932065731ce0f96474cf18c959d8",
+    "normal_build_report": "build-character-cast/low-memory-release/20261030T055301Z/report.json"
+  },
+  "native_visual_acceptance": false
+}

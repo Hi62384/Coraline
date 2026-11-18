@@ -1,0 +1,11 @@
+{
+  "status": "low_memory_cutoff",
+  "min_free_gib": 0.3695793151855469,
+  "peak_working_set_bytes": 3510272,
+  "peak_pagefile_bytes": 913408,
+  "peak_sampled_private_bytes": 913408,
+  "memory_samples": 235,
+  "exit_code": 1,
+  "own_child_stopped": true,
+  "memory_measurement_available": true
+}

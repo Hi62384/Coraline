@@ -1,6 +1,1 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "coraline:item/midnight_goggles"
-  }
-}
+{"parent":"minecraft:item/generated","textures":{"layer0":"coraline:item/midnight_goggles"}}

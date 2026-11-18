@@ -1,6 +1,1 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "coraline:item/panini"
-  }
-}
+{"parent":"minecraft:item/generated","textures":{"layer0":"coraline:item/panini"}}

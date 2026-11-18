@@ -1,0 +1,55 @@
+{
+  "method": "Built-in image_gen",
+  "assets": [
+    {
+      "id": "other_iron_lockpick",
+      "generated_source": "C:/Users/User1/.codex/generated_images/01a0e5a1-6507-7363-8a26-a56f9f230b40/exec-c4a39bbf-8549-48cb-894c-df29fccf111c.png",
+      "master": "artwork/infiltration/other_iron_lockpick.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/item/other_iron_lockpick.png",
+      "prompt": "Create a single flat 2D inventory item sprite for a Minecraft Coraline mod: an Other Iron Lockpick. A slim pale silver-gray metal lockpick with one small visibly hooked bent tip, a short charcoal wrapped grip and one tiny muted violet accent near the handle. Diagonal from lower left grip to upper right hooked tip. Strong readable silhouette, crisp pixel-style stepped edges, restrained hand-painted metal highlights consistent with supernatural Minecraft item icons, no photorealism and no 3D modeled scene. One tool only, centered with generous transparent margin; no text, letters, logo, border, background, checkerboard, shadow cast on a backdrop, hands or scenery. Preserve a real transparent alpha background, not a checkerboard illustration. This is a game item texture, not a finished 3D model."
+    },
+    {
+      "id": "other_iron_thread_cutter",
+      "generated_source": "C:/Users/User1/.codex/generated_images/01a0e5a1-6507-7363-8a26-a56f9f230b40/exec-c78ff8ff-9706-44de-82e0-0f8bb3431246.png",
+      "master": "artwork/infiltration/other_iron_thread_cutter.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/item/other_iron_thread_cutter.png",
+      "prompt": "Create one single isolated 2D Minecraft mod inventory sprite of an Other Iron Thread Cutter: compact sinister tailor's thread snips, two short sharp silver-gray metal blades, black wrapped handles with a tiny muted purple detail. Make it clearly recognizable as small cutting shears, distinct from a lockpick, axe or sword. Coraline-inspired handmade supernatural sewing tool, restrained square pixel-art appearance, crisp readable silhouette, no perspective render or 3D scene. Center the entire object diagonally from lower left handles to upper right blades, plenty of transparent margin, no text, no frame, no background, no shadow or extra objects. Output true transparent RGBA background; this is a game inventory icon that will be exported at at most 256 pixels while preserving the original master.",
+      "sha256": "1dbfd0d34d1dc27bea38b66fa9adb6533d46b8ee14ff0b7cb1e2b3068adf8014",
+      "inspection": {
+        "size": [
+          1269,
+          1240
+        ],
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "visual": "Inspected built-in output: single pair of silver thread snips, dark wrapped grips, purple accent and true transparency; native game appearance pending"
+      }
+    },
+    {
+      "id": "other_iron_drill_disruptor",
+      "generated_source": "C:/Users/User1/.codex/generated_images/01a0e5a1-6507-7363-8a26-a56f9f230b40/exec-32db1bd1-e9ad-4fe4-8187-8a33e28ddde3.png",
+      "master": "artwork/infiltration/other_iron_drill_disruptor.png",
+      "runtime_source": "src/main/resources/assets/coraline/textures/item/other_iron_drill_disruptor.png",
+      "sha256": "238ab02a504ebb7bb85bce746e7d9cb2d15e403b46cc8ce7b534d24785f1120d",
+      "prompt": "Single isolated 2D inventory sprite for a Minecraft Coraline mod: Other Iron Drill Disruptor, a compact handheld supernatural sabotage tool. Distinctive forked pale silver iron probe at the upper right, a small contained pale blue Moonstone coil in its middle, short black wrapped grip at the lower left, tiny restrained brass fittings. A practical industrial electrical disruptor, not a gun, sword, lockpick, scissors or drill. Crisp pixel-art stepped edges and readable silhouette for 256-pixel game inventory export, restrained metal highlights, entire tool centered diagonally with clear transparent margins. One tool only, no text, no scenery, no border, no background, no cast shadow, no fake checkerboard; true transparent RGBA background. Flat game sprite, no perspective scene or 3D render.",
+      "inspection": "Built-in output inspected: forked iron probe, blue coil and wrapped grip; native game appearance untested."
+    }
+  ],
+  "export": "Exact source copies; normal processResources optimizer alone produces inventory-size runtime copies. No master re-encoding.",
+  "inspection": {
+    "mode": "RGBA",
+    "size": [
+      1395,
+      1127
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "visual": "Inspected native generated output: single silver hooked pick, dark wrapped grip, readable silhouette, genuine transparency.",
+    "runtime_visual_qa": false
+  }
+}

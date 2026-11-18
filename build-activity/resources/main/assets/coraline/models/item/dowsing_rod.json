@@ -1,6 +1,1 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "coraline:item/dowsing_rod"
-  }
-}
+{"parent":"minecraft:item/generated","textures":{"layer0":"coraline:item/dowsing_rod"}}

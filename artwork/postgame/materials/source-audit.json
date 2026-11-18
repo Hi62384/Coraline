@@ -1,0 +1,281 @@
+[
+  {
+    "name": "stitched_grass_top",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "runtime_limit_applied": false,
+    "sha256": "02fbb04dbc59dbe4eb5e341a90bf468b53218eeb7a11aac8799a81c3064c7733",
+    "bytes": 3179388
+  },
+  {
+    "name": "other_soil",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "runtime_limit_applied": false,
+    "sha256": "a4021f0cc2d8c376de5f96105f0fb6b4b45b5f522b929bc0cbfe6d2f3e91c68d",
+    "bytes": 3318215
+  },
+  {
+    "name": "porcelain_stone",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "runtime_limit_applied": false,
+    "sha256": "c39e78420a39f38438c88f9eb9b56519e7fc80a63f05facbe873e2cc6935d1a7",
+    "bytes": 2212225
+  },
+  {
+    "name": "voidstone",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "runtime_limit_applied": false,
+    "sha256": "821d96fd6aa41f32547fce43c1ee3ee71fd2b001e1153016f8de3162d128f748",
+    "bytes": 3150559
+  },
+  {
+    "name": "candy_stone",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "runtime_limit_applied": false,
+    "sha256": "dbe91ff4bd286756447921cfcc764db4bb31d61b2115f2045e1eb6539f2eb625",
+    "bytes": 3127367
+  },
+  {
+    "name": "velvet_mycelium",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "runtime_limit_applied": false,
+    "sha256": "bdae2e9b0d6cc6ffecb9d26564383abf7659dc0853e8fa4e434da0f774a797be",
+    "bytes": 3892454
+  },
+  {
+    "name": "clockwork_stone",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "runtime_limit_applied": false,
+    "sha256": "607a9a74997ff18db4f230e13a8f4d2007a1fae0c4607dd1cf506c33a1e10fa4",
+    "bytes": 4045094
+  },
+  {
+    "name": "mirrorstone",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "runtime_limit_applied": false,
+    "sha256": "35946b89b8907dfd4880dbbc20e2730c4a86544f60f5b4c2cebb1d26cca29108",
+    "bytes": 3307924
+  },
+  {
+    "name": "threadbound_rock",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "runtime_limit_applied": false,
+    "sha256": "0d3e5668e5fad39da12a964d0f2892f8c640c13ca010682b6af479ae08fece48",
+    "bytes": 4051786
+  },
+  {
+    "name": "stitched_clay",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "runtime_limit_applied": false,
+    "sha256": "09680c591ca54a5f998e52b455a0a66f91e0c69acbf2c65608ebb6cf5103d785",
+    "bytes": 2671132
+  },
+  {
+    "name": "rootbound_soil",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "runtime_limit_applied": false,
+    "sha256": "d19b99a1612c79362ca3ab9a540e941c038df707e2578fab868de42582756fce",
+    "bytes": 3936210
+  },
+  {
+    "name": "otherworld_moss",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "runtime_limit_applied": false,
+    "sha256": "04f95466c1ae89c02241ce25e9d5e7096ec90f2d489f252726645df72bd05d44",
+    "bytes": 4056072
+  },
+  {
+    "name": "pale_rift_stone",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "runtime_limit_applied": false,
+    "sha256": "57aba814070f41f0b173057fa6089e5293894fa1e00395a9603729060a608560",
+    "bytes": 2833170
+  },
+  {
+    "name": "mirror_sand",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "runtime_limit_applied": false,
+    "sha256": "4cb2219703a9d98615f504b870e98e20291591abe627820846aa68f8dda617ee",
+    "bytes": 4546181
+  },
+  {
+    "name": "otherwood_end",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "runtime_limit_applied": false,
+    "sha256": "85fe440857c621ab6e4f011441bcec0792eaed71ad11273803003310347380e5",
+    "bytes": 3342143
+  },
+  {
+    "name": "buttonwood_log",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "runtime_limit_applied": false,
+    "sha256": "5ad8d4f926f3b93f12e9692b25756728dd6a7ff28d1d31bff5bdc4f3667e6ec0",
+    "bytes": 3411007
+  },
+  {
+    "name": "paperwood_log",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "runtime_limit_applied": false,
+    "sha256": "3a54f58688498dd71cc972fd6dc6aa7d6434f4c4fa2d1e931d392e6ebe7ea7f8",
+    "bytes": 3334802
+  },
+  {
+    "name": "lanternwood_log",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "runtime_limit_applied": false,
+    "sha256": "dfdd147736b868fec376fccce8029159971f18d0e1b8d96c04fb3cc906d67b0c",
+    "bytes": 3134735
+  },
+  {
+    "name": "buttonwood_planks",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "runtime_limit_applied": false,
+    "sha256": "38b4beb4f0809c3b29fd3d7c74d7dc48b3c7609a14dfaefa7a85bc2d04cc30fa",
+    "bytes": 2667789
+  },
+  {
+    "name": "paperwood_planks",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "runtime_limit_applied": false,
+    "sha256": "9303629872380f053529dc91b2c1b417b27a0ca858690da23b40797702be2c02",
+    "bytes": 2906892
+  },
+  {
+    "name": "lanternwood_planks",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "runtime_limit_applied": false,
+    "sha256": "35cba869d8eb5f1fee2a665ab46d70c3dd020bf7bbc4781af8d571526a9532a0",
+    "bytes": 2831687
+  },
+  {
+    "name": "buttonwood_leaves",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "runtime_limit_applied": false,
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_fraction": 0.036262270145423006,
+    "sha256": "acc80dbdd3107b2e551a8d48603cc119388381c8eb9e12f0e71c53b2dd76d7e5",
+    "bytes": 3888217
+  },
+  {
+    "name": "paperwood_leaves",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "runtime_limit_applied": false,
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_fraction": 0.057079864370219446,
+    "sha256": "808e116dfa892094a490d79abd43b8433af1136fb5d92af2bc2d414a8043e981",
+    "bytes": 3067343
+  },
+  {
+    "name": "lanternwood_leaves",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "runtime_limit_applied": false,
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_fraction": 0.02538670512732462,
+    "sha256": "5523e9d4993cd65251114c761ed9e312d5a346736313d25ad680b889aaa02f16",
+    "bytes": 3330634
+  }
+]

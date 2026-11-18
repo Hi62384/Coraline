@@ -1,0 +1,941 @@
+{
+  "MissingParentsSpinkAndForcible/A.wav": {
+    "source_sha256": "e6d4d501cca75d9318e3d6beaa56f27699517fb3aff04b90c813edd550cc11b1",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " April? Aren't you getting ready? We've lost our ride, Miriam. Caroline says her parents have vanished quite completely.",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 2.24,
+        "text": " April? Aren't you getting ready?",
+        "avg_logprob": -0.4211910132205848,
+        "no_speech_prob": 0.013002718798816204,
+        "compression_ratio": 1.1121495327102804
+      },
+      {
+        "start": 2.24,
+        "end": 4.0,
+        "text": " We've lost our ride, Miriam.",
+        "avg_logprob": -0.4211910132205848,
+        "no_speech_prob": 0.013002718798816204,
+        "compression_ratio": 1.1121495327102804
+      },
+      {
+        "start": 4.48,
+        "end": 8.16,
+        "text": " Caroline says her parents have vanished quite completely.",
+        "avg_logprob": -0.4211910132205848,
+        "no_speech_prob": 0.013002718798816204,
+        "compression_ratio": 1.1121495327102804
+      }
+    ]
+  },
+  "MissingParentsSpinkAndForcible/B.wav": {
+    "source_sha256": "de7aac56acc1c434ec7d3ac798a9ecb4efc904df9403be062aa6b4f8f8fdb4b3",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " What?! We've waited months for those tickets. I suppose we could walk. In your gummy legs? It's nearly two miles to the theatre.",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 3.6,
+        "text": " What?! We've waited months for those tickets.",
+        "avg_logprob": -0.4048807495518735,
+        "no_speech_prob": 0.02628815360367298,
+        "compression_ratio": 1.1743119266055047
+      },
+      {
+        "start": 3.6,
+        "end": 5.68,
+        "text": " I suppose we could walk.",
+        "avg_logprob": -0.4048807495518735,
+        "no_speech_prob": 0.02628815360367298,
+        "compression_ratio": 1.1743119266055047
+      },
+      {
+        "start": 5.68,
+        "end": 10.4,
+        "text": " In your gummy legs? It's nearly two miles to the theatre.",
+        "avg_logprob": -0.4048807495518735,
+        "no_speech_prob": 0.02628815360367298,
+        "compression_ratio": 1.1743119266055047
+      }
+    ]
+  },
+  "MissingParentsSpinkAndForcible/C.wav": {
+    "source_sha256": "707d8ff7fc98727bc1cc145063888054dc286a9bc444cbe21516bb317d16c5b8",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " Oh yes, your missing parents. We know just what you need.",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 6.640000000000001,
+        "text": " Oh yes, your missing parents.",
+        "avg_logprob": -0.5660512823807565,
+        "no_speech_prob": 0.09589938819408417,
+        "compression_ratio": 0.9047619047619048
+      },
+      {
+        "start": 6.640000000000001,
+        "end": 8.32,
+        "text": " We know just what you need.",
+        "avg_logprob": -0.5660512823807565,
+        "no_speech_prob": 0.09589938819408417,
+        "compression_ratio": 0.9047619047619048
+      }
+    ]
+  },
+  "MissingParentsSpinkAndForcible/D.wav": {
+    "source_sha256": "0270d19349290d27ae51ecd24f7c571723321357858db2918eee5d2496fc36e8",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " Medium, get... that's right.",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 2.6,
+        "text": " Medium, get... that's right.",
+        "avg_logprob": -0.7795178673484109,
+        "no_speech_prob": 0.030611488968133926,
+        "compression_ratio": 0.7777777777777778
+      }
+    ]
+  },
+  "MissingParentsSpinkAndForcible/E.wav": {
+    "source_sha256": "67d208ce0ffc96deaeed1b89b38a79bcfbec5d8fc9c0b584665646605b091220",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " How is 100 euro candy gonna help?",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 2.4,
+        "text": " How is 100 euro candy gonna help?",
+        "avg_logprob": -0.6213845339688387,
+        "no_speech_prob": 0.005339627619832754,
+        "compression_ratio": 0.8048780487804879
+      }
+    ]
+  },
+  "MissingParentsSpinkAndForcible/F.wav": {
+    "source_sha256": "bce4fbdc4f942cb0e9d79da462e86893aa26592000f7a26c0a2e24b4917a3357",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": "honk!",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 29.560000000000002,
+        "text": "honk!",
+        "avg_logprob": -3.3595403035481772,
+        "no_speech_prob": 0.1712663322687149,
+        "compression_ratio": 0.38461538461538464
+      }
+    ]
+  },
+  "MissingParentsSpinkAndForcible/G.wav": {
+    "source_sha256": "3c902954aa3b7c2eb6cbde604570692f909045a147e3f15b3f88cb87ab057e94",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " Huh?",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 1.0,
+        "text": " Huh?",
+        "avg_logprob": -0.9343485832214355,
+        "no_speech_prob": 0.6002689003944397,
+        "compression_ratio": 0.3333333333333333
+      }
+    ]
+  },
+  "MissingParentsSpinkAndForcible/H.wav": {
+    "source_sha256": "c63543086abfae8a74598e161e7af9d50f4437105a9f6267752942e2b51acbea",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " There you go, sweetie.",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 2.0,
+        "text": " There you go, sweetie.",
+        "avg_logprob": -0.4030580520629883,
+        "no_speech_prob": 0.011327922344207764,
+        "compression_ratio": 0.7333333333333333
+      }
+    ]
+  },
+  "MissingParentsSpinkAndForcible/I.wav": {
+    "source_sha256": "3a43d4b827e35d9adb44d1650c96f39ab7f5c9b94fdd6145e0227cdc0f98d742",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " What's it for? Well, it might help. They're good for bad things sometimes. No! They're good for lost things. It's bad things, Miriam. Lost things, April. Bad. Lost. Bad things! Lost. Bad. Lost. Bad. Lost.",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 1.0,
+        "text": " What's it for?",
+        "avg_logprob": -0.2111910702137465,
+        "no_speech_prob": 0.03877110034227371,
+        "compression_ratio": 1.632
+      },
+      {
+        "start": 1.0,
+        "end": 2.6,
+        "text": " Well, it might help.",
+        "avg_logprob": -0.2111910702137465,
+        "no_speech_prob": 0.03877110034227371,
+        "compression_ratio": 1.632
+      },
+      {
+        "start": 2.6,
+        "end": 5.0,
+        "text": " They're good for bad things sometimes.",
+        "avg_logprob": -0.2111910702137465,
+        "no_speech_prob": 0.03877110034227371,
+        "compression_ratio": 1.632
+      },
+      {
+        "start": 5.0,
+        "end": 6.0,
+        "text": " No!",
+        "avg_logprob": -0.2111910702137465,
+        "no_speech_prob": 0.03877110034227371,
+        "compression_ratio": 1.632
+      },
+      {
+        "start": 6.0,
+        "end": 8.0,
+        "text": " They're good for lost things.",
+        "avg_logprob": -0.2111910702137465,
+        "no_speech_prob": 0.03877110034227371,
+        "compression_ratio": 1.632
+      },
+      {
+        "start": 8.0,
+        "end": 10.0,
+        "text": " It's bad things, Miriam.",
+        "avg_logprob": -0.2111910702137465,
+        "no_speech_prob": 0.03877110034227371,
+        "compression_ratio": 1.632
+      },
+      {
+        "start": 10.0,
+        "end": 12.0,
+        "text": " Lost things, April.",
+        "avg_logprob": -0.2111910702137465,
+        "no_speech_prob": 0.03877110034227371,
+        "compression_ratio": 1.632
+      },
+      {
+        "start": 12.0,
+        "end": 13.0,
+        "text": " Bad.",
+        "avg_logprob": -0.2111910702137465,
+        "no_speech_prob": 0.03877110034227371,
+        "compression_ratio": 1.632
+      },
+      {
+        "start": 13.0,
+        "end": 14.0,
+        "text": " Lost.",
+        "avg_logprob": -0.2111910702137465,
+        "no_speech_prob": 0.03877110034227371,
+        "compression_ratio": 1.632
+      },
+      {
+        "start": 14.0,
+        "end": 15.0,
+        "text": " Bad things!",
+        "avg_logprob": -0.2111910702137465,
+        "no_speech_prob": 0.03877110034227371,
+        "compression_ratio": 1.632
+      },
+      {
+        "start": 15.0,
+        "end": 16.0,
+        "text": " Lost.",
+        "avg_logprob": -0.2111910702137465,
+        "no_speech_prob": 0.03877110034227371,
+        "compression_ratio": 1.632
+      },
+      {
+        "start": 16.0,
+        "end": 17.0,
+        "text": " Bad.",
+        "avg_logprob": -0.2111910702137465,
+        "no_speech_prob": 0.03877110034227371,
+        "compression_ratio": 1.632
+      },
+      {
+        "start": 17.0,
+        "end": 18.0,
+        "text": " Lost.",
+        "avg_logprob": -0.2111910702137465,
+        "no_speech_prob": 0.03877110034227371,
+        "compression_ratio": 1.632
+      },
+      {
+        "start": 18.0,
+        "end": 19.0,
+        "text": " Bad.",
+        "avg_logprob": -0.2111910702137465,
+        "no_speech_prob": 0.03877110034227371,
+        "compression_ratio": 1.632
+      },
+      {
+        "start": 19.0,
+        "end": 20.0,
+        "text": " Lost.",
+        "avg_logprob": -0.2111910702137465,
+        "no_speech_prob": 0.03877110034227371,
+        "compression_ratio": 1.632
+      }
+    ]
+  },
+  "MissingParentsCat/A.wav": {
+    "source_sha256": "ee71993f5bcb97b0b4b951fa266697566c8c9d2f8c8dc1936e639a99f9953dbb",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " Hello? Do you know where Mom and Dad are?",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 2.0,
+        "text": " Hello?",
+        "avg_logprob": -0.32695910334587097,
+        "no_speech_prob": 0.0017148328479379416,
+        "compression_ratio": 0.8367346938775511
+      },
+      {
+        "start": 2.0,
+        "end": 4.0,
+        "text": " Do you know where Mom and Dad are?",
+        "avg_logprob": -0.32695910334587097,
+        "no_speech_prob": 0.0017148328479379416,
+        "compression_ratio": 0.8367346938775511
+      }
+    ]
+  },
+  "MissingParentsCat/B.wav": {
+    "source_sha256": "ef8cfe77fd7023cb43ccb1bfede699723165ab59dc3f5251e6363185c4d4cfa8",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " Mom? Dad?",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 1.0,
+        "text": " Mom?",
+        "avg_logprob": -0.6082776917351617,
+        "no_speech_prob": 0.020320001989603043,
+        "compression_ratio": 0.5294117647058824
+      },
+      {
+        "start": 1.0,
+        "end": 2.0,
+        "text": " Dad?",
+        "avg_logprob": -0.6082776917351617,
+        "no_speech_prob": 0.020320001989603043,
+        "compression_ratio": 0.5294117647058824
+      }
+    ]
+  },
+  "MissingParentsCat/C.wav": {
+    "source_sha256": "7b7e27845d55ae7d5e95db81b7a819c53ed6b31ad6a1122615cb6408a6d2f1d1",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " Bye bye.",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 3.7600000000000002,
+        "text": " Bye bye.",
+        "avg_logprob": -2.051123301188151,
+        "no_speech_prob": 0.5635995268821716,
+        "compression_ratio": 0.5
+      }
+    ]
+  },
+  "MissingParentsCat/D.wav": {
+    "source_sha256": "b219847eecf8bc66019765e6166ff71a5bd81e024ec562c472e8786d8cf8258f",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " How did this happen?",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 7.0,
+        "text": " How did this happen?",
+        "avg_logprob": -0.7166664600372314,
+        "no_speech_prob": 0.019882414489984512,
+        "compression_ratio": 0.7142857142857143
+      }
+    ]
+  },
+  "MissingParentsCat/E.wav": {
+    "source_sha256": "75f6fc775ffb6f829810adb85e489c6cb8b585bdbecae963a860f3eb915ff018",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " She's taken them.",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 7.0,
+        "text": " She's taken them.",
+        "avg_logprob": -0.7335156202316284,
+        "no_speech_prob": 0.12931950390338898,
+        "compression_ratio": 0.68
+      }
+    ]
+  },
+  "MissingParentsCat/F.wav": {
+    "source_sha256": "5dd7ef81f940a8c7d4b5c66e32b744acb9c5bc1906b2b05d58b03e1edbb2d370",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " They're not coming back, are they? Mom and Dad. Not on their own. Only one thing to do.",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 2.0,
+        "text": " They're not coming back, are they?",
+        "avg_logprob": -0.265060771595348,
+        "no_speech_prob": 0.02337716519832611,
+        "compression_ratio": 1.0481927710843373
+      },
+      {
+        "start": 2.0,
+        "end": 4.0,
+        "text": " Mom and Dad.",
+        "avg_logprob": -0.265060771595348,
+        "no_speech_prob": 0.02337716519832611,
+        "compression_ratio": 1.0481927710843373
+      },
+      {
+        "start": 4.0,
+        "end": 6.0,
+        "text": " Not on their own.",
+        "avg_logprob": -0.265060771595348,
+        "no_speech_prob": 0.02337716519832611,
+        "compression_ratio": 1.0481927710843373
+      },
+      {
+        "start": 6.0,
+        "end": 8.0,
+        "text": " Only one thing to do.",
+        "avg_logprob": -0.265060771595348,
+        "no_speech_prob": 0.02337716519832611,
+        "compression_ratio": 1.0481927710843373
+      }
+    ]
+  },
+  "EnterOtherWorldParentRescue/A.wav": {
+    "source_sha256": "c4ff623dc1aaff549298e0c6829be03649291068d840a921a81167c26bbdcf61",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " You know you're walking right into her trap. I have to go back. They are my parents. Challenge her then. She may not play fair, but she won't refuse. She's got a thing for games. Hmm. Okay.",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 4.0,
+        "text": " You know you're walking right into her trap.",
+        "avg_logprob": -0.22756681442260743,
+        "no_speech_prob": 0.04656047001481056,
+        "compression_ratio": 1.2857142857142858
+      },
+      {
+        "start": 4.0,
+        "end": 7.6000000000000005,
+        "text": " I have to go back. They are my parents.",
+        "avg_logprob": -0.22756681442260743,
+        "no_speech_prob": 0.04656047001481056,
+        "compression_ratio": 1.2857142857142858
+      },
+      {
+        "start": 7.6000000000000005,
+        "end": 12.0,
+        "text": " Challenge her then. She may not play fair, but she won't refuse.",
+        "avg_logprob": -0.22756681442260743,
+        "no_speech_prob": 0.04656047001481056,
+        "compression_ratio": 1.2857142857142858
+      },
+      {
+        "start": 12.0,
+        "end": 15.0,
+        "text": " She's got a thing for games.",
+        "avg_logprob": -0.22756681442260743,
+        "no_speech_prob": 0.04656047001481056,
+        "compression_ratio": 1.2857142857142858
+      },
+      {
+        "start": 15.0,
+        "end": 17.0,
+        "text": " Hmm. Okay.",
+        "avg_logprob": -0.22756681442260743,
+        "no_speech_prob": 0.04656047001481056,
+        "compression_ratio": 1.2857142857142858
+      }
+    ]
+  },
+  "EnterOtherWorldParentRescue/B.wav": {
+    "source_sha256": "337a13f49a17b178f6e40bedbea04e5e37b9b2d3f174d3451733376534e95c08",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " Coraline? Mine? Coraline! You came back for us. Mom!",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 1.0,
+        "text": " Coraline?",
+        "avg_logprob": -0.5186592384620949,
+        "no_speech_prob": 0.021709924563765526,
+        "compression_ratio": 1.0196078431372548
+      },
+      {
+        "start": 1.0,
+        "end": 2.0,
+        "text": " Mine?",
+        "avg_logprob": -0.5186592384620949,
+        "no_speech_prob": 0.021709924563765526,
+        "compression_ratio": 1.0196078431372548
+      },
+      {
+        "start": 2.0,
+        "end": 4.0,
+        "text": " Coraline!",
+        "avg_logprob": -0.5186592384620949,
+        "no_speech_prob": 0.021709924563765526,
+        "compression_ratio": 1.0196078431372548
+      },
+      {
+        "start": 4.0,
+        "end": 6.0,
+        "text": " You came back for us.",
+        "avg_logprob": -0.5186592384620949,
+        "no_speech_prob": 0.021709924563765526,
+        "compression_ratio": 1.0196078431372548
+      },
+      {
+        "start": 6.0,
+        "end": 7.0,
+        "text": " Mom!",
+        "avg_logprob": -0.5186592384620949,
+        "no_speech_prob": 0.021709924563765526,
+        "compression_ratio": 1.0196078431372548
+      }
+    ]
+  },
+  "EnterOtherWorldParentRescue/C.wav": {
+    "source_sha256": "49c7b0d0ad4fe2d95a9664a31a8a57c879ff6f60ca10f1a0eb3cc000fab1b074",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " Darling, why would you run away from me? Oh! Mm-hmm.",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 3.44,
+        "text": " Darling, why would you run away from me?",
+        "avg_logprob": -0.7295098876953126,
+        "no_speech_prob": 0.015202546492218971,
+        "compression_ratio": 0.8666666666666667
+      },
+      {
+        "start": 4.44,
+        "end": 5.44,
+        "text": " Oh!",
+        "avg_logprob": -0.7295098876953126,
+        "no_speech_prob": 0.015202546492218971,
+        "compression_ratio": 0.8666666666666667
+      },
+      {
+        "start": 6.44,
+        "end": 8.44,
+        "text": " Mm-hmm.",
+        "avg_logprob": -0.7295098876953126,
+        "no_speech_prob": 0.015202546492218971,
+        "compression_ratio": 0.8666666666666667
+      }
+    ]
+  },
+  "EnterOtherWorldParentRescue/D.wav": {
+    "source_sha256": "f40a17cec6c55193a806c64a9f03cf4c5c2f4921edd35420fdde5033230e7222",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " Where are my parents? Gosh, I have no idea where your old parents are. Perhaps they've grown bored of you and run away to France. They weren't bored of me, you stole them! Now don't be difficult, Coraline. Have a seat, won't you?",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 1.56,
+        "text": " Where are my parents?",
+        "avg_logprob": -0.2810488012101915,
+        "no_speech_prob": 0.15637193620204926,
+        "compression_ratio": 1.4049079754601228
+      },
+      {
+        "start": 1.56,
+        "end": 5.4,
+        "text": " Gosh, I have no idea where your old parents are.",
+        "avg_logprob": -0.2810488012101915,
+        "no_speech_prob": 0.15637193620204926,
+        "compression_ratio": 1.4049079754601228
+      },
+      {
+        "start": 5.4,
+        "end": 8.6,
+        "text": " Perhaps they've grown bored of you and run away to France.",
+        "avg_logprob": -0.2810488012101915,
+        "no_speech_prob": 0.15637193620204926,
+        "compression_ratio": 1.4049079754601228
+      },
+      {
+        "start": 8.6,
+        "end": 11.0,
+        "text": " They weren't bored of me, you stole them!",
+        "avg_logprob": -0.2810488012101915,
+        "no_speech_prob": 0.15637193620204926,
+        "compression_ratio": 1.4049079754601228
+      },
+      {
+        "start": 11.0,
+        "end": 14.0,
+        "text": " Now don't be difficult, Coraline.",
+        "avg_logprob": -0.2810488012101915,
+        "no_speech_prob": 0.15637193620204926,
+        "compression_ratio": 1.4049079754601228
+      },
+      {
+        "start": 14.0,
+        "end": 16.0,
+        "text": " Have a seat, won't you?",
+        "avg_logprob": -0.2810488012101915,
+        "no_speech_prob": 0.15637193620204926,
+        "compression_ratio": 1.4049079754601228
+      }
+    ]
+  },
+  "EnterOtherWorldParentRescue/E.wav": {
+    "source_sha256": "39c9dc772ab35d5198c5e0918a7364e16298b33204b0d948e762c26bd10769e0",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " Why don't you have your own key?",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 2.0,
+        "text": " Why don't you have your own key?",
+        "avg_logprob": -0.2203585902849833,
+        "no_speech_prob": 0.030549485236406326,
+        "compression_ratio": 0.8648648648648649
+      }
+    ]
+  },
+  "EnterOtherWorldParentRescue/F.wav": {
+    "source_sha256": "85ddb4b8a5c38a19ebc59baaf63c542de9c3eecba2e99d65920a3e8ca3fe5711",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " Only one piece.",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 2.64,
+        "text": " Only one piece.",
+        "avg_logprob": -0.6980712073189872,
+        "no_speech_prob": 0.0409429557621479,
+        "compression_ratio": 0.6521739130434783
+      }
+    ]
+  },
+  "EnterOtherWorldParentRescue/G.wav": {
+    "source_sha256": "a2154a43aa5ed7079bcaff9cb3f0ea23e54587f28111097ff8ffbf4c55f2a7fb",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " The garden squash need tending, don't you think pumpkin? My small old concerned.",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 3.84,
+        "text": " The garden squash need tending, don't you think pumpkin?",
+        "avg_logprob": -0.8412460847334429,
+        "no_speech_prob": 0.00973350927233696,
+        "compression_ratio": 1.0
+      },
+      {
+        "start": 3.84,
+        "end": 8.0,
+        "text": " My small old concerned.",
+        "avg_logprob": -0.8412460847334429,
+        "no_speech_prob": 0.00973350927233696,
+        "compression_ratio": 1.0
+      }
+    ]
+  },
+  "EnterOtherWorldParentRescue/H.wav": {
+    "source_sha256": "035110024a510512a694d75887ff440dbb3b9e488d5c8a8278a3c1efd885cd68",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " La, la, la, la, la. Why don't we play the game?",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 5.0,
+        "text": " La, la, la, la, la.",
+        "avg_logprob": -0.8081539471944174,
+        "no_speech_prob": 0.01973237842321396,
+        "compression_ratio": 1.0930232558139534
+      },
+      {
+        "start": 7.640000000000001,
+        "end": 10.22,
+        "text": " Why don't we play the game?",
+        "avg_logprob": -0.8081539471944174,
+        "no_speech_prob": 0.01973237842321396,
+        "compression_ratio": 1.0930232558139534
+      }
+    ]
+  },
+  "EnterOtherWorldParentRescue/I.wav": {
+    "source_sha256": "8a4d56fd8bc196e67f71a3819d3facf009e658ad3b80955449f3d0d20cdc5cc5",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " I know you like them. Everybody likes games. Uh-huh.",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 1.4000000000000001,
+        "text": " I know you like them.",
+        "avg_logprob": -0.42896262082186615,
+        "no_speech_prob": 0.03655959665775299,
+        "compression_ratio": 0.9122807017543859
+      },
+      {
+        "start": 1.4000000000000001,
+        "end": 3.9,
+        "text": " Everybody likes games.",
+        "avg_logprob": -0.42896262082186615,
+        "no_speech_prob": 0.03655959665775299,
+        "compression_ratio": 0.9122807017543859
+      },
+      {
+        "start": 3.9,
+        "end": 4.9,
+        "text": " Uh-huh.",
+        "avg_logprob": -0.42896262082186615,
+        "no_speech_prob": 0.03655959665775299,
+        "compression_ratio": 0.9122807017543859
+      }
+    ]
+  },
+  "EnterOtherWorldParentRescue/J.wav": {
+    "source_sha256": "4e72bd6449f1c87eaede2bbb105637b3a5f56e1d0a8795b2d667deea0c5a56d7",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " What kind of gang would it be? An exploring game? A finding things game?",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 5.48,
+        "text": " What kind of gang would it be? An exploring game? A finding things game?",
+        "avg_logprob": -0.2835888624191284,
+        "no_speech_prob": 0.03850231319665909,
+        "compression_ratio": 1.0588235294117647
+      }
+    ]
+  },
+  "EnterOtherWorldParentRescue/K.wav": {
+    "source_sha256": "8068f6bfe770ef26c23cd7721cb4a8fdace88111d6a10b50d8f353af794e6f46",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " And what is it you'd be finding, Coraline? My real parents. Too easy. And... and the eyes of the ghost children. Huh.",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 3.54,
+        "text": " And what is it you'd be finding, Coraline?",
+        "avg_logprob": -0.5404692604428246,
+        "no_speech_prob": 0.0418567955493927,
+        "compression_ratio": 1.0934579439252337
+      },
+      {
+        "start": 3.54,
+        "end": 5.64,
+        "text": " My real parents.",
+        "avg_logprob": -0.5404692604428246,
+        "no_speech_prob": 0.0418567955493927,
+        "compression_ratio": 1.0934579439252337
+      },
+      {
+        "start": 5.64,
+        "end": 7.34,
+        "text": " Too easy.",
+        "avg_logprob": -0.5404692604428246,
+        "no_speech_prob": 0.0418567955493927,
+        "compression_ratio": 1.0934579439252337
+      },
+      {
+        "start": 7.34,
+        "end": 11.18,
+        "text": " And... and the eyes of the ghost children.",
+        "avg_logprob": -0.5404692604428246,
+        "no_speech_prob": 0.0418567955493927,
+        "compression_ratio": 1.0934579439252337
+      },
+      {
+        "start": 11.18,
+        "end": 12.18,
+        "text": " Huh.",
+        "avg_logprob": -0.5404692604428246,
+        "no_speech_prob": 0.0418567955493927,
+        "compression_ratio": 1.0934579439252337
+      }
+    ]
+  },
+  "EnterOtherWorldParentRescue/L.wav": {
+    "source_sha256": "c3e8cd9a2c0c742ceacde9199ff17a9dbddd13efd4b357f78db426eddbbcfc5b",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " What if you don't find them? I lose. We'll stay here with you forever and let you love me. And I'll let you sew buttons into my eyes. Hmm. And if you somehow... win this game... Then you let me go. You let everyone go. My real father and mother. The dead children, everyone you've trapped here. Ahh. Deal. Not till you give me a clue. Oh, right. In each of three wonders I've made just for you, a ghost's eye is lost in plain sight. And for my parents?",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 2.0,
+        "text": " What if you don't find them?",
+        "avg_logprob": -0.23221409907106494,
+        "no_speech_prob": 0.3123902678489685,
+        "compression_ratio": 1.547085201793722
+      },
+      {
+        "start": 2.0,
+        "end": 3.0,
+        "text": " I lose.",
+        "avg_logprob": -0.23221409907106494,
+        "no_speech_prob": 0.3123902678489685,
+        "compression_ratio": 1.547085201793722
+      },
+      {
+        "start": 3.0,
+        "end": 5.0,
+        "text": " We'll stay here with you forever and let you love me.",
+        "avg_logprob": -0.23221409907106494,
+        "no_speech_prob": 0.3123902678489685,
+        "compression_ratio": 1.547085201793722
+      },
+      {
+        "start": 6.0,
+        "end": 8.0,
+        "text": " And I'll let you sew buttons into my eyes.",
+        "avg_logprob": -0.23221409907106494,
+        "no_speech_prob": 0.3123902678489685,
+        "compression_ratio": 1.547085201793722
+      },
+      {
+        "start": 8.0,
+        "end": 9.0,
+        "text": " Hmm.",
+        "avg_logprob": -0.23221409907106494,
+        "no_speech_prob": 0.3123902678489685,
+        "compression_ratio": 1.547085201793722
+      },
+      {
+        "start": 9.0,
+        "end": 11.0,
+        "text": " And if you somehow...",
+        "avg_logprob": -0.23221409907106494,
+        "no_speech_prob": 0.3123902678489685,
+        "compression_ratio": 1.547085201793722
+      },
+      {
+        "start": 11.0,
+        "end": 13.0,
+        "text": " win this game...",
+        "avg_logprob": -0.23221409907106494,
+        "no_speech_prob": 0.3123902678489685,
+        "compression_ratio": 1.547085201793722
+      },
+      {
+        "start": 13.0,
+        "end": 14.0,
+        "text": " Then you let me go.",
+        "avg_logprob": -0.23221409907106494,
+        "no_speech_prob": 0.3123902678489685,
+        "compression_ratio": 1.547085201793722
+      },
+      {
+        "start": 14.0,
+        "end": 16.0,
+        "text": " You let everyone go.",
+        "avg_logprob": -0.23221409907106494,
+        "no_speech_prob": 0.3123902678489685,
+        "compression_ratio": 1.547085201793722
+      },
+      {
+        "start": 16.0,
+        "end": 17.0,
+        "text": " My real father and mother.",
+        "avg_logprob": -0.23221409907106494,
+        "no_speech_prob": 0.3123902678489685,
+        "compression_ratio": 1.547085201793722
+      },
+      {
+        "start": 17.0,
+        "end": 20.0,
+        "text": " The dead children, everyone you've trapped here.",
+        "avg_logprob": -0.23221409907106494,
+        "no_speech_prob": 0.3123902678489685,
+        "compression_ratio": 1.547085201793722
+      },
+      {
+        "start": 20.0,
+        "end": 21.0,
+        "text": " Ahh.",
+        "avg_logprob": -0.23221409907106494,
+        "no_speech_prob": 0.3123902678489685,
+        "compression_ratio": 1.547085201793722
+      },
+      {
+        "start": 21.0,
+        "end": 22.0,
+        "text": " Deal.",
+        "avg_logprob": -0.23221409907106494,
+        "no_speech_prob": 0.3123902678489685,
+        "compression_ratio": 1.547085201793722
+      },
+      {
+        "start": 22.0,
+        "end": 25.0,
+        "text": " Not till you give me a clue.",
+        "avg_logprob": -0.23221409907106494,
+        "no_speech_prob": 0.3123902678489685,
+        "compression_ratio": 1.547085201793722
+      },
+      {
+        "start": 25.0,
+        "end": 26.0,
+        "text": " Oh, right.",
+        "avg_logprob": -0.23221409907106494,
+        "no_speech_prob": 0.3123902678489685,
+        "compression_ratio": 1.547085201793722
+      },
+      {
+        "start": 26.0,
+        "end": 34.0,
+        "text": " In each of three wonders I've made just for you, a ghost's eye is lost in plain sight.",
+        "avg_logprob": -0.20851492881774902,
+        "no_speech_prob": 0.07355216145515442,
+        "compression_ratio": 1.092783505154639
+      },
+      {
+        "start": 34.0,
+        "end": 36.0,
+        "text": " And for my parents?",
+        "avg_logprob": -0.20851492881774902,
+        "no_speech_prob": 0.07355216145515442,
+        "compression_ratio": 1.092783505154639
+      }
+    ]
+  },
+  "EnterOtherWorldParentRescue/M.wav": {
+    "source_sha256": "86e10bcd81f5e3b9c85fad2f30507e8c1d8e02eeebf51bc1a968748cd9af55e1",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " Hmm fine don't tell me",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 5.34,
+        "text": " Hmm fine don't tell me",
+        "avg_logprob": -0.49127091301812065,
+        "no_speech_prob": 0.073272205889225,
+        "compression_ratio": 0.7333333333333333
+      }
+    ]
+  },
+  "EnterOtherWorldParentRescue/N.wav": {
+    "source_sha256": "c3fefc1f79b8ff3ed4a8cedaf8c8cdd936b35263eebf4cad6664f8ae9a18d000",
+    "review_status": "automatic_inspection_not_approved_subtitles",
+    "text": " It's a deal.",
+    "segments": [
+      {
+        "start": 0.0,
+        "end": 1.0,
+        "text": " It's a deal.",
+        "avg_logprob": -0.4540680944919586,
+        "no_speech_prob": 0.07442645728588104,
+        "compression_ratio": 0.6
+      }
+    ]
+  }
+}

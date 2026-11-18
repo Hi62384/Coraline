@@ -1,6 +1,1 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "coraline:item/bottomless_candy_bag"
-  }
-}
+{"parent":"minecraft:item/generated","textures":{"layer0":"coraline:item/bottomless_candy_bag"}}

@@ -1,0 +1,26 @@
+Built-in image_gen; edit of the user's supplied celestial reference, 2026-10-18.
+Original generated image retained under .codex/generated_images; this master is
+preserved outside packaged resources. Runtime input is a copy; processResources
+must optimize its generated output, never this master.
+
+Prompt:
+Use case: style-transfer / environment texture. Edit the supplied celestial-sky
+frame into a complete seamless 360-degree equirectangular game sky panorama,
+landscape 2:1. Retain its dense hand-painted, tactile short brushstrokes and rolling
+interlocking blue/teal/violet vortex currents on deep midnight navy, with small
+ochre-gold spiral stars woven into the sky. Expand the painted sky to fill the
+entire image. Remove the three large bright foreground golden ghost-orbs and all
+room/ceiling/wall/frame edges; those foreground characters are rendered separately
+in the game. Background only: no people, ghosts, silhouettes, objects, ground,
+horizon, lettering, border or watermark. Match the reference's dark luminous,
+intimate otherworldly mood and compact swirling brushwork, not a generic astronomy
+nebula, sparse starfield, flat gradient, or one giant spiral. Distribute many
+organic vortices with different sizes naturally in every direction. Make left and
+right edges continue seamlessly, with the upper and lower poles softly converging
+for spherical mapping. High-quality painted master asset, opaque RGB.
+
+Reference:
+C:/Users/User1/AppData/Local/Temp/codex-clipboard-8be06075-3a2a-431a-a2da-fab73df87183.png
+
+QA: Generated master inspected in conversation. Actual spherical game-camera,
+seam/pole continuity and optimized-512-pixel appearance still need acceptance.

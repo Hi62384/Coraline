@@ -1,6 +1,1 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "coraline:item/corn_on_the_cob"
-  }
-}
+{"parent":"minecraft:item/generated","textures":{"layer0":"coraline:item/corn_on_the_cob"}}

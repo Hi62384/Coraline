@@ -1,0 +1,15 @@
+{
+  "status": "low_memory_cutoff",
+  "min_free_gib": 0.37041473388671875,
+  "peak_working_set_bytes": 3514368,
+  "peak_pagefile_bytes": 897024,
+  "peak_sampled_private_bytes": 897024,
+  "memory_samples": 579,
+  "exit_code": 1,
+  "own_child_stopped": true,
+  "memory_measurement_available": true,
+  "mode": [
+    "--cpu-review"
+  ],
+  "voice_generation": false
+}

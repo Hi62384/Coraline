@@ -1,0 +1,33 @@
+{
+  "kind": "original procedural nonverbal syllables",
+  "real_person_reference": false,
+  "generator_sha256": "d3e4fd13754236985e152c3a8e0f29568e4dd223be154eaaa11a6613f4ee7c90",
+  "masters": [
+    {
+      "path": "artwork\\audio_masters\\ghost_victim\\yada_01.wav",
+      "sha256": "5fa4930fa4a5acf5d88560ce0870c1f62b59a3c282f34dc7d4376a7882b68c44",
+      "duration_seconds": 0.3380045351473923,
+      "peak_fraction": 0.72
+    },
+    {
+      "path": "artwork\\audio_masters\\ghost_victim\\yada_02.wav",
+      "sha256": "2e7f07493ab51452010068cfab75ab78e092c165da960bf7fa96f6036e3fcc0e",
+      "duration_seconds": 0.36201814058956916,
+      "peak_fraction": 0.72
+    },
+    {
+      "path": "artwork\\audio_masters\\ghost_victim\\yada_03.wav",
+      "sha256": "11bcbd4aecdc3309e22a9fd28f34d138dec942f7b9d8a3df309fb20052e620af",
+      "duration_seconds": 0.35,
+      "peak_fraction": 0.72
+    },
+    {
+      "path": "artwork\\audio_masters\\ghost_victim\\yada_04.wav",
+      "sha256": "1e82db10c3157943ab58b6e826716cf8c429b062ab41d793fe19e217ded3061b",
+      "duration_seconds": 0.3380045351473923,
+      "peak_fraction": 0.72
+    }
+  ],
+  "runtime_exported": false,
+  "human_listening": false
+}
