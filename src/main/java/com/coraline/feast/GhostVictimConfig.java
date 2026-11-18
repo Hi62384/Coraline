@@ -6,7 +6,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
  * by the continuation's normal integration, never by the frozen prior release. */
 public final class GhostVictimConfig {
     private static final ForgeConfigSpec.Builder B=new ForgeConfigSpec.Builder();
-    public static final ForgeConfigSpec.DoubleValue REGEN=B.comment("Manifestation energy regenerated per second outside mirrors.").defineInRange("manifestationRegeneration",.025,0.,1.);
+    public static final ForgeConfigSpec.DoubleValue REGEN=B.comment("Manifestation energy regenerated per second outside mirrors; a positive minimum keeps mandatory abilities recoverable after exhaustion.").defineInRange("manifestationRegeneration",.025,.001,1.);
     public static final ForgeConfigSpec.DoubleValue MIRROR_ENTRY=B.defineInRange("mirrorEntryEnergy",.10,0.,1.);
     public static final ForgeConfigSpec.DoubleValue MIRROR_DRAIN=B.defineInRange("mirrorEnergyPerSecond",.08,.001,1.);
     public static final ForgeConfigSpec.DoubleValue ATTENTION_DECAY=B.defineInRange("beldamAttentionDecayPerSecond",.005,0.,1.);

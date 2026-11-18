@@ -1,0 +1,106 @@
+{
+  "reference_unchanged": true,
+  "checks": [
+    {
+      "file": "low_low/line_01.wav",
+      "seconds": 20.354739229024943,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7656101584434509,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh sweetheart, I thought you might like a little time to yourself. You've got the next 30 minutes to relax and do whatever you please. I'll be pottering around the house, so if you get bored, just come find me and I'll think of something lovely for us to do. Just don't wander too far darling. There is really no need to go poking around where you shouldn't.",
+      "word_error_rate": 0.0273972602739726
+    },
+    {
+      "file": "low_low/line_02.wav",
+      "seconds": 21.817777777777778,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7857568264007568,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Well, darling, why don't we take a little break from all our wonderful plans? You can have 30 minutes to yourself, explore a little. Have something to eat or simply enjoy yourself. I'll be somewhere around the house if you want me to find another activity for you. Just stay reasonably close, sweetheart. And remember that some places are better left alone.",
+      "word_error_rate": 0.015625
+    },
+    {
+      "file": "mid_mid/line_01.wav",
+      "seconds": 20.37814058956916,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8374953269958496,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "I think you've earned a little time to yourself, sweetheart. 30 minutes should be plenty for you to relax and look around. I'll be keeping myself busy around the house. So come find me if you'd rather do something together. And do try not to wander too far this time, darling. You do have a habit of getting rather carried away.",
+      "word_error_rate": 0.015625
+    },
+    {
+      "file": "mid_mid/line_02.wav",
+      "seconds": 17.01124716553288,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8513073921203613,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Well, I suppose we don't need to fill every minute with activities. Why don't you amuse yourself for the next half hour? I'll be around the house if you need me, or if you decide you'd like something else to do. Just remember what we've discussed about wandering off and exploring places that aren't meant for you.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "high_low/line_01.wav",
+      "seconds": 20.095328798185943,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8285196423530579,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, my darling, you deserve a little time to yourself, don't you? Take the next 30 minutes and do whatever makes you happy. I'll be somewhere around the house, so you can come find me whenever you want another lovely activity. Just don't stray too far. Sweetheart, I do worry when I can't find my favorite little one.",
+      "word_error_rate": 0.016129032258064516
+    },
+    {
+      "file": "high_low/line_02.wav",
+      "seconds": 17.171972789115646,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8240575790405273,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Of course you can have some time to yourself, my love. Ernie Holman, it's just for you. I'll be nearby, taking care of a few things around the house. If you get bored, come and see me and we'll find something wonderful to do together. Just promise you won't wander too far or go looking through anything you shouldn't.",
+      "word_error_rate": 0.06349206349206349
+    },
+    {
+      "file": "low_high/line_01.wav",
+      "seconds": 20.30485260770975,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8258917331695557,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Very well, sweetheart. You may have 30 minutes to entertain yourself. I'll be moving around the house if you decide you'd rather participate in something I've prepared. But I expect you to stay reasonably nearby. And I certainly don't want to find you poking around in places you have no business visiting. Have I made myself clear?",
+      "word_error_rate": 0.01639344262295082
+    },
+    {
+      "file": "low_high/line_02.wav",
+      "seconds": 19.867301587301586,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8513058423995972,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "I suppose I can trust you to occupy yourself for half an hour. I'll be around the house if you want another activity. You're free to relax and enjoy yourself. Provided you remember the rules. Don't go wandering too far, and don't give me another reason to come looking for you. I'd much rather we had a pleasant visit.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "high_high/line_01.wav",
+      "seconds": 23.31546485260771,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7463343739509583,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh darling, you do love having your little adventures, don't you? Well, I'll give you 30 minutes to amuse yourself however you like, within reason of course. I'll be around the house if you'd rather spend some time with me. Just don't wander too far. Sweetheart. You and I both know how your curiosity sometimes gets the better of you.",
+      "word_error_rate": 0.015384615384615385
+    },
+    {
+      "file": "high_high/line_02.wav",
+      "seconds": 23.234195011337867,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7953140735626221,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Thirty minutes all to yourself, my love, isn't that nice? You can wander about, enjoy the garden, or find yourself something interesting to do. I'll be somewhere in the house if you decide you want another activity. Just remember, darling. There are some things you're better off not knowing. And I do hope you won't go looking for them.",
+      "word_error_rate": 0.0
+    }
+  ],
+  "note": "ASR checks words, not acting. Human listening review is not replaced by these checks."
+}

@@ -49,6 +49,8 @@ public final class GhostVictimSnapshot {
         var escapeState=n.getCompound(GhostEscapeProgress.KEY);boolean escaping=GhostEscapeProgress.owns(n,escapeState)&&GhostEscapeProgress.active(escapeState);
         if(escaping&&!GhostVictimProgress.imprisoned(n))objective=GhostEscapeProgress.objective(escapeState);
         if(GhostVictimProgress.suppressed(n))objective="The Beldam is suppressing your manifestations. The child is still in danger.";
+        String blocker=escaping?escapeState.getString("Blocker"):n.getString("Blocker");
+        if(!blocker.isBlank()&&!GhostVictimProgress.imprisoned(n))objective=blocker;
         ghost.putString("Objective",objective);
         long remaining=GhostVictimProgress.suppressed(n)?n.getLong("SuppressedUntil")-GhostVictimProgress.clock(n):GhostVictimProgress.imprisoned(n)?n.getLong("PunishedUntil")-GhostVictimProgress.clock(n):
             escaping?GhostEscapeProgress.countdown(escapeState,GhostVictimProgress.clock(n)):

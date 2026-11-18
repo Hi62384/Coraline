@@ -1,0 +1,100 @@
+[
+  {
+    "file": "invitation/low_low/line_02.wav",
+    "expected": "Darling, it's almost time for supper! I've been working away in the kitchen, and everything smells absolutely wonderful. You've got five minutes to come to the dining room, so don't wander too far. Your Other Father and I will be waiting.",
+    "first_transcription": "Darling, it is almost time for supper. I've been working away in the kitchen, and everything smells absolutely wonderful. You've got five minutes to come to the dining room, so don't wander too far. Your other father and I will be waiting.",
+    "beam_transcription": "Darling it is almost time for supper. I've been working away in the kitchen and everything smells absolutely wonderful You've got five minutes to come to the dining room. So don't wander too far your other father and I will be waiting",
+    "beam_word_error_rate": 0.022222222222222223
+  },
+  {
+    "file": "invitation/mid_mid/line_02.wav",
+    "expected": "Oh, darling, I've got dinner nearly ready. You have five minutes to make your way to the dining room. Do try to arrive on time, won't you? It's much nicer when the whole family can eat together.",
+    "first_transcription": "Oh darling, I got dinner nearly ready. You have five minutes to make your way to the dining room. Do try to arrive on time, won't you? It is much nicer when the whole family can eat together.",
+    "beam_transcription": "Oh darling, I got dinner nearly ready. You have five minutes to make your way to the dining room. Do try to arrive on time, won't you? It is much nicer when the whole family can eat together.",
+    "beam_word_error_rate": 0.05
+  },
+  {
+    "file": "invitation/high_low/line_02.wav",
+    "expected": "Sweetheart, dinner's almost ready, and I've made sure there's plenty of everything you like. Your Other Father is terribly excited to have us all together. Come to the dining room within five minutes, my love. I'll be waiting for you.",
+    "first_transcription": "Sweetheart, dinner's almost ready, and I've made sure there is plenty of everything you like. Your other father is terribly excited to have us all together. Come to the dining room within five minutes, my love. I'll be waiting for you.",
+    "beam_transcription": "Sweetheart, dinner's almost ready, and I've made sure there is plenty of everything you like. Your other father is terribly excited to have us all together. Come to the dining room within five minutes, my love. I'll be waiting for you.",
+    "beam_word_error_rate": 0.022727272727272728
+  },
+  {
+    "file": "invitation/high_high/line_02.wav",
+    "expected": "Sweetheart, it's time we spent a little while together as a family. Dinner will be ready in five minutes, and I do expect to see you there. Whatever little adventure you're having can wait, can't it?",
+    "first_transcription": "Sweetheart, it is time we spent a little while together as a family. Dinner will be ready in five minutes, and I do expect to see you there. Whatever little adventure you're having can wait! Can't it?",
+    "beam_transcription": "Sweetheart, it is time we spent a little while together as a family. Dinner will be ready in five minutes, and I do expect to see you there. Whatever little adventure you're having can wait, can't it?",
+    "beam_word_error_rate": 0.02564102564102564
+  },
+  {
+    "file": "ontime/high_low/line_01.wav",
+    "expected": "Oh, my darling! I knew you'd come straight to dinner. There's nothing quite like having the whole family together, is there? Come sit beside me.",
+    "first_transcription": "Oh, my darling! I knew you'd come straight to dinner. There is nothing quite like having the whole family together. Is there? Come sit beside me!",
+    "beam_transcription": "Oh, my darling! I knew you'd come straight to dinner! There is nothing quite like having the whole family together. Is there? Come sit beside me!",
+    "beam_word_error_rate": 0.037037037037037035
+  },
+  {
+    "file": "ontime/high_low/line_02.wav",
+    "expected": "There's my sweetheart! Right on time, of course. I've saved you the nicest portion, and I can't wait to see what you think of it.",
+    "first_transcription": "There is my sweetheart right on time. Of course! I've saved you the nicest portion, and I can't wait to see what you think of it.",
+    "beam_transcription": "There is my sweetheart right on time. Of course! I've saved you the nicest portion, and I can't wait to see what you think of it.",
+    "beam_word_error_rate": 0.03571428571428571
+  },
+  {
+    "file": "ontime/low_high/line_01.wav",
+    "expected": "Good. You managed to arrive when I asked. How refreshing. Now take your seat, sweetheart, and let's try to have one quiet meal together.",
+    "first_transcription": "Good! You managed to arrive when I asked. How refreshing. Now take your seats, sweetheart. And let's try to have one quiet meal together.",
+    "beam_transcription": "Good. You managed to arrive when I asked. How refreshing. Now take your seats, sweetheart. And let's try to have one quiet meal together.",
+    "beam_word_error_rate": 0.04
+  },
+  {
+    "file": "ontime/low_high/line_02.wav",
+    "expected": "Well, at least you're on time. That's a good start, darling. Sit down, and let's hope the rest of this evening is equally pleasant.",
+    "first_transcription": "Well, at least you're on time. That is a good start, darling. Sit down. And let's hope the rest of this evening is equally pleasant.",
+    "beam_transcription": "Well, at least you're on time. That is a good start, darling. Sit down. And let's hope the rest of this evening is equally pleasant.",
+    "beam_word_error_rate": 0.037037037037037035
+  },
+  {
+    "file": "late/mid_mid/line_02.wav",
+    "expected": "Oh, darling, we were beginning to think you'd forgotten all about us. It's rather rude to keep everyone waiting, you know. But you're here now, so take your seat.",
+    "first_transcription": "Oh darling, we were beginning to think you'd forgotten all about us. It is rather rude to keep everyone waiting, you know. But you're here now, so take your seat.",
+    "beam_transcription": "Oh, darling, we were beginning to think you'd forgotten all about us. It is rather rude to keep everyone waiting, you know. But you're here now, so take your seat.",
+    "beam_word_error_rate": 0.03125
+  },
+  {
+    "file": "late/high_low/line_02.wav",
+    "expected": "Sweetheart, you've kept us waiting! I was almost tempted to come looking for you myself. Never mind, darling. Your dinner's still warm, and I've saved you a lovely portion.",
+    "first_transcription": "Sweetheart, you've kept us waiting. I was almost tempted to come looking for you myself. Never mind, darling. Your dinner is still warm, and I've saved you a lovely portion.",
+    "beam_transcription": "Sweetheart, you've kept us waiting. I was almost tempted to come looking for you myself. Never mind, darling. Your dinner's still warm, and I've saved you a lovely portion.",
+    "beam_word_error_rate": 0.0
+  },
+  {
+    "file": "search/mid_mid/line_01.wav",
+    "expected": "Alright, sweetheart, that's quite long enough. I've given you plenty of time to come to dinner. If you won't come when I ask, I suppose I'll have to find you myself.",
+    "first_transcription": "Alright, sweetheart, that is quite long enough. I've given you plenty of time to come to dinner. If you won't come when I ask, I suppose I'll have to find you myself.",
+    "beam_transcription": "All right, sweetheart. That is quite long enough. I've given you plenty of time to come to dinner. If you won't come when I ask, I suppose I'll have to find you myself.",
+    "beam_word_error_rate": 0.08571428571428572
+  },
+  {
+    "file": "search/high_high/line_02.wav",
+    "expected": "Sweetheart, I know how much you love your little adventures, but you've kept your mother waiting far too long. I think it's time I came to collect you. Wherever you've wandered off to.",
+    "first_transcription": "Sweetheart, I know how much you love your little adventures, but you've kept your mother waiting far too long. I think it is time I came to collect you. Wherever you've wandered off to.",
+    "beam_transcription": "Sweetheart, I know how much you love your little adventures, but you've kept your mother waiting far too long. I think it is time I came to collect you. Wherever you've wandered off to.",
+    "beam_word_error_rate": 0.027777777777777776
+  },
+  {
+    "file": "finish/mid_mid/line_01.wav",
+    "expected": "Well, that was nice, wasn't it? It's always good when we can sit down and enjoy ourselves without any interruptions. Now then, sweetheart, let's see what else we might do.",
+    "first_transcription": "Well, that was nice, wasn't it? It is always good when we can sit down and enjoy ourselves without any interruptions. Now then, sweetheart. Let's see what else we might do.",
+    "beam_transcription": "Well, that was nice, wasn't it? It is always good when we can sit down and enjoy ourselves without any interruptions. Now then, sweetheart. Let's see what else we might do.",
+    "beam_word_error_rate": 0.030303030303030304
+  },
+  {
+    "file": "finish/mid_mid/line_02.wav",
+    "expected": "There, all finished. I do hope you enjoyed your dinner. It's nice having the family together, darling. Perhaps we should find ourselves another little activity.",
+    "first_transcription": "There, all finished, I do hope you enjoyed your dinner. It is nice having the family together, darling. Perhaps we should find ourselves another little activity.",
+    "beam_transcription": "There, all finished, I do hope you enjoyed your dinner. It is nice having the family together, darling. Perhaps we should find ourselves another little activity.",
+    "beam_word_error_rate": 0.038461538461538464
+  }
+]

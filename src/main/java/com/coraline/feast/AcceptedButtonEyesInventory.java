@@ -16,6 +16,31 @@ public final class AcceptedButtonEyesInventory {
     private record Capture(UUID player,ListTag overflow){}
     private static final ThreadLocal<Capture> CAPTURING=new ThreadLocal<>();
     private static CompoundTag inventoryState(ServerPlayer p,VisitData.Scene scene){return com.coraline.multiplayer.StorySessionData.get(p.server).inventoryLane(p,scene);}
+    private static boolean sameBase(CompoundTag a,CompoundTag b){
+        if(!a.hasUUID("Transaction")||!a.getUUID("Transaction").equals(b.getUUID("Transaction")))return false;
+        for(String key:new String[]{"Owner","Door","Inventory","Cursor","Crafting"})if(a.get(key)==null||b.get(key)==null||!a.get(key).equals(b.get(key)))return false;
+        return true;
+    }
+    private static boolean progressSuperset(CompoundTag a,CompoundTag b){
+        var ar=a.getCompound("ActivityRewards");var br=b.getCompound("ActivityRewards");
+        for(String key:br.getAllKeys())if(br.getBoolean(key)&&!ar.getBoolean(key))return false;
+        var counts=new java.util.HashMap<String,Integer>();for(Tag row:a.getList("Overflow",Tag.TAG_COMPOUND)){String key=row.toString();counts.merge(key,1,Integer::sum);}
+        for(Tag row:b.getList("Overflow",Tag.TAG_COMPOUND)){String key=row.toString();int count=counts.getOrDefault(key,0);if(count==0)return false;counts.put(key,count-1);}
+        return true;
+    }
+    /** Reconcile the two durable mirrors only when one is a provable monotonic
+     * superset of the other. Ambiguous item transactions stay quarantined. */
+    private static boolean reconcileSnapshots(ServerPlayer p,VisitData.Scene scene,CompoundTag n,CompoundTag backup){
+        if(!backup.getBoolean("Stored")||!backup.hasUUID("Door")||!scene.door.equals(backup.getUUID("Door"))||!validSnapshot(backup.getCompound("Snapshot"),p,scene.door))return false;
+        var saved=backup.getCompound("Snapshot");if(!n.getBoolean("EscrowStored")){n.put("InventoryEscrow",saved.copy());n.putBoolean("EscrowStored",true);n.putString("CaptureState",backup.getString("CaptureState"));OtherMotherLoop.changed(p);return true;}
+        var story=n.getCompound("InventoryEscrow");if(!validSnapshot(story,p,scene.door)||!sameBase(story,saved)){n.putString("Blocker","The original inventory escrow identities conflict. Both records are preserved for recovery.");OtherMotherLoop.changed(p);return false;}
+        if(story.equals(saved))return true;
+        boolean storyAhead=progressSuperset(story,saved),backupAhead=progressSuperset(saved,story);
+        if(storyAhead&&backupAhead){var canonical=story.copy();canonical.putInt("Revision",Math.max(story.getInt("Revision"),saved.getInt("Revision")));n.put("InventoryEscrow",canonical.copy());backup.put("Snapshot",canonical.copy());OtherMotherLoop.changed(p);return true;}
+        if(!storyAhead&&!backupAhead){n.putString("Blocker","The interrupted inventory reward records cannot be safely ordered. Both have been preserved.");OtherMotherLoop.changed(p);return false;}
+        var canonical=storyAhead?story:saved;canonical.putInt("Revision",Math.max(story.getInt("Revision"),saved.getInt("Revision"))+1);
+        n.put("InventoryEscrow",canonical.copy());backup.put("Snapshot",canonical.copy());OtherMotherLoop.changed(p);return true;
+    }
     public static boolean locked(ServerPlayer p){
         var sessions=com.coraline.multiplayer.StorySessionData.get(p.server);if(sessions.returning(p.getUUID()))return false;
         var scene=OtherMotherLoop.scene(p);var n=AcceptedButtonEyesProgress.active(scene)?inventoryState(p,scene):null;
@@ -25,8 +50,7 @@ public final class AcceptedButtonEyesInventory {
     public static boolean activityReward(ServerPlayer p,VisitData.Scene scene,String key,java.util.List<ItemStack> rewards){
         if(!locked(p)||!AcceptedButtonEyesProgress.active(scene))return false;
         var n=inventoryState(p,scene);if(n==null)return false;
-        var snapshot=n.getCompound("InventoryEscrow");var backup=p.getPersistentData().getCompound(BACKUP);
-        if(!validSnapshot(snapshot,p,scene.door)||!backup.getBoolean("Stored")||!snapshot.equals(backup.getCompound("Snapshot")))throw new IllegalStateException("Activity reward escrow is not synchronized");
+        var backup=p.getPersistentData().getCompound(BACKUP);if(!reconcileSnapshots(p,scene,n,backup))return false;var snapshot=n.getCompound("InventoryEscrow");
         String receipt=scene.loop.generation+":"+key;
         var paid=snapshot.getCompound("ActivityRewards");if(paid.getBoolean(receipt))return true;
         var overflow=snapshot.getList("Overflow",Tag.TAG_COMPOUND);
@@ -34,7 +58,7 @@ public final class AcceptedButtonEyesInventory {
             var earned=reward.copy();returnStack(p,earned);
             if(!earned.isEmpty())overflow.add(earned.save(new CompoundTag()));
         }
-        snapshot.put("Overflow",overflow);paid.putBoolean(receipt,true);snapshot.put("ActivityRewards",paid);
+        snapshot.put("Overflow",overflow);paid.putBoolean(receipt,true);snapshot.put("ActivityRewards",paid);snapshot.putInt("Revision",snapshot.getInt("Revision")+1);
         n.putBoolean("ActivityLootPending",true);
         backup.put("Snapshot",snapshot.copy());OtherMotherLoop.changed(p);
         p.getInventory().setChanged();p.inventoryMenu.broadcastChanges();
@@ -66,7 +90,7 @@ public final class AcceptedButtonEyesInventory {
         if(backup.getBoolean("Stored")){
             if(!backup.hasUUID("Door")||!scene.door.equals(backup.getUUID("Door"))){n.putString("Blocker","An existing inventory escrow belongs to another story. It has been preserved.");return false;}
             if(!validSnapshot(backup.getCompound("Snapshot"),p,scene.door)){n.putString("Blocker","The backup escrow is incomplete. Visible items have not been cleared.");return false;}
-            if(n.getBoolean("EscrowStored")&&!n.getCompound("InventoryEscrow").equals(backup.getCompound("Snapshot"))){n.putString("Blocker","Two inventory escrow records differ. Both have been preserved for recovery.");return false;}
+            if(n.getBoolean("EscrowStored")&&!reconcileSnapshots(p,scene,n,backup))return false;
             if(!n.getBoolean("EscrowStored")){n.put("InventoryEscrow",backup.getCompound("Snapshot").copy());n.putBoolean("EscrowStored",true);n.putString("CaptureState",backup.getString("CaptureState"));}
         }
         if(n.getBoolean("EscrowStored")){
@@ -147,7 +171,7 @@ public final class AcceptedButtonEyesInventory {
     private static boolean mayClearVisible(ServerPlayer p){
         var scene=OtherMotherLoop.scene(p);if(!AcceptedButtonEyesProgress.active(scene))return false;
         var n=inventoryState(p,scene);if(n==null)return false;var backup=p.getPersistentData().getCompound(BACKUP);
-        return n.getBoolean("EscrowStored")&&n.getBoolean("InventoryConfiscated")&&backup.getBoolean("Stored")&&backup.hasUUID("Door")&&scene.door.equals(backup.getUUID("Door"))
+        return reconcileSnapshots(p,scene,n,backup)&&n.getBoolean("InventoryConfiscated")&&backup.getBoolean("Stored")&&backup.hasUUID("Door")&&scene.door.equals(backup.getUUID("Door"))
             &&"CLEARED".equals(n.getString("CaptureState"))&&"CLEARED".equals(backup.getString("CaptureState"))
             &&validSnapshot(n.getCompound("InventoryEscrow"),p,scene.door)&&validSnapshot(backup.getCompound("Snapshot"),p,scene.door)
             &&n.getCompound("InventoryEscrow").equals(backup.getCompound("Snapshot"));
@@ -168,7 +192,7 @@ public final class AcceptedButtonEyesInventory {
             var stack=p.inventoryMenu.getSlot(slot).getItem();
             if(!stack.isEmpty()&&!approvedTool(p,stack)){overflow.add(stack.copy().save(new CompoundTag()));p.inventoryMenu.getSlot(slot).set(ItemStack.EMPTY);found=true;}
         }
-        snapshot.put("Overflow",overflow);p.getPersistentData().getCompound(BACKUP).put("Snapshot",snapshot.copy());
+        snapshot.put("Overflow",overflow);snapshot.putInt("Revision",snapshot.getInt("Revision")+1);p.getPersistentData().getCompound(BACKUP).put("Snapshot",snapshot.copy());
         n.remove("ActivityLootPending");OtherMotherLoop.changed(p);p.getInventory().setChanged();p.inventoryMenu.broadcastFullState();
         if(found)p.sendSystemMessage(net.minecraft.network.chat.Component.literal("Your activity loot was confiscated and stored with your other belongings."));
     }
@@ -184,7 +208,7 @@ public final class AcceptedButtonEyesInventory {
         if(door==null||!p.getUUID().equals(door.owner)||p.serverLevel()!=com.coraline.parents.FamilyData.level(p.server,door.dimension))return false;
         com.coraline.multiplayer.StorySessionData.get(p.server).authorizeInventoryReturn(p.server,scene);
         var backup=p.getPersistentData().getCompound(BACKUP);var snapshot=backup.getCompound("Snapshot");
-        if(!backup.hasUUID("Door")||!scene.door.equals(backup.getUUID("Door"))||!n.getBoolean("EscrowStored")||!n.getCompound("InventoryEscrow").equals(snapshot))return false;
+        if(!reconcileSnapshots(p,scene,n,backup)||!backup.hasUUID("Door")||!scene.door.equals(backup.getUUID("Door"))||!n.getBoolean("EscrowStored"))return false;snapshot=backup.getCompound("Snapshot");
         if(!validSnapshot(snapshot,p,scene.door)||!escape.hasUUID("OriginalEscrow")||!escape.getUUID("OriginalEscrow").equals(snapshot.getUUID("Transaction")))return false;
         if(backup.getBoolean("Restored")&&backup.hasUUID("RestoredTransaction")&&backup.getUUID("RestoredTransaction").equals(snapshot.getUUID("Transaction"))){
             restoredFlags(n,backup,snapshot.getUUID("Transaction"));OtherMotherLoop.changed(p);return true;

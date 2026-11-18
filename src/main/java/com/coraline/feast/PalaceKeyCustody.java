@@ -80,6 +80,13 @@ public final class PalaceKeyCustody {
     public static boolean reconcile(ServerPlayer p,VisitData.Scene s){
         if(!PalaceJourney.owns(p,s))return false;
         var root=PalaceJourney.existing(s);if(root==null||!root.contains(JOURNAL))return false;
+        // Older builds persisted transient checkpoint failures as permanent
+        // blockers. Re-run the journal reconciliation now that storage may be
+        // available; identity conflicts remain quarantined.
+        String oldBlocker=root.getString("KeyCustodyBlocker");
+        if(oldBlocker.startsWith("Could not verify original-key inventory checkpoint")||oldBlocker.startsWith("Could not verify prepared original-key journal")){
+            root.remove("KeyCustodyBlocker");OtherMotherLoop.changed(p);
+        }
         if(root.contains("KeyCustodyBlocker"))return false;
         if(!root.contains(JOURNAL,Tag.TAG_COMPOUND)){blocked(p,root,"Malformed original-key journal; review required.");return false;}
         var tx=journal(s,root);var state=well(s,root);

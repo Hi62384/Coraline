@@ -53,6 +53,22 @@ public final class QuestItemRecovery extends SavedData {
     private static ListTag ender(ServerPlayer p){var items=new ListTag();for(int i=0;i<p.getEnderChestInventory().getContainerSize();i++){var stack=p.getEnderChestInventory().getItem(i);if(!stack.isEmpty()){var n=stack.save(new CompoundTag());n.putByte("Slot",(byte)i);items.add(n);}}return items;}
     private static void ender(ServerPlayer p,ListTag items){p.getEnderChestInventory().clearContent();for(var tag:items){var row=(CompoundTag)tag;int slot=row.getByte("Slot")&255;if(slot<0||slot>=p.getEnderChestInventory().getContainerSize())throw new IllegalArgumentException("Invalid actual ender slot");p.getEnderChestInventory().setItem(slot,ItemStack.of(row));}}
     private static boolean sameSource(CompoundTag file,CompoundTag row,String prefix){return com.coraline.palace.PalaceKeyCheckpoint.inventory(file,row.getList(prefix,Tag.TAG_COMPOUND))&&file.getList("EnderItems",Tag.TAG_COMPOUND).equals(row.getList(prefix+"Ender",Tag.TAG_COMPOUND));}
+    /** Replan only the original stacks not already present. This safely resumes
+     * a prepared delivery after the recipient rearranged their inventory, while
+     * avoiding a second copy if an earlier save already inserted some items. */
+    static ListTag missingDeliveryItems(CompoundTag profile,CompoundTag row){
+        var available=new ArrayList<ItemStack>();
+        for(String key:List.of("Inventory","EnderItems"))for(Tag entry:profile.getList(key,Tag.TAG_COMPOUND))available.add(ItemStack.of((CompoundTag)entry));
+        var missing=new ListTag();
+        for(Tag entry:row.getList("Items",Tag.TAG_COMPOUND)){
+            var wanted=ItemStack.of((CompoundTag)entry);
+            for(var held:available)if(!held.isEmpty()&&ItemStack.isSameItemSameTags(wanted,held)){
+                int moved=Math.min(wanted.getCount(),held.getCount());wanted.shrink(moved);held.shrink(moved);if(wanted.isEmpty())break;
+            }
+            if(!wanted.isEmpty()){var serialized=wanted.save(new CompoundTag());serialized.putByte("Slot",(byte)127);missing.add(serialized);}
+        }
+        return missing;
+    }
     private static void savePlayer(ServerPlayer p){((com.coraline.mixin.MirrorPlayerSaveAccess)p.server.getPlayerList()).coraline$saveMirrorPlayer(p);}
     private static VisitData.Scene scope(ServerPlayer p){
         var frame=StorySessionData.get(p.server).frame(p.getUUID());
@@ -179,8 +195,12 @@ public final class QuestItemRecovery extends SavedData {
             var before=StoryRunStore.read(path);if(!before.hasUUID("UUID")||!owner.equals(before.getUUID("UUID"))||before.getFloat("Health")<=0)return false;String id=row.getUUID("Id").toString();var receipts=before.getCompound("ForgeData").getCompound(RECEIPTS);
             if(receipts.getBoolean(id)){if(row.hasUUID("Session")&&!StorySessionData.get(server).questHolder(server,row.getUUID("Session"),owner,row.getUUID("Id"),row.getList("Kinds",Tag.TAG_STRING)))return false;row.putString("State","DELIVERED");pending.remove(id);compact(row);boolean metadataSaved=checkpoint(server);if(metadataSaved&&row.hasUUID("Session"))StorySessionData.get(server).finishCustody(server,row.getUUID("Session"),row.getUUID("Id"));return metadataSaved;}
             if(receipts.size()>=65536)return false;
-            if(!row.getBoolean("DeliveryPrepared")){
-                var snapshot=new CompoundTag();snapshot.put("Inventory",row.getList("Items",Tag.TAG_COMPOUND).copy());
+            boolean preparedMatches=row.getBoolean("DeliveryPrepared")
+                &&(com.coraline.palace.PalaceKeyCheckpoint.inventory(before,row.getList("TargetBefore",Tag.TAG_COMPOUND))
+                    ||com.coraline.palace.PalaceKeyCheckpoint.inventory(before,row.getList("TargetAfter",Tag.TAG_COMPOUND)));
+            if(!preparedMatches){
+                var snapshot=new CompoundTag();snapshot.put("Inventory",row.getBoolean("DeliveryPrepared")
+                    ?missingDeliveryItems(before,row):row.getList("Items",Tag.TAG_COMPOUND).copy());
                 var plan=GroupInventoryEscrow.planNative(before.getList("Inventory",Tag.TAG_COMPOUND),snapshot);if(!plan.getList("Overflow",Tag.TAG_COMPOUND).isEmpty())return false;
                 row.put("TargetBefore",before.getList("Inventory",Tag.TAG_COMPOUND).copy());row.put("TargetAfter",plan.getList("Inventory",Tag.TAG_COMPOUND));row.putBoolean("DeliveryPrepared",true);if(!checkpoint(server))return false;
             }

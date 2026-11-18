@@ -1,7 +1,1 @@
-{
-  "replace": false,
-  "values": [
-    "coraline:other_diamond_ore",
-    "coraline:moonstone_ore"
-  ]
-}
+{"replace":false,"values":["coraline:other_diamond_ore","coraline:moonstone_ore","coraline:other_gold_ore","coraline:other_redstone_ore","coraline:other_emerald_ore"]}

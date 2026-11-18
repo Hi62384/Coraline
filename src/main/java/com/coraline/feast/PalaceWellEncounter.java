@@ -130,7 +130,20 @@ public final class PalaceWellEncounter {
         boolean departing=progress.phase()==DEPARTING;
         if(!entry&&!departing){b.stop();return;}
         var target=BlockPos.of(n.getLong(departing?"Departure":"Entry"));var path=w.getNavigation().createPath(target,0);
-        if(path==null||!path.canReach()){b.stop();n.putString("MotionBlocker","No physically reachable bicycle route.");return;}
+        if((path==null||!path.canReach())&&departing){
+            // The authored first choice can become unreachable after terrain
+            // edits. Try other grounded destinations around the same site,
+            // choosing only a route the real navigator can reach.
+            var center=center(p);Vec3 away=center.subtract(p.position()).multiply(1,0,1).normalize();
+            if(away.lengthSqr()<.1)away=new Vec3(0,0,1);
+            search: for(int turn:new int[]{0,45,-45,90,-90,135,-135,180})for(double distance:new double[]{28,36,44}){
+                var candidate=PalaceWellMotion.ground(p.serverLevel(),w,center.add(away.yRot((float)-Math.toRadians(turn)).scale(distance)),18);
+                if(candidate==null)continue;var block=BlockPos.containing(candidate);var route=w.getNavigation().createPath(block,0);
+                if(route==null||!route.canReach())continue;
+                target=block;path=route;n.putLong("Departure",block.asLong());n.remove("MotionBlocker");OtherMotherLoop.changed(p);break search;
+            }
+        }
+        if(path==null||!path.canReach()){b.stop();n.putString("MotionBlocker","No physically reachable bicycle route; the departure will retry after the path changes.");return;}
         Vec3 next=Vec3.atBottomCenterOf(target);for(int i=0;i<path.getNodeCount();i++){var node=Vec3.atBottomCenterOf(path.getNodePos(i));if(node.distanceToSqr(b.position())>2.25){next=node;break;}}
         if(b.distanceToSqr(Vec3.atBottomCenterOf(target))<2.25){b.stop();return;}
         var delta=next.subtract(b.position());float yaw=(float)Math.toDegrees(Math.atan2(-delta.x,delta.z));float turn=net.minecraft.util.Mth.wrapDegrees(yaw-b.getYRot());b.drive(Math.abs(turn)>70?.15F:.6F,net.minecraft.util.Mth.clamp(turn/35,-1,1),false);

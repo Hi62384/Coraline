@@ -19,10 +19,24 @@ def validate(root, record, cache=None):
     if cache[reference_key]!=record['reference_sha256']:
         raise ValueError('Established voice reference changed: '+record['event'])
     source=root/record['source'];canonical=record.get('shared_recording',record['event'])
-    if record['resource'].startswith('compact_events/'):
-        directory=source.parent.parent;key=canonical+'/line_01.wav';manifest={}
+    manifest=read(root/record['manifest']) if record.get('manifest') else {}
+    # Effective visit recordings can be stored in the shared, source-backed
+    # dialogue libraries instead of the legacy manifest's output directory.
+    # Their receipts are rooted beside those masters and keyed by the path
+    # relative to that library (for example ``event/line_01.wav``).
+    source_library=next((parent for parent in source.parents
+                         if parent.name in ('full_dialogue_v1','compact_v1')),
+                        None)
+    custom_receipts=(manifest.get('generation_report','generation_report.json')!='generation_report.json' or
+                     manifest.get('validation_report','validation_report.json')!='validation_report.json')
+    if source_library is not None and not custom_receipts:
+        directory=source_library
+        key=source.relative_to(directory).as_posix()
+        manifest={}
+    elif record['resource'].startswith('compact_events/'):
+        directory=source.parent.parent;key=canonical+'/line_01.wav'
     else:
-        manifest=read(root/record['manifest']);directory=root/manifest.get('output','voicelines/othermother/welcome')
+        directory=root/manifest.get('output','voicelines/othermother/welcome')
         key=(record['state']+'/'+record['profile'].get('filename',f"line_{record['index']:02d}.wav")).lstrip('/')
     generation_path=directory/manifest.get('generation_report','generation_report.json')
     validation_path=directory/manifest.get('validation_report','validation_report.json')
@@ -46,8 +60,8 @@ def validate(root, record, cache=None):
     if 'expected_text_sha256' in row and row['expected_text_sha256']!=hashlib.sha256(record['text'].encode('utf-8')).hexdigest():
         raise ValueError('Voice script changed since quality check: '+record['event'])
     return {'event':record['event'],'source_sha256':digest,'reference_sha256':record['reference_sha256'],
-            'generation_report':str(generation_path.relative_to(root)),
-            'validation_report':str(validation_path.relative_to(root)),
+            'generation_report':generation_path.relative_to(root).as_posix(),
+            'validation_report':validation_path.relative_to(root).as_posix(),
             'validation_source_hash_present':'source_sha256' in row}
 
 

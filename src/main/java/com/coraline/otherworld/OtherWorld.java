@@ -386,6 +386,16 @@ public final class OtherWorld {
             }
             if(tag.getBoolean("CoralineSeamlessTunnel")&&player.getZ()<p.getZ()+1.7&&player.server.overworld().getGameTime()>=tag.getLong("CoralinePortalCooldown")){leave(player,false,true);return;}
             if(player.getZ()<p.getZ()-.35&&tunnelDoorOpen(player.serverLevel(),p.offset(0,0,-1))&&player.server.overworld().getGameTime()>=tag.getLong("CoralinePortalCooldown")){leave(player,false);return;}
+            // A player returning from the Other World can turn back before
+            // reaching the real-world door. Re-enter the same visit through
+            // the far physical door without calling leave(), which would
+            // incorrectly finish the visit and close its portal.
+            if(back&&r.ready&&player.getZ()>p.getZ()+16.35&&tunnelDoorOpen(player.serverLevel(),p.offset(0,0,17))){
+                player.setForcedPose(null);var safe=safePlayer(player.serverLevel(),r.doorPos);
+                player.teleportTo(player.serverLevel(),safe.getX()+.5,safe.getY(),safe.getZ()+.5,player.getYRot(),0);
+                tag.remove("CoralineInTunnel");tag.remove("CoralineReturning");tag.remove("CoralineRecoveryTunnel");tag.remove("CoralineTunnelStartedAt");
+                tag.putLong("CoralinePortalCooldown",player.server.overworld().getGameTime()+40);player.fallDistance=0;return;
+            }
             if(player.getY()<p.getY()-.2||player.getY()>p.getY()+1||Math.abs(player.getX()-(p.getX()+.5))>.65||player.getZ()<p.getZ()-.5||player.getZ()>p.getZ()+18){
                 buildTunnel(player.serverLevel(),r);
                 player.teleportTo(player.serverLevel(),p.getX()+.5,p.getY(),p.getZ()+(back?16.5:.5),player.getYRot(),0);
@@ -402,7 +412,13 @@ public final class OtherWorld {
             boolean welcomeReady=staged||r.ready&&player.server.overworld().getGameTime()-tag.getLong("CoralineTunnelStartedAt")>=160;
             if(r.ready&&!welcomeReady&&player.tickCount%100==0)
                 player.displayClientMessage(Component.literal("The welcome is still being prepared. Stay by the far door."),true);
-            if(r.ready&&welcomeReady&&player.getZ()>p.getZ()+(tag.getBoolean("CoralineSeamlessTunnel")?15.3:16.35)&&(!back||tag.getBoolean("CoralineSeamlessTunnel"))){
+            // A normal outbound crawl must pass through the actual far door.
+            // Without this check the player could cross the trigger while the
+            // door was still locked and be teleported into the Other World
+            // through a solid door. Seamless passages use their own physical
+            // doorway and return crawls leave through the near door above.
+            boolean farDoorReady=back||tag.getBoolean("CoralineSeamlessTunnel")||tunnelDoorOpen(player.serverLevel(),p.offset(0,0,17));
+            if(r.ready&&welcomeReady&&farDoorReady&&player.getZ()>p.getZ()+(tag.getBoolean("CoralineSeamlessTunnel")?15.3:16.35)&&(!back||tag.getBoolean("CoralineSeamlessTunnel"))){
                 boolean seamless=tag.getBoolean("CoralineSeamlessTunnel");
                 if(seamless&&player.serverLevel().getBlockEntity(r.doorPos) instanceof DoorBlockEntity entrance&&TunnelPassage.ensure(player.serverLevel(),entrance))arrivePassage(player,player.serverLevel(),r.doorPos,true);
                 else{player.setForcedPose(null);var safe=safePlayer(player.serverLevel(),r.doorPos);player.teleportTo(player.serverLevel(),safe.getX()+.5,safe.getY(),safe.getZ()+.5,player.getYRot(),0);}tag.remove("CoralineInTunnel");tag.putLong("CoralinePortalCooldown",player.server.overworld().getGameTime()+(seamless?8:40));

@@ -54,7 +54,17 @@ public final class RescueEncounters {
             case CLOTHES->{if(done){if(MouseCircusSite.inAttic(p,s))enterAttic(p,s);else RescueChapter.go(p,s,ATTIC_TRAVEL);}}
             case ATTIC_SEARCH->{RescueChapter.hint(p,"Search the attic for the final ghost eye.");if(t>40)RescueChapter.go(p,s,BOB_A);}
             case BOB_A,BOB_B,BOB_C,FURNACE,BOB_D,BOB_TENT->{bobinsky(p,s,state,t);if(state==FURNACE&&t>=60)RescueChapter.go(p,s,BOB_D);else if(state==BOB_TENT&&t>=60)RescueChapter.go(p,s,CIRCUS_TRAVEL);else if(done)RescueChapter.go(p,s,switch(state){case BOB_A->BOB_B;case BOB_B->BOB_C;case BOB_C->FURNACE;case BOB_D->BOB_TENT;default->CIRCUS_TRAVEL;});}
-            case CIRCUS_TRAVEL->{RescueChapter.hint(p,"Follow Bobinsky into the circus tent.");var tent=MouseCircusSite.tent(p,s);if(tent!=null&&MouseCircusSite.inAttic(p,s)&&p.distanceToSqr(tent.getCenter())<9&&MouseCircusSite.enter(p,s)){var bob=ShowActors.acquire(p,s,"evil_other_bobinsky",p.serverLevel(),Vec3.atBottomCenterOf(MouseCircusSite.center(p,s)).add(0,2,0));prop(p,s,"Cheese",RescueProps.CHEESE,0,Vec3.atBottomCenterOf(MouseCircusSite.center(p,s)));if(bob!=null)RescueChapter.go(p,s,BOB_E);}}
+            case CIRCUS_TRAVEL->{RescueChapter.hint(p,"Follow Bobinsky into the circus tent.");var tent=MouseCircusSite.tent(p,s);var activity=p.server.getLevel(ActivityWorld.KEY);boolean alreadyInside=MouseCircusSite.inside(p,s);
+                if(tent!=null&&activity!=null&&(alreadyInside||MouseCircusSite.inAttic(p,s)&&p.distanceToSqr(tent.getCenter())<9)){
+                    // Prepare Bobinsky first. His original actor lease and the
+                    // player's dimension entry can then independently retry;
+                    // the phase commits only after both are verified present.
+                    var bob=ShowActors.acquire(p,s,"evil_other_bobinsky",activity,Vec3.atBottomCenterOf(MouseCircusSite.center(p,s)).add(0,2,0));
+                    if(bob==null){n.putString("Blocker","Bobinsky's saved actor is unavailable; the circus entry will retry without creating a duplicate.");return;}
+                    if(!alreadyInside&&!MouseCircusSite.enter(p,s)){n.putString("Blocker","The circus transfer is pending; follow the tent and try again.");return;}
+                    if(MouseCircusSite.inside(p,s)&&bob.level()==activity){prop(p,s,"Cheese",RescueProps.CHEESE,0,Vec3.atBottomCenterOf(MouseCircusSite.center(p,s)));n.remove("Blocker");RescueChapter.go(p,s,BOB_E);}
+                    else n.putString("Blocker","Waiting for both Coraline and Bobinsky to reach the circus.");
+                }}
             case BOB_E->{var bob=ShowActors.actor(p,s,"evil_other_bobinsky");if(bob!=null){bob.setInvisible(false);ShowActors.position(bob,Vec3.atBottomCenterOf(MouseCircusSite.center(p,s)).add(0,2,0),0,7,t,1);}if(done)RescueChapter.go(p,s,SWARM_TRANSFORM);}
             case SWARM_TRANSFORM->{var swarm=prop(p,s,"Swarm",RescueProps.SWARM,0,center(p,s));RescueProps.frame(swarm,5,t,Math.min(1,t/60F));var bob=ShowActors.actor(p,s,"evil_other_bobinsky");if(bob!=null){ShowPlaybackNetwork.pose(bob,80,t,1-t/60F);if(t>=55)bob.setInvisible(true);}if(t>=60)RescueBosses.begin(p,s,SWARM_FIGHT);}
             case RAT_CHASE->chase(p,s,t);
@@ -88,7 +98,16 @@ public final class RescueEncounters {
     private static void chase(ServerPlayer p,VisitData.Scene s,int t){
         var n=RescueChapter.data(s);RescueChapter.hint(p,"Catch the rat on the circus ball! Right-click it to grab the eye.");var rat=chaseRat(p,s);if(rat==null){n.putString("Blocker","Waiting for the saved chase rat; no duplicate created.");return;}int leg=n.getInt("RatLeg");
         if(leg==0){var exit=MouseCircusSite.exit(p,s);rollRat(p,s,rat,exit,t,leg);if(rat.distanceToSqr(exit.getCenter())<9){n.putInt("RatLeg",1);rat.setNoAi(true);}}
-        else if(leg==1){if(rat.getVehicle()!=null)rat.getVehicle().setDeltaMovement(Vec3.ZERO);if(MouseCircusSite.inside(p,s)&&p.distanceToSqr(MouseCircusSite.exit(p,s).getCenter())<16&&MouseCircusSite.returnToAttic(p,s)){var moved=ShowTravel.guest(rat,p,s,p.serverLevel(),Vec3.atBottomCenterOf(MouseCircusSite.tent(p,s).south(3)),true,"RescueRatReturn");if(moved!=null){n.putUUID("ChaseRat",moved.getUUID());n.putInt("RatLeg",2);n.remove("RatPathTarget");RescueProps.retire(p,s,"RatBall0");unlockAttic(p,s);}}}
+        else if(leg==1){if(rat.getVehicle()!=null)rat.getVehicle().setDeltaMovement(Vec3.ZERO);
+            // The player and rat use separate reversible travel leases. If the
+            // player returns but the mob transfer fails/unloads, retry the mob
+            // on later ticks from the attic instead of leaving the chase stuck
+            // forever on the circus leg.
+            boolean returned=MouseCircusSite.inAttic(p,s);
+            if(!returned&&MouseCircusSite.inside(p,s)&&p.distanceToSqr(MouseCircusSite.exit(p,s).getCenter())<16)
+                returned=MouseCircusSite.returnToAttic(p,s);
+            if(returned){var tent=MouseCircusSite.tent(p,s);if(tent!=null){var moved=ShowTravel.guest(rat,p,s,p.serverLevel(),Vec3.atBottomCenterOf(tent.south(3)),true,"RescueRatReturn");if(moved!=null){n.putUUID("ChaseRat",moved.getUUID());n.putInt("RatLeg",2);n.remove("RatPathTarget");n.remove("Blocker");RescueProps.retire(p,s,"RatBall0");unlockAttic(p,s);}else n.putString("Blocker","Rat return is pending; stay in the attic and the transfer will retry.");}}
+        }
         else {ShowHouseAccess.open(p,s,"basement");BlockPos[] route={FirstEscapeScene.at(s,7,24,60),FirstEscapeScene.at(s,7,15,52),FirstEscapeScene.at(s,7,15,18),FirstEscapeScene.at(s,20,15,10),FirstEscapeScene.at(s,26,6,10),FirstEscapeScene.at(s,26,4,8),FirstEscapeScene.at(s,26,2,4),FirstEscapeScene.at(s,26,0,0),FirstEscapeScene.at(s,26,-1,11)};int index=Math.min(route.length-1,n.getInt("RatNode"));rollRat(p,s,rat,route[index],t,leg);if(rat.distanceToSqr(route[index].getCenter())<5){if(index<route.length-1)n.putInt("RatNode",index+1);else{if(rat.getVehicle()!=null)rat.getVehicle().setDeltaMovement(Vec3.ZERO);n.putInt("RatExitWait",n.getInt("RatExitWait")+1);if(n.getInt("RatExitWait")>100){retry(p,s,RAT_CHASE);return;}}}
             if(index<3){var at=Vec3.atBottomCenterOf(route[index]).add(0,0,2);var obstacles=prop(p,s,"ChaseObstacles",RescueProps.SWARM,0,at);if(obstacles!=null){obstacles.setPos(at);obstacles.frame(6,t,1);}if(p.distanceToSqr(at)<4)p.makeStuckInBlock(Blocks.COBWEB.defaultBlockState(),new Vec3(.75,1,.75));}else RescueProps.hide(p,s,"ChaseObstacles");
         }
@@ -145,6 +164,7 @@ public final class RescueEncounters {
         if(!box.contains(eye)&&box.clip(eye,eye.add(p.getLookAngle().scale(4.5))).isEmpty())return false;
         return interact(p,s,wrapper);
     }
+    static boolean canClaimRatEye(int ratLeg){return ratLeg>=2;}
     public static boolean interact(ServerPlayer p,VisitData.Scene s,Entity target){var phase=RescueChapter.phase(s);var n=RescueChapter.data(s);
         if(takeOfferedEye(p,s))return true;
         if((phase==MANTIS_TAKE||phase==MANTIS_SINK)&&(target==ShowActors.actor(p,s,"evil_other_father")||target==RescueProps.find(p,s,"Mantis"))){
@@ -156,7 +176,7 @@ public final class RescueEncounters {
         }
         if(target instanceof CinematicPropEntity prop&&prop.kind()==RescueProps.EYE){int eye=prop.slot();if(eye==0&&(phase==MANTIS_TAKE||phase==MANTIS_SINK)){RescueEyes.eye(s,0).putBoolean("Defeated",true);RescueEyes.eye(s,0).putBoolean("Discovered",true);if(RescueEyes.claim(p,s,0))prop.setInvisible(true);return true;}if(eye==1&&phase==THEATRE_EYE){if(RescueEyes.claim(p,s,1))prop.setInvisible(true);return true;}if(eye==1&&phase==THEATRE_SEARCH&&RescueEyes.eye(s,1).getBoolean("Discovered"))RescueChapter.go(p,s,WRAPPER_REACH);else if(eye==1&&phase==WRAPPER_REACH&&n.getInt("Ticks")>=30)RescueChapter.go(p,s,THEATRE_GRAB);return true;}
         if(target instanceof CinematicPropEntity prop&&prop.kind()==RescueProps.WRAPPER){if(phase==THEATRE_SEARCH&&RescueEyes.eye(s,1).getBoolean("Discovered"))RescueChapter.go(p,s,WRAPPER_REACH);else if(phase==WRAPPER_REACH&&n.getInt("Ticks")>=30)RescueChapter.go(p,s,THEATRE_GRAB);return true;}
-        if(phase==RAT_CHASE&&n.hasUUID("ChaseRat")&&n.getUUID("ChaseRat").equals(target.getUUID())&&target.getPersistentData().hasUUID("RescueOwner")&&s.owner.equals(target.getPersistentData().getUUID("RescueOwner"))){if(RescueEyes.claim(p,s,2)){target.stopRiding();target.discard();n.remove("ChaseRat");for(int i=0;i<3;i++)RescueProps.retire(p,s,"RatBall"+i);RescueProps.retire(p,s,"ChaseObstacles");RescueChapter.go(p,s,EXTERIOR);}return true;}
+        if(phase==RAT_CHASE&&n.hasUUID("ChaseRat")&&n.getUUID("ChaseRat").equals(target.getUUID())&&target.getPersistentData().hasUUID("RescueOwner")&&s.owner.equals(target.getPersistentData().getUUID("RescueOwner"))){if(!canClaimRatEye(n.getInt("RatLeg"))){RescueChapter.hint(p,"Follow the rat out of the circus and return to the attic before catching it.");return true;}if(RescueEyes.claim(p,s,2)){target.stopRiding();target.discard();n.remove("ChaseRat");for(int i=0;i<3;i++)RescueProps.retire(p,s,"RatBall"+i);RescueProps.retire(p,s,"ChaseObstacles");RescueChapter.go(p,s,EXTERIOR);}return true;}
         if(phase==COLLAPSE&&target==ShowActors.actor(p,s,"cat")){n.putBoolean("CatRescued",true);return true;}return false;
     }
     public static void retry(ServerPlayer p,VisitData.Scene s,RescueChapter.Phase state){

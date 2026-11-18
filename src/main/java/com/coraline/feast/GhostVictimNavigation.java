@@ -17,6 +17,9 @@ import net.minecraft.world.phys.Vec3;
  * through a wall, invent arrival or silently unlock a restricted door. */
 public final class GhostVictimNavigation {
     public enum Result { MOVING, ARRIVED, BLOCKED }
+    /** Must be strictly inside the concealment validator's 0.65 block radius. */
+    static final double ARRIVAL_RADIUS=.55;
+    static boolean arrived(Vec3 actorPosition,BlockPos target){return actorPosition.distanceToSqr(Vec3.atBottomCenterOf(target))<=ARRIVAL_RADIUS*ARRIVAL_RADIUS;}
     public static boolean clear(ServerLevel level,PathfinderMob actor,BlockPos feet){
         var at=Vec3.atBottomCenterOf(feet);var box=actor.getBoundingBox().move(at.subtract(actor.position()));
         return level.getWorldBorder().isWithinBounds(feet)&&level.getFluidState(feet).isEmpty()
@@ -30,7 +33,7 @@ public final class GhostVictimNavigation {
             journal.putLong("Goal",target.asLong());journal.putLong("Started",clock);journal.putLong("ProgressAt",clock);
             journal.putDouble("PreviousX",actor.getX());journal.putDouble("PreviousZ",actor.getZ());journal.remove("Blocker");
         }
-        if(actor.distanceToSqr(Vec3.atBottomCenterOf(target))<=.8*.8){
+        if(arrived(actor.position(),target)){
             actor.getNavigation().stop();actor.setSprinting(false);journal.remove("Blocker");return Result.ARRIVED;
         }
         if(clock-journal.getLong("Started")>=limitTicks){

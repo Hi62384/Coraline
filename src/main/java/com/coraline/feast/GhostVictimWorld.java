@@ -22,6 +22,25 @@ public final class GhostVictimWorld {
     public static BlockPos supper(VisitData.Scene s){return at(s,44,6,37);}
     public static BlockPos kitchen(VisitData.Scene s){return at(s,47,6,47);}
     public static BlockPos bedroom(VisitData.Scene s){return at(s,44,15,23);}
+    /** A walkable shared position where the child is close enough to the
+     * bedroom mirror for its real conversation validator. */
+    static BlockPos bedtimeConversationPosition(VisitData.Scene s,ServerLevel level,net.minecraft.world.entity.PathfinderMob child,CompoundTag n){
+        var mirror=n.getCompound("Mirrors").getCompound("bedroom");if(!mirror.contains("Position",Tag.TAG_LONG))return null;
+        var stored=GhostVictimNavigationGoal(n);if(stored!=null&&GhostVictimNavigation.clear(level,child,stored)){
+            var eye=Vec3.atBottomCenterOf(stored).add(0,child.getEyeHeight(),0);
+            if(eye.distanceTo(GhostVictimMirrors.surface(mirror))<4.95)return stored;
+        }
+        var anchor=BlockPos.of(mirror.getLong("Position"));BlockPos best=null;double bestDistance=Double.MAX_VALUE;
+        for(int dx=-5;dx<=5;dx++)for(int dz=-5;dz<=5;dz++){
+            var candidate=anchor.offset(dx,0,dz);if(OtherWorldEstate.outsideHouse(AcceptedButtonEyesWorld.house(s),candidate))continue;
+            if(!level.hasChunkAt(candidate)||!GhostVictimNavigation.clear(level,child,candidate))continue;
+            var eye=Vec3.atBottomCenterOf(candidate).add(0,child.getEyeHeight(),0);double distance=eye.distanceTo(GhostVictimMirrors.surface(mirror));if(distance>=4.95)continue;
+            var path=child.getNavigation().createPath(candidate,0);if(path==null||!path.canReach())continue;
+            double score=distance+eye.distanceToSqr(child.getEyePosition())*.01;if(score<bestDistance){best=candidate;bestDistance=score;}
+        }
+        if(best!=null)n.putLong("BedtimeConversationTarget",best.asLong());return best;
+    }
+    private static BlockPos GhostVictimNavigationGoal(CompoundTag n){return n.contains("BedtimeConversationTarget",Tag.TAG_LONG)?BlockPos.of(n.getLong("BedtimeConversationTarget")):null;}
     public static boolean prepare(ServerPlayer p,VisitData.Scene s,CompoundTag n){
         if(!GhostVictimMirrors.owned(p,s,n))return false;
         var level=AcceptedButtonEyesWorld.level(p);var realm=AcceptedButtonEyesWorld.realm(p,s);
@@ -51,13 +70,15 @@ public final class GhostVictimWorld {
                 String key=Long.toString(pos.asLong());
                 if(handled.contains(key,Tag.TAG_BYTE))continue;
                 if(!level.hasChunkAt(pos)){complete=false;continue;}
-                // Save the consumed admission before changing native geometry.
-                // A failed save cannot authorize a replacement or snapshot load.
+                var current=level.getBlockState(pos);
+                if(current.isAir())level.setBlock(pos,state,2|16);
+                if(!level.getBlockState(pos).equals(state)){complete=false;continue;}
+                // Apply and verify the geometry first. If persistence is
+                // interrupted, the next call can safely observe the restored
+                // bed and commit this admission without duplicating blocks.
                 handled.putBoolean(key,true);n.put("ChildBedHandled",handled);OtherMotherLoop.changed(p);
                 p.server.overworld().getDataStorage().save();
                 try{var file=p.server.getWorldPath(net.minecraft.world.level.storage.LevelResource.ROOT).resolve("data/coraline_first_visits.dat");if(!com.coraline.rebirth.StoryRunStore.read(file).getCompound("data").equals(VisitData.get(p.server).save(new CompoundTag())))return false;}catch(java.io.IOException|RuntimeException failed){return false;}
-                var current=level.getBlockState(pos);
-                if(current.isAir())level.setBlock(pos,state,2|16);
             }
             if(complete){n.putBoolean("ChildBedRestored",true);OtherMotherLoop.changed(p);}
         }

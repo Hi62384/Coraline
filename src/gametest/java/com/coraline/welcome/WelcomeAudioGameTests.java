@@ -91,11 +91,24 @@ public final class WelcomeAudioGameTests {
                 String name=pool.sound(i);
                 h.assertTrue(VisitAudio.SOUNDS.containsKey(name)&&VisitAudio.SOUNDS.get(name).isPresent(),"Unregistered "+name);
                 h.assertTrue(VisitAudio.length(name)>20,"Missing duration "+name);
-                h.assertTrue(WelcomeAudioGameTests.class.getResource("/assets/coraline/sounds/visit/other_mother/"+pool.path()+"/"+pool.fileName(i))!=null,"Missing recording "+name);
+                h.assertTrue(hasRegisteredRecording(name),"Missing recording "+name);
                 count++;
             }
         }
         h.assertTrue(count==248,"Expected 238 existing and 10 new scolding recordings");h.succeed();
+    }
+    private static boolean hasRegisteredRecording(String event){
+        try(var in=WelcomeAudioGameTests.class.getResourceAsStream("/assets/coraline/sounds.json")){
+            if(in==null)return false;
+            var sounds=com.google.gson.JsonParser.parseReader(new java.io.InputStreamReader(in,java.nio.charset.StandardCharsets.UTF_8)).getAsJsonObject();
+            var registered=sounds.getAsJsonObject(event);if(registered==null)return false;
+            for(var entry:registered.getAsJsonArray("sounds")){
+                var sound=entry.isJsonPrimitive()?entry.getAsString():entry.getAsJsonObject().get("name").getAsString();
+                if(sound.startsWith("coraline:"))sound=sound.substring("coraline:".length());
+                if(WelcomeAudioGameTests.class.getResource("/assets/coraline/sounds/"+sound+".ogg")!=null)return true;
+            }
+            return false;
+        }catch(java.io.IOException|IllegalStateException ex){return false;}
     }
     @GameTest(template="empty") public static void completionPoolsUseOnlyExistingCurrentState(GameTestHelper h) {
         var paths=new HashSet<String>();var random=RandomSource.create(72);

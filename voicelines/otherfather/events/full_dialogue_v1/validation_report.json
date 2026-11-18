@@ -1,0 +1,179 @@
+{
+  "reference_unchanged": true,
+  "checks": [
+    {
+      "file": "father_game_night_greeting_2/line_01.wav",
+      "seconds": 8.559183673469388,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7218575477600098,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Ah, perfect timing. We've got the whole family together, and I've been looking forward to this all evening. Come on, grab a seat.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_game_night_finish_2/line_01.wav",
+      "seconds": 11.65904761904762,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7588011026382446,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Well, that was quite the evening. Some very clever moves all around, I must say. I think I'll need a little practice before our next game night.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_house_party_greeting_2/line_01.wav",
+      "seconds": 11.821587301587302,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8149526715278625,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, wonderful! Everyone's arriving, and the house is looking absolutely splendid! I do hope you've brought your appetite, kiddo. Your other mother has been cooking all day!",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_house_party_social_2/line_01.wav",
+      "seconds": 8.501133786848072,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8081557154655457,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "I've been having the most interesting conversations this evening. Well, I think they were interesting. There was rather a lot going on.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_house_party_game_2/line_01.wav",
+      "seconds": 8.895873015873017,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7696820497512817,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Ah, a little friendly competition. Nothing like a good board game to bring people together. Though I do hope nobody gets too competitive.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_house_party_feast_2/line_01.wav",
+      "seconds": 11.32235827664399,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8280650973320007,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Mmm. This is marvelous. I was beginning to think we'd never get to eat. Though I suppose that is what happens when you invite the whole neighborhood.",
+      "word_error_rate": 0.03571428571428571
+    },
+    {
+      "file": "father_house_party_finish_2/line_01.wav",
+      "seconds": 8.443083900226757,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7481132745742798,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Ah, what a splendid party! I don't think I've talked that much in ages. I may need a nice quiet evening at the piano after all this.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_player_party_greeting_2/line_01.wav",
+      "seconds": 9.755011337868481,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8173751831054688,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, wonderful, the guest of honor. Welcome to your very own party, kiddo. I must say, the whole house is looking rather splendid.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_player_party_social_2/line_01.wav",
+      "seconds": 9.279002267573697,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7968949675559998,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "I've been talking to all sorts of wonderful people tonight. Mind you, I seem to have forgotten half their names already. Ha ha!",
+      "word_error_rate": 0.043478260869565216
+    },
+    {
+      "file": "father_player_party_entertainment_2/line_01.wav",
+      "seconds": 9.662131519274377,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8070890307426453,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, there are some marvelous surprises tucked away around the house tonight. Your other mother really has outdone herself.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_player_party_celebration_2/line_01.wav",
+      "seconds": 9.418321995464852,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7865561842918396,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Well, would you look at that cake? Absolutely magnificent, and so many presents too. I think you've got quite a bit of unwrapping ahead of you.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_player_party_finish_1/line_01.wav",
+      "seconds": 9.894331065759637,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7973283529281616,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Ah, what a wonderful party. Lovely people, marvelous entertainment. And that cake was absolutely delicious. We really ought to do this again.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_player_party_finish_2/line_01.wav",
+      "seconds": 9.778231292517006,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7626568078994751,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Well, kiddo, I hope you've enjoyed yourself. It is not every day you get a celebration quite like this one. Your other mother certainly knows how to make things special.",
+      "word_error_rate": 0.03225806451612903
+    },
+    {
+      "file": "father_mother_goes_out_mother_left_1/line_01.wav",
+      "seconds": 11.159818594104308,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7705153226852417,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Ah, your other mother has popped out, has she? Well, she has always got a hundred little things to attend to. Don't mind me, kiddo. I'll be at the piano if you need anything.",
+      "word_error_rate": 0.027777777777777776
+    },
+    {
+      "file": "father_mother_goes_out_mother_left_2/line_01.wav",
+      "seconds": 12.216326530612244,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7580474615097046,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, she has gone out for a while? Yes, she does that from time to time. I couldn't tell you exactly where she goes, though. She rather likes to keep certain things to herself.",
+      "word_error_rate": 0.02857142857142857
+    },
+    {
+      "file": "father_mother_goes_out_when_return_1/line_01.wav",
+      "seconds": 12.239546485260771,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7730926275253296,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "When will she be back? Oh, goodness! I haven't the faintest idea. She tends to return whenever she is finished whatever it is she is doing. Best not to worry about it.",
+      "word_error_rate": 0.06060606060606061
+    },
+    {
+      "file": "father_mother_goes_out_when_return_2/line_01.wav",
+      "seconds": 13.969433106575964,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7596575617790222,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Ah, well your other mother can be rather unpredictable about these things. Sometimes she is back before I've even finished a piece of music. Other times I have time to play the whole thing. Twice.",
+      "word_error_rate": 0.027777777777777776
+    }
+  ],
+  "note": "ASR checks words, not acting. Human listening review is not replaced by these checks.",
+  "partial": false,
+  "selected_state": null,
+  "existing_only": false
+}

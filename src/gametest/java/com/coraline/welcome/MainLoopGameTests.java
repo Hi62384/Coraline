@@ -195,7 +195,7 @@ public final class MainLoopGameTests {
     @GameTest(template="empty") public static void storySubtitleCoverage(GameTestHelper h){
         try(var in=MainLoopGameTests.class.getResourceAsStream("/assets/coraline/story_subtitles.json")){
             var data=com.google.gson.JsonParser.parseReader(new java.io.InputStreamReader(in,java.nio.charset.StandardCharsets.UTF_8)).getAsJsonObject();
-            for(var name:VisitAudio.SOUNDS.keySet())if(name.startsWith("other_mother")||name.startsWith("other_father")&&!name.equals("other_father_song"))h.assertTrue(data.has(name),"Missing story caption: "+name);
+            for(var name:VisitAudio.SOUNDS.keySet())if((name.startsWith("other_mother")&&!name.equals("other_mother_game_proposal_music"))||name.startsWith("other_father")&&!name.equals("other_father_song"))h.assertTrue(data.has(name),"Missing story caption: "+name);
             h.assertFalse(data.has("other_father_song"),"Piano song must not have subtitles");
             for(var activity:OtherMotherActivities.Activity.values()){
                 var name=ActivityWorld.introSound(activity);

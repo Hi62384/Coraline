@@ -1,0 +1,156 @@
+{
+  "reference_unchanged": true,
+  "checks": [
+    {
+      "file": "father_outing_picnic_father_start/father_outing_picnic_father_start.wav",
+      "seconds": 8.303764172335601,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7792770862579346,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Ah, there you are. Welcome to our little picnic. Your other mother has packed enough food to feed half the village. So I do hope you've brought an appetite.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_outing_picnic_father_interaction/father_outing_picnic_father_interaction.wav",
+      "seconds": 8.501133786848072,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7551560997962952,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, those sandwiches look marvelous. Would you mind passing one over here, kiddo? I seem to have gotten myself rather comfortable.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_outing_picnic_father_finish/father_outing_picnic_father_finish.wav",
+      "seconds": 10.242630385487528,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.794381856918335,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Ah, that was splendid, good food, lovely scenery and wonderful company. I don't think we could have asked for a nicer afternoon.",
+      "word_error_rate": 0.043478260869565216
+    },
+    {
+      "file": "father_outing_fishing_father_start/father_outing_fishing_father_start.wav",
+      "seconds": 10.93922902494331,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8139492869377136,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Ah, ready to catch something. I brought plenty of bait and I have a feeling the fish are going to be awfully cooperative today. Come on, let's get those lines in the water.",
+      "word_error_rate": 0.02857142857142857
+    },
+    {
+      "file": "father_outing_fishing_father_interaction/father_outing_fishing_father_interaction.wav",
+      "seconds": 9.758639455782314,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7949250340461731,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Now, don't pull too soon. Give it a moment. Let the fish take the bait and then give the rod a good tug. There you are. You've got the idea.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_outing_fishing_father_finish/father_outing_fishing_father_finish.wav",
+      "seconds": 9.000362811791383,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7888690233230591,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Well, that was a lovely bit of fishing. I don't think I've had this much fun with a rod and ages. We ought to do this again sometime.",
+      "word_error_rate": 0.03333333333333333
+    },
+    {
+      "file": "father_outing_stargazing_father_start/father_outing_stargazing_father_start.wav",
+      "seconds": 9.615691609977324,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7064908742904663,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Ah, there you are. Just look at that sky. Your other mother tells me the stars are especially bright tonight. I brought my telescope so we can have a proper look.",
+      "word_error_rate": 0.03125
+    },
+    {
+      "file": "father_outing_stargazing_father_interaction/father_outing_stargazing_father_interaction.wav",
+      "seconds": 12.216326530612244,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7667950391769409,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "See those three bright little stars over there. They make a rather lovely pattern, don't they? Take a look through the telescope. You might be surprised what you find.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_outing_stargazing_father_finish/father_outing_stargazing_father_finish.wav",
+      "seconds": 12.239546485260771,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.792395293712616,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Ah, wonderful. There is something rather special about looking up at all those stars. Isn't there? Makes the whole world feel just a little bit more magical.",
+      "word_error_rate": 0.03571428571428571
+    },
+    {
+      "file": "father_outing_woodland_father_start/father_outing_woodland_father_start.wav",
+      "seconds": 9.63891156462585,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7462829351425171,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Ah! Ready for a walk, kiddo! Your other mother has picked out a beautiful little path for us! I've heard there is a rather lovely waterfall somewhere along the way!",
+      "word_error_rate": 0.03225806451612903
+    },
+    {
+      "file": "father_outing_woodland_father_interaction/father_outing_woodland_father_interaction.wav",
+      "seconds": 9.604081632653061,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7423676252365112,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, would you look at that? Isn't nature extraordinary? I've never seen flowers quite like those before. Your other mother certainly knows how to make a garden grow.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_outing_woodland_father_finish/father_outing_woodland_father_finish.wav",
+      "seconds": 9.696961451247166,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7534669637680054,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Well, that was refreshing. A lovely walk, a bit of fresh air, and some beautiful sights. I think I could get used to doing that every day!",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_outing_boat_father_start/father_outing_boat_father_start.wav",
+      "seconds": 10.335510204081633,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7582153677940369,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, all aboard. I've got the boat ready. And your other mother has planned a lovely route for us. Just find yourself a comfortable seat, and I'll handle the steering.",
+      "word_error_rate": 0.03125
+    },
+    {
+      "file": "father_outing_boat_father_interaction/father_outing_boat_father_interaction.wav",
+      "seconds": 9.383492063492064,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7899308204650879,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Would you look at that view? The water's so calm you can almost see the stars reflected in it. Beautiful, isn't it? Mind you don't lean too far over.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_outing_boat_father_finish/father_outing_boat_father_finish.wav",
+      "seconds": 9.10485260770975,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7743949890136719,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "And there we are, safe and sound. Not a bad little voyage. If I do say so myself, I hope you enjoyed the ride as much as I did.",
+      "word_error_rate": 0.0
+    }
+  ],
+  "note": "ASR checks words, not acting. Human listening review is not replaced by these checks."
+}

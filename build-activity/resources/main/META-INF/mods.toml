@@ -20,7 +20,7 @@ license="All Rights Reserved"
 # The modid of the mod
 modId="coraline" #mandatory
 # The version number of the mod
-version="1.15.49" #mandatory
+version="1.16.6" #mandatory
 # A display name for the mod
 displayName="Coraline" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://docs.minecraftforge.net/en/latest/misc/updatechecker/

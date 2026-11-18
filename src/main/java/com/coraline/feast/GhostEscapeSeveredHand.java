@@ -26,7 +26,10 @@ final class GhostEscapeSeveredHand {
         var chapter=RescueChapter.data(s);var scenery=ParentRescueStory.scenery(s);var row=GhostEscapeHandProgress.existing(ghost,s.owner,s.door,s.mom);
         if(ending.contains(GhostEscapeHandProgress.KEY)&&row==null){ending.putString("Blocker","The saved Hand detachment has incompatible provenance; no actor replaced.");return;}
         if(row!=null&&scenery.hasUUID("RescueSeveredHand")&&GhostEscapeHandProgress.handoffReady(ghost,s.owner,s.door,s.mom,scenery.getUUID("RescueSeveredHand"))){
-            if(!chapter.getBoolean("HandSevered")){chapter.putBoolean("HandSevered",true);OtherMotherLoop.changed(p);}return;
+            if(!chapter.getBoolean("HandSevered")){chapter.putBoolean("HandSevered",true);OtherMotherLoop.changed(p);}
+            var endingRow=GhostEscapeEndingProgress.existing(ghost,s.owner,s.door);
+            if(endingRow!=null&&!endingRow.getBoolean("AlternativeEndingComplete")){endingRow.putBoolean("AlternativeEndingComplete",true);s.loop.story.putBoolean("AlternativeEndingComplete",true);s.loop.story.putString("MajorStoryPhase","GHOST_ESCAPE_COMPLETE");OtherMotherLoop.changed(p);}
+            return;
         }
         var hand=RescueProps.find(p,s,"SeveredHand");
         if(row==null&&chapter.getBoolean("HandSevered")){

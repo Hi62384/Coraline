@@ -44,7 +44,7 @@ public final class GhostVictimProgress {
         n.putString("Phase",phase.name());n.putLong("PhaseStarted",clock(n));
         n.remove("VoiceStarted");n.remove("TravelTarget");n.remove("TravelStarted");
         n.remove("ArrivalConfirmed");
-        if(phase==Phase.BEDTIME)for(String key:new String[]{"BedtimeArrived","BedtimeWindowStarted","MotherBedtimeExit","FatherBedtimeExit"})n.remove(key);
+        if(phase==Phase.BEDTIME)for(String key:new String[]{"BedtimeArrived","BedtimeWindowStarted","BedtimeConversationTarget","MotherBedtimeExit","FatherBedtimeExit"})n.remove(key);
     }
     public static boolean leavePrison(CompoundTag n){
         if(phase(n)!=Phase.ENTER_MIRROR||!n.getBoolean("Started"))return false;

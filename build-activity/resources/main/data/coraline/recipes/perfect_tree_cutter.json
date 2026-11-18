@@ -1,1 +1,1 @@
-{"type":"minecraft:crafting_shaped","pattern":["PP ","PI "," S "],"key":{"P":{"item":"coraline:perfect_ingot"},"I":{"item":"coraline:other_iron_ingot"},"S":{"item":"minecraft:stick"}},"result":{"item":"coraline:perfect_tree_cutter"}}
+{"type":"minecraft:crafting_shaped","category":"equipment","pattern":["PP ","PI "," I "],"key":{"I":{"item":"coraline:other_iron_ingot"},"P":{"item":"coraline:perfect_ingot"}},"result":{"item":"coraline:perfect_tree_cutter","count":1}}

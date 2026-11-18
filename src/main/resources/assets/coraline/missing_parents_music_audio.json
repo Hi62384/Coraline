@@ -1,13 +1,13 @@
 {
   "source": "music/eventbased/MissingParents.mp3",
-  "source_sha256": "d04ac05f007da2ccb8290410caf5e7a275888079cfc7a4de303e24e86f433b29",
-  "ogg_sha256": "e823c2b44ffc270f241f6dde34e678c28342a4ab4093702d9afc33ec2132b77a",
+  "source_sha256": "03ff51af586e5984df1948bc250a68da2db629343d016701543786a285ed15d2",
+  "ogg_sha256": "5ac6fde26e7c0cf12410dcaa00080368182e6f713304f6b75877c6fb370f2b0a",
   "export": {
     "sample_rate": 48000,
     "channels": 2,
-    "samples": 5320936,
-    "seconds": 110.85283333333334,
-    "ticks": 2218
+    "samples": 2483793,
+    "seconds": 51.7456875,
+    "ticks": 1035
   },
   "spawn_after_start_ticks": 900
 }

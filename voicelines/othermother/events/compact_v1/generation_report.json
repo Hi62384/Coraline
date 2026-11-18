@@ -1,0 +1,36 @@
+{
+  "engine": "IndexTTS2",
+  "engine_commit": "d9e41aac89fd00b3d71497fddb287b7f24613712",
+  "reference": "voicelines/othermother/Sample.wav",
+  "reference_sha256": "154985720c45577f3c985dfea91b57bbf278caf1e3ff4077384f16d1e4ac3afe",
+  "reference_limit_seconds": 15,
+  "lines": {
+    "other_mother_events_family_game_night_late_low_high_01/line_01.wav": {
+      "seconds": 10.447256235827664,
+      "sample_rate": 22050,
+      "channels": 1,
+      "format": "PCM_16",
+      "gain_db": 3.0722082827035164,
+      "peak_dbfs": -5.215620718095955,
+      "trimmed_start_seconds": 0.0,
+      "trimmed_end_seconds": 0.2946031746031732,
+      "sha256": "b93b8c93921cac3cd0505ac2148e49b2844cc6d5eaeaeb16954003f7056de0fe",
+      "text": "How considerate of you to finally join us. We've been sitting here waiting, sweetheart. I hope whatever kept you away was terribly important.",
+      "direction": "Forced sweetness over restrained irritation; deliberate and watchful, never shouting or monstrous.",
+      "emotion": [
+        0.056249999999999994,
+        0.28,
+        0.0,
+        0.0,
+        0.056249999999999994,
+        0.0,
+        0.0,
+        0.28125
+      ],
+      "seed": 17410,
+      "attempt": 1,
+      "inference_seconds": 92.73399999999674
+    }
+  },
+  "note": "Acting uses model emotion vectors. Human listening review is still required."
+}

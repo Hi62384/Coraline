@@ -1,0 +1,506 @@
+{
+  "reference_unchanged": true,
+  "checks": [
+    {
+      "file": "invitation/low_low/line_01.wav",
+      "seconds": 14.933061224489796,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7741007208824158,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh sweetheart, I've made us a lovely dinner! Your other father and I are just getting everything ready! Why don't you finish up what you're doing and join us at the table in the next five minutes? I've made something especially nice for you.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "invitation/low_low/line_02.wav",
+      "seconds": 14.647709750566893,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7117480039596558,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Darling, it is almost time for supper. I've been working away in the kitchen, and everything smells absolutely wonderful. You've got five minutes to come to the dining room, so don't wander too far. Your other father and I will be waiting.",
+      "word_error_rate": 0.022222222222222223
+    },
+    {
+      "file": "invitation/mid_mid/line_01.wav",
+      "seconds": 12.100226757369615,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8789194226264954,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Now then, sweetheart, dinner will be ready in five minutes. I'd like you to come straight to the table when you're finished with whatever you're doing. Your other father and I have been looking forward to sitting down together.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "invitation/mid_mid/line_02.wav",
+      "seconds": 11.85641723356009,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8288998603820801,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh darling, I got dinner nearly ready. You have five minutes to make your way to the dining room. Do try to arrive on time, won't you? It is much nicer when the whole family can eat together.",
+      "word_error_rate": 0.05
+    },
+    {
+      "file": "invitation/high_low/line_01.wav",
+      "seconds": 15.21641723356009,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8263158798217773,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, my darling, I've made your supper. Come join us at the table in the next five minutes, won't you? I've prepared all sorts of lovely things. And it simply wouldn't be the same without my favorite little one sitting beside me.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "invitation/high_low/line_02.wav",
+      "seconds": 12.861768707482993,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8200641870498657,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Sweetheart, dinner's almost ready, and I've made sure there is plenty of everything you like. Your other father is terribly excited to have us all together. Come to the dining room within five minutes, my love. I'll be waiting for you.",
+      "word_error_rate": 0.022727272727272728
+    },
+    {
+      "file": "invitation/low_high/line_01.wav",
+      "seconds": 12.47265306122449,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7577294707298279,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Dinner will be ready in five minutes, sweetheart. I expect you at the table when I call you. We've had quite enough wandering about for one day. So do make an effort to be on time.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "invitation/low_high/line_02.wav",
+      "seconds": 13.530249433106576,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7799558639526367,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Now, I've prepared a proper family supper, and I'd like us all to enjoy it together. You have five minutes to come to the dining room. I trust you won't give me another reason to come looking for you.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "invitation/high_high/line_01.wav",
+      "seconds": 11.798367346938775,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7788499593734741,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh darling, I've made us something wonderful for dinner. I know how easily you get distracted by all those interesting little things you find, but do come to the table within five minutes. I'd so hate for you to miss it.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "invitation/high_high/line_02.wav",
+      "seconds": 12.878095238095238,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8359251618385315,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Sweetheart, it is time we spent a little while together as a family. Dinner will be ready in five minutes, and I do expect to see you there. Whatever little adventure you're having can wait! Can't it?",
+      "word_error_rate": 0.02564102564102564
+    },
+    {
+      "file": "ontime/low_low/line_01.wav",
+      "seconds": 8.082630385487528,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.6732630133628845,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, there you are, right on time too. How lovely. Come sit down, sweetheart. I've been dying for you to try what I've made.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "ontime/low_low/line_02.wav",
+      "seconds": 10.118004535147392,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7421501874923706,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Welcome, darling! Everything's ready! And you've arrived at just the right moment. Come along and take your seat. I think you're going to love this.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "ontime/mid_mid/line_01.wav",
+      "seconds": 8.60562358276644,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8197246193885803,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Ah good, you're here! Right on time, just as I hoped. Come sit down. Sweetheart. Let's have ourselves a pleasant little dinner.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "ontime/mid_mid/line_02.wav",
+      "seconds": 9.679002267573695,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.848605215549469,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "There you are, darling. I'm glad you remembered to come when I asked. Your plate's waiting, so go on and make yourself comfortable.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "ontime/high_low/line_01.wav",
+      "seconds": 9.197732426303855,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7591795325279236,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, my darling! I knew you'd come straight to dinner. There is nothing quite like having the whole family together. Is there? Come sit beside me!",
+      "word_error_rate": 0.037037037037037035
+    },
+    {
+      "file": "ontime/high_low/line_02.wav",
+      "seconds": 8.361995464852608,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8204767107963562,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "There is my sweetheart right on time. Of course! I've saved you the nicest portion, and I can't wait to see what you think of it.",
+      "word_error_rate": 0.03571428571428571
+    },
+    {
+      "file": "ontime/low_high/line_01.wav",
+      "seconds": 10.896235827664398,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8438013195991516,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Good! You managed to arrive when I asked. How refreshing. Now take your seats, sweetheart. And let's try to have one quiet meal together.",
+      "word_error_rate": 0.04
+    },
+    {
+      "file": "ontime/low_high/line_02.wav",
+      "seconds": 9.489433106575964,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8445825576782227,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Well, at least you're on time. That is a good start, darling. Sit down. And let's hope the rest of this evening is equally pleasant.",
+      "word_error_rate": 0.037037037037037035
+    },
+    {
+      "file": "ontime/high_high/line_01.wav",
+      "seconds": 11.624580498866214,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7782551050186157,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh darling, there you are! Right on time too! See? We can have such lovely moments together when you aren't getting distracted by all those little mysteries of yours.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "ontime/high_high/line_02.wav",
+      "seconds": 8.919092970521541,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7769076228141785,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "My sweetheart, I was wondering whether your curiosity would keep you away again. But here you are. Come sit down. I've made something very special for us.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "late/low_low/line_01.wav",
+      "seconds": 9.409614512471656,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7050762176513672,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, there you are, sweetheart! We were beginning to wonder where you'd gotten to! Come sit down before everything gets cold. There's still plenty for you!",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "late/low_low/line_02.wav",
+      "seconds": 8.10639455782313,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7326999306678772,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Darling, you're a little late, but never mind. I've kept your dinner nice and warm. Come along. Let's not waste any more time",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "late/mid_mid/line_01.wav",
+      "seconds": 9.539319727891156,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8630426526069641,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Well, there you are. Dinner's been ready for quite some time, sweetheart. I do wish you'd paid a little more attention to the clock. Sit down, please.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "late/mid_mid/line_02.wav",
+      "seconds": 10.646984126984126,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.884511411190033,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh darling, we were beginning to think you'd forgotten all about us. It is rather rude to keep everyone waiting, you know. But you're here now, so take your seat.",
+      "word_error_rate": 0.03125
+    },
+    {
+      "file": "late/high_low/line_01.wav",
+      "seconds": 10.82312925170068,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.80572110414505,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh my love, where have you been? I was beginning to worry. I know you enjoy your little adventures, but your other father and I have been waiting for you. Come sit down.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "late/high_low/line_02.wav",
+      "seconds": 9.419591836734694,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7681877017021179,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Sweetheart, you've kept us waiting. I was almost tempted to come looking for you myself. Never mind, darling. Your dinner is still warm, and I've saved you a lovely portion.",
+      "word_error_rate": 0.03125
+    },
+    {
+      "file": "late/low_high/line_01.wav",
+      "seconds": 10.417324263038548,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8052254915237427,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "How considerate of you to finally join us? We've been waiting, sweetheart, and I don't particularly enjoy having my time wasted. Sit down.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "late/low_high/line_02.wav",
+      "seconds": 10.61687074829932,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8760600090026855,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Well, look who decided to appear. Dinner was ready when I said it would be. I do hope whatever kept you away was worth making your entire family wait.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "late/high_high/line_01.wav",
+      "seconds": 11.136598639455782,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7621130347251892,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh darling, you really do lose track of time when you're off exploring, don't you? We've been waiting for you. Come sit down before I start wondering what you've been getting up to.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "late/high_high/line_02.wav",
+      "seconds": 10.962448979591837,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8316577672958374,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "There you are, sweetheart! I was beginning to think you'd found something more interesting than your own family. But I suppose nothing could keep you away from us forever. Could it?",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "search/low_low/line_01.wav",
+      "seconds": 8.524353741496599,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7626405954360962,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Sweetheart, dinner's been waiting for an awfully long time now. Where have you gone? Come along, darling. I'm going to have to come find you.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "search/low_low/line_02.wav",
+      "seconds": 10.497142857142856,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7465199828147888,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Darling, your other father and I have been waiting and waiting. I hope you haven't gotten yourself lost. I'm coming to look for you. Sweetheart.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "search/mid_mid/line_01.wav",
+      "seconds": 10.277460317460317,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8378932476043701,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Alright, sweetheart, that is quite long enough. I've given you plenty of time to come to dinner. If you won't come when I ask, I suppose I'll have to find you myself.",
+      "word_error_rate": 0.02857142857142857
+    },
+    {
+      "file": "search/mid_mid/line_02.wav",
+      "seconds": 11.085804988662131,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8577454686164856,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Where have you disappeared to this time? Dinner's been ready for ages, and my patience is wearing rather thin. I'm coming to find you! Darling?",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "search/high_low/line_01.wav",
+      "seconds": 11.03591836734694,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7817729115486145,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh my darling, where are you? I'm beginning to worry terribly. Your dinner's getting cold and I can't bear not knowing where you've gone. I'm coming to look for you.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "search/high_low/line_02.wav",
+      "seconds": 8.611428571428572,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8174891471862793,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Sweetheart, please come back to the house. I've been waiting for you and I'm getting awfully concerned. Never mind. My love. I'll find you.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "search/low_high/line_01.wav",
+      "seconds": 11.015963718820862,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8182984590530396,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "That is quite enough. I told you dinner was ready and I have waited more than long enough. I'm coming to find you now and you had better have a very good explanation.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "search/low_high/line_02.wav",
+      "seconds": 9.65904761904762,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.813988983631134,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Where are you hiding, sweetheart? You seem determined to make this difficult. Well, I'm finished waiting. I'll find you myself.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "search/high_high/line_01.wav",
+      "seconds": 13.480362811791384,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7419467568397522,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh darling, you've done it again. I prepare the loveliest dinner for us, and you disappear somewhere without a word. I wonder what could possibly be keeping you so occupied. Well, let's find out, shall we?",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "search/high_high/line_02.wav",
+      "seconds": 11.136598639455782,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7850875854492188,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Sweetheart, I know how much you love your little adventures, but you've kept your mother waiting far too long. I think it is time I came to collect you. Wherever you've wandered off to.",
+      "word_error_rate": 0.027777777777777776
+    },
+    {
+      "file": "finish/low_low/line_01.wav",
+      "seconds": 11.684444444444445,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.6953345537185669,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, wasn't that lovely? I do enjoy having us all together at the table. I hope you liked everything. Sweetheart. Now, I think we ought to find something else fun to do.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "finish/low_low/line_02.wav",
+      "seconds": 12.143401360544217,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7267988920211792,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "There we are! A proper family dinner, just as it should be! I'm so glad you could join us. Darling, I've still got plenty of wonderful things planned for you!",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "finish/mid_mid/line_01.wav",
+      "seconds": 11.85641723356009,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8792099952697754,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Well, that was nice, wasn't it? It is always good when we can sit down and enjoy ourselves without any interruptions. Now then, sweetheart. Let's see what else we might do.",
+      "word_error_rate": 0.030303030303030304
+    },
+    {
+      "file": "finish/mid_mid/line_02.wav",
+      "seconds": 11.754285714285714,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.862626314163208,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "There, all finished, I do hope you enjoyed your dinner. It is nice having the family together, darling. Perhaps we should find ourselves another little activity.",
+      "word_error_rate": 0.038461538461538464
+    },
+    {
+      "file": "finish/high_low/line_01.wav",
+      "seconds": 12.19310657596372,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.758640468120575,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, my darling, I wish every evening could be just like this! All of us together, enjoying a lovely meal. Doesn't it feel wonderful to be home now? Let's have a little more fun!",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "finish/high_low/line_02.wav",
+      "seconds": 10.602539682539682,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7304257154464722,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Wasn't that perfect, sweetheart? Seeing you sitting here with us makes me happier than you could imagine. Come along, my love! I've got something else wonderful in mind.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "finish/low_high/line_01.wav",
+      "seconds": 10.61687074829932,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8100851774215698,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Well, at least we've managed to have a reasonably pleasant dinner. I do hope you'll remember how much nicer things are when everyone behaves themselves. Now, let's move along.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "finish/low_high/line_02.wav",
+      "seconds": 10.67673469387755,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8631739616394043,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "There. Dinner's finished. And I think we've all had quite enough sitting around. Perhaps our next activity will give you something more productive to occupy yourself with.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "finish/high_high/line_01.wav",
+      "seconds": 12.355646258503402,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7771514654159546,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, darling, isn't it lovely how we can always come together like this? Whatever little secrets and adventures occupy your mind, you still find your way back to our table. Now, let's see what else I've planned.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "finish/high_high/line_02.wav",
+      "seconds": 11.519727891156462,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8053855895996094,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "There we are, sweetheart. Another lovely family dinner. I do wish moments like these could last forever. But never mind, I've got plenty more surprises waiting for you.",
+      "word_error_rate": 0.0
+    }
+  ],
+  "note": "ASR checks words, not acting. Human listening review is not replaced by these checks."
+}

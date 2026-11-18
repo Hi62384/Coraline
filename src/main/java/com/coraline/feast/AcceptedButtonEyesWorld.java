@@ -43,12 +43,21 @@ public final class AcceptedButtonEyesWorld {
         }
         FirstEscapeScene.light(p,s,c.above(3),13);return seat!=null&&table!=null;
     }
-    static ParentEntity mother(ServerPlayer p,VisitData.Scene s){return parent(p,s,s.mom);}
+    static ParentEntity mother(ServerPlayer p,VisitData.Scene s){
+        var actor=parent(p,s,s.mom);if(actor instanceof ParentEntity&&actor.isMom()&&actor.isOtherParent()
+                &&actor.getPersistentData().hasUUID("RealmDoor")&&s.door.equals(actor.getPersistentData().getUUID("RealmDoor")))return actor;
+        // The recorded Other Mother can simply be in an unloaded chunk after
+        // a restart or dimension trip. Request her last saved location and
+        // keep waiting for that UUID; never let the generic visit initializer
+        // create a second canonical actor for this route.
+        if(s.mom!=null){var level=level(p);var at=s.loop.motherPos;if(level!=null){level.getChunkSource().addRegionTicket(net.minecraft.server.level.TicketType.PORTAL,new net.minecraft.world.level.ChunkPos(at),2,at);return level.getEntity(s.mom) instanceof ParentEntity loaded&&loaded.isMom()&&loaded.isOtherParent()&&loaded.getPersistentData().hasUUID("RealmDoor")&&s.door.equals(loaded.getPersistentData().getUUID("RealmDoor"))?loaded:null;}}
+        return null;
+    }
     static ParentEntity father(ServerPlayer p,VisitData.Scene s){return parent(p,s,s.dad);}
     private static ParentEntity parent(ServerPlayer p,VisitData.Scene s,java.util.UUID id){if(id==null)return null;for(var l:p.server.getAllLevels())if(l.getEntity(id) instanceof ParentEntity actor)return actor;return null;}
     static boolean parents(ServerPlayer p,VisitData.Scene s){
         var l=level(p);var c=chair(s);var mom=mother(p,s);var dad=father(p,s);
-        if(mom==null){if(!OtherMotherLoop.prepare(p,realm(p,s)))return false;mom=mother(p,s);}
+        if(mom==null){AcceptedButtonEyesProgress.data(s).putString("Blocker","Waiting for the original Other Mother to load. Her saved actor is being requested; no replacement will be created.");return false;}
         if(dad==null){VisitEvents.ensureFather(p,s);dad=father(p,s);}
         if(mom==null||dad==null)return false;s.mom=mom.getUUID();s.dad=dad.getUUID();
         for(var actor:new ParentEntity[]{mom,dad}){

@@ -24,7 +24,7 @@ import static com.coraline.palace.PalaceTransportProgress.Phase.*;
  */
 @Mod.EventBusSubscriber(modid="coraline")
 public final class PalaceTransport {
-    public static final int MOVER=78,TRUCK=79,CARRIER=80;
+    public static final int MOVER=81,TRUCK=79,CARRIER=80;
     private static final Set<UUID> UNLOCKED=new HashSet<>();
     private static CompoundTag data(VisitData.Scene s){
         var root=PalaceJourney.existing(s);if(root==null||!root.contains("Transport",Tag.TAG_COMPOUND))return null;var n=root.getCompound("Transport");
@@ -46,11 +46,31 @@ public final class PalaceTransport {
         var sites=PalaceSiteData.get(p.server);int bay=arrived&&n.contains("DestinationBay")?n.getInt("DestinationBay"):n.getInt("Bay");return Vec3.atBottomCenterOf(sites.position(arrived?Kind.PALACE:Kind.COMPANY).orElseThrow()).add(arrived?bay==0?-7:7:17,arrived?0:1,arrived?-55:bay==0?-8:5);
     }
     private static boolean nearSites(ServerPlayer p,BlockPos at){var sites=PalaceSiteData.get(p.server);return sites.position(Kind.COMPANY).map(c->c.distSqr(at)<96*96).orElse(false)||sites.position(Kind.PALACE).map(c->c.distSqr(at)<96*96).orElse(false);}
+    /** Completed rides no longer need a bay reservation. Reap only their exact
+     * journaled props, only after the owner is away/offline and no player is
+     * near the truck; unfinished offline rides keep their reservation intact. */
+    private static boolean reapCompleted(ServerPlayer requester,VisitData.Scene ownerScene,CompoundTag n){
+        if(n.getBoolean("Cleaned")||progress(ownerScene,n).phase()!=COMPLETE)return n.getBoolean("Cleaned");
+        var truck=n.hasUUID("Truck")?find(requester,ownerScene,n,"Truck"):null;if(truck==null)return false;
+        var owner=requester.server.getPlayerList().getPlayer(ownerScene.owner);
+        if(owner!=null&&owner.distanceToSqr(truck)<=576)return false;
+        if(!requester.server.getPlayerList().getPlayers().stream().filter(q->q.level()==truck.level()).allMatch(q->q.distanceToSqr(truck)>=256))return false;
+        var props=new ArrayList<CinematicPropEntity>();
+        for(String key:new String[]{"Truck","Carrier","Mover0","Mover1","Mover2","Mover3"}){
+            var prop=n.hasUUID(key)?find(requester,ownerScene,n,key):null;
+            if(prop!=null){if(!prop.getPassengers().isEmpty())return false;props.add(prop);}
+        }
+        for(var prop:props)prop.discard();n.putBoolean("Cleaned",true);OtherMotherLoop.changed(requester);return true;
+    }
     private static boolean freeBay(ServerPlayer p,VisitData.Scene own,CompoundTag n,boolean arrived){
         int bay=arrived?n.getInt("DestinationBay"):n.getInt("Bay");var at=parked(p,n,arrived);
         for(var other:VisitData.get(p.server).scenes.values())if(!other.owner.equals(own.owner)){
-            var reservation=data(other);if(reservation==null||reservation.getBoolean("Cleaned"))continue;
-            var state=progress(other,reservation);if(!state.blocker().isEmpty())return false;
+            var reservation=data(other);if(reservation==null)continue;
+            var state=progress(other,reservation);
+            if(state.phase()==COMPLETE){reapCompleted(p,other,reservation);if(reservation.getBoolean("Cleaned"))continue;}
+            if(state.phase()==COMPLETE)continue;
+            if(reservation.getBoolean("Cleaned"))continue;
+            if(!state.blocker().isEmpty())return false;
             int reserved=arrived&&reservation.contains("DestinationBay")?reservation.getInt("DestinationBay"):reservation.getInt("Bay");
             if(reserved==bay&&(arrived||!reservation.getBoolean("Arrived")))return false;
         }
@@ -69,7 +89,20 @@ public final class PalaceTransport {
         }
         var e=p.server.overworld().getEntity(n.getUUID(key));
         int kind=key.equals("Truck")?TRUCK:key.equals("Carrier")?CARRIER:MOVER;int slot=kind==MOVER?Integer.parseInt(key.substring(5)):0;
-        return e instanceof CinematicPropEntity prop&&prop.owned(s)&&prop.kind()==kind&&prop.slot()==slot?prop:null;
+        if(!(e instanceof CinematicPropEntity prop)||!prop.owned(s))return null;
+        if(prop.kind()==kind&&prop.slot()==slot)return prop;
+        // Legacy releases encoded movers with the tea bowl's kind (78). The
+        // saved transport UUID and slot are the disambiguating provenance;
+        // only that exact journaled entity is migrated.
+        if(kind==MOVER&&prop.kind()==CinematicPropEntity.TAFFY_BOWL){prop.configure(s,MOVER,slot);OtherMotherLoop.changed(p);return prop;}
+        return null;
+    }
+    public static boolean legacyMover(CinematicPropEntity prop){
+        if(prop==null||prop.kind()!=CinematicPropEntity.TAFFY_BOWL||prop.owner()==null)return false;
+        var scene=VisitData.get(prop.getServer()).scenes.get(prop.owner());if(scene==null)return false;
+        var root=PalaceJourney.existing(scene);if(root==null||!root.contains("Transport",Tag.TAG_COMPOUND))return false;
+        var transport=root.getCompound("Transport");for(String key:new String[]{"Mover0","Mover1","Mover2","Mover3"})if(transport.hasUUID(key)&&transport.getUUID(key).equals(prop.getUUID()))return true;
+        return false;
     }
     private static CinematicPropEntity ensure(ServerPlayer p,VisitData.Scene s,CompoundTag n,String key,int kind,int slot,Vec3 at){
         if(n.contains(key))return find(p,s,n,key); // Unloaded/missing UUID is never permission to clone.

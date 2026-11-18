@@ -55,6 +55,26 @@ public final class GhostEscapeRooms {
     public static BlockPos inside(VisitData.Scene s,String id,ServerLevel level){
         var at=door(s,id);var outside=outside(s,id,level);if(at==null||outside==null)return null;return at.offset(at.getX()-outside.getX(),0,at.getZ()-outside.getZ());
     }
+    /** Find an actual reachable exit for the child, including a second authored
+     * doorway if the originally selected one was changed during the search. */
+    public static BlockPos reachableExit(VisitData.Scene s,String id,ServerLevel level,TycoonNpc child){
+        var room=room(id);if(room==null||level==null||child.level()!=level)return null;
+        for(int[] offset:room.doors()){
+            var at=GhostVictimWorld.at(s,offset[0],offset[1],offset[2]);var state=level.getBlockState(at);
+            if(!(state.getBlock() instanceof DoorBlock))continue;
+            var front=at.relative(state.getValue(DoorBlock.FACING));var back=at.relative(state.getValue(DoorBlock.FACING).getOpposite());
+            var target=HouseCabinets.contains(AcceptedButtonEyesWorld.house(s),room,front)?back:front;
+            if(!GhostVictimNavigation.clear(level,child,target))continue;
+            var path=child.getNavigation().createPath(target,0);if(path!=null&&path.canReach())return at;
+        }
+        return null;
+    }
+    public static BlockPos outside(VisitData.Scene s,String id,BlockPos door,ServerLevel level){
+        var room=room(id);if(room==null||door==null)return null;var state=level.getBlockState(door);
+        if(!(state.getBlock() instanceof DoorBlock))return null;
+        var front=door.relative(state.getValue(DoorBlock.FACING));var back=door.relative(state.getValue(DoorBlock.FACING).getOpposite());
+        return HouseCabinets.contains(AcceptedButtonEyesWorld.house(s),room,front)?back:front;
+    }
     public static BlockPos container(CompoundTag ghost,String id){var row=sites(ghost).getCompound(id);return row.contains("Container")?BlockPos.of(row.getLong("Container")):null;}
     public static boolean validContainer(ServerPlayer p,VisitData.Scene s,CompoundTag ghost,String id){
         if(!GhostVictimMirrors.owned(p,s,ghost))return false;var at=container(ghost,id);var level=AcceptedButtonEyesWorld.level(p);if(at==null||level==null)return false;level.getChunkAt(at);

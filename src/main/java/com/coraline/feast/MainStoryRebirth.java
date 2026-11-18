@@ -12,6 +12,9 @@ import java.util.*;
 public final class MainStoryRebirth {
     public static final Set<String> STORY_KEYS=Set.of(
         "FirstEscape","FirstEscapeRewardPaid","ParentRescue","MissingParentsCat","MissingParentsTea",
+        // The Spink and Forcible story module owns this key. Keep the older
+        // alias above in the reset set for saves created by earlier builds.
+        MissingParentsTea.KEY,"AcceptedButtonEyes","AlternativeEndingComplete",
         "PinkPalaceJourney","BlackIsTraditional","BlackIsTraditionalQueued","ParentDollsDiscovered",
         "SeeingStonePending","SeeingStoneReceipt","LittleDoorKeyIssued","LittleDoorKeyCustodyVersion",
         "LittleDoorKeyHolder","GhostChildrenFreed","MajorStoryPhase","WybieIntroductionComplete",

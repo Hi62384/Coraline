@@ -51,7 +51,9 @@ public final class TunnelPassage {
         door.passageOriginals=new ListTag();door.passageBuilt=false;door.setChanged();
     }
     public static boolean occupied(ServerLevel level,DoorBlockEntity door){var facing=door.getBlockState().getValue(TinyDoorBlock.FACING);var end=inside(door.getBlockPos(),facing,2);
-        return !level.getEntitiesOfClass(Player.class,new AABB(end.x-.7,end.y,end.z-.7,end.x+.7,end.y+1,end.z+.7).inflate(1.3,0,1.3)).isEmpty();
+        // Passage restoration must account for story actors as well as players:
+        // the rescued child uses the exact same physical crawl space.
+        return !level.getEntitiesOfClass(net.minecraft.world.entity.Entity.class,new AABB(end.x-.7,end.y,end.z-.7,end.x+.7,end.y+1,end.z+.7).inflate(1.3,0,1.3)).isEmpty();
     }
     private static DoorBlockEntity nearby(Player p){
         var origin=p.blockPosition();DoorBlockEntity best=null;double distance=Double.MAX_VALUE;

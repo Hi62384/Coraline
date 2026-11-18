@@ -1,0 +1,21 @@
+{
+  "reference_unchanged": true,
+  "checks": [
+    {
+      "file": "other_mother_events_family_game_night_late_low_high_01/line_01.wav",
+      "seconds": 10.447256235827664,
+      "pcm_decode": "pass",
+      "source_sha256": "b93b8c93921cac3cd0505ac2148e49b2844cc6d5eaeaeb16954003f7056de0fe",
+      "expected_text_sha256": "371960f80041f9865645cbd46f06ae6115a8f3af9db92f62a6c6baf91ad2005c",
+      "reference_speaker_cosine": 0.8517041206359863,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "How considerate of you to finally join us. We've been sitting here waiting, sweetheart. I hope whatever kept you away was terribly important.",
+      "word_error_rate": 0.0
+    }
+  ],
+  "note": "ASR checks words, not acting. Human listening review is not replaced by these checks.",
+  "partial": true,
+  "selected_state": null,
+  "existing_only": true
+}

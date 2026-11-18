@@ -117,6 +117,22 @@ public final class PalaceJourney {
         for(var slot:p.containerMenu.slots)if(matches.test(slot.getItem()))return true;
         return false;
     }
+    private static boolean boundMap(ItemStack stack,VisitData.Scene scene,BlockPos company,int oldId,int newId){
+        if(!map(stack,scene,company)||stack.getTag().getInt("map")!=oldId)return false;
+        stack.getTag().putInt("map",newId);return true;
+    }
+    private static Integer rebuildMissingMap(ServerPlayer p,VisitData.Scene scene,BlockPos company,int oldId){
+        // A missing vanilla map dataset cannot be restored under the same id.
+        // Allocate a new dataset only for this already owner/door/company-bound
+        // story record, then retarget matching copies in the owner's storage.
+        var result=MapItem.create(p.server.overworld(),company.getX(),company.getZ(),(byte)2,true,true);
+        Integer replacement=MapItem.getMapId(result);if(replacement==null||p.server.overworld().getMapData("map_"+replacement)==null)return null;
+        net.minecraft.world.level.saveddata.maps.MapItemSavedData.addTargetDecoration(result,company,"moving_company",MapDecoration.Type.RED_X);
+        for(int slot=0;slot<p.getInventory().getContainerSize();slot++)boundMap(p.getInventory().getItem(slot),scene,company,oldId,replacement);
+        for(int slot=0;slot<p.getEnderChestInventory().getContainerSize();slot++)boundMap(p.getEnderChestInventory().getItem(slot),scene,company,oldId,replacement);
+        boundMap(p.containerMenu.getCarried(),scene,company,oldId,replacement);p.getInventory().setChanged();p.getEnderChestInventory().setChanged();p.containerMenu.broadcastChanges();
+        var root=existing(scene);if(root==null)return null;root.putInt("MapId",replacement);OtherMotherLoop.changed(p);return replacement;
+    }
     /** Recovery recreates a MAP with the same saved vanilla map ID, not a key.
      * No chunk search/load, pre-render scan, world landmark or reward allocation.
      */
@@ -126,7 +142,10 @@ public final class PalaceJourney {
         var sites=PalaceSiteData.get(p.server);if(!sitesReady(sites))return false;
         var company=sites.position(Kind.COMPANY).orElseThrow();var root=initialize(scene);if(root==null)return false;
         if(root.contains("Company")&&(!root.contains("Company",Tag.TAG_LONG)||root.getLong("Company")!=company.asLong()))return false;
-        if(root.contains("MapId")&&p.server.overworld().getMapData("map_"+root.getInt("MapId"))==null)return false;
+        if(root.contains("MapId")&&p.server.overworld().getMapData("map_"+root.getInt("MapId"))==null){
+            if(root.getBoolean("MapIssued")&&!recovery||root.contains("Company")&&root.getLong("Company")!=company.asLong())return false;
+            if(rebuildMissingMap(p,scene,company,root.getInt("MapId"))==null)return false;
+        }
         if(mapPresent(p,scene,company)){if(!root.getBoolean("MapIssued")){root.putLong("Company",company.asLong());root.putBoolean("MapIssued",true);OtherMotherLoop.changed(p);}return true;}
         int noticeSlot=noticeSlot(p,scene);
         if(root.getBoolean("MapIssued")&&!recovery||(!keyPresent(p,scene)&&!com.coraline.postgame.InfiniteWorldData.get(p.server).active())

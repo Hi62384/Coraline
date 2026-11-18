@@ -155,7 +155,7 @@ public final class BeldamFinale {
             }
             case FINAL_O->{
                 if(RescueWebSite.prepare(p,s)&&t>=30&&!n.getBoolean("FloorOpened")){for(int x=14;x<=30;x++)for(int z=37;z<=51;z++)FirstEscapeScene.place(p,s,FirstEscapeScene.at(s,x,5,z),Blocks.AIR.defaultBlockState());n.putBoolean("FloorOpened",true);}
-                if(n.getBoolean("FloorOpened")&&p.getY()<FirstEscapeScene.room(s).getY()-2&&!n.getBoolean("WebEntered")){enterWeb(p,s,m);}
+                if(n.getBoolean("FloorOpened")&&!n.getBoolean("WebEntered")&&(p.getY()<FirstEscapeScene.room(s).getY()-2||p.serverLevel()==p.server.getLevel(ActivityWorld.KEY))){enterWeb(p,s,m);}
                 if(done&&n.getBoolean("WebEntered"))RescueChapter.go(p,s,FINAL_P);
             }
             case FINAL_P->{n.putFloat("BeldamMorph",Math.min(1,t/(float)Math.max(1,ShowRecordings.duration("finale_p"))));if(done)RescueChapter.go(p,s,FINAL_Q);}
@@ -164,7 +164,7 @@ public final class BeldamFinale {
             case DOOR_KICK->{RescueChapter.hint(p,"Kick the door open!");if(t==1)p.serverLevel().playSound(null,p.blockPosition(),net.minecraft.sounds.SoundEvents.ZOMBIE_ATTACK_WOODEN_DOOR,net.minecraft.sounds.SoundSource.BLOCKS,.8F,.8F);if(t>=20){n.putFloat("Struggle",0);RescueChapter.go(p,s,DOOR_STRUGGLE);}}
             case DOOR_STRUGGLE->{
                 float progress=RescueChallengeMath.struggle(n.getFloat("Struggle"),n.getBoolean("Press")?1:0,n.getBoolean("AccessibleStruggle"));n.remove("Press");n.putFloat("Struggle",progress);RescueChapter.hint(p,"Rapidly click to pull the door shut — "+Math.round(progress*100)+"%");
-                if(RescueWebLayout.struggleFinished(t,progress)){n.putBoolean("HandSevered",true);var hand=RescueProps.ensure(p,s,"SeveredHand",RescueProps.HAND,0,RescueWebSite.at(p,s,1,1).add(0,.15,-.7));if(hand!=null)hand.frame(1,0,1);RescueChapter.go(p,s,HAND_FALL);}else if(t>=240)retry(p,s,DOOR_STRUGGLE,"You lost your grip. Try closing the door again.");
+                if(RescueWebLayout.struggleFinished(t,progress)){var hand=RescueProps.ensure(p,s,"SeveredHand",RescueProps.HAND,0,RescueWebSite.at(p,s,1,1).add(0,.15,-.7));if(hand==null){n.putString("Blocker","The original severed Hand could not be staged; retrying this step.");retry(p,s,DOOR_STRUGGLE,"The Hand is not ready yet. Try closing the door again.");return;}hand.frame(1,0,1);n.putBoolean("HandSevered",true);RescueChapter.go(p,s,HAND_FALL);}else if(t>=240)retry(p,s,DOOR_STRUGGLE,"You lost your grip. Try closing the door again.");
             }
             case HAND_FALL->{RescuePassage.prepare(p,s);var hand=RescueProps.find(p,s,"SeveredHand");if(hand!=null){hand.frame(1,t,1);if(t<20)hand.setPos(hand.position().add(0,-.015,0));}if(t>=60&&RescuePassage.prepare(p,s)){n.remove("PassageEntered");RescueChapter.go(p,s,TUNNEL_CHASE);}}
             case TUNNEL_CHASE->tunnel(p,s,t,done);
@@ -176,6 +176,11 @@ public final class BeldamFinale {
     }
     private static void showEyes(ServerPlayer p,VisitData.Scene s,int t){for(int i=0;i<3;i++){var at=p.position().add(p.getLookAngle().multiply(.8,0,.8)).add((i-1)*.45,1.1,0);var e=RescueProps.ensure(p,s,"PresentedEye"+i,RescueProps.EYE,i,at);if(e!=null){e.setPos(at);e.frame(1,t,1);}}}
     private static boolean physicalEyes(ServerPlayer p,VisitData.Scene s){for(int i=0;i<3;i++){boolean found=false;for(int slot=0;slot<p.getInventory().getContainerSize();slot++)found|=RescueEyes.authentic(p.getInventory().getItem(slot),s,i);if(!found)return false;}return RescueEyes.all(s);}
+    private static boolean recoverPresentationEyes(ServerPlayer p,VisitData.Scene s){
+        for(int i=0;i<3;i++){boolean found=false;for(int slot=0;slot<p.getInventory().getContainerSize();slot++)found|=RescueEyes.authentic(p.getInventory().getItem(slot),s,i);
+            if(!found&&!com.coraline.multiplayer.QuestItemRecovery.recall(p,s,"eye_"+i))return false;}
+        return physicalEyes(p,s);
+    }
     private static void moveMother(ParentEntity m,Vec3 target,double speed,ServerPlayer p,int gesture){if(m==null)return;var delta=target.subtract(m.position()).multiply(1,0,1);var next=m.position().add(delta.length()<=speed?delta:delta.normalize().scale(speed));motherAt(m,next,p,gesture);}
     private static void moveWardrobe(ServerPlayer p,VisitData.Scene s,ParentEntity m){
         var n=RescueChapter.data(s);var wardrobe=FirstEscapeScene.prop(p,s,"Wardrobe");if(wardrobe==null)return;var door=little(s);var goal=Vec3.atBottomCenterOf(door).add(0,0,4);moveMother(m,wardrobe.position().add(1.5,0,0),.04,p,64);if(m.distanceToSqr(wardrobe)>12)return;
@@ -187,7 +192,7 @@ public final class BeldamFinale {
         if(catHitBeforeBlock(mother,from,next,trace)){cat.setPos(facePoint(mother));n.remove("CatFlying");n.remove("CatHeld");n.putBoolean("CatHit",true);RescueChapter.go(p,s,FINAL_N);return;}
         if(trace.getType()!=HitResult.Type.MISS||t>45){cat.setPos(trace.getType()==HitResult.Type.MISS?next:trace.getLocation());retry(p,s,CAT_THROW,"The Cat missed. Pick him up and aim at Other Mother's face.");return;}cat.setPos(next);n.putDouble("CatVY",v.y-.045);ShowPlaybackNetwork.pose(cat,34,t,1);
     }
-    private static void enterWeb(ServerPlayer p,VisitData.Scene s,ParentEntity mother){var n=RescueChapter.data(s);var l=p.server.getLevel(ActivityWorld.KEY);var at=RescueWebSite.at(p,s,1,0);l.getChunkAt(BlockPos.containing(at));p.stopRiding();p.setForcedPose(null);p.setPose(Pose.STANDING);p.teleportTo(l,at.x,at.y+1,at.z,90,0);p.fallDistance=0;n.putBoolean("WebEntered",true);if(mother!=null){var moved=ShowTravel.guest(mother,p,s,l,Vec3.atBottomCenterOf(RescueWebSite.center(p,s)),true,"BeldamFinaleReturn");if(moved!=null&&s.mom.equals(moved.getUUID()))n.putLong("BeldamAt",moved.blockPosition().asLong());}var web=RescueProps.ensure(p,s,"Web",RescueProps.WEB,0,Vec3.atLowerCornerOf(RescueWebSite.center(p,s)));if(web!=null)web.frame(0,0,1);}
+    private static void enterWeb(ServerPlayer p,VisitData.Scene s,ParentEntity mother){var n=RescueChapter.data(s);var l=p.server.getLevel(ActivityWorld.KEY);if(l==null||!RescueWebSite.prepare(p,s))return;var at=RescueWebSite.at(p,s,1,0);l.getChunkAt(BlockPos.containing(at));var web=RescueProps.ensure(p,s,"Web",RescueProps.WEB,0,Vec3.atLowerCornerOf(RescueWebSite.center(p,s)));if(web==null)return;web.frame(0,0,1);p.stopRiding();p.setForcedPose(null);p.setPose(Pose.STANDING);p.teleportTo(l,at.x,at.y+1,at.z,90,0);if(p.serverLevel()!=l||p.position().distanceToSqr(new Vec3(at.x,at.y+1,at.z))>1){n.putString("Blocker","The web arena transfer did not complete; the passage remains available to retry.");return;}p.fallDistance=0;n.putBoolean("WebEntered",true);n.remove("Blocker");if(mother!=null){var moved=ShowTravel.guest(mother,p,s,l,Vec3.atBottomCenterOf(RescueWebSite.center(p,s)),true,"BeldamFinaleReturn");if(moved!=null&&s.mom.equals(moved.getUUID()))n.putLong("BeldamAt",moved.blockPosition().asLong());}}
     private static void rememberPosition(ServerPlayer p,CompoundTag n){n.putDouble("PreviousX",p.getX());n.putDouble("PreviousY",p.getY());n.putDouble("PreviousZ",p.getZ());n.putBoolean("PreviousGround",p.onGround());}
     private static void web(ServerPlayer p,VisitData.Scene s,ParentEntity mother,int t){
         var n=RescueChapter.data(s);var center=RescueWebSite.center(p,s);double moved=Math.hypot(p.getX()-n.getDouble("PreviousX"),p.getZ()-n.getDouble("PreviousZ"));boolean sticky=false;double best=3;for(int lane=0;lane<3;lane++)for(int sample=0;sample<=RescueWebLayout.SAMPLES;sample+=4){var point=RescueWebSite.at(p,s,lane,sample/(double)RescueWebLayout.SAMPLES);double d=p.position().distanceToSqr(point);if(d<best){best=d;sticky=RescueWebLayout.sticky(lane,sample);}}
@@ -217,7 +222,8 @@ public final class BeldamFinale {
     }
     public static void input(ServerPlayer p,VisitData.Scene s,String action){
         var state=RescueChapter.phase(s);var n=RescueChapter.data(s);
-        if(state==SHOW_EYES&&action.equals("show_eyes")&&physicalEyes(p,s))RescueChapter.go(p,s,FINAL_D);
+        if(state==SHOW_EYES&&action.equals("show_eyes")){if(recoverPresentationEyes(p,s))RescueChapter.go(p,s,FINAL_D);else p.displayClientMessage(net.minecraft.network.chat.Component.literal("Retrieve the original eyes from your helper or make room in your inventory. You can close this screen and try again."),false);}
+        else if(state==SHOW_EYES&&action.equals("close_eyes"))RescueChapter.go(p,s,FINAL_C);
         else if(state==HIDING_CHOICE&&action.equals("behind_little_door"))RescueChapter.go(p,s,FINAL_H);
         else if(state==FIGHT_CHOICE&&action.equals("fight"))RescueChapter.go(p,s,FINAL_M);
         else if(state==DOOR_STRUGGLE&&action.equals("struggle"))n.putBoolean("Press",true);

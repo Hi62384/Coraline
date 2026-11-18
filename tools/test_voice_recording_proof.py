@@ -23,6 +23,22 @@ class VoiceProofTests(unittest.TestCase):
         self.assertTrue(validate(self.root,self.record)['validation_source_hash_present'])
         self.checked['checks'][0].pop('source_sha256');self.save()
         self.assertFalse(validate(self.root,self.record)['validation_source_hash_present'])
+    def test_full_dialogue_library_uses_its_own_receipt_key(self):
+        directory=self.root/'voicelines/othermother/events/full_dialogue_v1'
+        source=directory/'event_name/line_01.wav';source.parent.mkdir(parents=True,exist_ok=True)
+        source.write_bytes(b'full dialogue master')
+        digest=hashlib.sha256(source.read_bytes()).hexdigest()
+        record=dict(self.record,source=source.relative_to(self.root).as_posix())
+        key='event_name/line_01.wav'
+        generated={'reference_sha256':record['reference_sha256'],
+                   'lines':{key:{'text':record['text'],'sha256':digest}}}
+        checked={'reference_unchanged':True,'checks':[{'file':key,'pcm_decode':'pass','needs_review':False,
+            'speaker_review':False,'word_error_rate':0.,'reference_speaker_cosine':.8,'source_sha256':digest,
+            'expected_text_sha256':hashlib.sha256(record['text'].encode()).hexdigest()}]}
+        (directory/'generation_report.json').write_text(json.dumps(generated))
+        (directory/'validation_report.json').write_text(json.dumps(checked))
+        receipt=validate(self.root,record)
+        self.assertEqual(receipt['generation_report'],'voicelines/othermother/events/full_dialogue_v1/generation_report.json')
     def test_changed_master_is_rejected(self):
         (self.root/self.record['source']).write_bytes(b'changed')
         with self.assertRaisesRegex(ValueError,'proof mismatch'):validate(self.root,self.record)

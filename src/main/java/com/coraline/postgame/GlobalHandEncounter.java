@@ -26,7 +26,7 @@ public final class GlobalHandEncounter extends SavedData {
     }
     private boolean matches(VisitData.Scene scene,PalaceWellProgress progress){
         return !row.getBoolean("Blocked")&&row.getInt("Version")==1&&row.hasUUID("Owner")&&scene.owner.equals(row.getUUID("Owner"))
-            &&row.hasUUID("Door")&&scene.door.equals(row.getUUID("Door"))&&row.hasUUID("Session")&&progress.session().equals(row.getUUID("Session"))
+            &&row.hasUUID("Door")&&scene.door.equals(row.getUUID("Door"))&&row.hasUUID("Session")
             &&row.hasUUID("Hand")&&progress.originalHand().equals(row.getUUID("Hand"));
     }
     private boolean checkpoint(MinecraftServer server){
@@ -38,7 +38,14 @@ public final class GlobalHandEncounter extends SavedData {
     }
     public static boolean claim(MinecraftServer server,VisitData.Scene scene,PalaceWellProgress progress){
         if(scene==null||!progress.blocker().isEmpty()||TrueHeartBattle.resetting(server))return false;
-        var data=get(server);if(!data.row.isEmpty())return data.matches(scene,progress)&&(data.durable||data.checkpoint(server));
+        var data=get(server);if(!data.row.isEmpty()){
+            if(!data.matches(scene,progress))return false;
+            // Session rotates on pause/reconnect to reject stale inputs. The
+            // global reservation is encounter identity, so rebind its input
+            // epoch only after owner, door and original Hand all match.
+            if(!data.row.getUUID("Session").equals(progress.session())){data.row.putUUID("Session",progress.session());data.durable=false;}
+            return data.durable||data.checkpoint(server);
+        }
         if(InfiniteWorldData.get(server).active())return false;
         // A pre-upgrade native encounter must be resumed, never raced by a fresh owner.
         for(var other:VisitData.get(server).scenes.values()){

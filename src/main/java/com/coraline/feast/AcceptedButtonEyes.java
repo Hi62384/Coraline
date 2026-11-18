@@ -64,6 +64,16 @@ public final class AcceptedButtonEyes {
         if(GhostEscapeEnding.epilogueActive(s)){GhostEscapeEnding.tick(p,s,GhostVictimEntry.data(s));return true;}
         if(!GhostEscapeProgress.bodyRestored(GhostVictimEntry.data(s)))p.fallDistance=0;
         if(GhostVictimDirector.tick(p,s)){if(p.tickCount%10==0)sync(p,s);return true;}
+        // Once the real body and inventory have been restored, the prison
+        // controller must never pull the player back into the Other World.
+        // Keep the durable farewell/ending recovery as the sole owner even if
+        // an actor binding or a legacy save makes the director temporarily
+        // decline its normal tick.
+        var restoredGhost=GhostVictimEntry.data(s);
+        if(GhostEscapeProgress.bodyRestored(restoredGhost)){
+            GhostEscapeRestoration.tick(p,s,restoredGhost);
+            return true;
+        }
         if(n.getBoolean("SewingCompleted")){
             if(!AcceptedButtonEyesInventory.capture(p,s)){hint(p,n.getString("Blocker"));return true;}
             AcceptedButtonEyesWorld.sealAndRemoveBed(p,s);if(p.tickCount%20==0){restSewingProps(p,s);AcceptedButtonEyesInventory.enforce(p);}

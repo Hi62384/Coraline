@@ -1,0 +1,186 @@
+{
+  "reference_unchanged": true,
+  "checks": [
+    {
+      "file": "father_study_root/father_study_root.wav",
+      "seconds": 4.40281179138322,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7270723581314087,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Ah, there you are! Lovely day for a little music, isn't it?",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_study_music/father_study_music.wav",
+      "seconds": 5.145850340136055,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8243356347084045,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "An old melody, funny how a tune can find its way home.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_study_melody/father_study_melody.wav",
+      "seconds": 4.309931972789116,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7397852540016174,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, here and there. Some things are older than they look.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_study_questions/father_study_questions.wav",
+      "seconds": 3.474013605442177,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7977154850959778,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Of course, kiddo. What is it?",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_study_house/father_study_house.wav",
+      "seconds": 8.10639455782313,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7573550939559937,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Mother does like everything in its proper place. Even the little drawers have their arrangements.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_study_marks/father_study_marks.wav",
+      "seconds": 7.723265306122449,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7985988855361938,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Just a little pattern she uses. Once you've seen it, it is difficult not to notice it everywhere.",
+      "word_error_rate": 0.05263157894736842
+    },
+    {
+      "file": "father_study_watchers/father_study_watchers.wav",
+      "seconds": 6.829297052154195,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7604261040687561,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Mother is fond of those dolls, always placing them where they can see everything.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_study_blind/father_study_blind.wav",
+      "seconds": 7.026666666666666,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8040580749511719,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, not everything, of course. They have to face the right way. Walls get in the way, too.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_study_machines/father_study_machines.wav",
+      "seconds": 5.343219954648526,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7777141332626343,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Mother has clever machines working behind the scenes.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_study_gifts/father_study_gifts.wav",
+      "seconds": 6.562267573696145,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7615126371383667,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "They make sure the presents and surprises arrive where they ought to. Quite an arrangement, really.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_study_workshop/father_study_workshop.wav",
+      "seconds": 5.900498866213152,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7468971610069275,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "I like making things, especially when they make someone smile.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_study_world/father_study_world.wav",
+      "seconds": 6.527437641723356,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8068796992301941,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "The garden is lovely. Beyond it, some places have been forgotten for a very long time.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_study_trees/father_study_trees.wav",
+      "seconds": 5.726349206349206,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7429792284965515,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "You'd be surprised how empty some of those perfect trees are inside.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_study_family/father_study_family.wav",
+      "seconds": 5.842448979591837,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7496264576911926,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Mother does like things perfect. Best not to disturb her arrangements.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_study_kindness/father_study_kindness.wav",
+      "seconds": 5.923718820861678,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7119985222816467,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "A kind word, a quiet evening, a family sitting down together.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_study_wybie/father_study_wybie.wav",
+      "seconds": 6.887346938775511,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7879849076271057,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "A helpful fellow, sometimes quiet, is how someone stays out of trouble.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_study_hesitate/father_study_hesitate.wav",
+      "seconds": 5.424489795918367,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7881428599357605,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "I don't think she'd want me discussing that. Best not to worry yourself.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "father_study_uncomfortable/father_study_uncomfortable.wav",
+      "seconds": 5.691519274376417,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7850943803787231,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, I really must get back to my music now. Kiddo!",
+      "word_error_rate": 0.0
+    }
+  ],
+  "note": "ASR checks words, not acting. Human listening review is not replaced by these checks."
+}

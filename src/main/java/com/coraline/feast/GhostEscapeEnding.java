@@ -18,6 +18,19 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid="coraline")
 public final class GhostEscapeEnding {
     static boolean epilogueActive(VisitData.Scene s){return s!=null&&GhostEscapeEndingProgress.epilogueOwns(GhostVictimEntry.data(s),s.owner,s.door,RescueChapter.data(s));}
+    /** A replay receipt for the complete accepted-proposal ending, including
+     * the original child's escape, real-family epilogue, and detached original Hand. */
+    public static boolean alternativeComplete(VisitData.Scene s){
+        if(s==null||!AcceptedButtonEyes.data(s).hasUUID("Door")||!s.door.equals(AcceptedButtonEyes.data(s).getUUID("Door"))
+                ||!AcceptedButtonEyes.data(s).getString("Route").equals(AcceptedButtonEyesProgress.Route.ACCEPTED_PROPOSAL.name()))return false;
+        var ghost=GhostVictimEntry.data(s);var ending=GhostEscapeEndingProgress.existing(ghost,s.owner,s.door);
+        if(ending==null||!ending.getBoolean("AlternativeBeldamVictory")||!ending.getBoolean("AlternativeEndingComplete"))return false;
+        var hand=GhostEscapeHandProgress.existing(ghost,s.owner,s.door,s.mom);var scenery=ParentRescueStory.scenery(s);
+        return hand!=null&&scenery.hasUUID("RescueSeveredHand")
+                &&GhostEscapeHandProgress.handoffReady(ghost,s.owner,s.door,s.mom,scenery.getUUID("RescueSeveredHand"))
+                &&RescueChapter.data(s).getBoolean("ParentsReturned")&&RescueChapter.data(s).getBoolean("FarewellComplete")
+                &&RescueEyes.ledger(s).getBoolean("Released");
+    }
     static boolean hasKey(ServerPlayer p,VisitData.Scene s){
         for(int i=0;i<p.getInventory().getContainerSize();i++)if(ParentRescueStory.key(p.getInventory().getItem(i),s))return true;
         return false;

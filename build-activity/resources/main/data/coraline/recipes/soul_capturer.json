@@ -1,1 +1,1 @@
-{"type":"minecraft:crafting_shaped","pattern":["BMB","MVM","BSB"],"key":{"B":{"item":"coraline:button"},"M":{"item":"coraline:moonstone_block"},"V":{"item":"coraline:void_heart"},"S":{"item":"coraline:soulglass_block"}},"result":{"item":"coraline:soul_capturer"}}
+{"type":"minecraft:crafting_shaped","category":"equipment","pattern":["IKI","IHI","III"],"key":{"H":{"item":"coraline:void_heart"},"I":{"item":"coraline:other_iron_ingot"},"K":{"item":"coraline:soulglass_block"}},"result":{"item":"coraline:soul_capturer","count":1}}

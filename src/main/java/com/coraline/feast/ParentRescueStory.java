@@ -9,6 +9,7 @@ import com.coraline.registry.ModItems;
 import com.coraline.secrets.*;
 import net.minecraft.core.*;
 import net.minecraft.nbt.*;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.*;
@@ -246,7 +247,12 @@ public final class ParentRescueStory {
         n.putBoolean("MotherAtStove",false);return false;
     }
     private static boolean kitchen(ServerPlayer p,VisitData.Scene s){var n=data(s);if(n.contains("Kitchen"))return true;var realm=RealmData.get(p.server).realms.get(s.door);if(realm==null||realm.house==null)return false;var center=HouseCabinets.at(realm.house,43,6,60);n.putLong("Kitchen",center.asLong());BlockPos stove=null;for(var at:BlockPos.betweenClosed(center.offset(-8,0,-8),center.offset(8,2,8))){var id=net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(p.level().getBlockState(at).getBlock()).getPath();if(id.contains("furnace")||id.contains("oven")||id.contains("stove")){stove=at.immutable();break;}}if(stove==null){n.remove("Kitchen");n.putString("Blocker","The existing kitchen stove must be loaded before continuing.");return false;}n.putLong("Stove",stove.asLong());n.putLong("KitchenTable",center.asLong());var gift=FirstEscapeScene.ensure(p,s,"KitchenGift",CinematicPropEntity.BUTTON_GIFT,0,p.serverLevel(),Vec3.atBottomCenterOf(center).add(0,.9,0));if(gift!=null)gift.frame(0,0,0);return true;}
-    public static boolean block(ServerPlayer p,BlockPos at){var s=OtherMotherLoop.scene(p);if(!started(s))return false;var n=data(s);if(n.getBoolean("DoorLocked")&&at.asLong()==scenery(s).getLong("LittleDoor"))return true;if(phase(s)==Phase.WAIT_KITCHEN_SEAT&&n.contains("Kitchen")&&at.distSqr(BlockPos.of(n.getLong("Kitchen")))<64){var id=net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(p.level().getBlockState(at).getBlock()).getPath();if(id.contains("chair")){var seat=FirstEscapeScene.ensure(p,s,"KitchenSeat",CinematicPropEntity.STUNT_CARRIER,0,p.serverLevel(),Vec3.atBottomCenterOf(at).add(0,.3,0));if(seat!=null&&p.startRiding(seat,true)){n.putBoolean("KitchenSeated",true);n.putBoolean("Seated",true);go(p,s,Phase.H);}return true;}}return false;}
+    public static boolean block(ServerPlayer p,BlockPos at){var s=OtherMotherLoop.scene(p);if(!started(s))return false;var n=data(s);
+        if(RescueChapter.started(s)&&RescueChapter.phase(s)==RescueChapter.Phase.ROOM_LOCKED&&RescueChapter.data(s).getBoolean("RoomLocked")){
+            var block=p.level().getBlockState(at);var lower=block.hasProperty(net.minecraft.world.level.block.DoorBlock.HALF)&&block.getValue(net.minecraft.world.level.block.DoorBlock.HALF)==net.minecraft.world.level.block.state.properties.DoubleBlockHalf.UPPER?at.below():at;
+            var little=BlockPos.of(scenery(s).getLong("LittleDoor"));if(lower.equals(FirstEscapeScene.entrance(s))||lower.equals(FirstEscapeScene.at(s,31,6,42))||at.equals(little)||at.equals(little.above())){p.displayClientMessage(Component.literal("The door is sealed until the confrontation is ready."),true);return true;}
+        }
+        if(n.getBoolean("DoorLocked")&&at.asLong()==scenery(s).getLong("LittleDoor"))return true;if(phase(s)==Phase.WAIT_KITCHEN_SEAT&&n.contains("Kitchen")&&at.distSqr(BlockPos.of(n.getLong("Kitchen")))<64){var id=net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(p.level().getBlockState(at).getBlock()).getPath();if(id.contains("chair")){var seat=FirstEscapeScene.ensure(p,s,"KitchenSeat",CinematicPropEntity.STUNT_CARRIER,0,p.serverLevel(),Vec3.atBottomCenterOf(at).add(0,.3,0));if(seat!=null&&p.startRiding(seat,true)){n.putBoolean("KitchenSeated",true);n.putBoolean("Seated",true);go(p,s,Phase.H);}return true;}}return false;}
     private static boolean gaze(ServerPlayer p,Vec3 point,double dot){var delta=point.subtract(p.getEyePosition());return p.getLookAngle().dot(delta.normalize())>dot&&p.serverLevel().clip(new net.minecraft.world.level.ClipContext(p.getEyePosition(),point,net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,p)).getType()==HitResult.Type.MISS;}
     static Vec3 kitchenExit(ServerPlayer p,VisitData.Scene s){
         var n=data(s);if(!n.contains("Kitchen"))return null;

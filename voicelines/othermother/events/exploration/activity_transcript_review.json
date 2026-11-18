@@ -1,0 +1,51 @@
+[
+  {
+    "file": "low_low/line_01.wav",
+    "expected": "Oh, sweetheart, I thought you might like a little time to yourself! You've got the next thirty minutes to relax and do whatever you please. I'll be pottering around the house, so if you get bored, just come find me and I'll think of something lovely for us to do. Just don't wander too far, darling. There's really no need to go poking around where you shouldn't.",
+    "first_transcription": "Oh sweetheart, I thought you might like a little time to yourself. You've got the next 30 minutes to relax and do whatever you please. I'll be pottering around the house, so if you get bored, just come find me and I'll think of something lovely for us to do. Just don't wander too far darling. There is really no need to go poking around where you shouldn't.",
+    "beam_transcription": "Oh, sweetheart! I thought you might like a little time to yourself! You've got the next 30 minutes to relax and do whatever you please. I'll be pottering around the house, so if you get bored, just come find me and I'll think of something lovely for us to do. Just don't wander too far, darling. There is really no need to go poking around where you shouldn't.",
+    "beam_word_error_rate": 0.0273972602739726
+  },
+  {
+    "file": "low_low/line_02.wav",
+    "expected": "Well, darling, why don't we take a little break from all our wonderful plans? You can have thirty minutes to yourself. Explore a little, have something to eat, or simply enjoy yourself. I'll be somewhere around the house if you want me to find another activity for you. Just stay reasonably close, sweetheart, and remember that some places are better left alone.",
+    "first_transcription": "Well, darling, why don't we take a little break from all our wonderful plans? You can have 30 minutes to yourself, explore a little. Have something to eat or simply enjoy yourself. I'll be somewhere around the house if you want me to find another activity for you. Just stay reasonably close, sweetheart. And remember that some places are better left alone.",
+    "beam_transcription": "Well, darling, why don't we take a little break from all our wonderful plans? You can have 30 minutes to yourself, explore a little. Have something to eat or simply enjoy yourself. I'll be somewhere around the house if you want me to find another activity for you. Just stay reasonably close, sweetheart. And remember that some places are better left alone.",
+    "beam_word_error_rate": 0.015625
+  },
+  {
+    "file": "mid_mid/line_01.wav",
+    "expected": "I think you've earned a little time to yourself, sweetheart. Thirty minutes should be plenty for you to relax and look around. I'll be keeping myself busy around the house, so come find me if you'd rather do something together. And do try not to wander too far this time, darling. You do have a habit of getting rather carried away.",
+    "first_transcription": "I think you've earned a little time to yourself, sweetheart. 30 minutes should be plenty for you to relax and look around. I'll be keeping myself busy around the house. So come find me if you'd rather do something together. And do try not to wander too far this time, darling. You do have a habit of getting rather carried away.",
+    "beam_transcription": "I think you've earned a little time to yourself, sweetheart. Thirty minutes should be plenty for you to relax and look around. I'll be keeping myself busy around the house. So come find me if you'd rather do something together. And do try not to wander too far this time, darling. You do have a habit of getting rather carried away.",
+    "beam_word_error_rate": 0.0
+  },
+  {
+    "file": "high_low/line_01.wav",
+    "expected": "Oh, my darling, you deserve a little time to yourself, don't you? Take the next thirty minutes and do whatever makes you happy. I'll be somewhere around the house, so you can come find me whenever you want another lovely activity. Just don't stray too far, sweetheart. I do worry when I can't find my favorite little one.",
+    "first_transcription": "Oh, my darling, you deserve a little time to yourself, don't you? Take the next 30 minutes and do whatever makes you happy. I'll be somewhere around the house, so you can come find me whenever you want another lovely activity. Just don't stray too far. Sweetheart, I do worry when I can't find my favorite little one.",
+    "beam_transcription": "Oh, my darling. You deserve a little time to yourself, don't you? Take the next 30 minutes and do whatever makes you happy. I'll be somewhere around the house, so you can come find me whenever you want another lovely activity. Just don't stray too far. Sweetheart, I do worry when I can't find my favorite little one.",
+    "beam_word_error_rate": 0.016129032258064516
+  },
+  {
+    "file": "high_low/line_02.wav",
+    "expected": "Of course you can have some time to yourself, my love! Thirty whole minutes, just for you. I'll be nearby, taking care of a few things around the house. If you get bored, come and see me and we'll find something wonderful to do together. Just promise you won't wander too far or go looking through anything you shouldn't.",
+    "first_transcription": "Of course you can have some time to yourself, my love. Ernie Holman, it's just for you. I'll be nearby, taking care of a few things around the house. If you get bored, come and see me and we'll find something wonderful to do together. Just promise you won't wander too far or go looking through anything you shouldn't.",
+    "beam_transcription": "Of course, you can have some time to yourself, my love. 30 whole minutes just for you. I'll be nearby, taking care of a few things around the house. If you get bored, come and see me and we'll find something wonderful to do together. Just promise you won't wander too far or go looking through anything you shouldn't.",
+    "beam_word_error_rate": 0.015873015873015872
+  },
+  {
+    "file": "low_high/line_01.wav",
+    "expected": "Very well, sweetheart. You may have thirty minutes to entertain yourself. I'll be moving around the house if you decide you'd rather participate in something I've prepared. But I expect you to stay reasonably nearby, and I certainly don't want to find you poking around in places you have no business visiting. Have I made myself clear?",
+    "first_transcription": "Very well, sweetheart. You may have 30 minutes to entertain yourself. I'll be moving around the house if you decide you'd rather participate in something I've prepared. But I expect you to stay reasonably nearby. And I certainly don't want to find you poking around in places you have no business visiting. Have I made myself clear?",
+    "beam_transcription": "Very well, sweetheart, you may have 30 minutes to entertain yourself. I'll be moving around the house if you decide you'd rather participate in something I've prepared. But I expect you to stay reasonably nearby, and I certainly don't want to find you poking around in places you have no business visiting. Have I made myself clear?",
+    "beam_word_error_rate": 0.01639344262295082
+  },
+  {
+    "file": "high_high/line_01.wav",
+    "expected": "Oh, darling, you do love having your little adventures, don't you? Well, I'll give you thirty minutes to amuse yourself however you like, within reason, of course. I'll be around the house if you'd rather spend some time with me. Just don't wander too far, sweetheart. You and I both know how your curiosity sometimes gets the better of you.",
+    "first_transcription": "Oh darling, you do love having your little adventures, don't you? Well, I'll give you 30 minutes to amuse yourself however you like, within reason of course. I'll be around the house if you'd rather spend some time with me. Just don't wander too far. Sweetheart. You and I both know how your curiosity sometimes gets the better of you.",
+    "beam_transcription": "Oh, darling, you do love having your little adventures, don't you? Well, I'll give you 30 minutes to amuse yourself however you like, within reason, of course. I'll be around the house if you'd rather spend some time with me. Just don't wander too far. Sweetheart, you and I both know how your curiosity sometimes gets the better of you.",
+    "beam_word_error_rate": 0.015384615384615385
+  }
+]

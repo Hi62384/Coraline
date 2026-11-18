@@ -83,6 +83,28 @@ public final class GhostEscapeHunt {
             if(source==null||!s.owner.equals(source.owner)||!realm.sourceDoor.equals(source.pos))return true;
             var outside=com.coraline.parents.FamilyData.level(p.server,source.dimension);if(outside==null)return true;
             var original=outside.getBlockState(realm.sourceDoor);if(!original.is(ModBlocks.TINY_DOOR.get()))return true;
+            if(!(outside.getBlockEntity(realm.sourceDoor) instanceof com.coraline.otherworld.DoorBlockEntity sourceDoor)
+                    ||!s.door.equals(sourceDoor.doorId))return true;
+            // The crossing journal is the durable in-flight receipt. Before
+            // moving the original child, rebuild and verify both real tunnel
+            // ends so an expired passage cannot strand them in solid terrain.
+            var liveRealmDoor=child.level().getBlockEntity(realm.doorPos);
+            if(!(liveRealmDoor instanceof com.coraline.otherworld.DoorBlockEntity realmDoor)
+                    ||!s.door.equals(realmDoor.doorId)
+                    ||!TunnelPassage.ensure((net.minecraft.server.level.ServerLevel)child.level(),realmDoor)
+                    ||!TunnelPassage.ensure(outside,sourceDoor)){
+                e.putString("Blocker","The two Little Door passages are being restored before the child crosses.");return true;
+            }
+            var sourceOpen=outside.getBlockState(realm.sourceDoor);
+            if(!sourceOpen.getValue(TinyDoorBlock.OPEN)||!sourceOpen.getValue(TinyDoorBlock.PORTAL)){
+                outside.setBlock(realm.sourceDoor,sourceOpen.setValue(TinyDoorBlock.OPEN,true).setValue(TinyDoorBlock.PORTAL,true),3);
+                sourceOpen=outside.getBlockState(realm.sourceDoor);
+            }
+            var far=TunnelPassage.inside(realm.sourceDoor,sourceOpen.getValue(TinyDoorBlock.FACING),TunnelPassage.TRANSFER_DEPTH);
+            var farFeet=BlockPos.containing(far);
+            if(!GhostVictimNavigation.clear(outside,child,farFeet)||!GhostVictimNavigation.clear(outside,child,farFeet.relative(sourceOpen.getValue(TinyDoorBlock.FACING),2))){
+                e.putString("Blocker","Clear a child-sized route beyond the original Little Door; the crossing remains safely pending.");return true;
+            }
             if(child.level()==outside){
                 var tag=child.getPersistentData();
                 if(!tag.hasUUID("ShowTravelOwner")||!s.owner.equals(tag.getUUID("ShowTravelOwner"))||!tag.contains("GhostEscapeChild"))return true;
@@ -104,7 +126,6 @@ public final class GhostEscapeHunt {
             var state=child.level().getBlockState(realm.doorPos);if(!state.is(ModBlocks.TINY_DOOR.get()))return true;var facing=state.getValue(TinyDoorBlock.FACING);
             var end=BlockPos.containing(TunnelPassage.inside(realm.doorPos,facing,TunnelPassage.TRANSFER_DEPTH));
             if(child.distanceToSqr(end.getCenter())>1.2*1.2){GhostVictimRoutines.crawl(p,s,ghost,child,end);return true;}
-            var far=TunnelPassage.inside(realm.sourceDoor,original.getValue(TinyDoorBlock.FACING),TunnelPassage.TRANSFER_DEPTH);
             var crossed=ShowTravel.guest(child,p,s,outside,far,true,"GhostEscapeChild");if(crossed instanceof com.coraline.tycoon.TycoonNpc same){
                 same.setPose(Pose.SWIMMING);same.refreshDimensions();GhostVictimActors.remember(ghost,same);ghost.remove("ChildRoutine");OtherMotherLoop.changed(p);
             }

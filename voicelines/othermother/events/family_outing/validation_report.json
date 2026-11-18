@@ -1,0 +1,606 @@
+{
+  "reference_unchanged": true,
+  "checks": [
+    {
+      "file": "invitation/low_low/line_01.wav",
+      "seconds": 16.39374149659864,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7623829245567322,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh sweetheart, your other father and I thought it might be lovely to get out of the house for a little while. We've planned a special family outing, just for you. I'll tell you where we're going, and you've got five minutes to come meet us. I think you have a wonderful time.",
+      "word_error_rate": 0.017241379310344827
+    },
+    {
+      "file": "invitation/low_low/line_02.wav",
+      "seconds": 12.303038548752834,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7526044249534607,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Darling, how would you like a little adventure with your other father and me? We've arranged something rather nice outside the house. We'll be waiting for you, so come join us within the next five minutes, won't you?",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "invitation/mid_mid/line_01.wav",
+      "seconds": 13.075464852607709,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8725093603134155,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Well, sweetheart, I thought we might spend a little time together away from the house. Your other father and I have planned an outing. You got five minutes to meet us. So try not to get too distracted along the way.",
+      "word_error_rate": 0.023809523809523808
+    },
+    {
+      "file": "invitation/mid_mid/line_02.wav",
+      "seconds": 13.888163265306122,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8509293794631958,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Your other father and I have something planned for us today, darling. We're going on a little family outing. I'll tell you where to find us. You have five minutes to get there. And I do hope you'll arrive when I ask.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "invitation/high_low/line_01.wav",
+      "seconds": 16.152108843537416,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7380285859107971,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, my darling, I've been looking forward to this. Your other father and I have planned a lovely little outing for the three of us. Come meet us within five minutes. Sweetheart, it simply wouldn't be the same without you.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "invitation/high_low/line_02.wav",
+      "seconds": 10.457233560090703,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.724418044090271,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Sweetheart, I've arranged something special for our little family. We'll be waiting for you at a lovely spot I've picked out. Come join us within five minutes, my love. I can hardly wait to spend some time together.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "invitation/low_high/line_01.wav",
+      "seconds": 14.468662131519274,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.815503716468811,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Your other father and I are going on a family outing and I expect you to join us. I'll tell you where we're waiting. You have five minutes to get there. Sweetheart. Do try not to make me come looking for you again.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "invitation/low_high/line_02.wav",
+      "seconds": 16.11437641723356,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8157811164855957,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "I thought a little family outing might give you something more pleasant to occupy yourself with. Your other father and I will be waiting. Five minutes, darling. I trust you can manage to arrive without wandering somewhere you shouldn't.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "invitation/high_high/line_01.wav",
+      "seconds": 12.612335600907029,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7922215461730957,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh darling, I thought we might enjoy a little time together, just the three of us. I've planned a lovely outing, and you've got five minutes to join us. Do try not to let those little curiosities of yours keep you away.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "invitation/high_high/line_02.wav",
+      "seconds": 13.249614512471656,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7753175497055054,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Sweetheart, your other father and I have arranged something special. I know how much you enjoy exploring my world, but I think you'll find spending a little time with your family, just as rewarding. Come meet us within five minutes.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "ontime/low_low/line_01.wav",
+      "seconds": 9.669024943310658,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7185525298118591,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, there you are, sweetheart! Right on time, too! How wonderful! We've been looking forward to showing you everything! Come along, let's get started!",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "ontime/low_low/line_02.wav",
+      "seconds": 9.476371882086168,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7713297605514526,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Darling, you made it! Your other father and I have everything ready, and you've arrived at just the right moment. This is going to be such fun!",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "ontime/mid_mid/line_01.wav",
+      "seconds": 9.818684807256236,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.876804769039154,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Ah, good. You're here. I'm pleased you remembered to come on time, sweetheart. Your other father has been getting rather impatient to begin.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "ontime/mid_mid/line_02.wav",
+      "seconds": 9.197732426303855,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7496352195739746,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "There you are, darling, right on time, just as I hoped. Now then. Let's have ourselves a lovely little outing.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "ontime/high_low/line_01.wav",
+      "seconds": 8.82095238095238,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7459152936935425,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, my darling! I knew you wouldn't keep us waiting. Come here, sweetheart. I've been so excited to spend a little time together.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "ontime/high_low/line_02.wav",
+      "seconds": 7.992834467120181,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7737414836883545,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "There is my favorite little one. Right on time, of course. Everything's ready, darling. Let's make some wonderful memories together.",
+      "word_error_rate": 0.045454545454545456
+    },
+    {
+      "file": "ontime/low_high/line_01.wav",
+      "seconds": 10.557006802721089,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8233697414398193,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Good! You've arrived when I asked. That is a pleasant change. Sweetheart. Now, let's see if we can enjoy ourselves without any more trouble.",
+      "word_error_rate": 0.038461538461538464
+    },
+    {
+      "file": "ontime/low_high/line_02.wav",
+      "seconds": 8.70122448979592,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7888702154159546,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Well, you're on time. Very good, darling. I do hope you'll continue being just as cooperative for the rest of our outing.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "ontime/high_high/line_01.wav",
+      "seconds": 9.360272108843537,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7544900178909302,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh darling, there you are! Right on time too! I'm glad you haven't let your curiosity distract you from spending a little time with your family.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "ontime/high_high/line_02.wav",
+      "seconds": 7.781315192743764,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7260409593582153,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "My sweetheart. How lovely to see you arrive when I asked. You do know how to make your mother happy when you want to. Don't you?",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "late/low_low/line_01.wav",
+      "seconds": 10.008253968253968,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8098319172859192,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, there you are, sweetheart. We were beginning to wonder where you'd gotten to. Never mind, darling. Everything's still ready. So come along and join us!",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "late/low_low/line_02.wav",
+      "seconds": 8.142494331065759,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7167420983314514,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Darling, you're a little late, but I'm just glad you've arrived. Your other father and I have been waiting for you. Let's get started, shall we?",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "late/mid_mid/line_01.wav",
+      "seconds": 8.791020408163265,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8271279335021973,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Well, there you are. We've been waiting quite some time, sweetheart. I do wish you'd paid a little more attention to the clock. Come along, let's begin!",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "late/mid_mid/line_02.wav",
+      "seconds": 9.758639455782314,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8515391945838928,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, darling, I was beginning to think you'd forgotten about our little outing. It is rather rude to keep everyone waiting, you know. But you're here now.",
+      "word_error_rate": 0.034482758620689655
+    },
+    {
+      "file": "late/high_low/line_01.wav",
+      "seconds": 9.25578231292517,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7986820936203003,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh my love, where have you been? I was beginning to worry about you. Your other father and I have been waiting ever so patiently. Come here, sweetheart.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "late/high_low/line_02.wav",
+      "seconds": 10.397369614512472,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7609474658966064,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Darling, you've kept us waiting. I know you love exploring, but I was so looking forward to spending this time together. Never mind. Let's enjoy ourselves now.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "late/low_high/line_01.wav",
+      "seconds": 12.073560090702948,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8632714748382568,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "How thoughtful of you to finally arrive. Your other father and I have been standing here waiting, sweetheart! I do hope whatever distracted you was terribly important.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "late/low_high/line_02.wav",
+      "seconds": 12.412789115646259,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7524821162223816,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Well, look who decided to join us. I gave you five minutes, darling, and I meant five minutes. Now come along. We've wasted quite enough time.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "late/high_high/line_01.wav",
+      "seconds": 10.457233560090703,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.792523205280304,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, darling, you really do lose track of time whenever you're off exploring, don't you? We've been waiting here for you. I wonder what was so interesting that you nearly forgot about us.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "late/high_high/line_02.wav",
+      "seconds": 10.507120181405895,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8263702392578125,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "There you are, sweetheart! I was beginning to think you'd found something more interesting than your own family. But I suppose you couldn't stay away forever. Could you?",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "search/low_low/line_01.wav",
+      "seconds": 9.52281179138322,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.6488478779792786,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Sweetheart, where have you gone? Your other father and I have been waiting for such a long time. I hope you haven't gotten yourself lost. I'm coming to find you, darling.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "search/low_low/line_02.wav",
+      "seconds": 9.035192743764172,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8084390163421631,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Darling, we've been waiting and waiting for you. I was so looking forward to our little outing. Never mind, sweetheart. I'll come find you myself.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "search/mid_mid/line_01.wav",
+      "seconds": 9.13968253968254,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.822132408618927,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Alright sweetheart, that is quite long enough. I've given you plenty of time to come join us. If you won't come when I ask, I suppose I'll have to find you myself.",
+      "word_error_rate": 0.02857142857142857
+    },
+    {
+      "file": "search/mid_mid/line_02.wav",
+      "seconds": 10.579319727891157,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8729490041732788,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Where have you disappeared to this time? Your other father and I have been standing here waiting for ages. I'm coming to find you. Darling.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "search/high_low/line_01.wav",
+      "seconds": 10.55609977324263,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7702786326408386,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, my darling, where are you? I've been waiting for you and I'm beginning to worry terribly. Never mind, sweetheart. I'll find you, and then we can all enjoy ourselves together.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "search/high_low/line_02.wav",
+      "seconds": 9.476371882086168,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7655347585678101,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Sweetheart, please come back to us. Your other father and I have been waiting, and I can't bear not knowing where you've wandered off to. I'm coming to look for you.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "search/low_high/line_01.wav",
+      "seconds": 10.926167800453515,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8316980600357056,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "That is quite enough. I told you where to meet us, and I've waited more than long enough. I'm coming to find you now, and you'd better have a very good explanation.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "search/low_high/line_02.wav",
+      "seconds": 10.437278911564626,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7773102521896362,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Where are you hiding this time, sweetheart? You've kept us waiting far too long? Well, I'm finished being patient. I'll find you myself.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "search/high_high/line_01.wav",
+      "seconds": 12.173333333333334,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7888500690460205,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh darling, you've done it again! I planned something lovely for our family and you disappear somewhere without a word. I wonder what could possibly be so fascinating. Well, let's find out, shall we?",
+      "word_error_rate": 0.027777777777777776
+    },
+    {
+      "file": "search/high_high/line_02.wav",
+      "seconds": 11.159818594104308,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8067629337310791,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Sweetheart, I know how much you love your little adventures, but you've kept your mother waiting quite long enough. I think it is time I came to collect you. Wherever you've wandered off to.",
+      "word_error_rate": 0.027777777777777776
+    },
+    {
+      "file": "finish/low_low/line_01.wav",
+      "seconds": 10.397369614512472,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7895114421844482,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, wasn't that lovely? I'm so glad we got to spend a little time together. I hope you enjoyed yourself, sweetheart. Now, I think we had to find something else fun to do.",
+      "word_error_rate": 0.02857142857142857
+    },
+    {
+      "file": "finish/low_low/line_02.wav",
+      "seconds": 10.537414965986395,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7299683690071106,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "There we are! A wonderful little family outing, just as I hoped. I'm so happy you came along, darling. I've still got plenty of lovely things planned for you.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "finish/mid_mid/line_01.wav",
+      "seconds": 10.881179138321995,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8325813412666321,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Well, that was nice, wasn't it? It is good when we can all spend some time together without any interruptions. Now then, sweetheart. Let's see what else we might do.",
+      "word_error_rate": 0.03125
+    },
+    {
+      "file": "finish/mid_mid/line_02.wav",
+      "seconds": 11.764263038548753,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8182559609413147,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "There, all finished. I do hope you enjoyed our little outing, darling. Your other father certainly seemed to have a wonderful time. Perhaps we should find something else to do.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "finish/high_low/line_01.wav",
+      "seconds": 11.392018140589569,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.788722813129425,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, my darling, I wish we could spend every day doing lovely little things like this together. Doesn't it feel wonderful to have a family that loves you so much? Now, let's have some more fun!",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "finish/high_low/line_02.wav",
+      "seconds": 10.35873015873016,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8053749203681946,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Wasn't that perfect, sweetheart? Having you here with us makes every little moment so much more special. Come along, my love. I got another wonderful surprise in mind.",
+      "word_error_rate": 0.03333333333333333
+    },
+    {
+      "file": "finish/low_high/line_01.wav",
+      "seconds": 11.1556462585034,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8318992257118225,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Well, at least we've managed to have a reasonably pleasant outing. I do hope you'll remember how much nicer things are when everyone behaves themselves. Now, let's move along.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "finish/low_high/line_02.wav",
+      "seconds": 9.604081632653061,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8329013586044312,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "There. Our little outing is finished. I hope you found it enjoyable. Sweetheart. Perhaps our next activity will keep you a little more occupied.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "finish/high_high/line_01.wav",
+      "seconds": 13.540226757369615,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7588270902633667,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, darling, isn't it lovely how we can always enjoy ourselves together? Whatever little adventures and mysteries occupy your mind. You still find your way back to us. Now, let's see what else I've planned.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "finish/high_high/line_02.wav",
+      "seconds": 12.322993197278912,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7582968473434448,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "There we are, sweetheart. Another wonderful little memory for our family. I do wish moments like these could last forever, but never mind. I've got plenty more surprises waiting for you.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "destination/picnic/line_01.wav",
+      "seconds": 13.19156462585034,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7915670275688171,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "We've set up the most beautiful little picnic in the flower meadow. There's a lovely blanket, a basket full of food, and plenty of fresh air. Just follow the path to the meadow. Darling, we'll be waiting for you there.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "destination/picnic/line_02.wav",
+      "seconds": 15.4259410430839,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7624691724777222,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Your other father has carried everything out to the picnic meadow, and I've packed all sorts of delicious things. Come find us beside the flowers. Sweetheart, I've saved you the nicest spot on the blanket.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "destination/fishing/line_01.wav",
+      "seconds": 10.683809523809524,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7267000675201416,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Your other father has been terribly excited about taking us fishing. We've got our rods ready down at the lakeside dock. Come meet us there, darling. I do hope the fish are feeling cooperative today.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "destination/fishing/line_02.wav",
+      "seconds": 10.498049886621315,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8251020312309265,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "We're gonna spend a little while fishing at the lake, sweetheart! Your other father's already taking the equipment down to the dock! Come join us by the water. Perhaps you'll catch something wonderful.",
+      "word_error_rate": 0.10810810810810811
+    },
+    {
+      "file": "destination/stargazing/line_01.wav",
+      "seconds": 11.624580498866214,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7845157980918884,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh, darling, the stars look absolutely beautiful tonight. Your other father has brought his telescope up to the hilltop observatory, Kamita's there. I think you'll find the view rather extraordinary.",
+      "word_error_rate": 0.09090909090909091
+    },
+    {
+      "file": "destination/stargazing/line_02.wav",
+      "seconds": 16.443628117913832,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8227699995040894,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "I thought we might spend a little while looking at the stars! Sweetheart! We've prepared a lovely spot on the hill with blankets and a telescope. Come join us at the observation platform! The sky is especially pretty tonight.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "destination/woodland/line_01.wav",
+      "seconds": 13.99265306122449,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.806131899356842,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Your other father and I thought we'd take a lovely walk through the woods. There is a beautiful little trail I've been wanting to show you. Come meet us at the Forest Path entrance. Darling, and we'll all go together.",
+      "word_error_rate": 0.023255813953488372
+    },
+    {
+      "file": "destination/woodland/line_02.wav",
+      "seconds": 13.156734693877551,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.8023512959480286,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "We're going for a little family walk, sweetheart. The woodland paths are looking particularly lovely, and there are so many beautiful things to see. Come find us at the trailhead, and we'll show you around.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "destination/boat/line_01.wav",
+      "seconds": 12.889705215419502,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7743683457374573,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "Oh sweetheart, your other father has prepared a lovely little boat ride for us! We'll be waiting down at the lakeside dock. Come join us, darling. The water looks absolutely beautiful tonight.",
+      "word_error_rate": 0.0
+    },
+    {
+      "file": "destination/boat/line_02.wav",
+      "seconds": 11.474920634920634,
+      "pcm_decode": "pass",
+      "reference_speaker_cosine": 0.7360888123512268,
+      "speaker_review": false,
+      "needs_review": false,
+      "transcription": "We're going out on the lake for a little while, my love. Your other father has the boat already, and I've picked out the prettiest route. Come meet us at the boat house. I think you'll enjoy the view.",
+      "word_error_rate": 0.09523809523809523
+    }
+  ],
+  "note": "ASR checks words, not acting. Human listening review is not replaced by these checks."
+}

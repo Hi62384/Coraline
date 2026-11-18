@@ -85,12 +85,15 @@ public final class RescueBosses {
         if(contact.isEmpty()||p.serverLevel().clip(new net.minecraft.world.level.ClipContext(p.getEyePosition(),contact.get(),net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,p)).getType()!=HitResult.Type.MISS){
             if(mantis)RescueChapter.hint(p,"Missed the socket — opening closed. Locate it with the Seeing Stone before your next strike.");return true;
         }
-        if(p.getMainHandItem().isEmpty()||p.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE)<=1.0||p.getAttackStrengthScale(.5F)<.8F){RescueChapter.hint(p,mantis?"find weak spot with seeing stone":"attack now!");return true;}
-        n.putLong("HitAt",now);float damage=(float)Math.max(RescueChapter.phase(s)==MANTIS_FIGHT?6:3,Math.min(RescueChapter.phase(s)==MANTIS_FIGHT?20:8,p.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE)));int tier=RescueChallengeMath.tier(n.getFloat("BossHealth"),n.getFloat("BossMaximum"));
+        boolean unarmed=p.getMainHandItem().isEmpty();double attack=p.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE);float strength=p.getAttackStrengthScale(.5F);
+        if(!validStrike(unarmed,attack,strength)){RescueChapter.hint(p,mantis?"find weak spot with seeing stone":"attack now!");return true;}
+        n.putLong("HitAt",now);float damage=strikeDamage(unarmed,attack,RescueChapter.phase(s));int tier=RescueChallengeMath.tier(n.getFloat("BossHealth"),n.getFloat("BossMaximum"));
         if(RescueChapter.phase(s)==THEATRE_FIGHT){String key=n.getInt("WeakActress")==1?"ForcibleHealth":"SpinkHealth";n.putFloat(key,Math.max(0,n.getFloat(key)-damage));n.putFloat("BossHealth",n.getFloat("SpinkHealth")+n.getFloat("ForcibleHealth"));}else n.putFloat("BossHealth",Math.max(0,n.getFloat("BossHealth")-damage));
         int nextTier=RescueChallengeMath.tier(n.getFloat("BossHealth"),n.getFloat("BossMaximum"));if(nextTier!=tier&&RescueChapter.phase(s)!=MANTIS_FIGHT)n.remove("WeakUntil");
         p.serverLevel().sendParticles(net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK,weak.x,weak.y,weak.z,12,.22,.22,.22,.04);p.serverLevel().playSound(null,BlockPos.containing(weak),net.minecraft.sounds.SoundEvents.IRON_GOLEM_HURT,net.minecraft.sounds.SoundSource.HOSTILE,.9F,1.2F);p.displayClientMessage(Component.literal("Weak point hit! Health: "+Math.round(n.getFloat("BossHealth"))+" / "+Math.round(n.getFloat("BossMaximum"))),true);OtherMotherLoop.changed(p);return true;
     }
+    static boolean validStrike(boolean unarmed,double attackDamage,float strength){return strength>=.8F&&(unarmed||attackDamage>1.0);}
+    static float strikeDamage(boolean unarmed,double attackDamage,RescueChapter.Phase phase){if(unarmed)return 2.0F;return (float)Math.max(phase==MANTIS_FIGHT?6:3,Math.min(phase==MANTIS_FIGHT?20:8,attackDamage));}
     /** Match ordinary survival melee reach to the surface, not the entity origin. */
     static Optional<Vec3> weakContact(Vec3 eye,Vec3 look,Vec3 weak){
         var box=new AABB(weak.add(-.45,-.45,-.45),weak.add(.45,.45,.45));

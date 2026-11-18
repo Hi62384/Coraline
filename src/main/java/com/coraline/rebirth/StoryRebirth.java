@@ -54,6 +54,7 @@ public final class StoryRebirth {
     /** Personal replay credit never fabricates a well/key completion witness. */
     public static boolean personalCompletion(ServerPlayer p,VisitData.Scene s){
         if(s==null||!p.getUUID().equals(s.owner))return false;
+        if(com.coraline.feast.GhostEscapeEnding.alternativeComplete(s))return true;
         if(canonicalCompletion(s))return true;
         if(!PalaceJourney.prerequisites(s).ready())return false;
         var root=s.loop.story.getCompound("PinkPalaceJourney");var proof=root.getCompound("PersonalFarewell");
@@ -75,8 +76,9 @@ public final class StoryRebirth {
     }
     private static boolean quiet(ServerPlayer p,StoryRun run){
         var s=OtherMotherLoop.scene(p);
+        boolean alternate=s!=null&&com.coraline.feast.GhostEscapeEnding.alternativeComplete(s);
         return p.isAlive()&&!p.isSpectator()&&!p.isSleeping()&&!p.isPassenger()&&p.serverLevel()==p.server.overworld()
-            &&s!=null&&(s.loop.phase==OtherMotherLoopState.Phase.NONE||s.loop.phase==OtherMotherLoopState.Phase.BLACK_IS_TRADITIONAL&&personalCompletion(p,s))
+            &&s!=null&&(s.loop.phase==OtherMotherLoopState.Phase.NONE||s.loop.phase==OtherMotherLoopState.Phase.BLACK_IS_TRADITIONAL&&personalCompletion(p,s)||alternate)
             &&(personalCompletion(p,s)||p.hasPermissions(2)&&run.details().getBoolean("DebugCompletion"))&&!ShowPlayback.started(s)&&!com.coraline.bobinsky.BobinskyVisit.pending(p);
     }
     private static boolean eligible(ServerPlayer p,StoryRun run){

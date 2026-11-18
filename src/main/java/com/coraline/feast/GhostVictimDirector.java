@@ -33,7 +33,7 @@ public final class GhostVictimDirector {
 
             case INTRODUCTION->{if(child!=null)child.getNavigation().stop();move(p,s,n,GhostVictimProgress.Phase.FIRST_SUPPER);}
             case FIRST_SUPPER->finishSupper(p,s,n,child,false);
-            case BEDTIME->{n.putString("LastRouteBlocker","The child could not reach the bedroom; skipped bedtime safely.");GhostVictimSchedule.tomorrow(n);move(p,s,n,GhostVictimProgress.Phase.NIGHT_PREPARATION);}
+            case BEDTIME->{n.putString("LastRouteBlocker","The child is still trying to reach a safe position beside the bedroom mirror. Clear the route and the conversation will resume.");n.putString("Blocker","Waiting for the child to reach the bedroom mirror.");StoryCutsceneWatchdog.retry(s,"next_victim");}
             case NIGHT_PREPARATION->{
                 var home=AcceptedButtonEyesWorld.level(p);
                 if(child==null||home==null){StoryCutsceneWatchdog.retry(s,"next_victim");return;}
@@ -274,7 +274,7 @@ public final class GhostVictimDirector {
             case EXPLORATION->{if(child==null)return;GhostVictimWorld.ensureHouseProps(p,s,n);GhostVictimRoutines.explore(p,s,n,child);
                 if(GhostVictimProgress.age(n)>=GhostVictimConfig.EXPLORATION_SECONDS.get()*20L)move(p,s,n,GhostVictimProgress.Phase.BEDTIME);}
             case BEDTIME->{
-                if(child==null)return;var target=GhostVictimWorld.bedroom(s);
+                if(child==null)return;var target=GhostVictimWorld.bedtimeConversationPosition(s,level,child,n);if(target==null){n.putString("Blocker","No clear reachable position is available beside the bedroom mirror. Clear nearby furniture and the child will retry.");return;}
                 if(!n.contains("BedtimeArrived")){
                     if(GhostVictimRoutines.travel(p,s,n,child,target,false)!=GhostVictimNavigation.Result.ARRIVED)return;
                     n.putLong("BedtimeArrived",GhostVictimProgress.clock(n));words(n,"I'd better get to bed. Will you still be here tomorrow?");}

@@ -115,9 +115,14 @@ public final class GhostEscapeCovert {
                 return true;
             }
             case LEAVE_ROOM->{
-                hands(child);if(child.level()!=level)return true;var outside=GhostEscapeRooms.outside(s,e.getString("AssignedRoom"),level);if(outside==null)return true;
+                hands(child);if(child.level()!=level)return true;String roomId=e.getString("AssignedRoom");
+                var exit=e.contains("ExitDoor")?BlockPos.of(e.getLong("ExitDoor")):null;
+                var outside=GhostEscapeRooms.outside(s,roomId,exit,level);
+                if(outside==null){exit=GhostEscapeRooms.reachableExit(s,roomId,level,child);if(exit==null){e.putString("Blocker","All authored room exits are blocked. Restore one existing doorway, then the child can leave safely.");return true;}
+                    e.putLong("ExitDoor",exit.asLong());outside=GhostEscapeRooms.outside(s,roomId,exit,level);OtherMotherLoop.changed(p);}
+                if(outside==null)return true;
                 if(GhostVictimRoutines.travel(p,s,ghost,child,outside,false)==GhostVictimNavigation.Result.ARRIVED&&GhostEscapeRooms.closeAfterLeaving(p,s,ghost,child)){
-                    GhostEscapeProgress.leftRoom(ghost,true);e.remove("ReportSpoken");ghost.remove("ChildRoutine");OtherMotherLoop.changed(p);
+                    GhostEscapeProgress.leftRoom(ghost,true);e.remove("ExitDoor");e.remove("ReportSpoken");ghost.remove("ChildRoutine");OtherMotherLoop.changed(p);
                 }
                 return true;
             }
