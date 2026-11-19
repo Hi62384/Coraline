@@ -24,6 +24,48 @@ public final class ShowTravel {
         var fallback=Vec3.atBottomCenterOf(safe);
         return level.noCollision(actor,actor.getDimensions(actor.getPose()).makeBoundingBox(fallback))?fallback:null;
     }
+    /**
+     * Rebuild a missing player return lease only from a known, safe Other World
+     * venue entrance. A checkpoint reconstructed from the player's current
+     * Overworld position would strand the next theatre/circus exit.
+     */
+    static boolean recoverRescueReturn(ServerPlayer p,VisitData.Scene scene,String key,BlockPos returnNear){
+        if(scene==null||!scene.owner.equals(p.getUUID())||!p.isAlive()
+                ||!(key.equals("TheatreReturn")||key.equals("CircusReturn"))||returnNear==null)return false;
+        var source=p.server.getLevel(OtherWorld.KEY);
+        if(source==null)return false;
+        if(scene.loop.event.contains(key)){
+            if(!scene.loop.event.contains(key,Tag.TAG_COMPOUND))return false;
+            var saved=scene.loop.event.getCompound(key);
+            // Never silently replace an existing return ticket belonging elsewhere.
+            return source.dimension().location().toString().equals(saved.getString("Dimension"))
+                    &&returnPosition(source,p,saved)!=null;
+        }
+        source.getChunkAt(returnNear);
+        var safe=OtherWorld.safePlayer(source,returnNear);
+        if(safe==null||safe.distSqr(returnNear)>25)return false;
+        var point=Vec3.atBottomCenterOf(safe);
+        var body=p.getDimensions(Pose.STANDING).makeBoundingBox(point);
+        if(!source.getWorldBorder().isWithinBounds(safe)||source.containsAnyLiquid(body)
+                ||!source.noCollision(p,body)
+                ||!source.getBlockState(safe.below()).isFaceSturdy(source,safe.below(),Direction.UP))return false;
+        var record=new CompoundTag();
+        record.putString("Dimension",source.dimension().location().toString());
+        record.putDouble("X",point.x);record.putDouble("Y",point.y);record.putDouble("Z",point.z);
+        record.putFloat("Yaw",p.getYRot());record.putFloat("Pitch",p.getXRot());
+        scene.loop.event.put(key,record);OtherMotherLoop.changed(p);
+        try{
+            p.server.overworld().getDataStorage().save();
+            var file=p.server.getWorldPath(net.minecraft.world.level.storage.LevelResource.ROOT)
+                    .resolve("data/coraline_first_visits.dat");
+            var disk=VisitData.load(com.coraline.rebirth.StoryRunStore.read(file).getCompound("data")).scenes.get(scene.owner);
+            if(disk!=null&&scene.door.equals(disk.door)&&record.equals(disk.loop.event.getCompound(key)))return true;
+        }catch(java.io.IOException|RuntimeException unavailable){
+            // Leave the player at the source until the rollback checkpoint persists.
+        }
+        scene.loop.event.remove(key);OtherMotherLoop.changed(p);
+        return false;
+    }
     private static CompoundTag ledger(VisitData.Scene s){if(!s.loop.event.contains("ShowTravelGuests"))s.loop.event.put("ShowTravelGuests",new CompoundTag());return s.loop.event.getCompound("ShowTravelGuests");}
     private static void track(VisitData.Scene s,Mob actor,String key){var n=new CompoundTag();n.putUUID("Entity",actor.getUUID());n.putString("Key",key);ledger(s).put(key+":"+actor.getUUID(),n);}
     private static void untrack(VisitData.Scene s,UUID id,String key){ledger(s).remove(key+":"+id);}
