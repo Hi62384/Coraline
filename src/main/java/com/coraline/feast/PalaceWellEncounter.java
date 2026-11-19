@@ -109,6 +109,26 @@ public final class PalaceWellEncounter {
         result.setPos(at);result.setNoAi(true);result.setNoGravity(true);result.noPhysics=false;result.setInvulnerable(true);result.setInvisible(false);return result;
     }
     private static CinematicPropEntity prop(ServerPlayer p,VisitData.Scene s,String key,int kind,Vec3 at){return RescueProps.ensure(p,s,"Well"+key,kind,0,at);}
+    /** A bike UUID is persisted BEFORE physical admission. If the server
+     * dies between addFreshEntity and the story callback, the original
+     * reservation survives and the same UUID can be reconciled safely. */
+    private static boolean savedBikeReservation(ServerPlayer p,VisitData.Scene scene,java.util.UUID id){
+        try{
+            VisitData.get(p.server).setDirty();
+            p.server.overworld().getDataStorage().save();
+            var file=p.server.getWorldPath(net.minecraft.world.level.storage.LevelResource.ROOT)
+                    .resolve("data/coraline_first_visits.dat");
+            var previous=VisitData.load(com.coraline.rebirth.StoryRunStore.read(file)
+                    .getCompound("data")).scenes.get(scene.owner);
+            var root=PalaceJourney.existing(previous);
+            if(root==null||!root.contains("WellStage",Tag.TAG_COMPOUND))return false;
+            var stage=root.getCompound("WellStage");
+            return stage.hasUUID("Bike")&&stage.getUUID("Bike").equals(id)
+                    &&stage.contains("BikePosition",Tag.TAG_LONG);
+        }catch(java.io.IOException|RuntimeException unavailable){
+            return false;
+        }
+    }
     private static WybieBicycleEntity bike(ServerPlayer p,VisitData.Scene s,CompoundTag n,PalaceWellProgress progress,CharacterEntity w){
         java.util.UUID original=null;
         if(n.hasUUID("Bike")){
@@ -167,6 +187,15 @@ public final class PalaceWellEncounter {
         if(original!=null){
             if(com.coraline.rebirth.LegacyActorRecovery.check(p.server,original)!=com.coraline.rebirth.LegacyActorRecovery.Result.ABSENT)return null;
             b.setUUID(original);
+        }else{
+            // This first reserved identity must be on disk before admission,
+            // otherwise a crash could leave a native bike without its story UUID.
+            n.putUUID("Bike",b.getUUID());
+            n.putUUID("BikeSession",progress.session());
+            n.putLong("BikePosition",b.blockPosition().asLong());
+            n.putLong("Entry",BlockPos.containing(target).asLong());
+            OtherMotherLoop.changed(p);
+            if(!savedBikeReservation(p,s,b.getUUID()))return null;
         }
         if(!p.serverLevel().addFreshEntity(b))return null;
         n.putUUID("Bike",b.getUUID());
