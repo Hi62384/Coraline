@@ -96,7 +96,16 @@ public final class CinematicPropEntity extends Entity {
         }
         setDeltaMovement(Vec3.ZERO);
     }
-    @Override public InteractionResult interactAt(Player player,Vec3 hit,InteractionHand hand){if(player instanceof ServerPlayer p&&(com.coraline.rebirth.StoryRebirth.interact(p,this)||PalaceWellEncounter.interact(p,this)||FirstEscapeStory.interact(p,this)))return InteractionResult.CONSUME;return interact(player,hand);}
+    @Override public InteractionResult interactAt(Player player,Vec3 hit,InteractionHand hand){
+        // Resolve the real well bundle interaction through the entity itself.
+        // An EntityInteractSpecific event does not fire for every hit path.
+        if(player instanceof ServerPlayer p&&hand==InteractionHand.MAIN_HAND&&kind()==RescueProps.KEY_BUNDLE){
+            var scene=OtherMotherLoop.scene(p);
+            if(scene!=null&&PalaceKeyCustody.place(p,scene,this))return InteractionResult.CONSUME;
+        }
+        if(player instanceof ServerPlayer p&&(com.coraline.rebirth.StoryRebirth.interact(p,this)||PalaceWellEncounter.interact(p,this)||FirstEscapeStory.interact(p,this)))return InteractionResult.CONSUME;
+        return interact(player,hand);
+    }
     @Override public boolean canBeCollidedWith(){return kind()==PalaceTransport.TRUCK||kind()==ROACH_WARDROBE&&!(cue()==3&&value()>.8F);}
     @Override protected AABB makeBoundingBox(){
         if(entityData!=null&&entityData.hasItem(KIND)&&com.coraline.rebirth.StoryRebirth.kind(kind())){
