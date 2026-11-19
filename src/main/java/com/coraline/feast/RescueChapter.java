@@ -165,7 +165,11 @@ public final class RescueChapter {
         var state=phase(s);String voice=sound(state);
         // Fights, choices, retrievals, travel and stealth are gameplay, not
         // cinematics. A watchdog never pretends these challenges were won.
-        if(RescueBosses.fighting(state)||state.ordinal()>=Phase.BOB_A.ordinal())return;
+        // Previous blanket exclusion also disabled safety recovery for every
+        // post-boss reunion, Cat farewell and golden-dream cinematic. Preserve
+        // physical fight/player-choice gates while watching actual ending scenes.
+        if(RescueBosses.fighting(state)
+                ||state.ordinal()>=Phase.BOB_A.ordinal()&&state.ordinal()<Phase.REUNION_A.ordinal())return;
         boolean motion=java.util.EnumSet.of(Phase.MANTIS_RELEASE,Phase.THEATRE_GRAB,Phase.ATTIC_SEARCH,Phase.FURNACE,Phase.BOB_TENT,Phase.SWARM_TRANSFORM,Phase.WARDROBE_ASIDE,Phase.DOOR_KICK,Phase.HAND_FALL,Phase.BANGING,Phase.EYES_CLOSE,Phase.CELESTIAL_OPEN,Phase.ORBS).contains(state);
         if(voice.isEmpty()&&!motion)return;
         // Custodied quest items and a valid destination are real prerequisites,
