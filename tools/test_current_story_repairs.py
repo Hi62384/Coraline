@@ -114,6 +114,36 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('n.putString("SupperMotherDimension"',director)
         self.assertIn('n.putString("SupperFatherDimension"',director)
 
+    def test_postboss_company_grade_works_without_palace_well(self):
+        generation=source('palace/PalaceWorldGeneration.java')
+        grade=generation.split('private static boolean column(',1)[1].split('private static void terrain(',1)[0]
+        self.assertIn('PalaceGenerationRules.stage(n)==COMPANY_PREPARE',grade)
+        self.assertIn('PalaceGenerationRules.companyFoundationInner(',grade)
+        self.assertLess(grade.index('PalaceGenerationRules.stage(n)==COMPANY_PREPARE'),
+                        grade.index('d.position(Kind.PALACE).orElseThrow()'))
+        sites=source('palace/PalaceSiteData.java')
+        recover=sites.split('void retryLegacyPause()',1)[1].split('boolean prioritizeCompany()',1)[0]
+        self.assertIn('earlyCompanyMissingPalace',recover)
+        self.assertIn('COMPANY_PREPARE cursor',recover)
+        self.assertIn('generation.contains("DeferredPalace"',recover)
+
+    def test_well_reconnect_reuses_original_bicycle(self):
+        bike=source('feast/WybieBicycleEntity.java')
+        rebind=bike.split('boolean reconcileWellSession(',1)[1].split('public boolean ownedBy(',1)[0]
+        for identity in ('expectedOwner.equals(owner)','expectedDoor.equals(door)',
+                         'originalWybie.equals(rider)','PalaceWellOwner','entityData.set(SESSION,'):
+            self.assertIn(identity,rebind)
+        well=source('feast/PalaceWellEncounter.java')
+        rider=well.split('private static WybieBicycleEntity bike(',1)[1].split('private static Vec3 entryTarget(',1)[0]
+        self.assertIn('b.reconcileWellSession(s.owner,s.door,progress.originalWybie().orElseThrow(),progress.session())',rider)
+        self.assertLess(rider.index('reconcileWellSession('),rider.index('LegacyActorRecovery.check(p.server,original)'))
+
+    def test_lost_map_is_recoverable_under_original_map_prerequisites(self):
+        journey=source('feast/PalaceJourney.java')
+        recovery=journey.split('public static void recoverMap(',1)[1]
+        self.assertIn('mapEligible(p,scene)',recovery)
+        self.assertNotIn('!owns(p,scene)',recovery)
+
     def test_complete_music_master_timing_and_one_shot_playback(self):
         receipt=json.loads((ASSETS/'missing_parents_music_audio.json').read_text())
         self.assertEqual(receipt['source_sha256'],hashlib.sha256((ROOT/receipt['source']).read_bytes()).hexdigest())
