@@ -431,14 +431,25 @@ public final class PalaceWellEncounter {
         if(beat==PalaceHandCombat.Beat.TELEGRAPH){
             if(fight.cursor()==1){p.playNotifySound(SoundEvents.SPIDER_AMBIENT,SoundSource.HOSTILE,.6F,.7F);var target=new CompoundTag();target.putDouble("X",targetPlayer.getX());target.putDouble("Y",targetPlayer.getY());target.putDouble("Z",targetPlayer.getZ());n.put("Lunge",target);}
         }else if(beat==PalaceHandCombat.Beat.STRIKE){
-            if(!n.contains("Lunge",Tag.TAG_COMPOUND)){pause(p,s,n,"The telegraphed attack target is missing; no unannounced attack performed.");return;}
-            var aim=n.getCompound("Lunge");var target=new Vec3(aim.getDouble("X"),aim.getDouble("Y"),aim.getDouble("Z"));if(target.distanceToSqr(c)>48*48){pause(p,s,n,"Saved attack target lies outside the original well arena.");return;}
-            boolean intercepted=false;var tong=RescueProps.find(p,s,"WellTongs");
-            if(w!=null&&tong!=null&&fight.totalTicks()%300<60&&tong.getBoundingBox().intersects(h.getBoundingBox())&&w.hasLineOfSight(h)){intercepted=true;n.putInt("InterceptCycle",fight.cycle());n.putInt("InterceptPhase",fight.phase());}
-            intercepted|=n.contains("InterceptCycle",Tag.TAG_INT)&&n.getInt("InterceptCycle")==fight.cycle()&&n.getInt("InterceptPhase")==fight.phase();
-            var ground=PalaceWellMotion.ground(p.serverLevel(),h,target,3);
-            if(ground!=null&&!intercepted){double hop=fight.phase()==3?Math.sin((fight.cursor()-32)/12.0*Math.PI)*.65:0;move(p,h,ground.add(0,hop,0),.24+fight.phase()*.045);}
-            if(fight.cursor()==40&&!intercepted)for(var participant:fighters(p,s,h))if(participant.distanceToSqr(h)<2.5*2.5&&participant.hasLineOfSight(h)){participant.hurt(participant.damageSources().generic(),fight.phase()==3?5:3);var push=participant.position().subtract(h.position()).multiply(1,0,1).normalize().scale(.35);participant.setDeltaMovement(participant.getDeltaMovement().add(push).add(0,.15,0));participant.hurtMarked=true;}
+            var aim=n.getCompound("Lunge");
+            boolean valid=n.contains("Lunge",Tag.TAG_COMPOUND)
+                    &&java.util.stream.Stream.of("X","Y","Z").allMatch(axis->aim.contains(axis,Tag.TAG_DOUBLE)&&Double.isFinite(aim.getDouble(axis)));
+            Vec3 target=valid?new Vec3(aim.getDouble("X"),aim.getDouble("Y"),aim.getDouble("Z")):null;
+            if(target==null||target.distanceToSqr(c)>48*48){
+                // After a crash the transient telegraph may be missing or
+                // stale. Do not attack without a witnessed target, but do not
+                // trap the real fight in a pause/resume cycle either.
+                n.remove("Lunge");
+                n.putString("MotionBlocker","Interrupted Hand telegraph skipped safely; watch for the next attack.");
+            }else{
+                n.remove("MotionBlocker");
+                boolean intercepted=false;var tong=RescueProps.find(p,s,"WellTongs");
+                if(w!=null&&tong!=null&&fight.totalTicks()%300<60&&tong.getBoundingBox().intersects(h.getBoundingBox())&&w.hasLineOfSight(h)){intercepted=true;n.putInt("InterceptCycle",fight.cycle());n.putInt("InterceptPhase",fight.phase());}
+                intercepted|=n.contains("InterceptCycle",Tag.TAG_INT)&&n.getInt("InterceptCycle")==fight.cycle()&&n.getInt("InterceptPhase")==fight.phase();
+                var ground=PalaceWellMotion.ground(p.serverLevel(),h,target,3);
+                if(ground!=null&&!intercepted){double hop=fight.phase()==3?Math.sin((fight.cursor()-32)/12.0*Math.PI)*.65:0;move(p,h,ground.add(0,hop,0),.24+fight.phase()*.045);}
+                if(fight.cursor()==40&&!intercepted)for(var participant:fighters(p,s,h))if(participant.distanceToSqr(h)<2.5*2.5&&participant.hasLineOfSight(h)){participant.hurt(participant.damageSources().generic(),fight.phase()==3?5:3);var push=participant.position().subtract(h.position()).multiply(1,0,1).normalize().scale(.35);participant.setDeltaMovement(participant.getDeltaMovement().add(push).add(0,.15,0));participant.hurtMarked=true;}
+            }
         }else if(beat==PalaceHandCombat.Beat.RECOVERY){
             var floor=PalaceWellMotion.ground(p.serverLevel(),h,h.position(),2);if(floor!=null)move(p,h,floor,.08);
         }else if(beat==PalaceHandCombat.Beat.PURSUE){
