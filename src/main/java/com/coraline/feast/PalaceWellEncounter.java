@@ -471,8 +471,35 @@ public final class PalaceWellEncounter {
             }
             p.server.overworld().getDataStorage().save();
         }
+        // Authenticate any existing fight against the PRE-resume checkpoint,
+        // before changing the encounter session. An interrupted final hit may
+        // already have a fully verified combat victory while the story is still
+        // saved at BOSS; that result must reconcile instead of looping forever.
+        PalaceHandCombat fight=null;
+        if(n.contains("Combat")){
+            if(!n.contains("Combat",Tag.TAG_COMPOUND))return 0;
+            fight=PalaceHandCombat.load(s.owner,s.door,h.getUUID(),n.getCompound("Combat"));
+            if(!fight.blocker().isEmpty())return 0;
+            boolean oldSession=progress.session().equals(fight.session());
+            boolean interruptedVictory=fight.complete()&&progress.phase()==BOSS
+                    &&"Saved combat session requires owner-bound recovery.".equals(n.getString("Blocker"));
+            if(!oldSession&&!interruptedVictory){
+                p.sendSystemMessage(Component.literal("The saved Hand combat session needs identity review; no fight progress was changed."));
+                return 0;
+            }
+            if(!fight.complete()&&progress.phase()!=BOSS)return 0;
+        }
         if(!com.coraline.postgame.GlobalHandEncounter.claim(p.server,s,progress)||!progress.resume(s.owner))return 0;
-        if(n.contains("Combat")){var fight=PalaceHandCombat.load(s.owner,s.door,h.getUUID(),n.getCompound("Combat"));if(!fight.complete()&&!fight.resume(s.owner,progress.session()))return 0;n.put("Combat",fight.save());}
+        if(fight!=null){
+            if(fight.complete()){
+                // A completed combat journal is authoritative physical hit
+                // evidence. The next scene is DEFEATED, not a second fight.
+                if(progress.phase()==BOSS&&!progress.defeated(s.owner,progress.session(),h.getUUID()))return 0;
+            }else{
+                if(!fight.resume(s.owner,progress.session()))return 0;
+                n.put("Combat",fight.save());
+            }
+        }
         n.remove("Paused");n.remove("Blocker");n.putLong("LastTick",-1);n.putBoolean("CueStarted",false);ShowPlayback.stop(p,s);save(p,s,progress);return 1;
     }
     @SubscribeEvent public static void tick(TickEvent.PlayerTickEvent event){if(event.player instanceof net.minecraft.server.level.ServerPlayer coopPlayer&&com.coraline.multiplayer.StoryCoop.directorBlocked(coopPlayer))return;
