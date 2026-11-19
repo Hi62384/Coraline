@@ -38,6 +38,11 @@ public final class PalaceGenerationRules {
             new PalaceSitePlan.Point(n.getInt(prefix+"X"),n.getInt(prefix+"Z"));
         }
     }
+    /** Pure Company foundation layout. Safe to evaluate before either the
+     * Palace or Well exists, including an early-Company save after reload. */
+    public static boolean companyFoundationInner(int x,int z,int companyX,int companyZ){
+        return Math.abs((long)x-companyX)<=24&&Math.abs((long)z-companyZ)<=18;
+    }
     public static Stage stage(CompoundTag n){validate(n);return n.isEmpty()?Stage.SELECT_PALACE:Stage.valueOf(n.getString("Stage"));}
     public static void enter(CompoundTag n,Stage stage){n.putInt("Version",1);n.putString("Stage",stage.name());n.putInt("Cursor",0);n.putInt("Subcursor",0);n.putInt("Verified",0);n.remove("ColumnActive");n.remove("ColumnChanged");}
     private PalaceGenerationRules(){}
