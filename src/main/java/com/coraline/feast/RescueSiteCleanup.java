@@ -15,7 +15,7 @@ public final class RescueSiteCleanup {
         remaining=drain(player,scene,"WebCells",remaining);
         drain(player,scene,"PassageCells",remaining);
         if(!data.contains("WebCells")){data.remove("WebReady");data.remove("WebBuild");}
-        if(!data.contains("PassageCells")){data.remove("PassageReady");data.remove("PassageBuild");}
+        if(!data.contains("PassageCells")){data.remove("PassageReady");data.remove("PassageBuild");data.remove("PassageVerified");data.remove("PassageVerify");data.remove("PassageCellsCleanupOffset");}
         // The persistent Hand, original Cat, original Mother and child UUIDs are
         // deliberately absent. Subsequent chapters still own those identities.
         for(String key:new String[]{"Web","WebDoor","PursuingDoor","ThrownStone","PresentedEye0","PresentedEye1","PresentedEye2","WeakPoint"})RescueProps.retire(player,scene,key);
@@ -24,15 +24,35 @@ public final class RescueSiteCleanup {
         var data=RescueChapter.data(scene);if(!data.contains(key)||budget==0)return budget;
         var level=player.server.getLevel(ActivityWorld.KEY);if(level==null)return budget;
         var cells=data.getCompound(key);var lookup=level.holderLookup(Registries.BLOCK);
-        // Copy only the bounded worklist, not the complete several-thousand-cell journal.
-        var work=new java.util.ArrayList<String>(budget);
-        for(String position:cells.getAllKeys()){work.add(position);if(work.size()==budget)break;}
-        for(String position:work){var at=BlockPos.of(Long.parseLong(position));level.getChunkAt(at);var entry=cells.getCompound(position);
-            if(entry.contains("Placed")&&level.getBlockEntity(at)==null&&level.getBlockState(at).equals(NbtUtils.readBlockState(lookup,entry.getCompound("Placed"))))level.setBlock(at,NbtUtils.readBlockState(lookup,entry.getCompound("Original")),2);
-            cells.remove(position);budget--;
+        // Rotate through bounded slices, so an unrelated player edit near the
+        // start cannot indefinitely starve later cleanup cells.
+        var keys=cells.getAllKeys();
+        int total=keys.size(),offset=Math.floorMod(data.getInt(key+"CleanupOffset"),Math.max(1,total));
+        var work=new java.util.ArrayList<String>(Math.min(total,budget));
+        int index=0;
+        for(String position:keys){if(index++<offset)continue;work.add(position);if(work.size()>=budget)break;}
+        if(work.size()<budget){index=0;for(String position:keys){if(index++>=offset)break;work.add(position);if(work.size()>=budget)break;}}
+        data.putInt(key+"CleanupOffset",(offset+work.size())%Math.max(1,total));
+        boolean changed=false;
+        for(String position:work){
+            var at=BlockPos.of(Long.parseLong(position));level.getChunkAt(at);
+            var entry=cells.getCompound(position);
+            if(!entry.contains("Placed",net.minecraft.nbt.Tag.TAG_COMPOUND)
+                    ||!entry.contains("Original",net.minecraft.nbt.Tag.TAG_COMPOUND)
+                    ||level.getBlockEntity(at)!=null)continue;
+            var placed=NbtUtils.readBlockState(lookup,entry.getCompound("Placed"));
+            var original=NbtUtils.readBlockState(lookup,entry.getCompound("Original"));
+            var current=level.getBlockState(at);
+            // Never clear provenance until the original state is read back.
+            if(!current.equals(original)){
+                if(!current.equals(placed))continue;
+                level.setBlock(at,original,2);
+                if(!level.getBlockState(at).equals(original))continue;
+            }
+            cells.remove(position);budget--;changed=true;
         }
-        if(cells.isEmpty())data.remove(key);
-        if(!work.isEmpty())OtherMotherLoop.changed(player);
+        if(cells.isEmpty()){data.remove(key);data.remove(key+"CleanupOffset");}
+        if(changed)OtherMotherLoop.changed(player);
         return budget;
     }
     private RescueSiteCleanup(){}
