@@ -100,8 +100,17 @@ public final class RescuePassage {
             var expected=planned(i);
             if(!expected.equals(NbtUtils.readBlockState(lookup,row.getCompound("Placed"))))
                 return blocked(p,n,i,"the original passage layout does not match its saved receipt.");
-            if(!level.getBlockState(at).equals(expected))
-                return blocked(p,n,i,"the physical tunnel differs from the saved layout.");
+            if(!level.getBlockState(at).equals(expected)){
+                // An older build may have committed PassageReady after a
+                // refused placement. Retry only if the original state remains
+                // intact; never replace an unrelated player edit.
+                var original=NbtUtils.readBlockState(lookup,row.getCompound("Original"));
+                if(level.getBlockEntity(at)!=null||!level.getBlockState(at).equals(original))
+                    return blocked(p,n,i,"the physical tunnel differs from the saved layout.");
+                level.setBlock(at,expected,2);
+                if(!level.getBlockState(at).equals(expected))
+                    return blocked(p,n,i,"the original block is still refusing passage construction.");
+            }
             n.putInt("PassageVerify",i+1);
         }
         if(end==CELL_COUNT){n.putBoolean("PassageVerified",true);n.remove("Blocker");}
