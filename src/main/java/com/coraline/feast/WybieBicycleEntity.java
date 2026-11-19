@@ -28,6 +28,20 @@ public final class WybieBicycleEntity extends Entity {
     public WybieBicycleEntity(EntityType<? extends WybieBicycleEntity> type,Level level){super(type,level);setMaxUpStep(.6F);}
     @Override protected void defineSynchedData(){entityData.define(STEER,0F);entityData.define(SPEED,0F);entityData.define(FRIEND,false);entityData.define(SESSION,java.util.Optional.empty());}
     public void configure(UUID owner,UUID door,UUID session,int serial,UUID rider,boolean friend){this.owner=owner;this.door=door;this.serial=serial;this.rider=rider;entityData.set(SESSION,java.util.Optional.of(session));entityData.set(FRIEND,friend);}
+    /**
+     * Re-authorize the same well-story bicycle after the owner's saved
+     * encounter session rotates on reconnect. No new bike or rider is created.
+     */
+    public boolean resumeWellStory(UUID expectedOwner,UUID expectedDoor,UUID expectedWybie,UUID nextSession){
+        var tag=getPersistentData();
+        var record=new com.coraline.palace.PalaceWellResumeRules.Bicycle(
+                owner,door,rider,session(),
+                tag.hasUUID("PalaceWellOwner")?tag.getUUID("PalaceWellOwner"):null,friend());
+        if(!com.coraline.palace.PalaceWellResumeRules.canRebind(
+                record,expectedOwner,expectedDoor,expectedWybie,nextSession))return false;
+        entityData.set(SESSION,java.util.Optional.of(nextSession));
+        return true;
+    }
     public float visualSteering(){return entityData.get(STEER);}
     public UUID session(){return entityData.get(SESSION).orElse(null);}public boolean friend(){return entityData.get(FRIEND);}public double speed(){return level().isClientSide?entityData.get(SPEED):speed;}
     public boolean ownedBy(ServerPlayer p,VisitData.Scene s){return p.getUUID().equals(owner)&&s.door.equals(door)&&serial==s.loop.event.getInt("Serial")&&session()!=null&&session().equals(WybieAdventure.data(s).getUUID("Session"));}
