@@ -144,6 +144,19 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('mapEligible(p,scene)',recovery)
         self.assertNotIn('!owns(p,scene)',recovery)
 
+    def test_well_resume_reconciles_authenticated_finished_combat(self):
+        encounter=source('feast/PalaceWellEncounter.java')
+        resume=encounter.split('public static int resume(',1)[1].split('@SubscribeEvent public static void tick(',1)[0]
+        self.assertIn('PalaceHandCombat.load(s.owner,s.door,h.getUUID()',resume)
+        self.assertIn('progress.session().equals(fight.session())',resume)
+        self.assertIn('fight.complete()&&progress.phase()==BOSS',resume)
+        self.assertIn('progress.defeated(s.owner,progress.session(),h.getUUID())',resume)
+        self.assertIn('fight.resume(s.owner,progress.session())',resume)
+        self.assertLess(resume.index('PalaceHandCombat.load('),
+                        resume.index('GlobalHandEncounter.claim('))
+        self.assertLess(resume.index('GlobalHandEncounter.claim('),
+                        resume.index('progress.resume(s.owner)'))
+
     def test_complete_music_master_timing_and_one_shot_playback(self):
         receipt=json.loads((ASSETS/'missing_parents_music_audio.json').read_text())
         self.assertEqual(receipt['source_sha256'],hashlib.sha256((ROOT/receipt['source']).read_bytes()).hexdigest())
