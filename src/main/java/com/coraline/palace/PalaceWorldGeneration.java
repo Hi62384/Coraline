@@ -267,8 +267,8 @@ public final class PalaceWorldGeneration {
         // terrain sampler or the job will hard-stop on Optional.orElseThrow().
         else if(y==target&&PalaceGenerationRules.stage(n)==COMPANY_PREPARE){
             var company=d.position(Kind.COMPANY).orElseThrow();
-            int dx=Math.abs(x-company.getX()),dz=Math.abs(z-company.getZ());
-            value=(dx<=24&&dz<=18?Blocks.COARSE_DIRT:Blocks.GRASS_BLOCK).defaultBlockState();
+            value=(PalaceGenerationRules.companyFoundationInner(x,z,company.getX(),company.getZ())
+                    ?Blocks.COARSE_DIRT:Blocks.GRASS_BLOCK).defaultBlockState();
         }
         else if(y==target){
             var p=point(d.position(Kind.PALACE).orElseThrow());var w=point(d.position(Kind.WELL).orElseThrow());
