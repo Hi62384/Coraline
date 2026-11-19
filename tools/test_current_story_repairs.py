@@ -150,6 +150,8 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('PalaceHandCombat.load(s.owner,s.door,h.getUUID()',resume)
         self.assertIn('progress.session().equals(fight.session())',resume)
         self.assertIn('fight.complete()&&progress.phase()==BOSS',resume)
+        self.assertIn('fight.complete()&&progress.phase().ordinal()>BOSS.ordinal()',resume)
+        self.assertIn('!oldSession&&!interruptedVictory&&!completedEarlier',resume)
         self.assertIn('progress.defeated(s.owner,progress.session(),h.getUUID())',resume)
         self.assertIn('fight.resume(s.owner,progress.session())',resume)
         self.assertLess(resume.index('PalaceHandCombat.load('),
