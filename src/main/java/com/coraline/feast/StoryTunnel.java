@@ -108,11 +108,33 @@ public final class StoryTunnel {
             if(java.util.EnumSet.of(RescueChapter.Phase.THEATRE_SEARCH,RescueChapter.Phase.WRAPPER_REACH,
                     RescueChapter.Phase.THEATRE_GRAB,RescueChapter.Phase.THEATRE_FIGHT,RescueChapter.Phase.THEATRE_EYE).contains(phase)){
                 if(!TheatreSite.prepare(p,scene))return;
+                var entrance=TheatreSite.houseDoor(p,scene);
+                if(entrance==null||!ShowTravel.recoverRescueReturn(p,scene,"TheatreReturn",entrance)){
+                    FirstEscapeStory.hint(p,"The original theatre return checkpoint is unavailable. No transfer was made.");
+                    return;
+                }
                 level=p.server.getLevel(ActivityWorld.KEY);landing=TheatreSite.entrance(p,scene);
             }else if(java.util.EnumSet.of(RescueChapter.Phase.BOB_E,RescueChapter.Phase.SWARM_TRANSFORM,
                     RescueChapter.Phase.SWARM_FIGHT,RescueChapter.Phase.RAT_CHASE).contains(phase)){
-                if(!MouseCircusSite.prepare(p,scene))return;
-                level=p.server.getLevel(ActivityWorld.KEY);landing=MouseCircusSite.audience(p,scene);
+                var chapter=RescueChapter.data(scene);
+                // The rat chase has two dimensions: legs 0/1 are the circus,
+                // while leg 2 resumes with the original rat in the house.
+                if(phase==RescueChapter.Phase.RAT_CHASE&&chapter.getInt("RatLeg")>=2){
+                    if(!MouseCircusSite.prepareAttic(p,scene))return;
+                    var tent=MouseCircusSite.tent(p,scene);
+                    if(tent==null)return;
+                    level=p.server.getLevel(OtherWorld.KEY);
+                    landing=tent.south(1);
+                }else{
+                    if(!MouseCircusSite.prepare(p,scene))return;
+                    var tent=MouseCircusSite.tent(p,scene);
+                    if(tent==null||!ShowTravel.recoverRescueReturn(p,scene,"CircusReturn",tent.south(3))){
+                        FirstEscapeStory.hint(p,"The original circus return checkpoint is unavailable. No transfer was made.");
+                        return;
+                    }
+                    level=p.server.getLevel(ActivityWorld.KEY);
+                    landing=MouseCircusSite.audience(p,scene);
+                }
             }else if(phase.ordinal()>=RescueChapter.Phase.ATTIC_SEARCH.ordinal()&&phase.ordinal()<=RescueChapter.Phase.CIRCUS_TRAVEL.ordinal()){
                 if(!MouseCircusSite.prepareAttic(p,scene))return;
                 var tent=MouseCircusSite.tent(p,scene);
