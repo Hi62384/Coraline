@@ -126,6 +126,8 @@ public final class PalaceWorldGeneration {
         if(freeMemory()<(pendingChunk==null?START_FREE:STOP_FREE))return "Preparation is paused for available server memory ("+stage+").";
         if(occupied(world,data))return "Palace preparation is paused while players are near the construction area. It will resume when the area clears.";
         if(currentServer==server&&world.getGameTime()<retryAt)return "Retrying "+stage+" after "+retryReason+".";
+        if(!job.getString("LastFailure").isBlank()&&stage.equals("signs"))
+            return "Preparing the original landmark signs: "+job.getString("LastFailure");
         if(pendingChunk!=null&&!pendingChunk.isDone())return "Preparing "+stage+": loading chunk "+pendingPosition+" (section "+job.getInt("Cursor")+").";
         long progress=job.contains("LastProgress",net.minecraft.nbt.Tag.TAG_LONG)?job.getLong("LastProgress"):lastProgress;
         return "Preparing "+stage+" (section "+job.getInt("Cursor")+(progress>0?", last progress "+Math.max(0,world.getGameTime()-progress)/20+"s ago":"") +").";
@@ -395,14 +397,55 @@ public final class PalaceWorldGeneration {
         if(chunk(l,base.getX(),base.getZ())==null||!l.areEntitiesLoaded(signChunk.toLong()))return;
         com.coraline.feast.CinematicPropEntity sign=null;
         if(n.hasUUID(key)){
-            var e=l.getEntity(n.getUUID(key));if(!(e instanceof com.coraline.feast.CinematicPropEntity existing)||existing.kind()!=com.coraline.feast.CinematicPropEntity.WORLD_SIGN||existing.slot()!=index)throw new IllegalStateException("Original shared sign unavailable; no duplicate created");sign=existing;
+            var id=n.getUUID(key);
+            var raw=l.getEntity(id);
+            if(raw==null){
+                // A saved UUID is not proof that its original entity was
+                // admitted. Recover ONLY the same UUID after native absence
+                // has been established, not another world landmark.
+                var nearby=l.getEntitiesOfClass(com.coraline.feast.CinematicPropEntity.class,
+                        new AABB(base).inflate(8),e->e.kind()==com.coraline.feast.CinematicPropEntity.WORLD_SIGN&&e.slot()==index);
+                if(!nearby.isEmpty()){
+                    n.putString("LastFailure","Original "+key+" identity conflicts with a visible world sign.");
+                    return;
+                }
+                var status=com.coraline.rebirth.LegacyActorRecovery.check(l.getServer(),id);
+                if(status!=com.coraline.rebirth.LegacyActorRecovery.Result.ABSENT){
+                    n.putString("LastFailure","Waiting to verify original "+key+" in native entity storage: "+status);
+                    return;
+                }
+                sign=com.coraline.feast.CinematicPropEntity.TYPE.get().create(l);
+                if(sign==null)throw new RetryableGeneration("Original "+key+" entity creation is unavailable");
+                sign.worldSign(index);
+                sign.setUUID(id);
+                sign.setPos(Vec3.atBottomCenterOf(base));
+                if(!l.addFreshEntity(sign)||l.getEntity(id)!=sign)
+                    throw new RetryableGeneration("Original "+key+" admission was refused");
+            }else if(raw instanceof com.coraline.feast.CinematicPropEntity existing
+                    &&existing.kind()==com.coraline.feast.CinematicPropEntity.WORLD_SIGN
+                    &&existing.slot()==index&&existing.owner==null
+                    &&existing.getPersistentData().getBoolean("CoralineWorldLandmark")){
+                sign=existing;
+                if(sign.blockPosition().distSqr(base)>0)sign.setPos(Vec3.atBottomCenterOf(base));
+            }else{
+                n.putString("LastFailure","Original "+key+" UUID is occupied by a different actor; no duplicate placed.");
+                return;
+            }
         }else{
-            var found=l.getEntitiesOfClass(com.coraline.feast.CinematicPropEntity.class,new AABB(base).inflate(1),e->e.kind()==com.coraline.feast.CinematicPropEntity.WORLD_SIGN&&e.slot()==index);
+            var found=l.getEntitiesOfClass(com.coraline.feast.CinematicPropEntity.class,new AABB(base).inflate(8),
+                    e->e.kind()==com.coraline.feast.CinematicPropEntity.WORLD_SIGN&&e.slot()==index
+                            &&e.owner==null&&e.getPersistentData().getBoolean("CoralineWorldLandmark"));
             if(found.size()>1)throw new IllegalStateException("Duplicate shared sign identities need review");
             if(found.size()==1)sign=found.get(0);
-            else{sign=com.coraline.feast.CinematicPropEntity.TYPE.get().create(l);if(sign==null)throw new RetryableGeneration("Shared sign creation unavailable");sign.worldSign(index);sign.setPos(Vec3.atBottomCenterOf(base));if(!l.addFreshEntity(sign))throw new RetryableGeneration("Shared sign spawn refused");}
+            else{
+                sign=com.coraline.feast.CinematicPropEntity.TYPE.get().create(l);
+                if(sign==null)throw new RetryableGeneration("Shared sign creation unavailable");
+                sign.worldSign(index);sign.setPos(Vec3.atBottomCenterOf(base));
+                if(!l.addFreshEntity(sign))throw new RetryableGeneration("Shared sign spawn refused");
+            }
             n.putUUID(key,sign.getUUID());save(l,d);
         }
+        n.remove("LastFailure");
         n.putInt("Cursor",index+1);d.setDirty();
     }
     private static void finish(ServerLevel l,PalaceSiteData d){
