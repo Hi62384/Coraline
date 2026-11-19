@@ -70,6 +70,21 @@ public final class AcceptedButtonEyesWorld {
         var realm=realm(p,s);
         var id=mom?s.mom:s.dad;
         if(id==null||level==null||realm==null||!s.owner.equals(p.getUUID()))return null;
+        // A parent may still exist in an unloaded chunk of the dimension from
+        // which an interrupted guest transfer started. Request that ORIGINAL
+        // location before proving absence or attempting same-UUID admission.
+        var saved=GhostVictimEntry.data(s);
+        var positionKey=mom?"SupperMotherPosition":"SupperFatherPosition";
+        var dimensionKey=mom?"SupperMotherDimension":"SupperFatherDimension";
+        var origin=saved.contains(positionKey,Tag.TAG_LONG)?BlockPos.of(saved.getLong(positionKey))
+                :mom?s.loop.motherPos:s.piano;
+        var dimension=saved.getString(dimensionKey);
+        var recordedWorld=dimension.isEmpty()?level:com.coraline.parents.FamilyData.level(p.server,dimension);
+        if(recordedWorld!=null&&origin!=null&&recordedWorld.getWorldBorder().isWithinBounds(origin)){
+            recordedWorld.getChunkSource().addRegionTicket(net.minecraft.server.level.TicketType.PORTAL,
+                    new net.minecraft.world.level.ChunkPos(origin),2,origin);
+            LoopProps.hold(recordedWorld,origin);
+        }
         for(var world:p.server.getAllLevels()){
             var existing=world.getEntity(id);
             if(existing==null)continue;
@@ -81,12 +96,13 @@ public final class AcceptedButtonEyesWorld {
             var moved=ShowTravel.guest(actor,p,s,level,Vec3.atBottomCenterOf(landing),true,"AcceptedParents");
             return moved instanceof ParentEntity same&&same.getUUID().equals(id)&&same.level()==level?same:null;
         }
-        var saved=GhostVictimEntry.data(s);
-        var key=mom?"SupperMotherPosition":"SupperFatherPosition";
-        var original=saved.contains(key,net.minecraft.nbt.Tag.TAG_LONG)?BlockPos.of(saved.getLong(key)):mom?s.loop.motherPos:s.piano;
-        if(original==null||!FirstEscapeScene.inHouseOrPorch(s,original))original=near;
+        // If the saved position belongs to another dimension, loading the
+        // Other World near an unrelated coordinate proves nothing about it.
+        var original=recordedWorld==level&&origin!=null&&FirstEscapeScene.inHouseOrPorch(s,origin)?origin:near;
         LoopProps.hold(level,original);
-        if(!level.areEntitiesLoaded(new net.minecraft.world.level.ChunkPos(original).toLong()))return null;
+        if(!level.areEntitiesLoaded(new net.minecraft.world.level.ChunkPos(original).toLong())
+                ||recordedWorld!=null&&origin!=null
+                    &&!recordedWorld.areEntitiesLoaded(new net.minecraft.world.level.ChunkPos(origin).toLong()))return null;
         var family=com.coraline.parents.ParentAccess.family(p.server,s.owner);
         if(family==null)return null;
         var feet=net.minecraft.core.BlockPos.findClosestMatch(near,3,1,at->level.hasChunkAt(at)&&FirstEscapeScene.inHouseOrPorch(s,at)
@@ -105,7 +121,8 @@ public final class AcceptedButtonEyesWorld {
         mark.putUUID("AcceptedDoor",s.door);
         actor.setPos(Vec3.atBottomCenterOf(feet));
         if(!level.noCollision(actor)||!level.addFreshEntity(actor)||level.getEntity(id)!=actor)return null;
-        saved.putLong(key,feet.asLong());
+        saved.putLong(positionKey,feet.asLong());
+        saved.putString(dimensionKey,level.dimension().location().toString());
         OtherMotherLoop.changed(p);
         return p.server.saveEverything(true,true,true)?actor:null;
     }

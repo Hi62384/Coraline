@@ -275,8 +275,14 @@ public final class GhostVictimDirector {
                 if(p.tickCount%20==0){
                     if(mother==null||mother.level()!=level)mother=AcceptedButtonEyesWorld.recoverSupperParent(p,s,true,table.west(2));
                     if(father==null||father.level()!=level)father=AcceptedButtonEyesWorld.recoverSupperParent(p,s,false,table.east(2));
-                    if(mother!=null&&mother.level()==level)n.putLong("SupperMotherPosition",mother.blockPosition().asLong());
-                    if(father!=null&&father.level()==level)n.putLong("SupperFatherPosition",father.blockPosition().asLong());
+                    if(mother!=null){
+                        n.putLong("SupperMotherPosition",mother.blockPosition().asLong());
+                        n.putString("SupperMotherDimension",mother.level().dimension().location().toString());
+                    }
+                    if(father!=null){
+                        n.putLong("SupperFatherPosition",father.blockPosition().asLong());
+                        n.putString("SupperFatherDimension",father.level().dimension().location().toString());
+                    }
                 }
                 GhostVictimWorld.ensureHouseProps(p,s,n);
                 boolean childReady=seatAtSupper(p,s,n,child,"VictimSupperSeat",101,table.south(2),table);
