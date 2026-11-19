@@ -136,11 +136,15 @@ public final class PalaceWorldGeneration {
         return stage==SELECT_COMPANY||stage==SURVEY_COMPANY||stage==COMPANY_PREPARE||stage==COMPANY||stage==COMPANY_VERIFY;
     }
     private static boolean occupied(ServerLevel l,PalaceSiteData d){
-        var n=d.generation();int buffer=l.getServer().getPlayerList().getViewDistance()*16+64;
-        for(var p:l.players()){
-            if(!companyPhase(PalaceGenerationRules.stage(n))&&n.getBoolean("PalaceClaimed")&&Math.abs(p.getX()-n.getInt("CandidateX"))<=R+buffer&&Math.abs(p.getZ()-n.getInt("CandidateZ"))<=R+buffer)return true;
-            if(companyPhase(PalaceGenerationRules.stage(n))&&n.getBoolean("CompanyClaimed")&&!d.generated(Kind.COMPANY)&&Math.abs(p.getX()-n.getInt("CompanyX"))<=48+buffer&&Math.abs(p.getZ()-n.getInt("CompanyZ"))<=48+buffer)return true;
-        }
+        var n=d.generation();
+        var stage=PalaceGenerationRules.stage(n);
+        var well=d.position(Kind.WELL).orElse(null);
+        int viewBlocks=l.getServer().getPlayerList().getViewDistance()*16;
+        for(var p:l.players())if(PalaceGenerationOccupancy.pauses(
+                stage.name(),p.getX(),p.getZ(),
+                n.getBoolean("PalaceClaimed"),n.getInt("CandidateX"),n.getInt("CandidateZ"),
+                n.getBoolean("CompanyClaimed"),d.generated(Kind.COMPANY),n.getInt("CompanyX"),n.getInt("CompanyZ"),
+                well!=null,well==null?0:well.getX(),well==null?0:well.getZ(),viewBlocks,R))return true;
         return false;
     }
     /** Structure bounding boxes are checked against the actual mutation range,
