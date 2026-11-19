@@ -46,6 +46,16 @@ class PostBossRouteRepairs(unittest.TestCase):
         self.assertIn('sign.setUUID(id)',sign)
         self.assertIn('getBoolean("CoralineWorldLandmark")',sign)
 
+    def test_palace_visitor_does_not_pause_distant_well_generation(self):
+        world=java('palace/PalaceWorldGeneration.java')
+        occupied=world.split('private static boolean occupied(',1)[1].split('/** Structure bounding boxes',1)[0]
+        self.assertIn('PalaceGenerationOccupancy.pauses(',occupied)
+        rules=java('palace/PalaceGenerationOccupancy.java')
+        self.assertIn('stage.equals("WELL")||stage.equals("WELL_VERIFY")',rules)
+        self.assertIn('stage.equals("SIGNS")||stage.equals("FINISH")',rules)
+        self.assertIn('WELL_PAUSE_RADIUS=56',rules)
+        self.assertIn('palaceClaimed&&near(x,z,palaceX,palaceZ',rules)
+
     def test_well_bicycle_admission_and_reconnect_are_original_only(self):
         stage=java('feast/PalaceWellEncounter.java')
         bike=stage.split('private static WybieBicycleEntity bike(',1)[1].split('private static Vec3 entryTarget(',1)[0]
