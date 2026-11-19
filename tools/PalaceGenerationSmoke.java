@@ -61,6 +61,16 @@ public final class PalaceGenerationSmoke {
         check(PalaceGenerationRules.stage(reloaded)==PalaceGenerationRules.Stage.SELECT_COMPANY,"Company could not resume before Palace verification");
         check(reloaded.getCompound("DeferredPalace").getInt("Cursor")==681,"Early Company lost the deferred survey cursor");
         bad=reloaded.copy();PalaceGenerationRules.enter(bad,PalaceGenerationRules.Stage.TERRAIN);invalid(bad);
+        // Early Moving Company grading must be defined without any Palace or
+        // Well proposal. Both center and boundary cells remain deterministic.
+        int siteX=-2200,siteZ=3456;
+        check(PalaceGenerationRules.companyFoundationInner(siteX,siteZ,siteX,siteZ),
+                "Early Company grading rejected its own center");
+        check(PalaceGenerationRules.companyFoundationInner(siteX+24,siteZ-18,siteX,siteZ),
+                "Company foundation excluded its authored inner edge");
+        check(!PalaceGenerationRules.companyFoundationInner(siteX+25,siteZ,siteX,siteZ)
+                &&!PalaceGenerationRules.companyFoundationInner(siteX,siteZ+19,siteX,siteZ),
+                "Company grading leaked outside its independent footprint");
         earlyCompanyRegistry();
         anvil(fixture);return checks;
     }
