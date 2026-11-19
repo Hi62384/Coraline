@@ -120,8 +120,19 @@ public final class PalaceWellEncounter {
             var chunk=new net.minecraft.world.level.ChunkPos(at);
             overworld.getChunkSource().addRegionTicket(net.minecraft.server.level.TicketType.PORTAL,chunk,2,at);
             var raw=overworld.getEntity(original);
-            if(raw instanceof WybieBicycleEntity b&&progress.session().equals(b.session())
-                    &&b.getPersistentData().hasUUID("PalaceWellOwner")&&s.owner.equals(b.getPersistentData().getUUID("PalaceWellOwner")))return b;
+            if(raw instanceof WybieBicycleEntity b
+                    &&b.getPersistentData().hasUUID("PalaceWellOwner")
+                    &&s.owner.equals(b.getPersistentData().getUUID("PalaceWellOwner"))
+                    &&w!=null&&progress.originalWybie().filter(w.getUUID()::equals).isPresent()){
+                if(!progress.session().equals(b.session())){
+                    if(!b.resumeWellStory(s.owner,s.door,w.getUUID(),progress.session()))return null;
+                    // The new encounter session is durable in Well. The existing
+                    // entity's session must match before its tick drives the route.
+                    n.putUUID("BikeSession",progress.session());
+                    OtherMotherLoop.changed(p);
+                }
+                return b;
+            }
             if(raw!=null||w==null||!overworld.areEntitiesLoaded(chunk.toLong()))return null;
         }
         if(w==null)return null;var c=center(p);var palace=PalaceSiteData.get(p.server).position(PalaceSitePlan.Kind.PALACE).orElseThrow();var away=c.subtract(Vec3.atBottomCenterOf(palace)).multiply(1,0,1).normalize();
@@ -159,6 +170,7 @@ public final class PalaceWellEncounter {
         }
         if(!p.serverLevel().addFreshEntity(b))return null;
         n.putUUID("Bike",b.getUUID());
+        n.putUUID("BikeSession",progress.session());
         n.putLong("BikePosition",b.blockPosition().asLong());
         n.putLong("Entry",BlockPos.containing(target).asLong());
         b.wellRoute.addAll(route);
@@ -406,8 +418,11 @@ public final class PalaceWellEncounter {
         }
         if(!n.contains("Combat"))n.put("Combat",PalaceHandCombat.start(s.owner,s.door,h.getUUID(),progress.session()).save());
         var fight=PalaceHandCombat.load(s.owner,s.door,h.getUUID(),n.getCompound("Combat"));if(!fight.blocker().isEmpty()){pause(p,s,n,fight.blocker());return;}
-        if(!fight.session().equals(progress.session())){pause(p,s,n,"Saved combat session requires owner-bound recovery.");return;}
+        // A crash/reconnect can persist the authentic completed attack receipt
+        // before the adjacent encounter-phase advancement. Completion is bound
+        // to the original owner/door/Hand, not an old active-session clock.
         if(fight.complete()){progress.defeated(s.owner,progress.session(),h.getUUID());return;}
+        if(!fight.session().equals(progress.session())){pause(p,s,n,"Saved combat session requires owner-bound recovery.");return;}
         if(!fight.tick(s.owner,progress.session(),now,h.level()==p.level())){pause(p,s,n,"The active hand-combat clock could not advance safely.");return;}
         var beat=fight.beat();h.frame(30+fight.phase()*4+beat.ordinal(),fight.cursor(),fight.hits()/12F);
         var targetPlayer=fighters(p,s,h).stream().min(java.util.Comparator.comparingDouble(h::distanceToSqr)).orElse(null);
