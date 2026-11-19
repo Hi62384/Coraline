@@ -39,7 +39,13 @@ public final class CinematicPropRenderer extends EntityRenderer<CinematicPropEnt
             case AcceptedButtonEyesWorld.NEEDLE->{pose.pushPose();var direction=e.cue()==0?new net.minecraft.world.phys.Vec3(1,0,0):e.grabTarget();if(direction.lengthSqr()>.001)pose.mulPose(new org.joml.Quaternionf().rotationTo(new org.joml.Vector3f(0,1,0),new org.joml.Vector3f((float)direction.x,(float)direction.y,(float)direction.z).normalize()));box(pose,b,light,0,0,0,.018,.28,.018,0xD4D8DC);box(pose,b,light,0,.28,0,.009,.05,.009,0xD4D8DC);pose.popPose();}
             case CinematicPropEntity.BUTTON_GIFT->TraditionalPresentation.gift(e,pose,buffers,light,partial);
             case CinematicPropEntity.PIANO_HAND->TraditionalPresentation.hand(e,pose,buffers,light,partial);
-            case CinematicPropEntity.SEAT->{if(e.cue()>=0)chair(pose,b,light);}
+            case CinematicPropEntity.SEAT->{
+                if(e.cue()>=0){
+                    if(com.coraline.feast.GhostSupperGeometry.isSeat(e.slot()))
+                        pose.mulPose(com.mojang.math.Axis.YP.rotationDegrees(com.coraline.feast.GhostSupperGeometry.meshRotation(e.getYRot())));
+                    chair(pose,b,light);
+                }
+            }
             case CinematicPropEntity.DOG_ROW->{for(int col=0;col<20;col++){double x=col<10?-24+col*2:6+(col-10)*2;pose.pushPose();pose.translate(x,0,0);if(!com.coraline.feast.TheatreSite.reserved(e.slot(),col)){chair(pose,b,light);if(e.value()>=0)dog(pose,b,light,t,col+e.slot()*20,e.cue());}pose.popPose();}}
             case CinematicPropEntity.CURTAIN->{double open=Math.max(0,Math.min(1,e.value()));for(int side:new int[]{-1,1})for(int i=0;i<28;i++){double x=side*(.32+i*.8+open*(22-i*.70));box(pose,b,light,x,0,-.18+Math.sin(i*.8)*.22,.86,25,.55,RED);box(pose,b,light,x,24.6,-.3,.9,.28,.72,GOLD);}
                 // Fixed upper velvet valance and fan-shaped gold corner mouldings from the reference.

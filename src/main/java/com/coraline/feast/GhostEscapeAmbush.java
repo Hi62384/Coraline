@@ -23,7 +23,7 @@ public final class GhostEscapeAmbush {
         String id=phase==GhostEscapeProgress.Phase.APPROACH_AMBUSH?e.getString("TargetHide"):e.getString("HidingSpot");
         var node=GhostEscapeHiding.node(e,id);
         if(!node.contains("Position")||node.getBoolean("Compromised")){
-            returnToMirror(p,ghost,e,"This hiding place is gone. Meet me at the bedroom mirror.");
+            replan(p,s,ghost,e,child,"That hiding place is blocked and no reachable covered route to another working lamp is clear.");
             return true;
         }
         var at=BlockPos.of(node.getLong("Position"));
@@ -33,25 +33,14 @@ public final class GhostEscapeAmbush {
                 &&workingLights(ghost,child).stream().noneMatch(light->matchesLamp(e,at,light))){
             GhostVictimWorld.refreshRoomLights(p,s,ghost);
             if(workingLights(ghost,child).stream().noneMatch(light->matchesLamp(e,at,light))){
-                String replacement=plan(p,s,ghost,e,child);
-                e.remove("StealSignaled");
-                ghost.remove("ChildRoutine");
-                if(replacement.isEmpty()){
-                    returnToMirror(p,ghost,e,"The light here is gone. Meet me at the bedroom mirror.");
-                    return true;
-                }else{
-                    e.putString("TargetHide",replacement);
-                    GhostEscapeProgress.move(e,GhostEscapeProgress.Phase.APPROACH_AMBUSH,clock);
-                    GhostVictimDirector.words(ghost,"The light here is gone. I'm moving to another hiding place.");
-                }
-                OtherMotherLoop.changed(p);
+                replan(p,s,ghost,e,child,"The lamp is missing and no other working lamp has reachable cover and an approach to her key.");
                 return true;
             }
         }
         if(phase==GhostEscapeProgress.Phase.APPROACH_AMBUSH){
             var arrival=GhostVictimRoutines.travel(p,s,ghost,child,at,false);
             if(arrival==GhostVictimNavigation.Result.BLOCKED){
-                returnToMirror(p,ghost,e,"I can't reach that hiding place. Meet me at the bedroom mirror.");
+                replan(p,s,ghost,e,child,"The route to my hiding place is blocked. Clear a route between cover and a working lamp.");
             }else if(arrival==GhostVictimNavigation.Result.ARRIVED&&GhostEscapeHiding.concealed(child,mother,e,id)){
                 GhostEscapeProgress.hiddenForKey(ghost,id,true);ghost.remove("ChildRoutine");child.getNavigation().stop();
                 GhostVictimDirector.words(ghost,"I'm hidden. Lead her close, then keep her looking away from me.");OtherMotherLoop.changed(p);
@@ -90,6 +79,26 @@ public final class GhostEscapeAmbush {
             GhostVictimDirector.words(ghost,"I have it. Meet me at the mirror.");OtherMotherLoop.changed(p);
         }
         return true;
+    }
+    private static void replan(ServerPlayer p,VisitData.Scene scene,CompoundTag ghost,CompoundTag escape,
+                               com.coraline.tycoon.TycoonNpc child,String blocker){
+        long now=GhostVictimProgress.clock(ghost);
+        if(now<escape.getLong("AmbushRetryAt"))return;
+        escape.putLong("AmbushRetryAt",now+200);
+        GhostVictimWorld.refreshRoomLights(p,scene,ghost);
+        GhostEscapeHiding.refresh(p,scene,ghost,child);
+        var replacement=plan(p,scene,ghost,escape,child);
+        if(replacement.isEmpty()){
+            returnToMirror(p,ghost,escape,blocker+" Meet me at the bedroom mirror when it is clear.");
+            return;
+        }
+        escape.remove("StealSignaled");
+        ghost.remove("ChildRoutine");
+        child.getNavigation().stop();
+        escape.putString("TargetHide",replacement);
+        GhostEscapeProgress.move(escape,GhostEscapeProgress.Phase.APPROACH_AMBUSH,now);
+        GhostVictimDirector.words(ghost,"I found another route. Wait until I reach cover.");
+        OtherMotherLoop.changed(p);
     }
     private static void returnToMirror(ServerPlayer p,CompoundTag ghost,CompoundTag escape,String message){
         escape.remove("ReportSpoken");

@@ -29,11 +29,11 @@ public final class ParentRescueStory {
     public static CompoundTag scenery(VisitData.Scene s){var n=data(s);if(!n.contains("Scenery"))n.put("Scenery",new CompoundTag());return n.getCompound("Scenery");}
     public static Phase phase(VisitData.Scene s){try{return Phase.valueOf(data(s).getString("Phase"));}catch(IllegalArgumentException e){return Phase.A;}}
     private static String voice(Phase phase){return phase.name().length()==1?"parent_rescue_"+phase.name().toLowerCase(Locale.ROOT):"";}
-    private static void go(ServerPlayer p,VisitData.Scene s,Phase next){ShowPlayback.transition(p,s,voice(next));var n=data(s);if(next==Phase.B&&!n.getBoolean("ArrivalMusicStarted"))n.putLong("ArrivalMusicAt",p.serverLevel().getGameTime()+80);if(next==Phase.H&&n.getBoolean("KitchenSeated")&&!n.getBoolean("KitchenMusicStarted")){VisitAudio.play(p,"other_mother_game_proposal_music",true);n.putBoolean("KitchenMusicStarted",true);}n.putString("Phase",next.name());n.putInt("Ticks",0);n.remove("Audio");OtherMotherLoop.changed(p);p.server.overworld().getDataStorage().save();sync(p,s);}
+    private static void go(ServerPlayer p,VisitData.Scene s,Phase next){ShowPlayback.transition(p,s,voice(next));var n=data(s);if(next==Phase.B&&!n.getBoolean("ArrivalMusicStarted"))n.putLong("ArrivalMusicAt",p.serverLevel().getGameTime()+80);if(next==Phase.H&&n.getBoolean("KitchenSeated")&&!n.getBoolean("KitchenMusicStarted")){VisitAudio.play(p,"other_mother_game_proposal_music",true);n.putBoolean("KitchenMusicStarted",true);}n.putString("Phase",next.name());n.putInt("Ticks",0);n.remove("Audio");n.remove("ReturnRecording");OtherMotherLoop.changed(p);p.server.overworld().getDataStorage().save();sync(p,s);}
     public static boolean key(ItemStack stack,VisitData.Scene s){return stack.is(ModItems.LITTLE_DOOR_STORY_KEY.get())&&stack.hasTag()&&stack.getTag().hasUUID("StoryKeyOwner")&&s.owner.equals(stack.getTag().getUUID("StoryKeyOwner"))&&stack.getTag().hasUUID("StoryKeyDoor")&&s.door.equals(stack.getTag().getUUID("StoryKeyDoor"));}
     static ItemStack boundKey(VisitData.Scene s){var stack=new ItemStack(ModItems.LITTLE_DOOR_STORY_KEY.get());stack.getOrCreateTag().putUUID("StoryKeyOwner",s.owner);stack.getOrCreateTag().putUUID("StoryKeyDoor",s.door);return stack;}
     public static boolean grantKey(ServerPlayer p,VisitData.Scene s){if(s==null||!s.owner.equals(p.getUUID()))return false;var story=s.loop.story;if(story.getString("LittleDoorKeyHolder").equals("EVIL_OTHER_MOTHER"))return false;for(var stack:p.getInventory().items)if(key(stack,s))return true;if(story.getBoolean("LittleDoorKeyIssued")||p.getInventory().getFreeSlot()<0)return false;var stack=boundKey(s);SecretTransactions.give(p,stack);if(!stack.isEmpty())return false;story.putBoolean("LittleDoorKeyIssued",true);story.putInt("LittleDoorKeyCustodyVersion",1);story.putString("LittleDoorKeyHolder","PLAYER");p.sendSystemMessage(net.minecraft.network.chat.Component.literal("You take the Little Door Key for your return."));OtherMotherLoop.changed(p);return true;}
-    public static boolean begin(ServerPlayer p,VisitData.Scene s){if(started(s))return true;if(!s.owner.equals(p.getUUID())||!MissingParentsCat.data(s).getBoolean("Complete")||!MissingParentsCat.tunnelRestored(s)||p.serverLevel()!=p.server.overworld())return false;boolean has=false;for(int i=0;i<p.getInventory().getContainerSize();i++)has|=key(p.getInventory().getItem(i),s);if(!has&&!grantKey(p,s)){FirstEscapeStory.hint(p,"Bring the Little Door Key.");return false;}var n=data(s);n.putBoolean("Started",true);var scene=new CompoundTag();var old=FirstEscapeStory.data(s);for(String k:List.of("House","LittleDoor","Prison"))scene.putLong(k,old.getLong(k));n.put("Scenery",scene);s.loop.story.putString("MajorStoryPhase","PARENT_RESCUE_RETURN");p.closeContainer();p.stopRiding();VisitAudio.stop(p);prepareReturnRoom(p,s);StoryTunnel.crawl(p,s,2);go(p,s,Phase.A);return true;}
+    public static boolean begin(ServerPlayer p,VisitData.Scene s){if(started(s))return StoryTunnel.entryPhase(s)&&StoryTunnel.crawl(p,s,2);if(!s.owner.equals(p.getUUID())||!MissingParentsCat.data(s).getBoolean("Complete")||!MissingParentsCat.tunnelRestored(s)||p.serverLevel()!=p.server.overworld())return false;boolean has=false;for(int i=0;i<p.getInventory().getContainerSize();i++)has|=key(p.getInventory().getItem(i),s);if(!has&&!grantKey(p,s)){FirstEscapeStory.hint(p,"Bring the Little Door Key.");return false;}var n=data(s);n.putBoolean("Started",true);var scene=new CompoundTag();var old=FirstEscapeStory.data(s);for(String k:List.of("House","LittleDoor","Prison"))scene.putLong(k,old.getLong(k));n.put("Scenery",scene);s.loop.story.putString("MajorStoryPhase","PARENT_RESCUE_RETURN");p.closeContainer();p.stopRiding();VisitAudio.stop(p);prepareReturnRoom(p,s);go(p,s,Phase.A);return StoryTunnel.crawl(p,s,2);}
     public static ParentEntity mother(ServerPlayer p,VisitData.Scene s){
         if(s==null||s.mom==null)return null;var n=data(s);var other=p.server.getLevel(OtherWorld.KEY);
         if(other!=null){LoopProps.hold(other,BlockPos.of(scenery(s).getLong("House")));if(n.contains("MotherAt"))LoopProps.hold(other,BlockPos.of(n.getLong("MotherAt")));if(!s.loop.motherPos.equals(BlockPos.ZERO))LoopProps.hold(other,s.loop.motherPos);}
@@ -59,6 +59,10 @@ public final class ParentRescueStory {
         if(!started(s)||!s.owner.equals(p.getUUID())||!p.isAlive())return;var n=data(s);
         if(RescueChapter.started(s)||n.getBoolean("Complete")&&phase(s)==Phase.PARENT_RESCUE_KITCHEN_MOTHER_DISAPPEARED){RescueChapter.tick(p,s);return;}
         p.fallDistance=0;if(p.level()!=p.server.getLevel(OtherWorld.KEY))return;
+        if(StoryTunnel.entryPhase(s)&&!StoryTunnel.insideCrawl(p,s)){
+            if(p.tickCount%20==0)StoryTunnel.crawl(p,s,2);
+            return;
+        }
         if(n.getBoolean("Recover")){n.remove("Recover");n.remove("Audio");ShowPlayback.stop(p,s);}
         if(n.contains("ArrivalMusicAt")&&!n.getBoolean("ArrivalMusicStarted")&&p.serverLevel().getGameTime()>=n.getLong("ArrivalMusicAt")){
             VisitAudio.play(p,"parents_rescue_arrival_music",true);n.putBoolean("ArrivalMusicStarted",true);n.remove("ArrivalMusicAt");
@@ -66,11 +70,13 @@ public final class ParentRescueStory {
         var state=phase(s);var m=mother(p,s);if(m==null&&state!=Phase.A&&state!=Phase.TUNNEL_EXIT){n.putString("Blocker","Waiting for the canonical Other Mother to load; no duplicate created.");return;}
         var family=ParentAccess.family(p.server,s.owner);if(m!=null){if(family!=null){m.makeOtherParent(Math.max(0,family.momSkin));if(!family.storyMissing){family.storyMissing=true;FamilyData.get(p.server).setDirty();}}n.putLong("MotherAt",m.blockPosition().asLong());LoopProps.hold(p.serverLevel(),m.blockPosition());}
         var savedFather=father(p,s);if(savedFather!=null){n.putLong("FatherAt",savedFather.blockPosition().asLong());LoopProps.hold(p.serverLevel(),savedFather.blockPosition());}for(String key:scenery(s).getAllKeys())if(key.endsWith("Position"))LoopProps.hold(p.serverLevel(),BlockPos.of(scenery(s).getLong(key)));
-        String sound=voice(state);int t=n.getInt("Ticks");boolean done=false;if(!sound.isEmpty()){if(!n.getBoolean("Audio")){if(!ShowPlayback.start(p,s,sound,false)){n.putString("Blocker",ShowPlayback.data(s).getString("Blocker"));return;}n.putBoolean("Audio",true);}done=ShowPlayback.tick(p,s);t=ShowPlayback.position(s);n.putInt("Ticks",t);if(!ShowPlayback.data(s).getString("Blocker").isEmpty()){sync(p,s);return;}}else n.putInt("Ticks",++t);
+        String sound=voice(state);
+        boolean done=recording(p,s,n,sound);
+        int t=n.getInt("Ticks");
         if(n.getBoolean("DoorLocked")){var little=BlockPos.of(scenery(s).getLong("LittleDoor"));var stateAtDoor=p.level().getBlockState(little);if(stateAtDoor.is(com.coraline.registry.ModBlocks.TINY_DOOR.get())&&stateAtDoor.getValue(TinyDoorBlock.OPEN))p.serverLevel().setBlock(little,stateAtDoor.setValue(TinyDoorBlock.OPEN,false).setValue(TinyDoorBlock.PORTAL,false),3);}
         if(n.getBoolean("Seated")){var chair=FirstEscapeScene.prop(p,s,n.getBoolean("KitchenSeated")?"KitchenSeat":"BugChair");if(chair!=null&&p.getVehicle()!=chair)p.startRiding(chair,true);}
         switch(state){
-            case A,TUNNEL_EXIT->{p.setForcedPose(Pose.SWIMMING);p.setPose(Pose.SWIMMING);var origin=Vec3.atBottomCenterOf(BlockPos.of(FirstEscapeStory.data(s).getLong("EscapeTunnel")));var forward=FirstEscapeStory.escapeDirection(s);double progress=p.position().subtract(origin).dot(Vec3.atLowerCornerOf(forward.getNormal()));var c=cat(p,s);if(c!=null){guideTunnelCat(p,s,c,progress);}if(state==Phase.A&&done){n.putBoolean("TunnelSpeechFinished",true);go(p,s,Phase.TUNNEL_EXIT);}if(n.getBoolean("TunnelSpeechFinished")){FirstEscapeScene.place(p,s,FirstEscapeStory.tunnelCell(s,0,0,22),Blocks.AIR.defaultBlockState());if(progress>=20&&emerge(p,s)){n.putBoolean("CatLeft",true);ShowActors.restore(p,s);if(m!=null){m.stopRiding();m.setInvisible(false);m.setPos(Vec3.atBottomCenterOf(FirstEscapeScene.room(s).west(3)));m.lookAtStoryPlayer(p);}go(p,s,Phase.B);}}}
+            case A,TUNNEL_EXIT->{p.setForcedPose(Pose.SWIMMING);p.setPose(Pose.SWIMMING);var origin=Vec3.atBottomCenterOf(BlockPos.of(FirstEscapeStory.data(s).getLong("EscapeTunnel")));var forward=FirstEscapeStory.escapeDirection(s);double progress=p.position().subtract(origin).dot(Vec3.atLowerCornerOf(forward.getNormal()));var c=cat(p,s);if(c!=null){guideTunnelCat(p,s,c,progress);}if(state==Phase.A&&done){n.putBoolean("TunnelSpeechFinished",true);go(p,s,Phase.TUNNEL_EXIT);}if(n.getBoolean("TunnelSpeechFinished")){FirstEscapeScene.place(p,s,FirstEscapeStory.tunnelCell(s,0,0,22),Blocks.AIR.defaultBlockState());if(progress>=20&&emerge(p,s)){n.putBoolean("CatLeft",true);n.remove("ReturnTravel");ShowActors.restore(p,s);if(m!=null){m.stopRiding();m.setInvisible(false);m.setPos(Vec3.atBottomCenterOf(FirstEscapeScene.room(s).west(3)));m.lookAtStoryPlayer(p);}go(p,s,Phase.B);}}}
             case B->{m.lookAtStoryPlayer(p);if(done){FirstEscapeScene.prepareRoom(p,s);FirstEscapeScene.roomProps(p,s);go(p,s,Phase.C);}}
             case C->{float u=Math.min(1,t/(float)Math.max(1,ShowRecordings.duration(sound)));n.putFloat("Morph",u);parlor(p,s,u,t);m.lookAtStoryPlayer(p);if(done){n.putBoolean("Evil",true);go(p,s,Phase.D);}}
             case D->{m.lookAtStoryPlayer(p);if(done)go(p,s,Phase.FATHER_ENTRY);}
@@ -81,7 +87,7 @@ public final class ParentRescueStory {
             case KITCHEN->tickKitchenArrival(p,s,m);
             case WAIT_KITCHEN_SEAT->{if(walkKitchenMother(p,s,m))m.familyGesture(60,5);FirstEscapeStory.hint(p,"Right-click a kitchen chair to sit.");}
             case H,I,J,K->{walkKitchenMother(p,s,m);var stoveAt=BlockPos.of(n.getLong("Stove"));FirstEscapeScene.ensure(p,s,"CookingPot",CinematicPropEntity.RESCUE_POT,0,p.serverLevel(),Vec3.atBottomCenterOf(stoveAt).add(0,.9,0));if(state!=Phase.I&&t%12==0)p.serverLevel().sendParticles(net.minecraft.core.particles.ParticleTypes.SMOKE,stoveAt.getX()+.5,stoveAt.getY()+1.25,stoveAt.getZ()+.5,1,.12,.05,.12,.005);m.familyGesture(state==Phase.I?0:state==Phase.K&&t>=20?61:60,5);if(done){if(state==Phase.H)go(p,s,Phase.I);else if(state==Phase.I)go(p,s,Phase.J);else if(state==Phase.J)go(p,s,Phase.K);else go(p,s,Phase.SERVE);}}
-            case SERVE->{retireKitchenGift(p,s);var plate=FirstEscapeScene.ensure(p,s,"Meal",CinematicPropEntity.RESCUE_MEAL,0,p.serverLevel(),m.position().add(0,1,.4));var target=BlockPos.of(n.getLong("KitchenTable"));if(plate!=null)plate.setPos(m.position().add(0,1,.4));m.familyGesture(62,5);if(MissingParentsCat.walk(m,Vec3.atBottomCenterOf(target.west()),.65)){if(plate!=null)plate.setPos(Vec3.atBottomCenterOf(target).add(0,.9,0));n.putBoolean("MealPlaced",true);go(p,s,Phase.L);}}
+            case SERVE->{retireKitchenGift(p,s);var plate=FirstEscapeScene.ensure(p,s,"Meal",CinematicPropEntity.RESCUE_MEAL,0,p.serverLevel(),m.position().add(0,1,.4));var target=BlockPos.of(n.getLong("KitchenTable"));if(plate!=null)plate.setPos(m.position().add(0,1,.4));m.familyGesture(62,5);if(plate!=null&&MissingParentsCat.walk(m,Vec3.atBottomCenterOf(target.west()),.65)){plate.setPos(Vec3.atBottomCenterOf(target).add(0,.9,0));n.putBoolean("MealPlaced",true);go(p,s,Phase.L);}}
             case L->{retireKitchenGift(p,s);m.lookAtStoryPlayer(p);if(done)go(p,s,Phase.M);}
             case M->{retireKitchenGift(p,s);m.lookAtStoryPlayer(p);m.familyGesture(63,5);if(done)go(p,s,Phase.LOOK_AWAY);}
             case LOOK_AWAY->{m.lookAtStoryPlayer(p);FirstEscapeStory.hint(p,"Look away from Other Mother.");if(!gaze(p,m.position().add(0,1.5,0),.20))n.putInt("AwayTicks",n.getInt("AwayTicks")+1);else n.putInt("AwayTicks",0);if(n.getInt("AwayTicks")>=12){n.putLong("MotherVanishedAt",m.blockPosition().asLong());m.setInvisible(true);m.getNavigation().stop();n.putBoolean("MotherAbsent",true);go(p,s,Phase.WAIT_LOOK_BACK);}}
@@ -100,6 +106,39 @@ public final class ParentRescueStory {
         }
         if(p.tickCount%10==0)sync(p,s);if(p.tickCount%20==0)OtherMotherLoop.changed(p);
     }
+    private static boolean recording(ServerPlayer p,VisitData.Scene s,CompoundTag n,String sound){
+        if(sound.isEmpty()){n.putInt("Ticks",Math.min(Integer.MAX_VALUE-1,n.getInt("Ticks"))+1);return false;}
+        var recovery=n.getCompound("ReturnRecording");
+        if(!sound.equals(recovery.getString("Sound"))){
+            recovery=new CompoundTag();recovery.putString("Sound",sound);n.put("ReturnRecording",recovery);
+        }
+        if(ShowPlayback.debugSeeking(s))return false;
+        if(RescueChapter.RecordingRecovery.exhausted(recovery)){
+            int t=RescueChapter.RecordingRecovery.advance(recovery);
+            n.putInt("Ticks",t);
+            return RescueChapter.RecordingRecovery.dialogueWindowEnded(t,ShowRecordings.duration(sound));
+        }
+        long now=p.serverLevel().getGameTime();
+        if(now<recovery.getLong("RetryAt"))return false;
+        boolean running=n.getBoolean("Audio")&&sound.equals(ShowPlayback.data(s).getString("Sound"))&&ShowPlayback.ownsSession(p,s)
+                ||ShowPlayback.start(p,s,sound,false);
+        if(running){
+            n.putBoolean("Audio",true);
+            boolean done=ShowPlayback.tick(p,s);
+            if(ShowPlayback.data(s).getString("Blocker").isEmpty()&&!ShowPlayback.data(s).getBoolean("SafetySkipped")){
+                n.putInt("Ticks",ShowPlayback.position(s));
+                return done&&!ShowPlayback.debugSeeking(s);
+            }
+        }
+        ShowPlayback.stop(p,s);
+        n.remove("Audio");
+        RescueChapter.RecordingRecovery.failed(recovery);
+        recovery.putLong("RetryAt",now+20);
+        OtherMotherLoop.changed(p);
+        if(RescueChapter.RecordingRecovery.exhausted(recovery))
+            FirstEscapeStory.hint(p,"The recording is unavailable. The scene can continue through its required actions.");
+        return false;
+    }
     static void cutsceneSafety(ServerPlayer p,VisitData.Scene s){
         if(!OtherWorld.isOther(p.level()))return;var state=phase(s);var n=data(s);String sound=voice(state);
         boolean motion=state==Phase.FATHER_ENTRY||state==Phase.KEY_SCENE||state==Phase.SERVE;
@@ -107,24 +146,20 @@ public final class ParentRescueStory {
         // Fetching a key from storage is a player objective, not a failed animation.
         if(state==Phase.KEY_SCENE&&n.getInt("KeyStep")==0&&!java.util.stream.IntStream.range(0,p.getInventory().getContainerSize()).anyMatch(i->key(p.getInventory().getItem(i),s)))return;
         if(!StoryCutsceneWatchdog.overdue(p,s,"parent_rescue",state.name()+":"+n.getInt("KeyStep"),sound.isEmpty()?600:StoryCutsceneWatchdog.voiceBudget(sound)))return;
+        if(motion||state==Phase.G){
+            n.putString("Blocker","Waiting for the physical "+state.name().toLowerCase(Locale.ROOT).replace('_',' ')+" action.");
+            StoryCutsceneWatchdog.retry(s,"parent_rescue");
+            FirstEscapeStory.hint(p,n.getString("Blocker"));
+            return;
+        }
         ShowPlayback.safetyFinish(p,s,"Parent rescue action exceeded its safety window");
         switch(state){
             case A->{n.putBoolean("TunnelSpeechFinished",true);go(p,s,Phase.TUNNEL_EXIT);}
             case B->{FirstEscapeScene.prepareRoom(p,s);FirstEscapeScene.roomProps(p,s);go(p,s,Phase.C);}
             case C->{n.putFloat("Morph",1);n.putBoolean("Evil",true);parlor(p,s,1,200);go(p,s,Phase.D);}
             case D->go(p,s,Phase.FATHER_ENTRY);
-            case FATHER_ENTRY->{release(p,s);n.putBoolean("ChairPlaced",true);go(p,s,Phase.KEY_SCENE);}
-            case KEY_SCENE->{
-                if(!n.getBoolean("KeyTaken")&&!StoryItemCustody.capture(p,s,"Key",stack->key(stack,s))){release(p,s);StoryCutsceneWatchdog.retry(s,"parent_rescue");return;}
-                n.putBoolean("KeyTaken",true);n.putBoolean("KeySwallowed",true);s.loop.story.putString("LittleDoorKeyHolder","EVIL_OTHER_MOTHER");
-                if(!placeWardrobe(p,s,true,0)){StoryCutsceneWatchdog.retry(s,"parent_rescue");return;}
-                var mom=mother(p,s);if(mom!=null)mom.setItemSlot(EquipmentSlot.MAINHAND,ItemStack.EMPTY);
-                go(p,s,Phase.E);
-            }
             case E->go(p,s,Phase.F);case F->go(p,s,Phase.G);
-            case G->{release(p,s);go(p,s,Phase.KITCHEN);}
             case H->go(p,s,Phase.I);case I->go(p,s,Phase.J);case J->go(p,s,Phase.K);case K->go(p,s,Phase.SERVE);
-            case SERVE->{retireKitchenGift(p,s);var plate=FirstEscapeScene.prop(p,s,"Meal");if(plate!=null&&n.contains("KitchenTable"))plate.setPos(Vec3.atBottomCenterOf(BlockPos.of(n.getLong("KitchenTable"))).add(0,.9,0));n.putBoolean("MealPlaced",true);go(p,s,Phase.L);}
             case L->go(p,s,Phase.M);case M->go(p,s,Phase.LOOK_AWAY);
             case N->{release(p,s);n.putBoolean("Complete",true);s.loop.story.putString("MajorStoryPhase",Phase.PARENT_RESCUE_KITCHEN_MOTHER_DISAPPEARED.name());go(p,s,Phase.PARENT_RESCUE_KITCHEN_MOTHER_DISAPPEARED);}
             default->{}

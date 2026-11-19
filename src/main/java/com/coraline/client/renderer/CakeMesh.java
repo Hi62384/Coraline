@@ -1,5 +1,6 @@
 package com.coraline.client.renderer;
 
+import com.coraline.feast.CakeKitchenRules;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -52,9 +53,24 @@ final class CakeMesh {
         disk(pose,porcelain,light,.46F,.265F,0,0xFFFAEF);
         band(pose,porcelain,light,.465F,.22F,.265F,0,0xCDA347,SIDES);
     }
+    static void pan(CompoundTag design,int mode,PoseStack pose,MultiBufferSource buffers,int light){
+        var metal=buffers.getBuffer(RenderType.entityCutout(FROST));
+        var sponge=buffers.getBuffer(RenderType.entityCutout(SPONGE));
+        int layers=CakeKitchenRules.layers(design.getInt("Layers")),base=design.getInt("Base");
+        float rise=mode<=4?.085F:mode==5?.11F:.14F;
+        int tint=mode>=9?0x473B32:mode==8?0xA87B52:mode<=4?0xFFF0C9:0xFFFFFF;
+        float y=0;
+        for(int layer=0;layer<layers;layer++){
+            band(pose,metal,light,.435F,y,y+.055F,0,0x7C777E,SIDES);
+            band(pose,metal,light,.447F,y+.04F,y+.06F,0,0xC3BDC3,SIDES);
+            band(pose,sponge,light,.385F,y+.055F,y+.055F+rise,base,tint,SIDES);
+            disk(pose,sponge,light,.385F,y+.055F+rise,base,tint);
+            y+=.055F+rise;
+        }
+    }
     static void render(CompoundTag d,PoseStack pose,MultiBufferSource buffers,int light){
         stand(pose,buffers,light);
-        int base=Math.max(0,Math.min(6,d.getInt("Base"))),layers=Math.max(1,Math.min(3,d.getInt("Layers")));
+        int base=Math.max(0,Math.min(6,d.getInt("Base"))),layers=CakeKitchenRules.layers(d.getInt("Layers"));
         int filling=d.getInt("Filling"),frost=d.getInt("Frosting"),toppings=d.getInt("Toppings"),topper=d.getInt("Topper");
         int coverage=d.contains("FrostCoverage")?d.getInt("FrostCoverage"):4;
         var sponge=buffers.getBuffer(RenderType.entityCutout(SPONGE));var icing=buffers.getBuffer(RenderType.entityCutout(FROST));
@@ -64,9 +80,13 @@ final class CakeMesh {
             band(pose,sponge,light,.385F,y,y+layerHeight,base,0xFFFFFF,SIDES);
             disk(pose,sponge,light,.385F,y+layerHeight,base,0xFFFFFF);
             y+=layerHeight;
-            if(i<layers-1){int swatch=switch(filling){case 1->1;case 2,3->2;case 4->4;default->0;};
+            if(i<layers-1&&filling>=0){int swatch=switch(filling){case 1->1;case 2,3->2;case 4->4;default->0;};
                 band(pose,icing,light,.396F,y,y+.05F,swatch,0xFFFFFF,SIDES);
-                disk(pose,icing,light,.396F,y+.05F,swatch,0xFFFFFF);y+=.05F;}
+                disk(pose,icing,light,.396F,y+.05F,swatch,0xFFFFFF);y+=.05F;
+            }else if(i<layers-1){
+                band(pose,sponge,light,.385F,y,y+.018F,base,0xB6987B,SIDES);
+                y+=.018F;
+            }
         }
         if(coverage>0){int panels=Math.min(SIDES,coverage*3);
             band(pose,icing,light,.4F,y-.12F,y+.055F,Math.max(0,frost),0xFFFFFF,panels);

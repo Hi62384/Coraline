@@ -94,6 +94,8 @@ public final class GhostVictimWorld {
     static boolean ensureHouseProps(ServerPlayer p,VisitData.Scene s,CompoundTag n){
         var level=AcceptedButtonEyesWorld.level(p);
         if(level==null)return false;
+        // Active saves may already have a prepared house but no numbered lights.
+        if(p.tickCount%40==0)refreshRoomLights(p,s,n);
         var bedroomMirror=n.getCompound("Mirrors").getCompound("bedroom");
         if(!n.getBoolean("WallMirrorsPrepared")||!bedroomMirror.contains("Position",Tag.TAG_LONG)
                 ||!GhostVictimMirrors.hasBacking(level,bedroomMirror)){
@@ -102,7 +104,7 @@ public final class GhostVictimWorld {
         }
         for(String id:new String[]{"house_hall_vase","house_hall_book","house_kitchen_cup","house_bedroom_toy",
                 "house_bedroom_clock","supper_bottle","kitchen_knife","supper_cup"})
-            GhostVictimManifestations.retireDisplay(p,s,n,id);
+            GhostVictimManifestations.hideLegacyHouseholdDisplay(p,s,n,id);
         return true;
     }
     private static boolean points(ServerPlayer p,VisitData.Scene s,CompoundTag n){
@@ -127,19 +129,24 @@ public final class GhostVictimWorld {
                 if(GhostVictimManifestations.lightSource(level.getBlockState(at))
                         &&!level.getBlockState(at).is(Blocks.LIGHT))continue;
             }
+            var reserved=new java.util.HashSet<Long>();
+            for(String key:points.getAllKeys()){
+                var row=points.getCompound(key);
+                if(!id.equals(key)&&row.getString("Kind").equals("LIGHT")&&row.contains("Position",Tag.TAG_LONG))
+                    reserved.add(row.getLong("Position"));
+            }
             var center=rooms[room];
             BlockPos best=null;
             double nearest=Double.MAX_VALUE;
             for(var cell:BlockPos.betweenClosed(center.offset(-6,0,-6),center.offset(6,7,6))){
                 double distance=cell.distSqr(center);
-                if(distance>=nearest||!level.hasChunkAt(cell))continue;
+                if(distance>=nearest||reserved.contains(cell.asLong())||!level.hasChunkAt(cell))continue;
                 var state=level.getBlockState(cell);
                 if(state.is(Blocks.LIGHT)||!GhostVictimManifestations.lightSource(state)||level.getBlockEntity(cell)!=null)continue;
                 best=cell.immutable();
                 nearest=distance;
             }
             if(best!=null){
-                points.remove(id);
                 if(GhostVictimManifestations.light(p,s,n,id,best))OtherMotherLoop.changed(p);
             }
         }
@@ -150,22 +157,35 @@ public final class GhostVictimWorld {
         var table=diningTable(p,s);
         var level=AcceptedButtonEyesWorld.level(p);
         level.getChunkAt(table);
-        var scenery=FirstEscapeScene.context(s);
-        if(scenery.hasUUID("VictimSupperTable")&&FirstEscapeScene.prop(p,s,"VictimSupperTable")==null){
-            // The saved visual can be lost after a reload. Its missing UUID
-            // otherwise prevents ensure() from ever restoring the table.
-            scenery.remove("VictimSupperTable");
-            scenery.remove("VictimSupperTablePosition");
-            OtherMotherLoop.changed(p);
-        }
-        if(FirstEscapeScene.ensure(p,s,"VictimSupperTable",CinematicPropEntity.VICTIM_SUPPER_TABLE,0,level,Vec3.atBottomCenterOf(table))==null)return false;
-        if(n.getInt("SupperObjectsRevision")>=1)return true;
+        var prop=ensureSupperProp(p,s,"VictimSupperTable",CinematicPropEntity.VICTIM_SUPPER_TABLE,0,level,Vec3.atBottomCenterOf(table));
+        if(prop==null||prop.level()!=level||prop.kind()!=CinematicPropEntity.VICTIM_SUPPER_TABLE)return false;
         if(!GhostVictimManifestations.display(p,s,n,"supper_silverware",Vec3.atBottomCenterOf(table).add(-.5,1,.5),GhostVictimProgress.Disturbance.OBJECT,new net.minecraft.world.item.ItemStack(FeastContent.STORY_SPOON.get())))return false;
         if(!GhostVictimManifestations.display(p,s,n,"supper_knife",Vec3.atBottomCenterOf(table).add(.4,1,.6),GhostVictimProgress.Disturbance.KNIFE,new net.minecraft.world.item.ItemStack(FeastContent.STORY_TABLE_KNIFE.get())))return false;
         var base=Vec3.atBottomCenterOf(table);
         if(!GhostVictimManifestations.display(p,s,n,"supper_bread",base.add(-.95,1.08,-.55),GhostVictimProgress.Disturbance.FOOD,new ItemStack(Items.BREAD))
             ||!GhostVictimManifestations.display(p,s,n,"supper_dessert",base.add(.92,1.08,-.72),GhostVictimProgress.Disturbance.ILLUSION,new ItemStack(Items.PUMPKIN_PIE)))return false;
         n.putBoolean("SupperObjectsPrepared",true);n.putInt("SupperObjectsRevision",1);OtherMotherLoop.changed(p);return true;
+    }
+    static CinematicPropEntity ensureSupperProp(ServerPlayer p,VisitData.Scene s,String key,int kind,int slot,ServerLevel level,Vec3 target){
+        var scenery=FirstEscapeScene.context(s);
+        if(!scenery.hasUUID(key))return FirstEscapeScene.ensure(p,s,key,kind,slot,level,target);
+        var existing=FirstEscapeScene.prop(p,s,key);
+        if(existing!=null)return existing.level()==level&&existing.kind()==kind&&existing.slot()==slot?existing:null;
+        if(scenery.contains(key+"Position",Tag.TAG_LONG)){
+            var at=BlockPos.of(scenery.getLong(key+"Position"));
+            level.getChunkAt(at);
+            if(!level.areEntitiesLoaded(new net.minecraft.world.level.ChunkPos(at).toLong()))return null;
+        }
+        var id=scenery.getUUID(key);
+        if(com.coraline.rebirth.LegacyActorRecovery.check(p.server,id)
+                !=com.coraline.rebirth.LegacyActorRecovery.Result.ABSENT)return null;
+        var replacement=CinematicPropEntity.TYPE.get().create(level);
+        if(replacement==null)return null;
+        replacement.configure(s,kind,slot);replacement.setUUID(id);replacement.setPos(target);
+        if(!level.addFreshEntity(replacement))return null;
+        scenery.putLong(key+"Position",replacement.blockPosition().asLong());
+        OtherMotherLoop.changed(p);
+        return replacement;
     }
     public static void configureGiftSecret(CompoundTag n,String gift){
         var row=n.getCompound("Points").getCompound("gift_"+gift);if(!row.getString("Kind").equals("GIFT_SECRET")||row.getInt("GiftRevealVersion")>=1)return;

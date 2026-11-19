@@ -7,6 +7,11 @@ public final class PortalAperture {
     public record Vertex(double x,double y,double z,float u,float v,float shade){
         Vertex mix(Vertex other,double t){return new Vertex(x+(other.x-x)*t,y+(other.y-y)*t,z+(other.z-z)*t,(float)(u+(other.u-u)*t),(float)(v+(other.v-v)*t),(float)(shade+(other.shade-shade)*t));}
     }
+    public record Eye(double x,double y,double z) {}
+    /** Relative to the center of the block, with the opening behind its rear reveal. */
+    public static Eye eye(double x,double y,double z,int facingX,int facingZ,double mouth){
+        return new Eye(-x*facingZ+z*facingX,y,-x*facingX-z*facingZ-mouth);
+    }
     public static final double LEFT=-.4375,RIGHT=.4375,BOTTOM=-.5,TOP=.4375;
     public static List<Vertex> clip(List<Vertex> polygon,double cx,double cy,double cz){
         // Outside the opening, clip rays to the frame. Once the eye crosses

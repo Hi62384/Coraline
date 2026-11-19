@@ -39,7 +39,7 @@ public final class RescuePresentation {
             case RescueProps.CHEESE->{for(int i=0;i<5;i++)box(p,b,light,0,i*.12,0,.8-i*.12,.13,.7,0xDEBE64);}
             case RescueProps.SNOW_GLOBE->{float melt=e.value();oval(p,b,light,0,.12,0,.7,.12,.7,0x8E6852);for(int i=0;i<44;i++){double a=i*2.39,r=(i%7)/10.0,y=.3+(i%11)*.09*(1-melt);box(p,b,15728880,Math.cos(a)*r,y,Math.sin(a)*r,.025,.025,.025,0xFAF3E1);}var glass=buffers.getBuffer(RenderType.entityTranslucent(WHITE));FirstEscapePresentation.sphere(p,glass,light,0,.75,0,.7,.7,.7,0xBDE7F1,.19F);}
             case RescueProps.KEY,RescueProps.STONE->{p.translate(0,.25,0);p.mulPose(Axis.YP.rotationDegrees((float)(t*9)));p.scale(.6F,.6F,.6F);mc.getItemRenderer().renderStatic(new net.minecraft.world.item.ItemStack(e.kind()==RescueProps.KEY?com.coraline.registry.ModItems.LITTLE_DOOR_STORY_KEY.get():com.coraline.registry.ModItems.SEEING_STONE.get()),net.minecraft.world.item.ItemDisplayContext.GROUND,light,OverlayTexture.NO_OVERLAY,p,buffers,e.level(),e.getId());}
-            case RescueProps.HAND->{if(e.cue()>=10)crawlingHand(e,p,b,light,t);else{p.mulPose(Axis.ZP.rotationDegrees(e.cue()>0?90:0));oval(p,b,light,0,.15,0,.25,.12,.20,0xA5B6B0);for(int i=0;i<5;i++){double x=(i-2)*.11;var joint=new Vec3(x,.13,-.28);bar(p,b,light,new Vec3(x*.7,.15,0),joint,.065,0xA5B6B0);bar(p,b,light,joint,new Vec3(x*1.4,.05,-.55+Math.abs(i-2)*.045),.045,0x9BAEA6);}}}
+            case RescueProps.HAND->{if(e.cue()!=RescueProps.HAND_WAITING_CUE)crawlingHand(e,p,b,light,t);}
             case RescueProps.TONGS->{
                 for(int side:new int[]{-1,1}){bar(p,b,light,new Vec3(0,0,.35),new Vec3(side*.07,0,-.35),.035,0x8D9491);bar(p,b,light,new Vec3(side*.07,0,-.35),new Vec3(side*.13,-.04,-.62),.045,0xB2B7AA);}
                 oval(p,b,light,0,0,.35,.10,.025,.08,0x363C39);
@@ -62,7 +62,7 @@ public final class RescuePresentation {
                 // A folded cloth around the actual rock/hand-fragment bundle.
                 for(int side:new int[]{-1,1}){box(p,b,light,side*.31,.03,0,.34,.045,.72,0x9F947F);box(p,b,light,0,.03,side*.31,.72,.045,.34,0xB0A48E);}
                 oval(p,b,light,0,.22,0,.28,.21,.25,0x666960);
-                for(int fragment=0;fragment<5;fragment++){double a=fragment*2.4;box(p,b,light,Math.cos(a)*.22,.10,Math.sin(a)*.22,.13,.065,.07,0xA5B6B0);}
+                for(int fragment=0;fragment<5;fragment++){double a=fragment*2.4;box(p,b,light,Math.cos(a)*.22,.10,Math.sin(a)*.22,.13,.065,.07,0x9E8A78);}
                 for(int side:new int[]{-1,1}){bar(p,b,light,new Vec3(side*.42,.06,0),new Vec3(side*.42*(1-fold),.06+.43*fold,0),.13,0xB0A48E);bar(p,b,light,new Vec3(0,.06,side*.42),new Vec3(0,.06+.43*fold,side*.42*(1-fold)),.13,0x9F947F);}
                 if(fold>.9){double knot=(fold-.9)*10;oval(p,b,light,0,.48,0,.095*knot,.07*knot,.075*knot,0x8E806A);}
                 if(e.value()>0){oval(p,b,light,.17,.43,-.16,.09,.09,.025,0x29272B);bar(p,b,light,new Vec3(.17,.39,-.16),new Vec3(.17,.18,-.16),.035,0xA5946D);}
@@ -74,15 +74,15 @@ public final class RescuePresentation {
         boolean grip=e.cue()==11,recover=e.cue()>=34&&(e.cue()-34)%4==2,warning=e.cue()>=34&&(e.cue()-34)%4==0;
         if(e.cue()==20){p.translate(Math.sin(t*1.7)*.06,Math.abs(Math.sin(t*1.3))*.05,Math.cos(t*1.1)*.04);p.mulPose(Axis.ZP.rotationDegrees((float)(Math.sin(t*1.4)*18)));}
         if(warning)p.translate(0,.08+Math.sin(t*.3)*.03,0);
-        oval(p,b,light,0,.15,0,.24,.10,.21,recover?0xBAC4B2:0xA5B6B0);
+        oval(p,b,light,0,.15,0,.24,.10,.21,recover?0xAD9682:0x9E8A78);
         for(int finger=0;finger<4;finger++){
             double x=(finger-1.5)*.12,lift=grip?.14:Math.max(0,Math.sin(t*.28+finger*1.7))*.12;
             var root=new Vec3(x,.15,-.12);var knuckle=new Vec3(x*1.10,.11+lift,-.32);var joint=new Vec3(x*1.24,.08+lift,-.48);
             var tip=new Vec3(x*1.40,grip?.20:.015,grip?-.40:-.62+Math.abs(finger-1.5)*.04);
-            bar(p,b,light,root,knuckle,.065,0xA5B6B0);oval(p,b,light,knuckle.x,knuckle.y,knuckle.z,.047,.044,.045,0x879C93);
-            bar(p,b,light,knuckle,joint,.052,0xA5B6B0);bar(p,b,light,joint,tip,.042,0x9BAEA6);oval(p,b,light,tip.x,tip.y+.01,tip.z,.025,.012,.043,0x303C36);
+            bar(p,b,light,root,knuckle,.065,0x9E8A78);oval(p,b,light,knuckle.x,knuckle.y,knuckle.z,.047,.044,.045,0x756259);
+            bar(p,b,light,knuckle,joint,.052,0x9E8A78);bar(p,b,light,joint,tip,.042,0x887165);oval(p,b,light,tip.x,tip.y+.01,tip.z,.025,.012,.043,0x303C36);
         }
-        bar(p,b,light,new Vec3(-.18,.16,.06),new Vec3(-.36,.08,-.07),.085,0x9BAEA6);bar(p,b,light,new Vec3(-.36,.08,-.07),new Vec3(-.42,.02,-.22),.065,0xA5B6B0);
+        bar(p,b,light,new Vec3(-.18,.16,.06),new Vec3(-.36,.08,-.07),.085,0x887165);bar(p,b,light,new Vec3(-.36,.08,-.07),new Vec3(-.42,.02,-.22),.065,0x9E8A78);
         for(int wire=0;wire<3;wire++)bar(p,b,light,new Vec3((wire-1)*.07,.14,.12),new Vec3((wire-1)*.10,.14+Math.sin(t*.2+wire)*.025,.34),.018,0x766B58);
     }
     private static void furnace(CinematicPropEntity e,PoseStack p,VertexConsumer b,int light){

@@ -36,13 +36,16 @@ public final class DoorPortalRenderer implements BlockEntityRenderer<DoorBlockEn
             brick.vertex(pose.last().pose(),.49F,.49F,.15F).color(255,255,255,255).uv(1,0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(pose.last().normal(),0,0,1).endVertex();
             brick.vertex(pose.last().pose(),-.49F,.49F,.15F).color(255,255,255,255).uv(0,0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(pose.last().normal(),0,0,1).endVertex();pose.popPose();return;
         }
-        if(!state.getValue(TinyDoorBlock.PORTAL)||!state.getValue(TinyDoorBlock.OPEN))return;
+        if(block.storyPassageBlocked||!block.passageBuilt||!state.getValue(TinyDoorBlock.PORTAL)||!state.getValue(TinyDoorBlock.OPEN))return;
+        var facing=state.getValue(TinyDoorBlock.FACING);
+        var eye=net.minecraft.client.Minecraft.getInstance().gameRenderer.getMainCamera().getPosition()
+                .subtract(net.minecraft.world.phys.Vec3.atCenterOf(block.getBlockPos()));
+        var local=PortalAperture.eye(eye.x,eye.y,eye.z,facing.getStepX(),facing.getStepZ(),DeadTunnelGeometry.MOUTH);
         pose.pushPose();
-        pose.translate(.5,-1,.5);
-        pose.mulPose(Axis.YP.rotationDegrees(-state.getValue(TinyDoorBlock.FACING).toYRot()+180));
-        pose.translate(-.5,0,0);
-        if(block.storyDecayed)TunnelRenderer.renderWebbedSegment(pose,buffers,1,30);
-        else TunnelRenderer.renderSegment(pose,buffers,block.getLevel().getGameTime()+partial,1,30);
+        pose.translate(.5,.5,.5);
+        pose.mulPose(Axis.YP.rotationDegrees(-facing.toYRot()+180));
+        pose.translate(0,0,DeadTunnelGeometry.MOUTH);
+        TunnelRenderer.doorway(pose,buffers,block.storyDecayed,local,light,block.getLevel().getGameTime()+partial);
         pose.popPose();
     }
 }

@@ -31,7 +31,7 @@ public final class PalaceTransportProgress {
     public boolean motionFinished(UUID actor,UUID nonce,Phase next,boolean realMotionComplete,boolean destinationPreloaded){
         if(!owns(actor,nonce)||!realMotionComplete||phase==Phase.COMPLETE||next.ordinal()!=phase.ordinal()+1)return false;
         int minimum=switch(phase){case NOTICE->40;case LIFT,THROW->30;case CLOSE,ARRIVE->40;case TRANSIT->160;default->0;};
-        if(ticks<minimum||next==Phase.TRANSIT&&!destinationPreloaded)return false;
+        if(ticks<minimum||!destinationPreloaded&&(next==Phase.LIFT||next==Phase.TRANSIT||next==Phase.ARRIVE))return false;
         phase=next;ticks=0;return true;
     }
     public boolean resume(UUID actor){if(!blocker.isEmpty()||!owner.equals(actor)||phase==Phase.COMPLETE)return false;last=-1;session=UUID.randomUUID();return true;}

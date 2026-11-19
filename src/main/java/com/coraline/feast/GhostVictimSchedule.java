@@ -90,7 +90,7 @@ public final class GhostVictimSchedule {
         var escape=session.getCompound(GhostEscapeProgress.KEY);
         if(point.startsWith("room_light_")&&GhostEscapeProgress.owns(session,escape)
                 &&GhostEscapeProgress.phase(escape)==GhostEscapeProgress.Phase.WAIT_LURE)return true;
-        if(point.startsWith("supper_"))return phase==GhostVictimProgress.Phase.FIRST_SUPPER&&session.contains("SupperSeated");
+        if(point.startsWith("supper_"))return phase==GhostVictimProgress.Phase.FIRST_SUPPER&&session.getBoolean("SupperPhysicalReady");
         if(point.startsWith("gift_"))return phase==GhostVictimProgress.Phase.DAILY_GIFT&&session.getBoolean("GiftPlaced")
             &&point.equals("gift_"+today(session).getString("Gift"));
         if(point.startsWith("outing_")){

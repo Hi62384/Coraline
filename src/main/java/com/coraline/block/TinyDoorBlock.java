@@ -23,8 +23,8 @@ public final class TinyDoorBlock extends BaseEntityBlock implements LiquidBlockC
                 door.refreshStoryPassageBlock();
                 if(world.getGameTime()%20==0){
                     door.extinguishRetiredPostgame();
-                    if(s.getValue(PORTAL)&&s.getValue(OPEN)&&door.doorId!=null&&(!door.passageBuilt||door.passageVersion<4))com.coraline.otherworld.TunnelPassage.ensure(sl,door);
-                    else if((!s.getValue(PORTAL)||!s.getValue(OPEN))&&door.passageBuilt&&!com.coraline.otherworld.TunnelPassage.occupied(sl,door))com.coraline.otherworld.TunnelPassage.restore(sl,door);
+                    if(s.getValue(PORTAL)&&s.getValue(OPEN)&&door.doorId!=null)com.coraline.otherworld.TunnelPassage.ensure(sl,door);
+                    else if((!s.getValue(PORTAL)||!s.getValue(OPEN))&&com.coraline.otherworld.TunnelPassage.hasJournal(sl,door)&&!com.coraline.otherworld.TunnelPassage.occupied(sl,door))com.coraline.otherworld.TunnelPassage.restore(sl,door);
                 }
                 if(com.coraline.otherworld.OtherWorld.isOther(level))return;
                 var record=com.coraline.otherworld.DoorData.get(sl.getServer()).doors.get(door.doorId);
@@ -77,14 +77,19 @@ public final class TinyDoorBlock extends BaseEntityBlock implements LiquidBlockC
         if(l.getBlockEntity(p) instanceof com.coraline.otherworld.DoorBlockEntity fixed && fixed.storyBricked){if(!l.isClientSide)player.displayClientMessage(net.minecraft.network.chat.Component.literal("The passage is sealed."),true);return InteractionResult.CONSUME;}
         if(l instanceof net.minecraft.server.level.ServerLevel sealedLevel&&l.getBlockEntity(p) instanceof com.coraline.otherworld.DoorBlockEntity sealedDoor&&sealedDoor.doorId!=null){var record=com.coraline.otherworld.DoorData.get(sealedLevel.getServer()).doors.get(sealedDoor.doorId);if(record!=null&&com.coraline.feast.StoryTunnel.sealed(sealedLevel.getServer(),record.owner))return InteractionResult.CONSUME;}
         if(!s.getValue(OPEN)&&player instanceof net.minecraft.server.level.ServerPlayer serverPlayer&&com.coraline.otherworld.OtherWorld.lockTunnelDoor(serverPlayer,p))return InteractionResult.CONSUME;
-        if(s.getValue(OPEN)&&l instanceof net.minecraft.server.level.ServerLevel server&&l.getBlockEntity(p) instanceof com.coraline.otherworld.DoorBlockEntity door&&door.passageBuilt&&(com.coraline.otherworld.TunnelPassage.contains(player,door)||com.coraline.otherworld.TunnelPassage.occupied(server,door)))return InteractionResult.CONSUME;
+        if(s.getValue(OPEN)&&l instanceof net.minecraft.server.level.ServerLevel server
+                &&l.getBlockEntity(p) instanceof com.coraline.otherworld.DoorBlockEntity door
+                &&com.coraline.otherworld.TunnelPassage.occupied(server,door)){
+            player.displayClientMessage(net.minecraft.network.chat.Component.literal("Someone is in the Little Door opening or crawlspace. Wait for them to clear it before closing."),true);
+            return InteractionResult.CONSUME;
+        }
         if(!l.isClientSide&&!com.coraline.otherworld.OtherWorld.isOther(l)&&l.getBlockEntity(p) instanceof com.coraline.otherworld.DoorBlockEntity block&&block.doorId==null)
             setPlacedBy(l,p,s,player,new net.minecraft.world.item.ItemStack(com.coraline.registry.ModItems.TINY_DOOR.get()));
-        if(!l.isClientSide){l.setBlock(p,s.cycle(OPEN),3);l.playSound(null,p,s.getValue(OPEN)?net.minecraft.sounds.SoundEvents.WOODEN_DOOR_CLOSE:net.minecraft.sounds.SoundEvents.WOODEN_DOOR_OPEN,net.minecraft.sounds.SoundSource.BLOCKS,.8F,1);
+        if(!l.isClientSide){if(!l.setBlock(p,s.cycle(OPEN),3))return InteractionResult.CONSUME;l.playSound(null,p,s.getValue(OPEN)?net.minecraft.sounds.SoundEvents.WOODEN_DOOR_CLOSE:net.minecraft.sounds.SoundEvents.WOODEN_DOOR_OPEN,net.minecraft.sounds.SoundSource.BLOCKS,.8F,1);
             if(!s.getValue(OPEN))com.coraline.otherworld.SceneAudio.doorOpened((net.minecraft.server.level.ServerLevel)l,p);
             if(l.getBlockEntity(p) instanceof com.coraline.otherworld.DoorBlockEntity door){
                 if(s.getValue(OPEN))com.coraline.otherworld.TunnelPassage.restore((net.minecraft.server.level.ServerLevel)l,door);
-                else if(s.getValue(PORTAL)&&door.doorId!=null&&!com.coraline.otherworld.TunnelPassage.ensure((net.minecraft.server.level.ServerLevel)l,door))player.displayClientMessage(net.minecraft.network.chat.Component.literal("Move any containers directly behind the Little Door to make room for its passage."),true);
+                else if(s.getValue(PORTAL)&&door.doorId!=null&&!com.coraline.otherworld.TunnelPassage.ensure((net.minecraft.server.level.ServerLevel)l,door))player.displayClientMessage(net.minecraft.network.chat.Component.literal("The Little Door passage is not ready. Keep the crawlspace clear and nearby chunks loaded."),true);
             }
         }
         return InteractionResult.sidedSuccess(l.isClientSide);

@@ -47,9 +47,9 @@ public final class BeldamFinale {
         s.stage=VisitData.Stage.DONE;var first=FirstEscapeStory.data(s);first.putBoolean("Started",true);first.putBoolean("Complete",true);first.putString("Phase",FirstEscapeTimeline.Phase.ESCAPE_COMPLETE.name());first.remove("Recover");MissingParentsCat.data(s).putBoolean("Complete",true);MissingParentsCat.data(s).putBoolean("TunnelRestored",true);
         var rescue=ParentRescueStory.data(s);rescue.putBoolean("Started",true);rescue.putBoolean("Complete",true);rescue.putBoolean("Seated",false);
         var scenery=ParentRescueStory.scenery(s);scenery.putLong("House",realm.house.asLong());scenery.putLong("LittleDoor",realm.doorPos.asLong());scenery.putLong("Prison",realm.house.above(80).asLong());
-        var hand=RescueProps.ensure(p,s,"SeveredHand",RescueProps.HAND,0,Vec3.atBottomCenterOf(d.pos).add(0,.2,1));
+        var hand=RescueProps.ensure(p,s,"SeveredHand",RescueProps.HAND,0,handWaitingPosition(p.serverLevel(),d.pos));
         if(hand==null)return "The original Hand could not be staged; retry the checkpoint before the farewell.";
-        hand.frame(1,0,1);
+        parkHand(p,s,hand,d.pos);
         var sealed=door.setValue(TinyDoorBlock.OPEN,false).setValue(TinyDoorBlock.PORTAL,false);
         // setBlock returns false when the door is already in the requested state.
         // That is a successful checkpoint, not a reason to abandon the epilogue.
@@ -82,15 +82,52 @@ public final class BeldamFinale {
         ShowPlayback.stop(p,s);VisitAudio.stop(p);p.stopUsingItem();RescueBosses.hideBar(p);
         // The skipped door struggle normally severs the original Hand. Keep
         // that physical actor and its saved identity for the later well chase.
-        var hand=RescueProps.ensure(p,s,"SeveredHand",RescueProps.HAND,0,net.minecraft.world.phys.Vec3.atBottomCenterOf(d.pos).add(0,.2,1));
+        var hand=RescueProps.ensure(p,s,"SeveredHand",RescueProps.HAND,0,handWaitingPosition(p.serverLevel(),d.pos));
         if(hand==null)return "The original Hand could not be staged; the skip has not completed.";
         var n=RescueChapter.data(s);s.loop.story.remove("DebugSkipFinalFightPending");n.putBoolean("DebugFinalFightSkipped",true);n.putBoolean("KeyRecovered",true);n.putBoolean("CrawlReachedOverworld",true);n.remove("CatHeld");n.remove("CatFlying");n.remove("Recover");n.remove("Press");
-        hand.frame(1,0,1);n.putBoolean("HandSevered",true);
+        parkHand(p,s,hand,d.pos);n.putBoolean("HandSevered",true);
         s.loop.story.putString("LittleDoorKeyHolder","PLAYER");
         var mother=ParentRescueStory.mother(p,s);if(mother!=null){mother.getNavigation().stop();mother.setDeltaMovement(Vec3.ZERO);mother.setItemSlot(EquipmentSlot.MAINHAND,ItemStack.EMPTY);mother.setInvisible(true);}
         RescueChapter.go(p,s,LOCK_DOOR);RescueSiteCleanup.tick(p,s);OtherMotherLoop.changed(p);
         return "Final encounter skipped. Use your recovered key to lock the Little Door; the reunion continues normally.";
     }
+    static Vec3 handWaitingPosition(net.minecraft.server.level.ServerLevel level,BlockPos door){
+        var state=level.getBlockState(door);
+        if(state.is(ModBlocks.TINY_DOOR.get())){
+            var front=state.getValue(TinyDoorBlock.FACING);
+            for(var dir:new net.minecraft.core.Direction[]{front,front.getClockWise(),front.getCounterClockWise()}){
+                for(int dy:new int[]{0,-1,1}){
+                    var at=door.relative(dir).above(dy);
+                    if(level.hasChunkAt(at)&&com.coraline.tycoon.TycoonWorld.safeFeet(level,at))return Vec3.atBottomCenterOf(at);
+                }
+            }
+        }
+        return Vec3.atBottomCenterOf(door);
+    }
+    static void parkHand(ServerPlayer p,VisitData.Scene s,CinematicPropEntity hand,BlockPos door){
+        if(hand.level()==p.level()){
+            hand.setPos(handWaitingPosition(p.serverLevel(),door));
+            var state=p.level().getBlockState(door);
+            if(state.is(ModBlocks.TINY_DOOR.get()))hand.setYRot(state.getValue(TinyDoorBlock.FACING).toYRot());
+        }
+        hand.frame(RescueProps.HAND_WAITING_CUE,0,0);
+        hand.setInvisible(true);
+        hand.setDeltaMovement(Vec3.ZERO);
+        var scenery=ParentRescueStory.scenery(s);
+        scenery.putLong("RescueSeveredHandPosition",hand.blockPosition().asLong());
+        scenery.putString("RescueSeveredHandDimension",hand.level().dimension().location().toString());
+        RescueChapter.data(s).putBoolean("HandParked",true);
+        OtherMotherLoop.changed(p);
+    }
+    static void reconcileHand(ServerPlayer p,VisitData.Scene s){
+        var story=RescueChapter.data(s);
+        if(!story.getBoolean("HandSevered")||p.tickCount%20!=0||PalaceWellEncounter.control(s)!=null)return;
+        var source=DoorData.get(p.server).doors.get(s.door);
+        if(source==null||!s.owner.equals(source.owner)||FamilyData.level(p.server,source.dimension)!=p.level())return;
+        var hand=RescueProps.find(p,s,"SeveredHand");
+        if(hand!=null&&hand.cue()<10&&(!story.getBoolean("HandParked")||!hand.isInvisible()))parkHand(p,s,hand,source.pos);
+    }
+
     private static BlockPos little(VisitData.Scene s){return BlockPos.of(ParentRescueStory.scenery(s).getLong("LittleDoor"));}
     private static Vec3 hearth(VisitData.Scene s){return Vec3.atBottomCenterOf(FirstEscapeScene.room(s)).add(-2,.7,5);}
     static float face(Vec3 from,Vec3 to){return (float)Math.toDegrees(Math.atan2(from.x-to.x,to.z-from.z));}

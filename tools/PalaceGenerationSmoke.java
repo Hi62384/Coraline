@@ -47,8 +47,57 @@ public final class PalaceGenerationSmoke {
         for(var stage:PalaceGenerationRules.Stage.values()){PalaceGenerationRules.enter(root,stage);PalaceGenerationRules.validate(root);check(PalaceGenerationRules.stage(root.copy())==stage,"Generation stage lost on NBT reload");}
         PalaceGenerationRules.enter(root,PalaceGenerationRules.Stage.TERRAIN);root.putBoolean("ColumnActive",true);root.putInt("ColumnX",palace.x());root.putInt("ColumnZ",palace.z());root.putInt("ColumnBottom",70);root.putInt("ColumnTop",100);root.putInt("ColumnTarget",90);root.putInt("Y",82);PalaceGenerationRules.validate(root);
         bad=root.copy();bad.putInt("ColumnX",palace.x()+385);invalid(bad);bad=root.copy();bad.putInt("Y",102);invalid(bad);bad=root.copy();bad.remove("ColumnBottom");invalid(bad);
+        var deferred=new CompoundTag();
+        PalaceGenerationRules.enter(deferred,PalaceGenerationRules.Stage.SURVEY_REGION);
+        deferred.putBoolean("PalaceClaimed",true);
+        deferred.putInt("CandidateX",palace.x());
+        deferred.putInt("CandidateZ",palace.z());
+        deferred.putInt("ProfileBase",94);
+        deferred.putInt("Cursor",681);
+        var company=new CompoundTag();
+        company.put("DeferredPalace",deferred.copy());
+        PalaceGenerationRules.enter(company,PalaceGenerationRules.Stage.SELECT_COMPANY);
+        var reloaded=TagParser.parseTag(company.toString());
+        check(PalaceGenerationRules.stage(reloaded)==PalaceGenerationRules.Stage.SELECT_COMPANY,"Company could not resume before Palace verification");
+        check(reloaded.getCompound("DeferredPalace").getInt("Cursor")==681,"Early Company lost the deferred survey cursor");
+        bad=reloaded.copy();PalaceGenerationRules.enter(bad,PalaceGenerationRules.Stage.TERRAIN);invalid(bad);
+        earlyCompanyRegistry();
         anvil(fixture);return checks;
     }
+    private static void earlyCompanyRegistry() throws Exception {
+        var kind=PalaceSitePlan.Kind.COMPANY;
+        var data=new PalaceSiteData();
+        data.initialize(123,net.minecraft.core.BlockPos.ZERO);
+        var prioritize=PalaceSiteData.class.getDeclaredMethod("prioritizeCompany");
+        var generation=PalaceSiteData.class.getDeclaredMethod("generation");
+        var reserve=PalaceSiteData.class.getDeclaredMethod("reserveGenerationPlan",PalaceSitePlan.Kind.class,net.minecraft.core.BlockPos.class);
+        var verify=PalaceSiteData.class.getDeclaredMethod("generationVerified",PalaceSitePlan.Kind.class,net.minecraft.core.BlockPos.class,int.class,int.class);
+        var resume=PalaceSiteData.class.getDeclaredMethod("resumeAfterEarlyCompany");
+        for(var method:new java.lang.reflect.Method[]{prioritize,generation,reserve,verify,resume})method.setAccessible(true);
+        check((Boolean)prioritize.invoke(data),"Required Company could not start on a fresh registry");
+        var point=data.proposal(kind).orElseThrow();
+        data=PalaceSiteData.load(TagParser.parseTag(data.save(new CompoundTag()).toString()));
+        check(data.blocker().isEmpty()&&data.proposal(kind).orElseThrow().equals(point),"Company proposal changed across reload without a Palace");
+        var work=(CompoundTag)generation.invoke(data);
+        PalaceGenerationRules.enter(work,PalaceGenerationRules.Stage.SURVEY_COMPANY);
+        work.putBoolean("CompanyClaimed",true);
+        work.putInt("CompanyX",point.x());
+        work.putInt("CompanyZ",point.z());
+        work.putInt("CompanyY",82);
+        work.putInt("Cursor",49);
+        var address=new net.minecraft.core.BlockPos(point.x(),82,point.z());
+        check((Boolean)reserve.invoke(data,kind,address),"Bounded Company survey could not reserve its original address");
+        data=PalaceSiteData.load(TagParser.parseTag(data.save(new CompoundTag()).toString()));
+        check(data.blocker().isEmpty()&&!data.companyMapReady()&&data.position(kind).orElseThrow().equals(address),"Reserved Company unlocked the map before readback");
+        work=(CompoundTag)generation.invoke(data);
+        PalaceGenerationRules.enter(work,PalaceGenerationRules.Stage.COMPANY_VERIFY);
+        check(!(Boolean)verify.invoke(data,kind,address,49,50),"Partial readback unlocked the map");
+        check((Boolean)verify.invoke(data,kind,address,50,50),"Complete readback did not unlock the map");
+        resume.invoke(data);
+        data=PalaceSiteData.load(TagParser.parseTag(data.save(new CompoundTag()).toString()));
+        check(data.companyMapReady()&&!data.ready()&&data.blocker().isEmpty(),"Early Company verification was lost when the Palace survey resumed");
+    }
+
     private static void anvil(Path owned)throws Exception{
         var directory=Files.createDirectory(owned.resolve("virgin-region-fixtures"));
         check(PalaceVirginTerrain.untouched(directory,-40,-40,40,40,(x,z)->false),"Missing regions are not virgin");

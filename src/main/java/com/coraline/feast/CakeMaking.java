@@ -19,6 +19,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SmokerBlock;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.ClipContext;
+import static com.coraline.feast.CakeKitchenRules.Station;
 
 /** Owner-authoritative, physical baking workflow. Only the final score enters judging. */
 final class CakeMaking {
@@ -36,7 +39,7 @@ final class CakeMaking {
     static String baseName(int base){return BASE[Math.max(0,Math.min(BASE.length-1,base))];}
     static CompoundTag design(OtherMotherLoopState l){
         var n=new CompoundTag();n.putInt("Base",Math.max(0,l.cakeBase));n.putInt("Filling",l.cakeFilling);n.putInt("Frosting",l.cakeFrosting);
-        n.putInt("Layers",Math.max(1,l.cakeLayers));n.putInt("Toppings",l.cakeToppings);n.putInt("Piping",l.cakePiping);
+        n.putInt("Layers",CakeKitchenRules.layers(l.cakeLayers));n.putInt("Toppings",l.cakeToppings);n.putInt("Piping",l.cakePiping);
         n.putInt("Topper",l.cakeTopper);n.putInt("FrostCoverage",l.cakeFrostCoverage);n.putInt("MixQuality",l.cakeMixQuality);
         n.putInt("BakeQuality",l.cakeBakeQuality);return n;
     }
@@ -55,12 +58,34 @@ final class CakeMaking {
         }
         put(level,c,ModBlocks.LOW_MARBLE_TABLE.get());
         put(level,c.south(2),ModBlocks.LOW_MARBLE_TABLE.get());
-        put(level,c.north(2),Blocks.SMOKER);
+        reconcileOven(level,s,c.north(2));
         for(int x:new int[]{-1,1}){put(level,c.offset(x,0,-2),Blocks.SMOOTH_QUARTZ);put(level,c.offset(x,0,2),Blocks.SMOOTH_QUARTZ);}
         for(int z:new int[]{-3,3}){put(level,c.offset(-2,3,z),Blocks.SEA_LANTERN);put(level,c.offset(2,3,z),Blocks.SEA_LANTERN);}
         put(level,c.offset(0,0,3),Blocks.POTTED_PINK_TULIP);
         ensureDisplays(level,s,c);
         if(s.loop.cakeStage==3)sync(level,s,c);
+    }
+    private static void reconcileOven(ServerLevel level,VisitData.Scene s,BlockPos at){
+        boolean lit=s.loop.cakeStage==3&&s.loop.cakeStep==3;
+        var old=level.getBlockState(at);
+        var base=old.is(Blocks.SMOKER)?old:Blocks.SMOKER.defaultBlockState();
+        var desired=base.setValue(SmokerBlock.FACING,Direction.SOUTH).setValue(SmokerBlock.LIT,lit);
+        if(!desired.equals(old))ActivityBlocks.set(level,at,desired,2);
+    }
+    static Station station(BlockPos center,BlockPos at){
+        return Station.at(at.getX()-center.getX(),at.getY()-center.getY(),at.getZ()-center.getZ());
+    }
+    static boolean visibleProp(ServerPlayer p,ScenePropEntity prop){
+        var eye=p.getEyePosition();
+        double reach=Math.min(6,p.getEntityReach());
+        var box=prop.getBoundingBox().inflate(.06);
+        var target=box.contains(eye)?eye:box.clip(eye,eye.add(p.getLookAngle().scale(reach))).orElse(null);
+        return target!=null&&p.level().clip(new ClipContext(eye,target,ClipContext.Block.OUTLINE,ClipContext.Fluid.NONE,p)).getType()==HitResult.Type.MISS;
+    }
+    private static boolean beginAction(OtherMotherLoopState l,long now){
+        if(!CakeKitchenRules.actionReady(now,l.cakeLastActionAt))return false;
+        l.cakeLastActionAt=now;
+        return true;
     }
     private static void display(ServerLevel level,VisitData.Scene s,BlockPos c,int id,Vec3 pos,Item icon){
         var matches=level.getEntitiesOfClass(ScenePropEntity.class,new net.minecraft.world.phys.AABB(c).inflate(6,4,7),
@@ -97,8 +122,8 @@ final class CakeMaking {
             return "Ingredients ready — right-click the center MIXING BOWL";
         }
         if(l.cakeStep==1){long age=now-l.cakeMixStartedAt;return "MIX "+meter(age,80,40,60)+" "+(age<40?"Wait...":age<=60?"PERFECT — RIGHT-CLICK BOWL NOW!":"Overmixed — right-click bowl");}
-        if(l.cakeStep==2)return "Right-click OVEN to bake • Front stand: optional layers";
-        if(l.cakeStep==3){long age=now-l.cakeOvenStartedAt;return "OVEN "+meter(age,190,106,144)+" "+(age<40?"RAW — wait":age<85?"RISING — wait":age<106?"GOLDEN — nearly ready":age<=144?"PERFECT — RIGHT-CLICK OVEN NOW!":age<176?"OVERBAKED — remove now":"BURNT — remove cake");}
+        if(l.cakeStep==2)return "Front stand: choose 1–3 layers • Oven front: insert the pan";
+        if(l.cakeStep==3){long age=now-l.cakeOvenStartedAt;return "OVEN "+meter(age,190,106,144)+" "+(age<40?"RAW — wait":age<85?"RISING — wait":age<106?"GOLDEN — nearly ready":age<=144?"PERFECT — TAKE PAN FROM OVEN NOW!":age<176?"OVERBAKED — remove now":"BURNT — remove cake");}
         if(l.cakeFilling<0)return "Right-click the sparkling FILLING tray on the right";
         if(l.cakeFrosting<0)return "Right-click the sparkling FROSTING tray on the right";
         if(l.cakeFrostCoverage<4)return "FROST "+(l.cakeFrostCoverage+1)+"/4 "+meter(now%60,60,20,40)+" — "+(frostReady(now)?"RIGHT-CLICK CAKE STAND NOW!":"Wait for the green window");
@@ -111,23 +136,16 @@ final class CakeMaking {
         return missing==0?-1:Integer.numberOfTrailingZeros(missing);
     }
     private static boolean activeIngredient(OtherMotherLoopState l,int id){
-        if(l.cakeStep!=0||l.cakeBase<0||id<0||id>=INGREDIENT.length||(l.cakeIngredients&(1<<id))!=0)return false;
-        int next=nextRequiredIngredient(l);
-        return next>=0?id==next:!required(l.cakeBase,id);
+        return l.cakeStep==0&&l.cakeBase>=0&&l.cakeBase<REQUIRE.length
+            &&CakeKitchenRules.ingredientEditable(id,l.cakeIngredients,REQUIRE[l.cakeBase]);
     }
     private static boolean activeProp(OtherMotherLoopState l,int id){
         if(id>=0&&id<12)return activeIngredient(l,id);
-        if(id>=100&&id<107)return l.cakeStep==0&&l.cakeBase<0;
+        if(id>=100&&id<107)return l.cakeStep==0&&l.cakeIngredients==0;
         if(l.cakeStep!=4)return false;
-        if(id==200)return l.cakeFilling<0;
-        if(id==300)return l.cakeFilling>=0&&l.cakeFrosting<0;
+        if(id==200)return CakeKitchenRules.decorationEditable(l.cakeStep,l.cakeFrostCoverage);
+        if(id==300)return l.cakeFilling>=0&&CakeKitchenRules.decorationEditable(l.cakeStep,l.cakeFrostCoverage);
         return (id==400||id==500)&&l.cakeFilling>=0&&l.cakeFrosting>=0&&l.cakeFrostCoverage>=4;
-    }
-    private static boolean activeStation(OtherMotherLoopState l,BlockPos c,BlockPos at){
-        if(at.equals(c))return l.cakeStep==0&&l.cakeBase>=0&&nextRequiredIngredient(l)<0||l.cakeStep==1;
-        if(at.equals(c.north(2)))return l.cakeStep==2||l.cakeStep==3;
-        if(at.equals(c.south(2)))return l.cakeStep==2||l.cakeStep==4&&l.cakeFilling>=0&&l.cakeFrosting>=0;
-        return false;
     }
     private static String meter(long age,int total,int start,int end){
         StringBuilder b=new StringBuilder("[");int cursor=(int)Math.min(19,Math.max(0,age*20/total));
@@ -141,14 +159,13 @@ final class CakeMaking {
         if(s.loop.cakeStep!=1&&s.loop.cakeStep!=3&&!(s.loop.cakeStep==4&&s.loop.cakeFrosting>=0&&s.loop.cakeFrostCoverage<4)
             &&tag.getLong("CakeHintUntil")>now)message=tag.getString("CakeHint");
         objective(p,message);
-        var eye=p.getEyePosition();var look=p.getLookAngle();
         for(var e:LoopProps.nearby(p.serverLevel(),s,CakeContestActivity.center(p,s)))if(e.kind()==ScenePropEntity.CAKE_KITCHEN){
-            boolean aimed=e.getBoundingBox().inflate(.08).clip(eye,eye.add(look.scale(4.5))).isPresent();
+            boolean aimed=visibleProp(p,e);
             e.setCustomName(Component.literal(label(e.slot,s.loop)).withStyle(ChatFormatting.GOLD));e.setCustomNameVisible(aimed&&activeProp(s.loop,e.slot));
         }
     }
     private static String label(int id,OtherMotherLoopState l){
-        if(id<12)return "Right-click: Take "+INGREDIENT[id];
+        if(id>=0&&id<12)return ((l.cakeIngredients&(1<<id))==0?"Right-click: Take ":"Right-click: Remove ")+INGREDIENT[id];
         if(id>=100&&id<107)return "Right-click: "+BASE[id-100]+" recipe";
         return switch(id){case 200->"FILLING — click: "+FILLING[(l.cakeFilling+1)%FILLING.length];
             case 300->"FROSTING — click: "+FROSTING[(l.cakeFrosting+1)%FROSTING.length];
@@ -164,7 +181,8 @@ final class CakeMaking {
         if(l.cakeStep==1&&now-l.cakeMixStartedAt==40||l.cakeStep==3&&now-l.cakeOvenStartedAt==106||l.cakeStep==4&&l.cakeFrostCoverage<4&&now%60==20)
             cue(p,c,SoundEvents.NOTE_BLOCK_BELL.value(),1.5F);
         for(var prop:LoopProps.nearby(level,s,c))if(prop.kind()==ScenePropEntity.CAKE_MIXER){
-            prop.mode(l.cakeStep==1?1:0);
+            prop.mode(CakeKitchenRules.mode(Station.BOWL,l.cakeStep,0));
+            prop.cakeData(design(l));
             prop.setCustomName(Component.literal("MIXING BOWL").withStyle(ChatFormatting.GOLD));
             prop.setCustomNameVisible(l.cakeStep<=1);
         }
@@ -198,18 +216,26 @@ final class CakeMaking {
     }
     private static void sync(ServerLevel level,VisitData.Scene s,BlockPos c){
         var l=s.loop;if(l.cakeStage!=3)return;var props=LoopProps.nearby(level,s,c);
-        for(int slot=0;slot<3;slot++){
+        for(var prop:props)if(prop.kind()==ScenePropEntity.CAKE_WORKPIECE&&prop.slot==0)prop.discard();
+        for(int slot=1;slot<=2;slot++){
             final int id=slot;
-            var found=props.stream().filter(e->e.kind()==ScenePropEntity.CAKE_WORKPIECE&&e.slot==id).findFirst().orElse(null);
-            if(found==null){var at=slot==0?c:slot==1?c.north(2):c.south(2);
-                found=LoopProps.spawn(level,s,ScenePropEntity.CAKE_WORKPIECE,
-                    new Vec3(at.getX()+.5,at.getY()+(slot==1?1.02:.72),at.getZ()+.5),id);}
+            var station=Station.workpiece(slot);
+            var at=c.south(station.offset);
+            if(!level.areEntitiesLoaded(new net.minecraft.world.level.ChunkPos(at).toLong()))continue;
+            var matches=props.stream().filter(e->e.kind()==ScenePropEntity.CAKE_WORKPIECE&&e.slot==id
+                &&e.getPersistentData().getInt("LoopGeneration")==l.generation).toList();
+            var position=Vec3.atBottomCenterOf(at).add(0,station==Station.OVEN?1.02:.72,0);
+            var found=matches.isEmpty()?LoopProps.spawn(level,s,ScenePropEntity.CAKE_WORKPIECE,position,id):matches.get(0);
+            for(int i=1;i<matches.size();i++)matches.get(i).discard();
+            if(found.position().distanceToSqr(position)>.001)found.setPos(position);
             found.cakeData(design(l));
-            if(slot>0){found.setCustomName(Component.literal(slot==1?"OVEN":"CAKE STAND").withStyle(ChatFormatting.GOLD));
-                found.setCustomNameVisible(slot==1?l.cakeStep==2||l.cakeStep==3:l.cakeStep>=4);}
-            found.mode(slot==0?(l.cakeStep==0?0:l.cakeStep==1?1:10):
-                slot==1?(l.cakeStep==3?4+Math.min(5,(int)((level.getGameTime()-l.cakeOvenStartedAt)/35)):10):
-                l.cakeStep>=4?11:l.cakeStep==2?3:10);
+            int mode=CakeKitchenRules.mode(station,l.cakeStep,level.getGameTime()-l.cakeOvenStartedAt);
+            found.mode(mode);
+            String name=station==Station.OVEN?"OVEN · Take out the pan":
+                mode==3?"CAKE STAND · "+CakeKitchenRules.layers(l.cakeLayers)+" layers · Click to change":
+                l.cakeFrostCoverage<4?"CAKE STAND · Apply frosting":"CAKE STAND · Finish cake";
+            found.setCustomName(Component.literal(name).withStyle(ChatFormatting.GOLD));
+            found.setCustomNameVisible(mode!=CakeKitchenRules.EMPTY);
         }
     }
     static void objective(ServerPlayer p,String message){p.displayClientMessage(Component.literal(message).withStyle(ChatFormatting.YELLOW,ChatFormatting.BOLD),true);}
@@ -224,19 +250,40 @@ final class CakeMaking {
         p.serverLevel().playSound(null,at,sound,SoundSource.BLOCKS,.75F,pitch);
     }
     static boolean interactProp(ServerPlayer p,VisitData.Scene s,ScenePropEntity prop){
-        if(prop.kind()==ScenePropEntity.CONTEST_CAKE&&prop.slot==99&&s.loop.cakeStage==4&&!s.loop.cakeTaken)
-            return CakeContestActivity.interactBlock(p,CakeContestActivity.center(p,s).south(2));
-        if(prop.kind()!=ScenePropEntity.CAKE_KITCHEN)return false;
+        boolean finished=prop.kind()==ScenePropEntity.CONTEST_CAKE&&prop.slot==99;
+        boolean mixer=prop.kind()==ScenePropEntity.CAKE_MIXER;
+        boolean piece=prop.kind()==ScenePropEntity.CAKE_WORKPIECE;
+        if(!finished&&!mixer&&!piece&&prop.kind()!=ScenePropEntity.CAKE_KITCHEN)return false;
+        if(!visibleProp(p,prop)){
+            objective(p,"Move closer and aim at the visible cake station.");
+            return true;
+        }
+        var center=CakeContestActivity.center(p,s);
+        if(finished){
+            if(s.loop.cakeStage==4&&!s.loop.cakeTaken&&prop.blockPosition().below().equals(center.south(2)))
+                CakeContestActivity.interactStation(p,s,center,Station.STAND);
+            return true;
+        }
         if(s.loop.cakeStage!=3)return true;
         var l=s.loop;long now=OtherMotherLoop.now(p);
+        if(mixer||piece){
+            var station=mixer?Station.BOWL:Station.workpiece(prop.slot);
+            if(station!=null){
+                var anchor=Vec3.atBottomCenterOf(center.south(station.offset));
+                double height=mixer?.55:station==Station.OVEN?1.02:.72;
+                if(prop.position().distanceToSqr(anchor.add(0,height,0))<.12)
+                    interact(p,s,center,station,now);
+            }
+            return true;
+        }
         int id=prop.slot;
         if(!activeProp(l,id)){objective(p,instruction(l,now));return true;}
-        if(now-l.cakeLastActionAt<4)return true;l.cakeLastActionAt=now;
+        if(!beginAction(l,now))return true;
         if(id<12){
             if(l.cakeBase<0){feedback(p,prop.blockPosition(),"Choose your recipe first.");return true;}
             if(l.cakeStep!=0){feedback(p,prop.blockPosition(),"Ingredients are already in the bowl.");return true;}
             if((l.cakeIngredients&(1<<id))!=0){
-                if(!required(l.cakeBase,id)&&id!=11){l.cakeIngredients&=~(1<<id);OtherMotherLoop.changed(p);feedback(p,prop.blockPosition(),"Removed "+INGREDIENT[id]+" from your ingredients");}
+                if(!required(l.cakeBase,id)){l.cakeIngredients&=~(1<<id);OtherMotherLoop.changed(p);feedback(p,prop.blockPosition(),"Removed "+INGREDIENT[id]+" from your ingredients");}
                 else feedback(p,prop.blockPosition(),INGREDIENT[id]+" already collected");return true;
             }
             l.cakeIngredients|=1<<id;
@@ -272,12 +319,17 @@ final class CakeMaking {
         OtherMotherLoop.changed(p);sync(p.serverLevel(),s,CakeContestActivity.center(p,s));return true;
     }
     private static boolean required(int base,int id){return base>=0&&(REQUIRE[base]&(1<<id))!=0;}
-    static boolean interact(ServerPlayer p,VisitData.Scene s,BlockPos c,BlockPos at,long now){
-        var l=s.loop;if(p.distanceToSqr(Vec3.atCenterOf(at))>40)return false;
-        if(!at.equals(c)&&!at.equals(c.south(2))&&!at.equals(c.north(2)))return false;
-        if(!activeStation(l,c,at)){objective(p,instruction(l,now));return true;}
-        if(now-l.cakeLastActionAt<4)return true;l.cakeLastActionAt=now;
-        if(at.equals(c)){
+    static boolean interact(ServerPlayer p,VisitData.Scene s,BlockPos c,Station station,long now){
+        if(station==null||station==Station.JUDGING)return false;
+        var l=s.loop;
+        var at=c.south(station.offset);
+        var block=p.level().getBlockState(at);
+        if(station==Station.OVEN?!block.is(Blocks.SMOKER):!block.is(ModBlocks.LOW_MARBLE_TABLE.get())){
+            objective(p,"This station is unavailable. Use the station in your own booth.");
+            return true;
+        }
+        if(!beginAction(l,now))return true;
+        if(station==Station.BOWL){
             if(l.cakeStep==0){
                 if(l.cakeBase<0){feedback(p,at,"Choose a recipe card on the right.");return true;}
                 if(nextRequiredIngredient(l)>=0){feedback(p,at,"Collect the required ingredients from the pantry first.");return true;}
@@ -286,8 +338,8 @@ final class CakeMaking {
                 long age=now-l.cakeMixStartedAt;l.cakeMixQuality=age<16||age>90?0:age>=40&&age<=60?4:age>=28&&age<=75?3:2;
                 l.cakeStep=2;cue(p,at,SoundEvents.BUCKET_EMPTY,1.4F);feedback(p,at,"Mix: "+(l.cakeMixQuality==4?"perfect":l.cakeMixQuality==3?"good":l.cakeMixQuality==2?"rough":"poor"));
             }else feedback(p,at,instruction(l,now));
-        }else if(at.equals(c.south(2))){
-            if(l.cakeStep==2){l.cakeLayers=l.cakeLayers%3+1;cue(p,at,SoundEvents.WOOD_PLACE,1.25F);feedback(p,at,l.cakeLayers+" layer"+(l.cakeLayers==1?"":"s")+" — put the pan in the oven");}
+        }else if(station==Station.STAND){
+            if(l.cakeStep==2){l.cakeLayers=CakeKitchenRules.layers(l.cakeLayers)%3+1;cue(p,at,SoundEvents.WOOD_PLACE,1.25F);feedback(p,at,l.cakeLayers+" layer"+(l.cakeLayers==1?"":"s")+" — put the pan in the oven");}
             else if(l.cakeStep==4){
                 if(l.cakeFrosting<0||l.cakeFilling<0){feedback(p,at,instruction(l,now));return true;}
                 if(l.cakeFrostCoverage<4){l.cakeFrostCoverage++;
@@ -295,19 +347,26 @@ final class CakeMaking {
                     cue(p,at,SoundEvents.HONEY_BLOCK_SLIDE,smooth?1.3F:.8F);feedback(p,at,(smooth?"Smooth":"Uneven")+" frosting — "+l.cakeFrostCoverage+"/4 sides");}
                 else CakeContestActivity.finishBake(p,s,c,true);
             }else feedback(p,at,instruction(l,now));
-        }else if(at.equals(c.north(2))){
-            if(l.cakeStep==2){l.cakeStep=3;l.cakeOvenStartedAt=now;
-                p.serverLevel().setBlock(at,Blocks.SMOKER.defaultBlockState().setValue(SmokerBlock.FACING,Direction.SOUTH).setValue(SmokerBlock.LIT,true),2);
+        }else if(station==Station.OVEN){
+            if(l.cakeStep==2){
+                if(!setOvenLit(p.serverLevel(),at,true)){objective(p,"The oven could not start. Your batter is still on the stand.");return true;}
+                l.cakeStep=3;l.cakeOvenStartedAt=now;
                 cue(p,at,SoundEvents.FURNACE_FIRE_CRACKLE,1F);
                 feedback(p,at,"Baking — remove when the meter says PERFECT.");
             }else if(l.cakeStep==3){long age=now-l.cakeOvenStartedAt;
-                l.cakeBakeQuality=age<40||age>176?0:age>=106&&age<=144?4:age>=85&&age<=160?3:1;
-                l.cakeStep=4;p.serverLevel().setBlock(at,Blocks.SMOKER.defaultBlockState().setValue(SmokerBlock.FACING,Direction.SOUTH),2);
+                if(!setOvenLit(p.serverLevel(),at,false)){objective(p,"The oven could not open. The pan is still inside.");return true;}
+                l.cakeBakeQuality=CakeKitchenRules.bakeQuality(age);
+                l.cakeStep=4;
                 cue(p,at,l.cakeBakeQuality>=3?SoundEvents.NOTE_BLOCK_BELL.get():SoundEvents.FIRE_EXTINGUISH,1.15F);
                 feedback(p,at,"Bake: "+(l.cakeBakeQuality==4?"perfect":l.cakeBakeQuality==3?"good":l.cakeBakeQuality==1?"poor":"raw or burnt"));
             }else feedback(p,at,instruction(l,now));
         }
         OtherMotherLoop.changed(p);sync(p.serverLevel(),s,c);return true;
+    }
+    private static boolean setOvenLit(ServerLevel level,BlockPos at,boolean lit){
+        var desired=level.getBlockState(at).setValue(SmokerBlock.FACING,Direction.SOUTH).setValue(SmokerBlock.LIT,lit);
+        if(!level.getBlockState(at).equals(desired))ActivityBlocks.set(level,at,desired,2);
+        return level.getBlockState(at).equals(desired);
     }
     static void complete(ServerPlayer p,VisitData.Scene s,BlockPos c,boolean early){
         var l=s.loop;int required=l.cakeBase<0?0:REQUIRE[l.cakeBase],correct=Integer.bitCount(l.cakeIngredients&required);

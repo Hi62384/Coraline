@@ -193,7 +193,7 @@ public final class GhostVictimProgress {
         if(n.getCompound(GhostEscapeProgress.KEY).hasUUID("Attempt")){c.put(GhostEscapeProgress.KEY,n.getCompound(GhostEscapeProgress.KEY).copy());n.remove(GhostEscapeProgress.KEY);}
         var history=n.getList("VictimHistory",Tag.TAG_COMPOUND);
         history.add(c.copy());n.put("VictimHistory",history);n.remove("Victim");leaveMirror(n);
-        for(String key:new String[]{"VictimActor","ActorPosition","ActorDimension","ChildRoutine","Investigation","InvestigateUntil","ChildWords","ChildTalkingUntil","VoiceStarted","SupperSeated","BedtimeArrived","BedtimeWindowStarted","MotherBedtimeExit","FatherBedtimeExit","ChildAtHome","CrawlExit","GiftPlaced","GiftPresentedAt","CaptureSeatedAt","MotherInvestigation","MotherInvestigateUntil","MotherInvestigationRoute"})n.remove(key);
+        for(String key:new String[]{"VictimActor","ActorPosition","ActorDimension","ChildRoutine","Investigation","InvestigateUntil","ChildWords","ChildTalkingUntil","VoiceStarted","SupperSeated","SupperElapsed","SupperPhysicalReady","BedtimeArrived","BedtimeWindowStarted","MotherBedtimeExit","FatherBedtimeExit","ChildAtHome","CrawlExit","GiftPlaced","GiftPresentedAt","CaptureSeatedAt","MotherInvestigation","MotherInvestigateUntil","MotherInvestigationRoute"})n.remove(key);
         // These routes belong to the retired child's routine. Parent outing
         // transfer journals remain until the existing actors return home.
         clearRetiredRoutine(n);

@@ -94,7 +94,7 @@ public final class ModItems {
     public static final RegistryObject<Item> ARCHERY_ARROW=ITEMS.register("archery_arrow",com.coraline.item.ArcheryArrowItem::new);
     public static final RegistryObject<Item> ARCHERY_ACTIVITY_DEBUG=ITEMS.register("archery_activity_debug",com.coraline.item.ArcheryActivityDebugItem::new);
     public static final RegistryObject<Item> CAKE_ACTIVITY_DEBUG=ITEMS.register("cake_activity_debug",com.coraline.item.CakeActivityDebugItem::new);
-    public static final RegistryObject<Item> CONTEST_CAKE=ITEMS.register("contest_cake",()->new Item(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> CONTEST_CAKE=ITEMS.register("contest_cake",com.coraline.item.ContestCakeItem::new);
     public static final RegistryObject<Item> CARNIVAL_TOKEN=ITEMS.register("carnival_token",()->new Item(new Item.Properties().stacksTo(64)));
     public static final RegistryObject<Item> CARNIVAL_RING=ITEMS.register("carnival_ring",()->new com.coraline.item.CarnivalThrowableItem(false));
     public static final RegistryObject<Item> CARNIVAL_DART=ITEMS.register("carnival_dart",()->new com.coraline.item.CarnivalThrowableItem(true));

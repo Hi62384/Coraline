@@ -44,6 +44,17 @@ public final class PalaceTransport {
     static boolean completed(VisitData.Scene s){var n=s==null?null:data(s);if(n==null)return false;var state=progress(s,n);return state.blocker().isEmpty()&&state.phase()==COMPLETE;}
     private static BlockPos company(ServerPlayer p){return PalaceSiteData.get(p.server).position(Kind.COMPANY).orElseThrow();}
     public static BlockPos desk(ServerPlayer p){return company(p).offset(-5,1,-4);}
+    private static boolean receptionCounter(ServerPlayer p,BlockPos at){
+        var desk=desk(p);
+        int side=at.getX()-desk.getX();
+        return side>=-1&&side<=2&&at.getY()==desk.getY()&&at.getZ()==desk.getZ()
+                &&p.serverLevel().getBlockState(at).is(com.coraline.registry.ModBlocks.ROSEWOOD_COUNTER.get());
+    }
+    private static boolean receptionAvailable(ServerPlayer p){
+        var desk=desk(p);
+        for(int side=-1;side<=2;side++)if(receptionCounter(p,desk.east(side)))return true;
+        return false;
+    }
     private static Vec3 parked(ServerPlayer p,CompoundTag n,boolean arrived){return parked(p.server,n,arrived);}
     private static Vec3 parked(MinecraftServer server,CompoundTag n,boolean arrived){
         var sites=PalaceSiteData.get(server);int bay=arrived&&n.contains("DestinationBay")?n.getInt("DestinationBay"):n.getInt("Bay");return Vec3.atBottomCenterOf(sites.position(arrived?Kind.PALACE:Kind.COMPANY).orElseThrow()).add(arrived?bay==0?-7:7:17,arrived?0:1,arrived?-55:bay==0?-8:5);
@@ -189,7 +200,7 @@ public final class PalaceTransport {
     }
     private static boolean eligible(ServerPlayer p,VisitData.Scene s){
         var root=PalaceJourney.existing(s);return PalaceJourney.owns(p,s)&&p.isAlive()&&!p.isSpectator()&&p.serverLevel()==p.server.overworld()
-                &&PalaceSiteData.get(p.server).ready()&&root!=null&&!root.contains("PersonalFarewell")&&root.getBoolean("MapIssued")&&(!root.contains("Transport")||data(s)!=null);
+                &&PalaceSiteData.get(p.server).companyMapReady()&&root!=null&&!root.contains("PersonalFarewell")&&root.getBoolean("MapIssued")&&(!root.contains("Transport")||data(s)!=null);
     }
     private static void offer(ServerPlayer p,VisitData.Scene s){
         if(!eligible(p,s)||p.distanceToSqr(desk(p).getCenter())>25)return;var root=PalaceJourney.existing(s);var n=data(s);
@@ -211,6 +222,8 @@ public final class PalaceTransport {
         return new Vec3[]{new Vec3(n.getDouble("StartX"),n.getDouble("StartY"),n.getDouble("StartZ")),c.add(0,2,-6),c.add(0,2,-2),c.add(8,2,-2),c.add(14,2,-2),new Vec3(truck.x,truck.y+1,truck.z+5.3)};
     }
     private static boolean destination(ServerPlayer p,CompoundTag n){
+        var sites=PalaceSiteData.get(p.server);
+        if(!sites.palaceArrivalReady())return false;
         var at=parked(p,n,true);var level=p.server.overworld();var center=BlockPos.containing(at);
         level.getChunkSource().addRegionTicket(TicketType.PORTAL,new net.minecraft.world.level.ChunkPos(center),3,center);
         for(int x:new int[]{center.getX()-3,center.getX()+3})for(int z:new int[]{center.getZ()-5,center.getZ()+5})if(level.getChunkSource().getChunkNow(x>>4,z>>4)==null)return false;
@@ -222,6 +235,10 @@ public final class PalaceTransport {
     }
     public static int register(ServerPlayer p,UUID offer){
         var s=OtherMotherLoop.scene(p);if(!eligible(p,s)||p.distanceToSqr(desk(p).getCenter())>25)return 0;
+        if(!receptionAvailable(p)){
+            p.sendSystemMessage(Component.literal("The Moving Company reception counter is missing."));
+            return 0;
+        }
         if(p.getZ()>company(p).getZ()-5.3){p.sendSystemMessage(Component.literal("Please stand in front of the reception desk to sign up."));return 0;}
         var root=PalaceJourney.existing(s);long now=p.server.overworld().getGameTime();
         if(!root.hasUUID("MoverOffer")||!offer.equals(root.getUUID("MoverOffer"))||now>root.getLong("MoverOfferUntil"))return 0;
@@ -231,10 +248,9 @@ public final class PalaceTransport {
             n.putInt("Bay",bay);
             if(!freeBay(p,s,n,false)){if(bay==1){p.sendSystemMessage(Component.literal("The loading bays are busy. Please try again shortly."));return 0;}continue;}break;
         }
-        for(int bay=0;bay<2;bay++){n.putInt("DestinationBay",bay);if(freeBay(p,s,n,true))break;if(bay==1){p.sendSystemMessage(Component.literal("Both Palace arrival bays are occupied. Please try again shortly."));return 0;}}
+        n.putInt("DestinationBay",0);
         n.putDouble("StartX",p.getX());n.putDouble("StartY",p.getY()+1);n.putDouble("StartZ",p.getZ());
         var route=route(p,n);for(int i=1;i<route.length;i++)if(!clearRoute(p,route[i-1],route[i])){p.sendSystemMessage(Component.literal("The carrying route is obstructed. Nothing has been moved."));return 0;}
-        if(!destination(p,n)){p.sendSystemMessage(Component.literal("Preparing the destination safely. Please confirm again in a moment."));return 0;}
         var progress=PalaceTransportProgress.start(s.owner,s.door);
         n.put("Progress",progress.save());n.putUUID("ActorSession",progress.session());root.put("Transport",n);root.remove("MoverOffer");root.remove("MoverOfferUntil");
         OtherMotherLoop.changed(p);p.server.overworld().getDataStorage().save();return 1;
@@ -279,6 +295,24 @@ public final class PalaceTransport {
             fail(p,s,n,"Registration paused because you left reception before pickup.");
             return;
         }
+        if(state.phase()==NOTICE){
+            var sites=PalaceSiteData.get(p.server);
+            if(!sites.palaceArrivalReady()){
+                if(p.tickCount%80==0)p.displayClientMessage(Component.literal("Registration saved. "+PalaceWorldGeneration.travelStatus(p.server)),true);
+                return;
+            }
+            if(!destination(p,n)){
+                if(p.tickCount%20!=0)return;
+                int before=n.getInt("DestinationBay");
+                n.putInt("DestinationBay",1-before);
+                if(!destination(p,n)){
+                    n.putInt("DestinationBay",before);
+                    if(p.tickCount%80==0)p.displayClientMessage(Component.literal("Registration saved. Waiting for a clear Palace truck bay and exit."),true);
+                    return;
+                }
+                OtherMotherLoop.changed(p);
+            }
+        }
         var truck=ensure(p,s,n,"Truck",TRUCK,0,parked(p,n,false));if(truck==null){fail(p,s,n,"Original truck is unavailable; no duplicate created.");return;}
         var carrier=ensure(p,s,n,"Carrier",CARRIER,0,p.position().add(0,-1,0));if(carrier==null){fail(p,s,n,"Original carrier is unavailable; no duplicate created.");return;}
         var phase=state.phase();boolean inTruck=phase.ordinal()>=CLOSE.ordinal()&&phase.ordinal()<=ARRIVE.ordinal();
@@ -287,8 +321,19 @@ public final class PalaceTransport {
         boolean next=false;var nextPhase=phase;boolean ready=false;
         switch(phase){
             case NOTICE->{
-                boolean near=movers(p,s,n,p.position().add(0,1,0),0,t);truck.frame(0,t,1);ready=destination(p,n);next=t>=40&&ready&&near;nextPhase=LIFT;carrier.setPos(p.position().add(0,-1,0));
-                if(next){n.putDouble("StartX",p.getX());n.putDouble("StartY",p.getY()+1);n.putDouble("StartZ",p.getZ());}
+                boolean near=movers(p,s,n,p.position().add(0,1,0),0,t);truck.frame(0,t,1);ready=destination(p,n);next=t>=40&&ready&&near&&now>=n.getLong("PickupRetryAt");nextPhase=LIFT;carrier.setPos(p.position().add(0,-1,0));
+                if(next){
+                    var pickupRoute=route(p,n);
+                    pickupRoute[0]=p.position().add(0,1,0);
+                    for(int i=1;i<pickupRoute.length;i++){
+                        if(clearRoute(p,pickupRoute[i-1],pickupRoute[i]))continue;
+                        next=false;
+                        n.putLong("PickupRetryAt",now+20);
+                        if(p.tickCount%80==0)p.displayClientMessage(Component.literal("The pickup route is obstructed. Clear the passage from reception to the truck."),true);
+                        break;
+                    }
+                    if(next){n.putDouble("StartX",p.getX());n.putDouble("StartY",p.getY()+1);n.putDouble("StartZ",p.getZ());}
+                }
             }
             case LIFT->{movers(p,s,n,carrier.position().add(0,1,0),1,t);var target=new Vec3(n.getDouble("StartX"),n.getDouble("StartY"),n.getDouble("StartZ"));if(!movePlayerCarrier(p,carrier,target,.04)){fail(p,s,n,"The lifting space is blocked.");return;}next=t>=30&&carrier.position().add(0,1,0).distanceToSqr(target)<.02;nextPhase=CARRY;}
             case CARRY->{
@@ -305,7 +350,19 @@ public final class PalaceTransport {
             }
             case CLOSE->{truck.frame(1,t,(float)Math.max(0,1-t/40.0));ready=destination(p,n);next=t>=40&&ready;nextPhase=TRANSIT;}
             case TRANSIT->{
-                ready=n.getBoolean("Arrived")||destination(p,n);if(!ready){fail(p,s,n,"Destination safety changed; the truck stopped rather than transferring into an obstruction.");return;}
+                if(n.getBoolean("Arrived")){
+                    var arrival=parked(p,n,true);
+                    if(truck.position().distanceToSqr(arrival)>.25||p.getVehicle()!=truck){
+                        fail(p,s,n,"The saved arrival needs the original truck and passenger at the destination.");
+                        return;
+                    }
+                    ready=true;
+                    next=t>=160;
+                    nextPhase=ARRIVE;
+                    break;
+                }
+                ready=destination(p,n);
+                if(!ready){fail(p,s,n,"Destination safety changed; the truck stopped rather than transferring into an obstruction.");return;}
                 truck.frame(2,t,0);if(t>=60&&t<160&&t%20==0)p.playNotifySound(SoundEvents.MINECART_RIDING,SoundSource.NEUTRAL,.28F,.7F);
                 if(t<160)truck.setPos(parked(p,n,false).add(0,t>=60?Math.sin(t*1.17)*.025:0,0));
                 if(t==160){
@@ -347,7 +404,7 @@ public final class PalaceTransport {
         if(n==null||!p.isAlive()||p.serverLevel()!=p.server.overworld()||progress(s,n).phase()==COMPLETE)return 0;
         var state=progress(s,n);
         if(!state.blocker().isEmpty()||!PalaceJourney.owns(p,s))return 0;
-        if(state.phase()==NOTICE&&PalaceSiteData.get(p.server).ready()&&p.distanceToSqr(desk(p).getCenter())<=25){
+        if(state.phase()==NOTICE&&PalaceSiteData.get(p.server).companyMapReady()&&p.distanceToSqr(desk(p).getCenter())<=25){
             if(!retireActors(p.server,s,n,false))return 0;
             PalaceJourney.existing(s).remove("Transport");
             OtherMotherLoop.changed(p);
@@ -378,7 +435,7 @@ public final class PalaceTransport {
             if(vehicle==null&&n.hasUUID("Truck"))return 0;
             if(!n.hasUUID("ActorSession"))n.putUUID("ActorSession",state.session());
         }else if(vehicle==null||p.distanceToSqr(vehicle)>144)return 0;
-        if(state.phase().ordinal()<=TRANSIT.ordinal()&&!n.getBoolean("Arrived")&&!destination(p,n))return 0;
+        if(state.phase()!=NOTICE&&state.phase().ordinal()<=TRANSIT.ordinal()&&!n.getBoolean("Arrived")&&!destination(p,n))return 0;
         if(state.phase()==NOTICE){
             var points=route(p,n);
             for(int i=1;i<points.length;i++)if(!clearRoute(p,points[i-1],points[i]))return 0;
@@ -411,16 +468,13 @@ public final class PalaceTransport {
         if(p.tickCount%40==0&&eligible(p,s)&&p.distanceToSqr(desk(p).getCenter())<36)p.displayClientMessage(Component.literal("Sign up as a mover."),true);
     }
     @SubscribeEvent public static void desk(PlayerInteractEvent.RightClickBlock event){
-        if(!(event.getEntity() instanceof ServerPlayer p)||p.serverLevel()!=p.server.overworld())return;
+        if(!(event.getEntity() instanceof ServerPlayer p)||p.serverLevel()!=p.server.overworld()
+                ||event.getHand()!=net.minecraft.world.InteractionHand.MAIN_HAND)return;
         var sites=PalaceSiteData.get(p.server);
-        if(!sites.companyMapReady()||!event.getPos().equals(desk(p)))return;
+        if(!sites.companyMapReady()||!receptionCounter(p,event.getPos()))return;
         var s=OtherMotherLoop.scene(p);
         var root=PalaceJourney.existing(s);
         if(!PalaceJourney.owns(p,s)||root==null||!root.getBoolean("MapIssued"))return;
-        if(!sites.ready()){
-            p.displayClientMessage(Component.literal(PalaceWorldGeneration.travelStatus(p.server)),true);
-            return;
-        }
         if(root.contains("Transport")&&(data(s)==null||!progress(s,data(s)).blocker().isEmpty())){
             p.displayClientMessage(Component.literal("Your saved ride needs recovery. Use /coralinepalace leave to check whether incomplete signup can be canceled."),true);
             return;

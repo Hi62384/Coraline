@@ -13,6 +13,71 @@ import net.minecraft.world.phys.Vec3;
 /** Authoritative continuation of the same accepted-route journal. */
 public final class GhostVictimDirector {
     private static final int SUPPER_TICKS=1800;
+    private static boolean seatAtSupper(ServerPlayer p,VisitData.Scene s,CompoundTag n,
+            net.minecraft.world.entity.PathfinderMob actor,String key,int slot,BlockPos preferred,BlockPos table){
+        String name=slot==101?"the child":slot==103?"Other Mother":"Other Father";
+        String status=key+"Status";
+        var level=AcceptedButtonEyesWorld.level(p);
+        if(actor==null||!actor.isAlive()||actor.level()!=level){
+            n.putString(status,"Waiting for the original "+name+" to reach the house.");return false;
+        }
+        if(actor instanceof com.coraline.parents.ParentEntity parent
+                &&(!parent.isOtherParent()||parent.isMom()!=(slot==103)
+                ||!parent.getPersistentData().hasUUID("RealmDoor")
+                ||!s.door.equals(parent.getPersistentData().getUUID("RealmDoor")))){
+            n.putString(status,"The saved parent identity for "+name+" could not be verified.");return false;
+        }
+        var seat=FirstEscapeScene.prop(p,s,key);
+        if(seat!=null&&(seat.level()!=level||seat.kind()!=CinematicPropEntity.SEAT||seat.slot()!=slot)){
+            n.putString(status,"The recorded chair for "+name+" is in the wrong location.");return false;
+        }
+        if(seat!=null&&actor.getVehicle()==seat){
+            seat.setYRot(GhostSupperGeometry.facing(seat.getX(),seat.getZ(),table.getX()+.5,table.getZ()+.5));
+            n.remove(status);return true;
+        }
+        if(seat!=null&&seat.isVehicle()){n.putString(status,"The chair for "+name+" is occupied.");return false;}
+        if(actor.isPassenger())actor.stopRiding();
+        String routeKey=key+"Route";
+        var route=n.getCompound(routeKey);n.put(routeKey,route);
+        long now=GhostVictimProgress.clock(n);
+        if(now<route.getLong("RetryAt"))return false;
+        boolean fixed=seat!=null;
+        BlockPos at=fixed?seat.blockPosition():preferred;
+        if(!fixed){
+            var clockwise=preferred.getX()==table.getX()?net.minecraft.core.Direction.EAST:net.minecraft.core.Direction.SOUTH;
+            var options=new BlockPos[]{preferred,preferred.relative(clockwise),preferred.relative(clockwise.getOpposite())};
+            at=options[Math.floorMod(route.getInt("Attempt"),options.length)];
+        }
+        var result=level.hasChunkAt(at)&&GhostVictimNavigation.clear(level,actor,at)
+                ?GhostVictimNavigation.walk(actor,route,at,now,.95,160,door->GhostVictimWorld.ordinaryDoor(s,door))
+                :GhostVictimNavigation.Result.BLOCKED;
+        if(result==GhostVictimNavigation.Result.BLOCKED){
+            GhostVictimNavigation.stop(actor,route);
+            route.putInt("Attempt",Math.floorMod(route.getInt("Attempt")+1,3));
+            route.putLong("RetryAt",now+20);
+            n.putString(status,"Clear the route beside the table for "+name+".");
+            return false;
+        }
+        n.putString(status,"Waiting for "+name+" to reach the chair.");
+        if(result!=GhostVictimNavigation.Result.ARRIVED)return false;
+        if(seat==null)seat=GhostVictimWorld.ensureSupperProp(p,s,key,CinematicPropEntity.SEAT,slot,level,Vec3.atBottomCenterOf(at));
+        if(seat==null){n.putString(status,"Recovering the saved chair for "+name+".");return false;}
+        seat.setYRot(GhostSupperGeometry.facing(seat.getX(),seat.getZ(),table.getX()+.5,table.getZ()+.5));
+        if(!actor.startRiding(seat,true)){n.putString(status,"Waiting for "+name+" to mount the chair.");return false;}
+        n.remove(routeKey);n.remove(status);return true;
+    }
+    static boolean supperMounted(ServerPlayer p,VisitData.Scene s,TycoonNpc child){
+        var level=AcceptedButtonEyesWorld.level(p);
+        return level!=null&&supperMount(p,s,level,child,"VictimSupperSeat",101)
+                &&supperMount(p,s,level,AcceptedButtonEyesWorld.mother(p,s),"MotherSupperSeat",103)
+                &&supperMount(p,s,level,AcceptedButtonEyesWorld.father(p,s),"FatherSupperSeat",104);
+    }
+    private static boolean supperMount(ServerPlayer p,VisitData.Scene s,net.minecraft.server.level.ServerLevel level,
+            net.minecraft.world.entity.LivingEntity actor,String key,int slot){
+        var seat=FirstEscapeScene.prop(p,s,key);
+        return actor!=null&&actor.isAlive()&&actor.level()==level&&seat!=null&&seat.level()==level
+                &&seat.kind()==CinematicPropEntity.SEAT&&seat.slot()==slot&&actor.getVehicle()==seat;
+    }
     public static boolean active(VisitData.Scene s){return s!=null&&AcceptedButtonEyes.active(s)&&GhostVictimEntry.data(s).getBoolean("Started");}
     /** Bound the authored, non-choice cutscene beats. Deliberate mirror dialogue,
      * exploration and bedtime waiting remain player-paced. A recovery never
@@ -22,17 +87,16 @@ public final class GhostVictimDirector {
         if(phase==GhostVictimProgress.Phase.INTRODUCTION&&!n.getBoolean("VoiceStarted")
             &&!arrivalReady(p,s,AcceptedButtonEyesWorld.level(p),AcceptedButtonEyesWorld.mother(p,s)))return;
         int budget=switch(phase){case INTRODUCTION->Math.max(1200,StoryCutsceneWatchdog.voiceBudget(OtherMotherWelcome.State.HIGH_TRUST_LOW_SUSPICION.sound(0)));
-            case FIRST_SUPPER->SUPPER_TICKS+2400;
+            case FIRST_SUPPER->0; // The meal advances only after verified family seating.
             case DAILY_ARRIVAL,VICTIM_CAPTURED,VICTIM_ESCAPED->1800;
             case DAILY_GIFT->Math.max(1800,GhostVictimConfig.GIFT_SECONDS.get()*20+1200);
             case BEDTIME->n.contains("BedtimeArrived")?0:1800;
             case NIGHT_PREPARATION->Math.max(1800,GhostVictimConfig.PREPARATION_SECONDS.get()*20+1200);default->0;};
         if(budget==0||!StoryCutsceneWatchdog.overdue(p,s,"next_victim",phase.name(),budget))return;
-        var child=GhostVictimActors.find(p,s,n);if(child!=null){child.stopRiding();child.setPose(Pose.STANDING);child.refreshDimensions();child.gesture(0,0);}
+        var child=GhostVictimActors.find(p,s,n);if(child!=null&&phase!=GhostVictimProgress.Phase.VICTIM_ESCAPED){child.stopRiding();child.setPose(Pose.STANDING);child.refreshDimensions();child.gesture(0,0);}
         switch(phase){
 
             case INTRODUCTION->{if(child!=null)child.getNavigation().stop();move(p,s,n,GhostVictimProgress.Phase.FIRST_SUPPER);}
-            case FIRST_SUPPER->finishSupper(p,s,n,child,false);
             case BEDTIME->{n.putString("LastRouteBlocker","The child is still trying to reach a safe position beside the bedroom mirror. Clear the route and the conversation will resume.");n.putString("Blocker","Waiting for the child to reach the bedroom mirror.");StoryCutsceneWatchdog.retry(s,"next_victim");}
             case NIGHT_PREPARATION->{
                 var home=AcceptedButtonEyesWorld.level(p);
@@ -63,14 +127,8 @@ public final class GhostVictimDirector {
                 var needle=FirstEscapeScene.prop(p,s,"VictimNeedle");if(needle!=null)needle.discard();n.remove("CaptureSeatedAt");GhostVictimProgress.archiveVictim(n,"CAPTURED");OtherMotherLoop.changed(p);
             }
             case VICTIM_ESCAPED->{
-                if(child==null){StoryCutsceneWatchdog.retry(s,"next_victim");return;}
-                var originalDoor=DoorData.get(p.server).doors.get(s.door);var source=originalDoor==null?null:com.coraline.parents.FamilyData.level(p.server,originalDoor.dimension);
-                var safe=source==null?null:OtherWorld.safePlayer(source,originalDoor.pos);
-                if(source==null||safe==null){StoryCutsceneWatchdog.retry(s,"next_victim");return;}
-                var returned=ShowTravel.guest(child,p,s,source,Vec3.atBottomCenterOf(safe),false,"VictimHomeVisit");
-                if(!(returned instanceof TycoonNpc)){StoryCutsceneWatchdog.retry(s,"next_victim");return;}
-                returned.setInvisible(true);returned.noPhysics=true;returned.setNoAi(true);returned.getNavigation().stop();
-                GhostVictimProgress.archiveVictim(n,"ESCAPED");OtherMotherLoop.changed(p);
+                n.putString("Blocker","Waiting for the child to reach the Little Door or for the original return landing to clear.");
+                StoryCutsceneWatchdog.retry(s,"next_victim");
             }
             default->{}
         }
@@ -205,62 +263,44 @@ public final class GhostVictimDirector {
                     words(n,"This looks just like home... Are you my other mother?");move(p,s,n,GhostVictimProgress.Phase.FIRST_SUPPER);}
             }
             case FIRST_SUPPER->{
-                if(child==null||child.level()!=level)return;
-                var father=AcceptedButtonEyesWorld.father(p,s);
-                if(father==null&&p.tickCount%20==0&&p.level()==level){
-                    VisitEvents.ensureFather(p,s);father=AcceptedButtonEyesWorld.father(p,s);
-                    if(father!=null){
-                        father.getPersistentData().putUUID("AcceptedOwner",s.owner);
-                        GhostVictimEntry.disguise(p,s,n);
-                    }
-                }
-                GhostVictimWorld.ensureHouseProps(p,s,n);
-                if(!GhostVictimWorld.ensureSupperPoints(p,s,n))return;
+                n.putBoolean("SupperPhysicalReady",false);
+                if(child==null||child.level()!=level){n.putString("Blocker","Waiting for the original child at supper.");return;}
                 var table=GhostVictimWorld.diningTable(p,s);
-                var destination=table.south(2);
-                long supperClock=GhostVictimProgress.clock(n);
-                if(!n.contains("SupperWalkStarted"))n.putLong("SupperWalkStarted",supperClock);
-                var seat=FirstEscapeScene.prop(p,s,"VictimSupperSeat");
-                if(seat==null||child.getVehicle()!=seat){
-                    var scenery=FirstEscapeScene.context(s);
-                    if(seat==null&&scenery.hasUUID("VictimSupperSeat")){
-                        scenery.remove("VictimSupperSeat");
-                        scenery.remove("VictimSupperSeatPosition");
-                        OtherMotherLoop.changed(p);
-                    }
-                    var route=GhostVictimRoutines.travel(p,s,n,child,destination,false);
-                    if(route!=GhostVictimNavigation.Result.ARRIVED){
-                        if(supperClock-n.getLong("SupperWalkStarted")<160)return;
-                        // A saved house can have a blocked supper approach. Recover
-                        // at a collision-tested place beside the table so the meal
-                        // does not wait indefinitely for an impossible path.
-                        BlockPos recovery=null;
-                        for(var candidate:new BlockPos[]{destination,destination.east(),destination.west(),table.north(2),table.east(2),table.west(2)}){
-                            if(GhostVictimNavigation.clear(level,child,candidate)){recovery=candidate;break;}
-                        }
-                        if(recovery==null)return;
-                        destination=recovery;
-                        child.getNavigation().stop();child.setPos(Vec3.atBottomCenterOf(recovery));
-                        n.remove("ChildRoutine");
-                    }
-                    seat=FirstEscapeScene.ensure(p,s,"VictimSupperSeat",CinematicPropEntity.SEAT,101,level,Vec3.atBottomCenterOf(destination));
-                    if(seat==null||!child.startRiding(seat,true))return;
-                    seat.setYRot(180);
-                }
                 var mother=AcceptedButtonEyesWorld.mother(p,s);
-                var motherSeat=FirstEscapeScene.prop(p,s,"MotherSupperSeat");
-                var fatherSeat=FirstEscapeScene.prop(p,s,"FatherSupperSeat");
-                if(mother==null||father==null||motherSeat==null||fatherSeat==null
-                    ||mother.getVehicle()!=motherSeat||father.getVehicle()!=fatherSeat)return;
-                if(!n.contains("SupperSeated")){
-                    n.putLong("SupperSeated",GhostVictimProgress.clock(n));
+                var father=AcceptedButtonEyesWorld.father(p,s);
+                if(father==null&&p.tickCount%20==0){
+                    var last=n.contains("SupperFatherPosition",Tag.TAG_LONG)?BlockPos.of(n.getLong("SupperFatherPosition")):s.piano;
+                    if(last!=null)LoopProps.hold(level,last);
+                }else if(father!=null&&father.level()==level)n.putLong("SupperFatherPosition",father.blockPosition().asLong());
+                GhostVictimWorld.ensureHouseProps(p,s,n);
+                boolean childReady=seatAtSupper(p,s,n,child,"VictimSupperSeat",101,table.south(2),table);
+                boolean motherReady=seatAtSupper(p,s,n,mother,"MotherSupperSeat",103,table.west(2),table);
+                boolean fatherReady=seatAtSupper(p,s,n,father,"FatherSupperSeat",104,table.east(2),table);
+                boolean displays=GhostVictimWorld.ensureSupperPoints(p,s,n);
+                if(!childReady||!motherReady||!fatherReady||!displays){
+                    n.putString("Blocker",!childReady?n.getString("VictimSupperSeatStatus"):
+                            !motherReady?n.getString("MotherSupperSeatStatus"):
+                            !fatherReady?n.getString("FatherSupperSeatStatus"):"Recovering the supper table displays.");
+                    return;
                 }
-                if(!n.getBoolean("SupperFoodReady")){
-                    if(!GhostVictimManifestations.display(p,s,n,"supper_food",Vec3.atBottomCenterOf(table).add(0,1,0),
-                        GhostVictimProgress.Disturbance.FOOD,new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.COOKED_CHICKEN)))return;
-                    GhostVictimManifestations.show(p,s,n,"supper_food",true);n.putBoolean("SupperFoodReady",true);
+                n.remove("Blocker");
+                if(!GhostVictimManifestations.display(p,s,n,"supper_food",Vec3.atBottomCenterOf(table).add(0,1,0),
+                        GhostVictimProgress.Disturbance.FOOD,new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.COOKED_CHICKEN))){
+                    n.putString("Blocker","Recovering the supper food display.");
+                    return;
                 }
-                long elapsed=GhostVictimProgress.clock(n)-n.getLong("SupperSeated");
+                GhostVictimManifestations.show(p,s,n,"supper_food",true);
+                n.putBoolean("SupperFoodReady",true);
+                if(!n.getBoolean("ManifestationIntroduced")){
+                    p.sendSystemMessage(net.minecraft.network.chat.Component.literal(
+                            "Aim at a visible light or object and use your interact key to manifest. A child who sees a reveal may learn the truth. Noisy disturbances can frighten them and draw the Beldam's attention. Energy and each object's cooldown limit repeated actions."));
+                    n.putBoolean("ManifestationIntroduced",true);
+                }
+                if(!n.contains("SupperSeated"))n.putLong("SupperSeated",GhostVictimProgress.clock(n));
+                n.putBoolean("SupperPhysicalReady",true);
+                int elapsed=n.contains("SupperElapsed")?n.getInt("SupperElapsed"):
+                        GhostSupperGeometry.elapsedFromLegacyBeat(n.getInt("SupperDialogueBeat"));
+                n.putInt("SupperElapsed",Math.min(SUPPER_TICKS,elapsed+1));
                 supperConversation(n,elapsed);
                 if(n.contains("ReactionLook")&&GhostVictimProgress.clock(n)<n.getLong("ReactionLookUntil")){
                     var reaction=BlockPos.of(n.getLong("ReactionLook")).getCenter();
@@ -371,10 +411,57 @@ public final class GhostVictimDirector {
                 }
             }
             case VICTIM_ESCAPED->{
-                if(child==null)return;var state=level.getBlockState(realm.doorPos);if(!state.hasProperty(TinyDoorBlock.FACING))return;var facing=state.getValue(TinyDoorBlock.FACING);
-                if(child.getPose()!=Pose.SWIMMING){if(GhostVictimRoutines.travel(p,s,n,child,realm.doorPos.relative(facing,2),true)!=GhostVictimNavigation.Result.ARRIVED)return;child.gesture(6,100);child.setPose(Pose.SWIMMING);child.refreshDimensions();n.remove("ChildRoutine");words(n,"I am going home. I'm not coming back!");}
-                child.gesture(6,5);if(GhostVictimRoutines.travel(p,s,n,child,BlockPos.containing(TunnelPassage.inside(realm.doorPos,facing,2.2)),false)!=GhostVictimNavigation.Result.ARRIVED)return;
-                child.setInvisible(true);child.noPhysics=true;GhostVictimProgress.archiveVictim(n,"ESCAPED");OtherMotherLoop.changed(p);
+                if(child==null)return;
+                if(!n.getBoolean("VictimReachedDoor")){
+                    var state=level.getBlockState(realm.doorPos);
+                    if(child.level()!=level||!state.hasProperty(TinyDoorBlock.FACING))return;
+                    var facing=state.getValue(TinyDoorBlock.FACING);
+                    if(child.getPose()!=Pose.SWIMMING){
+                        if(GhostVictimRoutines.travel(p,s,n,child,realm.doorPos.relative(facing,2),true)!=GhostVictimNavigation.Result.ARRIVED)return;
+                        if(GhostEscapeHunt.openPassage(level,realm.doorPos,s.door)==null){
+                            n.putString("Blocker","The child reached the Little Door, but its original passage is obstructed.");
+                            return;
+                        }
+                        child.gesture(6,100);child.setPose(Pose.SWIMMING);child.refreshDimensions();
+                        n.remove("ChildRoutine");words(n,"I am going home. I'm not coming back!");
+                    }
+                    child.gesture(6,5);
+                    if(GhostVictimRoutines.travel(p,s,n,child,BlockPos.containing(TunnelPassage.inside(realm.doorPos,facing,2.2)),false)!=GhostVictimNavigation.Result.ARRIVED)return;
+                    n.putBoolean("VictimReachedDoor",true);
+                    OtherMotherLoop.changed(p);
+                    p.server.overworld().getDataStorage().save();
+                }
+                if(p.tickCount%20!=0)return;
+                var door=DoorData.get(p.server).doors.get(s.door);
+                var source=door==null||!s.owner.equals(door.owner)?null:com.coraline.parents.FamilyData.level(p.server,door.dimension);
+                if(source==null){
+                    n.putString("Blocker","The original Little Door destination is unavailable.");
+                    return;
+                }
+                var chunk=new net.minecraft.world.level.ChunkPos(door.pos);
+                source.getChunkSource().addRegionTicket(net.minecraft.server.level.TicketType.PORTAL,chunk,2,door.pos);
+                if(!source.hasChunkAt(door.pos)){
+                    n.putString("Blocker","Waiting for the original Little Door landing to load.");
+                    return;
+                }
+                net.minecraft.core.BlockPos safe=null;
+                for(int radius=1;radius<=4&&safe==null;radius++)for(var direction:net.minecraft.core.Direction.Plane.HORIZONTAL)
+                    for(int dy:new int[]{0,1,-1}){
+                        var point=door.pos.relative(direction,radius).above(dy);
+                        if(source.hasChunkAt(point)&&com.coraline.tycoon.TycoonWorld.safeFeet(source,point)){safe=point;break;}
+                    }
+                if(safe==null){
+                    n.putString("Blocker","The original Little Door landing is obstructed.");
+                    return;
+                }
+                var returned=child.level()==source?child:ShowTravel.guest(child,p,s,source,Vec3.atBottomCenterOf(safe),false,"VictimHomeVisit");
+                if(!(returned instanceof TycoonNpc same)||!same.getUUID().equals(child.getUUID())
+                        ||same.level()!=source||same.distanceToSqr(Vec3.atBottomCenterOf(safe))>64)return;
+                same.setInvisible(true);same.noPhysics=true;same.setNoAi(true);same.getNavigation().stop();
+                GhostVictimActors.remember(n,same);
+                n.remove("VictimReachedDoor");n.remove("Blocker");
+                GhostVictimProgress.archiveVictim(n,"ESCAPED");
+                OtherMotherLoop.changed(p);
             }
             case BETWEEN_ACTIVITIES,ACTIVITY->GhostVictimActivities.tick(p,s,n);
             default->{}
@@ -402,7 +489,7 @@ public final class GhostVictimDirector {
     }
     private static void finishSupper(ServerPlayer p,VisitData.Scene s,CompoundTag n,TycoonNpc child,boolean completed){
         if(child!=null)child.stopRiding();
-        n.remove("SupperSeated");n.remove("SupperDialogueBeat");n.remove("SupperFoodReady");
+        n.remove("SupperSeated");n.remove("SupperElapsed");n.remove("SupperPhysicalReady");n.remove("SupperDialogueBeat");n.remove("SupperFoodReady");
         GhostVictimManifestations.show(p,s,n,"supper_food",false);
         if(completed)GhostVictimProgress.trust(n,GhostVictimProgress.motherTrust(n)+.06,GhostVictimProgress.ghostTrust(n));
         familyWords(n,"Other Mother: Supper is over, darling. Go explore the house until bedtime.");
@@ -518,16 +605,8 @@ public final class GhostVictimDirector {
             }
         }else if(actor.isMom())n.remove("MotherArrivalRoute");
         if(GhostVictimProgress.phase(n)==GhostVictimProgress.Phase.FIRST_SUPPER&&child!=null&&actor.level()==child.level()){
-            var table=GhostVictimWorld.diningTable(p,s);var at=actor.isMom()?table.west(2):table.east(2);
             actor.getLookControl().setLookAt(child,25,25);
-            if(actor.isPassenger()&&actor.getVehicle()!=supperSeat)actor.stopRiding();
-            if(actor.getVehicle()!=supperSeat||supperSeat==null){
-                var route=n.getCompound(supperKey+"Route");n.put(supperKey+"Route",route);
-                if(GhostVictimNavigation.walk(actor,route,at,GhostVictimProgress.clock(n),.95,600,door->GhostVictimWorld.ordinaryDoor(s,door))==GhostVictimNavigation.Result.ARRIVED){
-                    var seat=FirstEscapeScene.ensure(p,s,supperKey,CinematicPropEntity.SEAT,actor.isMom()?103:104,(net.minecraft.server.level.ServerLevel)actor.level(),Vec3.atBottomCenterOf(at));
-                    if(seat!=null){seat.setYRot(actor.isMom()?270:90);actor.startRiding(seat,true);}
-                }
-            }else{actor.getNavigation().stop();actor.familyGesture(3,5);}
+            if(supperSeat!=null&&actor.getVehicle()==supperSeat){actor.getNavigation().stop();actor.familyGesture(3,5);}
             return true;
         }
         if(actor.isMom()&&n.contains("MotherInvestigation")&&GhostVictimProgress.clock(n)<n.getLong("MotherInvestigateUntil")){

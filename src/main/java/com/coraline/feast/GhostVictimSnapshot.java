@@ -34,7 +34,7 @@ public final class GhostVictimSnapshot {
             case RECONSTRUCTION,NEW_VICTIM_RESET->"Watch the Other World rebuild.";
             case WAITING_FOR_VICTIM->"Go to the Little Door room.";
             case INTRODUCTION->"A new child has arrived.";
-            case FIRST_SUPPER->n.contains("SupperSeated")
+            case FIRST_SUPPER->n.getBoolean("SupperPhysicalReady")
                     ?"Manifest an object near the table to warn the child."
                     :"Follow the family to supper.";
             case EXPLORATION->"Find a way to warn the child.";
@@ -72,12 +72,22 @@ public final class GhostVictimSnapshot {
                     label+(GhostVictimMirrors.childPresent(p,n,key,child)?" — child ready":" — waiting for the child"));
         }
         for(String key:n.getCompound("Points").getAllKeys()){
+            if(!GhostManifestationTarget.validId(key))continue;
             boolean preview=GhostVictimSchedule.previewAvailable(n,key);
             if(!GhostVictimSchedule.manifestationAvailable(n,key)&&!preview)continue;
             var row=n.getCompound("Points").getCompound(key);if(row.contains("Visible")&&!row.getBoolean("Visible"))continue;
             if(!row.getString("Dimension").isEmpty()&&!row.getString("Dimension").equals(p.level().dimension().location().toString()))continue;
             point(points,GhostVictimManifestations.interactionPoint(row),(preview?"inspect:":"manifest:")+key);
-            var point=points.getCompound(points.size()-1);point.putString("Label",row.getString("Kind").toLowerCase(java.util.Locale.ROOT).replace('_',' '));
+            var point=points.getCompound(points.size()-1);
+            var fixture=GhostVictimManifestations.fixture(row);
+            if(fixture!=null)point.putLong("Fixture",fixture.asLong());
+            point.putString("Label",switch(row.getString("Kind")){
+                case "LIGHT"->"Flicker the light";
+                case "FOOD"->"Reveal the food";
+                case "ILLUSION"->"Reveal the illusion";
+                case "KNIFE","OBJECT"->"Disturb the object";
+                default->row.getString("Kind").toLowerCase(java.util.Locale.ROOT).replace('_',' ');
+            });
             if(!row.getString("Label").isBlank())point.putString("Label",row.getString("Label"));
             var plan=n.getCompound(GhostEscapeProgress.KEY);
             if(key.startsWith("room_light_")&&GhostEscapeProgress.phase(plan)==GhostEscapeProgress.Phase.WAIT_LURE

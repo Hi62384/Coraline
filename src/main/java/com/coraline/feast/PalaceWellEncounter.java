@@ -110,12 +110,19 @@ public final class PalaceWellEncounter {
     }
     private static CinematicPropEntity prop(ServerPlayer p,VisitData.Scene s,String key,int kind,Vec3 at){return RescueProps.ensure(p,s,"Well"+key,kind,0,at);}
     private static WybieBicycleEntity bike(ServerPlayer p,VisitData.Scene s,CompoundTag n,PalaceWellProgress progress,CharacterEntity w){
+        java.util.UUID original=null;
         if(n.hasUUID("Bike")){
-            if(n.contains("BikePosition",Tag.TAG_LONG)){
-                var at=BlockPos.of(n.getLong("BikePosition"));if(at.distSqr(BlockPos.containing(center(p)))>96*96)return null;
-                p.server.overworld().getChunkSource().addRegionTicket(net.minecraft.server.level.TicketType.PORTAL,new net.minecraft.world.level.ChunkPos(at),2,at);
-            }
-            var raw=p.server.overworld().getEntity(n.getUUID("Bike"));return raw instanceof WybieBicycleEntity b&&b.getPersistentData().hasUUID("PalaceWellOwner")&&s.owner.equals(b.getPersistentData().getUUID("PalaceWellOwner"))?b:null;
+            original=n.getUUID("Bike");
+            if(!n.contains("BikePosition",Tag.TAG_LONG))return null;
+            var at=BlockPos.of(n.getLong("BikePosition"));
+            if(at.distSqr(BlockPos.containing(center(p)))>96*96)return null;
+            var overworld=p.server.overworld();
+            var chunk=new net.minecraft.world.level.ChunkPos(at);
+            overworld.getChunkSource().addRegionTicket(net.minecraft.server.level.TicketType.PORTAL,chunk,2,at);
+            var raw=overworld.getEntity(original);
+            if(raw instanceof WybieBicycleEntity b&&progress.session().equals(b.session())
+                    &&b.getPersistentData().hasUUID("PalaceWellOwner")&&s.owner.equals(b.getPersistentData().getUUID("PalaceWellOwner")))return b;
+            if(raw!=null||w==null||!overworld.areEntitiesLoaded(chunk.toLong()))return null;
         }
         if(w==null)return null;var c=center(p);var palace=PalaceSiteData.get(p.server).position(PalaceSitePlan.Kind.PALACE).orElseThrow();var away=c.subtract(Vec3.atBottomCenterOf(palace)).multiply(1,0,1).normalize();
         if(away.lengthSqr()<.1)away=new Vec3(0,0,1);
@@ -146,6 +153,10 @@ public final class PalaceWellEncounter {
         if(route==null||route.isEmpty())return null;
         b.configure(s.owner,s.door,progress.session(),s.loop.event.getInt("Serial"),w.getUUID(),true);
         b.getPersistentData().putUUID("PalaceWellOwner",s.owner);
+        if(original!=null){
+            if(com.coraline.rebirth.LegacyActorRecovery.check(p.server,original)!=com.coraline.rebirth.LegacyActorRecovery.Result.ABSENT)return null;
+            b.setUUID(original);
+        }
         if(!p.serverLevel().addFreshEntity(b))return null;
         n.putUUID("Bike",b.getUUID());
         n.putLong("BikePosition",b.blockPosition().asLong());
@@ -290,7 +301,7 @@ public final class PalaceWellEncounter {
         var c=center(p);var w=wybie(p,s,progress);
         if(progress.wybieLife()==PalaceWellProgress.WybieLife.ALIVE&&w==null){pause(p,s,n,"Waiting for the original living Wybie; no resurrection or replacement performed.");return;}
         if(!n.getBoolean("HandAtWell")){
-            if(PalaceWellMotion.seen(p,h))return;
+            if(h.cue()!=RescueProps.HAND_WAITING_CUE&&!h.isInvisible()&&PalaceWellMotion.seen(p,h))return;
             h=RescueProps.ensure(p,s,"SeveredHand",RescueProps.HAND,0,p.position());if(h==null)return;
             h.setPos(p.position().add(0,.17,0));h.setInvisible(false);n.putBoolean("HandAtWell",true);
         }

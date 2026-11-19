@@ -178,6 +178,7 @@ public final class GhostVictimMirrors {
                 response=retrieve?"I'll retrieve the eyes from that room.":"I'll search that room for the eyes.";
             }else if(action.equals("ambush")){
                 GhostVictimWorld.refreshRoomLights(p,s,n);
+                GhostEscapeHiding.refresh(p,s,n,child);
                 String hide=GhostEscapeAmbush.plan(p,s,n,e,child);
                 if(hide.isEmpty()){
                     screen(p,n,"I need a reachable hiding place near a working light.");

@@ -81,11 +81,14 @@ public final class RescueChapter {
             &&state.ordinal()>=Phase.REUNION_A.ordinal()){
             var door=DoorData.get(p.server).doors.get(s.door);
             if(door!=null&&s.owner.equals(door.owner)){
-                var hand=RescueProps.ensure(p,s,"SeveredHand",RescueProps.HAND,0,Vec3.atBottomCenterOf(door.pos).add(0,.2,1));
-                if(hand!=null){hand.frame(1,0,1);n.putBoolean("HandSevered",true);OtherMotherLoop.changed(p);}
+                var hand=RescueProps.ensure(p,s,"SeveredHand",RescueProps.HAND,0,BeldamFinale.handWaitingPosition(p.serverLevel(),door.pos));
+                if(hand!=null){BeldamFinale.parkHand(p,s,hand,door.pos);n.putBoolean("HandSevered",true);OtherMotherLoop.changed(p);}
             }
         }
-        if(state.ordinal()>=Phase.LOCK_DOOR.ordinal())com.coraline.doll.DollBondData.get(p.server).destroyAfterBeldam(s.owner);
+        if(state.ordinal()>=Phase.LOCK_DOOR.ordinal()){
+            BeldamFinale.reconcileHand(p,s);
+            com.coraline.doll.DollBondData.get(p.server).destroyAfterBeldam(s.owner);
+        }
         if(n.getBoolean("BossLossPending")){RescueBosses.lose(p,s);return;}
         if(s.loop.story.getBoolean("DebugSkipFinalFightPending")&&state.ordinal()>=Phase.FINAL_A.ordinal()&&state.ordinal()<Phase.LOCK_DOOR.ordinal()&&RescueEyes.all(s)){
             var result=BeldamFinale.debugSkipFight(p,s);if(phase(s)==Phase.LOCK_DOOR){p.sendSystemMessage(net.minecraft.network.chat.Component.literal(result));return;}

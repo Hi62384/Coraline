@@ -394,7 +394,7 @@ public final class ScenePropRenderer extends EntityRenderer<ScenePropEntity> {
             case ScenePropEntity.CAKE_MIXER->{
                 box(pose,buffers,light,Blocks.IRON_BLOCK,-.34F,0,-.34F,.68F,.09F,.68F);
                 box(pose,buffers,light,Blocks.PINK_TERRACOTTA,-.29F,.08F,-.29F,.58F,.2F,.58F);
-                box(pose,buffers,light,Blocks.YELLOW_TERRACOTTA,-.21F,.28F,-.21F,.42F,.025F,.42F);
+                box(pose,buffers,light,e.mode()==1?sponge(e.cakeData().getInt("Base")):Blocks.YELLOW_TERRACOTTA,-.21F,.28F,-.21F,.42F,.025F,.42F);
                 pose.pushPose();
                 if(e.mode()>0)pose.mulPose(Axis.YP.rotationDegrees((e.tickCount+partial)*42));
                 box(pose,buffers,light,Blocks.IRON_BLOCK,-.025F,.27F,-.025F,.05F,.3F,.05F);
@@ -567,23 +567,13 @@ public final class ScenePropRenderer extends EntityRenderer<ScenePropEntity> {
         }
     }
     private static void cakeWorkpiece(ScenePropEntity e,PoseStack pose,MultiBufferSource buffers,int light){
-        int mode=e.mode();if(mode==10){if(e.visualSlot()==2)CakeMesh.stand(pose,buffers,light);return;}
-        var d=e.cakeData();Block batter=sponge(d.getInt("Base"));
-        if(mode<=2){
-            box(pose,buffers,light,Blocks.IRON_BLOCK,-.34F,0,-.34F,.68F,.09F,.68F);
-            box(pose,buffers,light,Blocks.PINK_TERRACOTTA,-.31F,.08F,-.31F,.62F,.17F,.62F);
-            box(pose,buffers,light,mode==0?Blocks.WHITE_CONCRETE_POWDER:batter,-.25F,.25F,-.25F,.50F,.05F,.50F);
-            if(mode==0)for(int i=0;i<5;i++)box(pose,buffers,light,i%2==0?Blocks.YELLOW_WOOL:Blocks.BROWN_WOOL,
-                -.22F+i*.08F,.30F,-.11F+(i%2)*.12F,.08F,.04F,.07F);
-            if(mode==1)for(int i=0;i<4;i++)box(pose,buffers,light,Blocks.WHITE_WOOL,-.18F+i*.1F,.30F,-.2F+(i%2)*.22F,.07F,.04F,.07F);
-        }else if(mode==11){CakeMesh.render(d,pose,buffers,light);}
-        else {
-            box(pose,buffers,light,Blocks.IRON_BLOCK,-.45F,0,-.45F,.90F,.055F,.90F);
-            Block color=mode>=9?Blocks.BLACK_TERRACOTTA:mode>=8?Blocks.BROWN_TERRACOTTA:batter;
-            float height=mode==3||mode==4?.15F:mode==5?.21F:.28F;
-            box(pose,buffers,light,color,-.37F,.055F,-.37F,.74F,height,.74F);
-            if(mode>=6&&mode<=7)box(pose,buffers,light,Blocks.YELLOW_TERRACOTTA,-.29F,.055F+height,-.29F,.58F,.025F,.58F);
-        }
+        int mode=e.mode();
+        if(e.visualSlot()==0)return;
+        var design=e.cakeData();
+        if(mode==com.coraline.feast.CakeKitchenRules.ASSEMBLED)CakeMesh.render(design,pose,buffers,light);
+        else if(mode==com.coraline.feast.CakeKitchenRules.EMPTY){
+            if(e.visualSlot()==2)CakeMesh.stand(pose,buffers,light);
+        }else CakeMesh.pan(design,mode,pose,buffers,light);
     }
     private static void dish(PoseStack pose,MultiBufferSource buffers,int light,float r){
         // Stepped porcelain rim, approximating an octagonal plate rather than a square tile.

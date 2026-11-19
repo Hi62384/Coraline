@@ -254,7 +254,7 @@ public final class GhostEscapeHunt {
         GhostVictimDirector.words(ghost,"That path is blocked. I'm heading for other cover.");
         OtherMotherLoop.changed(p);
     }
-    private static net.minecraft.world.level.block.state.BlockState openPassage(net.minecraft.server.level.ServerLevel level,BlockPos at,java.util.UUID expected){
+    static net.minecraft.world.level.block.state.BlockState openPassage(net.minecraft.server.level.ServerLevel level,BlockPos at,java.util.UUID expected){
         LoopProps.hold(level,at);
         var state=level.getBlockState(at);
         if(!state.is(ModBlocks.TINY_DOOR.get())

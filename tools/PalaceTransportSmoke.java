@@ -40,6 +40,7 @@ public final class PalaceTransportSmoke {
         for(int attempt=0;attempt<64;attempt++){
             var state=PalaceTransportProgress.start(OWNER,DOOR);var token=state.session();
             check(!state.motionFinished(OWNER,token,LIFT,true,true),"New registration skips the worker approach");ticks(state,40,false);
+            check(!state.motionFinished(OWNER,token,LIFT,true,false),"Registered passenger was lifted before the destination was safe");
             check(!state.motionFinished(OWNER,token,LIFT,false,true),"Workers not physically present lifted player");check(state.motionFinished(OWNER,token,LIFT,true,true),"Actual worker approach not accepted");
             check(!state.tick(OWNER,token,clock+1,false),"Missing physical carrier advanced lift");ticks(state,30,true);check(state.motionFinished(OWNER,token,CARRY,true,false),"Lift completion rejected");
             ticks(state,80,true);check(!state.motionFinished(OWNER,token,THROW,false,true),"Blocked physical carry advanced");check(state.motionFinished(OWNER,token,THROW,true,true),"Actual carry arrival rejected");
@@ -55,6 +56,7 @@ public final class PalaceTransportSmoke {
                     check(!state.tick(OWNER,old,clock+1,true),"Stale pre-reconnect input advanced ride");clock+=1_000_000;
                 }
             }
+            check(!state.motionFinished(OWNER,token,ARRIVE,true,false),"Truck completed arrival without a safe destination");
             check(!state.motionFinished(OWNER,token,ARRIVE,false,true),"Elapsed time alone fabricated destination transfer");check(state.motionFinished(OWNER,token,ARRIVE,true,true),"Actual eight-second transfer rejected");
             ticks(state,40,true);check(state.motionFinished(OWNER,token,EXIT,true,true),"Opened cargo doors rejected");
             check(!state.motionFinished(OWNER,token,COMPLETE,false,true),"Passenger still in truck received completion");check(state.motionFinished(OWNER,token,COMPLETE,true,true),"Actual grounded exit rejected");

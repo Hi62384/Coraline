@@ -137,6 +137,7 @@ public final class PalaceJourney {
      * No chunk search/load, pre-render scan, world landmark or reward allocation.
      */
     public static boolean giveMap(ServerPlayer p,VisitData.Scene scene,boolean recovery){
+        com.coraline.palace.PalaceWorldGeneration.requireCompany(p.server);
         if(!mapEligible(p,scene)||p.serverLevel()!=p.server.overworld()||p.isSpectator())return false;
         try{if(com.coraline.rebirth.StoryRunStore.status(p.server,p.getUUID()).run()!=1)return false;}catch(java.io.IOException unavailable){return false;}
         var sites=PalaceSiteData.get(p.server);if(!sitesReady(sites))return false;
@@ -203,7 +204,7 @@ public final class PalaceJourney {
                 if(p.tickCount%80==0){
                     var sites=PalaceSiteData.get(p.server);
                     String status=sites.companyMapReady()?"Keep your key and a free inventory slot."
-                            :sites.blocker().isEmpty()?"The destination is still being prepared.":sites.blocker();
+                            :com.coraline.palace.PalaceWorldGeneration.travelStatus(p.server);
                     p.displayClientMessage(Component.literal("Moving Company map pending. "+status),true);
                 }
             }

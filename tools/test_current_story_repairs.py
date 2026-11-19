@@ -37,6 +37,22 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('boolean canCollideWith(Entity other)',text);self.assertIn('void push(Entity other)',text)
         guide=source('feast/ParentRescueStory.java').split('static void guideTunnelCat(',1)[1].split('public static void tick(',1)[0]
         self.assertIn('playerProgress-2.5',guide);self.assertIn('cat.storyCatCrawl(true)',guide);self.assertIn('getBlockCollisions(cat',guide)
+    def test_first_escape_retries_completion_and_requires_physical_transfers(self):
+        text=source('feast/FirstEscapeStory.java')
+        tick=text.split('public static boolean tick(',1)[1].split('private static boolean recording(',1)[0]
+        self.assertLess(tick.index('finishFirstEscape(p,s,false)'),tick.index('ParentRescueStory.tick(p,s)'))
+        self.assertIn('frame>=30&&enterPrison(p,s)',tick)
+        push=text.split('private static void pushIntoTunnel(',1)[1].split('private static void tunnel(',1)[0]
+        self.assertLess(push.index('if(spawnInEscapeTunnel(p,s,1))'),push.index('go(p,s,ESCAPE_TUNNEL)'))
+        finish=text.split('public static boolean finishFirstEscape(',1)[1].split('private static void brickDoor(',1)[0]
+        self.assertLess(finish.index('!verifiedTransfer(p,s,p.server.overworld(),d.pos)'),finish.index('n.putBoolean("Complete",true)'))
+
+    def test_accepted_child_crosses_before_escape_is_archived(self):
+        text=source('feast/GhostVictimDirector.java')
+        escaped=text.rsplit('case VICTIM_ESCAPED->{',1)[1].split('case BETWEEN_ACTIVITIES',1)[0]
+        self.assertLess(escaped.index('GhostEscapeHunt.openPassage'),escaped.index('n.putBoolean("VictimReachedDoor",true)'))
+        self.assertLess(escaped.index('same.level()!=source'),escaped.index('archiveVictim(n,"ESCAPED")'))
+
     def test_complete_music_master_timing_and_one_shot_playback(self):
         receipt=json.loads((ASSETS/'missing_parents_music_audio.json').read_text())
         self.assertEqual(receipt['source_sha256'],hashlib.sha256((ROOT/receipt['source']).read_bytes()).hexdigest())

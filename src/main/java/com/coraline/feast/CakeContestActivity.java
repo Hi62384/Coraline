@@ -19,6 +19,12 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -366,7 +372,10 @@ public final class CakeContestActivity {
                 }
             }
             case 4->{
-                if(p.tickCount%20==0)chefsToPanel(level,s,c,now);
+                if(p.tickCount%20==0){
+                    chefsToPanel(level,s,c,now);
+                    recoverFinishedDisplay(level,s,c);
+                }
                 if(p.tickCount%10==0){
                     CakeMaking.objective(p,l.cakeTaken?"Right-click the sparkling judging table to place your cake":"Right-click your finished cake on the front stand");
                     var target=l.cakeTaken?c.north(22):c.south(2);
@@ -390,12 +399,6 @@ public final class CakeContestActivity {
             default->{}
         }
     }
-    private static String instruction(OtherMotherLoopState l,long now){return switch(l.cakeStep){
-        case 0->"LEFT: flour/eggs/milk | RIGHT: flavor rack | CENTER: mix bowl";
-        case 1->"Stir at the marble mixer ("+l.cakeMixCount+"/3)";
-        case 2->l.cakeOvenReadyAt==0?"Right-click the OVEN behind the bowl":"Bake: "+Math.max(0,(l.cakeOvenReadyAt-now+19)/20)+"s; then click oven again";
-        default->"RIGHT: icing rack + topper sideboard | CENTER: finish cake";
-    };}
     static int targetFor(OtherMotherLoopState l){return 0;}
     public static void action(ServerPlayer p,int choice){p.displayClientMessage(Component.literal("Use the ingredient baskets and baking machines in your booth."),true);}
     static void finishBake(ServerPlayer p,VisitData.Scene s,BlockPos c,boolean early){
@@ -410,69 +413,48 @@ public final class CakeContestActivity {
     }
     private static int cakeStyle(OtherMotherLoopState l){return l.cakeFlavor|(l.cakeIcing<<2)|(l.cakeTopper<<4);}
     private static void removeIngredients(ServerPlayer p,VisitData.Scene s){for(var stack:p.getInventory().items)if(stack.hasTag()&&stack.getTag().getBoolean("CoralineCakeIngredient")&&stack.getTag().hasUUID(OWNER)&&p.getUUID().equals(stack.getTag().getUUID(OWNER)))stack.setCount(0);p.getInventory().setChanged();}
-    private static void takeIngredient(ServerPlayer p,VisitData.Scene s,int ingredient){
-        var l=s.loop;if((l.cakeIngredients&(1<<ingredient))!=0){p.displayClientMessage(Component.literal("Already packed this ingredient."),true);return;}
-        var stack=new ItemStack(ingredient==0?Items.WHEAT:ingredient==1?Items.EGG:Items.MILK_BUCKET);
-        stack.setHoverName(Component.literal(ingredient==0?"Contest Flour":ingredient==1?"Contest Eggs":"Contest Milk"));
-        stack.getOrCreateTag().putBoolean("CoralineCakeIngredient",true);stack.getTag().putUUID(OWNER,p.getUUID());stack.getTag().putInt(GEN,l.generation);
-        if(!p.getInventory().add(stack)){p.displayClientMessage(Component.literal("Make room for baking ingredients."),true);return;}
-        l.cakeIngredients|=1<<ingredient;l.cakeScore+=7;OtherMotherLoop.changed(p);
-        p.displayClientMessage(Component.literal("Picked up "+stack.getHoverName().getString()+". Ingredients "+Integer.bitCount(l.cakeIngredients)+"/3"),true);
+    private static void recoverFinishedDisplay(ServerLevel level,VisitData.Scene s,BlockPos c){
+        var at=c.south(2).above();
+        if(s.loop.cakeTaken||!level.areEntitiesLoaded(new net.minecraft.world.level.ChunkPos(at).toLong()))return;
+        if(LoopProps.nearby(level,s,c).stream().noneMatch(e->e.kind()==ScenePropEntity.CONTEST_CAKE&&e.slot==99
+            &&e.blockPosition().equals(at)&&e.getPersistentData().getInt("LoopGeneration")==s.loop.generation))
+            showCake(level,s,at,99,cakeStyle(s.loop),CakeMaking.design(s.loop));
+    }
+    @SubscribeEvent(priority=EventPriority.HIGH)
+    public static void stationClick(PlayerInteractEvent.RightClickBlock event){
+        if(!(event.getEntity() instanceof ServerPlayer p)||!ActivityWorld.isActivity(p.level()))return;
+        var scene=OtherMotherLoop.active(p);
+        if(scene==null||scene.loop.activity!=OtherMotherActivities.Activity.CAKE_MAKING_CONTEST)return;
+        var station=CakeMaking.station(center(p,scene),event.getPos());
+        if(station==null)return;
+        event.setCanceled(true);
+        event.setCancellationResult(InteractionResult.SUCCESS);
+        if(event.getHand()==InteractionHand.MAIN_HAND)interactBlock(p,event.getPos());
     }
     public static boolean interactBlock(ServerPlayer p,BlockPos at){
-        var s=OtherMotherLoop.active(p);if(s==null||s.loop.activity!=OtherMotherActivities.Activity.CAKE_MAKING_CONTEST||!ActivityWorld.isActivity(p.level())||!com.coraline.multiplayer.StoryCoop.canAct(p,s))return false;
-        var l=s.loop;var c=center(p,s);long now=OtherMotherLoop.now(p);
-        if(l.cakeStage==3)return CakeMaking.interact(p,s,c,at,now);
-        /* Legacy station flow removed. Keep stage four's pickup and the
-           existing judging handoff below entirely unchanged. */
-        /*if(l.cakeStage==3){
-            if(p.distanceToSqr(Vec3.atCenterOf(at))>36)return false;
-            if(at.getX()==c.getX()-2&&at.getY()==c.getY()&&Math.abs(at.getZ()-c.getZ())<=2&&Math.floorMod(at.getZ()-c.getZ(),2)==0){
-                takeIngredient(p,s,(at.getZ()-c.getZ()+2)/2);return true;
-            }
-            if(at.getX()==c.getX()+2&&at.getY()==c.getY()&&Math.abs(at.getZ()-c.getZ())<=2&&Math.floorMod(at.getZ()-c.getZ(),2)==0){
-                int choice=(at.getZ()-c.getZ()+2)/2;
-                if(l.cakeStep==0){l.cakeFlavor=choice;p.sendSystemMessage(Component.literal("Batter flavor: "+new String[]{"chocolate","vanilla","berry"}[choice]));}
-                else if(l.cakeStep==3){l.cakeIcing=choice;p.sendSystemMessage(Component.literal("Icing: "+new String[]{"cream","blueberry","rose"}[choice]));}
-                else p.displayClientMessage(Component.literal("Finish mixing and baking first."),true);
-                OtherMotherLoop.changed(p);return true;
-            }
-            if(at.equals(c.offset(2,0,-1))){
-                if(l.cakeStep==3){l.cakeTopper=(l.cakeTopper+1)%3;OtherMotherLoop.changed(p);
-                    p.sendSystemMessage(Component.literal("Topper: "+new String[]{"berries","golden sugar","flowers"}[l.cakeTopper]+". Click again to change."));}
-                else p.displayClientMessage(Component.literal("Decorate after baking."),true);
-                return true;
-            }
-            if(at.equals(c.north(2))){
-                if(l.cakeStep==2){
-                    if(l.cakeOvenReadyAt==0){l.cakeOvenReadyAt=now+160;l.cakeScore+=10;OtherMotherLoop.changed(p);
-                        p.sendSystemMessage(Component.literal("Batter is in the oven. Listen for the chime in eight seconds, then open it."));}
-                    else if(now>=l.cakeOvenReadyAt){l.cakeStep=3;l.cakeScore+=16;l.cakeStepAt=now;OtherMotherLoop.changed(p);
-                        p.sendSystemMessage(Component.literal("Cake baked! Pick an icing at the right flavor rack, cycle a topper at the sideboard, then finish at the mixer."));}
-                    else p.displayClientMessage(Component.literal("The cake needs "+Math.max(1,(l.cakeOvenReadyAt-now+19)/20)+" more seconds in the oven."),true);
-                }else p.displayClientMessage(Component.literal(instruction(l,now)),true);
-                return true;
-            }
-            if(at.equals(c)){
-                if(l.cakeStep==0){
-                    if(l.cakeIngredients!=7||l.cakeFlavor<0){p.displayClientMessage(Component.literal("Collect flour, eggs and milk, and choose a flavor first."),true);return true;}
-                    removeIngredients(p,s);l.cakeStep=1;l.cakeMixCount=0;l.cakeStepAt=now;l.cakeScore+=8;OtherMotherLoop.changed(p);
-                    p.sendSystemMessage(Component.literal("Ingredients combined. Stir the mixer three times, leaving a beat between stirs."));
-                }else if(l.cakeStep==1){
-                    if(now-l.cakeStepAt<8){p.displayClientMessage(Component.literal("Give the batter a moment between stirs."),true);return true;}
-                    l.cakeMixCount++;l.cakeScore+=7;l.cakeStepAt=now;OtherMotherLoop.changed(p);
-                    p.serverLevel().playSound(null,c,SoundEvents.NOTE_BLOCK_CHIME.value(),SoundSource.PLAYERS,.5F,1F+l.cakeMixCount*.12F);
-                    if(l.cakeMixCount>=3){l.cakeStep=2;p.sendSystemMessage(Component.literal("Batter ready! Put it into the oven behind the mixer."));}
-                    else p.displayClientMessage(Component.literal("Mixing "+l.cakeMixCount+"/3"),true);
-                }else if(l.cakeStep==3){
-                    if(l.cakeIcing<0||l.cakeTopper<0){p.displayClientMessage(Component.literal("Choose an icing and a topper first."),true);return true;}
-                    l.cakeScore+=22;finishBake(p,s,c,true);
-                }else p.displayClientMessage(Component.literal(instruction(l,now)),true);
-                return true;
-            }
-        }*/
-        if(at.equals(c)||at.equals(c.south(2))){
+        var s=OtherMotherLoop.active(p);
+        if(s==null||s.loop.phase!=OtherMotherLoopState.Phase.ACTIVITY||s.loop.activity!=OtherMotherActivities.Activity.CAKE_MAKING_CONTEST
+            ||!ActivityWorld.isActivity(p.level())||!com.coraline.multiplayer.StoryCoop.canAct(p,s))return false;
+        var c=center(p,s);
+        var station=CakeMaking.station(c,at);
+        if(station==null)return false;
+        var hit=p.pick(Math.min(6,p.getBlockReach()),1F,false);
+        if(!(hit instanceof BlockHitResult block)||hit.getType()!=HitResult.Type.BLOCK||!block.getBlockPos().equals(at)){
+            CakeMaking.objective(p,"Move closer and aim directly at the station.");
+            return true;
+        }
+        return interactStation(p,s,c,station);
+    }
+    static boolean interactStation(ServerPlayer p,VisitData.Scene s,BlockPos c,CakeKitchenRules.Station station){
+        var l=s.loop;
+        if(l.cakeStage==3)return CakeMaking.interact(p,s,c,station,OtherMotherLoop.now(p));
+        if(station==CakeKitchenRules.Station.STAND){
             if(l.cakeStage==4&&!l.cakeTaken){
+                if(findCake(p,s)!=null){
+                    l.cakeTaken=true;
+                    OtherMotherLoop.changed(p);
+                    return true;
+                }
                 var cake=new ItemStack(ModItems.CONTEST_CAKE.get());cake.getOrCreateTag().putUUID(OWNER,p.getUUID());cake.getTag().putInt(GEN,l.generation);cake.getTag().putInt("CakeScore",l.cakeScore);
                 cake.getTag().putInt("CakeStyle",cakeStyle(l));cake.getTag().put("CakeDesign",CakeMaking.design(l));
                 cake.setHoverName(Component.literal(CakeMaking.baseName(l.cakeBase)+" Festival Cake"));
@@ -482,7 +464,7 @@ public final class CakeContestActivity {
             }
             return true;
         }
-        if(at.equals(c.north(22))){
+        if(station==CakeKitchenRules.Station.JUDGING){
             if(l.cakeStage==4&&l.cakeTaken&&!l.cakeSubmitted){
                 var stack=findCake(p,s);if(stack==null){p.displayClientMessage(Component.literal("Bring the cake you baked at your stand."),true);return true;}
                 int style=stack.getTag().getInt("CakeStyle");var design=stack.getTag().getCompound("CakeDesign");stack.shrink(1);l.cakeSubmitted=true;l.cakeStage=5;OtherMotherLoop.changed(p);

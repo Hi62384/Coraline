@@ -16,7 +16,7 @@ import net.minecraft.world.phys.Vec3;
 /** The permanent decayed entrance reuses the saved First Escape corridor, never the friendly loop. */
 public final class StoryTunnel {
     public static boolean sealed(MinecraftServer server,java.util.UUID owner){var s=VisitData.get(server).scenes.get(owner);return ParentRescueStory.data(s).getCompound("Continuation").getBoolean("PermanentlySealed");}
-    public static boolean permanent(MinecraftServer server,java.util.UUID owner){var s=VisitData.get(server).scenes.get(owner);return MissingParentsCat.tunnelRestored(s)&&!ParentRescueStory.started(s)&&!sealed(server,owner);}
+    public static boolean permanent(MinecraftServer server,java.util.UUID owner){var s=VisitData.get(server).scenes.get(owner);return MissingParentsCat.tunnelRestored(s)&&(!ParentRescueStory.started(s)||entryPhase(s))&&!sealed(server,owner);}
     public static boolean restore(ServerPlayer p,VisitData.Scene s){
         if(s==null||!s.owner.equals(p.getUUID()))return false;
         var d=DoorData.get(p.server).doors.get(s.door);if(d==null||!s.owner.equals(d.owner))return false;
@@ -59,10 +59,139 @@ public final class StoryTunnel {
         }
         original.putBoolean("EscapeTunnelBuilt",false);OtherMotherLoop.changed(p);
     }
-    public static boolean enter(ServerPlayer p,DoorBlockEntity door){var s=OtherMotherLoop.scene(p);if(s==null||!MissingParentsCat.tunnelRestored(s)||door.doorId==null||!door.doorId.equals(s.door))return false;if(sealed(p.server,s.owner))return true;if(!MissingParentsCat.data(s).getBoolean("Complete")){
-            if(!MissingParentsCat.finishForReturn(p,s)){FirstEscapeStory.hint(p,"The Cat is still revealing the passage.");return true;}
-        }if(!ParentRescueStory.started(s))ParentRescueStory.begin(p,s);return true;}
-    public static void tickSource(ServerPlayer p,VisitData.Scene s){if(MissingParentsCat.tunnelRestored(s)&&!ParentRescueStory.started(s)&&p.serverLevel()==p.server.overworld())TunnelPassage.tick(p);}
-    public static void crawl(ServerPlayer p,VisitData.Scene s,double progress){FirstEscapeStory.ensureDecayedTunnel(p,s);var l=p.server.getLevel(OtherWorld.KEY);var n=FirstEscapeStory.data(s);var origin=BlockPos.of(n.getLong("EscapeTunnel"));var direction=FirstEscapeStory.escapeDirection(s);var at=Vec3.atBottomCenterOf(origin).add(direction.getStepX()*progress,0,direction.getStepZ()*progress);l.getChunkAt(BlockPos.containing(at));p.closeContainer();p.stopRiding();p.setForcedPose(Pose.SWIMMING);p.setPose(Pose.SWIMMING);p.teleportTo(l,at.x,at.y,at.z,direction.toYRot(),0);}
+    public static boolean enter(ServerPlayer p,DoorBlockEntity door){
+        var scene=OtherMotherLoop.scene(p);
+        if(scene==null||!MissingParentsCat.tunnelRestored(scene)||!scene.door.equals(door.doorId))return false;
+        if(!scene.owner.equals(p.getUUID())||sealed(p.server,scene.owner))return true;
+        var source=DoorData.get(p.server).doors.get(scene.door);
+        if(source==null||!scene.owner.equals(source.owner)||FamilyData.level(p.server,source.dimension)!=p.level()
+                ||!source.pos.equals(door.getBlockPos())||p.distanceToSqr(source.pos.getCenter())>64)return true;
+        if(!MissingParentsCat.data(scene).getBoolean("Complete")&&!MissingParentsCat.finishForReturn(p,scene)){
+            FirstEscapeStory.hint(p,"The Cat is still revealing the passage.");
+            return true;
+        }
+        if(ParentRescueStory.started(scene)){
+            if(entryPhase(scene))crawl(p,scene,2);
+        }else ParentRescueStory.begin(p,scene);
+        return true;
+    }
+
+    static boolean entryPhase(VisitData.Scene scene){
+        if(!ParentRescueStory.started(scene)||RescueChapter.started(scene))return false;
+        return StoryReturnContext.entryPhase(ParentRescueStory.phase(scene).name());
+    }
+
+    public static boolean controls(ServerPlayer player){
+        var scene=VisitData.get(player.server).scenes.get(player.getUUID());
+        if(scene==null||!ParentRescueStory.started(scene))return false;
+        return entryPhase(scene)||OtherWorld.isOther(player.level())&&!sealed(player.server,scene.owner);
+    }
+
+    public static void tickReturnSource(ServerPlayer player){
+        var scene=VisitData.get(player.server).scenes.get(player.getUUID());
+        if(!entryPhase(scene)||OtherWorld.isOther(player.level()))return;
+        var flags=player.getPersistentData();
+        for(String flag:java.util.List.of("CoralineWaitingDoor","CoralineInTunnel","CoralineReturning","CoralineRecoveryTunnel",
+                "CoralineTunnelStartedAt","CoralineWakeAt","CoralineExitLead","CoralineExitClose"))flags.remove(flag);
+        var source=DoorData.get(player.server).doors.get(scene.door);
+        if(source==null||!scene.owner.equals(source.owner)||FamilyData.level(player.server,source.dimension)!=player.level()
+                ||player.distanceToSqr(source.pos.getCenter())>36){
+            if(flags.getBoolean("CoralineAutoCrawl")&&player.getForcedPose()==Pose.SWIMMING)player.setForcedPose(null);
+            flags.remove("CoralineAutoCrawl");
+            return;
+        }
+        refreshPortal(player,scene,source);
+        TunnelPassage.tick(player);
+    }
+
+    public static void tickSource(ServerPlayer p,VisitData.Scene s){
+        if(!MissingParentsCat.tunnelRestored(s)||ParentRescueStory.started(s)||p.serverLevel()!=p.server.overworld())return;
+        var source=DoorData.get(p.server).doors.get(s.door);
+        if(source!=null&&s.owner.equals(source.owner)&&FamilyData.level(p.server,source.dimension)==p.level()
+                &&p.distanceToSqr(source.pos.getCenter())<=36)refreshPortal(p,s,source);
+        TunnelPassage.tick(p);
+    }
+
+    private static void refreshPortal(ServerPlayer player,VisitData.Scene scene,DoorData.Door source){
+        if(sealed(player.server,scene.owner))return;
+        var level=player.serverLevel();
+        var state=level.getBlockState(source.pos);
+        if(!state.is(ModBlocks.TINY_DOOR.get())||!(level.getBlockEntity(source.pos) instanceof DoorBlockEntity door)
+                ||!scene.door.equals(door.doorId)||door.storyBricked)return;
+        boolean changed=!door.storyDecayed;
+        if(changed){door.storyDecayed=true;door.setChanged();}
+        if(!state.getValue(TinyDoorBlock.PORTAL))level.setBlock(source.pos,state.setValue(TinyDoorBlock.PORTAL,true),3);
+        else if(changed)level.sendBlockUpdated(source.pos,state,state,3);
+    }
+
+    static boolean insideCrawl(ServerPlayer p,VisitData.Scene scene){
+        var escape=FirstEscapeStory.data(scene);
+        if(!escape.contains("EscapeTunnel",Tag.TAG_LONG)||p.level()!=p.server.getLevel(OtherWorld.KEY))return false;
+        var offset=p.position().subtract(Vec3.atBottomCenterOf(BlockPos.of(escape.getLong("EscapeTunnel"))));
+        return StoryReturnContext.inCorridor(offset,FirstEscapeStory.escapeDirection(scene));
+    }
+
+    static boolean crawl(ServerPlayer p,VisitData.Scene scene,double progress){
+        if(!scene.owner.equals(p.getUUID())||!entryPhase(scene))return false;
+        var realm=RealmData.get(p.server).realms.get(scene.door);
+        var level=p.server.getLevel(OtherWorld.KEY);
+        var source=DoorData.get(p.server).doors.get(scene.door);
+        if(level==null||realm==null||!realm.ready||realm.house==null||realm.doorPos==null||source==null||!scene.owner.equals(source.owner)){
+            if(source!=null&&scene.owner.equals(source.owner)&&level!=null&&FamilyData.level(p.server,source.dimension)==p.level())
+                OtherWorld.prepareStoryRealm(p,source);
+            FirstEscapeStory.hint(p,"The original Other World passage is unavailable. Your return progress is saved.");
+            return false;
+        }
+        var escape=FirstEscapeStory.data(scene);
+        if(escape.getLong("House")!=realm.house.asLong()||escape.getLong("LittleDoor")!=realm.doorPos.asLong()){
+            FirstEscapeStory.hint(p,"The saved corridor does not match your Other World.");
+            return false;
+        }
+        FirstEscapeStory.ensureDecayedTunnel(p,scene);
+        if(!escape.getBoolean("EscapeTunnelBuilt")||!escape.contains("EscapeTunnel",Tag.TAG_LONG))return false;
+        var origin=BlockPos.of(escape.getLong("EscapeTunnel"));
+        var direction=FirstEscapeStory.escapeDirection(scene);
+        var at=Vec3.atBottomCenterOf(origin.relative(direction,(int)progress));
+        var feet=BlockPos.containing(at);
+        level.getChunkAt(feet);
+        var space=new net.minecraft.world.phys.AABB(at.x-.29,at.y+.01,at.z-.29,at.x+.29,at.y+.59,at.z+.29);
+        if(!level.getWorldBorder().isWithinBounds(feet)||!level.noCollision(p,space)||!level.getFluidState(feet).isEmpty()
+                ||!level.getBlockState(feet.below()).isFaceSturdy(level,feet.below(),Direction.UP)){
+            FirstEscapeStory.hint(p,"The saved corridor entrance is obstructed. Clear the passage before retrying.");
+            return false;
+        }
+        var story=ParentRescueStory.data(scene);
+        var ticket=StoryReturnContext.ticket(story.getCompound("ReturnTravel"),scene.owner,scene.door,
+                ParentRescueStory.phase(scene).name(),origin.asLong(),direction);
+        if(ticket==null){
+            FirstEscapeStory.hint(p,"The saved return checkpoint belongs to a different passage.");
+            return false;
+        }
+        story.put("ReturnTravel",ticket);
+        var visit=VisitData.get(p.server);
+        try{
+            visit.setDirty();
+            p.server.overworld().getDataStorage().save();
+            var path=p.server.getWorldPath(net.minecraft.world.level.storage.LevelResource.ROOT).resolve("data/coraline_first_visits.dat");
+            if(!com.coraline.rebirth.StoryRunStore.read(path).getCompound("data").equals(visit.save(new CompoundTag())))return false;
+        }catch(java.io.IOException|RuntimeException unavailable){
+            FirstEscapeStory.hint(p,"The return checkpoint could not be saved. Retry at the Little Door.");
+            return false;
+        }
+        p.closeContainer();
+        p.stopRiding();
+        p.setForcedPose(Pose.SWIMMING);
+        p.setPose(Pose.SWIMMING);
+        p.teleportTo(level,at.x,at.y,at.z,direction.toYRot(),0);
+        if(p.level()!=level||p.position().distanceToSqr(at)>.25){
+            p.setForcedPose(null);
+            return false;
+        }
+        var player=p.getPersistentData();
+        for(String flag:java.util.List.of("CoralineWaitingDoor","CoralineInTunnel","CoralineReturning","CoralineSeamlessTunnel",
+                "CoralineRecoveryTunnel","CoralineTunnelStartedAt","CoralineWakeAt","CoralineExitLead","CoralineExitClose"))player.remove(flag);
+        p.fallDistance=0;
+        return true;
+    }
     private StoryTunnel(){}
 }

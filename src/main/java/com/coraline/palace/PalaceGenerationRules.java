@@ -13,10 +13,18 @@ public final class PalaceGenerationRules {
             if(n.contains(key)&&!n.contains(key,Tag.TAG_INT))throw new IllegalArgumentException("Malformed generation "+key);
         for(String key:new String[]{"Cursor","Subcursor","Verified"})if(n.getInt(key)<0||n.getInt(key)>100_000_000)throw new IllegalArgumentException("Unbounded generation "+key);
         for(String key:new String[]{"PalaceClaimed","CompanyClaimed","ColumnActive","ColumnChanged","ProfileSurveyed","CompanyFirst"})if(n.contains(key)&&(!n.contains(key,Tag.TAG_BYTE)||n.getByte(key)<0||n.getByte(key)>1))throw new IllegalArgumentException("Malformed generation "+key);
-        if(stage.ordinal()>Stage.SELECT_PALACE.ordinal()&&(!n.getBoolean("PalaceClaimed")||!n.contains("CandidateX",Tag.TAG_INT)||!n.contains("CandidateZ",Tag.TAG_INT)||!n.contains("ProfileBase",Tag.TAG_INT)||n.getInt("ProfileBase")<64||n.getInt("ProfileBase")>150))throw new IllegalArgumentException("Missing safe Palace claim/profile");
+        boolean early=n.contains("DeferredPalace",Tag.TAG_COMPOUND);
+        if(n.contains("DeferredPalace")){
+            if(!early||!java.util.EnumSet.of(Stage.SELECT_COMPANY,Stage.SURVEY_COMPANY,Stage.COMPANY_PREPARE,Stage.COMPANY,Stage.COMPANY_VERIFY).contains(stage))throw new IllegalArgumentException("Invalid early Company phase");
+            var deferred=n.getCompound("DeferredPalace");
+            if(deferred.contains("DeferredPalace"))throw new IllegalArgumentException("Nested early Company phase");
+            var resume=stage(deferred);
+            if(resume!=Stage.SELECT_PALACE&&resume!=Stage.SURVEY_REGION&&resume!=Stage.SELECT_WELL)throw new IllegalArgumentException("Invalid deferred Palace phase");
+        }
+        if(!early&&stage.ordinal()>Stage.SELECT_PALACE.ordinal()&&(!n.getBoolean("PalaceClaimed")||!n.contains("CandidateX",Tag.TAG_INT)||!n.contains("CandidateZ",Tag.TAG_INT)||!n.contains("ProfileBase",Tag.TAG_INT)||n.getInt("ProfileBase")<64||n.getInt("ProfileBase")>150))throw new IllegalArgumentException("Missing safe Palace claim/profile");
         if(stage.ordinal()>=Stage.SURVEY_COMPANY.ordinal()&&(!n.getBoolean("CompanyClaimed")||!n.contains("CompanyX",Tag.TAG_INT)||!n.contains("CompanyZ",Tag.TAG_INT)))throw new IllegalArgumentException("Missing safe company claim");
         if(n.getBoolean("ColumnActive")&&(stage!=Stage.TERRAIN&&stage!=Stage.HOUSE_PREPARE&&stage!=Stage.COMPANY_PREPARE))throw new IllegalArgumentException("Column outside its terrain/building phase");
-        if(stage.ordinal()>=Stage.SELECT_WELL.ordinal()&&!n.getBoolean("ProfileSurveyed"))throw new IllegalArgumentException("Missing actual regional survey");
+        if(!early&&stage.ordinal()>=Stage.SELECT_WELL.ordinal()&&!n.getBoolean("ProfileSurveyed"))throw new IllegalArgumentException("Missing actual regional survey");
         if(stage==Stage.DETAILS&&n.getInt("Subcursor")>0&&(!n.contains("DetailBaseY",Tag.TAG_INT)||n.getInt("DetailBaseY")< -63||n.getInt("DetailBaseY")>319))throw new IllegalArgumentException("Missing original vegetation/rock base");
         for(String key:new String[]{"PalaceSign","CompanySign"})if(n.contains(key)&&!n.hasUUID(key))throw new IllegalArgumentException("Malformed original shared sign UUID");
         if(n.getBoolean("ColumnActive")){

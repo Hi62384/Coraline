@@ -7,6 +7,7 @@ import net.minecraft.world.phys.Vec3;
 public final class RescueProps {
     public static final int MANTIS=60,EYE=61,WRAPPER=62,SWARM=63,RAT_BALL=64,CLOTHES=65,FURNACE=66,WEB=67,PURSUING_DOOR=68,CHEESE=69,FREED_GHOST=70,SNOW_GLOBE=71,KEY=72,STONE=73,HAND=74,ROOF_SWING=75;
     public static final int KEY_BUNDLE=76,CONTROL_POINT=91;
+    public static final int HAND_WAITING_CUE=2;
     public static final int TONGS=81,ROCK=82,PHOTO=83;
     public static boolean kind(int kind){return kind>=MANTIS&&kind<=KEY_BUNDLE||kind==CONTROL_POINT||kind>=TONGS&&kind<=PHOTO;}
     public static CinematicPropEntity find(ServerPlayer p,VisitData.Scene s,String key){

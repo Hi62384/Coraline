@@ -132,6 +132,13 @@ public final class CinematicPropEntity extends Entity {
         if(kind()==BUG_CHAIR){double a=Math.toRadians(getYRot());move.accept(rider,getX()+Math.sin(a)*.60,getY()+getPassengersRidingOffset()+rider.getMyRidingOffset(),getZ()-Math.cos(a)*.60);return;}
         if(kind()==PalaceTransport.TRUCK){move.accept(rider,getX(),getY()+.88,getZ()+2);return;}
         if(kind()==PalaceTransport.CARRIER){move.accept(rider,getX(),getY()+1,getZ());return;}
+        if(kind()==SEAT&&GhostSupperGeometry.isSeat(slot())
+                &&rider instanceof net.minecraft.world.entity.LivingEntity living){
+            int appearance=rider instanceof com.coraline.tycoon.TycoonNpc child?child.appearance():0;
+            move.accept(rider,getX(),getY()+GhostSupperGeometry.riderOrigin(slot(),appearance),getZ());
+            living.setYRot(getYRot());living.setYBodyRot(getYRot());
+            return;
+        }
         if(kind()==BUG_COUCH){double angle=Math.toRadians(getYRot());move.accept(rider,getX()+Math.sin(angle)*.12,getY()+.02,getZ()-Math.cos(angle)*.12);}
         else super.positionRider(rider,move);if((kind()==SEAT||kind()==BUG_COUCH)&&rider instanceof net.minecraft.world.entity.LivingEntity living&&!(rider instanceof net.minecraft.world.entity.player.Player)){float facing=kind()==BUG_COUCH?getYRot()+180:180;living.setYRot(facing);living.setYBodyRot(facing);if(kind()==SEAT)living.setYHeadRot(facing);}
     }
@@ -141,6 +148,6 @@ public final class CinematicPropEntity extends Entity {
     @Override public AABB getBoundingBoxForCulling(){return switch(kind()){case RescueProps.WEB->new AABB(getX()-35,getY()-2,getZ()-35,getX()+35,getY()+22,getZ()+35);case RescueProps.SWARM->getBoundingBox().inflate(12);case RescueProps.MANTIS->getBoundingBox().inflate(4);case INSECT_PARLOR->getBoundingBox().inflate(10);case OCEAN_SET->new AABB(getX()-25,getY()-1,getZ()-12,getX()+25,getY()+20,getZ()+12);case CURTAIN->new AABB(getX()-25,getY()-1,getZ()-4,getX()+25,getY()+26,getZ()+4);case DOG_ROW->new AABB(getX()-26,getY()-1,getZ()-2,getX()+26,getY()+3,getZ()+2);case DIVING,TRAPEZE,HOOPS,BEAMS,MOUSE_TRAPEZES->new AABB(getX()-20,getY()-1,getZ()-20,getX()+20,getY()+40,getZ()+20);default->getBoundingBox().inflate(kind()==TENT?4:3);};}
     @Override public boolean shouldRenderAtSqrDistance(double distance){return distance<192*192;}
     @Override protected void addAdditionalSaveData(CompoundTag n){if(owner!=null)n.putUUID("Owner",owner);if(door!=null)n.putUUID("Door",door);n.putInt("Serial",serial);n.putInt("Kind",kind());n.putInt("Slot",slot());n.putInt("Cue",cue());n.putInt("Time",time());n.putFloat("Value",value());}
-    @Override protected void readAdditionalSaveData(CompoundTag n){owner=n.hasUUID("Owner")?n.getUUID("Owner"):null;door=n.hasUUID("Door")?n.getUUID("Door"):null;serial=n.getInt("Serial");syncIdentity();entityData.set(KIND,n.getInt("Kind"));entityData.set(SLOT,n.getInt("Slot"));frame(n.getInt("Cue"),n.getInt("Time"),n.getFloat("Value"));}
+    @Override protected void readAdditionalSaveData(CompoundTag n){owner=n.hasUUID("Owner")?n.getUUID("Owner"):null;door=n.hasUUID("Door")?n.getUUID("Door"):null;serial=n.getInt("Serial");syncIdentity();entityData.set(KIND,n.getInt("Kind"));entityData.set(SLOT,n.getInt("Slot"));frame(n.getInt("Cue"),n.getInt("Time"),n.getFloat("Value"));if(kind()==RescueProps.HAND&&cue()==RescueProps.HAND_WAITING_CUE)setInvisible(true);}
     @Override public net.minecraft.network.protocol.Packet<net.minecraft.network.protocol.game.ClientGamePacketListener> getAddEntityPacket(){return net.minecraftforge.network.NetworkHooks.getEntitySpawningPacket(this);}
 }

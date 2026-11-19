@@ -22,6 +22,15 @@ public final class PalaceSiteData extends SavedData {
     CompoundTag generation(){return generation;}
     void stopGeneration(String reason){if(blocker.isEmpty()){blocker=reason;setDirty();}}
     boolean reselectUnbuiltSite(){
+        if(generation.contains("DeferredPalace")&&!position(Kind.COMPANY).isPresent()){
+            var site=sites.get(Kind.COMPANY);
+            if(site!=null){site.remove("Pending");site.remove("CandidateX");site.remove("CandidateZ");}
+            for(String name:new String[]{"CompanyClaimed","CompanyX","CompanyY","CompanyZ"})generation.remove(name);
+            PalaceGenerationRules.enter(generation,PalaceGenerationRules.Stage.SELECT_COMPANY);
+            blocker="";
+            setDirty();
+            return true;
+        }
         if(incompatibleOriginal!=null||PalaceGenerationRules.stage(generation).ordinal()>PalaceGenerationRules.Stage.SURVEY_COMPANY.ordinal()
                 ||Arrays.stream(Kind.values()).anyMatch(this::generated))return false;
         var palace=sites.get(Kind.PALACE);
@@ -45,7 +54,38 @@ public final class PalaceSiteData extends SavedData {
             reselectUnbuiltSite();
         }
     }
+    boolean prioritizeCompany(){
+        if(!initialized||!blocker.isEmpty()||companyMapReady()||position(Kind.COMPANY).isPresent()||generation.contains("DeferredPalace"))return false;
+        var stage=PalaceGenerationRules.stage(generation);
+        if(stage!=PalaceGenerationRules.Stage.SELECT_PALACE&&stage!=PalaceGenerationRules.Stage.SURVEY_REGION&&stage!=PalaceGenerationRules.Stage.SELECT_WELL)return false;
+        var early=new CompoundTag();
+        early.put("DeferredPalace",generation.copy());
+        PalaceGenerationRules.enter(early,PalaceGenerationRules.Stage.SELECT_COMPANY);
+        generation=early;
+        setDirty();
+        return true;
+    }
+    void deferPalaceEdit(){
+        if(generation.contains("DeferredPalace")){
+            generation.putBoolean("DeferredPalaceEdited",true);
+            setDirty();
+        }
+    }
+    void resumeAfterEarlyCompany(){
+        if(!generation.contains("DeferredPalace")||!companyMapReady())return;
+        var saved=generation.getCompound("DeferredPalace").copy();
+        if(saved.isEmpty())PalaceGenerationRules.enter(saved,PalaceGenerationRules.Stage.SELECT_PALACE);
+        for(String name:new String[]{"CompanyX","CompanyZ","CompanyY"})saved.putInt(name,generation.getInt(name));
+        saved.putBoolean("CompanyClaimed",true);
+        boolean edited=generation.getBoolean("DeferredPalaceEdited");
+        generation=saved;
+        if(edited)stopGeneration("The deferred Palace footprint was edited during Company construction. The verified Company remains available.");
+        setDirty();
+    }
     public boolean companyMapReady(){return incompatibleOriginal==null&&generated(Kind.COMPANY)&&position(Kind.COMPANY).isPresent();}
+    public boolean palaceArrivalReady(){
+        return incompatibleOriginal==null&&generated(Kind.PALACE)&&position(Kind.PALACE).isPresent();
+    }
     /** Only the real streamed builder calls this after its complete readback pass. */
     boolean generationVerified(Kind kind,BlockPos at,int verified,int expected){
         if(!blocker.isEmpty()||expected<=0||verified!=expected||position(kind).isEmpty()||!position(kind).get().equals(at))return false;
@@ -63,7 +103,7 @@ public final class PalaceSiteData extends SavedData {
      * proposals survive reload and are not rerolled on player/chunk events.
      */
     public Optional<PalaceSitePlan.Point> proposal(Kind kind){
-        if(!initialized||!blocker.isEmpty()||position(kind).isPresent()||kind!=Kind.PALACE&&palace().isEmpty())return Optional.empty();
+        if(!initialized||!blocker.isEmpty()||position(kind).isPresent()||kind==Kind.WELL&&palace().isEmpty()||kind==Kind.COMPANY&&palace().isEmpty()&&!generation.contains("DeferredPalace"))return Optional.empty();
         var site=sites.computeIfAbsent(kind,key->new CompoundTag());
         if(site.getBoolean("Pending"))return Optional.of(new PalaceSitePlan.Point(site.getInt("CandidateX"),site.getInt("CandidateZ")));
         int index=site.getInt("Candidate");if(index>=PalaceSitePlan.MAX_CANDIDATES){blocker="No safe "+kind+" candidate within the bounded search; no duplicate allocated.";setDirty();return Optional.empty();}
@@ -89,7 +129,8 @@ public final class PalaceSiteData extends SavedData {
      * false until real block readback and final actual LOS validation finish.
      */
     boolean reserveGenerationPlan(Kind kind,BlockPos at){
-        if(!initialized||!blocker.isEmpty()||!generation.getBoolean("PalaceClaimed")||!generation.getBoolean("ProfileSurveyed"))return false;
+        if(!initialized||!blocker.isEmpty())return false;
+        if(!(kind==Kind.COMPANY&&generation.contains("DeferredPalace"))&&(!generation.getBoolean("PalaceClaimed")||!generation.getBoolean("ProfileSurveyed")))return false;
         var stage=PalaceGenerationRules.stage(generation);
         if(kind==Kind.PALACE&&(stage!=PalaceGenerationRules.Stage.SURVEY_REGION||generation.getInt("Cursor")!=2401||at.getY()!=generation.getInt("ProfileBase")))return false;
         if(kind==Kind.WELL&&(stage!=PalaceGenerationRules.Stage.SELECT_WELL||at.getY()!=generation.getInt("ProfileBase")+36))return false;
@@ -153,7 +194,8 @@ public final class PalaceSiteData extends SavedData {
                 if(site.getBoolean("Legacy"))continue;
                 if(!positioned&&!pending)continue;
                 int cursor=site.getInt("Candidate");
-                if(cursor<1||kind!=Kind.PALACE&&data.palace().isEmpty())throw new IllegalArgumentException("Missing proposal origin/cursor");
+                if(cursor<1||kind==Kind.WELL&&data.palace().isEmpty()
+                        ||kind==Kind.COMPANY&&data.palace().isEmpty()&&!data.generation.contains("DeferredPalace")&&!site.getBoolean("Generated"))throw new IllegalArgumentException("Missing proposal origin/cursor");
                 var expected=PalaceSitePlan.candidate(data.seed,data.spawn,kind,cursor-1,data.palace().orElse(null));
                 var actual=positioned?data.position(kind).map(at->new PalaceSitePlan.Point(at.getX(),at.getZ())).orElseThrow():new PalaceSitePlan.Point(site.getInt("CandidateX"),site.getInt("CandidateZ"));
                 if(expected.isEmpty()||!expected.get().equals(actual))throw new IllegalArgumentException("Saved landmark does not match its deterministic proposal");
@@ -168,7 +210,7 @@ public final class PalaceSiteData extends SavedData {
                     if(data.position(kind).isPresent()){var saved=data.position(kind).get();if(saved.getX()!=at.x()||saved.getZ()!=at.z())throw new IllegalArgumentException("Claim moved away from reserved landmark");}
                     else if(!matches(site,at))throw new IllegalArgumentException("Claim moved away from pending proposal");
                 }
-                if(stage.ordinal()>=PalaceGenerationRules.Stage.TERRAIN.ordinal())for(var kind:Kind.values())if(data.position(kind).isEmpty())throw new IllegalArgumentException("Generation stage has no reserved landmark");
+                if(!work.contains("DeferredPalace")&&stage.ordinal()>=PalaceGenerationRules.Stage.TERRAIN.ordinal())for(var kind:Kind.values())if(data.position(kind).isEmpty())throw new IllegalArgumentException("Generation stage has no reserved landmark");
                 if(stage==PalaceGenerationRules.Stage.DONE)for(var kind:Kind.values())if(!data.generated(kind))throw new IllegalArgumentException("Completed world job has an unverified landmark");
             }
         }catch(IllegalArgumentException bad){data.blocker="Saved Palace registry needs compatibility review: "+bad.getMessage()+". No reroll or generation permitted.";data.incompatibleOriginal=root.copy();}

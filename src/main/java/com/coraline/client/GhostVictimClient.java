@@ -44,7 +44,8 @@ public final class GhostVictimClient {
         if(ghost()&&mc.player.tickCount%20==0)for(Tag entry:data.getList("InteractionPoints",Tag.TAG_COMPOUND)){
             var point=(CompoundTag)entry;if(!point.getString("Action").startsWith("manifest:"))continue;
             double x=point.getDouble("X"),y=point.getDouble("Y"),z=point.getDouble("Z");
-            if(mc.player.distanceToSqr(x,y,z)<64)mc.level.addParticle(net.minecraft.core.particles.ParticleTypes.SOUL,x,y+.15,z,0,.004,0);
+            var target=new Vec3(x,y,z);
+            if(mc.player.distanceToSqr(x,y,z)<36&&clear(mc,point,target))mc.level.addParticle(net.minecraft.core.particles.ParticleTypes.SOUL,x,y+.15,z,0,.004,0);
         }
         if(!active()||data.getInt("TalkingTicks")<=age||data.getString("ChildWords").isBlank()){stopSyllable();return;}
         var child=mc.level.getEntity(victim());
@@ -58,13 +59,32 @@ public final class GhostVictimClient {
         if(event.isAttack()){if(ghost()){event.setCanceled(true);event.setSwingHand(false);}return;}
         if(!event.isUseItem())return;event.setCanceled(true);event.setSwingHand(false);
         var mc=Minecraft.getInstance();if(mc.player==null||mc.level==null||!data.hasUUID("Session"))return;
-        var eye=mc.player.getEyePosition();var look=mc.player.getLookAngle();String selected="";double nearest=25;
+        var point=targeted(mc);
+        if(point!=null){
+            String selected=mc.player.isShiftKeyDown()&&point.contains("Alternate")?point.getString("Alternate"):point.getString("Action");
+            if(!selected.isEmpty())SecretsNetwork.request(data.getUUID("Session"),"ghost_victim",selected);
+        }
+    }
+    private static boolean clear(Minecraft mc,CompoundTag point,Vec3 target){
+        String action=point.getString("Action");
+        if(!action.startsWith("manifest:")&&!action.startsWith("inspect:"))return true;
+        var fixture=point.contains("Fixture",Tag.TAG_LONG)?net.minecraft.core.BlockPos.of(point.getLong("Fixture")):null;
+        return com.coraline.feast.GhostManifestationTarget.clear(mc.level,mc.player,target,fixture);
+    }
+    private static CompoundTag targeted(Minecraft mc){
+        if(mc.player==null||mc.level==null)return null;
+        var eye=mc.player.getEyePosition();var look=mc.player.getLookAngle();double nearest=Double.MAX_VALUE;
+        CompoundTag selected=null;
         for(Tag entry:data.getList("InteractionPoints",Tag.TAG_COMPOUND)){
             var point=(CompoundTag)entry;var target=new Vec3(point.getDouble("X"),point.getDouble("Y"),point.getDouble("Z"));
-            var delta=target.subtract(eye);double length=delta.lengthSqr();
-            if(length<nearest&&length>.001&&look.dot(delta.normalize())>.965){nearest=length;selected=mc.player.isShiftKeyDown()&&point.contains("Alternate")?point.getString("Alternate"):point.getString("Action");}
+            var delta=target.subtract(eye);double distance=delta.lengthSqr();
+            String action=point.getString("Action");
+            boolean manifestation=action.startsWith("manifest:")||action.startsWith("inspect:");
+            boolean aim=manifestation?com.coraline.feast.GhostManifestationTarget.aimed(look,delta)
+                    :distance<25&&distance>.001&&look.dot(delta.normalize())>.965;
+            if(aim&&distance<nearest&&clear(mc,point,target)){nearest=distance;selected=point;}
         }
-        if(!selected.isEmpty())SecretsNetwork.request(data.getUUID("Session"),"ghost_victim",selected);
+        return selected;
     }
     @SubscribeEvent public static void hud(RenderGuiEvent.Post event){
         if(!active())return;var mc=Minecraft.getInstance();var graphics=event.getGuiGraphics();
@@ -78,14 +98,14 @@ public final class GhostVictimClient {
             }
         }
         if(mc.player!=null&&!imprisoned()){
-            String label="";double nearest=25;var eye=mc.player.getEyePosition();var look=mc.player.getLookAngle();
-            for(Tag entry:data.getList("InteractionPoints",Tag.TAG_COMPOUND)){
-                var point=(CompoundTag)entry;var delta=new Vec3(point.getDouble("X"),point.getDouble("Y"),point.getDouble("Z")).subtract(eye);
-                double distance=delta.lengthSqr();if(distance>.001&&distance<nearest&&look.dot(delta.normalize())>.965){
-                    nearest=distance;label=point.getString("Label");if(label.isBlank())label=point.getString("Action").startsWith("mirror:")?"Speak through the mirror":point.getString("Action").equals("prison_exit")?"Enter mirror":point.getString("Action").equals("return_house")?"Return to the house":"Follow the child";
-                }
+            var point=targeted(mc);
+            if(point!=null){
+                String action=point.getString("Action");
+                String label=point.getString("Label");
+                if(label.isBlank())label=action.startsWith("mirror:")?"Speak through the mirror":action.equals("prison_exit")?"Enter mirror":action.equals("return_house")?"Return to the house":"Follow the child";
+                String use=mc.options.keyUse.getTranslatedKeyMessage().getString();
+                graphics.drawCenteredString(mc.font,use+": "+label,width/2,height/2+18,0xD9ECFF);
             }
-            if(!label.isBlank())graphics.drawCenteredString(mc.font,"Right-click: "+label,width/2,height/2+18,0xD9ECFF);
         }
         String objective=data.getString("Objective");
         if(!objective.isBlank())graphics.drawCenteredString(mc.font,objective,width/2,height-72,0xE1E9F2);

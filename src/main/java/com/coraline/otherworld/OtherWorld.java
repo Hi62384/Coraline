@@ -170,7 +170,7 @@ public final class OtherWorld {
         if(com.coraline.multiplayer.StoryCoop.touchDoor(player,block))return;
         var story=com.coraline.feast.OtherMotherLoop.scene(player);
         if(!isOther(player.level())&&(story==null||!com.coraline.feast.FirstEscapeStory.data(story).getBoolean("Complete"))&&!com.coraline.parents.ParentsBedSafety.validPlaced(player.server,player.getUUID())){player.displayClientMessage(net.minecraft.network.chat.Component.literal("Place your parents' bed before visiting the Other World."),true);return;}
-        if(com.coraline.feast.StoryTunnel.enter(player,block))return;
+        if(com.coraline.feast.StoryTunnel.enter(player,block)||com.coraline.feast.StoryTunnel.controls(player))return;
         if(com.coraline.feast.FirstEscapeStory.engaged(story)&&!com.coraline.feast.FirstEscapeStory.data(story).getBoolean("Complete"))return;
         var tag=player.getPersistentData();long now=player.server.overworld().getGameTime();
         if(now<tag.getLong("CoralinePortalCooldown")||block.doorId==null||tag.getBoolean("CoralineInTunnel"))return;
@@ -291,6 +291,7 @@ public final class OtherWorld {
         }
     }
     public static boolean rescueTunnel(ServerPlayer player){
+        if(com.coraline.feast.StoryTunnel.controls(player))return false;
         var tag=player.getPersistentData();if(!com.coraline.feast.ActivityWorld.protectedWorld(player.level())||!tag.hasUUID("CoralineVisitDoor"))return false;
         var door=DoorData.get(player.server).doors.get(tag.getUUID("CoralineVisitDoor"));
         if(door==null||!player.getUUID().equals(door.owner)||!RealmData.get(player.server).realms.containsKey(door.id)||player.server.getLevel(KEY)==null)return false;
@@ -300,6 +301,7 @@ public final class OtherWorld {
         return true;
     }
     static void startTunnel(ServerPlayer player,DoorData.Door door,boolean returning){
+        if(com.coraline.feast.StoryTunnel.controls(player))return;
         var r=RealmData.get(player.server).realms.get(door.id);var target=player.server.getLevel(KEY);if(r==null||target==null)return;
         var localDoor=returning?r.doorPos:door.pos;
         boolean seamless=player.getPersistentData().getBoolean("CoralineSeamlessTunnel")&&player.level().getBlockEntity(localDoor) instanceof DoorBlockEntity entrance&&TunnelPassage.contains(player,entrance);
@@ -319,6 +321,7 @@ public final class OtherWorld {
         leave(player,bed,false);
     }
     private static void leave(ServerPlayer player,boolean bed,boolean intoPassage){
+        if(com.coraline.feast.StoryTunnel.controls(player))return;
         if(com.coraline.feast.AcceptedButtonEyes.sealed(player)){player.displayClientMessage(net.minecraft.network.chat.Component.literal("The Little Door is sealed."),true);return;}
         if(com.coraline.feast.BlackIsTraditional.active(player)&&!player.getPersistentData().getBoolean("CoralineRecovering")){player.displayClientMessage(Component.literal("You cannot leave during the offer."),true);return;}
         if(com.coraline.secrets.SecretsRuntime.exitBlocked(player))return;
@@ -361,6 +364,10 @@ public final class OtherWorld {
     @SubscribeEvent public static void playerTick(TickEvent.PlayerTickEvent event){if(event.player instanceof net.minecraft.server.level.ServerPlayer coopPlayer&&com.coraline.multiplayer.StoryCoop.directorBlocked(coopPlayer))return;
         if(event.phase!=TickEvent.Phase.END||!(event.player instanceof ServerPlayer player))return;
         var story=com.coraline.feast.OtherMotherLoop.scene(player);
+        if(com.coraline.feast.StoryTunnel.controls(player)){
+            com.coraline.feast.StoryTunnel.tickReturnSource(player);
+            return;
+        }
         if(com.coraline.feast.FirstEscapeStory.engaged(story)&&!com.coraline.feast.FirstEscapeStory.data(story).getBoolean("Complete"))return;
         TunnelPassage.tick(player);
         var tag=player.getPersistentData();
@@ -464,7 +471,7 @@ public final class OtherWorld {
             }
             }
         }
-        if(tag.contains("CoralineWakeAt")&&player.server.overworld().getGameTime()>=tag.getLong("CoralineWakeAt")){tag.remove("CoralineWakeAt");com.coraline.feast.FirstVisit.slept(player);player.stopSleepInBed(true,false);leave(player,true);}
+        if(!com.coraline.feast.StoryTunnel.controls(player)&&tag.contains("CoralineWakeAt")&&player.server.overworld().getGameTime()>=tag.getLong("CoralineWakeAt")){tag.remove("CoralineWakeAt");com.coraline.feast.FirstVisit.slept(player);player.stopSleepInBed(true,false);leave(player,true);}
     }
     private static boolean tunnelDoorOpen(ServerLevel level,BlockPos pos){
         var state=level.getBlockState(pos);return state.is(ModBlocks.TINY_DOOR.get())&&state.getValue(TinyDoorBlock.OPEN);
