@@ -483,7 +483,11 @@ public final class PalaceWellEncounter {
             boolean oldSession=progress.session().equals(fight.session());
             boolean interruptedVictory=fight.complete()&&progress.phase()==BOSS
                     &&"Saved combat session requires owner-bound recovery.".equals(n.getString("Blocker"));
-            if(!oldSession&&!interruptedVictory){
+            // Once the authenticated boss victory has already advanced the
+            // encounter beyond BOSS, its completed combat record is historical.
+            // Further reconnects must not require an obsolete combat session.
+            boolean completedEarlier=fight.complete()&&progress.phase().ordinal()>BOSS.ordinal();
+            if(!oldSession&&!interruptedVictory&&!completedEarlier){
                 p.sendSystemMessage(Component.literal("The saved Hand combat session needs identity review; no fight progress was changed."));
                 return 0;
             }
