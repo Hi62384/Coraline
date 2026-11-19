@@ -262,6 +262,14 @@ public final class PalaceWorldGeneration {
         BlockState value;
         if(y>target)value=Blocks.AIR.defaultBlockState();
         else if(house)value=Blocks.STONE_BRICKS.defaultBlockState();
+        // Company-first generation deliberately runs before the Palace and Well
+        // have been reserved. Its own foundation must never depend on their
+        // terrain sampler or the job will hard-stop on Optional.orElseThrow().
+        else if(y==target&&PalaceGenerationRules.stage(n)==COMPANY_PREPARE){
+            var company=d.position(Kind.COMPANY).orElseThrow();
+            int dx=Math.abs(x-company.getX()),dz=Math.abs(z-company.getZ());
+            value=(dx<=24&&dz<=18?Blocks.COARSE_DIRT:Blocks.GRASS_BLOCK).defaultBlockState();
+        }
         else if(y==target){
             var p=point(d.position(Kind.PALACE).orElseThrow());var w=point(d.position(Kind.WELL).orElseThrow());
             var s=PalaceTerrainPlan.sample(l.getSeed(),p,w,n.getInt("ProfileBase"),x,z,target);
