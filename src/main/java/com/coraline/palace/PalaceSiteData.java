@@ -44,7 +44,17 @@ public final class PalaceSiteData extends SavedData {
     }
     void retryLegacyPause(){
         if(incompatibleOriginal!=null)return;
-        if(blocker.equals("Palace generation stopped safely: IllegalStateException: Landmark chunk request failed safely")
+        // Older builds crashed while grading an early Moving Company because
+        // COMPANY_PREPARE incorrectly read Palace/Well positions which did not
+        // exist yet. Resume the exact reserved Company cursor, never reroll.
+        boolean earlyCompanyMissingPalace=blocker.startsWith("Palace generation needs review at COMPANY_PREPARE cursor ")
+                &&blocker.endsWith(": No value present")
+                &&generation.contains("DeferredPalace",Tag.TAG_COMPOUND)
+                &&PalaceGenerationRules.stage(generation)==PalaceGenerationRules.Stage.COMPANY_PREPARE
+                &&generation.getBoolean("CompanyClaimed")&&position(Kind.COMPANY).isPresent()
+                &&position(Kind.PALACE).isEmpty()&&position(Kind.WELL).isEmpty();
+        if(earlyCompanyMissingPalace
+                ||blocker.equals("Palace generation stopped safely: IllegalStateException: Landmark chunk request failed safely")
                 ||blocker.startsWith("Palace generation needs review at ")
                 &&blocker.contains(": Actual block placement was refused at ")){
             blocker="";
