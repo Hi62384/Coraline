@@ -38,8 +38,9 @@ public final class ShowTravel {
             if(!scene.loop.event.contains(key,Tag.TAG_COMPOUND))return false;
             var saved=scene.loop.event.getCompound(key);
             // Never silently replace an existing return ticket belonging elsewhere.
+            var destination=returnPosition(source,p,saved);
             return source.dimension().location().toString().equals(saved.getString("Dimension"))
-                    &&returnPosition(source,p,saved)!=null;
+                    &&destination!=null&&destination.distanceToSqr(Vec3.atBottomCenterOf(returnNear))<=64;
         }
         source.getChunkAt(returnNear);
         var safe=OtherWorld.safePlayer(source,returnNear);
