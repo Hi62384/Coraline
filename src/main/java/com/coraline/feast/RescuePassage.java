@@ -127,6 +127,34 @@ public final class RescuePassage {
         return true;
     }
     public static double progress(ServerPlayer p,VisitData.Scene s){return p.getX()-origin(p,s).getX()-.5;}
-    public static void restore(ServerPlayer p,VisitData.Scene s){if(!RescueChapter.owns(p,s))return;var l=p.server.getLevel(ActivityWorld.KEY);if(l==null)return;var n=RescueChapter.data(s);var cells=n.getCompound("PassageCells");var lookup=l.holderLookup(net.minecraft.core.registries.Registries.BLOCK);for(String key:cells.getAllKeys()){var at=BlockPos.of(Long.parseLong(key));l.getChunkAt(at);var cell=cells.getCompound(key);if(l.getBlockEntity(at)==null&&l.getBlockState(at).equals(NbtUtils.readBlockState(lookup,cell.getCompound("Placed"))))l.setBlock(at,NbtUtils.readBlockState(lookup,cell.getCompound("Original")),2);}n.remove("PassageCells");n.remove("PassageReady");n.remove("PassageBuild");OtherMotherLoop.changed(p);}
+    /** Direct restoration uses the same exact-state receipts as the bounded
+     * post-exit cleanup and never forgets an unresolved original block. */
+    public static void restore(ServerPlayer p,VisitData.Scene s){
+        if(!RescueChapter.owns(p,s))return;
+        var level=p.server.getLevel(ActivityWorld.KEY);if(level==null)return;
+        var n=RescueChapter.data(s);var cells=n.getCompound("PassageCells");
+        var lookup=level.holderLookup(net.minecraft.core.registries.Registries.BLOCK);
+        boolean changed=false;
+        for(String key:new java.util.HashSet<>(cells.getAllKeys())){
+            var at=BlockPos.of(Long.parseLong(key));level.getChunkAt(at);
+            var row=cells.getCompound(key);
+            if(!row.contains("Placed",Tag.TAG_COMPOUND)||!row.contains("Original",Tag.TAG_COMPOUND)
+                    ||level.getBlockEntity(at)!=null)continue;
+            var expected=NbtUtils.readBlockState(lookup,row.getCompound("Placed"));
+            var original=NbtUtils.readBlockState(lookup,row.getCompound("Original"));
+            var actual=level.getBlockState(at);
+            if(!actual.equals(original)){
+                if(!actual.equals(expected))continue;
+                level.setBlock(at,original,2);
+                if(!level.getBlockState(at).equals(original))continue;
+            }
+            cells.remove(key);changed=true;
+        }
+        if(cells.isEmpty()){
+            n.remove("PassageCells");n.remove("PassageReady");n.remove("PassageBuild");
+            n.remove("PassageVerified");n.remove("PassageVerify");
+        }
+        if(changed)OtherMotherLoop.changed(p);
+    }
     private RescuePassage(){}
 }
