@@ -219,7 +219,7 @@ public final class PalaceJourney {
     }
     @SubscribeEvent public static void recoverMap(PlayerInteractEvent.RightClickItem event){
         if(!(event.getEntity() instanceof ServerPlayer p)||!p.isShiftKeyDown())return;
-        var scene=OtherMotherLoop.scene(p);if(!owns(p,scene)||!ParentRescueStory.key(event.getItemStack(),scene))return;
+        var scene=OtherMotherLoop.scene(p);if(!mapEligible(p,scene)||!ParentRescueStory.key(event.getItemStack(),scene))return;
         var root=existing(scene);if(root==null||!root.getBoolean("MapIssued"))return;
         long now=p.server.overworld().getGameTime(),next=root.getLong("MapRecoveryAfter");
         if(next>now&&next-now<=200)return;root.putLong("MapRecoveryAfter",now+200);OtherMotherLoop.changed(p);
