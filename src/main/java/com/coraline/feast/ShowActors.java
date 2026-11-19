@@ -36,8 +36,35 @@ public final class ShowActors {
         tag.putUUID("ShowActorOwner",s.owner);tag.putInt("ShowActorSerial",s.loop.event.getInt("Serial"));tag.putUUID("RealmDoor",s.door);
         var moved=ShowTravel.guest(actor,p,s,level,at,true,"ShowActorReturn");if(moved!=null){n.putUUID("Entity",moved.getUUID());remember(n,moved);control(moved);}OtherMotherLoop.changed(p);return moved;
     }
+    /**
+     * The finale changes the event serial without changing the original Cat.
+     * Rebind only that exact saved Cat at CAT_NOTICE, never an arbitrary cat
+     * or another owner's old event lease.
+     */
+    private static void reconcileFarewellCat(ServerPlayer p,VisitData.Scene s){
+        if(s==null||!s.owner.equals(p.getUUID())||!RescueChapter.started(s)
+                ||RescueChapter.phase(s)!=RescueChapter.Phase.CAT_NOTICE)return;
+        var lease=root(s).getCompound("cat");
+        if(!lease.hasUUID("Entity"))return;
+        var canonical=canonicalCat(s);
+        var id=lease.getUUID("Entity");
+        if(canonical.hasUUID("Entity")&&!id.equals(canonical.getUUID("Entity")))return;
+        var original=actor(p,s,"cat");
+        if(!(original instanceof CharacterEntity cat)||!cat.characterId().equals("cat")||!cat.isAlive())return;
+        var tag=cat.getPersistentData();
+        if(tag.hasUUID("ShowActorOwner")&&!s.owner.equals(tag.getUUID("ShowActorOwner"))
+                ||tag.hasUUID("CanonicalStoryCatOwner")&&!s.owner.equals(tag.getUUID("CanonicalStoryCatOwner"))
+                ||tag.hasUUID("RealmDoor")&&!s.door.equals(tag.getUUID("RealmDoor")))return;
+        if(owned(cat,s))return;
+        tag.putUUID("ShowActorOwner",s.owner);
+        tag.putInt("ShowActorSerial",s.loop.event.getInt("Serial"));
+        tag.putUUID("RealmDoor",s.door);
+        rememberCat(s,cat);
+        OtherMotherLoop.changed(p);
+    }
     static Mob recoverCat(ServerPlayer p,VisitData.Scene s,ServerLevel level,Vec3 at){
         if(!root(s).getCompound("cat").hasUUID("Entity")&&!canonicalCat(s).hasUUID("Entity"))return null;
+        reconcileFarewellCat(p,s);
         var actor=acquire(p,s,"cat",level,at);
         return actor instanceof CharacterEntity cat&&cat.characterId().equals("cat")&&cat.isAlive()?cat:null;
     }
