@@ -120,8 +120,8 @@ public final class PalaceWellEncounter {
             var chunk=new net.minecraft.world.level.ChunkPos(at);
             overworld.getChunkSource().addRegionTicket(net.minecraft.server.level.TicketType.PORTAL,chunk,2,at);
             var raw=overworld.getEntity(original);
-            if(raw instanceof WybieBicycleEntity b&&progress.session().equals(b.session())
-                    &&b.getPersistentData().hasUUID("PalaceWellOwner")&&s.owner.equals(b.getPersistentData().getUUID("PalaceWellOwner")))return b;
+            if(raw instanceof WybieBicycleEntity b&&progress.originalWybie().isPresent()
+                    &&b.reconcileWellSession(s.owner,s.door,progress.originalWybie().orElseThrow(),progress.session()))return b;
             if(raw!=null||w==null||!overworld.areEntitiesLoaded(chunk.toLong()))return null;
         }
         if(w==null)return null;var c=center(p);var palace=PalaceSiteData.get(p.server).position(PalaceSitePlan.Kind.PALACE).orElseThrow();var away=c.subtract(Vec3.atBottomCenterOf(palace)).multiply(1,0,1).normalize();
