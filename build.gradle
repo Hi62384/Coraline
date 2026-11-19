@@ -123,59 +123,79 @@ minecraft {
                 property 'coraline.scoldingAudioCheck', 'true'
                 if (project.hasProperty('scoldingFlowStart')) property 'coraline.scoldingFlowStart', project.property('scoldingFlowStart')
                 workingDirectory project.file('run-new-activities')
-                args '--quickPlaySingleplayer', 'CoralineActivitiesQA'
+                if (project.file('run-new-activities/saves/CoralineActivitiesQA/level.dat').isFile()) {
+                    args '--quickPlaySingleplayer', 'CoralineActivitiesQA'
+                }
             }
             if (project.hasProperty('secretsAudioCheck')) {
                 property 'coraline.secretsAudioCheck', 'true'
                 if (project.hasProperty('secretsUiCheck')) property 'coraline.secretsUiCheck', 'true'
                 workingDirectory project.file('run-new-activities')
-                args '--quickPlaySingleplayer', 'CoralineActivitiesQA'
+                if (project.file('run-new-activities/saves/CoralineActivitiesQA/level.dat').isFile()) {
+                    args '--quickPlaySingleplayer', 'CoralineActivitiesQA'
+                }
             }
             if (project.hasProperty('secretsVisualCheck')) {
                 property 'coraline.secretsVisualCheck', 'true'
                 workingDirectory project.file('run-new-activities')
-                args '--quickPlaySingleplayer', 'CoralineActivitiesQA'
+                if (project.file('run-new-activities/saves/CoralineActivitiesQA/level.dat').isFile()) {
+                    args '--quickPlaySingleplayer', 'CoralineActivitiesQA'
+                }
             }
             if (project.hasProperty('dropperVisualCheck')) {
                 property 'coraline.dropperVisualCheck', 'true'
                 if (project.hasProperty('dropperOnly')) property 'coraline.dropperOnly', 'true'
                 property 'coraline.revisionVisualCheck', 'true'
                 workingDirectory project.file('run-new-activities')
-                args '--quickPlaySingleplayer', 'CoralineActivitiesQA'
+                if (project.file('run-new-activities/saves/CoralineActivitiesQA/level.dat').isFile()) {
+                    args '--quickPlaySingleplayer', 'CoralineActivitiesQA'
+                }
             }
             if (project.hasProperty('activityRevisionVisualCheck')) {
                 property 'coraline.activityRevisionVisualCheck', 'true'
                 property 'coraline.revisionVisualCheck', 'true'
                 workingDirectory project.file('run-new-activities')
-                args '--quickPlaySingleplayer', 'CoralineActivitiesQA'
+                if (project.file('run-new-activities/saves/CoralineActivitiesQA/level.dat').isFile()) {
+                    args '--quickPlaySingleplayer', 'CoralineActivitiesQA'
+                }
             }
             if (project.hasProperty('visitGiftVisualCheck')) {
                 property 'coraline.visitGiftVisualCheck', 'true'
                 property 'coraline.revisionVisualCheck', 'true'
                 workingDirectory project.file('run-new-activities')
-                args '--quickPlaySingleplayer', 'CoralineActivitiesQA'
+                if (project.file('run-new-activities/saves/CoralineActivitiesQA/level.dat').isFile()) {
+                    args '--quickPlaySingleplayer', 'CoralineActivitiesQA'
+                }
             }
             if (project.hasProperty('revisionVisualCheck')) {
                 property 'coraline.revisionVisualCheck', 'true'
                 if (project.hasProperty('introFortressVisualCheck')) property 'coraline.introFortressVisualCheck', 'true'
                 workingDirectory project.file('run-new-activities')
-                args '--quickPlaySingleplayer', 'CoralineActivitiesQA'
+                if (project.file('run-new-activities/saves/CoralineActivitiesQA/level.dat').isFile()) {
+                    args '--quickPlaySingleplayer', 'CoralineActivitiesQA'
+                }
             }
             if (project.hasProperty('mallBattleHuntVisualCheck')) {
                 property 'coraline.mallBattleHuntVisualCheck', 'true'
                 if (project.hasProperty('snowBattleOnly')) property 'coraline.snowBattleOnly', 'true'
                 workingDirectory project.file('run-new-activities')
-                args '--quickPlaySingleplayer', 'CoralineActivitiesQA'
+                if (project.file('run-new-activities/saves/CoralineActivitiesQA/level.dat').isFile()) {
+                    args '--quickPlaySingleplayer', 'CoralineActivitiesQA'
+                }
             }
             if (project.hasProperty('expeditionVisualCheck')) {
                 property 'coraline.expeditionVisualCheck', 'true'
                 workingDirectory project.file('run-new-activities')
-                args '--quickPlaySingleplayer', 'CoralineActivitiesQA'
+                if (project.file('run-new-activities/saves/CoralineActivitiesQA/level.dat').isFile()) {
+                    args '--quickPlaySingleplayer', 'CoralineActivitiesQA'
+                }
             }
             if (project.hasProperty('newActivitiesVisualCheck')) {
                 property 'coraline.newActivitiesVisualCheck', 'true'
                 workingDirectory project.file('run-new-activities')
-                args '--quickPlaySingleplayer', 'CoralineActivitiesQA'
+                if (project.file('run-new-activities/saves/CoralineActivitiesQA/level.dat').isFile()) {
+                    args '--quickPlaySingleplayer', 'CoralineActivitiesQA'
+                }
             }
             if (project.hasProperty('storyPresentationCheck')) {
                 property 'coraline.storyPresentationCheck', 'true'
