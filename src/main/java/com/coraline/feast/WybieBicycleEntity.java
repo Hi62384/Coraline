@@ -30,6 +30,21 @@ public final class WybieBicycleEntity extends Entity {
     public void configure(UUID owner,UUID door,UUID session,int serial,UUID rider,boolean friend){this.owner=owner;this.door=door;this.serial=serial;this.rider=rider;entityData.set(SESSION,java.util.Optional.of(session));entityData.set(FRIEND,friend);}
     public float visualSteering(){return entityData.get(STEER);}
     public UUID session(){return entityData.get(SESSION).orElse(null);}public boolean friend(){return entityData.get(FRIEND);}public double speed(){return level().isClientSide?entityData.get(SPEED):speed;}
+    /** The well's resume checkpoint rotates its combat/recording session. The
+     * original bicycle remains the same saved entity; rebind only its session,
+     * after verifying owner, door, original passenger and well provenance. */
+    boolean reconcileWellSession(UUID expectedOwner,UUID expectedDoor,UUID originalWybie,UUID currentSession){
+        if(level().isClientSide||expectedOwner==null||expectedDoor==null
+                ||originalWybie==null||currentSession==null||!friend()
+                ||!expectedOwner.equals(owner)||!expectedDoor.equals(door)
+                ||!originalWybie.equals(rider)||!getPersistentData().hasUUID("PalaceWellOwner")
+                ||!expectedOwner.equals(getPersistentData().getUUID("PalaceWellOwner")))return false;
+        if(!currentSession.equals(session())){
+            stop();
+            entityData.set(SESSION,java.util.Optional.of(currentSession));
+        }
+        return true;
+    }
     public boolean ownedBy(ServerPlayer p,VisitData.Scene s){return p.getUUID().equals(owner)&&s.door.equals(door)&&serial==s.loop.event.getInt("Serial")&&session()!=null&&session().equals(WybieAdventure.data(s).getUUID("Session"));}
     public void input(ServerPlayer p,UUID session,float forward,float turn,boolean braking){
         if(!p.getUUID().equals(owner)||!p.getUUID().equals(rider)||friend()||p.getVehicle()!=this||!java.util.Objects.equals(session,session())||inputAt==tickCount||!Float.isFinite(forward)||!Float.isFinite(turn))return;
