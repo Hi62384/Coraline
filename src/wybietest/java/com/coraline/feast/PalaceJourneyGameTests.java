@@ -202,7 +202,8 @@ public final class PalaceJourneyGameTests {
             }
         }
         var desk=company.offset(-5,1,-4);
-        level.setBlock(desk,stone,2);
+        // Registration requires a real reception counter, not a plain stone block.
+        level.setBlock(desk,com.coraline.registry.ModBlocks.ROSEWOOD_COUNTER.get().defaultBlockState(),2);
         // Use the actual transfer opening, retaining the exterior wall either side.
         for(int z=-9;z<=9;z++)for(int y=1;y<=4;y++)if(Math.abs(z)>4)level.setBlock(company.offset(11,y,z),stone,2);
         var s=ready();
@@ -322,7 +323,8 @@ public final class PalaceJourneyGameTests {
         var players=checkpointPlayers(p.server);
         players.add(p);
         try{
-            h.assertTrue(PalaceKeyCustody.place(p,s,bundle),"Original key could not reach verified bundle custody");
+            h.assertTrue(bundle.interactAt(p,net.minecraft.world.phys.Vec3.ZERO,net.minecraft.world.InteractionHand.MAIN_HAND)
+                    ==net.minecraft.world.InteractionResult.CONSUME,"Physical right-click did not place the original key in the wrapped bundle");
             var receipt=root.getCompound("KeyCustody").copy();
             h.assertTrue(receipt.getString("Stage").equals("HELD")&&p.getMainHandItem().isEmpty(),"Verified custody did not remove the original key");
             h.assertTrue(!PalaceKeyCustody.place(p,s,bundle)&&!PalaceKeyCustody.dispose(p,s,bundle),"Repeated interaction or an above-ground bundle completed disposal");
