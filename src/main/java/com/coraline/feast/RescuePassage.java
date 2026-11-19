@@ -3,7 +3,6 @@ package com.coraline.feast;
 import com.coraline.registry.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.*;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.*;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.block.Blocks;
@@ -48,7 +47,7 @@ public final class RescuePassage {
         // batch before changing blocks. An interrupted batch can be replayed.
         for(int i=cursor;i<end;i++){
             var at=cell(origin,i);LoopProps.hold(level,at);level.getChunkAt(at);
-            var expected=planned(i),actual=level.getBlockState(at);
+            var expected=planned(i);var actual=level.getBlockState(at);
             var key=Long.toString(at.asLong());
             if(!journal.contains(key)){
                 if(!actual.isAir()||level.getBlockEntity(at)!=null)
@@ -72,7 +71,7 @@ public final class RescuePassage {
         p.server.overworld().getDataStorage().save();
         // Advance the durable cursor only after each physical block is confirmed.
         for(int i=cursor;i<end;i++){
-            var at=cell(origin,i),expected=planned(i);
+            var at=cell(origin,i);var expected=planned(i);
             if(!level.getBlockState(at).equals(expected)){
                 level.setBlock(at,expected,2);
                 if(!level.getBlockState(at).equals(expected))
