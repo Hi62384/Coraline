@@ -212,13 +212,17 @@ public final class PalaceWorldGeneration {
         n.putInt("Cursor",cursor+1);d.setDirty();if(cursor%16==0)save(l,d);
     }
     private static void selectWell(ServerLevel l,PalaceSiteData d){
+        if(d.continueReservedCompany()){save(l,d);return;}
+        if(d.position(Kind.WELL).isPresent()){enter(d,SELECT_COMPANY);save(l,d);return;}
         var proposed=d.proposal(Kind.WELL);if(proposed.isEmpty())return;var p=proposed.get();var c=chunk(l,p.x(),p.z());if(c==null)return;
         int y=d.generation().getInt("ProfileBase")+36;var boxes=structures(l,c);if(boxes==null)return;
         for(int dx=-5;dx<=5;dx++)for(int dz=-5;dz<=5;dz++)if(intersects(boxes,p.x()+dx,y-33,p.z()+dz,y+6)){d.reject(Kind.WELL,p);return;}
         if(!d.reserveGenerationPlan(Kind.WELL,new BlockPos(p.x(),y,p.z())))throw new IllegalStateException("Original well reservation changed");
-        enter(d,SELECT_COMPANY);save(l,d);
+        if(!d.continueReservedCompany())enter(d,SELECT_COMPANY);
+        save(l,d);
     }
     private static void selectCompany(ServerLevel l,PalaceSiteData d)throws java.io.IOException{
+        if(d.continueReservedCompany()){save(l,d);return;}
         var proposed=d.proposal(Kind.COMPANY);if(proposed.isEmpty())return;var p=proposed.get();
         var deferred=d.generation().getCompound("DeferredPalace");
         if(deferred.getBoolean("PalaceClaimed")&&candidate(deferred).distance(p)<600){d.reject(Kind.COMPANY,p);return;}

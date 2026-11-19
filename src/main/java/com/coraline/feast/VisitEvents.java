@@ -184,9 +184,12 @@ public final class VisitEvents {
         var realm=RealmData.get(p.server).realms.get(s.door);if(realm!=null){if(realm.piano!=null)s.piano=realm.piano;if(realm.table!=null)s.table=realm.table;}
         if(s.piano==null||s.table==null)return;LoopProps.hold(p.serverLevel(),s.piano);LoopProps.hold(p.serverLevel(),s.table);
         var existing=p.serverLevel().getEntitiesOfClass(ParentEntity.class,new AABB(s.piano).inflate(110),e->e.isOtherParent()&&!e.isMom()&&!e.getPersistentData().hasUUID("DeliveryOwner")&&e.getPersistentData().hasUUID("RealmDoor")&&s.door.equals(e.getPersistentData().getUUID("RealmDoor")));
-        var dad=father(p,s);if(dad==null&&!existing.isEmpty())dad=existing.get(0);
-        if(dad==null){dad=ModEntities.DAD.get().create(p.serverLevel());if(dad==null)return;var family=com.coraline.parents.ParentAccess.family(p.server,p.getUUID());dad.makeOtherParent(family==null?0:Math.max(0,family.dadSkin));if(family!=null)dad.getPersistentData().putUUID("OriginalFamily",family.id);dad.getPersistentData().putUUID("RealmDoor",s.door);if(realm!=null)dad.getPersistentData().putInt("RealmGeneration",realm.parentGeneration);dad.getPersistentData().putLong("OtherHome",s.piano.asLong());dad.setPos(Vec3.atBottomCenterOf(s.piano));p.serverLevel().addFreshEntity(dad);}
-        for(var extra:existing)if(extra!=dad)extra.discard();s.dad=dad.getUUID();dad.getPersistentData().putUUID("VisitEventOwner",p.getUUID());dad.eventGaze(true);ScenePlacement.prepareWalker(dad);
+        var dad=father(p,s);
+        if(dad==null&&s.dad!=null)return;
+        if(dad==null&&existing.size()==1)dad=existing.get(0);
+        if(dad==null&&!existing.isEmpty())return;
+        if(dad==null){dad=ModEntities.DAD.get().create(p.serverLevel());if(dad==null)return;var family=com.coraline.parents.ParentAccess.family(p.server,p.getUUID());dad.makeOtherParent(family==null?0:Math.max(0,family.dadSkin));if(family!=null)dad.getPersistentData().putUUID("OriginalFamily",family.id);dad.getPersistentData().putUUID("RealmDoor",s.door);if(realm!=null)dad.getPersistentData().putInt("RealmGeneration",realm.parentGeneration);dad.getPersistentData().putLong("OtherHome",s.piano.asLong());dad.setPos(Vec3.atBottomCenterOf(s.piano));if(!p.serverLevel().addFreshEntity(dad))return;}
+        s.dad=dad.getUUID();dad.getPersistentData().putUUID("VisitEventOwner",p.getUUID());dad.eventGaze(true);ScenePlacement.prepareWalker(dad);
         if(type(s)==Type.EXPLORATION_30_MIN||type(s)==Type.OTHER_MOTHER_GOES_OUT){
             var existingPianos=p.serverLevel().getEntitiesOfClass(ScenePropEntity.class,new AABB(s.piano).inflate(6),e->e.kind()==ScenePropEntity.PIANO&&s.owner.equals(e.owner)&&(e.storyDoor==null||s.door.equals(e.storyDoor)));
             var piano=existingPianos.stream().findFirst().orElse(null);

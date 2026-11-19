@@ -90,12 +90,60 @@ public final class PalaceGenerationSmoke {
         data=PalaceSiteData.load(TagParser.parseTag(data.save(new CompoundTag()).toString()));
         check(data.blocker().isEmpty()&&!data.companyMapReady()&&data.position(kind).orElseThrow().equals(address),"Reserved Company unlocked the map before readback");
         work=(CompoundTag)generation.invoke(data);
+        PalaceGenerationRules.enter(work,PalaceGenerationRules.Stage.COMPANY_PREPARE);
+        work.putInt("Cursor",218);
+        data=PalaceSiteData.load(TagParser.parseTag(data.save(new CompoundTag()).toString()));
+        work=(CompoundTag)generation.invoke(data);
+        check(data.blocker().isEmpty()&&work.getInt("Cursor")==218&&data.position(kind).orElseThrow().equals(address),
+                "Restart during Company construction lost the original work");
         PalaceGenerationRules.enter(work,PalaceGenerationRules.Stage.COMPANY_VERIFY);
         check(!(Boolean)verify.invoke(data,kind,address,49,50),"Partial readback unlocked the map");
         check((Boolean)verify.invoke(data,kind,address,50,50),"Complete readback did not unlock the map");
+        data=PalaceSiteData.load(TagParser.parseTag(data.save(new CompoundTag()).toString()));
+        check(data.companyMapReady()&&data.blocker().isEmpty(),"Restart after verification lost the Company");
         resume.invoke(data);
         data=PalaceSiteData.load(TagParser.parseTag(data.save(new CompoundTag()).toString()));
         check(data.companyMapReady()&&!data.ready()&&data.blocker().isEmpty(),"Early Company verification was lost when the Palace survey resumed");
+        var continueCompany=PalaceSiteData.class.getDeclaredMethod("continueReservedCompany");
+        continueCompany.setAccessible(true);
+        var palaceKind=PalaceSitePlan.Kind.PALACE;
+        var palace=data.proposal(palaceKind).orElseThrow();
+        while(palace.distance(point)<600){data.reject(palaceKind,palace);palace=data.proposal(palaceKind).orElseThrow();}
+        work=(CompoundTag)generation.invoke(data);
+        PalaceGenerationRules.enter(work,PalaceGenerationRules.Stage.SURVEY_REGION);
+        work.putBoolean("PalaceClaimed",true);
+        work.putBoolean("ProfileSurveyed",true);
+        work.putInt("CandidateX",palace.x());work.putInt("CandidateZ",palace.z());work.putInt("ProfileBase",90);
+        work.putInt("Cursor",2401);
+        var palaceAddress=new net.minecraft.core.BlockPos(palace.x(),90,palace.z());
+        check((Boolean)reserve.invoke(data,palaceKind,palaceAddress),"Deferred Palace lost its candidate");
+        PalaceGenerationRules.enter(work,PalaceGenerationRules.Stage.SELECT_WELL);
+        check(!(Boolean)continueCompany.invoke(data),"Company skipped an unreserved Well");
+        var wellKind=PalaceSitePlan.Kind.WELL;
+        var well=data.proposal(wellKind).orElseThrow();
+        var wellAddress=new net.minecraft.core.BlockPos(well.x(),126,well.z());
+        check((Boolean)reserve.invoke(data,wellKind,wellAddress),"Well could not be reserved after early Company");
+        var atWell=PalaceSiteData.load(TagParser.parseTag(data.save(new CompoundTag()).toString()));
+        check((Boolean)continueCompany.invoke(atWell)&&PalaceGenerationRules.stage((CompoundTag)generation.invoke(atWell))==PalaceGenerationRules.Stage.TERRAIN,
+                "Well reservation entered a second Company selection");
+        PalaceGenerationRules.enter(work,PalaceGenerationRules.Stage.SELECT_COMPANY);
+        data=PalaceSiteData.load(TagParser.parseTag(data.save(new CompoundTag()).toString()));
+        check((Boolean)continueCompany.invoke(data),"Older checkpoint was stranded at SELECT_COMPANY");
+        work=(CompoundTag)generation.invoke(data);
+        check(PalaceGenerationRules.stage(work)==PalaceGenerationRules.Stage.TERRAIN,"Verified Company failed to advance to Palace terrain");
+        check(data.proposal(kind).isEmpty()&&data.position(kind).orElseThrow().equals(address),"Company coordinates changed or a duplicate was offered");
+        for(var phase:new PalaceGenerationRules.Stage[]{PalaceGenerationRules.Stage.DETAILS,PalaceGenerationRules.Stage.HOUSE_PREPARE,
+                PalaceGenerationRules.Stage.HOUSE,PalaceGenerationRules.Stage.HOUSE_VERIFY,PalaceGenerationRules.Stage.WELL,
+                PalaceGenerationRules.Stage.WELL_VERIFY,PalaceGenerationRules.Stage.SIGNS,PalaceGenerationRules.Stage.FINISH,PalaceGenerationRules.Stage.DONE}){
+            if(phase==PalaceGenerationRules.Stage.HOUSE_VERIFY)check((Boolean)verify.invoke(data,palaceKind,palaceAddress,1,1),"Palace verification rejected");
+            if(phase==PalaceGenerationRules.Stage.WELL_VERIFY)check((Boolean)verify.invoke(data,wellKind,wellAddress,1,1),"Well verification rejected");
+            PalaceGenerationRules.enter(work,phase);
+            data=PalaceSiteData.load(TagParser.parseTag(data.save(new CompoundTag()).toString()));
+            check(data.blocker().isEmpty(),"Reload blocked phase "+phase);
+            work=(CompoundTag)generation.invoke(data);
+        }
+        check(data.ready(),"Verified Company, Palace, and Well did not survive completion reload");
+
     }
 
     private static void anvil(Path owned)throws Exception{

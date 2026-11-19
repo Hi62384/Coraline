@@ -83,6 +83,25 @@ public final class PalaceSiteData extends SavedData {
         setDirty();
     }
     public boolean companyMapReady(){return incompatibleOriginal==null&&generated(Kind.COMPANY)&&position(Kind.COMPANY).isPresent();}
+    boolean continueReservedCompany(){
+        var stage=PalaceGenerationRules.stage(generation);
+        if(stage!=PalaceGenerationRules.Stage.SELECT_WELL&&stage!=PalaceGenerationRules.Stage.SELECT_COMPANY)return false;
+        if(stage==PalaceGenerationRules.Stage.SELECT_WELL&&position(Kind.WELL).isEmpty())return false;
+        var company=position(Kind.COMPANY).orElse(null);
+        if(company==null)return false;
+        if(companyMapReady()&&generation.contains("DeferredPalace")){
+            resumeAfterEarlyCompany();
+            return true;
+        }
+        generation.putBoolean("CompanyClaimed",true);
+        generation.putInt("CompanyX",company.getX());
+        generation.putInt("CompanyY",company.getY());
+        generation.putInt("CompanyZ",company.getZ());
+        generation.putBoolean("CompanyFirst",true);
+        PalaceGenerationRules.enter(generation,companyMapReady()?PalaceGenerationRules.Stage.TERRAIN:PalaceGenerationRules.Stage.COMPANY_PREPARE);
+        setDirty();
+        return true;
+    }
     public boolean palaceArrivalReady(){
         return incompatibleOriginal==null&&generated(Kind.PALACE)&&position(Kind.PALACE).isPresent();
     }
@@ -206,7 +225,7 @@ public final class PalaceSiteData extends SavedData {
                     String prefix=kind==Kind.PALACE?"Palace":"Company",coordinate=kind==Kind.PALACE?"Candidate":"Company";
                     if(!work.getBoolean(prefix+"Claimed"))continue;
                     var site=data.sites.get(kind);var at=new PalaceSitePlan.Point(work.getInt(coordinate+"X"),work.getInt(coordinate+"Z"));
-                    if(site==null||site.getBoolean("Legacy"))throw new IllegalArgumentException("Generation claim has no original proposal");
+                    if(site==null||site.getBoolean("Legacy")&&!(kind==Kind.COMPANY&&data.companyMapReady()))throw new IllegalArgumentException("Generation claim has no original proposal");
                     if(data.position(kind).isPresent()){var saved=data.position(kind).get();if(saved.getX()!=at.x()||saved.getZ()!=at.z())throw new IllegalArgumentException("Claim moved away from reserved landmark");}
                     else if(!matches(site,at))throw new IllegalArgumentException("Claim moved away from pending proposal");
                 }

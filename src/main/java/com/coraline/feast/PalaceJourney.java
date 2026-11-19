@@ -53,6 +53,10 @@ public final class PalaceJourney {
         scene.loop.story.put(ROOT,root);return root;
     }
     static boolean owns(ServerPlayer player,VisitData.Scene scene){return scene!=null&&player.getUUID().equals(scene.owner)&&prerequisites(scene).ready();}
+    static boolean ownsTransport(ServerPlayer player,VisitData.Scene scene){
+        var record=existing(scene);
+        return mapEligible(player,scene)&&record!=null&&record.getBoolean("MapIssued");
+    }
     private static boolean mapEligible(ServerPlayer player,VisitData.Scene scene){
         if(scene==null||!player.getUUID().equals(scene.owner))return false;
         var proof=prerequisites(scene);

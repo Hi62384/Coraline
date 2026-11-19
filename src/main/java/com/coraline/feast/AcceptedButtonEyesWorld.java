@@ -53,12 +53,68 @@ public final class AcceptedButtonEyesWorld {
         if(s.mom!=null){var level=level(p);var at=s.loop.motherPos;if(level!=null){level.getChunkSource().addRegionTicket(net.minecraft.server.level.TicketType.PORTAL,new net.minecraft.world.level.ChunkPos(at),2,at);return level.getEntity(s.mom) instanceof ParentEntity loaded&&loaded.isMom()&&loaded.isOtherParent()&&loaded.getPersistentData().hasUUID("RealmDoor")&&s.door.equals(loaded.getPersistentData().getUUID("RealmDoor"))?loaded:null;}}
         return null;
     }
-    static ParentEntity father(ServerPlayer p,VisitData.Scene s){return parent(p,s,s.dad);}
+    static ParentEntity father(ServerPlayer p,VisitData.Scene s){
+        var actor=parent(p,s,s.dad);
+        return authenticParent(p,s,actor,false)?actor:null;
+    }
+    private static boolean authenticParent(ServerPlayer p,VisitData.Scene s,ParentEntity actor,boolean mom){
+        var realm=realm(p,s);
+        return actor!=null&&actor.isAlive()&&actor.isMom()==mom&&actor.isOtherParent()&&realm!=null
+                &&actor.getPersistentData().hasUUID("RealmDoor")&&s.door.equals(actor.getPersistentData().getUUID("RealmDoor"))
+                &&(!actor.getPersistentData().contains("AcceptedOwner")||actor.getPersistentData().hasUUID("AcceptedOwner")&&s.owner.equals(actor.getPersistentData().getUUID("AcceptedOwner")))
+                &&(!actor.getPersistentData().contains("AcceptedDoor")||actor.getPersistentData().hasUUID("AcceptedDoor")&&s.door.equals(actor.getPersistentData().getUUID("AcceptedDoor")))
+                &&(!actor.getPersistentData().contains("RealmGeneration")||actor.getPersistentData().getInt("RealmGeneration")==realm.parentGeneration);
+    }
+    static ParentEntity recoverSupperParent(ServerPlayer p,VisitData.Scene s,boolean mom,BlockPos near){
+        var level=level(p);
+        var realm=realm(p,s);
+        var id=mom?s.mom:s.dad;
+        if(id==null||level==null||realm==null||!s.owner.equals(p.getUUID()))return null;
+        for(var world:p.server.getAllLevels()){
+            var existing=world.getEntity(id);
+            if(existing==null)continue;
+            if(!(existing instanceof ParentEntity actor)||!authenticParent(p,s,actor,mom))return null;
+            if(actor.level()==level)return actor;
+            var landing=net.minecraft.core.BlockPos.findClosestMatch(near,3,1,at->level.hasChunkAt(at)
+                    &&FirstEscapeScene.inHouseOrPorch(s,at)&&com.coraline.tycoon.TycoonWorld.safeFeet(level,at)).orElse(null);
+            if(landing==null)return null;
+            var moved=ShowTravel.guest(actor,p,s,level,Vec3.atBottomCenterOf(landing),true,"AcceptedParents");
+            return moved instanceof ParentEntity same&&same.getUUID().equals(id)&&same.level()==level?same:null;
+        }
+        var saved=GhostVictimEntry.data(s);
+        var key=mom?"SupperMotherPosition":"SupperFatherPosition";
+        var original=saved.contains(key,net.minecraft.nbt.Tag.TAG_LONG)?BlockPos.of(saved.getLong(key)):mom?s.loop.motherPos:s.piano;
+        if(original==null||!FirstEscapeScene.inHouseOrPorch(s,original))original=near;
+        LoopProps.hold(level,original);
+        if(!level.areEntitiesLoaded(new net.minecraft.world.level.ChunkPos(original).toLong()))return null;
+        var family=com.coraline.parents.ParentAccess.family(p.server,s.owner);
+        if(family==null)return null;
+        var feet=net.minecraft.core.BlockPos.findClosestMatch(near,3,1,at->level.hasChunkAt(at)&&FirstEscapeScene.inHouseOrPorch(s,at)
+                &&com.coraline.tycoon.TycoonWorld.safeFeet(level,at)).orElse(null);
+        if(feet==null||com.coraline.rebirth.LegacyActorRecovery.check(p.server,id)!=com.coraline.rebirth.LegacyActorRecovery.Result.ABSENT)return null;
+        ParentEntity actor=(mom?com.coraline.registry.ModEntities.MOM.get():com.coraline.registry.ModEntities.DAD.get()).create(level);
+        if(actor==null)return null;
+        actor.setUUID(id);
+        actor.makeOtherParent(Math.max(0,mom?family.momSkin:family.dadSkin));
+        var mark=actor.getPersistentData();
+        mark.putUUID("OriginalFamily",family.id);
+        mark.putUUID("RealmDoor",s.door);
+        mark.putInt("RealmGeneration",realm.parentGeneration);
+        mark.putLong("OtherHome",feet.asLong());
+        mark.putUUID("AcceptedOwner",s.owner);
+        mark.putUUID("AcceptedDoor",s.door);
+        actor.setPos(Vec3.atBottomCenterOf(feet));
+        if(!level.noCollision(actor)||!level.addFreshEntity(actor)||level.getEntity(id)!=actor)return null;
+        saved.putLong(key,feet.asLong());
+        OtherMotherLoop.changed(p);
+        return p.server.saveEverything(true,true,true)?actor:null;
+    }
     private static ParentEntity parent(ServerPlayer p,VisitData.Scene s,java.util.UUID id){if(id==null)return null;for(var l:p.server.getAllLevels())if(l.getEntity(id) instanceof ParentEntity actor)return actor;return null;}
     static boolean parents(ServerPlayer p,VisitData.Scene s){
         var l=level(p);var c=chair(s);var mom=mother(p,s);var dad=father(p,s);
         if(mom==null){AcceptedButtonEyesProgress.data(s).putString("Blocker","Waiting for the original Other Mother to load. Her saved actor is being requested; no replacement will be created.");return false;}
         if(dad==null){VisitEvents.ensureFather(p,s);dad=father(p,s);}
+        if(dad==null&&s.dad!=null&&p.tickCount%20==0)dad=recoverSupperParent(p,s,false,c.west(2).north());
         if(mom==null||dad==null)return false;s.mom=mom.getUUID();s.dad=dad.getUUID();
         for(var actor:new ParentEntity[]{mom,dad}){
             if(actor==null)return false;var at=Vec3.atBottomCenterOf(actor.isMom()?c.east():c.west(2).north());

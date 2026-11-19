@@ -57,8 +57,18 @@ public final class ParentRescueStory {
     }
     public static void tick(ServerPlayer p,VisitData.Scene s){
         if(!started(s)||!s.owner.equals(p.getUUID())||!p.isAlive())return;var n=data(s);
-        if(RescueChapter.started(s)||n.getBoolean("Complete")&&phase(s)==Phase.PARENT_RESCUE_KITCHEN_MOTHER_DISAPPEARED){RescueChapter.tick(p,s);return;}
-        p.fallDistance=0;if(p.level()!=p.server.getLevel(OtherWorld.KEY))return;
+        if(RescueChapter.started(s)||n.getBoolean("Complete")&&phase(s)==Phase.PARENT_RESCUE_KITCHEN_MOTHER_DISAPPEARED){
+            if(StoryTunnel.resumable(s)&&!OtherWorld.isOther(p.level())&&!ActivityWorld.isActivity(p.level())){
+                FirstEscapeStory.hint(p,"Return through your original Little Door to resume the rescue checkpoint.");
+                return;
+            }
+            RescueChapter.tick(p,s);
+            return;
+        }
+        p.fallDistance=0;if(p.level()!=p.server.getLevel(OtherWorld.KEY)){
+            FirstEscapeStory.hint(p,"Return through your original Little Door to resume the rescue.");
+            return;
+        }
         if(StoryTunnel.entryPhase(s)&&!StoryTunnel.insideCrawl(p,s)){
             if(p.tickCount%20==0)StoryTunnel.crawl(p,s,2);
             return;
@@ -67,7 +77,14 @@ public final class ParentRescueStory {
         if(n.contains("ArrivalMusicAt")&&!n.getBoolean("ArrivalMusicStarted")&&p.serverLevel().getGameTime()>=n.getLong("ArrivalMusicAt")){
             VisitAudio.play(p,"parents_rescue_arrival_music",true);n.putBoolean("ArrivalMusicStarted",true);n.remove("ArrivalMusicAt");
         }
-        var state=phase(s);var m=mother(p,s);if(m==null&&state!=Phase.A&&state!=Phase.TUNNEL_EXIT){n.putString("Blocker","Waiting for the canonical Other Mother to load; no duplicate created.");return;}
+        var state=phase(s);
+        if(!StoryTunnel.entryPhase(s)&&p.tickCount%20==0&&p.onGround()&&!p.isPassenger()
+                &&FirstEscapeScene.inHouseOrPorch(s,p.blockPosition())
+                &&com.coraline.tycoon.TycoonWorld.safeFeet(p.serverLevel(),p.blockPosition())){
+            n.putString("SafeReturnPhase",state.name());
+            n.putLong("SafeReturnPosition",p.blockPosition().asLong());
+        }
+        var m=mother(p,s);if(m==null&&state!=Phase.A&&state!=Phase.TUNNEL_EXIT){n.putString("Blocker","Waiting for the canonical Other Mother to load; no duplicate created.");return;}
         var family=ParentAccess.family(p.server,s.owner);if(m!=null){if(family!=null){m.makeOtherParent(Math.max(0,family.momSkin));if(!family.storyMissing){family.storyMissing=true;FamilyData.get(p.server).setDirty();}}n.putLong("MotherAt",m.blockPosition().asLong());LoopProps.hold(p.serverLevel(),m.blockPosition());}
         var savedFather=father(p,s);if(savedFather!=null){n.putLong("FatherAt",savedFather.blockPosition().asLong());LoopProps.hold(p.serverLevel(),savedFather.blockPosition());}for(String key:scenery(s).getAllKeys())if(key.endsWith("Position"))LoopProps.hold(p.serverLevel(),BlockPos.of(scenery(s).getLong(key)));
         String sound=voice(state);

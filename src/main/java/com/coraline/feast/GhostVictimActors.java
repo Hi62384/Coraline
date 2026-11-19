@@ -96,8 +96,34 @@ public final class GhostVictimActors {
             if(!(world.getEntity(id) instanceof TycoonNpc child))return null;
             n.putUUID("VictimActor",id);return owns(child,s,n)?child:null;
         }
+        if(com.coraline.rebirth.LegacyActorRecovery.check(p.server,id)!=com.coraline.rebirth.LegacyActorRecovery.Result.ABSENT)return null;
         n.remove("VictimActor");
-        return arrive(p,s,n,level,feet,true);
+        return arrive(p,s,n,level,feet,false);
+    }
+    static TycoonNpc recoverSupper(ServerPlayer p,VisitData.Scene s,CompoundTag n,ServerLevel level,BlockPos near){
+        if(!GhostVictimMirrors.owned(p,s,n)||!GhostVictimProgress.hasVictim(n)||!n.hasUUID("Session"))return null;
+        var id=GhostVictimProgress.child(n).getUUID("Id");
+        if(n.hasUUID("VictimActor")&&!id.equals(n.getUUID("VictimActor")))return null;
+        for(var world:p.server.getAllLevels())if(world.getEntity(id)!=null)return null;
+        var feet=BlockPos.findClosestMatch(near,3,1,at->level.hasChunkAt(at)&&FirstEscapeScene.inHouseOrPorch(s,at)
+                &&com.coraline.tycoon.TycoonWorld.safeFeet(level,at)).orElse(null);
+        if(feet==null||com.coraline.rebirth.LegacyActorRecovery.check(p.server,id)!=com.coraline.rebirth.LegacyActorRecovery.Result.ABSENT)return null;
+        n.remove("VictimActor");
+        var actor=arrive(p,s,n,level,feet,false);
+        if(actor==null){n.putUUID("VictimActor",id);return null;}
+        actor.setPose(Pose.STANDING);actor.refreshDimensions();
+        return p.server.saveEverything(true,true,true)?actor:null;
+    }
+    static TycoonNpc returnToSupper(ServerPlayer p,VisitData.Scene s,CompoundTag n,TycoonNpc actor,ServerLevel level,BlockPos near){
+        if(!GhostVictimMirrors.owned(p,s,n)||!owns(actor,s,n)||!actor.isAlive())return null;
+        if(actor.level()==level)return actor;
+        var feet=BlockPos.findClosestMatch(near,3,1,at->level.hasChunkAt(at)&&FirstEscapeScene.inHouseOrPorch(s,at)
+                &&com.coraline.tycoon.TycoonWorld.safeFeet(level,at)).orElse(null);
+        if(feet==null)return null;
+        var moved=ShowTravel.guest(actor,p,s,level,Vec3.atBottomCenterOf(feet),false,"VictimHomeVisit");
+        if(!(moved instanceof TycoonNpc same)||!owns(same,s,n)||same.level()!=level)return null;
+        remember(n,same);
+        return same;
     }
     public static void remember(CompoundTag n,TycoonNpc actor){
         n.putLong("ActorPosition",actor.blockPosition().asLong());n.putString("ActorDimension",actor.level().dimension().location().toString());

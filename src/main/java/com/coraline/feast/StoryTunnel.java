@@ -16,7 +16,7 @@ import net.minecraft.world.phys.Vec3;
 /** The permanent decayed entrance reuses the saved First Escape corridor, never the friendly loop. */
 public final class StoryTunnel {
     public static boolean sealed(MinecraftServer server,java.util.UUID owner){var s=VisitData.get(server).scenes.get(owner);return ParentRescueStory.data(s).getCompound("Continuation").getBoolean("PermanentlySealed");}
-    public static boolean permanent(MinecraftServer server,java.util.UUID owner){var s=VisitData.get(server).scenes.get(owner);return MissingParentsCat.tunnelRestored(s)&&(!ParentRescueStory.started(s)||entryPhase(s))&&!sealed(server,owner);}
+    public static boolean permanent(MinecraftServer server,java.util.UUID owner){var s=VisitData.get(server).scenes.get(owner);return MissingParentsCat.tunnelRestored(s)&&(!ParentRescueStory.started(s)||resumable(s))&&!sealed(server,owner);}
     public static boolean restore(ServerPlayer p,VisitData.Scene s){
         if(s==null||!s.owner.equals(p.getUUID()))return false;
         var d=DoorData.get(p.server).doors.get(s.door);if(d==null||!s.owner.equals(d.owner))return false;
@@ -72,6 +72,7 @@ public final class StoryTunnel {
         }
         if(ParentRescueStory.started(scene)){
             if(entryPhase(scene))crawl(p,scene,2);
+            else resumeChapter(p,scene);
         }else ParentRescueStory.begin(p,scene);
         return true;
     }
@@ -81,15 +82,75 @@ public final class StoryTunnel {
         return StoryReturnContext.entryPhase(ParentRescueStory.phase(scene).name());
     }
 
+    static boolean resumable(VisitData.Scene scene){
+        return ParentRescueStory.started(scene)&&!RescueChapter.finished(scene)
+                &&(!RescueChapter.started(scene)||RescueChapter.phase(scene).ordinal()<RescueChapter.Phase.LOCK_DOOR.ordinal());
+    }
+
+    private static void resumeChapter(ServerPlayer p,VisitData.Scene scene){
+        if(!resumable(scene)||!scene.owner.equals(p.getUUID())||!p.isAlive()||p.isPassenger()||p.isSpectator())return;
+        var realm=RealmData.get(p.server).realms.get(scene.door);
+        if(realm==null||!realm.ready||realm.house==null||realm.doorPos==null
+                ||ParentRescueStory.scenery(scene).getLong("House")!=realm.house.asLong()){
+            FirstEscapeStory.hint(p,"The original rescue realm is unavailable. Your checkpoint is preserved.");
+            return;
+        }
+        var level=p.server.getLevel(OtherWorld.KEY);
+        BlockPos landing=realm.doorPos;
+        var parent=ParentRescueStory.data(scene);
+        if(!RescueChapter.started(scene)&&parent.contains("SafeReturnPosition",Tag.TAG_LONG)
+                &&ParentRescueStory.phase(scene).name().equals(parent.getString("SafeReturnPhase"))){
+            var saved=BlockPos.of(parent.getLong("SafeReturnPosition"));
+            if(FirstEscapeScene.inHouseOrPorch(scene,saved))landing=saved;
+        }
+        if(RescueChapter.started(scene)){
+            var phase=RescueChapter.phase(scene);
+            if(java.util.EnumSet.of(RescueChapter.Phase.THEATRE_SEARCH,RescueChapter.Phase.WRAPPER_REACH,
+                    RescueChapter.Phase.THEATRE_GRAB,RescueChapter.Phase.THEATRE_FIGHT,RescueChapter.Phase.THEATRE_EYE).contains(phase)){
+                if(!TheatreSite.prepare(p,scene))return;
+                level=p.server.getLevel(ActivityWorld.KEY);landing=TheatreSite.entrance(p,scene);
+            }else if(java.util.EnumSet.of(RescueChapter.Phase.BOB_E,RescueChapter.Phase.SWARM_TRANSFORM,
+                    RescueChapter.Phase.SWARM_FIGHT,RescueChapter.Phase.RAT_CHASE).contains(phase)){
+                if(!MouseCircusSite.prepare(p,scene))return;
+                level=p.server.getLevel(ActivityWorld.KEY);landing=MouseCircusSite.audience(p,scene);
+            }else if(phase.ordinal()>=RescueChapter.Phase.ATTIC_SEARCH.ordinal()&&phase.ordinal()<=RescueChapter.Phase.CIRCUS_TRAVEL.ordinal()){
+                if(!MouseCircusSite.prepareAttic(p,scene))return;
+                var tent=MouseCircusSite.tent(p,scene);
+                if(tent==null)return;
+                landing=tent.south(4);
+            }else if(phase==RescueChapter.Phase.COLLAPSE&&RescueChapter.data(scene).contains("CollapseStart",Tag.TAG_LONG)){
+                landing=BlockPos.of(RescueChapter.data(scene).getLong("CollapseStart"));
+            }else if(phase.ordinal()<=RescueChapter.Phase.MANTIS_GONE.ordinal()){
+                landing=RescueEncounters.garden(p,scene);
+            }else if(phase==RescueChapter.Phase.TUNNEL_CHASE){
+                if(!RescuePassage.enter(p,scene))FirstEscapeStory.hint(p,"The saved escape passage is obstructed.");
+                return;
+            }else if(phase.ordinal()>=RescueChapter.Phase.WEB_STEALTH.ordinal()){
+                if(!RescueWebSite.prepare(p,scene))return;
+                level=p.server.getLevel(ActivityWorld.KEY);
+                landing=BlockPos.containing(RescueWebSite.at(p,scene,1,phase==RescueChapter.Phase.WEB_STEALTH?0:1)).above();
+            }else if(phase.ordinal()>=RescueChapter.Phase.HOUSE_SAFE.ordinal()){
+                landing=FirstEscapeScene.room(scene);
+            }
+        }
+        if(!RescueChapter.transfer(p,level,landing)){
+            FirstEscapeStory.hint(p,"The saved rescue landing is blocked. Your phase and items are preserved.");
+            return;
+        }
+        ParentRescueStory.data(scene).putBoolean("Recover",true);
+        if(RescueChapter.started(scene)&&RescueBosses.fighting(RescueChapter.phase(scene)))RescueChapter.data(scene).putBoolean("Recover",true);
+        OtherMotherLoop.changed(p);
+    }
+
     public static boolean controls(ServerPlayer player){
         var scene=VisitData.get(player.server).scenes.get(player.getUUID());
         if(scene==null||!ParentRescueStory.started(scene))return false;
-        return entryPhase(scene)||OtherWorld.isOther(player.level())&&!sealed(player.server,scene.owner);
+        return resumable(scene)||OtherWorld.isOther(player.level())&&!sealed(player.server,scene.owner);
     }
 
     public static void tickReturnSource(ServerPlayer player){
         var scene=VisitData.get(player.server).scenes.get(player.getUUID());
-        if(!entryPhase(scene)||OtherWorld.isOther(player.level()))return;
+        if(!resumable(scene)||OtherWorld.isOther(player.level())||ActivityWorld.isActivity(player.level()))return;
         var flags=player.getPersistentData();
         for(String flag:java.util.List.of("CoralineWaitingDoor","CoralineInTunnel","CoralineReturning","CoralineRecoveryTunnel",
                 "CoralineTunnelStartedAt","CoralineWakeAt","CoralineExitLead","CoralineExitClose"))flags.remove(flag);

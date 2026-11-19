@@ -53,6 +53,29 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertLess(escaped.index('GhostEscapeHunt.openPassage'),escaped.index('n.putBoolean("VictimReachedDoor",true)'))
         self.assertLess(escaped.index('same.level()!=source'),escaped.index('archiveVictim(n,"ESCAPED")'))
 
+    def test_later_parent_rescue_has_original_door_reentry(self):
+        door=source('feast/StoryTunnel.java')
+        self.assertIn('else resumeChapter(p,scene);',door)
+        resume=door.split('private static void resumeChapter(',1)[1].split('public static boolean controls(',1)[0]
+        self.assertIn('SafeReturnPhase',resume)
+        self.assertIn('TheatreSite.entrance',resume)
+        self.assertIn('MouseCircusSite.audience',resume)
+        self.assertIn('RescuePassage.enter',resume)
+        self.assertNotIn('ParentRescueStory.begin',resume)
+
+    def test_registration_uses_map_proof_and_supper_recovery_preserves_saved_actors(self):
+        transport=source('feast/PalaceTransport.java')
+        self.assertIn('PalaceJourney.ownsTransport(p,s)',transport)
+        self.assertNotIn('PalaceJourney.owns(p,s)',transport)
+        self.assertIn('!sites.palaceArrivalReady()',transport)
+        self.assertIn('PalaceJourney.owns(p,s)',source('feast/PalaceWellEncounter.java'))
+        for path,method,admit in (
+            ('feast/AcceptedButtonEyesWorld.java','recoverSupperParent','level.addFreshEntity(actor)'),
+            ('feast/GhostVictimActors.java','recoverSupper','var actor=arrive('),
+        ):
+            text=source(path).split(method+'(',1)[1]
+            self.assertLess(text.index('LegacyActorRecovery.Result.ABSENT'),text.index(admit))
+
     def test_complete_music_master_timing_and_one_shot_playback(self):
         receipt=json.loads((ASSETS/'missing_parents_music_audio.json').read_text())
         self.assertEqual(receipt['source_sha256'],hashlib.sha256((ROOT/receipt['source']).read_bytes()).hexdigest())

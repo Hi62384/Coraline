@@ -199,7 +199,7 @@ public final class PalaceTransport {
         if(!p.server.overworld().addFreshEntity(e))return null;n.putUUID(key,e.getUUID());n.putLong(key+"Position",e.blockPosition().asLong());OtherMotherLoop.changed(p);return e;
     }
     private static boolean eligible(ServerPlayer p,VisitData.Scene s){
-        var root=PalaceJourney.existing(s);return PalaceJourney.owns(p,s)&&p.isAlive()&&!p.isSpectator()&&p.serverLevel()==p.server.overworld()
+        var root=PalaceJourney.existing(s);return PalaceJourney.ownsTransport(p,s)&&p.isAlive()&&!p.isSpectator()&&p.serverLevel()==p.server.overworld()
                 &&PalaceSiteData.get(p.server).companyMapReady()&&root!=null&&!root.contains("PersonalFarewell")&&root.getBoolean("MapIssued")&&(!root.contains("Transport")||data(s)!=null);
     }
     private static void offer(ServerPlayer p,VisitData.Scene s){
@@ -393,7 +393,7 @@ public final class PalaceTransport {
         var s=OtherMotherLoop.scene(p);var n=s==null?null:data(s);
         var root=PalaceJourney.existing(s);
         if(root!=null&&root.contains("Transport")&&(n==null||!progress(s,n).blocker().isEmpty())
-                &&p.isAlive()&&p.serverLevel()==p.server.overworld()&&PalaceJourney.owns(p,s)){
+                &&p.isAlive()&&p.serverLevel()==p.server.overworld()&&PalaceJourney.ownsTransport(p,s)){
             if(recoverRegistration(p,s,root)){
                 p.sendSystemMessage(Component.literal("Your incomplete registration was archived. You can sign up again."));
                 return 1;
@@ -403,7 +403,7 @@ public final class PalaceTransport {
         }
         if(n==null||!p.isAlive()||p.serverLevel()!=p.server.overworld()||progress(s,n).phase()==COMPLETE)return 0;
         var state=progress(s,n);
-        if(!state.blocker().isEmpty()||!PalaceJourney.owns(p,s))return 0;
+        if(!state.blocker().isEmpty()||!PalaceJourney.ownsTransport(p,s))return 0;
         if(state.phase()==NOTICE&&PalaceSiteData.get(p.server).companyMapReady()&&p.distanceToSqr(desk(p).getCenter())<=25){
             if(!retireActors(p.server,s,n,false))return 0;
             PalaceJourney.existing(s).remove("Transport");
@@ -474,7 +474,7 @@ public final class PalaceTransport {
         if(!sites.companyMapReady()||!receptionCounter(p,event.getPos()))return;
         var s=OtherMotherLoop.scene(p);
         var root=PalaceJourney.existing(s);
-        if(!PalaceJourney.owns(p,s)||root==null||!root.getBoolean("MapIssued"))return;
+        if(!PalaceJourney.ownsTransport(p,s)||root==null||!root.getBoolean("MapIssued"))return;
         if(root.contains("Transport")&&(data(s)==null||!progress(s,data(s)).blocker().isEmpty())){
             p.displayClientMessage(Component.literal("Your saved ride needs recovery. Use /coralinepalace leave to check whether incomplete signup can be canceled."),true);
             return;

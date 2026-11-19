@@ -264,14 +264,20 @@ public final class GhostVictimDirector {
             }
             case FIRST_SUPPER->{
                 n.putBoolean("SupperPhysicalReady",false);
-                if(child==null||child.level()!=level){n.putString("Blocker","Waiting for the original child at supper.");return;}
                 var table=GhostVictimWorld.diningTable(p,s);
+                if(p.tickCount%20==0){
+                    if(child==null)child=GhostVictimActors.recoverSupper(p,s,n,level,table.south(2));
+                    else if(child.level()!=level)child=GhostVictimActors.returnToSupper(p,s,n,child,level,table.south(2));
+                }
+                if(child==null||child.level()!=level){n.putString("Blocker","Checking the original child's saved identity and safe supper landing.");return;}
                 var mother=AcceptedButtonEyesWorld.mother(p,s);
                 var father=AcceptedButtonEyesWorld.father(p,s);
-                if(father==null&&p.tickCount%20==0){
-                    var last=n.contains("SupperFatherPosition",Tag.TAG_LONG)?BlockPos.of(n.getLong("SupperFatherPosition")):s.piano;
-                    if(last!=null)LoopProps.hold(level,last);
-                }else if(father!=null&&father.level()==level)n.putLong("SupperFatherPosition",father.blockPosition().asLong());
+                if(p.tickCount%20==0){
+                    if(mother==null||mother.level()!=level)mother=AcceptedButtonEyesWorld.recoverSupperParent(p,s,true,table.west(2));
+                    if(father==null||father.level()!=level)father=AcceptedButtonEyesWorld.recoverSupperParent(p,s,false,table.east(2));
+                    if(mother!=null&&mother.level()==level)n.putLong("SupperMotherPosition",mother.blockPosition().asLong());
+                    if(father!=null&&father.level()==level)n.putLong("SupperFatherPosition",father.blockPosition().asLong());
+                }
                 GhostVictimWorld.ensureHouseProps(p,s,n);
                 boolean childReady=seatAtSupper(p,s,n,child,"VictimSupperSeat",101,table.south(2),table);
                 boolean motherReady=seatAtSupper(p,s,n,mother,"MotherSupperSeat",103,table.west(2),table);
