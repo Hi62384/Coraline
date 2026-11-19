@@ -44,3 +44,8 @@ forge-*-mdk.zip
 .gradle-story-release/
 .gradle-repository-audit/
 run-new-activities/
+
+# Generated visual QA captures. Keep the rig references and door-sheet inputs.
+/artwork/*_qa/**
+!/artwork/rescue_rig_qa/**
+!/artwork/seamless_tunnel_qa/**
