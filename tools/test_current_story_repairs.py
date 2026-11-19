@@ -76,6 +76,44 @@ class CurrentStoryRepairs(unittest.TestCase):
             text=source(path).split(method+'(',1)[1]
             self.assertLess(text.index('LegacyActorRecovery.Result.ABSENT'),text.index(admit))
 
+    def test_rescue_reentry_preserves_actual_venue_exits_and_rat_leg(self):
+        tunnel=source('feast/StoryTunnel.java')
+        recover=tunnel.split('private static void resumeChapter(',1)[1].split('public static boolean controls(',1)[0]
+        self.assertIn('ShowTravel.recoverRescueReturn(p,scene,"TheatreReturn"',recover)
+        self.assertIn('ShowTravel.recoverRescueReturn(p,scene,"CircusReturn"',recover)
+        self.assertIn('chapter.getInt("RatLeg")>=2',recover)
+        self.assertIn('level=p.server.getLevel(OtherWorld.KEY);',recover)
+        self.assertLess(recover.index('recoverRescueReturn(p,scene,"TheatreReturn"'),
+                        recover.index('level=p.server.getLevel(ActivityWorld.KEY);landing=TheatreSite.entrance'))
+        travel=source('feast/ShowTravel.java')
+        lease=travel.split('static boolean recoverRescueReturn(',1)[1].split('private static CompoundTag ledger(',1)[0]
+        self.assertIn('data/coraline_first_visits.dat',lease)
+        self.assertIn('record.equals(disk.loop.event.getCompound(key))',lease)
+        self.assertIn('destination.distanceToSqr(Vec3.atBottomCenterOf(returnNear))<=64',lease)
+
+    def test_rescue_passage_requires_readback_and_cleanup_retains_failures(self):
+        passage=source('feast/RescuePassage.java')
+        self.assertIn('PassageVerified',passage)
+        self.assertIn('if(!level.getBlockState(at).equals(expected))',passage)
+        self.assertIn('if(!expected.equals(NbtUtils.readBlockState(lookup,row.getCompound("Placed"))))',passage)
+        self.assertIn('p.server.overworld().getDataStorage().save();',passage)
+        cleanup=source('feast/RescueSiteCleanup.java')
+        self.assertLess(cleanup.index('if(!level.getBlockState(at).equals(original))continue;'),
+                        cleanup.index('cells.remove(position);budget--;changed=true;'))
+        self.assertIn('CleanupOffset',cleanup)
+
+    def test_supper_parent_recovery_loads_original_dimension_first(self):
+        world=source('feast/AcceptedButtonEyesWorld.java')
+        recovery=world.split('static ParentEntity recoverSupperParent(',1)[1].split('private static ParentEntity parent(',1)[0]
+        self.assertIn('SupperMotherDimension',recovery)
+        self.assertIn('SupperFatherDimension',recovery)
+        self.assertIn('FamilyData.level(p.server,dimension)',recovery)
+        self.assertLess(recovery.index('LoopProps.hold(recordedWorld,origin)'),
+                        recovery.index('LegacyActorRecovery.check(p.server,id)'))
+        director=source('feast/GhostVictimDirector.java')
+        self.assertIn('n.putString("SupperMotherDimension"',director)
+        self.assertIn('n.putString("SupperFatherDimension"',director)
+
     def test_complete_music_master_timing_and_one_shot_playback(self):
         receipt=json.loads((ASSETS/'missing_parents_music_audio.json').read_text())
         self.assertEqual(receipt['source_sha256'],hashlib.sha256((ROOT/receipt['source']).read_bytes()).hexdigest())
