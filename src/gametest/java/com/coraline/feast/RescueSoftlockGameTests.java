@@ -59,6 +59,19 @@ public final class RescueSoftlockGameTests {
     }
 
     @GameTest(template="empty", batch="story_softlocks")
+    public static void parentRescueKitchenServingWaitsBeforeRecoveringOriginalActor(GameTestHelper helper) {
+        helper.assertFalse(ParentRescueStory.serveRecoveryDue(0),
+            "The normal physical kitchen serving approach should get its turn");
+        helper.assertFalse(ParentRescueStory.serveRecoveryDue(359),
+            "The original Other Mother was moved before navigation grace elapsed");
+        helper.assertTrue(ParentRescueStory.serveRecoveryDue(360),
+            "A permanently blocked serving approach would never become recoverable");
+        helper.assertTrue(ParentRescueStory.serveRecoveryDue(1000),
+            "Old or restarted serving checkpoints should stay recoverable");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
     public static void finaleOpenedFloorRecoversOnlyAfterRecordedFallCueAndGrace(GameTestHelper helper) {
         int duration=ShowRecordings.duration("finale_o");
         helper.assertTrue(duration>0,"Original final floor-collapse recording is missing");
