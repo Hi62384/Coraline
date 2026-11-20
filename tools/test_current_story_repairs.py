@@ -213,6 +213,16 @@ class CurrentStoryRepairs(unittest.TestCase):
         native=ROOT/'src/wybietest/java/com/coraline/feast/GhostVictimProgressGameTests.java'
         self.assertIn('acceptedEscapeChoiceVisibilityMatchesProgressPrerequisites',native.read_text(encoding='utf-8'))
 
+    def test_chase_spots_are_not_permanently_exhausted(self):
+        hiding=source('feast/GhostEscapeHiding.java')
+        mother=source('feast/GhostEscapeMother.java')
+        self.assertIn('row.putLong("CompromisedAt",marked)',hiding)
+        self.assertIn('stillCompromised(now,marked,nearby)',hiding)
+        self.assertIn('now-markedAt<1200||motherNearby',hiding)
+        self.assertIn('node.putLong("CompromisedAt",clock)',mother)
+        native=(ROOT/'src/wybietest/java/com/coraline/feast/GhostEscapeRecoveryGameTests.java').read_text(encoding='utf-8')
+        self.assertIn('compromisedHidingSpotsEventuallyBecomeReusable',native)
+
     def test_complete_music_master_timing_and_one_shot_playback(self):
         receipt=json.loads((ASSETS/'missing_parents_music_audio.json').read_text())
         self.assertEqual(receipt['source_sha256'],hashlib.sha256((ROOT/receipt['source']).read_bytes()).hexdigest())
