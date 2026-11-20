@@ -32,7 +32,7 @@ public final class FirstEscapeStoryGameTests {
     }
     private static net.minecraft.server.level.ServerPlayer fixture(GameTestHelper h){var l=h.getLevel().getServer().getLevel(OtherWorld.KEY);var p=new net.minecraft.server.level.ServerPlayer(l.getServer(),l,new com.mojang.authlib.GameProfile(UUID.randomUUID(),"FirstEscapeQA"));p.connection=new net.minecraft.server.network.ServerGamePacketListenerImpl(p.server,new net.minecraft.network.Connection(net.minecraft.network.protocol.PacketFlow.SERVERBOUND),p);var s=new VisitData.Scene();s.owner=p.getUUID();s.door=UUID.randomUUID();s.stage=VisitData.Stage.DONE;s.table=new BlockPos(107200,180,107200);s.loop.event.putInt("Serial",2);VisitData.get(p.server).scenes.put(s.owner,s);p.getPersistentData().putUUID("CoralineVisitDoor",s.door);p.setPos(s.table.getCenter());return p;}
     @GameTest(template="empty") public static void missedShoePreservesTheSingleOriginalForRethrow(GameTestHelper h){
-        var p=fixture(h);var s=OtherMotherLoop.scene(p);CinematicPropEntity shoe=null;
+        var p=overworldFixture(h);var s=OtherMotherLoop.scene(p);CinematicPropEntity shoe=null;
         try{
             var n=FirstEscapeStory.data(s);n.putBoolean("Started",true);n.putUUID("Token",UUID.randomUUID());
             n.putString("Phase",FirstEscapeTimeline.Phase.THROW_SHOE.name());
