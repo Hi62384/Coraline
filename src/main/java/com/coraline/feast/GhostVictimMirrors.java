@@ -127,7 +127,10 @@ public final class GhostVictimMirrors {
         if("close".equals(action)){GhostVictimProgress.leaveMirror(n);close(p);OtherMotherLoop.changed(p);return true;}
         int selected;try{selected=Integer.parseInt(action);}catch(NumberFormatException invalid){return false;}
         if(selected<0)return false;
-        if(selected>=CHOICES.length){var extras=n.getList("EscapeOptions",Tag.TAG_COMPOUND);int extra=selected-CHOICES.length;if(extra>=extras.size())return false;return escapeChoice(p,s,n,child,nonce,extras.getCompound(extra).getString("Action"));}
+        if(selected>=CHOICES.length){
+            String extra=indexedEscapeAction(n,selected);
+            return extra!=null&&escapeChoice(p,s,n,child,nonce,extra);
+        }
         var choice=CHOICES[selected];
         if(!childPresent(p,n,n.getString("Mirror"),child))return false;
         if(!GhostVictimProgress.dialogue(n,nonce,choice,true)){
@@ -157,6 +160,17 @@ public final class GhostVictimMirrors {
         if(GhostVictimProgress.readyToHelp(n)&&!GhostEscapeProgress.active(n.getCompound(GhostEscapeProgress.KEY)))
             response+=" I'll help you. Can we talk in the bedroom tonight?";
         screen(p,n,response);return true;
+    }
+    /** Extra options store wire actions as "escape:begin"/"escape:room:...".
+     * The escape handler accepts the suffix only. Keep that normalization in the
+     * same dispatch path the actual numeric conversation buttons use. */
+    static String indexedEscapeAction(CompoundTag conversation,int selected){
+        int extra=selected-CHOICES.length;
+        var entries=conversation.getList("EscapeOptions",Tag.TAG_COMPOUND);
+        if(extra<0||extra>=entries.size())return null;
+        String wireAction=entries.getCompound(extra).getString("Action");
+        if(!wireAction.startsWith("escape:")||wireAction.length()<=7)return null;
+        return wireAction.substring(7);
     }
     private static boolean escapeChoice(ServerPlayer p,VisitData.Scene s,CompoundTag n,TycoonNpc child,UUID nonce,String action){
         if(!p.getUUID().equals(s.owner)||!GhostVictimProgress.mirror(n)||!childPresent(p,n,n.getString("Mirror"),child)||action.length()>80)return false;
