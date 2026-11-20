@@ -100,7 +100,7 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('if(missing>=60)',shoe)
         self.assertIn('if(p.tickCount%20==0)recoverMissingShoe(p,s)',shoe)
         self.assertIn('n.remove("ShoeMissingTicks")',shoe)
-        self.assertIn('n.remove("ShoeMissingTicks");data(s).remove("ShoeMissed")',story)
+        self.assertIn('data(s).remove("ShoeMissingTicks");data(s).remove("ShoeMissed")',story)
         restart=source('client/FirstEscapeClient.java')
         self.assertIn('SecretsNetwork.request(data.getUUID("Choice"),"escape_shoe","retry")',restart)
 
