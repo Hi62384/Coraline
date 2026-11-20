@@ -35,6 +35,30 @@ public final class RescueSoftlockGameTests {
     }
 
     @GameTest(template="empty", batch="story_softlocks")
+    public static void invisibleRescueEyesCannotBlockTheVisiblePickTarget(GameTestHelper helper) {
+        var scene=new VisitData.Scene();
+        scene.owner=java.util.UUID.randomUUID();
+        scene.door=java.util.UUID.randomUUID();
+        scene.loop.event.putInt("Serial",42);
+        var eye=CinematicPropEntity.TYPE.get().create(helper.getLevel());
+        helper.assertTrue(eye!=null,"Rescue eye entity type did not register");
+        eye.configure(scene,RescueProps.EYE,0);
+        helper.assertTrue(eye.isPickable(),"A visible authentic eye must be targetable");
+        eye.setInvisible(true);
+        helper.assertFalse(eye.isPickable(),"A hidden eye must not steal clicks from the visible boss or reward");
+        eye.setInvisible(false);
+        helper.assertTrue(eye.isPickable(),"The offered eye must become targetable when revealed");
+        var ball=CinematicPropEntity.TYPE.get().create(helper.getLevel());
+        var rat=com.coraline.registry.ModEntities.MOUSE.get().create(helper.getLevel());
+        helper.assertTrue(ball!=null&&rat!=null,"Ratmaster original entity types did not register");
+        ball.configure(scene,RescueProps.RAT_BALL,0);
+        helper.assertTrue(ball.isPickable(),"The circus ball must accept the player's right-click");
+        helper.assertTrue(ball.getPassengersRidingOffset()+rat.getBbHeight()<1.35,
+            "The original rat is not concealed inside the ball's 1.35-block pick box");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
     public static void rebirthResetsTheTeaModuleOwnedKey(GameTestHelper helper) {
         helper.assertTrue(MainStoryRebirth.STORY_KEYS.contains(MissingParentsTea.KEY),
             "A new run must retire the tea module's actual saved story state");
