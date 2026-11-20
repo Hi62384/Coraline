@@ -175,6 +175,10 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('GhostEscapeRooms.reachableExit(s,roomId,level,child,exit)',leaving)
         self.assertLess(leaving.index('if(travel==GhostVictimNavigation.Result.BLOCKED)'),
                         leaving.index('GhostEscapeProgress.leftRoom(ghost,true)'))
+        director=source('feast/GhostVictimDirector.java')
+        requests=director.split('public static void request(',1)[1].split('public static boolean parent(',1)[0]
+        self.assertIn('||value.equals("escape_door")||value.equals("escape_go")',requests)
+        self.assertIn('if(!GhostEscapePerception.destinationSignalPoint(p,s,n,child,at))return;',requests)
 
     def test_accepted_activity_parent_landing_can_be_obstructed_without_crashing(self):
         world=source('feast/ActivityWorld.java')
