@@ -189,7 +189,7 @@ public final class BlackIsTraditional {
             parent.getNavigation().stop();parent.setDeltaMovement(Vec3.ZERO);parent.teleportTo(feet.x,feet.y,feet.z);n.putLong("Progress",now);return;
         }
     }
-    public static boolean interact(ServerPlayer p,VisitData.Scene s,CinematicPropEntity prop){if(!active(s)||!prop.owned(s))return false;if(prop.kind()==CinematicPropEntity.BUTTON_GIFT&&phase(s)==Phase.WAITING_FOR_GIFT_OPEN&&p.distanceToSqr(prop)<16){data(s).putBoolean("Opened",true);go(p,s,Phase.GIFT_OPENED);}return true;}
+    public static boolean interact(ServerPlayer p,VisitData.Scene s,CinematicPropEntity prop){if(!active(s)||FirstEscapeStory.engaged(s)||!prop.owned(s))return false;if(prop.kind()==CinematicPropEntity.BUTTON_GIFT&&phase(s)==Phase.WAITING_FOR_GIFT_OPEN&&p.distanceToSqr(prop)<16){data(s).putBoolean("Opened",true);go(p,s,Phase.GIFT_OPENED);}return true;}
     public static boolean choice(ServerPlayer p,UUID nonce,String answer){var s=OtherMotherLoop.active(p);if(!active(s)||!answer.startsWith("traditional:"))return false;var n=data(s);if(phase(s)!=Phase.AWAITING_CHOICE||!n.hasUUID("Choice")||!nonce.equals(n.getUUID("Choice")))return true;if(answer.equals("traditional:reject"))go(p,s,Phase.L);else if(answer.equals("traditional:accept")){releaseSeat(p,s);AcceptedButtonEyes.begin(p,s,AcceptedButtonEyesProgress.Route.ACCEPTED_PROPOSAL);}return true;}
     public static boolean block(ServerPlayer p,BlockPos at){var s=OtherMotherLoop.active(p);if(!active(s))return false;var n=data(s);var state=p.serverLevel().getBlockState(at);
         if(FirstEscapeStory.engaged(s))return FirstEscapeStory.block(p,at);
