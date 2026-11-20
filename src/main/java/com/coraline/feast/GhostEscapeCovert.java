@@ -141,7 +141,21 @@ public final class GhostEscapeCovert {
                 if(outside==null){exit=GhostEscapeRooms.reachableExit(s,roomId,level,child);if(exit==null){e.putString("Blocker","All authored room exits are blocked. Restore one existing doorway, then the child can leave safely.");return true;}
                     e.putLong("ExitDoor",exit.asLong());outside=GhostEscapeRooms.outside(s,roomId,exit,level);OtherMotherLoop.changed(p);}
                 if(outside==null)return true;
-                if(GhostVictimRoutines.travel(p,s,ghost,child,outside,false)==GhostVictimNavigation.Result.ARRIVED&&GhostEscapeRooms.closeAfterLeaving(p,s,ghost,child)){
+                var travel=GhostVictimRoutines.travel(p,s,ghost,child,outside,false);
+                if(travel==GhostVictimNavigation.Result.BLOCKED){
+                    // A saved exit can become obstructed after it was selected.
+                    // Use another reachable doorway of the SAME authored room,
+                    // and reset only the unfinished walk, never collected eyes.
+                    var alternative=GhostEscapeRooms.reachableExit(s,roomId,level,child,exit);
+                    if(alternative!=null&&GhostEscapeRooms.outside(s,roomId,alternative,level)!=null){
+                        e.putLong("ExitDoor",alternative.asLong());
+                        e.remove("Blocker");
+                        ghost.remove("ChildRoutine");
+                        OtherMotherLoop.changed(p);
+                    }else e.putString("Blocker","The room exit is blocked. Clear a route through an original room doorway.");
+                    return true;
+                }
+                if(travel==GhostVictimNavigation.Result.ARRIVED&&GhostEscapeRooms.closeAfterLeaving(p,s,ghost,child)){
                     GhostEscapeProgress.leftRoom(ghost,true);e.remove("ExitDoor");e.remove("ReportSpoken");ghost.remove("ChildRoutine");OtherMotherLoop.changed(p);
                 }
                 return true;
