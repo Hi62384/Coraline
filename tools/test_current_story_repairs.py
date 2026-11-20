@@ -80,6 +80,17 @@ class CurrentStoryRepairs(unittest.TestCase):
         rendering=source('client/renderer/FirstEscapePresentation.java')
         self.assertIn('case CinematicPropEntity.STORY_SHOE->{if(e.cue()!=1)',rendering)
 
+    def test_stranded_post_escape_checkpoint_recovers_original_world_not_parent_rescue(self):
+        story=source('feast/FirstEscapeStory.java')
+        tick=story.split('public static boolean tick(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static boolean recording(',1)[0]
+        self.assertIn('if(FirstEscapeTimeline.overworld(state)&&state!=ESCAPE_COMPLETE)',tick)
+        self.assertIn('var real=source==null?null:FamilyData.level(p.server,source.dimension);',tick)
+        self.assertIn('n.putBoolean("Recover",true)',tick)
+        recover=story.split('private static boolean recoverCheckpoint(',1)[1].split('private static void prepareSealedRoom(',1)[0]
+        self.assertIn('if(FirstEscapeTimeline.overworld(state)&&!ParentRescueStory.started(s))',recover)
+        self.assertIn('real==null||p.serverLevel()!=real&&!verifiedTransfer(p,s,real,door.pos)',recover)
+        self.assertLess(recover.index('if(FirstEscapeTimeline.overworld(state)&&!ParentRescueStory.started(s))'),recover.index('n.remove("Recover")'))
+
     def test_original_shoe_retry_works_without_clicking_ground_prop(self):
         story=source('feast/FirstEscapeStory.java')
         retry=story.split('public static boolean retryShoe(ServerPlayer p,UUID nonce)',1)[1].split('private static boolean relaunchShoe(',1)[0]
