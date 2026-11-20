@@ -180,6 +180,22 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('||value.equals("escape_door")||value.equals("escape_go")',requests)
         self.assertIn('if(!GhostEscapePerception.destinationSignalPoint(p,s,n,child,at))return;',requests)
 
+    def test_accepted_escape_retries_physically_return_to_the_bedroom_mirror(self):
+        # These are source-dispatch regressions, NOT proof of a Minecraft playthrough.
+        progress=source('feast/GhostEscapeProgress.java')
+        self.assertIn('phase==Phase.WAIT_GO||phase==Phase.WAIT_LURE||phase==Phase.STEAL_KEY?Phase.READY',progress)
+        self.assertIn('move(n,Phase.READY,GhostVictimProgress.clock(ghost));return true;',progress)
+        covert=source('feast/GhostEscapeCovert.java')
+        planning=covert.split('switch(GhostEscapeProgress.phase(e)){',1)[1].split('case APPROACH_ROOM->{',1)[0]
+        self.assertIn('case READY,STONE_REPORT,ROOM_REPORT,KEY_REPORT->{',planning)
+        self.assertIn('GhostVictimRoutines.travel(p,s,ghost,child,destination,false)',planning)
+        self.assertIn('GhostVictimMirrors.childAtMirror(ghost,"bedroom",child,true)',planning)
+        self.assertIn('case READY->',planning)
+        self.assertLess(planning.index('GhostVictimRoutines.travel(p,s,ghost,child,destination,false)'),
+                        planning.index('GhostVictimMirrors.childAtMirror(ghost,"bedroom",child,true)'))
+        mirrors=source('feast/GhostVictimMirrors.java')
+        self.assertIn('!childPresent(p,n,n.getString("Mirror"),child)',mirrors)
+
     def test_accepted_activity_parent_landing_can_be_obstructed_without_crashing(self):
         world=source('feast/ActivityWorld.java')
         entry=world.split('public static void enter(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static String enterDebug(',1)[0]
