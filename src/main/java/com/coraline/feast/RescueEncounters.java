@@ -299,6 +299,21 @@ public final class RescueEncounters {
         }
         if(target instanceof CinematicPropEntity prop&&prop.kind()==RescueProps.EYE){int eye=prop.slot();if(eye==0&&(phase==MANTIS_TAKE||phase==MANTIS_SINK)){RescueEyes.eye(s,0).putBoolean("Defeated",true);RescueEyes.eye(s,0).putBoolean("Discovered",true);if(RescueEyes.claim(p,s,0))prop.setInvisible(true);return true;}if(eye==1&&phase==THEATRE_EYE){if(RescueEyes.claim(p,s,1))prop.setInvisible(true);return true;}if(eye==1&&phase==THEATRE_SEARCH&&RescueEyes.eye(s,1).getBoolean("Discovered"))RescueChapter.go(p,s,WRAPPER_REACH);else if(eye==1&&phase==WRAPPER_REACH&&n.getInt("Ticks")>=30)RescueChapter.go(p,s,THEATRE_GRAB);return true;}
         if(target instanceof CinematicPropEntity prop&&prop.kind()==RescueProps.WRAPPER){if(phase==THEATRE_SEARCH&&RescueEyes.eye(s,1).getBoolean("Discovered"))RescueChapter.go(p,s,WRAPPER_REACH);else if(phase==WRAPPER_REACH&&n.getInt("Ticks")>=30)RescueChapter.go(p,s,THEATRE_GRAB);return true;}
+        // The ball's physical pick box is 1.35 blocks tall, while its 0.25
+        // block-high rat rides only 0.45 above the ball. A normal ray hits the
+        // ball first. Resolve that real hit to the SAME saved passenger; the
+        // rat's leg, movement and original-owner checks below still apply.
+        if(phase==RAT_CHASE&&target instanceof CinematicPropEntity ball
+                &&ball.kind()==RescueProps.RAT_BALL&&ball.owned(s)){
+            var passenger=ball.getPassengers().stream()
+                    .filter(rider->rider instanceof com.coraline.otherworld.MouseEntity
+                            &&n.hasUUID("ChaseRat")&&n.getUUID("ChaseRat").equals(rider.getUUID())
+                            &&rider.getPersistentData().hasUUID("RescueOwner")
+                            &&s.owner.equals(rider.getPersistentData().getUUID("RescueOwner")))
+                    .findFirst().orElse(null);
+            if(passenger==null){RescueChapter.hint(p,"Follow the original rat on its circus ball.");return true;}
+            return interact(p,s,passenger);
+        }
         if(phase==RAT_CHASE&&n.hasUUID("ChaseRat")&&n.getUUID("ChaseRat").equals(target.getUUID())&&target.getPersistentData().hasUUID("RescueOwner")&&s.owner.equals(target.getPersistentData().getUUID("RescueOwner"))){if(!canClaimRatEye(n.getInt("RatLeg"))||!n.getBoolean("RatHouseMoved")||n.getBoolean("RatResetPending")
                 ||!(target.getVehicle() instanceof CinematicPropEntity ball)||ball.kind()!=RescueProps.RAT_BALL||!ball.owned(s)){
             RescueChapter.hint(p,"Follow the rolling rat into the house and cut it off once it is moving.");
