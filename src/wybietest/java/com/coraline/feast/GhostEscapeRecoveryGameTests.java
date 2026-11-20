@@ -193,6 +193,35 @@ public final class GhostEscapeRecoveryGameTests {
         h.succeed();
     }
 
+    @GameTest(template="empty") public static void stoneVisitorsRecoverDistinctClearLandings(GameTestHelper h){
+        var level=h.getLevel();var child=h.absolutePos(new BlockPos(3,4,3));
+        var originals=new java.util.HashMap<BlockPos,net.minecraft.world.level.block.state.BlockState>();
+        try{
+            for(var pos:java.util.List.of(child.east(2),child.west(2))){
+                for(int dy=0;dy<=1;dy++){
+                    var blocked=pos.above(dy);originals.put(blocked,level.getBlockState(blocked));
+                    level.setBlock(blocked,Blocks.OBSIDIAN.defaultBlockState(),2);
+                }
+            }
+            for(var pos:java.util.List.of(child.east(3),child.west(3))){
+                for(var at:java.util.List.of(pos.below(),pos,pos.above())){
+                    originals.putIfAbsent(at,level.getBlockState(at));
+                    level.setBlock(at,at.equals(pos.below())?Blocks.STONE.defaultBlockState():Blocks.AIR.defaultBlockState(),2);
+                }
+            }
+            var first=GhostEscapeCovert.visitorLanding(level,child,1,null);
+            var second=GhostEscapeCovert.visitorLanding(level,child,-1,first);
+            h.assertTrue(first!=null&&second!=null&&!first.equals(second)
+                    &&first.distSqr(child)<=25&&second.distSqr(child)<=25,
+                    "A blocked east/west approach still has two legitimate nearby visitor landings");
+            h.assertTrue(level.getBlockState(first).isAir()&&level.getBlockState(second).isAir(),
+                    "Seeing Stone visitor selection ignored a physical obstruction");
+        }finally{
+            originals.forEach((pos,state)->level.setBlock(pos,state,2));
+        }
+        h.succeed();
+    }
+
     private static CompoundTag session(){
         var n=new CompoundTag();GhostVictimProgress.begin(n,"ACCEPTED_PROPOSAL");n.putUUID("Session",UUID.randomUUID());
         GhostVictimProgress.leavePrison(n);var c=new CompoundTag();c.putString("Name","Robin");
