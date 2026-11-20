@@ -72,7 +72,16 @@ public final class FirstEscapeStory {
             n.putString("Blocker","Story owner is outside the current scene; use safe recovery.");
             return true;
         }
-        if(FirstEscapeTimeline.overworld(state)&&OtherWorld.isOther(p.level())){n.putString("Blocker","Waiting for Overworld return.");return true;}
+        if(FirstEscapeTimeline.overworld(state)&&state!=ESCAPE_COMPLETE){
+            var source=sourceDoor(p,s);
+            var real=source==null?null:FamilyData.level(p.server,source.dimension);
+            if(real==null){n.putString("Blocker","The original owned Little Door return destination is unavailable.");return true;}
+            if(p.serverLevel()!=real){
+                n.putBoolean("Recover",true);
+                n.putString("Blocker","The saved scene is in the real world; recovering the original Little Door landing.");
+                return true;
+            }
+        }
         if(p.tickCount%20==0){BlackIsTraditional.retirePresentation(p,s);FirstEscapeScene.removeHallMirror(p,s);holdActors(p,s);if(state.ordinal()>=ROOM_DARK.ordinal()&&state.ordinal()<=ESCAPE_PUSH.ordinal())repairLittleDoor(p,s);if(state.ordinal()>=ROOM_DARK.ordinal()&&state.ordinal()<OPEN_LITTLE_DOOR.ordinal())openLittleDoor(p,s,state.ordinal()<MIRROR_A.ordinal());if(!FirstEscapeTimeline.overworld(state))LoopProps.hold(p.serverLevel(),FirstEscapeScene.room(s));}
         if(!FirstEscapeTimeline.prison(state)&&state!=ESCAPE_A&&state!=ESCAPE_TUNNEL&&!FirstEscapeTimeline.overworld(state)&&!((state==COCOA_G||state==MIRROR_THROW)&&n.getBoolean("MirrorPrisonEntered"))){
             if(!FirstEscapeScene.inHouseOrPorch(s,p.blockPosition())){verifiedTransfer(p,s,p.serverLevel(),safeHouseAnchor(s));hint(p,"The garden is beyond reach. Return to the house.");}
@@ -247,6 +256,19 @@ public final class FirstEscapeStory {
         }else if(!FirstEscapeTimeline.overworld(state)&&state!=ESCAPE_TUNNEL&&p.serverLevel()!=level
                 &&!verifiedTransfer(p,s,level,safeHouseAnchor(s)))return false;
         if(state==ESCAPE_TUNNEL&&level==null)return false;
+        // A saved Overworld chapter must not tick in the Other World or an
+        // activity dimension. Transfer only to the SAME owned source door,
+        // and never steal control from the later parent rescue which also
+        // retains the completed First Escape ledger.
+        if(FirstEscapeTimeline.overworld(state)&&!ParentRescueStory.started(s)){
+            var door=sourceDoor(p,s);
+            if(door==null){n.putString("Blocker","Waiting for the original Little Door record.");return false;}
+            var real=FamilyData.level(p.server,door.dimension);
+            if(real==null||p.serverLevel()!=real&&!verifiedTransfer(p,s,real,door.pos)){
+                n.putString("Blocker","The owned Overworld return landing is obstructed; recovery will retry.");
+                return false;
+            }
+        }
         n.remove("Recover");n.remove("AudioStarted");n.putInt("Ticks",0);ShowPlayback.stop(p,s);
         n.putBoolean("InternalTransfer",true);p.stopRiding();n.remove("InternalTransfer");p.setForcedPose(null);
         boolean inThrowPrison=(state==COCOA_G||state==MIRROR_THROW)&&n.getBoolean("MirrorPrisonEntered");
