@@ -104,6 +104,27 @@ class CurrentStoryRepairs(unittest.TestCase):
         restart=source('client/FirstEscapeClient.java')
         self.assertIn('SecretsNetwork.request(data.getUUID("Choice"),"escape_shoe","retry")',restart)
 
+    def test_post_escape_tea_visitor_recovery_preserves_original_uuid_and_refuses_unverified_absence(self):
+        tea=source('feast/MissingParentsTea.java')
+        proof=tea.split('static boolean teaActorMissingProof(',1)[1].split('private static boolean recoverAbsentVisitor(',1)[0]
+        self.assertIn('LegacyActorRecovery.Result.ABSENT',proof)
+        recover=tea.split('private static boolean recoverAbsentVisitor(',1)[1].split('private static void spawn(',1)[0]
+        for token in (
+                'n.getBoolean("Completed")','n.hasUUID("Token")','n.hasUUID(key)',
+                'for(var world:p.server.getAllLevels())if(world.getEntity(original)!=null)',
+                'LegacyActorRecovery.check(p.server,original)',
+                'if(!teaActorMissingProof(result))',
+                'actor.setUUID(original)', 'actor.getPersistentData().putUUID("TeaOwner",s.owner)',
+                'actor.getPersistentData().putUUID("TeaToken",n.getUUID("Token"))',
+                'level.addFreshEntity(actor)'):
+            self.assertIn(token,recover)
+        self.assertLess(recover.index('if(!teaActorMissingProof(result))'),
+                        recover.index('actor.setUUID(original)'))
+        spawned=tea.split('private static void spawn(ServerPlayer p,VisitData.Scene s)',1)[1].split('static boolean walk(',1)[0]
+        self.assertIn('if(actor(p,n,key)==null&&p.tickCount%20==0)recoverAbsentVisitor(p,s,n,key)',spawned)
+        native=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('missingTeaVisitorsRequireNativeProofOfAbsenceBeforeOriginalUuidRecovery',native)
+
     def test_parent_rescue_kitchen_accepts_original_smoker_and_null_safe_registry_id(self):
         story=source('feast/ParentRescueStory.java')
         helper=story.split('static boolean kitchenStoveId(String id)',1)[1].split('private static boolean kitchen(',1)[0]
