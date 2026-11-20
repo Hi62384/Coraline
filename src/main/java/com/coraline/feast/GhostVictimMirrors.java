@@ -225,7 +225,7 @@ public final class GhostVictimMirrors {
             options.add(StringTag.valueOf(option));
         }
         var extraActions=new ListTag();var escape=n.getCompound(GhostEscapeProgress.KEY);
-        if(p.getUUID().equals(n.getUUID("Owner"))&&GhostVictimProgress.phase(n)==GhostVictimProgress.Phase.BEDTIME&&!escape.hasUUID("Attempt")&&GhostVictimProgress.readyToHelp(n))
+        if(p.getUUID().equals(n.getUUID("Owner"))&&escapePlanOfferReady(n))
             addOption(options,extraActions,"escape:begin","I believe you. I'll help you escape.");
         if(p.getUUID().equals(n.getUUID("Owner"))&&GhostEscapeProgress.active(escape)){
             switch(GhostEscapeProgress.phase(escape)){
@@ -233,7 +233,7 @@ public final class GhostVictimMirrors {
                 case READY,ROOM_REPORT,KEY_REPORT->{
                     if(GhostEscapeProgress.phase(escape)==GhostEscapeProgress.Phase.ROOM_REPORT)addOption(options,extraActions,"escape:room_report","Tell me what you found.");
                     for(Tag room:escape.getList("Rooms",Tag.TAG_STRING))addOption(options,extraActions,"escape:room:"+room.getAsString(),"Search the "+room.getAsString().replace('_',' ')+".");
-                    if(GhostEscapeProgress.phase(escape)==GhostEscapeProgress.Phase.ROOM_REPORT&&!escape.getBoolean("KeyStolen"))addOption(options,extraActions,"escape:ambush","I'll distract her so you can get the key.");
+                    if(ambushOfferReady(escape))addOption(options,extraActions,"escape:ambush","I'll distract her so you can get the key.");
                 }
                 case HIDDEN->{
                     for(Tag raw:escape.getList("HidingNodes",Tag.TAG_COMPOUND)){var node=(CompoundTag)raw;if(!node.getBoolean("Compromised"))addOption(options,extraActions,"escape:hide:"+node.getString("Id"),"Move to another hiding place.");}
@@ -243,6 +243,19 @@ public final class GhostVictimMirrors {
         }
         n.put("EscapeOptions",extraActions);packet.put("Options",options);
         packet.putInt("ReadyTicks",Math.max(0,(int)(n.getLong("ConversationAfter")-GhostVictimProgress.clock(n))));SecretsNetwork.send(p,packet);
+    }
+    /** An option must not be shown until the very same conditions accepted
+     * by the server's escape-plan transition are met. */
+    static boolean escapePlanOfferReady(CompoundTag ghost){
+        return GhostVictimProgress.phase(ghost)==GhostVictimProgress.Phase.BEDTIME
+                &&ghost.contains("BedtimeWindowStarted",Tag.TAG_LONG)
+                &&!ghost.getCompound(GhostEscapeProgress.KEY).hasUUID("Attempt")
+                &&GhostVictimProgress.readyToHelp(ghost);
+    }
+    /** No key-stealing invitation before the eyes' real room is discovered. */
+    static boolean ambushOfferReady(CompoundTag escape){
+        return GhostEscapeProgress.phase(escape)==GhostEscapeProgress.Phase.ROOM_REPORT
+                &&escape.getBoolean("EyeRoomKnown")&&!escape.getBoolean("KeyStolen");
     }
     private static void addOption(ListTag visible,ListTag actions,String action,String label){var entry=new CompoundTag();entry.putString("Action",action);actions.add(entry);visible.add(StringTag.valueOf(label));}
     private GhostVictimMirrors(){}
