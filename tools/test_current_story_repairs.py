@@ -87,6 +87,37 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('case REUNION_A->"reunion_a"',chapter)
         self.assertIn('case FAREWELL_C->"farewell_c"',chapter)
 
+    def test_late_rescue_props_are_not_stolen_by_first_escape_interactions(self):
+        first=source('feast/FirstEscapeStory.java')
+        handler=first.split('public static boolean interact(ServerPlayer p,CinematicPropEntity prop)',1)[1].split('public static boolean block(',1)[0]
+        self.assertIn('if(MissingParentsCat.interact(p,prop))return true;',handler)
+        self.assertIn('!ParentRescueStory.started(s)&&phase!=ESCAPE_COMPLETE',handler)
+        self.assertIn('prop.kind()<=CinematicPropEntity.STORY_SHOE;',handler)
+        self.assertNotIn('return prop.owner.equals(p.getUUID())&&prop.kind()>=CinematicPropEntity.STORY_CANE;',handler)
+        prop=source('feast/CinematicPropEntity.java')
+        specific=prop.split('InteractionResult interactAt(',1)[1].split('boolean canBeCollidedWith()',1)[0]
+        self.assertLess(specific.index('FirstEscapeStory.interact(p,this)'),specific.index('return interact(player,hand);'))
+        generic=prop.split('InteractionResult interact(Player actor,InteractionHand hand)',1)[1].split('AABB getBoundingBoxForCulling()',1)[0]
+        self.assertIn('if(RescueChapter.interact(p,this))return InteractionResult.CONSUME;',generic)
+
+    def test_ratmaster_clickable_ball_reaches_exact_saved_rat_and_eye_gate(self):
+        prop=source('feast/CinematicPropEntity.java')
+        # The pick box covers the tiny canonical passenger. Direct rat clicks
+        # cannot be the sole way to obtain the required final ghost eye.
+        self.assertIn('RescueProps.RAT_BALL)return new AABB(getX()-.30,getY(),getZ()-.30,getX()+.30,getY()+1.35,getZ()+.30)',prop)
+        self.assertIn('kind()==RescueProps.RAT_BALL?.45',prop)
+        self.assertIn('return RescueProps.kind(kind())',prop)
+        self.assertIn('.sized(.3F,.25F)',source('registry/ModEntities.java'))
+        encounter=source('feast/RescueEncounters.java')
+        interaction=encounter.split('public static boolean interact(ServerPlayer p,VisitData.Scene s,Entity target)',1)[1].split('public static void retry(',1)[0]
+        self.assertIn('ball.kind()==RescueProps.RAT_BALL&&ball.owned(s)',interaction)
+        self.assertIn('n.hasUUID("ChaseRat")&&n.getUUID("ChaseRat").equals(rider.getUUID())',interaction)
+        self.assertIn('s.owner.equals(rider.getPersistentData().getUUID("RescueOwner"))',interaction)
+        self.assertLess(interaction.index('return interact(p,s,passenger);'),
+                        interaction.index('if(phase==RAT_CHASE&&n.hasUUID("ChaseRat")'))
+        self.assertIn('!canClaimRatEye(n.getInt("RatLeg"))||!n.getBoolean("RatHouseMoved")',interaction)
+        self.assertIn('RescueEyes.claim(p,s,2)',interaction)
+
     def test_final_rescue_crawl_and_key_lock_require_verified_physical_exit(self):
         finale=source('feast/BeldamFinale.java')
         crawl=finale.split('private static void tunnel(',1)[1].split('public static void input(',1)[0]
