@@ -52,6 +52,38 @@ public final class FirstEscapeStoryGameTests {
         h.succeed();
     }
 
+    @GameTest(template="empty") public static void shoeCanBeRetriedWithoutClickingTinyGroundHitbox(GameTestHelper h){
+        var p=fixture(h);var s=OtherMotherLoop.scene(p);CinematicPropEntity shoe=null;
+        try{
+            var n=FirstEscapeStory.data(s);n.putBoolean("Started",true);
+            n.putUUID("Token",UUID.randomUUID());
+            n.putString("Phase",FirstEscapeTimeline.Phase.THROW_SHOE.name());
+            var choice=UUID.randomUUID();n.putUUID("Choice",choice);
+            shoe=FirstEscapeScene.ensure(p,s,"ShoeFlight",
+                    CinematicPropEntity.STORY_SHOE,0,p.serverLevel(),p.position());
+            h.assertTrue(shoe!=null,"Original physical shoe could not be prepared");
+            var original=shoe.getUUID();
+            shoe.setPos(p.position().add(0,-15,0));
+            FirstEscapeStory.shoe(p,s);
+            h.assertTrue(n.getBoolean("ShoeMissed")&&shoe.cue()==1,"Miss did not enter retry state");
+            h.assertFalse(FirstEscapeStory.retryShoe(p,UUID.randomUUID()),"Foreign story nonce relaunched the shoe");
+            h.assertTrue(FirstEscapeStory.retryShoe(p,choice),"Use-input failed to rethrow the same shoe");
+            h.assertTrue(shoe.getUUID().equals(original)&&shoe.cue()==0&&!n.getBoolean("ShoeMissed"),
+                    "Retry failed to preserve the same entity identity or active flight");
+            h.assertFalse(FirstEscapeStory.retryShoe(p,choice),"Repeated input relaunched a shoe already flying");
+            // A second miss must be just as retryable as the first.
+            shoe.setPos(p.position().add(0,-15,0));
+            FirstEscapeStory.shoe(p,s);
+            h.assertTrue(n.getBoolean("ShoeMissed"),"Second miss advanced or permanently consumed the shoe");
+            h.assertTrue(FirstEscapeStory.retryShoe(p,choice),"Second use-input could not recover the original shoe");
+            h.assertTrue(shoe.getUUID().equals(original)&&FirstEscapeStory.phase(s)==FirstEscapeTimeline.Phase.THROW_SHOE,
+                    "Retry duplicated the object or silently advanced the story");
+        }finally{
+            if(shoe!=null)shoe.discard();
+            VisitData.get(p.server).scenes.remove(s.owner);
+        }
+        h.succeed();
+    }
     @GameTest(template="empty") public static void allOriginalRecordingsAndCueOffsets(GameTestHelper h){
         var sounds=new HashSet<String>();for(var phase:FirstEscapeTimeline.Phase.values()){var sound=FirstEscapeTimeline.sound(phase);if(!sound.isEmpty()){h.assertTrue(sounds.add(sound),"Duplicate recording phase");h.assertTrue(ShowRecordings.duration(sound)>0,"Missing original "+sound);}}
         h.assertTrue(sounds.size()==26,"Expected all 26 original recordings");
