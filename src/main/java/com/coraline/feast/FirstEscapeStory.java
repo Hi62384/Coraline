@@ -688,7 +688,7 @@ private static boolean openLittleDoor(ServerPlayer p,VisitData.Scene s,boolean o
             w.gameGesture(49,40);finishShoeThrow(p,s,e);return;
         }
         e.frame(0,e.time()+1,0);
-        if(wall.getType()!=HitResult.Type.MISS||e.time()>100||e.getY()<p.getY()-12){
+        if(wall.getType()!=HitResult.Type.MISS||e.time()>45||e.getY()<p.getY()-12||e.distanceToSqr(p)>24*24){
             e.setDeltaMovement(Vec3.ZERO);e.setPos(missedShoePosition(p,e));e.frame(1,0,0);
             n.putBoolean("ShoeMissed",true);n.putLong("ShoeFlightPosition",e.blockPosition().asLong());
             OtherMotherLoop.changed(p);
