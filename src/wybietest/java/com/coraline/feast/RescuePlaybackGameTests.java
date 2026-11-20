@@ -23,13 +23,16 @@ public final class RescuePlaybackGameTests {
                 // timestamps have been lost.
                 ShowPlayback.stop(p,s);n.merge(saved);
                 h.assertFalse(ShowPlayback.tick(p,s),"Orphaned session completed without new real audio");
-                h.assertTrue(n.getString("Blocker").contains("lost its playback session"),
-                        "Saved recording silently waits instead of reporting interruption");
-                h.assertTrue(ShowPlayback.start(p,s,"reunion_b",false),
-                        "The same recording checkpoint could not restart safely");
                 h.assertFalse(nonce.equals(n.getUUID("Nonce")),
-                        "Old disconnected recording nonce was incorrectly reused");
-                h.assertFalse(n.contains("Blocker"),"Restart still reports a stale audio blocker");
+                        "Orphaned session was not rebound with a fresh nonce");
+                h.assertFalse(n.getBoolean("Started"),
+                        "The interrupted recording was not reset to an unacknowledged start");
+                h.assertFalse(n.contains("Blocker"),"Fresh playback was incorrectly blocked");
+                var restarted=n.getUUID("Nonce");
+                h.assertTrue(ShowPlayback.start(p,s,"reunion_b",false),
+                        "Same original recording could not be resumed idempotently");
+                h.assertTrue(restarted.equals(n.getUUID("Nonce")),
+                        "Idempotent start discarded the fresh playback session");
                 h.assertFalse(ShowPlayback.tick(p,s),"Unacknowledged replacement audio skipped its duration");
                 ShowPlayback.stop(p,s);
             }
