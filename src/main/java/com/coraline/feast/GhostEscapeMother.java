@@ -71,7 +71,7 @@ public final class GhostEscapeMother {
         }
         var target=BlockPos.of(route.getLong("PatrolTarget"));var result=walk(mother,s,route,target,clock,hunt?1.35:.9);
         if(result!=GhostVictimNavigation.Result.MOVING){
-            if(hunt&&result==GhostVictimNavigation.Result.ARRIVED)for(Tag entry:escape.getList("HidingNodes",Tag.TAG_COMPOUND)){var node=(CompoundTag)entry;if(BlockPos.of(node.getLong("Position")).distSqr(mother.blockPosition())<3){node.putBoolean("Compromised",true);escape.putString("SearchedHide",node.getString("Id"));escape.putLong("SearchedAt",clock);mother.getLookControl().setLookAt(target.getX()+.5,target.getY()+1,target.getZ()+.5,40,40);}}
+            if(hunt&&result==GhostVictimNavigation.Result.ARRIVED)for(Tag entry:escape.getList("HidingNodes",Tag.TAG_COMPOUND)){var node=(CompoundTag)entry;if(BlockPos.of(node.getLong("Position")).distSqr(mother.blockPosition())<3){node.putBoolean("Compromised",true);node.putLong("CompromisedAt",clock);escape.putString("SearchedHide",node.getString("Id"));escape.putLong("SearchedAt",clock);mother.getLookControl().setLookAt(target.getX()+.5,target.getY()+1,target.getZ()+.5,40,40);}}
             route.putLong("PreviousTarget",target.asLong());route.remove("PatrolTarget");route.putLong("PauseUntil",clock+(hunt?30:100));GhostVictimNavigation.stop(mother,route);
         }
         if(!hunt&&phase==GhostEscapeProgress.Phase.READY&&mother.tickCount%20==0)GhostEscapeProgress.ordinarySecond(escape);
