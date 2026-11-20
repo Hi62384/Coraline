@@ -59,7 +59,9 @@ public final class GhostEscapeCovert {
                 if(!retrieveStoneFromVisitors(p,s,e,child))return true;
                 GhostEscapeProgress.homeErrand(ghost,true);OtherMotherLoop.changed(p);return false;
             }
-            case STONE_REPORT,ROOM_REPORT,KEY_REPORT->{
+            // Every retry, including a canceled room or expired key ambush, must
+            // physically rendezvous at the bedroom mirror before a new plan.
+            case READY,STONE_REPORT,ROOM_REPORT,KEY_REPORT->{
                 if(child.level()!=level||ghost.getBoolean("ChildAtHome")||GhostVictimProgress.phase(ghost)==GhostVictimProgress.Phase.DAILY_ARRIVAL)return false;
                 var destination=GhostVictimWorld.bedtimeConversationPosition(s,level,child,ghost);
                 if(destination==null){
@@ -75,7 +77,12 @@ public final class GhostEscapeCovert {
                     if(!GhostVictimMirrors.childAtMirror(ghost,"bedroom",child,true))return true;
                     e.remove("Blocker");
                     hands(child);
-                    if(!e.getBoolean("ReportSpoken")){GhostVictimDirector.words(ghost,switch(GhostEscapeProgress.phase(e)){case STONE_REPORT->"I have the Seeing Stone. Tell me where to look.";case KEY_REPORT->"I got her key. We have to be careful.";default->e.getBoolean("KeyStolen")?"Tell me when it's safe to get the eyes.":"I found the eyes, but the container is locked.";});e.putBoolean("ReportSpoken",true);}
+                    if(!e.getBoolean("ReportSpoken")){GhostVictimDirector.words(ghost,switch(GhostEscapeProgress.phase(e)){
+                        case STONE_REPORT->"I have the Seeing Stone. Tell me where to look.";
+                        case KEY_REPORT->"I got her key. We have to be careful.";
+                        case READY->e.getBoolean("KeyStolen")?"I have her key. Tell me when to get the eyes.":e.getBoolean("EyeRoomKnown")?"I know where the eyes are. Help me get her key.":"I'm ready to try another room. Tell me where to look.";
+                        default->e.getBoolean("KeyStolen")?"Tell me when it's safe to get the eyes.":"I found the eyes, but the container is locked.";
+                    });e.putBoolean("ReportSpoken",true);}
                 }
                 return true;
             }
