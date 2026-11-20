@@ -178,6 +178,21 @@ public final class GhostEscapeRecoveryGameTests {
         h.succeed();
     }
 
+    @GameTest(template="empty") public static void savedEscapeExitMustBelongToTheOriginalRoom(GameTestHelper h){
+        var scene=new VisitData.Scene();scene.owner=UUID.randomUUID();scene.door=UUID.randomUUID();
+        AcceptedButtonEyesProgress.scenery(scene).putLong("House",h.absolutePos(new BlockPos(40,2,40)).asLong());
+        for(var room:com.coraline.secrets.HouseCabinets.ROOMS){
+            var original=GhostEscapeRooms.door(scene,room.id());
+            h.assertTrue(GhostEscapeRooms.authoredExit(scene,room.id(),original),
+                    "Original room doorway refused: "+room.id());
+            h.assertFalse(GhostEscapeRooms.authoredExit(scene,room.id(),original.east(100)),
+                    "Foreign saved exit could redirect the child across the house");
+        }
+        h.assertFalse(GhostEscapeRooms.authoredExit(scene,"unknown_room",BlockPos.ZERO),
+                "Unknown room accepted a saved exit");
+        h.succeed();
+    }
+
     private static CompoundTag session(){
         var n=new CompoundTag();GhostVictimProgress.begin(n,"ACCEPTED_PROPOSAL");n.putUUID("Session",UUID.randomUUID());
         GhostVictimProgress.leavePrison(n);var c=new CompoundTag();c.putString("Name","Robin");
