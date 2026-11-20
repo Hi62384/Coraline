@@ -104,6 +104,24 @@ class CurrentStoryRepairs(unittest.TestCase):
         restart=source('client/FirstEscapeClient.java')
         self.assertIn('SecretsNetwork.request(data.getUUID("Choice"),"escape_shoe","retry")',restart)
 
+    def test_parent_rescue_kitchen_cannot_stall_forever_on_actor_navigation(self):
+        story=source('feast/ParentRescueStory.java')
+        serve=story.split('case SERVE->{',1)[1].split('case L->{',1)[0]
+        self.assertIn('MissingParentsCat.walk(m,Vec3.atBottomCenterOf(target.west()),.65)',serve)
+        self.assertIn('!arrived&&plate!=null&&serveRecoveryDue(t)&&t%20==0',serve)
+        self.assertIn('arrived=recoverServingActor(p,s,m,target)',serve)
+        self.assertIn('plate.setPos(Vec3.atBottomCenterOf(target).add(0,.9,0))',serve)
+        self.assertLess(serve.index('arrived=recoverServingActor('),serve.index('go(p,s,Phase.L)'))
+        method=story.split('private static boolean recoverServingActor(',1)[1].split('public static BlockPos cookingStand(',1)[0]
+        self.assertIn('s.owner.equals(p.getUUID())',method)
+        self.assertIn('mother.level()!=p.level()||!mother.isOtherParent()',method)
+        self.assertIn('!level.noCollision(mother,box)',method)
+        self.assertIn('level.getWorldBorder().isWithinBounds(box)',method)
+        self.assertIn('MissingParentsCat.arrived(mother,Vec3.atBottomCenterOf(wanted))',method)
+        self.assertIn('Clear a reachable serving space beside the original kitchen table.',method)
+        game=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('parentRescueKitchenServingWaitsBeforeRecoveringOriginalActor',game)
+
     def test_finale_open_floor_has_delayed_safe_return_to_actual_hole(self):
         finale=source('feast/BeldamFinale.java')
         floor=finale.split('private static boolean guideOpenedFloorFall(',1)[1].split('public static boolean preflight(',1)[0]
