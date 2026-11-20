@@ -91,7 +91,7 @@ public final class GhostEscapeCovert {
                 if(outside==null||inside==null){e.putString("Blocker","The selected room's entrance changed.");return true;}
                 if(!e.getCompound("UnlockedRooms").getBoolean(id)){
                     if(GhostVictimRoutines.travel(p,s,ghost,child,outside,false)!=GhostVictimNavigation.Result.ARRIVED)return true;
-                    child.gesture(2,5);child.setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(Items.IRON_NUGGET));var door=GhostEscapeRooms.door(s,id);child.getLookControl().setLookAt(door.getX()+.5,door.getY()+.8,door.getZ()+.5,30,30);
+                    child.gesture(2,5);child.setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(Items.IRON_NUGGET));var door=GhostEscapeRooms.liveDoor(s,id,level);if(door==null){e.putString("Blocker","The selected room has no intact original doorway.");return true;}child.getLookControl().setLookAt(door.getX()+.5,door.getY()+.8,door.getZ()+.5,30,30);
                     if(!e.contains("PickStarted"))e.putLong("PickStarted",clock);
                     if(clock-e.getLong("PickStarted")<100||!GhostEscapeRooms.openPickedDoor(p,s,ghost,child))return true;e.remove("PickStarted");ghost.remove("ChildRoutine");
                 }
