@@ -122,7 +122,7 @@ class CurrentStoryRepairs(unittest.TestCase):
         # Source dispatch checks supplement, but do not replace, an in-game run.
         escape=source('feast/FirstEscapeStory.java')
         self.assertIn('case THROW_SHOE->{ensureTool(p,s,true);shoe(p,s);',escape)
-        self.assertIn('if(wall.getType()!=HitResult.Type.MISS||e.time()>100',escape)
+        self.assertIn('if(wall.getType()!=HitResult.Type.MISS||e.time()>45||e.getY()<p.getY()-12||e.distanceToSqr(p)>24*24',escape)
         self.assertIn('case MISSING_G,BICYCLE_DEPARTURE->departure(p,s);',escape)
         self.assertIn('MissingParentsTea.select(p,s,false)',escape)
         tea=source('feast/MissingParentsTea.java')
