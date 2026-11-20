@@ -122,6 +122,8 @@ class CurrentStoryRepairs(unittest.TestCase):
                         recover.index('actor.setUUID(original)'))
         spawned=tea.split('private static void spawn(ServerPlayer p,VisitData.Scene s)',1)[1].split('static boolean walk(',1)[0]
         self.assertIn('if(actor(p,n,key)==null&&p.tickCount%20==0)recoverAbsentVisitor(p,s,n,key)',spawned)
+        self.assertIn('if(created)save(p,s,true);',spawned)
+        self.assertNotIn('        save(p,s,true);\n    }',spawned)
         native=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
         self.assertIn('missingTeaVisitorsRequireNativeProofOfAbsenceBeforeOriginalUuidRecovery',native)
 
