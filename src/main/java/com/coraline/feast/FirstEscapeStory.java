@@ -132,7 +132,7 @@ public final class FirstEscapeStory {
             case SHOW_DOOR->{followReal(p,s);hint(p,"Show Wybie the Little Door.");var w=realWybie(p,s);var door=sourceDoor(p,s);if(w!=null&&door!=null&&p.distanceToSqr(door.pos.getCenter())<25&&w.distanceToSqr(door.pos.getCenter())<49)go(p,s,MISSING_C);}
             case MISSING_C->{var w=realWybie(p,s);if(w!=null)w.gameGesture(43,5);}
             case MISSING_D->{followReal(p,s);hint(p,"Find the doll.");}
-            case THROW_SHOE->{ensureTool(p,s,true);shoe(p,s);hint(p,"Throw the shoe at Wybie.");}
+            case THROW_SHOE->{ensureTool(p,s,true);shoe(p,s);hint(p,n.getBoolean("ShoeMissed")?"The shoe missed. Press Use to throw the SAME shoe again, or right-click it.":"Aim the shoe at Wybie and throw it.");}
             case MISSING_E->{var w=realWybie(p,s);if(w!=null)w.gameGesture(49,5);}
             case MISSING_F->chase(p,s,ticks);
             case MISSING_G,BICYCLE_DEPARTURE->departure(p,s);
@@ -279,13 +279,7 @@ public final class FirstEscapeStory {
             // Re-throw the SAME authenticated shoe after a miss. The original
             // inventory item was already spent and its co-op custody receipt
             // still exists; calling giveTool here cannot safely issue another.
-            if(n.hasUUID("ShoeFlight")&&prop.getUUID().equals(n.getUUID("ShoeFlight"))&&prop.cue()==1){
-                prop.setPos(p.getEyePosition().add(p.getLookAngle().scale(.4)));
-                prop.setDeltaMovement(p.getLookAngle().scale(1.05));
-                prop.frame(0,0,0);n.remove("ShoeMissed");
-                n.putLong("ShoeFlightPosition",prop.blockPosition().asLong());
-                p.swing(InteractionHand.MAIN_HAND,true);OtherMotherLoop.changed(p);
-            }
+            relaunchShoe(p,s,prop);
             return true;
         }return !ParentRescueStory.started(s)&&phase!=ESCAPE_COMPLETE
             &&prop.owner.equals(p.getUUID())&&prop.kind()>=CinematicPropEntity.STORY_CANE
@@ -598,6 +592,57 @@ private static boolean openLittleDoor(ServerPlayer p,VisitData.Scene s,boolean o
     private static CharacterEntity realWybie(ServerPlayer p,VisitData.Scene s){var n=data(s);var w=ShowActors.actor(p,s,"wybie");if(w==null){var d=sourceDoor(p,s);if(d==null)return null;var at=OtherWorld.safePlayer(p.serverLevel(),d.pos.offset(8,0,-8));if(at==null)return null;if(CanonicalRealWybie.recorded(s)){var canonical=CanonicalRealWybie.find(p,s);if(canonical==null||!CanonicalRealWybie.bind(p,s,canonical)){n.putString("Blocker","Canonical Wybie is unavailable or story-dead; no replacement will be created.");return null;}w=ShowActors.adopt(p,s,"wybie",canonical,p.serverLevel(),Vec3.atBottomCenterOf(at));}else if(s.wybieActor!=null){for(var level:p.server.getAllLevels())if(level.getEntity(s.wybieActor) instanceof com.coraline.wybie.WybieVisitorEntity canonical){w=ShowActors.adopt(p,s,"wybie",canonical,p.serverLevel(),Vec3.atBottomCenterOf(at));break;}if(w==null){n.putString("Blocker","Waiting for the canonical Wybie visitor to load; no duplicate will be created.");return null;}}else w=ShowActors.acquire(p,s,"wybie",p.serverLevel(),Vec3.atBottomCenterOf(at));}if(w instanceof CharacterEntity actor){if(!CanonicalRealWybie.bind(p,s,actor))return null;actor.setNoGravity(false);actor.noPhysics=false;actor.setNoAi(false);n.putInt("RealWybieId",actor.getId());n.putLong("RealWybiePosition",actor.blockPosition().asLong());return actor;}return null;}
     private static boolean gaze(ServerPlayer p,Mob w){var delta=w.getEyePosition().subtract(p.getEyePosition());return delta.lengthSqr()<24*24&&p.hasLineOfSight(w)&&p.getLookAngle().dot(delta.normalize())>.88;}
     private static void followReal(ServerPlayer p,VisitData.Scene s){var w=realWybie(p,s);if(w!=null){if(w.distanceToSqr(p)>9)walk(w,p.position(),1.15);else w.getNavigation().stop();w.getLookControl().setLookAt(p,30,20);} }
+    /** The missed shoe is a single saved projectile, not a new inventory item.
+     * A normal Use press rethrows it even if its tiny ground hitbox is awkward
+     * to click; only the owning player's current scene nonce is accepted. */
+    public static boolean retryShoe(ServerPlayer p,UUID nonce){
+        var s=OtherMotherLoop.scene(p);
+        if(!engaged(s)||!s.owner.equals(p.getUUID())||p.isSpectator()
+                ||phase(s)!=THROW_SHOE||!p.serverLevel().equals(p.server.overworld()))return false;
+        var n=data(s);
+        if(!n.hasUUID("Choice")||!n.getUUID("Choice").equals(nonce)||!n.getBoolean("ShoeMissed"))return false;
+        var shoe=FirstEscapeScene.prop(p,s,"ShoeFlight");
+        if(shoe==null){
+            if(n.contains("ShoeFlightPosition",Tag.TAG_LONG))
+                LoopProps.hold(p.serverLevel(),BlockPos.of(n.getLong("ShoeFlightPosition")));
+            n.putString("Blocker","Waiting for the SAME original shoe to load before retrying.");
+            return false;
+        }
+        return relaunchShoe(p,s,shoe);
+    }
+    private static boolean relaunchShoe(ServerPlayer p,VisitData.Scene s,CinematicPropEntity prop){
+        var n=data(s);
+        if(!n.getBoolean("ShoeMissed")||!n.hasUUID("ShoeFlight")
+                ||!n.getUUID("ShoeFlight").equals(prop.getUUID())
+                ||prop.kind()!=CinematicPropEntity.STORY_SHOE||prop.cue()!=1
+                ||prop.level()!=p.level()||prop.isRemoved())return false;
+        prop.setPos(p.getEyePosition().add(p.getLookAngle().scale(.4)));
+        prop.setDeltaMovement(p.getLookAngle().scale(1.05));
+        prop.frame(0,0,0);
+        n.remove("ShoeMissed");n.remove("Blocker");
+        n.putLong("ShoeFlightPosition",prop.blockPosition().asLong());
+        p.swing(InteractionHand.MAIN_HAND,true);OtherMotherLoop.changed(p);
+        return true;
+    }
+    /** Keep a missed shoe visible in front of the player instead of nesting its
+     * .8m hitbox inside the player's own feet. Block/line-of-sight validation
+     * uses real terrain; keyboard Use remains a fallback if none is available. */
+    private static Vec3 missedShoePosition(ServerPlayer p,CinematicPropEntity shoe){
+        Vec3 forward=p.getLookAngle().multiply(1,0,1);
+        if(forward.lengthSqr()<.001)forward=Vec3.directionFromRotation(0,p.getYRot()).multiply(1,0,1);
+        forward=forward.normalize();
+        for(double distance:new double[]{1.45,1.15,1.85}){
+            var candidate=p.position().add(forward.scale(distance)).add(0,.14,0);
+            var floor=BlockPos.containing(candidate).below();
+            if(!p.serverLevel().getBlockState(floor).isFaceSturdy(p.serverLevel(),floor,Direction.UP))continue;
+            var box=shoe.getBoundingBox().move(candidate.subtract(shoe.position())).deflate(.01);
+            if(p.serverLevel().getBlockCollisions(shoe,box).iterator().hasNext())continue;
+            if(p.serverLevel().clip(new ClipContext(p.getEyePosition(),candidate.add(0,.34,0),
+                    ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,p)).getType()!=HitResult.Type.MISS)continue;
+            return candidate;
+        }
+        return p.position().add(0,.2,0);
+    }
     public static void throwShoe(ServerPlayer p,ItemStack stack){var s=OtherMotherLoop.scene(p);if(!engaged(s)||phase(s)!=THROW_SHOE||!validTool(s,stack,true)||data(s).hasUUID("ShoeFlight"))return;var e=FirstEscapeScene.ensure(p,s,"ShoeFlight",CinematicPropEntity.STORY_SHOE,0,p.serverLevel(),p.getEyePosition().add(p.getLookAngle().scale(.4)));if(e!=null){stack.shrink(1);e.setDeltaMovement(p.getLookAngle().scale(1.05));e.frame(0,0,0);OtherMotherLoop.changed(p);} }
     static void shoe(ServerPlayer p,VisitData.Scene s){
         var e=FirstEscapeScene.prop(p,s,"ShoeFlight");if(e==null)return;
@@ -607,10 +652,10 @@ private static boolean openLittleDoor(ServerPlayer p,VisitData.Scene s,boolean o
             // reusable shoe. Pull an unreachable miss back within reach after
             // a bounded delay; never invent a second bound inventory item.
             if(e.time()>=80&&p.distanceToSqr(e)>16){
-                e.setPos(p.position().add(0,.2,0));e.frame(1,0,0);
+                e.setPos(missedShoePosition(p,e));e.frame(1,0,0);
                 n.putLong("ShoeFlightPosition",e.blockPosition().asLong());OtherMotherLoop.changed(p);
             }else e.frame(1,Math.min(80,e.time()+1),0);
-            hint(p,"The shoe missed. Right-click the shoe to throw it at Wybie again.");
+            // The normal phase hint tells the player they can press Use to rethrow.
             return;
         }
         n.putLong("ShoeFlightPosition",e.blockPosition().asLong());
@@ -622,7 +667,7 @@ private static boolean openLittleDoor(ServerPlayer p,VisitData.Scene s,boolean o
         }
         e.frame(0,e.time()+1,0);
         if(wall.getType()!=HitResult.Type.MISS||e.time()>100||e.getY()<p.getY()-12){
-            e.setDeltaMovement(Vec3.ZERO);e.setPos(p.position().add(0,.2,0));e.frame(1,0,0);
+            e.setDeltaMovement(Vec3.ZERO);e.setPos(missedShoePosition(p,e));e.frame(1,0,0);
             n.putBoolean("ShoeMissed",true);n.putLong("ShoeFlightPosition",e.blockPosition().asLong());
             OtherMotherLoop.changed(p);
         }else{
@@ -700,7 +745,7 @@ private static boolean openLittleDoor(ServerPlayer p,VisitData.Scene s,boolean o
     private static void sync(ServerPlayer p,VisitData.Scene s){var n=data(s);
         if(!n.hasUUID("Choice")){n.putUUID("Choice",UUID.randomUUID());OtherMotherLoop.changed(p);}
         var level=p.server.getLevel(OtherWorld.KEY);var mother=level==null||s.mom==null?null:level.getEntity(s.mom);
-        var packet=new CompoundTag();packet.putBoolean("FirstEscapeStory",true);packet.putString("Phase",phase(s).name());packet.putInt("Ticks",n.getInt("Ticks"));packet.putBoolean("ClockRunning",FirstEscapeTimeline.sound(phase(s)).isEmpty()||ShowPlayback.started(s));packet.putString("Sound",FirstEscapeTimeline.sound(phase(s)));packet.putInt("Duration",ShowRecordings.duration(FirstEscapeTimeline.sound(phase(s))));packet.putUUID("Choice",n.getUUID("Choice"));packet.putUUID("Door",s.door);packet.putLong("RoomMin",FirstEscapeScene.roomMin(s).asLong());packet.putLong("RoomMax",FirstEscapeScene.roomMax(s).asLong());packet.putInt("Mother",mother==null?-1:mother.getId());packet.putInt("OtherWybie",n.getInt("OtherWybieId"));packet.putInt("RealWybie",n.getInt("RealWybieId"));for(String key:List.of("MaskRemoved","StitchesRemoved","HandMissing","BeetleEaten","DecayedTunnel","CocoaMusic","Rescued","MirrorPrisonEntered"))packet.putBoolean(key,n.getBoolean(key));if(n.contains("KnockdownAt"))packet.putInt("KnockdownAge",(int)Math.max(0,OtherMotherLoop.now(p)-n.getLong("KnockdownAt")));packet.putBoolean("Completed",phase(s)==ESCAPE_COMPLETE);var tunnel=FirstEscapeStory.data(s);if(tunnel.contains("EscapeTunnel")){packet.putLong("EscapeTunnel",tunnel.getLong("EscapeTunnel"));packet.putString("EscapeDirection",tunnel.getString("EscapeDirection"));}SecretsNetwork.send(p,packet);}
+        var packet=new CompoundTag();packet.putBoolean("FirstEscapeStory",true);packet.putString("Phase",phase(s).name());packet.putInt("Ticks",n.getInt("Ticks"));packet.putBoolean("ClockRunning",FirstEscapeTimeline.sound(phase(s)).isEmpty()||ShowPlayback.started(s));packet.putString("Sound",FirstEscapeTimeline.sound(phase(s)));packet.putInt("Duration",ShowRecordings.duration(FirstEscapeTimeline.sound(phase(s))));packet.putUUID("Choice",n.getUUID("Choice"));packet.putUUID("Door",s.door);packet.putLong("RoomMin",FirstEscapeScene.roomMin(s).asLong());packet.putLong("RoomMax",FirstEscapeScene.roomMax(s).asLong());packet.putInt("Mother",mother==null?-1:mother.getId());packet.putInt("OtherWybie",n.getInt("OtherWybieId"));packet.putInt("RealWybie",n.getInt("RealWybieId"));for(String key:List.of("MaskRemoved","StitchesRemoved","HandMissing","BeetleEaten","DecayedTunnel","CocoaMusic","Rescued","MirrorPrisonEntered"))packet.putBoolean(key,n.getBoolean(key));if(n.contains("KnockdownAt"))packet.putInt("KnockdownAge",(int)Math.max(0,OtherMotherLoop.now(p)-n.getLong("KnockdownAt")));packet.putBoolean("ShoeMissed",n.getBoolean("ShoeMissed"));packet.putBoolean("Completed",phase(s)==ESCAPE_COMPLETE);var tunnel=FirstEscapeStory.data(s);if(tunnel.contains("EscapeTunnel")){packet.putLong("EscapeTunnel",tunnel.getLong("EscapeTunnel"));packet.putString("EscapeDirection",tunnel.getString("EscapeDirection"));}SecretsNetwork.send(p,packet);}
     @SubscribeEvent(priority=net.minecraftforge.eventbus.api.EventPriority.HIGHEST) public static void click(net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract e){if(!(e.getEntity() instanceof ServerPlayer p))return;var s=OtherMotherLoop.scene(p);if(!engaged(s)||p.distanceToSqr(e.getTarget())>16)return;var w=ShowActors.actor(p,s,"other_wybie");if(e.getTarget()!=w){if(e.getTarget() instanceof CinematicPropEntity prop&&interact(p,prop)){e.setCanceled(true);e.setCancellationResult(InteractionResult.SUCCESS);}return;}e.setCanceled(true);e.setCancellationResult(InteractionResult.SUCCESS);if(phase(s)==MASK_REMOVAL){p.swing(InteractionHand.MAIN_HAND,true);go(p,s,MASK_ANIMATION);}else if(phase(s)==STITCH_REMOVAL){p.swing(InteractionHand.MAIN_HAND,true);go(p,s,STITCH_ANIMATION);}}
     @SubscribeEvent(priority=net.minecraftforge.eventbus.api.EventPriority.HIGHEST) public static void punch(net.minecraftforge.event.entity.player.AttackEntityEvent e){if(!(e.getEntity() instanceof ServerPlayer p))return;var s=OtherMotherLoop.scene(p);if(!engaged(s))return;if(e.getTarget()==ShowActors.actor(p,s,"wybie")&&FirstEscapeTimeline.overworld(phase(s))){e.setCanceled(true);return;}if(e.getTarget()!=ShowActors.actor(p,s,"other_wybie"))return;e.setCanceled(true);if((phase(s)==ESCAPE_A||phase(s)==MASK_REMOVAL)&&p.distanceToSqr(e.getTarget())<16){data(s).putBoolean("Punched",true);data(s).putLong("KnockdownAt",OtherMotherLoop.now(p));((CharacterEntity)e.getTarget()).gameGesture(51,25);sfx(p,e.getTarget().blockPosition(),SoundEvents.PLAYER_ATTACK_WEAK,.5F,.8F);OtherMotherLoop.changed(p);}}
     @SubscribeEvent public static void mount(net.minecraftforge.event.entity.EntityMountEvent e){if(e.isDismounting()&&e.getEntityMounting() instanceof ServerPlayer p){var s=OtherMotherLoop.scene(p);if(!AcceptedButtonEyes.active(s)&&engaged(s)&&!data(s).getBoolean("InternalTransfer")&&(FirstEscapeTimeline.seated(phase(s))||phase(s)==MIRROR_DRAG||phase(s)==MIRROR_THROW)&&e.getEntityBeingMounted() instanceof CinematicPropEntity prop&&prop.owned(s))e.setCanceled(true);}}
