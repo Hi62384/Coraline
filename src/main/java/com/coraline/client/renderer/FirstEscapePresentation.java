@@ -74,7 +74,7 @@ public final class FirstEscapePresentation {
                 for(int x:new int[]{-1,1})for(int z:new int[]{-1,1})
                     box(p,b,light,x*1.21,0,z*1.17,.17,.75,.17,0x432C20);
             }
-            case CinematicPropEntity.STORY_SHOE->{p.mulPose(Axis.XP.rotationDegrees((float)(e.time()*13)));Minecraft.getInstance().getItemRenderer().renderStatic(new net.minecraft.world.item.ItemStack(com.coraline.feast.FirstEscapeItems.SHOE.get()),net.minecraft.world.item.ItemDisplayContext.GROUND,light,OverlayTexture.NO_OVERLAY,p,buffers,e.level(),e.getId());}
+            case CinematicPropEntity.STORY_SHOE->{if(e.cue()!=1)p.mulPose(Axis.XP.rotationDegrees((float)(e.time()*13)));Minecraft.getInstance().getItemRenderer().renderStatic(new net.minecraft.world.item.ItemStack(com.coraline.feast.FirstEscapeItems.SHOE.get()),net.minecraft.world.item.ItemDisplayContext.GROUND,light,OverlayTexture.NO_OVERLAY,p,buffers,e.level(),e.getId());}
             case CinematicPropEntity.GRAB_CARRIER->{if(com.coraline.feast.FirstEscapeVisualRules.rescueHand(FirstEscapeClient.phase(),FirstEscapeClient.flag("Rescued"),e.cue())){limb(p,b,light,new Vec3(.8,1.15,-.7),new Vec3(.15,1.1,-.18),.13,0x314964);sphere(p,b,light,.12,1.1,-.15,.13,.08,.17,0xB49470,1);for(int i=0;i<4;i++)sphere(p,b,light,.03+i*.055,1.09,-.02,.035,.035,.09,0xB49470,1);}}
             default->{}
         }
