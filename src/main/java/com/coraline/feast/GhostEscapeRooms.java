@@ -18,8 +18,8 @@ public final class GhostEscapeRooms {
         var valid=new ArrayList<String>();if(!GhostVictimMirrors.owned(p,s,ghost)||!GhostVictimActors.owns(child,s,ghost))return valid;
         var level=AcceptedButtonEyesWorld.level(p);if(level==null||child.level()!=level)return valid;
         for(var room:HouseCabinets.ROOMS){
-            var all=sites(ghost);var row=all.getCompound(room.id());var d=room.doors()[0];var door=GhostVictimWorld.at(s,d[0],d[1],d[2]);level.getChunkAt(door);
-            var state=level.getBlockState(door);if(!(state.getBlock() instanceof DoorBlock))continue;
+            var all=sites(ghost);var row=all.getCompound(room.id());var door=liveDoor(s,room.id(),level);
+            if(door==null)continue;
             if(!row.contains("Container")){
                 for(int i=0;i<HouseCabinets.CABINETS.length;i++){
                     var cabinet=HouseCabinets.CABINETS[i];
@@ -55,13 +55,24 @@ public final class GhostEscapeRooms {
         return List.copyOf(valid);
     }
     public static BlockPos door(VisitData.Scene s,String id){var room=room(id);if(room==null)return null;var d=room.doors()[0];return GhostVictimWorld.at(s,d[0],d[1],d[2]);}
+    /** Prefer the first intact doorway from this room's original authored set.
+     * In particular, the basement has two entrances: one damaged doorway
+     * must not strand the child beside the other. */
+    static BlockPos liveDoor(VisitData.Scene s,String id,ServerLevel level){
+        var room=room(id);if(s==null||room==null||level==null)return null;
+        for(int[] offset:room.doors()){
+            var at=GhostVictimWorld.at(s,offset[0],offset[1],offset[2]);level.getChunkAt(at);
+            if(level.getBlockState(at).getBlock() instanceof DoorBlock)return at;
+        }
+        return null;
+    }
     public static BlockPos outside(VisitData.Scene s,String id,ServerLevel level){
-        var at=door(s,id);if(at==null)return null;var state=level.getBlockState(at);if(!(state.getBlock() instanceof DoorBlock))return null;
+        var at=liveDoor(s,id,level);if(at==null)return null;var state=level.getBlockState(at);
         var room=room(id);var front=at.relative(state.getValue(DoorBlock.FACING));var back=at.relative(state.getValue(DoorBlock.FACING).getOpposite());
         return HouseCabinets.contains(AcceptedButtonEyesWorld.house(s),room,front)?back:front;
     }
     public static BlockPos inside(VisitData.Scene s,String id,ServerLevel level){
-        var at=door(s,id);var outside=outside(s,id,level);if(at==null||outside==null)return null;return at.offset(at.getX()-outside.getX(),0,at.getZ()-outside.getZ());
+        var at=liveDoor(s,id,level);var outside=outside(s,id,level);if(at==null||outside==null)return null;return at.offset(at.getX()-outside.getX(),0,at.getZ()-outside.getZ());
     }
     /** Find an actual reachable exit for the child, including a second authored
      * doorway if the originally selected one was changed during the search. */
@@ -122,12 +133,14 @@ public final class GhostEscapeRooms {
         var escape=ghost.getCompound(GhostEscapeProgress.KEY);String id=escape.getString("AssignedRoom");var room=room(id);
         if(room==null||!GhostVictimMirrors.owned(p,s,ghost)||!GhostVictimActors.owns(child,s,ghost)||!GhostEscapeProgress.owns(ghost,escape)
             ||GhostEscapeProgress.phase(escape)!=GhostEscapeProgress.Phase.LOCKPICK||!(child.level() instanceof ServerLevel level)||level!=AcceptedButtonEyesWorld.level(p))return false;
-        var at=door(s,id);if(at==null||child.distanceToSqr(at.getCenter())>9)return false;
-        for(int[] d:room.doors()){
-            var position=GhostVictimWorld.at(s,d[0],d[1],d[2]);var state=level.getBlockState(position);if(!(state.getBlock() instanceof DoorBlock))return false;
-        }
+        var at=liveDoor(s,id,level);if(at==null||child.distanceToSqr(at.getCenter())>9)return false;
         var permits=escape.getCompound("UnlockedRooms");permits.putBoolean(id,true);escape.put("UnlockedRooms",permits);
-        for(int[] d:room.doors()){var position=GhostVictimWorld.at(s,d[0],d[1],d[2]);var state=level.getBlockState(position);((DoorBlock)state.getBlock()).setOpen(child,level,state,position,true);}
+        // Open only the real authored door blocks still present. A missing
+        // second basement door is not grounds to reject the reachable first.
+        for(int[] d:room.doors()){
+            var position=GhostVictimWorld.at(s,d[0],d[1],d[2]);var state=level.getBlockState(position);
+            if(state.getBlock() instanceof DoorBlock door)door.setOpen(child,level,state,position,true);
+        }
         OtherMotherLoop.changed(p);return true;
     }
     public static boolean closeAfterLeaving(ServerPlayer p,VisitData.Scene s,CompoundTag ghost,TycoonNpc child){
