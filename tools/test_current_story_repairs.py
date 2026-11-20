@@ -120,6 +120,14 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('case REUNION_A->"reunion_a"',chapter)
         self.assertIn('case FAREWELL_C->"farewell_c"',chapter)
 
+    def test_old_proposal_cannot_consume_rescue_interactions(self):
+        proposal=source('feast/BlackIsTraditional.java')
+        interaction=proposal.split('public static boolean interact(ServerPlayer p,VisitData.Scene s,CinematicPropEntity prop)',1)[1].split('public static boolean choice(',1)[0]
+        self.assertIn('!active(s)||FirstEscapeStory.engaged(s)||!prop.owned(s)',interaction)
+        prop=source('feast/CinematicPropEntity.java')
+        general=prop.split('InteractionResult interact(Player actor,InteractionHand hand)',1)[1].split('AABB getBoundingBoxForCulling()',1)[0]
+        self.assertLess(general.index('RescueChapter.interact(p,this)'),general.index('BlackIsTraditional.interact(p,s,this)'))
+
     def test_late_rescue_props_are_not_stolen_by_first_escape_interactions(self):
         first=source('feast/FirstEscapeStory.java')
         handler=first.split('public static boolean interact(ServerPlayer p,CinematicPropEntity prop)',1)[1].split('public static boolean block(',1)[0]
