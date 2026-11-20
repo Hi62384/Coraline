@@ -41,6 +41,8 @@ public final class GhostVictimProgressGameTests {
         h.assertFalse(GhostVictimMirrors.ambushOfferReady(escape),"Key ambush offered without the actual eye room discovery");
         escape.putBoolean("EyeRoomKnown",true);
         h.assertTrue(GhostVictimMirrors.ambushOfferReady(escape),"Discovered eye room did not offer the key ambush");
+        GhostEscapeProgress.move(escape,GhostEscapeProgress.Phase.READY,0);
+        h.assertTrue(GhostVictimMirrors.ambushOfferReady(escape)&&GhostEscapeProgress.keyAmbushReady(escape),"A known eye room lost the ambush retry button after timeout");
         escape.putBoolean("KeyStolen",true);
         h.assertFalse(GhostVictimMirrors.ambushOfferReady(escape),"Already stolen key advertised another ambush");
         h.succeed();
