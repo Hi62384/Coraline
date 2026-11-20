@@ -261,6 +261,11 @@ class CurrentStoryRepairs(unittest.TestCase):
                         locked.index('closeRoom(p,s)'))
         self.assertLess(locked.index('closeRoom(p,s)'),
                         locked.index('RescueChapter.go(p,s,FINAL_A)'))
+        chapter=source('feast/RescueChapter.java')
+        tick=chapter.split('public static void tick(ServerPlayer p,VisitData.Scene s)',1)[1].split('static final class RecordingRecovery',1)[0]
+        self.assertNotIn('state==Phase.ROOM_LOCKED&&!BeldamFinale.keepPlayerInRoom(p,s)',tick)
+        self.assertIn('!BeldamFinale.preflight(p,s)',tick)
+        self.assertIn('RescueEncounters.tick(p,s,state,t,done)',tick)
 
     def test_late_rescue_cutscenes_keep_safety_but_bosses_and_crawl_do_not_autocomplete(self):
         chapter=source('feast/RescueChapter.java')
