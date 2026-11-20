@@ -237,6 +237,31 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('n.putBoolean("KeySwallowed",true)',supper)
         self.assertIn('StoryItemCustody.capture(p,s,"Key"',supper)
 
+    def test_final_room_waits_for_original_cat_and_recovers_old_locked_saves(self):
+        story=source('feast/RescueEncounters.java')
+        house=story.split('case HOUSE_SAFE->{',1)[1].split('case ROOM_LOCKED->{',1)[0]
+        self.assertIn('if(BeldamFinale.catAtMantel(p,s)==null)',house)
+        self.assertLess(house.index('if(BeldamFinale.catAtMantel(p,s)==null)'),
+                        house.index('closeRoom(p,s)'))
+        locked=story.split('case ROOM_LOCKED->{',1)[1].split('default->{}',1)[0]
+        for required in ('!OtherWorld.isOther(p.level())',
+                         'RescueEyes.all(s)&&n.getBoolean("CatRescued")&&n.getBoolean("HouseSafe")',
+                         'objectives?BeldamFinale.catAtMantel(p,s):null',
+                         'if(!objectives||cat==null)',
+                         'n.putBoolean("RoomLocked",false)',
+                         'FirstEscapeStory.setDoor(p,FirstEscapeScene.entrance(s),true)',
+                         'FirstEscapeStory.setDoor(p,FirstEscapeScene.entrance(s).south(),true)',
+                         '!FirstEscapeScene.fullyInRoom(s,p.getBoundingBox())',
+                         'closeRoom(p,s)',
+                         'RescueChapter.go(p,s,FINAL_A)'):
+            self.assertIn(required,locked)
+        self.assertLess(locked.index('if(!objectives||cat==null)'),
+                        locked.index('RescueChapter.go(p,s,FINAL_A)'))
+        self.assertLess(locked.index('if(!FirstEscapeScene.fullyInRoom(s,p.getBoundingBox()))'),
+                        locked.index('closeRoom(p,s)'))
+        self.assertLess(locked.index('closeRoom(p,s)'),
+                        locked.index('RescueChapter.go(p,s,FINAL_A)'))
+
     def test_late_rescue_cutscenes_keep_safety_but_bosses_and_crawl_do_not_autocomplete(self):
         chapter=source('feast/RescueChapter.java')
         safety=chapter.split('static void cutsceneSafety(',1)[1].split('public static void recover(',1)[0]
