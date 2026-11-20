@@ -59,6 +59,19 @@ public final class RescueSoftlockGameTests {
     }
 
     @GameTest(template="empty", batch="story_softlocks")
+    public static void canonicalKitchenSmokerCanStartParentRescueDinner(GameTestHelper helper) {
+        for(String name:new String[]{"smoker","furnace","blast_furnace","oven","oak_stove"})
+            helper.assertTrue(ParentRescueStory.kitchenStoveId(name),
+                "Known kitchen appliance should be accepted: "+name);
+        for(String name:new String[]{"air","stone","oak_log","bookshelf"})
+            helper.assertFalse(ParentRescueStory.kitchenStoveId(name),
+                "Non-appliance incorrectly accepted as kitchen stove: "+name);
+        helper.assertFalse(ParentRescueStory.kitchenStoveId(null),
+                "Unregistered/null block name should not crash the kitchen search");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
     public static void parentRescueKitchenServingWaitsBeforeRecoveringOriginalActor(GameTestHelper helper) {
         helper.assertFalse(ParentRescueStory.serveRecoveryDue(0),
             "The normal physical kitchen serving approach should get its turn");
