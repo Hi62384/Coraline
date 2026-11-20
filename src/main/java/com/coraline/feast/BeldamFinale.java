@@ -395,7 +395,24 @@ public final class BeldamFinale {
         var delta=goal.subtract(wardrobe.position());wardrobe.setPos(wardrobe.position().add(delta.length()<.055?delta:delta.normalize().scale(.055)));wardrobe.frame(1,n.getInt("Ticks"),1);
         var portal=new AABB(door).inflate(.3,.1,.3);if(!wardrobe.getBoundingBox().intersects(portal)&&wardrobe.distanceToSqr(goal)<.1){n.putBoolean("WardrobeClear",true);ParentRescueStory.data(s).putBoolean("WardrobeBlocking",false);}
     }
-    static Mob catAtMantel(ServerPlayer p,VisitData.Scene s){var n=RescueChapter.data(s);var at=hearth(s).add(0,.7,0);var cat=ShowActors.recoverCat(p,s,p.serverLevel(),at);if(cat==null)return null;if(!n.getBoolean("CatMantel")){cat.stopRiding();cat.setNoAi(true);cat.setNoGravity(true);cat.setDeltaMovement(Vec3.ZERO);cat.setPos(at);n.putBoolean("CatMantel",true);}cat.setInvisible(false);n.putInt("Cat",cat.getId());LoopProps.hold(p.serverLevel(),cat.blockPosition());return cat;}
+    static Mob catAtMantel(ServerPlayer p,VisitData.Scene s){
+        var n=RescueChapter.data(s);
+        var at=hearth(s).add(0,.7,0);
+        var cat=ShowActors.recoverCat(p,s,p.serverLevel(),at);
+        if(cat==null)return null;
+        var state=RescueChapter.phase(s);
+        // A saved CatMantel flag is not proof the original Cat is still here.
+        // Re-stage the SAME actor at pre-fight checkpoints only. In CAT_THROW,
+        // never reset a carried or airborne Cat just because it moved away.
+        boolean preFight=state==HOUSE_SAFE||state==ROOM_LOCKED;
+        if(!n.getBoolean("CatMantel")||preFight&&cat.distanceToSqr(at)>.25){
+            cat.stopRiding();cat.setNoAi(true);cat.setNoGravity(true);
+            cat.setDeltaMovement(Vec3.ZERO);cat.setPos(at);n.putBoolean("CatMantel",true);
+        }
+        cat.setInvisible(false);
+        n.putInt("Cat",cat.getId());LoopProps.hold(p.serverLevel(),cat.blockPosition());
+        return cat;
+    }
     private static void catFlight(ServerPlayer p,VisitData.Scene s,Mob cat,ParentEntity mother){
         var n=RescueChapter.data(s);
         int ticks=n.getInt("CatFlightTick")+1;
