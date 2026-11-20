@@ -53,7 +53,8 @@ class CurrentStoryRepairs(unittest.TestCase):
         tick=playback.split('public static boolean tick(',1)[1].split('public static boolean ownsSession(',1)[0]
         self.assertIn('n.hasUUID("Nonce")&&REQUESTED_AT.containsKey(n.getUUID("Nonce"))',start)
         self.assertIn('if(!n.hasUUID("Nonce")||!REQUESTED_AT.containsKey(n.getUUID("Nonce")))',tick)
-        self.assertIn('n.putString("Blocker","The saved recording lost its playback session',tick)
+        self.assertIn('if(!start(p,s,sound,music)&&n.getString("Blocker").isEmpty())',tick)
+        self.assertIn('String sound=n.getString("Sound");boolean music=n.getBoolean("Music");',tick)
         self.assertLess(tick.index('if(!n.hasUUID("Nonce")||!REQUESTED_AT.containsKey('),
                         tick.index('if(!n.getBoolean("Started"))'))
         fixture=(ROOT/'src/wybietest/java/com/coraline/feast/RescuePlaybackGameTests.java').read_text()
