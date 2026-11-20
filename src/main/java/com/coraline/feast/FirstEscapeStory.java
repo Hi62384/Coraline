@@ -599,7 +599,7 @@ private static boolean openLittleDoor(ServerPlayer p,VisitData.Scene s,boolean o
     private static boolean gaze(ServerPlayer p,Mob w){var delta=w.getEyePosition().subtract(p.getEyePosition());return delta.lengthSqr()<24*24&&p.hasLineOfSight(w)&&p.getLookAngle().dot(delta.normalize())>.88;}
     private static void followReal(ServerPlayer p,VisitData.Scene s){var w=realWybie(p,s);if(w!=null){if(w.distanceToSqr(p)>9)walk(w,p.position(),1.15);else w.getNavigation().stop();w.getLookControl().setLookAt(p,30,20);} }
     public static void throwShoe(ServerPlayer p,ItemStack stack){var s=OtherMotherLoop.scene(p);if(!engaged(s)||phase(s)!=THROW_SHOE||!validTool(s,stack,true)||data(s).hasUUID("ShoeFlight"))return;var e=FirstEscapeScene.ensure(p,s,"ShoeFlight",CinematicPropEntity.STORY_SHOE,0,p.serverLevel(),p.getEyePosition().add(p.getLookAngle().scale(.4)));if(e!=null){stack.shrink(1);e.setDeltaMovement(p.getLookAngle().scale(1.05));e.frame(0,0,0);OtherMotherLoop.changed(p);} }
-    private static void shoe(ServerPlayer p,VisitData.Scene s){
+    static void shoe(ServerPlayer p,VisitData.Scene s){
         var e=FirstEscapeScene.prop(p,s,"ShoeFlight");if(e==null)return;
         var n=data(s);
         if(e.cue()==1){
