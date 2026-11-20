@@ -80,6 +80,47 @@ class CurrentStoryRepairs(unittest.TestCase):
         rendering=source('client/renderer/FirstEscapePresentation.java')
         self.assertIn('case CinematicPropEntity.STORY_SHOE->{if(e.cue()!=1)',rendering)
 
+    def test_missing_story_shoe_requires_native_storage_absence_before_same_uuid_recovery(self):
+        story=source('feast/FirstEscapeStory.java')
+        lost=story.split('private static CinematicPropEntity recoverMissingShoe(',1)[1].split('private static boolean relaunchShoe(',1)[0]
+        self.assertIn('n.getBoolean("ShoeMissed")',lost)
+        self.assertIn('n.hasUUID("ShoeFlight")',lost)
+        self.assertIn('n.contains("ShoeFlightPosition",Tag.TAG_LONG)',lost)
+        self.assertIn('LoopProps.hold(p.server.overworld(),oldAt)',lost)
+        self.assertIn('for(var level:p.server.getAllLevels())if(level.getEntity(id)!=null)',lost)
+        self.assertIn('LegacyActorRecovery.check(p.server,id)',lost)
+        self.assertIn('LegacyActorRecovery.Result.ABSENT',lost)
+        self.assertLess(lost.index('LegacyActorRecovery.Result.ABSENT'),lost.index('recreated.setUUID(id)'))
+        self.assertIn('recreated.configure(s,CinematicPropEntity.STORY_SHOE,0)',lost)
+        self.assertIn('recreated.setUUID(id)',lost)
+        self.assertIn('if(!p.server.overworld().addFreshEntity(recreated))return null',lost)
+        self.assertNotIn('data(s).putUUID("ShoeFlight"',lost)
+        shoe=story.split('static void shoe(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static void finishShoeThrow(',1)[0]
+        self.assertIn('int missing=Math.min(240,n.getInt("ShoeMissingTicks")+1)',shoe)
+        self.assertIn('if(missing>=60)',shoe)
+        self.assertIn('if(p.tickCount%20==0)recoverMissingShoe(p,s)',shoe)
+        self.assertIn('n.remove("ShoeMissingTicks")',shoe)
+        self.assertIn('n.remove("ShoeMissingTicks");data(s).remove("ShoeMissed")',story)
+        restart=source('client/FirstEscapeClient.java')
+        self.assertIn('SecretsNetwork.request(data.getUUID("Choice"),"escape_shoe","retry")',restart)
+
+    def test_finale_open_floor_has_delayed_safe_return_to_actual_hole(self):
+        finale=source('feast/BeldamFinale.java')
+        floor=finale.split('private static boolean guideOpenedFloorFall(',1)[1].split('public static boolean preflight(',1)[0]
+        self.assertIn('n.getBoolean("FloorOpened")',floor)
+        self.assertIn('openedFloorFallRecoveryDue(t,duration)',floor)
+        self.assertIn('level.getBlockState(room.below()).isAir()',floor)
+        self.assertIn('level.getBlockCollisions(p,body).iterator().hasNext()',floor)
+        self.assertIn('level.getWorldBorder().isWithinBounds(body)',floor)
+        self.assertIn('now=level.getGameTime()',floor)
+        self.assertIn('n.putLong("FallGuideRetryAt",now+80)',floor)
+        self.assertIn('p.teleportTo(level,landing.x,landing.y,landing.z',floor)
+        final_o=finale.split('case FINAL_O->{',1)[1].split('case FINAL_P->',1)[0]
+        self.assertLess(final_o.index('!prepareFall(p,s)'),final_o.index('guideOpenedFloorFall('))
+        self.assertLess(final_o.index('guideOpenedFloorFall('),final_o.index('&&enterWeb(p,s,m)&&done'))
+        native=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('finaleOpenedFloorRecoversOnlyAfterRecordedFallCueAndGrace',native)
+
     def test_stranded_post_escape_checkpoint_recovers_original_world_not_parent_rescue(self):
         story=source('feast/FirstEscapeStory.java')
         tick=story.split('public static boolean tick(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static boolean recording(',1)[0]
