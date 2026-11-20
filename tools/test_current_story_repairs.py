@@ -47,6 +47,25 @@ class CurrentStoryRepairs(unittest.TestCase):
         finish=text.split('public static boolean finishFirstEscape(',1)[1].split('private static void brickDoor(',1)[0]
         self.assertLess(finish.index('!verifiedTransfer(p,s,p.server.overworld(),d.pos)'),finish.index('n.putBoolean("Complete",true)'))
 
+    def test_wybie_shoe_miss_requires_real_hit_and_reuses_original(self):
+        story=source('feast/FirstEscapeStory.java')
+        shoe=story.split('static void shoe(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static Vec3 escapeTarget(',1)[0]
+        self.assertIn('if(e.cue()==1){',shoe)
+        self.assertIn('if(e.time()>=80&&p.distanceToSqr(e)>16)',shoe)
+        self.assertIn('n.putBoolean("ShoeMissed",true)',shoe)
+        self.assertIn('n.putLong("ShoeFlightPosition",e.blockPosition().asLong())',shoe)
+        self.assertIn('e.setDeltaMovement(Vec3.ZERO);e.setPos(p.position().add(0,.2,0));e.frame(1,0,0);',shoe)
+        self.assertIn('w.gameGesture(49,40);finishShoeThrow(p,s,e);return;',shoe)
+        self.assertEqual(shoe.count('finishShoeThrow(p,s,e)'),1)
+        self.assertLess(shoe.index('if(hit.isPresent()'),shoe.index('finishShoeThrow(p,s,e)'))
+        self.assertNotIn('if(e.cue()==1){finishShoeThrow',shoe)
+        interaction=story.split('public static boolean interact(ServerPlayer p,CinematicPropEntity prop)',1)[1].split('public static boolean block(',1)[0]
+        self.assertIn('prop.getUUID().equals(n.getUUID("ShoeFlight"))&&prop.cue()==1',interaction)
+        self.assertIn('prop.setDeltaMovement(p.getLookAngle().scale(1.05))',interaction)
+        self.assertNotIn('if(giveTool(p,s,true)){prop.discard()',interaction)
+        rendering=source('client/renderer/FirstEscapePresentation.java')
+        self.assertIn('case CinematicPropEntity.STORY_SHOE->{if(e.cue()!=1)',rendering)
+
     def test_first_escape_wybie_tea_cat_and_return_tunnel_handoffs(self):
         # Source dispatch checks supplement, but do not replace, an in-game run.
         escape=source('feast/FirstEscapeStory.java')
