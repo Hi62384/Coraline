@@ -134,13 +134,20 @@ public final class GhostEscapeRooms {
         if(room==null||!GhostVictimMirrors.owned(p,s,ghost)||!GhostVictimActors.owns(child,s,ghost)||!GhostEscapeProgress.owns(ghost,escape)
             ||GhostEscapeProgress.phase(escape)!=GhostEscapeProgress.Phase.LOCKPICK||!(child.level() instanceof ServerLevel level)||level!=AcceptedButtonEyesWorld.level(p))return false;
         var at=liveDoor(s,id,level);if(at==null||child.distanceToSqr(at.getCenter())>9)return false;
-        var permits=escape.getCompound("UnlockedRooms");permits.putBoolean(id,true);escape.put("UnlockedRooms",permits);
-        // Open only the real authored door blocks still present. A missing
-        // second basement door is not grounds to reject the reachable first.
+        // Open only the real authored doors still present. Do not persist the
+        // unlock permission until the selected doorway is visibly OPEN: block
+        // updates can fail or replace a door between the route and this tick.
+        boolean selectedOpened=false;
         for(int[] d:room.doors()){
             var position=GhostVictimWorld.at(s,d[0],d[1],d[2]);var state=level.getBlockState(position);
-            if(state.getBlock() instanceof DoorBlock door)door.setOpen(child,level,state,position,true);
+            if(!(state.getBlock() instanceof DoorBlock door))continue;
+            if(!state.getValue(DoorBlock.OPEN))door.setOpen(child,level,state,position,true);
+            var actual=level.getBlockState(position);
+            if(position.equals(at)&&actual.getBlock() instanceof DoorBlock&&actual.getValue(DoorBlock.OPEN))
+                selectedOpened=true;
         }
+        if(!selectedOpened)return false;
+        var permits=escape.getCompound("UnlockedRooms");permits.putBoolean(id,true);escape.put("UnlockedRooms",permits);
         OtherMotherLoop.changed(p);return true;
     }
     public static boolean closeAfterLeaving(ServerPlayer p,VisitData.Scene s,CompoundTag ghost,TycoonNpc child){
