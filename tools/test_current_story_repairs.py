@@ -47,6 +47,62 @@ class CurrentStoryRepairs(unittest.TestCase):
         finish=text.split('public static boolean finishFirstEscape(',1)[1].split('private static void brickDoor(',1)[0]
         self.assertLess(finish.index('!verifiedTransfer(p,s,p.server.overworld(),d.pos)'),finish.index('n.putBoolean("Complete",true)'))
 
+    def test_first_escape_wybie_tea_cat_and_return_tunnel_handoffs(self):
+        # Source dispatch checks supplement, but do not replace, an in-game run.
+        escape=source('feast/FirstEscapeStory.java')
+        self.assertIn('case THROW_SHOE->{ensureTool(p,s,true);shoe(p,s);',escape)
+        self.assertIn('if(wall.getType()!=HitResult.Type.MISS||e.time()>100',escape)
+        self.assertIn('case MISSING_G,BICYCLE_DEPARTURE->departure(p,s);',escape)
+        self.assertIn('MissingParentsTea.select(p,s,false)',escape)
+        tea=source('feast/MissingParentsTea.java')
+        self.assertIn('n.putBoolean("Completed",true);n.putBoolean("Active",false)',tea)
+        self.assertIn('s.loop.story.putBoolean("SeeingStoneReceipt",true)',tea)
+        cat=source('feast/MissingParentsCat.java')
+        self.assertIn('tea.getBoolean("Completed")&&!tea.getBoolean("Active")',cat)
+        self.assertIn('!s.loop.story.getBoolean("SeeingStonePending")',cat)
+        self.assertIn('StoryTunnel.restore(p,s)',cat)
+        tunnel=source('feast/StoryTunnel.java')
+        self.assertIn('else ParentRescueStory.begin(p,scene);',tunnel)
+        self.assertIn('return StoryReturnContext.inCorridor',tunnel)
+        supper=source('feast/ParentRescueStory.java')
+        self.assertIn('n.putBoolean("KeySwallowed",true)',supper)
+        self.assertIn('StoryItemCustody.capture(p,s,"Key"',supper)
+
+    def test_late_rescue_cutscenes_keep_safety_but_bosses_and_crawl_do_not_autocomplete(self):
+        chapter=source('feast/RescueChapter.java')
+        safety=chapter.split('static void cutsceneSafety(',1)[1].split('public static void recover(',1)[0]
+        # A former ordinal check silently disabled every Bobinsky, finale and
+        # postboss cinematic watchdog as soon as the Bobinsky chapter began.
+        self.assertNotIn('state.ordinal()>=Phase.BOB_A.ordinal()',safety)
+        self.assertIn('RescueBosses.fighting(state)||state==Phase.TUNNEL_CHASE',safety)
+        for name in ('Phase.FURNACE','Phase.BOB_TENT','Phase.SWARM_TRANSFORM',
+                     'Phase.WARDROBE_ASIDE','Phase.HAND_FALL','Phase.BANGING',
+                     'Phase.EYES_CLOSE','Phase.CELESTIAL_OPEN','Phase.ORBS'):
+            self.assertIn(name,safety)
+        self.assertIn('if(voice.isEmpty()&&!motion)return;',safety)
+        self.assertIn('RescueEncounters.tick(p,s,state,tail,true)',safety)
+        self.assertIn('BeldamFinale.tick(p,s,state,tail,true)',safety)
+        self.assertIn('RescueEpilogue.tick(p,s,state,tail,true)',safety)
+        self.assertIn('!BeldamFinale.preflight(p,s)',safety)
+        self.assertIn('case REUNION_A->"reunion_a"',chapter)
+        self.assertIn('case FAREWELL_C->"farewell_c"',chapter)
+
+    def test_final_rescue_crawl_and_key_lock_require_verified_physical_exit(self):
+        finale=source('feast/BeldamFinale.java')
+        crawl=finale.split('private static void tunnel(',1)[1].split('public static void input(',1)[0]
+        self.assertLess(crawl.index('if(progress<RescuePassage.LENGTH||!done)return;'),
+                        crawl.index('if(!RescueChapter.transfer(p,level,source.pos))return;'))
+        self.assertLess(crawl.index('if(!RescueChapter.transfer(p,level,source.pos))return;'),
+                        crawl.index('RescueChapter.go(p,s,LOCK_DOOR)'))
+        lock=finale.split('public static boolean block(ServerPlayer p,BlockPos at)',1)[1].split('public static void retry(',1)[0]
+        self.assertIn('!n.getBoolean("CrawlReachedOverworld")||!n.getBoolean("KeyRecovered")',lock)
+        self.assertLess(lock.index('if(!p.serverLevel().getBlockState(at).equals(closed))return true;'),
+                        lock.index('n.putBoolean("PermanentlySealed",true)'))
+        epilogue=source('feast/RescueEpilogue.java')
+        self.assertIn('if(!reunionReady(s))return;',epilogue)
+        self.assertIn('if(!restoreVision(p,s))return;',epilogue)
+        self.assertIn('if(RescueEyes.release(p,s))completeFarewell(p,s)',epilogue)
+
     def test_accepted_child_crosses_before_escape_is_archived(self):
         text=source('feast/GhostVictimDirector.java')
         escaped=text.rsplit('case VICTIM_ESCAPED->{',1)[1].split('case BETWEEN_ACTIVITIES',1)[0]
