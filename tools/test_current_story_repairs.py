@@ -198,6 +198,17 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('visitorLanding(home,front,-1,first)',covert)
         self.assertIn('first==null||second==null',covert)
 
+    def test_accepted_escape_options_match_actual_server_gates(self):
+        mirror=source('feast/GhostVictimMirrors.java')
+        display=mirror.split('private static void screen(',1)[1].split('private static void addOption(',1)[0]
+        self.assertIn('escapePlanOfferReady(n)',display)
+        self.assertIn('ambushOfferReady(escape)',display)
+        self.assertIn('ghost.contains("BedtimeWindowStarted",Tag.TAG_LONG)',display)
+        self.assertIn('GhostVictimProgress.readyToHelp(ghost)',display)
+        self.assertIn('escape.getBoolean("EyeRoomKnown")&&!escape.getBoolean("KeyStolen")',display)
+        native=ROOT/'src/wybietest/java/com/coraline/feast/GhostVictimProgressGameTests.java'
+        self.assertIn('acceptedEscapeChoiceVisibilityMatchesProgressPrerequisites',native.read_text(encoding='utf-8'))
+
     def test_complete_music_master_timing_and_one_shot_playback(self):
         receipt=json.loads((ASSETS/'missing_parents_music_audio.json').read_text())
         self.assertEqual(receipt['source_sha256'],hashlib.sha256((ROOT/receipt['source']).read_bytes()).hexdigest())
