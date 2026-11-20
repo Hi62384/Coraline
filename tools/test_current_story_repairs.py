@@ -266,6 +266,14 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertNotIn('state==Phase.ROOM_LOCKED&&!BeldamFinale.keepPlayerInRoom(p,s)',tick)
         self.assertIn('!BeldamFinale.preflight(p,s)',tick)
         self.assertIn('RescueEncounters.tick(p,s,state,t,done)',tick)
+        finale=source('feast/BeldamFinale.java')
+        mantel=finale.split('static Mob catAtMantel(',1)[1].split('private static void catFlight(',1)[0]
+        self.assertIn('boolean preFight=state==HOUSE_SAFE||state==ROOM_LOCKED;',mantel)
+        self.assertIn('if(!n.getBoolean("CatMantel")||preFight&&cat.distanceToSqr(at)>.25)',mantel)
+        self.assertIn('cat.setPos(at);n.putBoolean("CatMantel",true)',mantel)
+        self.assertLess(mantel.index('var cat=ShowActors.recoverCat('),
+                        mantel.index('cat.setPos(at)'))
+        self.assertNotIn('state==CAT_THROW',mantel)
 
     def test_late_rescue_cutscenes_keep_safety_but_bosses_and_crawl_do_not_autocomplete(self):
         chapter=source('feast/RescueChapter.java')
