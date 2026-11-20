@@ -16,6 +16,41 @@ public final class FirstEscapeStoryGameTests {
     @GameTest(template="empty") public static void decayedCorridorIsCrawlSizedClearAndFacesActualDoor(GameTestHelper h){var p=fixture(h);var s=OtherMotherLoop.scene(p);var l=p.serverLevel();var c=new BlockPos(107232,220,107232);try{var n=FirstEscapeStory.data(s);n.putLong("Prison",c.asLong());n.putLong("LittleDoor",c.below(40).asLong());l.getChunkAt(c);l.setBlock(c.below(40),com.coraline.registry.ModBlocks.TINY_DOOR.get().defaultBlockState().setValue(com.coraline.block.TinyDoorBlock.FACING,net.minecraft.core.Direction.EAST),2);FirstEscapeStory.ensureDecayedTunnel(p,s);h.assertTrue(FirstEscapeStory.escapeDirection(s)==net.minecraft.core.Direction.WEST,"Corridor rotates player away from the actual doorway");for(int along=1;along<=21;along++){var cell=FirstEscapeStory.tunnelCell(s,0,0,along);var at=net.minecraft.world.phys.Vec3.atBottomCenterOf(cell);h.assertTrue(l.noCollision(p,p.getDimensions(net.minecraft.world.entity.Pose.SWIMMING).makeBoundingBox(at)),"Crawl route blocked at "+along);h.assertFalse(l.noCollision(p,p.getDimensions(net.minecraft.world.entity.Pose.STANDING).makeBoundingBox(at)),"Corridor is standing-height instead of crawl-sized");h.assertTrue(l.getBlockState(cell.below()).isFaceSturdy(l,cell.below(),net.minecraft.core.Direction.UP),"Missing tunnel floor");}FirstEscapeScene.restore(p,s);l.removeBlock(c.below(40),false);}finally{VisitData.get(p.server).scenes.remove(s.owner);}h.succeed();}
     @GameTest(template="empty",timeoutTicks=110) public static void realmProtectionCannotConsumeRescuePunchOrHeadClick(GameTestHelper h){var p=fixture(h);var s=OtherMotherLoop.scene(p);var n=FirstEscapeStory.data(s);n.putBoolean("Started",true);n.putString("Phase","ESCAPE_A");n.putUUID("Choice",UUID.randomUUID());var chunk=new net.minecraft.world.level.ChunkPos(p.blockPosition());p.serverLevel().setChunkForced(chunk.x,chunk.z,true);p.serverLevel().getChunkAt(p.blockPosition());h.runAtTickTime(30,()->{var actor=ShowActors.acquire(p,s,"other_wybie",p.serverLevel(),p.position());h.assertTrue(actor!=null,"Could not lease real Other Wybie");});h.runAtTickTime(70,()->{try{var w=ShowActors.actor(p,s,"other_wybie");h.assertTrue(w!=null,"Recorded Wybie UUID never became live");p.setPos(w.position().add(1,0,0));float health=((net.minecraft.world.entity.LivingEntity)w).getHealth();var hit=new net.minecraftforge.event.entity.player.AttackEntityEvent(p,w);net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(hit);h.assertTrue(hit.isCanceled()&&n.getBoolean("Punched"),"Protection consumed punch before rescue handler");h.assertTrue(((net.minecraft.world.entity.LivingEntity)w).getHealth()==health,"Rescue punch caused lethal gameplay damage");n.putString("Phase","MASK_REMOVAL");var body=new net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteractSpecific(p,net.minecraft.world.InteractionHand.MAIN_HAND,w,new net.minecraft.world.phys.Vec3(0,.2,0));net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(body);h.assertTrue(FirstEscapeStory.phase(s)==FirstEscapeTimeline.Phase.MASK_REMOVAL,"Clicking a boot removed the mask");var head=new net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteractSpecific(p,net.minecraft.world.InteractionHand.MAIN_HAND,w,new net.minecraft.world.phys.Vec3(0,w.getBbHeight()*.9,0));net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(head);h.assertTrue(head.isCanceled()&&FirstEscapeStory.phase(s)==FirstEscapeTimeline.Phase.MASK_ANIMATION,"Head click did not reach rescue interaction before realm protection");w.discard();}finally{VisitData.get(p.server).scenes.remove(s.owner);p.serverLevel().setChunkForced(chunk.x,chunk.z,false);}h.succeed();});}
     private static net.minecraft.server.level.ServerPlayer fixture(GameTestHelper h){var l=h.getLevel().getServer().getLevel(OtherWorld.KEY);var p=new net.minecraft.server.level.ServerPlayer(l.getServer(),l,new com.mojang.authlib.GameProfile(UUID.randomUUID(),"FirstEscapeQA"));p.connection=new net.minecraft.server.network.ServerGamePacketListenerImpl(p.server,new net.minecraft.network.Connection(net.minecraft.network.protocol.PacketFlow.SERVERBOUND),p);var s=new VisitData.Scene();s.owner=p.getUUID();s.door=UUID.randomUUID();s.stage=VisitData.Stage.DONE;s.table=new BlockPos(107200,180,107200);s.loop.event.putInt("Serial",2);VisitData.get(p.server).scenes.put(s.owner,s);p.getPersistentData().putUUID("CoralineVisitDoor",s.door);p.setPos(s.table.getCenter());return p;}
+    @GameTest(template="empty") public static void missedShoePreservesTheSingleOriginalForRethrow(GameTestHelper h){
+        var p=fixture(h);var s=OtherMotherLoop.scene(p);CinematicPropEntity shoe=null;
+        try{
+            var n=FirstEscapeStory.data(s);n.putBoolean("Started",true);n.putUUID("Token",UUID.randomUUID());
+            n.putString("Phase",FirstEscapeTimeline.Phase.THROW_SHOE.name());
+            shoe=FirstEscapeScene.ensure(p,s,"ShoeFlight",CinematicPropEntity.STORY_SHOE,0,p.serverLevel(),p.position());
+            h.assertTrue(shoe!=null&&n.hasUUID("ShoeFlight"),"Original airborne shoe not staged");
+            var id=shoe.getUUID();
+            // A fall or wall collision is a miss, not permission to skip the shoe scene.
+            shoe.setPos(p.position().add(0,-15,0));shoe.setDeltaMovement(Vec3.ZERO);
+            FirstEscapeStory.shoe(p,s);
+            h.assertTrue(FirstEscapeStory.phase(s)==FirstEscapeTimeline.Phase.THROW_SHOE,
+                    "Missing Wybie incorrectly advanced the story");
+            h.assertTrue(shoe.cue()==1&&n.getBoolean("ShoeMissed")&&n.getUUID("ShoeFlight").equals(id),
+                    "Miss did not retain the single authentic projectile");
+            // Even if the player moves away after a save/reload, the same shoe
+            // must return within reach without minting a new bound inventory item.
+            shoe.setPos(p.position().add(30,0,0));shoe.frame(1,80,0);
+            FirstEscapeStory.shoe(p,s);
+            h.assertTrue(shoe.distanceToSqr(p)<16&&shoe.getUUID().equals(id),
+                    "Unreachable original shoe did not recover to the owner");
+            h.assertTrue(FirstEscapeStory.interact(p,shoe),"Original missed shoe cannot be used again");
+            h.assertTrue(shoe.cue()==0&&shoe.getDeltaMovement().lengthSqr()>0
+                    &&n.getUUID("ShoeFlight").equals(id)&&!n.getBoolean("ShoeMissed"),
+                    "Retry spawned a new shoe or did not relaunch the saved one");
+            for(int i=0;i<p.getInventory().getContainerSize();i++)
+                h.assertFalse(FirstEscapeStory.validTool(s,p.getInventory().getItem(i),true),
+                        "Retry duplicated the spent co-op custody-tracked shoe");
+        }finally{
+            if(shoe!=null)shoe.discard();
+            VisitData.get(p.server).scenes.remove(s.owner);
+        }
+        h.succeed();
+    }
+
     @GameTest(template="empty") public static void allOriginalRecordingsAndCueOffsets(GameTestHelper h){
         var sounds=new HashSet<String>();for(var phase:FirstEscapeTimeline.Phase.values()){var sound=FirstEscapeTimeline.sound(phase);if(!sound.isEmpty()){h.assertTrue(sounds.add(sound),"Duplicate recording phase");h.assertTrue(ShowRecordings.duration(sound)>0,"Missing original "+sound);}}
         h.assertTrue(sounds.size()==26,"Expected all 26 original recordings");
