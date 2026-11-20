@@ -56,11 +56,12 @@ public final class GhostEscapeRecoveryGameTests {
         n.putUUID("VictimActor",child.getUUID());var lease=new CompoundTag();lease.putUUID("Owner",s.owner);lease.putUUID("Door",s.door);lease.putUUID("Session",n.getUUID("Session"));
         child.getPersistentData().put(GhostVictimActors.LEASE,lease);p.serverLevel().addFreshEntity(child);
         var e=new CompoundTag();e.putUUID("Attempt",UUID.randomUUID());e.putUUID("Victim",child.resident);e.putUUID("Session",n.getUUID("Session"));
-        e.putLong("AmbushStarted",0);e.putString("HidingSpot","test_cover");GhostEscapeProgress.move(e,GhostEscapeProgress.Phase.WAIT_LURE,0);n.put(GhostEscapeProgress.KEY,e);
+        e.putLong("AmbushStarted",0);e.putString("HidingSpot","test_cover");e.putBoolean("EyeRoomKnown",true);GhostEscapeProgress.move(e,GhostEscapeProgress.Phase.WAIT_LURE,0);n.put(GhostEscapeProgress.KEY,e);
         var actual=child.position();
         try{
             GhostEscapeCovert.monitor(p,s,n);
             h.assertTrue(GhostEscapeProgress.phase(e)==GhostEscapeProgress.Phase.READY&&!e.contains("HidingSpot"),"Shared physical monitor left the expired ambush active");
+            h.assertTrue(GhostEscapeProgress.keyAmbushReady(e)&&GhostVictimMirrors.ambushOfferReady(e),"Timed-out key ambush lost the direct retry option despite the already-known eye room");
             h.assertTrue(child.position().equals(actual)&&!e.getBoolean("KeyStolen"),"Timeout moved the child or awarded an unearned key");
             GhostEscapeProgress.move(e,GhostEscapeProgress.Phase.WAIT_LURE,0);e.putLong("AmbushStarted",0);n.putUUID("Owner",UUID.randomUUID());
             GhostEscapeCovert.monitor(p,s,n);
