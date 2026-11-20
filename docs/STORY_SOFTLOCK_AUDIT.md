@@ -1,5 +1,22 @@
 # Coraline story softlock audit
 
+## Follow-up review — 2026-11-19 (main escape through post-boss reunion)
+
+Scope: First Escape (including the rejected button-eye choice, real Wybie shoe and bicycle departure), the temporary Spink/Forcible tea visit, Cat/mirror and restored return tunnel, the parent-return chapter, all three rescue eye bosses and chase legs, the final Other Mother web confrontation, the real Little Door exit/lock and the reunion/dream cutscenes.
+
+**Repaired in source in this follow-up:**
+
+- The earlier proposal conversation could still consume generic cinematic prop interactions after First Escape began. The old proposal handler now declines them once that storyline owns the route.
+- The unique Wybie story shoe previously completed its cutscene even when the projectile missed. A miss now leaves the SAME persisted shoe prop as a rethrowable physical item, with a bounded retrieval if it becomes unreachable; only the authentic Wybie collision resolves the scene. No second item or custody receipt is issued.
+- Saved ShowPlayback state could survive a server restart without its in-memory recording request. This could leave dialogue silently waiting. The server now recognizes the orphaned session and restarts the SAME recording checkpoint with a new nonce, including in the Tea and Cat chapters which do not independently retry all audio blockers.
+
+Previously repaired and retained: limited First Escape prop dispatch, Ratmaster ball-click forwarding to its original rat passenger, invisible rescue props no longer consuming clicks, and full finale/reunion cinematic watchdog dispatch without skipping actual fights or crawling.
+
+**Verification performed here:** Retrieved source at main and inspected the 52 First Escape, 18 tea, 15 Cat, 23 parent-return, and 70 rescue phases (178 phase labels), their handlers and handoffs. Compiled the standalone original FirstEscapeTimeline, RescueChallengeMath, and RescueWebLayout Java helper code and executed 288,533 deterministic assertions for phase ordering, boss timing, web geometry, struggle and tunnel pursuit. Verified new native Forge GameTest fixtures in source for missed-shoe rethrow and interrupted playback sessions; these GameTests were **not executed**.
+
+**Not proven:** This is NOT a Minecraft/Forge end-to-end playthrough. The Windows runner was disconnected and the GitHub repository exposed no new Actions runs. Entity pathfinding, actual hitboxes/interaction event order, per-recording client acknowledgements, save/reload, multiplayer state and complete geometry transitions still require a real runtime test. The previously recorded 16 failing full-server GameTests have not been shown to pass in this follow-up.
+
+
 Date: 2026-11-15
 
 Latest delivery pass: the production `jar` task completed successfully on 2026-11-15 at 20:58 local time, including audio timing checks and runtime asset optimization. No tests were run in this pass, per the user's instruction. The resulting artifact is `build-activity/libs/coraline-1.16.6.jar` (103,611,238 bytes).
