@@ -223,6 +223,23 @@ public final class GhostEscapeRecoveryGameTests {
         h.succeed();
     }
 
+    @GameTest(template="empty") public static void compromisedHidingSpotsEventuallyBecomeReusable(GameTestHelper h){
+        final long discovered=4000;
+        h.assertTrue(GhostEscapeHiding.stillCompromised(discovered,discovered,false),
+                "A freshly discovered hiding spot was reusable immediately");
+        h.assertTrue(GhostEscapeHiding.stillCompromised(discovered+1199,discovered,false),
+                "The hiding-place cooldown ended prematurely");
+        h.assertTrue(GhostEscapeHiding.stillCompromised(discovered+1200,discovered,true),
+                "A spot was declared safe while Mother still searched beside it");
+        h.assertFalse(GhostEscapeHiding.stillCompromised(discovered+1200,discovered,false),
+                "Mother departed but an expired hiding spot could never be reused");
+        h.assertFalse(GhostEscapeHiding.stillCompromised(discovered+8000,discovered,false),
+                "A compromised spot was made permanently unavailable after save/reload");
+        h.assertTrue(GhostEscapeHiding.stillCompromised(discovered-1,discovered,false),
+                "A reversed or stale clock bypassed the cover safety budget");
+        h.succeed();
+    }
+
     private static CompoundTag session(){
         var n=new CompoundTag();GhostVictimProgress.begin(n,"ACCEPTED_PROPOSAL");n.putUUID("Session",UUID.randomUUID());
         GhostVictimProgress.leavePrison(n);var c=new CompoundTag();c.putString("Name","Robin");
