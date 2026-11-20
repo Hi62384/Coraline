@@ -213,6 +213,20 @@ class CurrentStoryRepairs(unittest.TestCase):
         native=ROOT/'src/wybietest/java/com/coraline/feast/GhostVictimProgressGameTests.java'
         self.assertIn('acceptedEscapeChoiceVisibilityMatchesProgressPrerequisites',native.read_text(encoding='utf-8'))
 
+    def test_original_room_door_fallback_does_not_issue_fake_lockpick_receipt(self):
+        rooms=source('feast/GhostEscapeRooms.java')
+        self.assertIn('static BlockPos liveDoor(VisitData.Scene s,String id,ServerLevel level)',rooms)
+        self.assertIn('var door=liveDoor(s,room.id(),level)',rooms)
+        self.assertIn('var at=liveDoor(s,id,level)',rooms)
+        self.assertIn('var at=liveDoor(s,id,level);if(at==null||child.distanceToSqr',rooms)
+        self.assertIn('boolean selectedOpened=false;',rooms)
+        self.assertIn('if(!selectedOpened)return false;',rooms)
+        self.assertLess(rooms.index('if(!selectedOpened)return false;'),rooms.index('permits.putBoolean(id,true)'))
+        covert=source('feast/GhostEscapeCovert.java')
+        self.assertIn('GhostEscapeRooms.liveDoor(s,id,level)',covert)
+        native=(ROOT/'src/wybietest/java/com/coraline/feast/GhostEscapeRecoveryGameTests.java').read_text(encoding='utf-8')
+        self.assertIn('basementCanUseItsSecondOriginalDoorWhenFirstMissing',native)
+
     def test_chase_spots_are_not_permanently_exhausted(self):
         hiding=source('feast/GhostEscapeHiding.java')
         mother=source('feast/GhostEscapeMother.java')
