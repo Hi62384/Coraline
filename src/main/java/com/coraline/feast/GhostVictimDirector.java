@@ -99,6 +99,14 @@ public final class GhostVictimDirector {
             case INTRODUCTION->{if(child!=null)child.getNavigation().stop();move(p,s,n,GhostVictimProgress.Phase.FIRST_SUPPER);}
             case BEDTIME->{n.putString("LastRouteBlocker","The child is still trying to reach a safe position beside the bedroom mirror. Clear the route and the conversation will resume.");n.putString("Blocker","Waiting for the child to reach the bedroom mirror.");StoryCutsceneWatchdog.retry(s,"next_victim");}
             case NIGHT_PREPARATION->{
+                // An agreed Seeing Stone errand has its own physical return and
+                // custody receipt. A scene watchdog must never end the night
+                // before that original visit is resolved.
+                if(GhostEscapeProgress.homeErrandPending(n)){
+                    n.putString("Blocker","Waiting for the child's original Seeing Stone visit to finish. No home errand was skipped.");
+                    StoryCutsceneWatchdog.retry(s,"next_victim");
+                    return;
+                }
                 var home=AcceptedButtonEyesWorld.level(p);
                 if(child==null||home==null){StoryCutsceneWatchdog.retry(s,"next_victim");return;}
                 if(child!=null&&home!=null&&child.level()!=home){
@@ -361,7 +369,13 @@ public final class GhostVictimDirector {
                     if(!(transferred instanceof TycoonNpc same))return;same.setInvisible(true);same.noPhysics=true;same.setNoAi(true);same.getNavigation().stop();
                     GhostVictimActors.remember(n,same);n.putBoolean("ChildAtHome",true);OtherMotherLoop.changed(p);
                 }
-                if(GhostVictimProgress.age(n)>=GhostVictimConfig.PREPARATION_SECONDS.get()*20L){GhostVictimActivities.finishScouting(p,s,n);GhostVictimSchedule.morning(n);n.remove("ChildRoutine");OtherMotherLoop.changed(p);}
+                if(GhostVictimProgress.age(n)>=GhostVictimConfig.PREPARATION_SECONDS.get()*20L){
+                    if(GhostEscapeProgress.homeErrandPending(n)){
+                        n.putString("Blocker","Waiting for the real Seeing Stone home errand to complete before the next morning.");
+                        return;
+                    }
+                    GhostVictimActivities.finishScouting(p,s,n);GhostVictimSchedule.morning(n);n.remove("ChildRoutine");OtherMotherLoop.changed(p);
+                }
             }
             case DAILY_ARRIVAL->{
                 if(child==null)return;var state=level.getBlockState(realm.doorPos);if(!state.hasProperty(TinyDoorBlock.FACING))return;
