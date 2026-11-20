@@ -178,6 +178,24 @@ public final class GhostEscapeCovert {
             default->{return false;}
         }
     }
+    /** Bounded, physically verified visitor staging; never teleports the child
+     * or interprets the absence of a safe landing as a completed handoff. */
+    static BlockPos visitorLanding(net.minecraft.server.level.ServerLevel level,BlockPos child,int side,BlockPos excluded){
+        if(level==null||child==null||(side!=1&&side!=-1))return null;
+        for(int dx:new int[]{2,3,1,4})for(int dz:new int[]{0,1,-1,2,-2})
+            for(int dy:new int[]{0,1,-1}){
+                var at=child.offset(side*dx,dy,dz);
+                if(at.equals(excluded)||at.equals(child)||at.distSqr(child)>25||!level.hasChunkAt(at)
+                        ||!level.hasChunkAt(at.above())||!level.hasChunkAt(at.below())
+                        ||!level.getBlockState(at).isAir()||!level.getBlockState(at.above()).isAir()
+                        ||!level.getFluidState(at).isEmpty()||!level.getFluidState(at.above()).isEmpty()
+                        ||!level.getBlockState(at.below()).isFaceSturdy(level,at.below(),net.minecraft.core.Direction.UP))continue;
+                var box=new net.minecraft.world.phys.AABB(at.getX()+.05,at.getY(),at.getZ()+.05,
+                        at.getX()+.95,at.getY()+1.95,at.getZ()+.95);
+                if(level.noCollision(box))return at;
+            }
+        return null;
+    }
     private static boolean retrieveStoneFromVisitors(ServerPlayer p,VisitData.Scene s,CompoundTag escape,
                                                    com.coraline.tycoon.TycoonNpc child){
         var held=stone(escape);
@@ -188,9 +206,16 @@ public final class GhostEscapeCovert {
         }
         var home=(net.minecraft.server.level.ServerLevel)child.level();
         var front=child.blockPosition();
-        var first=com.coraline.otherworld.OtherWorld.safePlayer(home,front.east(2));
-        var second=com.coraline.otherworld.OtherWorld.safePlayer(home,front.west(2));
-        if(first==null||second==null||first.equals(second)||first.distSqr(front)>25||second.distSqr(front)>25)return false;
+        // The vanilla safePlayer search can choose the SAME fallback for
+        // both visitors when the east/west cells are obstructed. That used to
+        // leave a valid home errand pending forever, even with other safe floor
+        // near the child. Select two distinct, actually clear spots locally.
+        var first=visitorLanding(home,front,1,null);
+        var second=visitorLanding(home,front,-1,first);
+        if(first==null||second==null){
+            escape.putString("Blocker","The Seeing Stone visitors need two clear standing spaces near the child's real home arrival.");
+            return false;
+        }
         var spink=ShowActors.acquire(p,s,"miss_spink",home,net.minecraft.world.phys.Vec3.atBottomCenterOf(first));
         var forcible=ShowActors.acquire(p,s,"miss_forcible",home,net.minecraft.world.phys.Vec3.atBottomCenterOf(second));
         if(spink==null||forcible==null||spink.level()!=home||forcible.level()!=home
