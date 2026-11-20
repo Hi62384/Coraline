@@ -54,21 +54,41 @@ public final class GhostEscapeHiding {
         escape.putLong("HideReplanAfter",now+200);
         var previous=escape.getList("HidingNodes",Tag.TAG_COMPOUND);
         String initial=escape.getString("InitialHide");
-        var compromised=new java.util.HashSet<Long>();
+        // A searched hiding spot is temporarily unsafe, not permanently
+        // deleted from the story. Otherwise every discovered cover is carried
+        // into every rebuilt graph forever and an exhausted pursuit can never
+        // leave WAGER, even after Mother has departed.
+        var compromised=new java.util.HashMap<Long,Long>();
         for(var tag:previous){
             var row=(CompoundTag)tag;
-            if(row.getBoolean("Compromised"))compromised.add(row.getLong("Position"));
+            if(!row.getBoolean("Compromised")||!row.contains("Position",Tag.TAG_LONG))continue;
+            long marked=row.contains("CompromisedAt",Tag.TAG_LONG)?row.getLong("CompromisedAt"):now;
+            row.putLong("CompromisedAt",marked); // Durable migration for older saves.
+            compromised.put(row.getLong("Position"),marked);
         }
         escape.remove("HidingNodes");
         if(!prepare(player,scene,ghost,child)){
             escape.put("HidingNodes",previous);escape.putString("InitialHide",initial);
             return false;
         }
+        var mother=AcceptedButtonEyesWorld.mother(player,scene);
         for(var tag:escape.getList("HidingNodes",Tag.TAG_COMPOUND)){
-            var row=(CompoundTag)tag;
-            if(compromised.contains(row.getLong("Position")))row.putBoolean("Compromised",true);
+            var row=(CompoundTag)tag;var marked=compromised.get(row.getLong("Position"));
+            if(marked==null)continue;
+            var position=BlockPos.of(row.getLong("Position")).getCenter();
+            boolean nearby=mother!=null&&mother.level()==child.level()&&mother.distanceToSqr(position)<=64;
+            if(stillCompromised(now,marked,nearby)){
+                row.putBoolean("Compromised",true);
+                row.putLong("CompromisedAt",marked);
+            }
         }
+        OtherMotherLoop.changed(player);
         return true;
+    }
+    /** Physical cover can re-enter the pool only after a full minute and
+     * after Mother has left its eight-block vicinity. */
+    static boolean stillCompromised(long now,long markedAt,boolean motherNearby){
+        return now<markedAt||now-markedAt<1200||motherNearby;
     }
     static String coverLabel(int room,String cover){
         String area=switch(room){case 0->"Hall";case 1->"Kitchen";case 2->"Living room";case 3->"Dining room";case 4->"Bedroom";default->"Upstairs corridor";};
