@@ -106,6 +106,10 @@ class CurrentStoryRepairs(unittest.TestCase):
 
     def test_post_escape_tea_visitor_recovery_preserves_original_uuid_and_refuses_unverified_absence(self):
         tea=source('feast/MissingParentsTea.java')
+        actor=tea.split('private static TeaVisitorEntity actor(',1)[1].split('private static void spawn(',1)[0]
+        self.assertIn('e.getType()==type',actor)
+        self.assertIn('n.getUUID("Owner").equals(e.getPersistentData().getUUID("TeaOwner"))',actor)
+        self.assertIn('n.getUUID("Token").equals(e.getPersistentData().getUUID("TeaToken"))',actor)
         proof=tea.split('static boolean teaActorMissingProof(',1)[1].split('private static boolean recoverAbsentVisitor(',1)[0]
         self.assertIn('LegacyActorRecovery.Result.ABSENT',proof)
         recover=tea.split('private static boolean recoverAbsentVisitor(',1)[1].split('private static void spawn(',1)[0]
