@@ -30,7 +30,7 @@ public final class GhostVictimProgressGameTests {
         h.succeed();
     }
     @GameTest(template="empty") public static void acceptedEscapeChoiceVisibilityMatchesProgressPrerequisites(GameTestHelper h){
-        var n=session();GhostVictimProgress.trust(n,.45,.65);
+        var n=session();GhostVictimProgress.trust(n,.45,1);
         GhostVictimProgress.move(n,GhostVictimProgress.Phase.BEDTIME);
         h.assertFalse(GhostVictimMirrors.escapePlanOfferReady(n),"Alliance offered before the private bedtime conversation window");
         n.putLong("BedtimeWindowStarted",GhostVictimProgress.clock(n));
