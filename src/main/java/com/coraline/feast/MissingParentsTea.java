@@ -165,7 +165,16 @@ public final class MissingParentsTea {
     static void go(ServerPlayer p,VisitData.Scene s,Phase next){ShowPlayback.transition(p,s,sound(next));var n=data(s);n.putString("StoryPhase",next.name());n.putInt("Ticks",0);n.remove("AudioStarted");n.remove("Blocker");if(next==Phase.WAITING_FOR_EXIT&&n.getBoolean("FloatingLanding"))TeaVisitTravel.inviteReturn(p);save(p,s,true);}
     private static BlockPos center(CompoundTag n){return BlockPos.of(n.getLong("House"));}
     private static Vec3 point(CompoundTag n,double x,double y,double z){var c=center(n);return new Vec3(c.getX()+x,c.getY()+y,c.getZ()+z);}
-    private static TeaVisitorEntity actor(ServerPlayer p,CompoundTag n,String key){if(!n.hasUUID(key))return null;if(n.contains(key+"Position"))p.server.overworld().getChunkAt(BlockPos.of(n.getLong(key+"Position")));return p.server.overworld().getEntity(n.getUUID(key)) instanceof TeaVisitorEntity e&&n.getUUID("Token").equals(e.getPersistentData().getUUID("TeaToken"))?e:null;}
+    private static TeaVisitorEntity actor(ServerPlayer p,CompoundTag n,String key){
+        if(!n.hasUUID(key)||!n.hasUUID("Token")||!n.hasUUID("Owner"))return null;
+        if(n.contains(key+"Position"))p.server.overworld().getChunkAt(BlockPos.of(n.getLong(key+"Position")));
+        var raw=p.server.overworld().getEntity(n.getUUID(key));
+        if(!(raw instanceof TeaVisitorEntity e)||!List.of("Spink","Forcible").contains(key))return null;
+        var type=(key.equals("Spink")?ModEntities.SPINK_VISITOR:ModEntities.FORCIBLE_VISITOR).get();
+        return e.getType()==type
+                &&n.getUUID("Token").equals(e.getPersistentData().getUUID("TeaToken"))
+                &&n.getUUID("Owner").equals(e.getPersistentData().getUUID("TeaOwner"))?e:null;
+    }
     /** Restore only a temporary tea-visit actor proven truly absent from
      * every native entity region. A saved UUID that is just unloaded or whose
      * file cannot be checked is NEVER authority for a duplicate spawn. */
