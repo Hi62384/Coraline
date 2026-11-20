@@ -60,8 +60,15 @@ public final class GhostEscapeProgress {
         var n=data(ghost);if(!owns(ghost,n)||phase(n)!=Phase.STONE_REPORT||!n.getBoolean("StoneObtained")||!actualMirrorConversation||!GhostVictimProgress.mirror(ghost))return false;
         move(n,Phase.READY,GhostVictimProgress.clock(ghost));return true;
     }
+    /** A discovered eye room stays known after a failed or timed-out key
+     * ambush. READY is a retryable planning state, not an instruction to
+     * repeat the same already-completed Seeing Stone room search. */
+    static boolean keyAmbushReady(CompoundTag n){
+        return (phase(n)==Phase.ROOM_REPORT||phase(n)==Phase.READY)
+                &&n.getBoolean("EyeRoomKnown")&&!n.getBoolean("KeyStolen");
+    }
     public static boolean assignAmbush(CompoundTag ghost,String authoredSpot,boolean actualMirrorConversation){
-        var n=data(ghost);if(!owns(ghost,n)||phase(n)!=Phase.ROOM_REPORT||!n.getBoolean("EyeRoomKnown")||n.getBoolean("KeyStolen")
+        var n=data(ghost);if(!owns(ghost,n)||!keyAmbushReady(n)
             ||!actualMirrorConversation||!GhostVictimProgress.mirror(ghost)||authoredSpot==null||!authoredSpot.matches("[a-z_0-9]{1,40}"))return false;
         n.putString("TargetHide",authoredSpot);move(n,Phase.APPROACH_AMBUSH,GhostVictimProgress.clock(ghost));return true;
     }
