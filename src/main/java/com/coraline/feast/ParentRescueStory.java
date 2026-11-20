@@ -104,7 +104,25 @@ public final class ParentRescueStory {
             case KITCHEN->tickKitchenArrival(p,s,m);
             case WAIT_KITCHEN_SEAT->{if(walkKitchenMother(p,s,m))m.familyGesture(60,5);FirstEscapeStory.hint(p,"Right-click a kitchen chair to sit.");}
             case H,I,J,K->{walkKitchenMother(p,s,m);var stoveAt=BlockPos.of(n.getLong("Stove"));FirstEscapeScene.ensure(p,s,"CookingPot",CinematicPropEntity.RESCUE_POT,0,p.serverLevel(),Vec3.atBottomCenterOf(stoveAt).add(0,.9,0));if(state!=Phase.I&&t%12==0)p.serverLevel().sendParticles(net.minecraft.core.particles.ParticleTypes.SMOKE,stoveAt.getX()+.5,stoveAt.getY()+1.25,stoveAt.getZ()+.5,1,.12,.05,.12,.005);m.familyGesture(state==Phase.I?0:state==Phase.K&&t>=20?61:60,5);if(done){if(state==Phase.H)go(p,s,Phase.I);else if(state==Phase.I)go(p,s,Phase.J);else if(state==Phase.J)go(p,s,Phase.K);else go(p,s,Phase.SERVE);}}
-            case SERVE->{retireKitchenGift(p,s);var plate=FirstEscapeScene.ensure(p,s,"Meal",CinematicPropEntity.RESCUE_MEAL,0,p.serverLevel(),m.position().add(0,1,.4));var target=BlockPos.of(n.getLong("KitchenTable"));if(plate!=null)plate.setPos(m.position().add(0,1,.4));m.familyGesture(62,5);if(plate!=null&&MissingParentsCat.walk(m,Vec3.atBottomCenterOf(target.west()),.65)){plate.setPos(Vec3.atBottomCenterOf(target).add(0,.9,0));n.putBoolean("MealPlaced",true);go(p,s,Phase.L);}}
+            case SERVE->{
+                retireKitchenGift(p,s);
+                var plate=FirstEscapeScene.ensure(p,s,"Meal",CinematicPropEntity.RESCUE_MEAL,0,p.serverLevel(),m.position().add(0,1,.4));
+                if(!n.contains("KitchenTable",Tag.TAG_LONG)){n.putString("Blocker","Waiting for the original kitchen table.");break;}
+                var target=BlockPos.of(n.getLong("KitchenTable"));
+                if(plate!=null)plate.setPos(m.position().add(0,1,.4));
+                m.familyGesture(62,5);
+                // A permanent navigation obstruction near the table must not
+                // keep the whole parent-rescue plot stuck on a silent scene.
+                // After a long grace, place the SAME Mother at verified safe
+                // serving feet, then physically set down the original plate.
+                boolean arrived=MissingParentsCat.walk(m,Vec3.atBottomCenterOf(target.west()),.65);
+                if(!arrived&&plate!=null&&serveRecoveryDue(t)&&t%20==0)
+                    arrived=recoverServingActor(p,s,m,target);
+                if(plate!=null&&arrived){
+                    plate.setPos(Vec3.atBottomCenterOf(target).add(0,.9,0));
+                    n.putBoolean("MealPlaced",true);n.remove("Blocker");go(p,s,Phase.L);
+                }
+            }
             case L->{retireKitchenGift(p,s);m.lookAtStoryPlayer(p);if(done)go(p,s,Phase.M);}
             case M->{retireKitchenGift(p,s);m.lookAtStoryPlayer(p);m.familyGesture(63,5);if(done)go(p,s,Phase.LOOK_AWAY);}
             case LOOK_AWAY->{m.lookAtStoryPlayer(p);FirstEscapeStory.hint(p,"Look away from Other Mother.");if(!gaze(p,m.position().add(0,1.5,0),.20))n.putInt("AwayTicks",n.getInt("AwayTicks")+1);else n.putInt("AwayTicks",0);if(n.getInt("AwayTicks")>=12){n.putLong("MotherVanishedAt",m.blockPosition().asLong());m.setInvisible(true);m.getNavigation().stop();n.putBoolean("MotherAbsent",true);go(p,s,Phase.WAIT_LOOK_BACK);}}
@@ -316,6 +334,31 @@ public final class ParentRescueStory {
         if(wardrobe.distanceToSqr(target)>=.04)return false;
         n.putBoolean("DoorLocked",true);n.putBoolean("WardrobeBlocking",true);
         n.remove("Blocker");OtherMotherLoop.changed(p);return true;
+    }
+    static boolean serveRecoveryDue(int ticks){return ticks>=360;}
+    private static boolean recoverServingActor(ServerPlayer p,VisitData.Scene s,ParentEntity mother,BlockPos table){
+        if(!s.owner.equals(p.getUUID())||phase(s)!=Phase.SERVE||mother.isRemoved()
+                ||mother.level()!=p.level()||!mother.isOtherParent())return false;
+        var level=p.serverLevel();
+        var wanted=table.west();
+        for(var spot:List.of(wanted,wanted.north(),wanted.south(),wanted.west())){
+            var candidate=Vec3.atBottomCenterOf(spot);
+            if(!level.getBlockState(spot.below()).isFaceSturdy(level,spot.below(),Direction.UP))continue;
+            var box=mother.getBoundingBox().move(candidate.subtract(mother.position()));
+            if(!level.getWorldBorder().isWithinBounds(box)||!level.noCollision(mother,box))continue;
+            var eye=candidate.add(0,.6,0);
+            if(level.clip(new net.minecraft.world.level.ClipContext(eye,
+                    Vec3.atBottomCenterOf(wanted).add(0,.6,0),
+                    net.minecraft.world.level.ClipContext.Block.COLLIDER,
+                    net.minecraft.world.level.ClipContext.Fluid.NONE,mother)).getType()!=HitResult.Type.MISS)continue;
+            mother.stopRiding();mother.getNavigation().stop();mother.setPos(candidate);
+            mother.setDeltaMovement(Vec3.ZERO);
+            if(MissingParentsCat.arrived(mother,Vec3.atBottomCenterOf(wanted))){
+                OtherMotherLoop.changed(p);return true;
+            }
+        }
+        data(s).putString("Blocker","Clear a reachable serving space beside the original kitchen table.");
+        return false;
     }
     public static BlockPos cookingStand(net.minecraft.server.level.ServerLevel level,BlockPos stove){var state=level.getBlockState(stove);var facing=state.hasProperty(HorizontalDirectionalBlock.FACING)?state.getValue(HorizontalDirectionalBlock.FACING):Direction.NORTH;return stove.relative(facing);}
     static void tickKitchenArrival(ServerPlayer p,VisitData.Scene s,ParentEntity mother){
