@@ -1,5 +1,22 @@
 # Coraline story softlock audit
 
+## Further review — 2026-11-20 (Wybie shoe miss, full rescue route)
+
+The previous shoe-miss fix was insufficient: a recovered projectile was placed near/in the owner's own feet and only a tiny 0.8 m prop could be clicked. The player could be stuck looking for the pickup even though the same UUID remained saved.
+
+**Production fixes on main:**
+
+- The same saved original shoe is now recoverable by pressing **Use** during THROW_SHOE after a miss (or by clicking the prop). Client input uses the current story Choice nonce; server verifies owner, scene phase, recorded UUID, world, cue and missed state. A second use while flying is rejected; no new shoe/item/UUID is created.
+- Missed shoe placement checks clear ground and unobstructed view in front of the owner. When no safe placement exists, the Use input still retries the original even if its fallback ground location is awkward.
+- A shot that misses into empty air is capped after 45 ticks or 24 blocks (instead of 100 ticks). Wall and below-floor misses are immediate. Only a real collision with the canonical Wybie hitbox advances to MISSING_E.
+- When a saved First Escape post-tunnel checkpoint is loaded in the wrong dimension, recovery attempts the exact owner-bound original Little Door return landing before ticking the Overworld story. Later Parent Rescue sessions are explicitly exempt from this transfer.
+- Native GameTest fixtures for repeated miss, wrong-nonce/repeated input, flight timeout and distance, same projectile identity and original Overworld phase now exist, along with source-level regressions.
+
+**Independent executable tests:** five Java helper source files were copied from GitHub main, verified byte-for-byte against their Git blob SHA, compiled with javac and executed using a standalone Java audit runner: **932,894 assertions passed** for original First Escape phase rules, boss/web/tunnel timing, Cat animation and audio clock boundaries, and a *modeled* same-UUID shoe-retry state machine. A separate source-derived projectile/AABB geometry simulation covered **50,029** shot cases and checks, including world-wall occlusion, miss timeout and feasible Wybie hit angles. These are **not** Forge gameplay execution; the shoe state simulation and ray traces do not exercise Minecraft's actual engine.
+
+**Still unverified:** real Minecraft owner/guest hit registration, client Use input packet delivery, actual prop picking/terrain, cross-world save/restart, NPC pathfinding, full-length story and bosses. Windows runner remained disconnected, and no new GitHub Actions runs were available. The 16 historically failing full-server GameTests have not been re-run to completion.
+
+
 ## Follow-up review — 2026-11-19 (main escape through post-boss reunion)
 
 Scope: First Escape (including the rejected button-eye choice, real Wybie shoe and bicycle departure), the temporary Spink/Forcible tea visit, Cat/mirror and restored return tunnel, the parent-return chapter, all three rescue eye bosses and chase legs, the final Other Mother web confrontation, the real Little Door exit/lock and the reunion/dream cutscenes.
