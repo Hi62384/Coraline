@@ -29,6 +29,22 @@ public final class GhostVictimProgressGameTests {
                 "Unknown extra button action was accepted");
         h.succeed();
     }
+    @GameTest(template="empty") public static void acceptedEscapeChoiceVisibilityMatchesProgressPrerequisites(GameTestHelper h){
+        var n=session();GhostVictimProgress.trust(n,.45,.65);
+        GhostVictimProgress.move(n,GhostVictimProgress.Phase.BEDTIME);
+        h.assertFalse(GhostVictimMirrors.escapePlanOfferReady(n),"Alliance offered before the private bedtime conversation window");
+        n.putLong("BedtimeWindowStarted",GhostVictimProgress.clock(n));
+        h.assertTrue(GhostVictimMirrors.escapePlanOfferReady(n),"The ready child cannot offer the escape plan during a private bedtime window");
+        var escape=GhostEscapeProgress.data(n);escape.putUUID("Attempt",UUID.randomUUID());
+        h.assertFalse(GhostVictimMirrors.escapePlanOfferReady(n),"Escape plan was offered again after the attempt began");
+        GhostEscapeProgress.move(escape,GhostEscapeProgress.Phase.ROOM_REPORT,0);
+        h.assertFalse(GhostVictimMirrors.ambushOfferReady(escape),"Key ambush offered without the actual eye room discovery");
+        escape.putBoolean("EyeRoomKnown",true);
+        h.assertTrue(GhostVictimMirrors.ambushOfferReady(escape),"Discovered eye room did not offer the key ambush");
+        escape.putBoolean("KeyStolen",true);
+        h.assertFalse(GhostVictimMirrors.ambushOfferReady(escape),"Already stolen key advertised another ambush");
+        h.succeed();
+    }
     @GameTest(template="empty") public static void bedtimeGetsANewPrivateWindowEveryNight(GameTestHelper h){
         var n=session();n.putLong("BedtimeWindowStarted",1);n.putLong("BedtimeArrived",1);var route=new CompoundTag();route.putLong("Started",1);n.put("MotherBedtimeExit",route);
         GhostVictimProgress.move(n,GhostVictimProgress.Phase.BEDTIME);
