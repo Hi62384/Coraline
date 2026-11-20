@@ -10,5 +10,31 @@ public final class RescuePlaybackGameTests {
     private static ServerPlayer player(GameTestHelper h){var l=h.getLevel();var p=new ServerPlayer(l.getServer(),l,new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(),"PlaybackQA"));p.connection=new net.minecraft.server.network.ServerGamePacketListenerImpl(p.server,new net.minecraft.network.Connection(net.minecraft.network.protocol.PacketFlow.SERVERBOUND),p);var s=new VisitData.Scene();s.owner=p.getUUID();s.door=java.util.UUID.randomUUID();s.loop.event.putInt("Serial",19);VisitData.get(p.server).scenes.put(s.owner,s);return p;}
     @GameTest(template="empty") public static void earlyEndSignalCannotSkipOriginalWallDuration(GameTestHelper h){var p=player(h);var s=OtherMotherLoop.scene(p);try{h.assertTrue(ShowPlayback.start(p,s,"reunion_a",false),"Existing original reunion recording missing");var n=ShowPlayback.data(s);var nonce=n.getUUID("Nonce");ShowPlayback.signal(p,java.util.UUID.randomUUID(),"reunion_a",0);h.assertFalse(n.getBoolean("Started"),"Foreign start nonce accepted");ShowPlayback.signal(p,nonce,"reunion_a",0);n.putInt("Position",n.getInt("Duration"));ShowPlayback.signal(p,nonce,"reunion_a",1);h.assertFalse(ShowPlayback.tick(p,s),"A fast server/early end ACK bypassed the original recording duration");h.assertTrue(n.getInt("Position")<n.getInt("Duration")&&!n.getBoolean("Finished"),"Recording clock was not bounded by elapsed audible time");}finally{ShowPlayback.stop(p,s);VisitData.get(p.server).scenes.remove(s.owner);}h.succeed();}
     @GameTest(template="empty") public static void validLateSignalsRecoverOnlyTheirOwnTimeoutNotARealPlaybackFailure(GameTestHelper h){var p=player(h);var s=OtherMotherLoop.scene(p);try{h.assertTrue(ShowPlayback.start(p,s,"reunion_a",false),"Existing original reunion recording missing");var n=ShowPlayback.data(s);var nonce=n.getUUID("Nonce");n.putBoolean("StartAckTimedOut",true);n.putString("Blocker","loading timeout");ShowPlayback.signal(p,java.util.UUID.randomUUID(),"reunion_a",0);h.assertTrue(n.contains("Blocker"),"Foreign ACK cleared loading timeout");ShowPlayback.signal(p,nonce,"reunion_a",0);h.assertFalse(n.contains("Blocker"),"Valid late start stayed permanently blocked");n.putBoolean("EndAckTimedOut",true);n.putString("Blocker","end timeout");ShowPlayback.signal(p,nonce,"reunion_b",1);h.assertTrue(n.contains("Blocker")&&!n.getBoolean("Ended"),"Wrong recording cleared end timeout");ShowPlayback.signal(p,nonce,"reunion_a",1);h.assertTrue(!n.contains("Blocker")&&n.getBoolean("Ended"),"Valid late original end ACK stayed permanently blocked");n.putBoolean("StartAckTimedOut",true);n.putBoolean("EndAckTimedOut",true);ShowPlayback.signal(p,nonce,"reunion_a",2);ShowPlayback.signal(p,nonce,"reunion_a",0);ShowPlayback.signal(p,nonce,"reunion_a",1);h.assertTrue(n.getString("Blocker").startsWith("Recording failed to play"),"Late ACK erased an actual decoder/playback failure");}finally{ShowPlayback.stop(p,s);VisitData.get(p.server).scenes.remove(s.owner);}h.succeed();}
+    @GameTest(template="empty") public static void savedPlaybackCannotStallSilentlyAfterRestart(GameTestHelper h){
+        var p=player(h);var s=OtherMotherLoop.scene(p);
+        try{
+            for(boolean acknowledged:new boolean[]{false,true}){
+                h.assertTrue(ShowPlayback.start(p,s,"reunion_b",false),"Original short reunion recording missing");
+                var n=ShowPlayback.data(s);var nonce=n.getUUID("Nonce");
+                if(acknowledged)ShowPlayback.signal(p,nonce,"reunion_b",0);
+                var saved=n.copy();
+                // Exactly what a restart does: the disk checkpoint still has
+                // its original nonce, but the in-memory request and audible
+                // timestamps have been lost.
+                ShowPlayback.stop(p,s);n.merge(saved);
+                h.assertFalse(ShowPlayback.tick(p,s),"Orphaned session completed without new real audio");
+                h.assertTrue(n.getString("Blocker").contains("lost its playback session"),
+                        "Saved recording silently waits instead of reporting interruption");
+                h.assertTrue(ShowPlayback.start(p,s,"reunion_b",false),
+                        "The same recording checkpoint could not restart safely");
+                h.assertFalse(nonce.equals(n.getUUID("Nonce")),
+                        "Old disconnected recording nonce was incorrectly reused");
+                h.assertFalse(n.contains("Blocker"),"Restart still reports a stale audio blocker");
+                h.assertFalse(ShowPlayback.tick(p,s),"Unacknowledged replacement audio skipped its duration");
+                ShowPlayback.stop(p,s);
+            }
+        }finally{ShowPlayback.stop(p,s);VisitData.get(p.server).scenes.remove(s.owner);}
+        h.succeed();
+    }
     private RescuePlaybackGameTests(){}
 }
