@@ -12,7 +12,8 @@ public final class ShowPlayback {
     public static CompoundTag data(VisitData.Scene s){if(!s.loop.event.contains("ShowPlayback"))s.loop.event.put("ShowPlayback",new CompoundTag());return s.loop.event.getCompound("ShowPlayback");}
     public static boolean start(ServerPlayer p,VisitData.Scene s,String sound,boolean music){
         if(!s.owner.equals(p.getUUID()))return false;
-        var n=data(s);if(n.getString("Sound").equals(sound)&&!n.getBoolean("Finished")&&ownsSession(p,s))return true;
+        var n=data(s);if(n.getString("Sound").equals(sound)&&!n.getBoolean("Finished")&&ownsSession(p,s)
+                &&n.hasUUID("Nonce")&&REQUESTED_AT.containsKey(n.getUUID("Nonce")))return true;
         int duration=ShowRecordings.duration(sound);if(duration<=0){n.putString("Blocker","Original recording unavailable: "+sound);return false;}
         stop(p,s);n.putUUID("Nonce",UUID.randomUUID());n.putUUID("SessionOwner",s.owner);n.putUUID("SessionRealm",s.door);n.putInt("SessionSerial",s.loop.event.getInt("Serial"));n.putString("Sound",sound);n.putBoolean("Music",music);n.putInt("Duration",duration);n.putInt("Position",0);n.putInt("LoadingTicks",0);n.putInt("EndWait",0);n.putBoolean("Started",false);n.putBoolean("Ended",false);n.putBoolean("Finished",false);n.remove("Blocker");
         n.remove("StartAckTimedOut");n.remove("EndAckTimedOut");n.remove("SafetySkipped");n.remove("SafetyLastGameTick");n.putInt("SafetyTicks",0);REQUESTED_AT.put(n.getUUID("Nonce"),System.nanoTime());ShowPlaybackNetwork.bind(p,n.getUUID("Nonce"),sound,music,s.owner,s.door,s.loop.event.getInt("Serial"),duration);VisitAudio.play(p,sound,music);OtherMotherLoop.changed(p);return true;
@@ -28,6 +29,15 @@ public final class ShowPlayback {
     public static boolean tick(ServerPlayer p,VisitData.Scene s){
         if(!s.owner.equals(p.getUUID()))return false;
         var n=data(s);if(debugSeeking(s)){ShowAudioSeek.tick(p,s);return false;}if(n.getString("Sound").isEmpty()||n.getBoolean("Finished"))return n.getBoolean("Finished");
+        // Saved NBT survives a server restart, but the acknowledged mixer run
+        // and in-memory request clock do not. An orphaned started=true recording
+        // previously ticked silently for Duration+600, unable to finish itself.
+        // Report the interrupted session immediately so the owning chapter can
+        // retry this same recording checkpoint with a fresh nonce.
+        if(!n.hasUUID("Nonce")||!REQUESTED_AT.containsKey(n.getUUID("Nonce"))){
+            n.putString("Blocker","The saved recording lost its playback session after a restart; retrying the same checkpoint.");
+            OtherMotherLoop.changed(p);return false;
+        }
         // Before Blocker: missing acknowledgements used to return forever.
         // Count calls only, never elapsed offline time or /time command jumps.
         long gameTick=p.server.overworld().getGameTime();
