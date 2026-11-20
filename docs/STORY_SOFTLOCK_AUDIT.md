@@ -1,5 +1,24 @@
 # Coraline story softlock audit
 
+## Follow-up audit — 2026-11-20 (missing shoe, finale floor, kitchen service)
+
+Latest full-path inspection revisited First Escape and Wybie's thrown shoe; Miss Spink/Forcible and Cat; the physical return tunnel; parent-return kitchen; first three ghost-eye bosses and Ratmaster chase; finale Cat/web/tunnel and Little Door key; real-parent reunion and the ghost children's dream.
+
+### Newly fixed
+
+1. **Truly lost original shoe entity:** If the canonical shoe was removed from Minecraft entity storage, its saved UUID prevented new inventory issuance, but the shoe tick and Use retry could not find anything to interact with. The flight can now become a miss after 60 ticks of unresolved entity lookup. The game first holds/loads its saved chunk, then uses LegacyActorRecovery.check to prove that UUID is genuinely ABSENT from native entity storage. It can reconstruct exactly one shoe with the same saved UUID and story ownership only after this proof. PRESENT, WAITING, UNVERIFIED and any live UUID collision never permit replacement. Successful physical hits retire both the old flight and any stale missing-state flags.
+2. **Final Other Mother floor-collapse perimeter stall:** In FINAL_O, the player can stand on surviving room edges even when the floor opening has been verified, so the stage could wait indefinitely for a fall. After the real recording and an 80-tick grace window, a bounded recovery verifies air under the center, player clearance, world border and the original dimension, then moves the real owner into the already-open falling gap. The boss's real web transfer, passage and physical exit are still required. Recovery cooldown uses persistent world time to survive chapter tick resets.
+3. **Parent-rescue kitchen serving path stall:** The scene previously waited indefinitely if the original Other Mother couldn't navigate beside the kitchen table; the watchdog only repeated a blocker. After 360 normal walking ticks, a safe, collision-checked same-actor recovery may bring her to the original serving position. Progress still requires the existing physical meal prop, with a clear blocker if no safe position exists.
+
+### Tests/evidence
+
+- Retrieved main source and checked 52 First Escape, 18 tea, 15 Cat, 23 parent-return and 70 final-rescue checkpoint names (178 total) and critical handoff and fail-safe logic.
+- Copied five exact current-repository pure Java helper classes, confirmed their git hash-object blobs against GitHub (FirstEscapeTimeline, RescueChallengeMath, RescueWebLayout, StoryPlaybackClock, MissingParentsCatTimeline), compiled with javac --release 17 and executed a deterministic runner. **1,796,194 assertions passed** for story ordering, combat beat/vulnerability windows, Cat animations, recording clocks, web route/struggle and a **modeled** lost-shoe/retry sequence. The shoe model does not run Minecraft's entity registry, storage or collision engine.
+- Added source-regression assertions and Forge GameTests for the final floor-timing and kitchen-navigation-fallback gates. These new Forge GameTests are committed but were not executed.
+
+**Not yet certified:** The Windows native command runner was offline, and the repository had no GitHub Actions runs. No Minecraft client/server gameplay simulation, forge build, chunk save/reload, real entity-discard proof, actor pathfinding or complete bossfight-to-reunion playthrough was performed. Existing historical failed native GameTests were not rerun or declared fixed.
+
+
 ## Further review — 2026-11-20 (Wybie shoe miss, full rescue route)
 
 The previous shoe-miss fix was insufficient: a recovered projectile was placed near/in the owner's own feet and only a tiny 0.8 m prop could be clicked. The player could be stuck looking for the pickup even though the same UUID remained saved.
