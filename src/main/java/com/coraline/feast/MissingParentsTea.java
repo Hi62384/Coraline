@@ -206,13 +206,14 @@ public final class MissingParentsTea {
     }
     private static void spawn(ServerPlayer p,VisitData.Scene s){
         var n=data(s);
+        boolean created=false;
         for(String key:List.of("Spink","Forcible")){
             if(n.hasUUID(key)){
                 if(actor(p,n,key)==null&&p.tickCount%20==0)recoverAbsentVisitor(p,s,n,key);
                 continue;
             }
             var e=(key.equals("Spink")?ModEntities.SPINK_VISITOR:ModEntities.FORCIBLE_VISITOR).get().create(p.server.overworld());
-            if(e==null)return;
+            if(e==null)break;
             e.setPos(key.equals("Spink")?point(n,.5,0,-6.5):point(n,-5.5,0,2.5));
             e.getPersistentData().putUUID("TeaOwner",s.owner);
             e.getPersistentData().putUUID("TeaToken",n.getUUID("Token"));
@@ -220,9 +221,13 @@ public final class MissingParentsTea {
             e.setOnGround(true);
             if(p.server.overworld().addFreshEntity(e)){
                 n.putUUID(key,e.getUUID());n.putLong(key+"Position",e.blockPosition().asLong());
+                created=true;
             }
         }
-        save(p,s,true);
+        // Missing saved actors can be probed on every tick of a stalled scene.
+        // Do not save all server data on every probe; commit only new identities.
+        // recoverAbsentVisitor() writes its own exact-UUID recovery checkpoint.
+        if(created)save(p,s,true);
     }
     /** Collision-aware scripted walking in the established open lanes, with native pathfinding recovery. */
     private static boolean walk(TeaVisitorEntity e,Vec3 target,double speed){if(e==null)return false;if(e.isPassenger())e.stopRiding();target=walkFloor(e,target);var delta=target.subtract(e.position()).multiply(1,0,1);if(delta.lengthSqr()<.035){e.getNavigation().stop();return true;}e.setNoAi(false);e.setMaxUpStep(.6F);gaze(e,target.add(0,1.4,0));var step=delta.normalize().scale(Math.min(speed,delta.length()));if(e.level().noCollision(e,e.getBoundingBox().move(step))){e.getNavigation().stop();e.move(MoverType.SELF,step);e.setOnGround(true);}else if(e.tickCount%15==0||e.getNavigation().isDone())e.getNavigation().moveTo(target.x,target.y,target.z,.8);return false;}
