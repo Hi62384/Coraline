@@ -30,13 +30,15 @@ public final class ShowPlayback {
         if(!s.owner.equals(p.getUUID()))return false;
         var n=data(s);if(debugSeeking(s)){ShowAudioSeek.tick(p,s);return false;}if(n.getString("Sound").isEmpty()||n.getBoolean("Finished"))return n.getBoolean("Finished");
         // Saved NBT survives a server restart, but the acknowledged mixer run
-        // and in-memory request clock do not. An orphaned started=true recording
-        // previously ticked silently for Duration+600, unable to finish itself.
-        // Report the interrupted session immediately so the owning chapter can
-        // retry this same recording checkpoint with a fresh nonce.
+        // and in-memory request clock do not. With Started=true, the old
+        // recording could tick silently for Duration+600 without finishing.
+        // Tea/Cat cutscenes also cannot all retry a Blocker on their own, so
+        // rebind the SAME checkpoint now with a fresh authenticated nonce.
         if(!n.hasUUID("Nonce")||!REQUESTED_AT.containsKey(n.getUUID("Nonce"))){
-            n.putString("Blocker","The saved recording lost its playback session after a restart; retrying the same checkpoint.");
-            OtherMotherLoop.changed(p);return false;
+            String sound=n.getString("Sound");boolean music=n.getBoolean("Music");
+            if(!start(p,s,sound,music)&&n.getString("Blocker").isEmpty())
+                n.putString("Blocker","The interrupted recording could not be restarted.");
+            return false;
         }
         // Before Blocker: missing acknowledgements used to return forever.
         // Count calls only, never elapsed offline time or /time command jumps.
