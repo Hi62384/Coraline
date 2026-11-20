@@ -254,8 +254,7 @@ public final class GhostVictimMirrors {
     }
     /** No key-stealing invitation before the eyes' real room is discovered. */
     static boolean ambushOfferReady(CompoundTag escape){
-        return GhostEscapeProgress.phase(escape)==GhostEscapeProgress.Phase.ROOM_REPORT
-                &&escape.getBoolean("EyeRoomKnown")&&!escape.getBoolean("KeyStolen");
+        return GhostEscapeProgress.keyAmbushReady(escape);
     }
     private static void addOption(ListTag visible,ListTag actions,String action,String label){var entry=new CompoundTag();entry.putString("Action",action);actions.add(entry);visible.add(StringTag.valueOf(label));}
     private GhostVictimMirrors(){}
