@@ -275,7 +275,19 @@ public final class FirstEscapeStory {
     public static boolean interact(ServerPlayer p,CinematicPropEntity prop){var s=OtherMotherLoop.scene(p);if(!engaged(s)||!prop.owned(s)||p.distanceToSqr(prop)>16)return false;if(MissingParentsCat.interact(p,prop))return true;var phase=phase(s);var n=data(s);
         if(prop.kind()==CinematicPropEntity.STORY_CANE&&phase==FIND_CANE){if(giveTool(p,s,false)){n.putBoolean("CaneCollected",true);prop.discard();n.remove("Cane");go(p,s,CANE_COLLECTED);sfx(p,p.blockPosition(),SoundEvents.ITEM_PICKUP,.7F,1);}return true;}
         if(prop.kind()==CinematicPropEntity.ROACH_WARDROBE&&phase==PUSH_WARDROBE){var w=wybie(p,s);if(w!=null&&w.distanceToSqr(prop)<36)go(p,s,PUSHING);else hint(p,"Wait for Wybie to reach the wardrobe.");return true;}
-        if(prop.kind()==CinematicPropEntity.STORY_SHOE&&phase==THROW_SHOE){if(giveTool(p,s,true)){prop.discard();n.remove("ShoeFlight");}return true;}return !ParentRescueStory.started(s)&&phase!=ESCAPE_COMPLETE
+        if(prop.kind()==CinematicPropEntity.STORY_SHOE&&phase==THROW_SHOE){
+            // Re-throw the SAME authenticated shoe after a miss. The original
+            // inventory item was already spent and its co-op custody receipt
+            // still exists; calling giveTool here cannot safely issue another.
+            if(n.hasUUID("ShoeFlight")&&prop.getUUID().equals(n.getUUID("ShoeFlight"))&&prop.cue()==1){
+                prop.setPos(p.getEyePosition().add(p.getLookAngle().scale(.4)));
+                prop.setDeltaMovement(p.getLookAngle().scale(1.05));
+                prop.frame(0,0,0);n.remove("ShoeMissed");
+                n.putLong("ShoeFlightPosition",prop.blockPosition().asLong());
+                p.swing(InteractionHand.MAIN_HAND,true);OtherMotherLoop.changed(p);
+            }
+            return true;
+        }return !ParentRescueStory.started(s)&&phase!=ESCAPE_COMPLETE
             &&prop.owner.equals(p.getUUID())&&prop.kind()>=CinematicPropEntity.STORY_CANE
             &&prop.kind()<=CinematicPropEntity.STORY_SHOE;
     }
@@ -587,8 +599,36 @@ private static boolean openLittleDoor(ServerPlayer p,VisitData.Scene s,boolean o
     private static boolean gaze(ServerPlayer p,Mob w){var delta=w.getEyePosition().subtract(p.getEyePosition());return delta.lengthSqr()<24*24&&p.hasLineOfSight(w)&&p.getLookAngle().dot(delta.normalize())>.88;}
     private static void followReal(ServerPlayer p,VisitData.Scene s){var w=realWybie(p,s);if(w!=null){if(w.distanceToSqr(p)>9)walk(w,p.position(),1.15);else w.getNavigation().stop();w.getLookControl().setLookAt(p,30,20);} }
     public static void throwShoe(ServerPlayer p,ItemStack stack){var s=OtherMotherLoop.scene(p);if(!engaged(s)||phase(s)!=THROW_SHOE||!validTool(s,stack,true)||data(s).hasUUID("ShoeFlight"))return;var e=FirstEscapeScene.ensure(p,s,"ShoeFlight",CinematicPropEntity.STORY_SHOE,0,p.serverLevel(),p.getEyePosition().add(p.getLookAngle().scale(.4)));if(e!=null){stack.shrink(1);e.setDeltaMovement(p.getLookAngle().scale(1.05));e.frame(0,0,0);OtherMotherLoop.changed(p);} }
-    private static void shoe(ServerPlayer p,VisitData.Scene s){var e=FirstEscapeScene.prop(p,s,"ShoeFlight");if(e==null)return;if(e.cue()==1){finishShoeThrow(p,s,e);return;}data(s).putLong("ShoeFlightPosition",e.blockPosition().asLong());var w=realWybie(p,s);Vec3 from=e.position(),to=from.add(e.getDeltaMovement());var wall=p.serverLevel().clip(new ClipContext(from,to,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,e));var hit=w==null?Optional.<Vec3>empty():w.getBoundingBox().inflate(.2).clip(from,to);if(hit.isPresent()&&(wall.getType()==HitResult.Type.MISS||hit.get().distanceToSqr(from)<wall.getLocation().distanceToSqr(from))){w.gameGesture(49,40);finishShoeThrow(p,s,e);return;}
-        e.frame(e.cue(),e.time()+1,0);if(wall.getType()!=HitResult.Type.MISS||e.time()>100||e.getY()<p.getY()-12){finishShoeThrow(p,s,e);}else {e.setPos(to);e.setDeltaMovement(e.getDeltaMovement().add(0,-.04,0).scale(.98));} }
+    private static void shoe(ServerPlayer p,VisitData.Scene s){
+        var e=FirstEscapeScene.prop(p,s,"ShoeFlight");if(e==null)return;
+        var n=data(s);
+        if(e.cue()==1){
+            // The original projectile remains in the world and is the ONLY
+            // reusable shoe. Pull an unreachable miss back within reach after
+            // a bounded delay; never invent a second bound inventory item.
+            if(e.time()>=80&&p.distanceToSqr(e)>16){
+                e.setPos(p.position().add(0,.2,0));e.frame(1,0,0);
+                n.putLong("ShoeFlightPosition",e.blockPosition().asLong());OtherMotherLoop.changed(p);
+            }else e.frame(1,Math.min(80,e.time()+1),0);
+            hint(p,"The shoe missed. Right-click the shoe to throw it at Wybie again.");
+            return;
+        }
+        n.putLong("ShoeFlightPosition",e.blockPosition().asLong());
+        var w=realWybie(p,s);Vec3 from=e.position(),to=from.add(e.getDeltaMovement());
+        var wall=p.serverLevel().clip(new ClipContext(from,to,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,e));
+        var hit=w==null?Optional.<Vec3>empty():w.getBoundingBox().inflate(.2).clip(from,to);
+        if(hit.isPresent()&&(wall.getType()==HitResult.Type.MISS||hit.get().distanceToSqr(from)<wall.getLocation().distanceToSqr(from))){
+            w.gameGesture(49,40);finishShoeThrow(p,s,e);return;
+        }
+        e.frame(0,e.time()+1,0);
+        if(wall.getType()!=HitResult.Type.MISS||e.time()>100||e.getY()<p.getY()-12){
+            e.setDeltaMovement(Vec3.ZERO);e.setPos(p.position().add(0,.2,0));e.frame(1,0,0);
+            n.putBoolean("ShoeMissed",true);n.putLong("ShoeFlightPosition",e.blockPosition().asLong());
+            OtherMotherLoop.changed(p);
+        }else{
+            e.setPos(to);e.setDeltaMovement(e.getDeltaMovement().add(0,-.04,0).scale(.98));
+        }
+    }
     private static void finishShoeThrow(ServerPlayer p,VisitData.Scene s,CinematicPropEntity shoe){shoe.discard();data(s).remove("ShoeFlight");data(s).putBoolean("ShoeResolved",true);go(p,s,MISSING_E);}
     private static Vec3 escapeTarget(ServerPlayer p,VisitData.Scene s,CharacterEntity w){var n=data(s);if(n.contains("ChaseTarget")&&w.distanceToSqr(Vec3.atBottomCenterOf(BlockPos.of(n.getLong("ChaseTarget"))))>9)return Vec3.atBottomCenterOf(BlockPos.of(n.getLong("ChaseTarget")));n.remove("ChaseTarget");for(int radius:new int[]{12,18,24})for(var direction:Direction.Plane.HORIZONTAL){var at=OtherWorld.safePlayer(p.serverLevel(),w.blockPosition().relative(direction,radius));var path=w.getNavigation().createPath(at,0);if(path!=null&&path.canReach()&&path.getNodeCount()>5){n.putLong("ChaseTarget",at.asLong());return Vec3.atBottomCenterOf(at);}}return w.position();}
     private static void chase(ServerPlayer p,VisitData.Scene s,int ticks){var w=realWybie(p,s);if(w==null)return;walk(w,escapeTarget(p,s,w),2.35);var n=data(s);if(p.distanceToSqr(w)<20.25)n.putInt("ChaseClose",n.getInt("ChaseClose")+1);int required=Math.max(10,Math.min(30,ShowRecordings.duration("missing_parents_f")/5));if(n.getInt("ChaseClose")>=required&&!n.getBoolean("ChaseRewardEarned")){n.putBoolean("ChaseRewardEarned",true);OtherMotherLoop.changed(p);}payChaseReward(p,s);hint(p,"Chase Wybie!");}
