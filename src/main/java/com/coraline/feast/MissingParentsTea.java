@@ -166,7 +166,64 @@ public final class MissingParentsTea {
     private static BlockPos center(CompoundTag n){return BlockPos.of(n.getLong("House"));}
     private static Vec3 point(CompoundTag n,double x,double y,double z){var c=center(n);return new Vec3(c.getX()+x,c.getY()+y,c.getZ()+z);}
     private static TeaVisitorEntity actor(ServerPlayer p,CompoundTag n,String key){if(!n.hasUUID(key))return null;if(n.contains(key+"Position"))p.server.overworld().getChunkAt(BlockPos.of(n.getLong(key+"Position")));return p.server.overworld().getEntity(n.getUUID(key)) instanceof TeaVisitorEntity e&&n.getUUID("Token").equals(e.getPersistentData().getUUID("TeaToken"))?e:null;}
-    private static void spawn(ServerPlayer p,VisitData.Scene s){var n=data(s);for(String key:List.of("Spink","Forcible")){if(n.hasUUID(key))continue;var e=(key.equals("Spink")?ModEntities.SPINK_VISITOR:ModEntities.FORCIBLE_VISITOR).get().create(p.server.overworld());if(e==null)return;e.setPos(key.equals("Spink")?point(n,.5,0,-6.5):point(n,-5.5,0,2.5));e.getPersistentData().putUUID("TeaOwner",s.owner);e.getPersistentData().putUUID("TeaToken",n.getUUID("Token"));e.getPersistentData().putBoolean("MissingParentsTea",true);e.setOnGround(true);if(p.server.overworld().addFreshEntity(e)){n.putUUID(key,e.getUUID());n.putLong(key+"Position",e.blockPosition().asLong());}}save(p,s,true);}
+    /** Restore only a temporary tea-visit actor proven truly absent from
+     * every native entity region. A saved UUID that is just unloaded or whose
+     * file cannot be checked is NEVER authority for a duplicate spawn. */
+    static boolean teaActorMissingProof(com.coraline.rebirth.LegacyActorRecovery.Result result){
+        return result==com.coraline.rebirth.LegacyActorRecovery.Result.ABSENT;
+    }
+    private static boolean recoverAbsentVisitor(ServerPlayer p,VisitData.Scene s,CompoundTag n,String key){
+        if(!owns(p,s,n)||n.getBoolean("Completed")||!n.hasUUID("Token")||!n.hasUUID(key)
+                ||!List.of("Spink","Forcible").contains(key))return false;
+        var original=n.getUUID(key);
+        if(actor(p,n,key)!=null)return true;
+        var level=p.server.overworld();
+        var start=key.equals("Spink")?point(n,.5,0,-6.5):point(n,-5.5,0,2.5);
+        var at=n.contains(key+"Position",Tag.TAG_LONG)?BlockPos.of(n.getLong(key+"Position")):BlockPos.containing(start);
+        if(!level.getWorldBorder().isWithinBounds(at))return false;
+        LoopProps.hold(level,at);
+        for(var world:p.server.getAllLevels())if(world.getEntity(original)!=null){
+            n.putString("Blocker","The recorded "+key+" identity is occupied by another actor.");
+            return false;
+        }
+        var result=com.coraline.rebirth.LegacyActorRecovery.check(p.server,original);
+        if(!teaActorMissingProof(result)){
+            n.putString("Blocker","Waiting to verify the saved "+key+" identity: "+result);
+            return false;
+        }
+        var actor=(key.equals("Spink")?ModEntities.SPINK_VISITOR:ModEntities.FORCIBLE_VISITOR).get().create(level);
+        if(actor==null)return false;
+        actor.setUUID(original);
+        actor.setPos(Vec3.atBottomCenterOf(at));
+        actor.getPersistentData().putUUID("TeaOwner",s.owner);
+        actor.getPersistentData().putUUID("TeaToken",n.getUUID("Token"));
+        actor.getPersistentData().putBoolean("MissingParentsTea",true);
+        actor.setOnGround(true);
+        if(!level.addFreshEntity(actor))return false;
+        n.putLong(key+"Position",actor.blockPosition().asLong());
+        n.remove("Blocker");save(p,s,true);
+        return true;
+    }
+    private static void spawn(ServerPlayer p,VisitData.Scene s){
+        var n=data(s);
+        for(String key:List.of("Spink","Forcible")){
+            if(n.hasUUID(key)){
+                if(actor(p,n,key)==null&&p.tickCount%20==0)recoverAbsentVisitor(p,s,n,key);
+                continue;
+            }
+            var e=(key.equals("Spink")?ModEntities.SPINK_VISITOR:ModEntities.FORCIBLE_VISITOR).get().create(p.server.overworld());
+            if(e==null)return;
+            e.setPos(key.equals("Spink")?point(n,.5,0,-6.5):point(n,-5.5,0,2.5));
+            e.getPersistentData().putUUID("TeaOwner",s.owner);
+            e.getPersistentData().putUUID("TeaToken",n.getUUID("Token"));
+            e.getPersistentData().putBoolean("MissingParentsTea",true);
+            e.setOnGround(true);
+            if(p.server.overworld().addFreshEntity(e)){
+                n.putUUID(key,e.getUUID());n.putLong(key+"Position",e.blockPosition().asLong());
+            }
+        }
+        save(p,s,true);
+    }
     /** Collision-aware scripted walking in the established open lanes, with native pathfinding recovery. */
     private static boolean walk(TeaVisitorEntity e,Vec3 target,double speed){if(e==null)return false;if(e.isPassenger())e.stopRiding();target=walkFloor(e,target);var delta=target.subtract(e.position()).multiply(1,0,1);if(delta.lengthSqr()<.035){e.getNavigation().stop();return true;}e.setNoAi(false);e.setMaxUpStep(.6F);gaze(e,target.add(0,1.4,0));var step=delta.normalize().scale(Math.min(speed,delta.length()));if(e.level().noCollision(e,e.getBoundingBox().move(step))){e.getNavigation().stop();e.move(MoverType.SELF,step);e.setOnGround(true);}else if(e.tickCount%15==0||e.getNavigation().isDone())e.getNavigation().moveTo(target.x,target.y,target.z,.8);return false;}
     private static boolean route(TeaVisitorEntity e,CompoundTag n,String key,double[][] nodes,double speed){int i=Math.min(n.getInt(key),nodes.length-1);if(walk(e,point(n,nodes[i][0],0,nodes[i][1]),speed)){if(i==nodes.length-1)return true;n.putInt(key,i+1);}return false;}
