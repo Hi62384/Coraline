@@ -179,6 +179,31 @@ public final class GhostEscapeRecoveryGameTests {
         h.succeed();
     }
 
+    @GameTest(template="empty") public static void basementCanUseItsSecondOriginalDoorWhenFirstMissing(GameTestHelper h){
+        var scene=new VisitData.Scene();scene.owner=UUID.randomUUID();scene.door=UUID.randomUUID();
+        AcceptedButtonEyesProgress.scenery(scene).putLong("House",h.absolutePos(new BlockPos(180,155,110)).asLong());
+        var first=GhostEscapeRooms.door(scene,"basement");
+        var second=GhostVictimWorld.at(scene,27,-1,12);
+        var level=h.getLevel();
+        level.getChunkAt(first);level.getChunkAt(second);
+        var oldFirst=level.getBlockState(first);var oldSecond=level.getBlockState(second);
+        try{
+            level.setBlock(first,Blocks.AIR.defaultBlockState(),2);
+            level.setBlock(second,Blocks.OAK_DOOR.defaultBlockState(),2);
+            h.assertTrue(second.equals(GhostEscapeRooms.liveDoor(scene,"basement",level)),
+                    "Missing first basement entrance disabled its intact second authored doorway");
+            h.assertTrue(GhostEscapeRooms.outside(scene,"basement",level)!=null
+                    &&GhostEscapeRooms.inside(scene,"basement",level)!=null,
+                    "Child cannot approach and enter through the remaining basement doorway");
+            level.setBlock(second,Blocks.AIR.defaultBlockState(),2);
+            h.assertTrue(GhostEscapeRooms.liveDoor(scene,"basement",level)==null,
+                    "Missing all authentic room doors fabricated an entrance");
+        }finally{
+            level.setBlock(first,oldFirst,2);level.setBlock(second,oldSecond,2);
+        }
+        h.succeed();
+    }
+
     @GameTest(template="empty") public static void savedEscapeExitMustBelongToTheOriginalRoom(GameTestHelper h){
         var scene=new VisitData.Scene();scene.owner=UUID.randomUUID();scene.door=UUID.randomUUID();
         AcceptedButtonEyesProgress.scenery(scene).putLong("House",h.absolutePos(new BlockPos(40,2,40)).asLong());
