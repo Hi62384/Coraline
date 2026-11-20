@@ -26,6 +26,17 @@ public final class GhostEscapeStateCheck {
             int tick=RescueChapter.RecordingRecovery.advance(recording);
             require(RescueChapter.RecordingRecovery.dialogueWindowEnded(tick,0)==(i==100),"Missing audio completed before the silent dialogue window");
         }
+        var errand=session();
+        require(!GhostEscapeProgress.homeErrandPending(errand),"Alliance was considered an active home errand before consent");
+        require(GhostEscapeProgress.bedtimeAgreement(errand,true)&&GhostEscapeProgress.homeErrandPending(errand),
+                "Agreed Seeing Stone errand was not protected from night watchdog progression");
+        errand=TagParser.parseTag(errand.toString());
+        require(GhostEscapeProgress.homeErrandPending(errand),"Reload lost unfinished original home errand");
+        require(!GhostEscapeProgress.homeErrand(errand,false)&&GhostEscapeProgress.homeErrandPending(errand),
+                "Nonphysical home return advanced the errand");
+        errand.putBoolean("ChildAtHome",true);
+        require(GhostEscapeProgress.homeErrand(errand,true)&&!GhostEscapeProgress.homeErrandPending(errand),
+                "Real Seeing Stone home handoff did not release the morning guard");
         var ghost=session();var n=GhostEscapeProgress.data(ghost);String room=n.getString("EyeRoom");
         require(!GhostEscapeProgress.begin(ghost,List.of("storage"),Set.of(),true),"Repeated alliance rerolled the room");
         require(n.getString("EyeRoom").equals(room),"Eye room changed after reload/re-entry");
