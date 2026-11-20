@@ -118,6 +118,16 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('!canClaimRatEye(n.getInt("RatLeg"))||!n.getBoolean("RatHouseMoved")',interaction)
         self.assertIn('RescueEyes.claim(p,s,2)',interaction)
 
+    def test_hidden_rescue_props_do_not_steal_scene_clicks(self):
+        source_text=source('feast/CinematicPropEntity.java')
+        pick=source_text.split('@Override public boolean isPickable()',1)[1].split('@Override public boolean hurt(',1)[0]
+        self.assertIn('if(isInvisible()&&RescueProps.kind(kind()))return false;',pick)
+        self.assertLess(pick.index('if(isInvisible()&&RescueProps.kind(kind()))return false;'),
+                        pick.index('return RescueProps.kind(kind())'))
+        encounter=source('feast/RescueEncounters.java')
+        self.assertIn('RescueProps.hide(p,s,"GardenEye")',encounter)
+        self.assertIn('RescueProps.hide(p,s,"Swarm")',source('feast/RescueBosses.java'))
+
     def test_final_rescue_crawl_and_key_lock_require_verified_physical_exit(self):
         finale=source('feast/BeldamFinale.java')
         crawl=finale.split('private static void tunnel(',1)[1].split('public static void input(',1)[0]
