@@ -248,8 +248,9 @@ public final class BeldamFinale {
         }
         // Do not run this as an unconditional per-tick teleport: a previous
         // staged fall needs time to complete, and saves may resume mid-drop.
-        if(n.contains("FallGuideRetryAt")&&t<n.getInt("FallGuideRetryAt"))return false;
-        n.putInt("FallGuideRetryAt",t+80);
+        long now=level.getGameTime();
+        if(n.contains("FallGuideRetryAt")&&now<n.getLong("FallGuideRetryAt"))return false;
+        n.putLong("FallGuideRetryAt",now+80);
         p.stopRiding();p.setForcedPose(null);p.setPose(Pose.STANDING);
         p.teleportTo(level,landing.x,landing.y,landing.z,p.getYRot(),p.getXRot());
         if(p.serverLevel()!=level||p.position().distanceToSqr(landing)>.25)return false;
