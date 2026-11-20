@@ -19,6 +19,13 @@ public final class GhostEscapeProgress {
     public static boolean active(CompoundTag n){return n.hasUUID("Attempt")&&phase(n)!=Phase.COMPLETE&&phase(n)!=Phase.FAILED_SEWING;}
     public static Phase phase(CompoundTag n){try{return Phase.valueOf(n.getString("Phase"));}catch(IllegalArgumentException invalid){return Phase.ALLIED_BEDTIME;}}
     public static boolean hunting(CompoundTag n){return Set.of(Phase.HIDDEN,Phase.MOVING_HIDE,Phase.FINAL_CROSSING,Phase.OPEN_DOOR,Phase.CRAWL).contains(phase(n));}
+    /** An unfinished original Seeing Stone visit owns the night's departure.
+     * Morning/watchdog recovery may proceed only after the real home handoff. */
+    static boolean homeErrandPending(CompoundTag ghost){
+        if(ghost==null)return false;
+        var escape=ghost.getCompound(KEY);
+        return owns(ghost,escape)&&phase(escape)==Phase.HOME_ERRAND;
+    }
     public static void move(CompoundTag n,Phase phase,long clock){n.putString("Phase",phase.name());n.putLong("PhaseAt",clock);n.remove("OpportunityAt");n.remove("PickStarted");}
     public static long age(CompoundTag n,long clock){return Math.max(0,clock-n.getLong("PhaseAt"));}
     public static boolean begin(CompoundTag ghost,List<String> validRooms,Set<String> unresolvedGhosts,boolean actualBedtimeMirror){
