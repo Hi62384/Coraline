@@ -104,6 +104,18 @@ class CurrentStoryRepairs(unittest.TestCase):
         restart=source('client/FirstEscapeClient.java')
         self.assertIn('SecretsNetwork.request(data.getUUID("Choice"),"escape_shoe","retry")',restart)
 
+    def test_parent_rescue_kitchen_accepts_original_smoker_and_null_safe_registry_id(self):
+        story=source('feast/ParentRescueStory.java')
+        helper=story.split('static boolean kitchenStoveId(String id)',1)[1].split('private static boolean kitchen(',1)[0]
+        for token in ('id!=null','id.contains("smoker")','id.contains("furnace")',
+                      'id.contains("oven")','id.contains("stove")'):
+            self.assertIn(token,helper)
+        lookup=story.split('private static boolean kitchen(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static boolean block(',1)[0]
+        self.assertIn('if(id!=null&&kitchenStoveId(id.getPath()))',lookup)
+        game=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('canonicalKitchenSmokerCanStartParentRescueDinner',game)
+        self.assertIn('blast_furnace',game)
+
     def test_parent_rescue_kitchen_cannot_stall_forever_on_actor_navigation(self):
         story=source('feast/ParentRescueStory.java')
         serve=story.split('case SERVE->{',1)[1].split('case L->{',1)[0]
