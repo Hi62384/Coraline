@@ -92,6 +92,19 @@ public final class FirstEscapeStoryGameTests {
             h.assertTrue(FirstEscapeStory.retryShoe(p,choice),"Second use-input could not recover the original shoe");
             h.assertTrue(shoe.getUUID().equals(original)&&FirstEscapeStory.phase(s)==FirstEscapeTimeline.Phase.THROW_SHOE,
                     "Retry duplicated the object or silently advanced the story");
+            // The old five-second airborne timeout looked like a stuck shoe.
+            // Time and distance bounds must each make the saved one retryable.
+            shoe.frame(0,45,0);shoe.setDeltaMovement(Vec3.ZERO);
+            shoe.setPos(p.position().add(0,2,0));FirstEscapeStory.shoe(p,s);
+            h.assertTrue(n.getBoolean("ShoeMissed")&&shoe.cue()==1,
+                    "Open-air miss did not recover at the shorter flight cap");
+            h.assertTrue(FirstEscapeStory.retryShoe(p,choice),"Timed-out shoe did not rethrow");
+            shoe.frame(0,0,0);shoe.setDeltaMovement(Vec3.ZERO);
+            shoe.setPos(p.position().add(30,0,0));FirstEscapeStory.shoe(p,s);
+            h.assertTrue(n.getBoolean("ShoeMissed")&&shoe.cue()==1,
+                    "Far missed shoe did not return to retry state");
+            h.assertTrue(FirstEscapeStory.retryShoe(p,choice),"Distant shoe did not rethrow");
+            h.assertTrue(shoe.getUUID().equals(original),"Flight recovery duplicated the original entity");
         }finally{
             if(shoe!=null)shoe.discard();
             VisitData.get(p.server).scenes.remove(s.owner);
