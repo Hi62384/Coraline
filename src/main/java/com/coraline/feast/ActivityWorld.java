@@ -181,7 +181,10 @@ public final class ActivityWorld {
         var level=p.server.getLevel(KEY);if(level==null){p.displayClientMessage(net.minecraft.network.chat.Component.literal("Activity dimension unavailable."),true);return;}
         // Finish her approach before the player departs so she is already waiting on return.
         if(s.mom!=null&&p.serverLevel().getEntity(s.mom) instanceof com.coraline.parents.ParentEntity mom){
-            var at=OtherWorld.safePlayer(p.serverLevel(),s.loop.portal.east(2));mom.getNavigation().stop();mom.teleportTo(at.getX()+.5,at.getY(),at.getZ()+.5);s.loop.motherPos=at;
+            var at=OtherWorld.safePlayer(p.serverLevel(),s.loop.portal.east(2));
+            // An obstructed portal-side landing is not permission to move the
+            // canonical Mother into solid terrain or crash activity entry.
+            if(at!=null){mom.getNavigation().stop();mom.teleportTo(at.getX()+.5,at.getY(),at.getZ()+.5);s.loop.motherPos=at;}
         }
         if(!ExpeditionActivities.supports(s.loop.activity)&&s.loop.activity!=OtherMotherActivities.Activity.MUSIC_FESTIVAL&&s.loop.activity!=OtherMotherActivities.Activity.OTHER_DESERT_TEMPLE&&s.loop.activity!=OtherMotherActivities.Activity.OTHER_END_CITY&&s.loop.activity!=OtherMotherActivities.Activity.ARCHERY_CONTEST&&s.loop.activity!=OtherMotherActivities.Activity.CAKE_MAKING_CONTEST&&s.loop.activity!=OtherMotherActivities.Activity.CARNIVAL&&s.loop.activity!=OtherMotherActivities.Activity.DREAM_PARKOUR&&s.loop.activity!=OtherMotherActivities.Activity.FISHING_CONTEST&&s.loop.activity!=OtherMotherActivities.Activity.GARDEN_MAZE&&s.loop.activity!=OtherMotherActivities.Activity.GRAND_FEAST&&s.loop.activity!=OtherMotherActivities.Activity.ICE_BOAT_RACE&&s.loop.activity!=OtherMotherActivities.Activity.MAGIC_SHOW&&s.loop.activity!=OtherMotherActivities.Activity.MAGIC_GARDEN&&s.loop.activity!=OtherMotherActivities.Activity.MICE_CIRCUS&&s.loop.activity!=OtherMotherActivities.Activity.OTHER_OCEAN_MONUMENT)s.loop.activity=OtherMotherActivities.Activity.OTHER_VILLAGE;
         if(!p.getUUID().equals(s.owner))return;
@@ -323,7 +326,10 @@ public final class ActivityWorld {
         ShoppingMallActivity.deliver(p);MineshaftActivity.deliver(p);
         s.loop.event.remove("ActivityReturn");
         LoopProps.removePortals(p.server,s);OtherMotherLoop.phase(p,s,OtherMotherLoopState.Phase.COMPLETE);
-        if(s.mom!=null&&level.getEntity(s.mom) instanceof com.coraline.parents.ParentEntity mom){var safe=OtherWorld.safePlayer(level,at.east(2));mom.teleportTo(safe.getX()+.5,safe.getY(),safe.getZ()+.5);}
+        if(s.mom!=null&&level.getEntity(s.mom) instanceof com.coraline.parents.ParentEntity mom){
+            var safe=OtherWorld.safePlayer(level,at.east(2));
+            if(safe!=null)mom.teleportTo(safe.getX()+.5,safe.getY(),safe.getZ()+.5);
+        }
     }
     static boolean recoverCompletedReturn(ServerPlayer p,VisitData.Scene s){
         if(!s.owner.equals(p.getUUID())||!OtherWorld.isOther(p.level())||s.loop.phase!=OtherMotherLoopState.Phase.ACTIVITY)return false;
