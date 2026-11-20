@@ -1,5 +1,27 @@
 # Coraline story softlock audit
 
+## Follow-up — November 20, 2026: canonical Cat revalidation and older saved final-room recovery
+
+This pass re-inspected the complete rejected-button-eye first-escape-to-post-boss route: Wybie's single saved shoe and bicycle, temporary Spink/Forcible tea and original Seeing Stone, Cat/mirror, the authenticated original return tunnel, parent-rescue kitchen, Mantis and theatre and Ratmaster eye quests, final Other Mother Cat/web/hand/tunnel/door struggle, and the snow-covered parent reunion and ghost-child dream.
+
+### Confirmed progression issues repaired on `main`
+
+1. **Normal final-room Cat handoff:** `RescueEncounters.HOUSE_SAFE` previously closed its doors and committed `ROOM_LOCKED` even if `BeldamFinale.catAtMantel` returned `null`. It now commits only after the **original** Cat is recovered and staged.
+2. **Older `ROOM_LOCKED` saved checkpoints:** A stored room-lock phase advanced to `FINAL_A` without checking the Cat, original three ghost-eye claims or Cat rescue flags. The phase now rechecks these prerequisites, reopens the real doors if one is missing, and requires the real player to stand inside the room before it seals and advances. It does not create actors, add ghost eyes or change quest receipts.
+3. **Recovery intercepted by early player movement:** `RescueChapter.tick` used to force owners back into `ROOM_LOCKED` before the save recovery could run. The checkpoint now handles its own re-entry and unlock. The genuine `FINAL_A` through `FINAL_O` fight still runs its own locked-room check.
+4. **Stale `CatMantel` flag:** Old progress might claim the original Cat is staged although it is physically elsewhere. `BeldamFinale.catAtMantel` now repositions that same actor for the `HOUSE_SAFE` or `ROOM_LOCKED` handoff; it never snaps a carried or airborne Cat during `CAT_THROW`.
+
+### Checks performed
+
+- Confirmed **178 enumerated checkpoint labels**: First Escape 52; tea 18; Cat 15; parent-rescue 23; rescue/finale/epilogue 70.
+- Verified **88 voiced checkpoint audio keys plus the Cat intro song** have sound registration and timing metadata.
+- Decompressed the exact shipped Rosewood house blueprint: 32,438 authored block entries; confirmed both real kitchen ovens and kitchen chairs, and available authored roof material near Bobinsky's original swing site. This does not verify NPC collision/pathfinding in-game.
+- Recompiled the five source-hash-matched original Java timing/geometry helpers at Java 17 language level and ran **1,634,693 deterministic assertions**. These are standalone source-driven simulations, **not a Minecraft/Forge gameplay test**.
+- Verified 11 targeted source-level requirements against the new `main` implementations and added source regression coverage for both ordinary and legacy locked-room handoffs.
+- Merged former PR #3 and committed the supplementary stale-mantel fix to `main`.
+
+**Unverified:** Native Forge compilation, client input, actual entity collision and actor pathfinding, chunk save/reload, server restarts, every bossfight encounter, and the complete post-boss dream were **not executed** in Minecraft during this pass. The Windows native runner was disconnected and the repository had no Actions runs. Previous failing Forge GameTests remain unverified; no full route is certified softlock-free.
+
 ## Follow-up — November 20, 2026: repeated full-route review
 
 Reviewed the rejected-button-eye First Escape, original Wybie shoe/throw and bicycle departure, temporary Spink/Forcible visit, Cat/mirror, original tunnel, parent return/kitchen, all three eye bosses, Ratmaster chase, final Beldam fight, physical web/tunnel/door exit, snow-covered real-parent reunion, Cat, and ghost-child dream.
