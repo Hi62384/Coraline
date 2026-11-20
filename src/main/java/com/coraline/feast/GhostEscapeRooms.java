@@ -66,9 +66,15 @@ public final class GhostEscapeRooms {
     /** Find an actual reachable exit for the child, including a second authored
      * doorway if the originally selected one was changed during the search. */
     public static BlockPos reachableExit(VisitData.Scene s,String id,ServerLevel level,TycoonNpc child){
-        var room=room(id);if(room==null||level==null||child.level()!=level)return null;
+        return reachableExit(s,id,level,child,null);
+    }
+    /** Retry another authenticated room doorway when a formerly reachable
+     * exit is obstructed. Never target arbitrary doors elsewhere in the house. */
+    static BlockPos reachableExit(VisitData.Scene s,String id,ServerLevel level,TycoonNpc child,BlockPos excluded){
+        var room=room(id);if(s==null||room==null||level==null||child==null||child.level()!=level)return null;
         for(int[] offset:room.doors()){
-            var at=GhostVictimWorld.at(s,offset[0],offset[1],offset[2]);var state=level.getBlockState(at);
+            var at=GhostVictimWorld.at(s,offset[0],offset[1],offset[2]);if(at.equals(excluded))continue;
+            var state=level.getBlockState(at);
             if(!(state.getBlock() instanceof DoorBlock))continue;
             var front=at.relative(state.getValue(DoorBlock.FACING));var back=at.relative(state.getValue(DoorBlock.FACING).getOpposite());
             var target=HouseCabinets.contains(AcceptedButtonEyesWorld.house(s),room,front)?back:front;
@@ -77,8 +83,14 @@ public final class GhostEscapeRooms {
         }
         return null;
     }
+    static boolean authoredExit(VisitData.Scene s,String id,BlockPos at){
+        var room=room(id);if(s==null||room==null||at==null)return false;
+        for(int[] offset:room.doors())
+            if(GhostVictimWorld.at(s,offset[0],offset[1],offset[2]).equals(at))return true;
+        return false;
+    }
     public static BlockPos outside(VisitData.Scene s,String id,BlockPos door,ServerLevel level){
-        var room=room(id);if(room==null||door==null)return null;var state=level.getBlockState(door);
+        var room=room(id);if(room==null||level==null||!authoredExit(s,id,door))return null;var state=level.getBlockState(door);
         if(!(state.getBlock() instanceof DoorBlock))return null;
         var front=door.relative(state.getValue(DoorBlock.FACING));var back=door.relative(state.getValue(DoorBlock.FACING).getOpposite());
         return HouseCabinets.contains(AcceptedButtonEyesWorld.house(s),room,front)?back:front;
