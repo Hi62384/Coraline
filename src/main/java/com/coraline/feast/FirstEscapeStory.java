@@ -275,7 +275,9 @@ public final class FirstEscapeStory {
     public static boolean interact(ServerPlayer p,CinematicPropEntity prop){var s=OtherMotherLoop.scene(p);if(!engaged(s)||!prop.owned(s)||p.distanceToSqr(prop)>16)return false;if(MissingParentsCat.interact(p,prop))return true;var phase=phase(s);var n=data(s);
         if(prop.kind()==CinematicPropEntity.STORY_CANE&&phase==FIND_CANE){if(giveTool(p,s,false)){n.putBoolean("CaneCollected",true);prop.discard();n.remove("Cane");go(p,s,CANE_COLLECTED);sfx(p,p.blockPosition(),SoundEvents.ITEM_PICKUP,.7F,1);}return true;}
         if(prop.kind()==CinematicPropEntity.ROACH_WARDROBE&&phase==PUSH_WARDROBE){var w=wybie(p,s);if(w!=null&&w.distanceToSqr(prop)<36)go(p,s,PUSHING);else hint(p,"Wait for Wybie to reach the wardrobe.");return true;}
-        if(prop.kind()==CinematicPropEntity.STORY_SHOE&&phase==THROW_SHOE){if(giveTool(p,s,true)){prop.discard();n.remove("ShoeFlight");}return true;}return prop.owner.equals(p.getUUID())&&prop.kind()>=CinematicPropEntity.STORY_CANE;
+        if(prop.kind()==CinematicPropEntity.STORY_SHOE&&phase==THROW_SHOE){if(giveTool(p,s,true)){prop.discard();n.remove("ShoeFlight");}return true;}return !ParentRescueStory.started(s)&&phase!=ESCAPE_COMPLETE
+            &&prop.owner.equals(p.getUUID())&&prop.kind()>=CinematicPropEntity.STORY_CANE
+            &&prop.kind()<=CinematicPropEntity.STORY_SHOE;
     }
     public static boolean block(ServerPlayer p,BlockPos at){var s=OtherMotherLoop.scene(p);if(ParentRescueStory.started(s))return ParentRescueStory.block(p,at);if(MissingParentsCat.block(p,at))return true;if(!engaged(s))return false;var n=data(s);var state=phase(s);var block=p.serverLevel().getBlockState(at);
         if(FirstEscapeTimeline.overworld(state)){if(block.is(com.coraline.registry.ModBlocks.TINY_DOOR.get()))return false;return state!=ESCAPE_COMPLETE&&p.serverLevel().getBlockEntity(at) instanceof net.minecraft.world.Container;}
