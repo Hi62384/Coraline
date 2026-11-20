@@ -205,7 +205,11 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('ambushOfferReady(escape)',display)
         self.assertIn('ghost.contains("BedtimeWindowStarted",Tag.TAG_LONG)',display)
         self.assertIn('GhostVictimProgress.readyToHelp(ghost)',display)
-        self.assertIn('escape.getBoolean("EyeRoomKnown")&&!escape.getBoolean("KeyStolen")',display)
+        progress=source('feast/GhostEscapeProgress.java')
+        self.assertIn('static boolean keyAmbushReady(CompoundTag n)',progress)
+        self.assertIn('(phase(n)==Phase.ROOM_REPORT||phase(n)==Phase.READY)',progress)
+        self.assertIn('!keyAmbushReady(n)',progress)
+        self.assertIn('return GhostEscapeProgress.keyAmbushReady(escape)',display)
         native=ROOT/'src/wybietest/java/com/coraline/feast/GhostVictimProgressGameTests.java'
         self.assertIn('acceptedEscapeChoiceVisibilityMatchesProgressPrerequisites',native.read_text(encoding='utf-8'))
 
