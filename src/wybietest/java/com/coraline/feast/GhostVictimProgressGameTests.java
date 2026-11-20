@@ -13,6 +13,22 @@ public final class GhostVictimProgressGameTests {
         h.assertTrue(GhostVictimProgress.energy(n)==.5,"Energy regenerated during an active manifestation");
         GhostVictimProgress.tick(n,GhostVictimProgress.Tuning.defaults());h.assertTrue(GhostVictimProgress.energy(n)>.5,"Energy did not recover after the effect ended");h.succeed();
     }
+    @GameTest(template="empty") public static void acceptedEscapeDialogueButtonsDecodeTheirWireAction(GameTestHelper h){
+        var n=new CompoundTag();var actions=new ListTag();
+        for(String id:java.util.List.of("begin","report_stone","room:storage","ambush","hide:cover_1")){
+            var row=new CompoundTag();row.putString("Action","escape:"+id);actions.add(row);
+        }
+        n.put("EscapeOptions",actions);
+        String[] expected={"begin","report_stone","room:storage","ambush","hide:cover_1"};
+        for(int i=0;i<expected.length;i++)h.assertTrue(expected[i].equals(GhostVictimMirrors.indexedEscapeAction(n,7+i)),
+                "Visible indexed escape option did not reach the matching choice: "+expected[i]);
+        h.assertTrue(GhostVictimMirrors.indexedEscapeAction(n,6)==null&&GhostVictimMirrors.indexedEscapeAction(n,12)==null,
+                "Out-of-range or ordinary dialogue was treated as an escape command");
+        actions.getCompound(0).putString("Action","incorrect:begin");
+        h.assertTrue(GhostVictimMirrors.indexedEscapeAction(n,7)==null,
+                "Unknown extra button action was accepted");
+        h.succeed();
+    }
     @GameTest(template="empty") public static void bedtimeGetsANewPrivateWindowEveryNight(GameTestHelper h){
         var n=session();n.putLong("BedtimeWindowStarted",1);n.putLong("BedtimeArrived",1);var route=new CompoundTag();route.putLong("Started",1);n.put("MotherBedtimeExit",route);
         GhostVictimProgress.move(n,GhostVictimProgress.Phase.BEDTIME);
