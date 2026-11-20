@@ -224,6 +224,39 @@ public final class BeldamFinale {
         n.putBoolean("FloorOpened",true);
         return true;
     }
+    static boolean openedFloorFallRecoveryDue(int ticks,int duration){
+        return ticks>=Math.max(120,duration+80);
+    }
+    private static boolean guideOpenedFloorFall(ServerPlayer p,VisitData.Scene s,int t,int duration){
+        var n=RescueChapter.data(s);
+        var level=p.server.getLevel(OtherWorld.KEY);
+        var room=FirstEscapeScene.room(s);
+        if(!n.getBoolean("FloorOpened")||level==null||p.serverLevel()!=level
+                ||p.getY()<room.getY()-2)return false;
+        if(!openedFloorFallRecoveryDue(t,duration)){
+            RescueChapter.hint(p,"The floor has opened. Step into the falling center.");
+            return false;
+        }
+        var landing=Vec3.atBottomCenterOf(room);
+        var body=p.getDimensions(Pose.STANDING).makeBoundingBox(landing);
+        if(!level.getWorldBorder().isWithinBounds(body)
+                ||!level.getBlockState(room.below()).isAir()
+                ||level.containsAnyLiquid(body)
+                ||level.getBlockCollisions(p,body).iterator().hasNext()){
+            n.putString("Blocker","The center of the opened floor is obstructed. Clear it to continue the fall.");
+            return false;
+        }
+        // Do not run this as an unconditional per-tick teleport: a previous
+        // staged fall needs time to complete, and saves may resume mid-drop.
+        if(n.contains("FallGuideRetryAt")&&t<n.getInt("FallGuideRetryAt"))return false;
+        n.putInt("FallGuideRetryAt",t+80);
+        p.stopRiding();p.setForcedPose(null);p.setPose(Pose.STANDING);
+        p.teleportTo(level,landing.x,landing.y,landing.z,p.getYRot(),p.getXRot());
+        if(p.serverLevel()!=level||p.position().distanceToSqr(landing)>.25)return false;
+        p.fallDistance=0;
+        n.remove("Blocker");OtherMotherLoop.changed(p);
+        return true;
+    }
     public static boolean preflight(ServerPlayer p,VisitData.Scene s){
         var state=RescueChapter.phase(s);var n=RescueChapter.data(s);
         if(state.ordinal()>=FINAL_I.ordinal()&&state.ordinal()<=FINAL_N.ordinal()&&!n.getBoolean("KeyRecovered")&&!StoryItemCustody.recoverSwallowedKey(p,s)){n.putString("Blocker","The swallowed key cannot be recovered: restore its saved custody record or bring the surviving owner-bound original out of storage.");return false;}
@@ -292,6 +325,12 @@ public final class BeldamFinale {
             }
             case FINAL_O->{
                 if(t<30||!RescueWebSite.prepare(p,s)||webLanding(p,s)==null||!prepareFall(p,s))return;
+                // The floor can open while the player stands on its surviving
+                // perimeter. Do not leave the voiced fall permanently waiting
+                // for an accidental step: after a full cue and grace window,
+                // move the original player into the already verified air gap.
+                // The web transfer and the rest of the boss remain physical.
+                guideOpenedFloorFall(p,s,t,ShowRecordings.duration("finale_o"));
                 if((p.getY()<FirstEscapeScene.room(s).getY()-2||p.serverLevel()==p.server.getLevel(ActivityWorld.KEY))
                         &&enterWeb(p,s,m)&&done)RescueChapter.go(p,s,FINAL_P);
             }
