@@ -624,13 +624,49 @@ private static boolean openLittleDoor(ServerPlayer p,VisitData.Scene s,boolean o
         var n=data(s);
         if(!n.hasUUID("Choice")||!n.getUUID("Choice").equals(nonce)||!n.getBoolean("ShoeMissed"))return false;
         var shoe=FirstEscapeScene.prop(p,s,"ShoeFlight");
+        if(shoe==null)shoe=recoverMissingShoe(p,s);
         if(shoe==null){
-            if(n.contains("ShoeFlightPosition",Tag.TAG_LONG))
-                LoopProps.hold(p.serverLevel(),BlockPos.of(n.getLong("ShoeFlightPosition")));
-            n.putString("Blocker","Waiting for the SAME original shoe to load before retrying.");
+            n.putString("Blocker","Waiting for the recorded shoe to load or for its verified absence before retry.");
             return false;
         }
         return relaunchShoe(p,s,shoe);
+    }
+    /** Only a genuinely missing projectile can be reconstructed, using its
+     * SAME saved UUID. Unloaded original entities remain authoritative: a
+     * chunk-load failure or an unverified native save never permits a clone. */
+    private static CinematicPropEntity recoverMissingShoe(ServerPlayer p,VisitData.Scene s){
+        var n=data(s);
+        if(!s.owner.equals(p.getUUID())||phase(s)!=THROW_SHOE||!n.getBoolean("ShoeMissed")
+                ||!n.hasUUID("ShoeFlight")||!n.contains("ShoeFlightPosition",Tag.TAG_LONG)
+                ||p.serverLevel()!=p.server.overworld())return null;
+        var id=n.getUUID("ShoeFlight");
+        var original=FirstEscapeScene.prop(p,s,"ShoeFlight");
+        if(original!=null)return original;
+        var oldAt=BlockPos.of(n.getLong("ShoeFlightPosition"));
+        LoopProps.hold(p.server.overworld(),oldAt);
+        // A UUID occupied by a foreign or incompatible entity is a hard
+        // identity conflict, not permission to replace that entity.
+        for(var level:p.server.getAllLevels())if(level.getEntity(id)!=null){
+            n.putString("Blocker","The saved shoe identity is occupied by an incompatible entity.");
+            return null;
+        }
+        var result=com.coraline.rebirth.LegacyActorRecovery.check(p.server,id);
+        if(result!=com.coraline.rebirth.LegacyActorRecovery.Result.ABSENT){
+            n.putString("Blocker","Waiting for original shoe identity verification: "+result);
+            return null;
+        }
+        var recreated=CinematicPropEntity.TYPE.get().create(p.server.overworld());
+        if(recreated==null)return null;
+        recreated.configure(s,CinematicPropEntity.STORY_SHOE,0);
+        recreated.setUUID(id);
+        recreated.setPos(missedShoePosition(p,recreated));
+        recreated.setDeltaMovement(Vec3.ZERO);
+        recreated.frame(1,0,0);
+        if(!p.server.overworld().addFreshEntity(recreated))return null;
+        n.putLong("ShoeFlightPosition",recreated.blockPosition().asLong());
+        n.remove("ShoeMissingTicks");n.remove("Blocker");
+        OtherMotherLoop.changed(p);
+        return recreated;
     }
     private static boolean relaunchShoe(ServerPlayer p,VisitData.Scene s,CinematicPropEntity prop){
         var n=data(s);
@@ -667,8 +703,23 @@ private static boolean openLittleDoor(ServerPlayer p,VisitData.Scene s,boolean o
     }
     public static void throwShoe(ServerPlayer p,ItemStack stack){var s=OtherMotherLoop.scene(p);if(!engaged(s)||phase(s)!=THROW_SHOE||!validTool(s,stack,true)||data(s).hasUUID("ShoeFlight"))return;var e=FirstEscapeScene.ensure(p,s,"ShoeFlight",CinematicPropEntity.STORY_SHOE,0,p.serverLevel(),p.getEyePosition().add(p.getLookAngle().scale(.4)));if(e!=null){stack.shrink(1);e.setDeltaMovement(p.getLookAngle().scale(1.05));e.frame(0,0,0);OtherMotherLoop.changed(p);} }
     static void shoe(ServerPlayer p,VisitData.Scene s){
-        var e=FirstEscapeScene.prop(p,s,"ShoeFlight");if(e==null)return;
         var n=data(s);
+        var e=FirstEscapeScene.prop(p,s,"ShoeFlight");
+        if(e==null){
+            if(n.hasUUID("ShoeFlight")&&n.contains("ShoeFlightPosition",Tag.TAG_LONG)){
+                // Allow time for an ordinary chunk reload before attempting
+                // the disk-verified missing-entity recovery.
+                LoopProps.hold(p.server.overworld(),BlockPos.of(n.getLong("ShoeFlightPosition")));
+                int missing=Math.min(240,n.getInt("ShoeMissingTicks")+1);
+                n.putInt("ShoeMissingTicks",missing);
+                if(missing>=60){
+                    n.putBoolean("ShoeMissed",true);
+                    if(p.tickCount%20==0)recoverMissingShoe(p,s);
+                }
+            }
+            return;
+        }
+        n.remove("ShoeMissingTicks");
         if(e.cue()==1){
             // The original projectile remains in the world and is the ONLY
             // reusable shoe. Pull an unreachable miss back within reach after
@@ -696,7 +747,7 @@ private static boolean openLittleDoor(ServerPlayer p,VisitData.Scene s,boolean o
             e.setPos(to);e.setDeltaMovement(e.getDeltaMovement().add(0,-.04,0).scale(.98));
         }
     }
-    private static void finishShoeThrow(ServerPlayer p,VisitData.Scene s,CinematicPropEntity shoe){shoe.discard();data(s).remove("ShoeFlight");data(s).putBoolean("ShoeResolved",true);go(p,s,MISSING_E);}
+    private static void finishShoeThrow(ServerPlayer p,VisitData.Scene s,CinematicPropEntity shoe){shoe.discard();data(s).remove("ShoeFlight");data(s).remove("ShoeMissingTicks");data(s).remove("ShoeMissed");data(s).putBoolean("ShoeResolved",true);go(p,s,MISSING_E);}
     private static Vec3 escapeTarget(ServerPlayer p,VisitData.Scene s,CharacterEntity w){var n=data(s);if(n.contains("ChaseTarget")&&w.distanceToSqr(Vec3.atBottomCenterOf(BlockPos.of(n.getLong("ChaseTarget"))))>9)return Vec3.atBottomCenterOf(BlockPos.of(n.getLong("ChaseTarget")));n.remove("ChaseTarget");for(int radius:new int[]{12,18,24})for(var direction:Direction.Plane.HORIZONTAL){var at=OtherWorld.safePlayer(p.serverLevel(),w.blockPosition().relative(direction,radius));var path=w.getNavigation().createPath(at,0);if(path!=null&&path.canReach()&&path.getNodeCount()>5){n.putLong("ChaseTarget",at.asLong());return Vec3.atBottomCenterOf(at);}}return w.position();}
     private static void chase(ServerPlayer p,VisitData.Scene s,int ticks){var w=realWybie(p,s);if(w==null)return;walk(w,escapeTarget(p,s,w),2.35);var n=data(s);if(p.distanceToSqr(w)<20.25)n.putInt("ChaseClose",n.getInt("ChaseClose")+1);int required=Math.max(10,Math.min(30,ShowRecordings.duration("missing_parents_f")/5));if(n.getInt("ChaseClose")>=required&&!n.getBoolean("ChaseRewardEarned")){n.putBoolean("ChaseRewardEarned",true);OtherMotherLoop.changed(p);}payChaseReward(p,s);hint(p,"Chase Wybie!");}
     static void departure(ServerPlayer p,VisitData.Scene s){
