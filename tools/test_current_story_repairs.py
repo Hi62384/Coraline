@@ -159,6 +159,30 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertLess(resume.index('GlobalHandEncounter.claim('),
                         resume.index('progress.resume(s.owner)'))
 
+    def test_accepted_escape_dialogue_and_room_exit_recovery(self):
+        mirrors=source('feast/GhostVictimMirrors.java')
+        dispatch=mirrors.split('public static boolean choice(',1)[1].split('private static boolean escapeChoice(',1)[0]
+        self.assertIn('String extra=indexedEscapeAction(n,selected);',dispatch)
+        self.assertIn('return extra!=null&&escapeChoice(p,s,n,child,nonce,extra);',dispatch)
+        self.assertIn('wireAction.startsWith("escape:")',dispatch)
+        self.assertIn('return wireAction.substring(7);',dispatch)
+        rooms=source('feast/GhostEscapeRooms.java')
+        self.assertIn('!authoredExit(s,id,door)',rooms)
+        self.assertIn('if(at.equals(excluded))continue;',rooms)
+        covert=source('feast/GhostEscapeCovert.java')
+        leaving=covert.split('case LEAVE_ROOM->{',1)[1].split('case APPROACH_EXIT->',1)[0]
+        self.assertIn('travel==GhostVictimNavigation.Result.BLOCKED',leaving)
+        self.assertIn('GhostEscapeRooms.reachableExit(s,roomId,level,child,exit)',leaving)
+        self.assertLess(leaving.index('if(travel==GhostVictimNavigation.Result.BLOCKED)'),
+                        leaving.index('GhostEscapeProgress.leftRoom(ghost,true)'))
+
+    def test_accepted_activity_parent_landing_can_be_obstructed_without_crashing(self):
+        world=source('feast/ActivityWorld.java')
+        entry=world.split('public static void enter(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static String enterDebug(',1)[0]
+        self.assertIn('if(at!=null){mom.getNavigation().stop();mom.teleportTo(',entry)
+        returned=world.split('private static void finishActivityReturn(',1)[1].split('static boolean recoverCompletedReturn(',1)[0]
+        self.assertIn('if(safe!=null)mom.teleportTo(',returned)
+
     def test_complete_music_master_timing_and_one_shot_playback(self):
         receipt=json.loads((ASSETS/'missing_parents_music_audio.json').read_text())
         self.assertEqual(receipt['source_sha256'],hashlib.sha256((ROOT/receipt['source']).read_bytes()).hexdigest())
