@@ -47,6 +47,19 @@ class CurrentStoryRepairs(unittest.TestCase):
         finish=text.split('public static boolean finishFirstEscape(',1)[1].split('private static void brickDoor(',1)[0]
         self.assertLess(finish.index('!verifiedTransfer(p,s,p.server.overworld(),d.pos)'),finish.index('n.putBoolean("Complete",true)'))
 
+    def test_reloaded_audio_retries_same_checkpoint_instead_of_silent_wait(self):
+        playback=source('feast/ShowPlayback.java')
+        start=playback.split('public static boolean start(',1)[1].split('public static void signal(',1)[0]
+        tick=playback.split('public static boolean tick(',1)[1].split('public static boolean ownsSession(',1)[0]
+        self.assertIn('n.hasUUID("Nonce")&&REQUESTED_AT.containsKey(n.getUUID("Nonce"))',start)
+        self.assertIn('if(!n.hasUUID("Nonce")||!REQUESTED_AT.containsKey(n.getUUID("Nonce")))',tick)
+        self.assertIn('n.putString("Blocker","The saved recording lost its playback session',tick)
+        self.assertLess(tick.index('if(!n.hasUUID("Nonce")||!REQUESTED_AT.containsKey('),
+                        tick.index('if(!n.getBoolean("Started"))'))
+        fixture=(ROOT/'src/wybietest/java/com/coraline/feast/RescuePlaybackGameTests.java').read_text()
+        self.assertIn('savedPlaybackCannotStallSilentlyAfterRestart',fixture)
+        self.assertIn('for(boolean acknowledged:new boolean[]{false,true})',fixture)
+
     def test_wybie_shoe_miss_requires_real_hit_and_reuses_original(self):
         story=source('feast/FirstEscapeStory.java')
         shoe=story.split('static void shoe(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static Vec3 escapeTarget(',1)[0]
