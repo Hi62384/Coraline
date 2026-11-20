@@ -519,7 +519,7 @@ public final class GhostVictimDirector {
         if(!n.hasUUID("Session")||!n.getUUID("Session").equals(nonce))return;
         if(GhostEscapeProgress.bodyRestored(n))return;
         if(!GhostVictimMirrors.participant(p,s,n))return;
-        if(!p.getUUID().equals(s.owner)&&!(value.startsWith("inspect:")||value.startsWith("inspect_mirror:")||value.startsWith("mirror:")||value.startsWith("manifest:")||value.startsWith("manifest_fright:")||value.startsWith("escape_hide:")||value.equals("escape_go")||value.equals("escape_stop")))return;
+        if(!p.getUUID().equals(s.owner)&&!(value.startsWith("inspect:")||value.startsWith("inspect_mirror:")||value.startsWith("mirror:")||value.startsWith("manifest:")||value.startsWith("manifest_fright:")||value.startsWith("escape_hide:")||value.equals("escape_door")||value.equals("escape_go")||value.equals("escape_stop")))return;
         if(value.equals("prison_exit")){GhostVictimEntry.leave(p,s,nonce);return;}
         if(value.startsWith("inspect_mirror:")){GhostVictimMirrors.inspect(p,s,n,value.substring(15));return;}
         if(value.startsWith("inspect:")){GhostVictimManifestations.inspect(p,s,n,value.substring(8));return;}
