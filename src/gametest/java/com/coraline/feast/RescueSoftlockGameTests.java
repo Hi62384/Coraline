@@ -59,6 +59,22 @@ public final class RescueSoftlockGameTests {
     }
 
     @GameTest(template="empty", batch="story_softlocks")
+    public static void finaleOpenedFloorRecoversOnlyAfterRecordedFallCueAndGrace(GameTestHelper helper) {
+        int duration=ShowRecordings.duration("finale_o");
+        helper.assertTrue(duration>0,"Original final floor-collapse recording is missing");
+        int recovery=Math.max(120,duration+80);
+        helper.assertFalse(BeldamFinale.openedFloorFallRecoveryDue(0,duration),
+            "No opening exists at start of the final collapse");
+        helper.assertFalse(BeldamFinale.openedFloorFallRecoveryDue(recovery-1,duration),
+            "Recovery would teleport the player before the original fall sequence finishes");
+        helper.assertTrue(BeldamFinale.openedFloorFallRecoveryDue(recovery,duration),
+            "Standing on the surviving rim could stall the final fall permanently");
+        helper.assertFalse(BeldamFinale.openedFloorFallRecoveryDue(100,1000),
+            "A much longer valid recording would be truncated by fallback timing");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
     public static void rebirthResetsTheTeaModuleOwnedKey(GameTestHelper helper) {
         helper.assertTrue(MainStoryRebirth.STORY_KEYS.contains(MissingParentsTea.KEY),
             "A new run must retire the tea module's actual saved story state");
