@@ -59,6 +59,15 @@ public final class RescueSoftlockGameTests {
     }
 
     @GameTest(template="empty", batch="story_softlocks")
+    public static void missingTeaVisitorsRequireNativeProofOfAbsenceBeforeOriginalUuidRecovery(GameTestHelper helper) {
+        for(var result:com.coraline.rebirth.LegacyActorRecovery.Result.values())
+            helper.assertTrue(MissingParentsTea.teaActorMissingProof(result)
+                    ==(result==com.coraline.rebirth.LegacyActorRecovery.Result.ABSENT),
+                "An unloaded, present or unverifiable visitor would be incorrectly duplicated: "+result);
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
     public static void canonicalKitchenSmokerCanStartParentRescueDinner(GameTestHelper helper) {
         for(String name:new String[]{"smoker","furnace","blast_furnace","oven","oak_stove"})
             helper.assertTrue(ParentRescueStory.kitchenStoveId(name),
