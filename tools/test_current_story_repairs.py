@@ -187,6 +187,17 @@ class CurrentStoryRepairs(unittest.TestCase):
         returned=world.split('private static void finishActivityReturn(',1)[1].split('static boolean recoverCompletedReturn(',1)[0]
         self.assertIn('if(safe!=null)mom.teleportTo(',returned)
 
+    def test_pending_stone_errand_cannot_be_skipped_by_night_watchdog(self):
+        director=source('feast/GhostVictimDirector.java')
+        self.assertGreaterEqual(director.count('if(GhostEscapeProgress.homeErrandPending(n))'),2)
+        progress=source('feast/GhostEscapeProgress.java')
+        self.assertIn('static boolean homeErrandPending(CompoundTag ghost)',progress)
+        self.assertIn('owns(ghost,escape)&&phase(escape)==Phase.HOME_ERRAND',progress)
+        covert=source('feast/GhostEscapeCovert.java')
+        self.assertIn('visitorLanding(home,front,1,null)',covert)
+        self.assertIn('visitorLanding(home,front,-1,first)',covert)
+        self.assertIn('first==null||second==null',covert)
+
     def test_complete_music_master_timing_and_one_shot_playback(self):
         receipt=json.loads((ASSETS/'missing_parents_music_audio.json').read_text())
         self.assertEqual(receipt['source_sha256'],hashlib.sha256((ROOT/receipt['source']).read_bytes()).hexdigest())
