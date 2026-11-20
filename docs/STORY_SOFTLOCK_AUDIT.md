@@ -1,5 +1,24 @@
 # Coraline story softlock audit
 
+## Follow-up — November 20, 2026: repeated full-route review
+
+Reviewed the rejected-button-eye First Escape, original Wybie shoe/throw and bicycle departure, temporary Spink/Forcible visit, Cat/mirror, original tunnel, parent return/kitchen, all three eye bosses, Ratmaster chase, final Beldam fight, physical web/tunnel/door exit, snow-covered real-parent reunion, Cat, and ghost-child dream.
+
+### New source fixes
+
+- **Kitchen appliance discovery:** The parent-rescue KITCHEN phase scanned for block IDs containing furnace, oven or stove, but omitted the vanilla smoker. The appliance search now explicitly recognizes smoker and protects against an unregistered/null block ID. An accepted smoker allows the original kitchen interaction to continue; it does not create or substitute new appliances.
+- **Authentic tea-visitor loss:** Spink/Forcible encounter phases required their original saved actors, yet spawn() ignored any existing recorded UUID even if that actor had actually disappeared, causing the scene to wait indefinitely. Recovery now loads the saved location and examines native entity storage. Only verified ABSENT allows re-creating the temporary visitor with the SAME original UUID, owner and Tea token; PRESENT, WAITING, UNVERIFIED and any live UUID collision refuse replacement. Actor lookup additionally checks the expected type, owner and saved token.
+- **Unnecessary disk saves:** The previous spawn loop saved all story data on every tick while a recorded actor was missing. Now newly created actors are checkpointed only when actually created; verified restoration saves separately.
+
+Added focused source regressions to tools/test_current_story_repairs.py and Forge GameTests to RescueSoftlockGameTests.java for the missing-actor proof and kitchen appliance recognition. **The Forge tests were not run.**
+
+### Re-execution and limits
+
+- Compiled five actual dependency-free Java files copied from the current GitHub source: FirstEscapeTimeline.java, RescueChallengeMath.java, RescueWebLayout.java, StoryPlaybackClock.java and MissingParentsCatTimeline.java. Their git blob hashes matched the repository blobs. A standalone Java harness executed **5,613,900 assertions** (phase ordering, weakpoint/combat clocks, web positions, hearing/struggle rules, tunnel pursuit, recorded-time limits and Cat animation bounds); all passed.
+- Rechecked the five main phase enumerations (52+18+15+23+70 = **178 checkpoints**) and **88 distinct voice events** for recorded duration and sounds.json event metadata. No missing voice keys or phase names were identified in these static checks.
+- This is **not a native Minecraft playthrough**. The Windows runner was offline, no GitHub Actions runs were available, and the new Minecraft-entity recovery, forge compile, real actor movement, ray interaction, dimension crossings and post-boss cutscene still require native integration testing. A previously recorded 147-test GameTest run (131 pass / 16 fail) was not repeated here. Do not infer that all known runtime failures have been cleared.
+
+
 ## Follow-up audit — 2026-11-20 (missing shoe, finale floor, kitchen service)
 
 Latest full-path inspection revisited First Escape and Wybie's thrown shoe; Miss Spink/Forcible and Cat; the physical return tunnel; parent-return kitchen; first three ghost-eye bosses and Ratmaster chase; finale Cat/web/tunnel and Little Door key; real-parent reunion and the ghost children's dream.
