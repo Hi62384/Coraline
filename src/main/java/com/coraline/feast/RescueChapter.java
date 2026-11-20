@@ -165,7 +165,10 @@ public final class RescueChapter {
         var state=phase(s);String voice=sound(state);
         // Fights, choices, retrievals, travel and stealth are gameplay, not
         // cinematics. A watchdog never pretends these challenges were won.
-        if(RescueBosses.fighting(state)||state.ordinal()>=Phase.BOB_A.ordinal())return;
+        // Do not blanket-exclude everything after Bobinsky: that also disables
+        // recovery for his dialogue, the scripted finale and the reunion/dream.
+        // The voiced 52-block tunnel chase remains a physical player objective.
+        if(RescueBosses.fighting(state)||state==Phase.TUNNEL_CHASE)return;
         boolean motion=java.util.EnumSet.of(Phase.MANTIS_RELEASE,Phase.THEATRE_GRAB,Phase.ATTIC_SEARCH,Phase.FURNACE,Phase.BOB_TENT,Phase.SWARM_TRANSFORM,Phase.WARDROBE_ASIDE,Phase.DOOR_KICK,Phase.HAND_FALL,Phase.BANGING,Phase.EYES_CLOSE,Phase.CELESTIAL_OPEN,Phase.ORBS).contains(state);
         if(voice.isEmpty()&&!motion)return;
         // Custodied quest items and a valid destination are real prerequisites,
