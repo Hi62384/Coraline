@@ -99,7 +99,7 @@ public final class MissingParentsCatGameTests {
             for(int x=-13;x<=13;x++)for(int z=-13;z<=13;z++)for(int y=-1;y<=5;y++){var at=bed.offset(x,y,z);l.getChunkAt(at);l.setBlock(at,Blocks.STONE.defaultBlockState(),2);}
             family.bed=bed;n.putString("Phase","A");n.putBoolean("Started",true);n.putUUID("Owner",s.owner);n.putUUID("Door",s.door);
             for(int tick=0;tick<200;tick++)MissingParentsCat.cutsceneSafety(p,s);
-            h.assertTrue(MissingParentsCat.phase(s)==MissingParentsCat.Phase.D&&!n.contains("MirrorApproach")&&!n.hasUUID("MirrorActor"),"Blocked staging did not skip its unavailable mirror presentation");
+            h.assertTrue(MissingParentsCat.phase(s)==MissingParentsCat.Phase.A&&!n.contains("MirrorApproach")&&!n.hasUUID("MirrorActor"),"Blocked staging or absent original Cat fabricated mirror advancement");
             h.assertTrue(n.getBoolean("MirrorBroken")&&!s.loop.story.getBoolean("ParentDollsDiscovered")&&!n.getBoolean("Complete"),"Presentation recovery fabricated a reward or completed the visit early");
             h.assertTrue(s.loop.story.getCompound("CutsceneSafety").getList("History",10).isEmpty(),"Watchdog says it continued without a valid next step");
         }finally{remove(p);}h.succeed();
