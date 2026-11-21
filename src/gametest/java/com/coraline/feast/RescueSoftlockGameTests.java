@@ -9,6 +9,28 @@ import net.minecraftforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public final class RescueSoftlockGameTests {
     @GameTest(template="empty", batch="story_softlocks")
+    public static void invalidEscapeRoomCleanupJournalCannotCrashOrEraseUnownedBlocks(GameTestHelper helper) {
+        var level=helper.getLevel();
+        helper.assertTrue(level.getServer().getLevel(com.coraline.otherworld.OtherWorld.KEY)!=null,
+            "The original Other World must exist for the escape cleanup test");
+        var player=new net.minecraftforge.common.util.FakePlayer(level,
+            new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(),"EscapeRoomQA"));
+        var scene=new VisitData.Scene();
+        scene.owner=player.getUUID();
+        scene.door=java.util.UUID.randomUUID();
+        var saved=FirstEscapeStory.data(scene);
+        var journal=new net.minecraft.nbt.CompoundTag();
+        journal.put("malformed-escaped-room-position",new net.minecraft.nbt.CompoundTag());
+        journal.put(Long.toString(new net.minecraft.core.BlockPos(0,-512,0).asLong()),
+            new net.minecraft.nbt.CompoundTag());
+        saved.put("Environment",journal);
+        FirstEscapeScene.restore(player,scene);
+        helper.assertTrue(journal.size()==2,
+            "Malformed or unowned cleanup records must remain unresolved, not be deleted");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
     public static void malformedCollapseCheckpointRestartsTheRealExteriorObjective(GameTestHelper helper) {
         var saved=new net.minecraft.nbt.CompoundTag();
         helper.assertFalse(RescueEncounters.collapseCheckpointValid(saved),
