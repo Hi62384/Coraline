@@ -62,10 +62,24 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends ffmpeg
 
-      - name: Run native Forge GameTest server
+      - name: Run native Forge GameTest server from production resources
         shell: bash
         timeout-minutes: 35
         run: |
+          # Supported QA mode skips expensive master-audio re-imports, not
+          # committed sound assets or the actual Forge game-test classes.
+          # Gradle emits its authentic launch spec, then exits successfully.
           ./gradlew --no-daemon --max-workers=2 \
             '-Dorg.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=768m' \
-            -PgameTests -PfreshGameTests runGameTestServer
+            -PgameTests -PfreshGameTests -PqaCodeOnlyResources -PexportNativeLaunch runGameTestServer
+          test -s build/qa-launch-runGameTestServer.json
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          config=json.loads(Path('build/qa-launch-runGameTestServer.json').read_text())
+          command=config['command']
+          environment={**os.environ,**config.get('environment',{})}
+          os.chdir(config['cwd'])
+          os.execvpe(command[0],command,environment)
+          PY
