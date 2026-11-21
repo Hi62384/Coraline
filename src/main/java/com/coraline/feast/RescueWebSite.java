@@ -29,11 +29,45 @@ public final class RescueWebSite {
     static boolean webVerificationRequired(boolean ready,boolean verified,int receipts){
         return ready&&(!verified||receipts<=0);
     }
+    /** Reconstruct the authored web's EXPECTED receipt coordinates without
+     * mutating the world. A partial saved journal cannot certify WebReady just
+     * because the handful of surviving rows happen to validate. */
+    private static java.util.Set<Long> expectedCells(ServerPlayer p,VisitData.Scene s){
+        var expected=new java.util.HashSet<Long>();
+        int samples=RescueWebLayout.SAMPLES;
+        for(int lane=0;lane<RescueWebLayout.LANES;lane++)
+            for(int sample=0;sample<=samples;sample++){
+                var point=at(p,s,lane,sample/(double)samples);
+                expected.add(BlockPos.containing(point.x,point.y-.001,point.z).asLong());
+                if(sample%(samples/6)==0&&sample>0&&sample<samples&&lane<RescueWebLayout.LANES-1){
+                    var adjacent=at(p,s,lane+1,sample/(double)samples);
+                    for(int i=0;i<=12;i++){
+                        var cross=point.lerp(adjacent,i/12.0);
+                        expected.add(BlockPos.containing(cross.x,cross.y-.001,cross.z).asLong());
+                    }
+                }
+            }
+        for(double u:new double[]{0,1}){
+            var endpoint=at(p,s,1,u);
+            for(int x=-1;x<=1;x++)for(int z=-1;z<=1;z++){
+                var point=endpoint.add(x,0,z);
+                expected.add(BlockPos.containing(point.x,point.y-.001,point.z).asLong());
+            }
+        }
+        return expected;
+    }
     private static boolean verify(ServerPlayer p,VisitData.Scene s){
         var n=RescueChapter.data(s);var cells=n.getCompound("WebCells");
         var keys=new java.util.ArrayList<>(cells.getAllKeys());
         if(!webVerificationRequired(n.getBoolean("WebReady"),n.getBoolean("WebVerified"),keys.size()))return true;
         if(keys.isEmpty()){n.putString("Blocker","The original web receipts are missing; cannot trust its saved ready flag.");return false;}
+        // Check geometry coverage, not merely the rows that happened to be
+        // persisted. A partial WebReady save may omit entire cross-threads.
+        var expected=expectedCells(p,s);
+        for(long packed:expected)if(!cells.contains(Long.toString(packed))){
+            n.putString("Blocker","Saved web geometry is incomplete; the original cell journal must be restored.");
+            return false;
+        }
         var level=p.server.getLevel(ActivityWorld.KEY);if(level==null)return false;
         keys.sort(String::compareTo);
         int cursor=n.getInt("WebVerify");
