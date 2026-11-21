@@ -163,16 +163,58 @@ public final class MissingParentsCat {
         if(!audio.getString("Sound").isEmpty()&&!audio.getBoolean("Finished")&&!audio.getString("Sound").startsWith("missing_parents_cat_")&&!audio.getString("Sound").equals(INTRO_MUSIC))return false;
         return true;
     }
+    /** A vanished bed may retire a started clue only while its original Cat still exists.
+     * An unstarted clue needs the original family bed for its physical mirror scene. */
+    static boolean missingBedRecoveryReady(boolean started,boolean originalCatPresent,int missingTicks){
+        return started&&originalCatPresent&&missingTicks>=200;
+    }
     public static void tick(ServerPlayer p,VisitData.Scene s){
         if(!eligible(s)||!owns(p,s)||!p.isAlive()||p.serverLevel()!=p.server.overworld()||!available(p,s))return;
         var n=data(s);var family=ParentAccess.family(p.server,s.owner);
         if(family==null||!family.storyMissing)return;
         if(family.bed==null){
-            if(n.getBoolean("Started")){int missing=n.getInt("MissingBedTicks")+1;n.putInt("MissingBedTicks",missing);
-                if(missing>=200){n.putBoolean("DollsRetrieved",true);s.loop.story.putBoolean("ParentDollsDiscovered",true);if(StoryTunnel.restore(p,s)){n.putBoolean("Complete",true);n.putBoolean("TunnelRestored",true);n.putString("Phase",Phase.COMPLETE.name());ShowPlayback.stop(p,s);ShowActors.releaseHidden(p,s,"cat");props(p,s);OtherMotherLoop.changed(p);FirstEscapeStory.hint(p,"The Cat reveals the way back. Investigate the Little Door.");}}
-            }return;
+            if(!n.getBoolean("Started")){
+                n.putString("Blocker","Place your family's original parents' bed to begin the Cat's mirror scene.");
+                FirstEscapeStory.hint(p,n.getString("Blocker"));
+                return;
+            }
+            int missing=Math.min(200,n.getInt("MissingBedTicks")+1);
+            n.putInt("MissingBedTicks",missing);
+            // Without the original Cat, an apparently successful tunnel handoff
+            // would strand the later collapse, final fight and farewell.
+            var originalCat=cat(p,s);
+            if(originalCat==null){
+                n.putString("Blocker","Waiting for the original Cat to load before restoring the missing-bed passage.");
+                FirstEscapeStory.hint(p,n.getString("Blocker"));
+                return;
+            }
+            if(missingBedRecoveryReady(n.getBoolean("Started"),originalCat!=null,missing)){
+                if(!StoryTunnel.restore(p,s)){
+                    FirstEscapeStory.hint(p,"Restoring the original Little Door passage...");
+                    return;
+                }
+                n.putBoolean("DollsRetrieved",true);
+                s.loop.story.putBoolean("ParentDollsDiscovered",true);
+                n.putBoolean("Complete",true);
+                n.putBoolean("TunnelRestored",true);
+                n.putString("Phase",Phase.COMPLETE.name());
+                n.remove("Blocker");
+                ShowPlayback.stop(p,s);
+                ShowActors.releaseHidden(p,s,"cat");
+                props(p,s);
+                OtherMotherLoop.changed(p);
+                FirstEscapeStory.hint(p,"The Cat reveals the way back. Investigate the Little Door.");
+            }
+            return;
         }
-        if(phase(s)==Phase.PENDING&&p.distanceToSqr(family.bed.getCenter())>64)return;
+        if(n.contains("MissingBedTicks"))n.remove("MissingBedTicks");
+        if(n.getString("Blocker").startsWith("Place your family's original parents' bed")
+                ||n.getString("Blocker").startsWith("Waiting for the original Cat to load before restoring"))
+            n.remove("Blocker");
+        if(phase(s)==Phase.PENDING&&p.distanceToSqr(family.bed.getCenter())>64){
+            FirstEscapeStory.hint(p,"Return to your parents' bed for the Cat's mirror scene.");
+            return;
+        }
         if(!n.contains("BedFoot")&&phase(s).ordinal()>=Phase.E.ordinal()){
             n.putLong("BedFoot",bedFoot(p,family.bed).asLong());n.putString("BedFront",bedFront(p,family.bed).getName());
         }
@@ -293,6 +335,11 @@ public final class MissingParentsCat {
         // Resolve it before the watchdog announces that it continued the scene.
         if(state==Phase.A||state==Phase.FOLLOW_MIRROR||state==Phase.B||state==Phase.WAIT_BREAK){var family=ParentAccess.family(p.server,s.owner);if(family==null||family.bed==null||!mirror(p,s,family.bed)){int failed=n.getInt("MirrorStageFailures")+1;n.putInt("MirrorStageFailures",failed);if(failed>=200){n.putBoolean("MirrorBroken",true);go(p,s,Phase.D);}else FirstEscapeStory.hint(p,"Preparing the Cat's mirror.");return;}}
         // Resolve destination preparation before announcing a successful recovery.
+        if(state==Phase.F&&cat(p,s)==null){
+            n.putString("Blocker","Waiting for the original Cat before the tunnel can be restored.");
+            FirstEscapeStory.hint(p,n.getString("Blocker"));
+            return;
+        }
         if(state==Phase.F&&!StoryTunnel.restore(p,s)){FirstEscapeStory.hint(p,"Preparing the Little Door passage...");return;}
         int safetyBudget=sound.isEmpty()?600:StoryCutsceneWatchdog.voiceBudget(sound);
         // If the player is following the Cat and its route has made no useful
@@ -310,9 +357,57 @@ public final class MissingParentsCat {
             case C->{shatter(p,s);go(p,s,Phase.SHATTER);}
             case SHATTER->go(p,s,Phase.D);
             case D->go(p,s,Phase.FOLLOW_BED);
-            case FOLLOW_BED->{retireShatteredMirror(p,s);var actor=cat(p,s);var family=ParentAccess.family(p.server,s.owner);if(actor==null||family==null||family.bed==null){n.putBoolean("DollsRetrieved",true);go(p,s,Phase.F);return;}var foot=bedFoot(p,family.bed);var front=bedFront(p,family.bed);var at=bedApproach(p,actor,foot,front);if(at==null){n.putBoolean("DollsRetrieved",true);s.loop.story.putBoolean("ParentDollsDiscovered",true);go(p,s,Phase.F);return;}actor.setPos(Vec3.atBottomCenterOf(at));n.putLong("BedFoot",foot.asLong());n.putString("BedFront",front.getName());go(p,s,Phase.E);}
-            case E->{n.putFloat("DollsPull",1);n.putBoolean("DollsRetrieved",true);s.loop.story.putBoolean("ParentDollsDiscovered",true);go(p,s,Phase.F);}
-            case F->{if(StoryTunnel.restore(p,s)){n.putBoolean("FFinished",true);n.putBoolean("TunnelRestored",true);s.loop.story.putString("MajorStoryPhase","MISSING_PARENTS_CAT_COMPLETE");go(p,s,Phase.DEPART);}else StoryCutsceneWatchdog.retry(s,"post_escape_cat");}
+            case FOLLOW_BED->{
+                retireShatteredMirror(p,s);
+                var actor=cat(p,s);
+                if(actor==null){
+                    n.putString("Blocker","Waiting for the original Cat before retrieving the parent dolls.");
+                    FirstEscapeStory.hint(p,n.getString("Blocker"));
+                    StoryCutsceneWatchdog.retry(s,"post_escape_cat");
+                    return;
+                }
+                var family=ParentAccess.family(p.server,s.owner);
+                if(family==null||family.bed==null){
+                    n.putBoolean("DollsRetrieved",true);
+                    s.loop.story.putBoolean("ParentDollsDiscovered",true);
+                    go(p,s,Phase.F);
+                    return;
+                }
+                var foot=bedFoot(p,family.bed);
+                var front=bedFront(p,family.bed);
+                var at=bedApproach(p,actor,foot,front);
+                if(at==null){
+                    n.putBoolean("DollsRetrieved",true);
+                    s.loop.story.putBoolean("ParentDollsDiscovered",true);
+                    go(p,s,Phase.F);
+                    return;
+                }
+                actor.setPos(Vec3.atBottomCenterOf(at));
+                n.putLong("BedFoot",foot.asLong());n.putString("BedFront",front.getName());
+                go(p,s,Phase.E);
+            }
+            case E->{
+                if(cat(p,s)==null){
+                    n.putString("Blocker","Waiting for the original Cat before completing the parent-dolls clue.");
+                    StoryCutsceneWatchdog.retry(s,"post_escape_cat");
+                    return;
+                }
+                n.putFloat("DollsPull",1);
+                n.putBoolean("DollsRetrieved",true);
+                s.loop.story.putBoolean("ParentDollsDiscovered",true);
+                go(p,s,Phase.F);
+            }
+            case F->{
+                if(cat(p,s)==null){
+                    n.putString("Blocker","Waiting for the original Cat before ending its scene.");
+                    StoryCutsceneWatchdog.retry(s,"post_escape_cat");
+                }else if(StoryTunnel.restore(p,s)){
+                    n.putBoolean("FFinished",true);
+                    n.putBoolean("TunnelRestored",true);
+                    s.loop.story.putString("MajorStoryPhase","MISSING_PARENTS_CAT_COMPLETE");
+                    go(p,s,Phase.DEPART);
+                }else StoryCutsceneWatchdog.retry(s,"post_escape_cat");
+            }
             default->{}
         }
     }

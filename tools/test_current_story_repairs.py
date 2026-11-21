@@ -216,6 +216,47 @@ class CurrentStoryRepairs(unittest.TestCase):
         native=(ROOT/'src/wybietest/java/com/coraline/feast/FirstEscapeStoryGameTests.java').read_text()
         self.assertIn('shoeCanBeRetriedWithoutClickingTinyGroundHitbox',native)
 
+    def test_missing_bed_cat_handoff_requires_the_original_actor_before_completion(self):
+        cat=source('feast/MissingParentsCat.java')
+        recovery=cat.split('if(family.bed==null){',1)[1].split('if(n.contains("MissingBedTicks"))',1)[0]
+        self.assertIn('if(!n.getBoolean("Started"))',recovery)
+        self.assertIn('Place your family',recovery)
+        self.assertIn('var originalCat=cat(p,s);',recovery)
+        self.assertIn('if(originalCat==null)',recovery)
+        self.assertIn('missingBedRecoveryReady(n.getBoolean("Started"),originalCat!=null,missing)',recovery)
+        self.assertIn('if(!StoryTunnel.restore(p,s))',recovery)
+        self.assertLess(recovery.index('if(originalCat==null)'),
+                        recovery.index('n.putBoolean("DollsRetrieved",true)'))
+        self.assertLess(recovery.index('if(!StoryTunnel.restore(p,s))'),
+                        recovery.index('n.putBoolean("Complete",true)'))
+        self.assertIn('n.remove("MissingBedTicks")',cat)
+        native=(ROOT/'src/wybietest/java/com/coraline/feast/MissingParentsCatGameTests.java').read_text()
+        self.assertIn('missingBedBeforeCatStartsPreservesTheMirrorClue',native)
+        self.assertIn('missingBedFallbackCannotLoseTheOriginalCatForTheBoss',native)
+        self.assertIn('catWatchdogCannotAwardDollsWhileOriginalCatIsUnloaded',native)
+        continuation=(ROOT/'src/wybietest/java/com/coraline/feast/StoryContinuationGameTests.java').read_text()
+        scenario=continuation.split('skippedEscapeQueuesMissingRealmAndResumesBlockedCatClue(',1)[1].split('catDepartureCannotCompleteAnUnrestoredPassage',1)[0]
+        self.assertIn('ShowActors.acquire(p,s,"cat",level,',scenario)
+        self.assertLess(scenario.index('ShowActors.acquire(p,s,"cat",level,'),
+                        scenario.index('MissingParentsCat.cutsceneSafety(p,s);'))
+        safety=cat.split('static void cutsceneSafety(ServerPlayer p,VisitData.Scene s)',1)[1].split('static boolean parkInTunnel(',1)[0]
+        self.assertIn('if(state==Phase.F&&cat(p,s)==null)',safety)
+        self.assertLess(safety.index('if(state==Phase.F&&cat(p,s)==null)'),
+                        safety.index('if(state==Phase.F&&!StoryTunnel.restore(p,s))'))
+        follow=safety.split('case FOLLOW_BED->{',1)[1].split('case E->{',1)[0]
+        self.assertIn('if(actor==null)',follow)
+        self.assertLess(follow.index('if(actor==null)'),
+                        follow.index('n.putBoolean("DollsRetrieved",true)'))
+        self.assertIn('StoryCutsceneWatchdog.retry(s,"post_escape_cat")',follow)
+        performance=safety.split('case E->{',1)[1].split('case F->{',1)[0]
+        self.assertIn('if(cat(p,s)==null)',performance)
+        self.assertLess(performance.index('if(cat(p,s)==null)'),
+                        performance.index('n.putBoolean("DollsRetrieved",true)'))
+        finish=safety.split('case F->{',1)[1].split('default->{}',1)[0]
+        self.assertIn('if(cat(p,s)==null)',finish)
+        self.assertLess(finish.index('if(cat(p,s)==null)'),
+                        finish.index('n.putBoolean("TunnelRestored",true)'))
+
     def test_first_escape_wybie_tea_cat_and_return_tunnel_handoffs(self):
         # Source dispatch checks supplement, but do not replace, an in-game run.
         escape=source('feast/FirstEscapeStory.java')

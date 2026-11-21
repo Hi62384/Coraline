@@ -43,6 +43,10 @@ public final class StoryContinuationGameTests {
         var tile=(com.coraline.otherworld.DoorBlockEntity)level.getBlockEntity(at);tile.doorId=s.door;tile.storyBricked=true;
         var n=MissingParentsCat.data(s);n.putBoolean("Started",true);n.putString("Phase","F");
         try{
+            // A genuine F checkpoint already has its leased Cat. The old
+            // fixture lacked one, inadvertently testing an unsafe skipped cast.
+            var cat=ShowActors.acquire(p,s,"cat",level,net.minecraft.world.phys.Vec3.atBottomCenterOf(at.north(3)));
+            h.assertTrue(cat!=null,"Canonical Cat lease could not be staged for the saved final clue");
             h.assertFalse(StoryTunnel.restore(p,s),"Unbuilt destination was declared ready");
             h.assertTrue(com.coraline.otherworld.RealmData.get(p.server).realms.containsKey(s.door)&&com.coraline.otherworld.OtherWorld.weaving(p.server),"Skipped escape did not automatically queue its destination");
             MissingParentsCat.cutsceneSafety(p,s);
@@ -58,7 +62,12 @@ public final class StoryContinuationGameTests {
             MissingParentsCat.cutsceneSafety(p,s);
             h.assertTrue(MissingParentsCat.phase(s)==MissingParentsCat.Phase.DEPART&&n.getBoolean("FFinished")&&MissingParentsCat.tunnelRestored(s),"Stalled clue did not advance after realm recovery");
             h.assertTrue(MissingParentsCat.finishForReturn(p,s)&&n.getBoolean("Complete"),"Cat departure still locked the usable return passage");
-        }finally{FirstEscapeScene.restore(p,s);level.removeBlock(at,false);level.removeBlock(at.south(),false);remove(p);}h.succeed();
+        }finally{
+            var cat=ShowActors.actor(p,s,"cat");
+            if(cat!=null)cat.discard();
+            FirstEscapeScene.restore(p,s);
+            level.removeBlock(at,false);level.removeBlock(at.south(),false);remove(p);
+        }h.succeed();
     }
     @GameTest(template="empty") public static void catDepartureCannotCompleteAnUnrestoredPassage(GameTestHelper h){var p=fixture(h);var s=OtherMotherLoop.scene(p);try{MissingParentsCat.data(s).putBoolean("FFinished",true);h.assertFalse(MissingParentsCat.finishForReturn(p,s),"Missing tunnel was treated as a completed clue");h.assertFalse(MissingParentsCat.data(s).getBoolean("Complete"),"Failed completion changed progress");}finally{remove(p);}h.succeed();}
     private static ServerPlayer fixture(GameTestHelper h){var p=MissingParentsTeaGameTests.fixture(h);var s=OtherMotherLoop.scene(p);MissingParentsTeaGameTests.ready(p,s);FirstEscapeStory.data(s).putBoolean("WybieDeparted",true);return p;}
