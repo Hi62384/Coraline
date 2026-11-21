@@ -251,4 +251,18 @@ public final class RescueSoftlockGameTests {
             "The already-entered state must not invalidate the live passage");
         helper.succeed();
     }
+
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void finalDoorAndBangingCannotResumeInTheWebWorld(GameTestHelper helper) {
+        helper.assertTrue(BeldamFinale.requiresOriginalExit(RescueChapter.Phase.LOCK_DOOR),
+            "Saved exit must prove actual Overworld transfer before allowing key interaction");
+        helper.assertTrue(BeldamFinale.requiresOriginalExit(RescueChapter.Phase.BANGING),
+            "Banging reunion handoff must stay at the original physical door");
+        for(var phase:new RescueChapter.Phase[]{RescueChapter.Phase.HAND_FALL,
+                RescueChapter.Phase.TUNNEL_CHASE,RescueChapter.Phase.REUNION_A,
+                RescueChapter.Phase.CAT_NOTICE,RescueChapter.Phase.FAREWELL_C})
+            helper.assertFalse(BeldamFinale.requiresOriginalExit(phase),
+                "A non-door chapter would be transferred away from its real scene: "+phase);
+        helper.succeed();
+    }
 }
