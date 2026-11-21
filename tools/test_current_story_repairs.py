@@ -9,6 +9,32 @@ ASSETS=ROOT/'src/main/resources/assets/coraline'
 def source(name):return (JAVA/name).read_text(encoding='utf-8-sig')
 
 class CurrentStoryRepairs(unittest.TestCase):
+    def test_final_web_entry_revalidates_actual_journal_and_persists_retry(self):
+        web=source('feast/RescueWebSite.java')
+        self.assertIn('static boolean webVerificationRequired(boolean ready,boolean verified,int receipts)',web)
+        self.assertIn('if(n.getBoolean("WebReady"))return verify(p,s)',web)
+        verify=web.split('private static boolean verify(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static boolean blocked(',1)[0]
+        self.assertIn('keys.sort(String::compareTo)',verify)
+        self.assertIn('int end=Math.min(keys.size(),cursor+96)',verify)
+        self.assertIn('receipt.contains("Original",Tag.TAG_COMPOUND)',verify)
+        self.assertIn('receipt.contains("Placed",Tag.TAG_COMPOUND)',verify)
+        self.assertIn('!actual.equals(placed)&&!actual.equals(original)',verify)
+        self.assertIn('if(actual.equals(original)&&!actual.equals(placed))',verify)
+        self.assertIn('if(!level.getBlockState(pos).equals(placed))',verify)
+        finale=source('feast/BeldamFinale.java')
+        entry=finale.split('static boolean enterWeb(ServerPlayer p,VisitData.Scene s,ParentEntity mother)',1)[1].split('private static void rememberPosition(',1)[0]
+        self.assertLess(entry.index('n.remove("WebVerified")'),entry.index('var landing=webLanding(p,s)'))
+        self.assertIn('n.putBoolean("WebEntryRecheck",true)',entry)
+        self.assertIn('p.position().distanceToSqr(landing)>.25',entry)
+        self.assertIn('n.remove("WebEntryRecheck")',entry)
+        self.assertIn('RescueWebHearing.reset(p)',entry)
+        retry=finale.split('public static void retry(ServerPlayer p,VisitData.Scene s',1)[1]
+        self.assertIn('n.remove("WebEntryReady");n.remove("WebEntered");n.remove("WebEntryRecheck")',retry)
+        self.assertIn('n.remove("WebVerified");n.putInt("WebVerify",0)',retry)
+        self.assertNotIn('RescueChapter.transfer(p,p.server.getLevel(ActivityWorld.KEY)',retry.split('}else if(state==WEB_STEALTH){',1)[1].split('}else if(state==DOOR_STRUGGLE){',1)[0])
+        tests=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('webReadyCannotSkipItsPhysicalReceipts',tests)
+
     def test_first_escape_cutscene_and_main_tick_require_original_cast(self):
         rules=source('feast/FirstEscapeTimeline.java')
         for key in ('needsOtherMother','needsOtherWybie','needsRealWybie'):
