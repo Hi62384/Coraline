@@ -20,7 +20,7 @@ public final class RescueEncounters {
      * phantom (0,0,0) respawn or an endless zero-duration death loop. */
     static boolean collapseCheckpointValid(CompoundTag n){
         double radius=n.getDouble("CollapseInitialRadius");
-        return n.contains("CollapseStart",Tag.TAG_LONG)
+        return n.contains("CollapseStart",Tag.TAG_LONG)&&n.getLong("CollapseStart")!=0L
                 &&n.getInt("CollapseDuration")>0&&Double.isFinite(radius)&&radius>48;
     }
     static boolean restoreIncompleteCollapse(ServerPlayer p,VisitData.Scene s){
