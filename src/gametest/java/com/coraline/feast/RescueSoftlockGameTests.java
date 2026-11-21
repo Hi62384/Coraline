@@ -238,4 +238,17 @@ public final class RescueSoftlockGameTests {
             "Already-open original doors should not be rewritten every tick");
         helper.succeed();
     }
+
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void savedEscapeCrawlRechecksEveryNewAttempt(GameTestHelper helper) {
+        helper.assertTrue(RescuePassage.entryRecheckNeeded(false,false),
+            "An old saved PassageVerified flag must not skip physical readback");
+        helper.assertFalse(RescuePassage.entryRecheckNeeded(false,true),
+            "A bounded physical readback must not restart every tick");
+        helper.assertFalse(RescuePassage.entryRecheckNeeded(true,false),
+            "An already entered and verified crawl must keep running");
+        helper.assertFalse(RescuePassage.entryRecheckNeeded(true,true),
+            "The already-entered state must not invalidate the live passage");
+        helper.succeed();
+    }
 }
