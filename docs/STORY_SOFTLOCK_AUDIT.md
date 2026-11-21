@@ -1,5 +1,25 @@
 # Coraline story softlock audit
 
+## Follow-up — November 21, 2026: independent route reinspection and Cat missing-bed safety
+
+**Scope:** rejected-button-eye First Escape, original Wybie's missed/rethrown shoe and bicycle, temporary Spink/Forcible visit and Seeing Stone, Cat's mirror and parent-dolls scenes, source Little Door/return crawl, parent-rescue kitchen, Mantis/Theatre/Ratmaster eye quests, final Other Mother Cat throw/web/Hand/tunnel/key lock, real parents in snow, Cat farewell, and three ghost children in the dream. No accepted-button-eye alternative ending is claimed.
+
+### Newly identified and repaired
+
+- **Cat clue auto-completed while original Cat missing:** `MissingParentsCat.tick` previously treated a missing original parents' bed after a Cat visit began as sufficient to finish the clue after 200 ticks, even if the canonical Cat had disappeared/unloaded. That left the later collapse and final confrontation dependent on a Cat that was never verified. The fallback now requires the original Cat actor and successful restoration of the actual owner-bound Little Door *before* committing parent-dolls and completion receipts. It preserves identity and retries on unloading.
+- **Watchdog could advance an absent Cat:** the follow-bed watchdog used to mark dolls recovered even when `cat(p,s)==null`; the dolls' recorded E performance could also be auto-completed, and F could prepare the source tunnel without first checking the original Cat. The watchdog now waits for that original actor and never advances those gates on its absence.
+- **No instruction when parents' bed missing before Cat start:** when the physical bed is already missing, the Cat scene remains unstarted and prompts the owner to restore/place their original family bed instead of silently returning forever. It does not skip the mirror, create a stand-in bed/Cat or invent an eye/stone. The later, previously existing started-scene missing-bed recovery remains available only with the original Cat.
+- **Stale missing-bed recovery timer:** if the bed is restored after an interruption, the now-obsolete missing-bed timer is cleared, so a second loss receives its own full grace period.
+
+### Verification
+
+- Retrieved current source and reviewed **178 checkpoint labels**: 52 First Escape, 18 tea, 15 Cat, 23 parent-return, 70 rescue/finale/epilogue.
+- Verified **88 voiced checkpoint keys** and the Cat-arrival music have registrations and positive timing metadata; cross-checked literal transition targets, shoe retries, tea-to-Cat prerequisites, verified return-corridor gating, boss encounter win conditions, authentic key/eye custody, physical 52-block final crawl, reunion and vision restore.
+- Re-executed the existing separate Java 17 compatible source-hash-matched helper harness, which passed **1,634,693 deterministic assertions** for timeline, boss, web, Cat animation and audio timing boundaries. These do not exercise changed Cat actor code or Forge entities.
+- Added focused `MissingParentsCatGameTests` for (a) an unstarted visit without a bed, (b) a missing canonical Cat at the started fallback, and (c) watchdog attempts to award dolls or restore the passage without the original actor. Added source-level regressions verifying prerequisite ordering.
+
+**Limits:** This review did **not** run a native Forge build, full Minecraft playthrough, story save/reload integration test, or the new Forge GameTests: the Windows command runner remains disconnected and no GitHub Actions runs are available. Earlier historically failing GameTests are not certified fixed. NPC pathfinding, prop interaction hitboxes, original actor region reload, Boss dialogue playback, physical dimension crossing and reunion/dream remain integration risks, not claimed passed.
+
 ## Follow-up — November 20, 2026: canonical Cat revalidation and older saved final-room recovery
 
 This pass re-inspected the complete rejected-button-eye first-escape-to-post-boss route: Wybie's single saved shoe and bicycle, temporary Spink/Forcible tea and original Seeing Stone, Cat/mirror, the authenticated original return tunnel, parent-rescue kitchen, Mantis and theatre and Ratmaster eye quests, final Other Mother Cat/web/hand/tunnel/door struggle, and the snow-covered parent reunion and ghost-child dream.
