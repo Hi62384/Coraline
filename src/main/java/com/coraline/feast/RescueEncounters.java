@@ -333,7 +333,31 @@ public final class RescueEncounters {
         double distance=Math.hypot(p.getX()-home.getX(),p.getZ()-home.getZ());if(distance>radius+2||elapsed>=n.getInt("CollapseDuration")&&!n.getBoolean("HouseSafe"))retry(p,s,COLLAPSE);
     }
     private static void carryCat(ServerPlayer p,VisitData.Scene s){var cat=ShowActors.actor(p,s,"cat");if(cat==null)return;cat.stopRiding();cat.setNoAi(true);cat.setNoGravity(true);cat.setInvisible(false);cat.setDeltaMovement(Vec3.ZERO);cat.setPos(p.position().add(p.getLookAngle().multiply(.5,0,.5)).add(0,.8,0));RescueChapter.data(s).putInt("Cat",cat.getId());LoopProps.hold(p.serverLevel(),cat.blockPosition());}
-    private static void greenHouse(ServerPlayer p,VisitData.Scene s){var n=RescueChapter.data(s);if(n.getBoolean("GreenHouse"))return;FirstEscapeStory.setDoor(p,FirstEscapeScene.entrance(s),true);FirstEscapeStory.setDoor(p,FirstEscapeScene.entrance(s).south(),true);FirstEscapeScene.light(p,s,FirstEscapeScene.room(s).above(3),10);var m=ParentRescueStory.mother(p,s);if(m==null)return;m.stopRiding();m.setInvisible(false);m.setNoAi(true);m.setPos(Vec3.atBottomCenterOf(FirstEscapeScene.room(s).west(3)));m.lookAtStoryPlayer(p);n.putBoolean("GreenHouse",true);}
+    static boolean restoreHouseEntry(boolean savedReady,boolean firstDoorOpen,boolean secondDoorOpen){
+        return !savedReady||!firstDoorOpen||!secondDoorOpen;
+    }
+    private static boolean entryDoorOpen(ServerLevel level,BlockPos pos){
+        if(level==null)return false;
+        var state=level.getBlockState(pos);
+        return state.getBlock() instanceof DoorBlock&&state.getValue(DoorBlock.OPEN);
+    }
+    private static void greenHouse(ServerPlayer p,VisitData.Scene s){
+        var n=RescueChapter.data(s);var entrance=FirstEscapeScene.entrance(s);
+        var level=p.server.getLevel(OtherWorld.KEY);
+        // The GreenHouse save flag is not proof that both original entry
+        // doors survived a relog. Reopen only the real doors while HOUSE_SAFE.
+        if(restoreHouseEntry(n.getBoolean("GreenHouse"),
+                entryDoorOpen(level,entrance),entryDoorOpen(level,entrance.south()))){
+            FirstEscapeStory.setDoor(p,entrance,true);
+            FirstEscapeStory.setDoor(p,entrance.south(),true);
+        }
+        if(n.getBoolean("GreenHouse"))return;
+        FirstEscapeScene.light(p,s,FirstEscapeScene.room(s).above(3),10);
+        var m=ParentRescueStory.mother(p,s);if(m==null)return;
+        m.stopRiding();m.setInvisible(false);m.setNoAi(true);
+        m.setPos(Vec3.atBottomCenterOf(FirstEscapeScene.room(s).west(3)));
+        m.lookAtStoryPlayer(p);n.putBoolean("GreenHouse",true);
+    }
     static void closeRoom(ServerPlayer p,VisitData.Scene s){FirstEscapeStory.setDoor(p,FirstEscapeScene.entrance(s),false);FirstEscapeStory.setDoor(p,FirstEscapeScene.entrance(s).south(),false);}
     public static boolean takeOfferedEye(ServerPlayer p,VisitData.Scene s){
         var phase=RescueChapter.phase(s);if(phase!=MANTIS_TAKE&&phase!=MANTIS_SINK)return false;
