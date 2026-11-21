@@ -9,6 +9,33 @@ import net.minecraftforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public final class RescueSoftlockGameTests {
     @GameTest(template="empty", batch="story_softlocks")
+    public static void malformedCollapseCheckpointRestartsTheRealExteriorObjective(GameTestHelper helper) {
+        var saved=new net.minecraft.nbt.CompoundTag();
+        helper.assertFalse(RescueEncounters.collapseCheckpointValid(saved),
+            "A saved phase marker without physical collapse data cannot retry");
+        saved.putLong("CollapseStart",new net.minecraft.core.BlockPos(30,74,40).asLong());
+        helper.assertFalse(RescueEncounters.collapseCheckpointValid(saved),
+            "A collapse position alone cannot substitute for its clock and radius");
+        saved.putInt("CollapseDuration",1500);
+        helper.assertFalse(RescueEncounters.collapseCheckpointValid(saved),
+            "A missing initial collapse radius must not cause an instant defeat loop");
+        saved.putDouble("CollapseInitialRadius",Double.NaN);
+        helper.assertFalse(RescueEncounters.collapseCheckpointValid(saved),
+            "An invalid saved radius cannot reach the collapse retry");
+        saved.putDouble("CollapseInitialRadius",180);
+        helper.assertTrue(RescueEncounters.collapseCheckpointValid(saved),
+            "The original fully committed exterior checkpoint must remain valid");
+        saved.putInt("CollapseDuration",0);
+        helper.assertFalse(RescueEncounters.collapseCheckpointValid(saved),
+            "A zero-duration collapse must roll back to the real exterior gate");
+        saved.putInt("CollapseDuration",1500);
+        saved.putLong("CollapseStart",0);
+        helper.assertFalse(RescueEncounters.collapseCheckpointValid(saved),
+            "An absent/default origin must not teleport the owner to (0,0,0)");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
     public static void interruptedWybieShoeMissKeepsSameActorAndNeverAutoCompletes(GameTestHelper helper) {
         helper.assertTrue(FirstEscapeTimeline.after(FirstEscapeTimeline.Phase.THROW_SHOE)==null,
             "The shoe scene must never time-advance after an ordinary miss");
