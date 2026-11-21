@@ -53,14 +53,37 @@ public final class RescueEpilogue {
     private static ParentEntity parent(ServerPlayer p,FamilyData.Family f,boolean mom){
         var id=mom?f.mom:f.dad;if(id==null)return null;var l=FamilyData.level(p.server,mom?f.momDim:f.dadDim);if(l==null)return null;LoopProps.hold(l,mom?f.momPos:f.dadPos);return l.getEntity(id) instanceof ParentEntity entity&&!entity.isOtherParent()?entity:null;
     }
+    /** Persisted ParentsStaged is only a hint: both real actors must still be
+     * in this reunion world and near their original Little Door checkpoint. */
+    static boolean parentsOnReunionStage(boolean staged,boolean motherInWorld,boolean fatherInWorld,double motherDistanceSq,double fatherDistanceSq){
+        return staged&&motherInWorld&&fatherInWorld
+                &&Double.isFinite(motherDistanceSq)&&Double.isFinite(fatherDistanceSq)
+                &&motherDistanceSq<=36*36&&fatherDistanceSq<=36*36;
+    }
+    /** Hold the actual reunion recording until both canonical parents are visible
+     * at its saved stage. Re-stage only the original UUIDs, never replacements. */
+    static boolean presentationReady(ServerPlayer p,VisitData.Scene s){
+        var state=RescueChapter.phase(s);
+        if(state!=REUNION_A&&state!=REUNION_B)return true;
+        var n=RescueChapter.data(s);var door=source(p,s);var family=ParentAccess.family(p.server,s.owner);
+        if(door!=null&&family!=null&&stageParents(p,s,family,door)){
+            n.remove("Blocker");return true;
+        }
+        if(n.getBoolean("Audio")){ShowPlayback.stop(p,s);n.remove("Audio");n.remove("AudioTail");n.putInt("Ticks",0);}
+        if(n.getString("Blocker").isEmpty())n.putString("Blocker","Waiting for both original parents to reach the reunion.");
+        return false;
+    }
     public static boolean begin(ServerPlayer p,VisitData.Scene s){
         var n=RescueChapter.data(s);var d=source(p,s);if(d==null||p.serverLevel()!=FamilyData.level(p.server,d.dimension)||!n.getBoolean("PermanentlySealed")||!n.getBoolean("BangingDone")||!RescueEyes.all(s))return false;
         var family=ParentAccess.family(p.server,s.owner);if(family==null||parent(p,family,true)==null||parent(p,family,false)==null){n.putString("Blocker","Waiting for both saved real parents to load; no replacements created.");return false;}
         if(!stageParents(p,s,family,d))return false;n.remove("Blocker");RescueChapter.go(p,s,REUNION_A);return true;
     }
     private static boolean stageParents(ServerPlayer p,VisitData.Scene s,FamilyData.Family family,DoorData.Door door){
-        var n=RescueChapter.data(s);if(n.getBoolean("ParentsStaged"))return true;var target=FamilyData.level(p.server,door.dimension);if(target==null)return false;
+        var n=RescueChapter.data(s);var target=FamilyData.level(p.server,door.dimension);if(target==null)return false;
         var mom=parent(p,family,true);var dad=parent(p,family,false);if(mom==null||dad==null)return false;
+        if(parentsOnReunionStage(n.getBoolean("ParentsStaged"),mom.level()==target,dad.level()==target,
+                mom.blockPosition().distSqr(door.pos),dad.blockPosition().distSqr(door.pos)))return true;
+        n.remove("ParentsStaged");
         var momAt=OtherWorld.safePlayer(target,door.pos.offset(-2,0,2));var dadAt=OtherWorld.safePlayer(target,door.pos.offset(2,0,2));if(momAt==null||dadAt==null){n.putString("Blocker","Make room for both real parents near your Little Door.");return false;}
         for(var actor:java.util.List.of(mom,dad)){var saved=actor.getPersistentData();if(!saved.contains("ReunionFlags")){var flags=saved.contains("FirstEscapeHidden")?saved.getCompound("FirstEscapeHidden").copy():new CompoundTag();if(!saved.contains("FirstEscapeHidden")){flags.putBoolean("Invisible",actor.isInvisible());flags.putBoolean("NoAI",actor.isNoAi());flags.putBoolean("Silent",actor.isSilent());}saved.put("ReunionFlags",flags);}saved.remove("FirstEscapeHidden");}
         var movedMom=ShowTravel.guest(mom,p,s,target,Vec3.atBottomCenterOf(momAt),false,"Reunion");var movedDad=ShowTravel.guest(dad,p,s,target,Vec3.atBottomCenterOf(dadAt),false,"Reunion");
