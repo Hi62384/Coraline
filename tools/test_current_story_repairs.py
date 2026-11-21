@@ -149,7 +149,7 @@ class CurrentStoryRepairs(unittest.TestCase):
         for key in ('n.contains("Kitchen",Tag.TAG_LONG)',
                     'n.contains("Stove",Tag.TAG_LONG)',
                     'n.contains("KitchenTable",Tag.TAG_LONG)',
-                    'n.getLong("Kitchen")==n.getLong("KitchenTable")'):
+                    'n.getLong("Kitchen")!=n.getLong("KitchenTable")'):
             self.assertIn(key,readiness)
         tick=story.split('public static void tick(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static boolean recording(',1)[0]
         self.assertIn('state==Phase.WAIT_KITCHEN_SEAT',tick)
@@ -163,7 +163,10 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('n.putInt("Ticks",0)',paused)
         self.assertLess(paused.index('ShowPlayback.stop(p,s)'),paused.index('return;'))
         rebuild=story.split('private static boolean kitchen(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static boolean block(',1)[0]
-        self.assertIn('if(kitchenCheckpointComplete(n))return true;',rebuild)
+        self.assertIn('if(kitchenCheckpointComplete(n)){',rebuild)
+        self.assertIn('if(savedId!=null&&kitchenStoveId(savedId.getPath()))return true;',rebuild)
+        self.assertLess(rebuild.index('if(kitchenCheckpointComplete(n)){'),
+                        rebuild.index('var realm=RealmData.get(p.server)'))
         self.assertLess(rebuild.index('if(stove==null)'),rebuild.index('n.putLong("Kitchen",center.asLong())'))
         self.assertLess(rebuild.index('n.putLong("Stove",stove.asLong())'),rebuild.rindex('return true;'))
         game=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
