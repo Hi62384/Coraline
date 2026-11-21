@@ -373,24 +373,6 @@ public final class RescueEpilogue {
         }
         if(projection!=null)projection.discard();
         var l=stage;Entity result=old;if(old.level()!=l)result=old.changeDimension(l,new net.minecraftforge.common.util.ITeleporter(){@Override public Entity placeEntity(Entity entity,ServerLevel current,ServerLevel destination,float yaw,java.util.function.Function<Boolean,Entity> reposition){var moved=reposition.apply(false);if(moved!=null)moved.setPos(at);return moved;}});if(!(result instanceof CinematicPropEntity ghost))return null;if(!ghost.getUUID().equals(old.getUUID()))throw new IllegalStateException("Ghost identity changed during farewell");LoopProps.hold(l,BlockPos.containing(at));ghost.setPos(at);FirstEscapeScene.context(s).putLong("Ghost"+index+"Position",ghost.blockPosition().asLong());return ghost;}
-    /** Preserve authentic saved survival vitals but never restore a missing,
-     * non-finite or non-positive health value as death after a broken dream
-     * checkpoint. Fall back to the still-living protected player, not a new
-     * reward, item or a newly generated parent. */
-    static float restoredDreamHealth(boolean hasSaved,float saved,float current,float maximum){
-        float cap=Float.isFinite(maximum)&&maximum>0?maximum:20;
-        float value=hasSaved&&Float.isFinite(saved)&&saved>0?saved
-                :Float.isFinite(current)&&current>0?current:1;
-        return Math.max(Math.min(cap,0.01F),Math.min(cap,value));
-    }
-    static int restoredDreamFood(boolean hasSaved,int saved,int current){
-        return hasSaved&&saved>=0&&saved<=20?saved:Math.max(0,Math.min(20,current));
-    }
-    static float restoredDreamSaturation(boolean hasSaved,float saved,float current,int food){
-        float value=hasSaved&&Float.isFinite(saved)&&saved>=0?saved
-                :Float.isFinite(current)&&current>=0?current:0;
-        return Math.max(0,Math.min(Math.max(0,food),value));
-    }
     private static boolean restoreVision(ServerPlayer p,VisitData.Scene s){
         var n=RescueChapter.data(s);
         if(n.getBoolean("VisionRestored")&&p.serverLevel()==p.server.overworld())return true;
@@ -433,9 +415,9 @@ public final class RescueEpilogue {
         float savedHealth=saved.getFloat("Health");
         if(!healthSaved||!Float.isFinite(savedHealth)||savedHealth<=0)
             n.putBoolean("VisionReturnUsedVitalsFallback",true);
-        float health=restoredDreamHealth(healthSaved,savedHealth,p.getHealth(),p.getMaxHealth());
-        int food=restoredDreamFood(foodSaved,saved.getInt("Food"),p.getFoodData().getFoodLevel());
-        float saturation=restoredDreamSaturation(saturationSaved,saved.getFloat("Saturation"),p.getFoodData().getSaturationLevel(),food);
+        float health=RescueVisionRules.restoredHealth(healthSaved,savedHealth,p.getHealth(),p.getMaxHealth());
+        int food=RescueVisionRules.restoredFood(foodSaved,saved.getInt("Food"),p.getFoodData().getFoodLevel());
+        float saturation=RescueVisionRules.restoredSaturation(saturationSaved,saved.getFloat("Saturation"),p.getFoodData().getSaturationLevel(),food);
         p.setInvulnerable(saved.getBoolean("Invulnerable"));p.setNoGravity(saved.getBoolean("NoGravity"));
         p.setHealth(health);p.getFoodData().setFoodLevel(food);p.getFoodData().setSaturation(saturation);p.setForcedPose(null);if(saved.contains("ForcedPose"))try{p.setForcedPose(Pose.valueOf(saved.getString("ForcedPose")));}catch(IllegalArgumentException ignored){}p.setPose(pose);p.fallDistance=0;p.setDeltaMovement(Vec3.ZERO);
         n.putBoolean("VisionLandingPending",true);
