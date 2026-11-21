@@ -168,6 +168,12 @@ public final class MissingParentsCat {
     static boolean missingBedRecoveryReady(boolean started,boolean originalCatPresent,int missingTicks){
         return started&&originalCatPresent&&missingTicks>=200;
     }
+    /** The mirror/doll watchdog cannot replace the original Cat by skipping
+     * ahead. Its UUID must remain present throughout every started scene. */
+    static boolean catWatchdogReady(boolean started,Phase state,boolean originalPresent){
+        return !started||state.ordinal()<Phase.NOTICE.ordinal()
+                ||state==Phase.COMPLETE||originalPresent;
+    }
     public static void tick(ServerPlayer p,VisitData.Scene s){
         if(!eligible(s)||!owns(p,s)||!p.isAlive()||p.serverLevel()!=p.server.overworld()||!available(p,s))return;
         var n=data(s);var family=ParentAccess.family(p.server,s.owner);
@@ -331,6 +337,16 @@ public final class MissingParentsCat {
                 ||cat!=null&&cat.level()==p.level()&&p.distanceToSqr(cat)<144;
         }
         if(sound.isEmpty()&&!movement)return;
+        // Normal story ticking already pauses while the original Cat is
+        // unloaded. The independent safety watchdog must respect that pause,
+        // or it can award mirror/doll dialogue without ever seeing the Cat.
+        if(!catWatchdogReady(n.getBoolean("Started"),state,cat(p,s)!=null)){
+            if(n.getBoolean("Audio")){ShowPlayback.stop(p,s);n.remove("Audio");n.putInt("Ticks",0);}
+            n.putString("Blocker","Waiting for the original Cat before advancing the mirror scene.");
+            FirstEscapeStory.hint(p,n.getString("Blocker"));
+            StoryCutsceneWatchdog.retry(s,"post_escape_cat");
+            return;
+        }
         // An unavailable staging surface is not a successfully skipped action.
         // Resolve it before the watchdog announces that it continued the scene.
         if(state==Phase.A||state==Phase.FOLLOW_MIRROR||state==Phase.B||state==Phase.WAIT_BREAK){var family=ParentAccess.family(p.server,s.owner);if(family==null||family.bed==null||!mirror(p,s,family.bed)){int failed=n.getInt("MirrorStageFailures")+1;n.putInt("MirrorStageFailures",failed);if(failed>=200){n.putBoolean("MirrorBroken",true);go(p,s,Phase.D);}else FirstEscapeStory.hint(p,"Preparing the Cat's mirror.");return;}}
