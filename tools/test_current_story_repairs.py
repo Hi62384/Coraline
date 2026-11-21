@@ -15,12 +15,18 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('receipt.put("PreviousPlaced",NbtUtils.writeBlockState(old))',floor)
         self.assertIn('if(!l.getBlockState(pos).equals(state))return false',floor)
         self.assertIn('receipt.remove("PreviousPlaced")',floor)
+        build=web.split('public static boolean prepare(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static java.util.Set<Long> expectedCells(',1)[0]
+        self.assertIn('n.putInt("WebBuild",cursor)',build)
+        self.assertLess(build.index('n.putInt("WebBuild",cursor)'),build.index('OtherMotherLoop.changed(p)'))
         self.assertIn('if(!recorded&&!old.isAir())return false',floor)
         self.assertIn('old.equals(NbtUtils.readBlockState(lookup,receipt.getCompound("PreviousPlaced")))',floor)
         sag=web.split('public static void sag(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static void restore(',1)[0]
         self.assertIn('cell.put("PreviousPlaced",NbtUtils.writeBlockState(old))',sag)
         self.assertIn('if(l.getBlockState(at).equals(state))cell.remove("PreviousPlaced")',sag)
         self.assertIn('if(l.getBlockState(at).equals(saved))cell.remove("PreviousPlaced")',sag)
+        self.assertIn('boolean updated=false',sag)
+        self.assertIn('if(updated)OtherMotherLoop.changed(p)',sag)
+        self.assertLess(sag.index('cell.put("Placed",NbtUtils.writeBlockState(state))'),sag.index('if(updated)OtherMotherLoop.changed(p)'))
         restore=web.split('public static void restore(ServerPlayer p,VisitData.Scene s)',1)[1].split('private RescueWebSite()',1)[0]
         self.assertIn('for(String key:new java.util.HashSet<>(cells.getAllKeys()))',restore)
         self.assertIn('previous==null||!actual.equals(previous)',restore)
