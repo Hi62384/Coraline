@@ -60,18 +60,37 @@ public final class RescueEpilogue {
                 &&Double.isFinite(motherDistanceSq)&&Double.isFinite(fatherDistanceSq)
                 &&motherDistanceSq<=36*36&&fatherDistanceSq<=36*36;
     }
-    /** Hold the actual reunion recording until both canonical parents are visible
-     * at its saved stage. Re-stage only the original UUIDs, never replacements. */
+    /** The viewer must be able to see the reunion, not merely be in a saved phase. */
+    static boolean reunionViewerNear(boolean correctDimension,double distanceSquared){
+        return correctDimension&&Double.isFinite(distanceSquared)&&distanceSquared<=64*64;
+    }
+    private static boolean pauseReunion(ServerPlayer p,VisitData.Scene s,String reason){
+        var n=RescueChapter.data(s);
+        if(n.getBoolean("Audio")){ShowPlayback.stop(p,s);n.remove("Audio");n.remove("AudioTail");n.putInt("Ticks",0);}
+        n.putString("Blocker",reason);
+        return false;
+    }
+    /** Hold the actual reunion recording until the real player and both
+     * canonical parents are physically at the saved Overworld stage.
+     * Re-stage only the original UUIDs, never replacements. */
     static boolean presentationReady(ServerPlayer p,VisitData.Scene s){
         var state=RescueChapter.phase(s);
         if(state!=REUNION_A&&state!=REUNION_B)return true;
-        var n=RescueChapter.data(s);var door=source(p,s);var family=ParentAccess.family(p.server,s.owner);
-        if(door!=null&&family!=null&&stageParents(p,s,family,door)){
-            n.remove("Blocker");return true;
+        if(!reunionReady(s))return pauseReunion(p,s,"Waiting for the original sealed-door and three-eye reunion receipt.");
+        var door=source(p,s);var family=ParentAccess.family(p.server,s.owner);
+        var world=door==null?null:FamilyData.level(p.server,door.dimension);
+        if(door==null||family==null||world==null)
+            return pauseReunion(p,s,"Waiting for the saved real-world Little Door and family.");
+        if(p.serverLevel()!=world&&!RescueChapter.transfer(p,world,door.pos))
+            return pauseReunion(p,s,"Your reunion return is blocked. Clear a safe landing near the original Little Door.");
+        if(!reunionViewerNear(p.serverLevel()==world,p.distanceToSqr(door.pos.getCenter())))
+            return pauseReunion(p,s,"Return near the original Little Door to see your parents.");
+        if(!stageParents(p,s,family,door)){
+            var blocker=RescueChapter.data(s).getString("Blocker");
+            return pauseReunion(p,s,blocker.isEmpty()?"Waiting for both original parents to reach the reunion.":blocker);
         }
-        if(n.getBoolean("Audio")){ShowPlayback.stop(p,s);n.remove("Audio");n.remove("AudioTail");n.putInt("Ticks",0);}
-        if(n.getString("Blocker").isEmpty())n.putString("Blocker","Waiting for both original parents to reach the reunion.");
-        return false;
+        RescueChapter.data(s).remove("Blocker");
+        return true;
     }
     public static boolean begin(ServerPlayer p,VisitData.Scene s){
         var n=RescueChapter.data(s);var d=source(p,s);if(d==null||p.serverLevel()!=FamilyData.level(p.server,d.dimension)||!n.getBoolean("PermanentlySealed")||!n.getBoolean("BangingDone")||!RescueEyes.all(s))return false;
