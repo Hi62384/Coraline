@@ -15,7 +15,7 @@ These are **source-path and dependency-free simulation checks**, not a successfu
 ## Repaired risks
 
 - **Tea visit watchdog bypass:** The independent watchdog could continue scripted phases without the saved original Miss Spink and Miss Forcible visitors. Its audio and skip gates now require both authenticated actors; a missing actor stops the interrupted voice run, preserves the phase and resets the watchdog while the original identity is recovered. A Seeing Stone reward cannot be reached by a watchdog skipping absent actors.
-- **Reunion saved-stage false positive:** A persisted `ParentsStaged` flag was trusted without rechecking the real mother and father's dimension and location, allowing reunion voices to run while parents were elsewhere. Both canonical parent UUIDs must be in the Overworld reunion area; an invalid marker causes safe same-actor restaging. The recording is paused/restarted when either original parent is unavailable.
+- **Reunion saved-stage false positive:** A persisted `ParentsStaged` flag was trusted without rechecking the real mother and father's dimension and location, allowing reunion voices to run while parents were elsewhere. Both canonical parent UUIDs must be in the Overworld reunion area; an invalid marker causes safe same-actor restaging. The recording is paused/restarted when either original parent is unavailable. A player relogging into the wrong dimension is returned using a checked landing by the real Little Door; a player too far away must return to the reunion area before its audio can run.
 
 No changes were made to encounter wins, eye receipts, key identity, canonical actor UUIDs, or player rewards.
 
