@@ -23,6 +23,9 @@ public final class RescueVisionRulesSmoke {
                 check(Float.isFinite(actual)&&actual>0&&actual<=cap,"Dream restored lethal health");
                 check(actual==expected,"Dream restored wrong saved health");
             }
+        check(RescueVisionRules.restoredFood(true,Double.NaN,14)==14,"NaN hunger must not become zero");
+        check(RescueVisionRules.restoredFood(true,9.5,14)==14,"Fractional hunger must not be truncated");
+        check(RescueVisionRules.restoredFood(true,Double.POSITIVE_INFINITY,14)==14,"Infinite hunger must not be accepted");
         var random=new Random(20261121);
         for(int i=0;i<100_000;i++){
             boolean hasSaved=random.nextBoolean();
