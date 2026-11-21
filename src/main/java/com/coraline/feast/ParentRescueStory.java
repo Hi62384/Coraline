@@ -78,6 +78,16 @@ public final class ParentRescueStory {
             VisitAudio.play(p,"parents_rescue_arrival_music",true);n.putBoolean("ArrivalMusicStarted",true);n.remove("ArrivalMusicAt");
         }
         var state=phase(s);
+        // A crash or old save can retain Kitchen without Stove/KitchenTable.
+        // Do not play the cooking dialogue or advance the meal against (0,0,0).
+        // Rebuild the original kitchen checkpoint first; never invent a stove.
+        if((state==Phase.KITCHEN||state==Phase.WAIT_KITCHEN_SEAT
+                ||state==Phase.H||state==Phase.I||state==Phase.J||state==Phase.K
+                ||state==Phase.SERVE)&&!kitchen(p,s)){
+            if(n.getString("Blocker").isEmpty())n.putString("Blocker","Waiting for the original kitchen stove and table checkpoint.");
+            FirstEscapeStory.hint(p,n.getString("Blocker"));
+            return;
+        }
         if(!StoryTunnel.entryPhase(s)&&p.tickCount%20==0&&p.onGround()&&!p.isPassenger()
                 &&FirstEscapeScene.inHouseOrPorch(s,p.blockPosition())
                 &&com.coraline.tycoon.TycoonWorld.safeFeet(p.serverLevel(),p.blockPosition())){
@@ -375,7 +385,41 @@ public final class ParentRescueStory {
     }
     /** The built kitchens can use the vanilla Smoker (not named stove or furnace). */
     static boolean kitchenStoveId(String id){return id!=null&&(id.contains("furnace")||id.contains("oven")||id.contains("stove")||id.contains("smoker"));}
-    private static boolean kitchen(ServerPlayer p,VisitData.Scene s){var n=data(s);if(n.contains("Kitchen"))return true;var realm=RealmData.get(p.server).realms.get(s.door);if(realm==null||realm.house==null)return false;var center=HouseCabinets.at(realm.house,43,6,60);n.putLong("Kitchen",center.asLong());BlockPos stove=null;for(var at:BlockPos.betweenClosed(center.offset(-8,0,-8),center.offset(8,2,8))){var id=net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(p.level().getBlockState(at).getBlock());if(id!=null&&kitchenStoveId(id.getPath())){stove=at.immutable();break;}}if(stove==null){n.remove("Kitchen");n.putString("Blocker","The existing kitchen stove must be loaded before continuing.");return false;}n.putLong("Stove",stove.asLong());n.putLong("KitchenTable",center.asLong());var gift=FirstEscapeScene.ensure(p,s,"KitchenGift",CinematicPropEntity.BUTTON_GIFT,0,p.serverLevel(),Vec3.atBottomCenterOf(center).add(0,.9,0));if(gift!=null)gift.frame(0,0,0);return true;}
+    /** A saved KITCHEN marker alone is not an atomic oven/table checkpoint. */
+    static boolean kitchenCheckpointComplete(CompoundTag n){
+        return n.contains("Kitchen",Tag.TAG_LONG)&&n.contains("Stove",Tag.TAG_LONG)
+                &&n.contains("KitchenTable",Tag.TAG_LONG)
+                &&n.getLong("Kitchen")==n.getLong("KitchenTable");
+    }
+    private static boolean kitchen(ServerPlayer p,VisitData.Scene s){
+        var n=data(s);
+        if(kitchenCheckpointComplete(n))return true;
+        // Rebuild the owner-authored checkpoint rather than trusting incomplete
+        // coordinates left by an interrupted save or earlier code version.
+        var realm=RealmData.get(p.server).realms.get(s.door);
+        if(realm==null||realm.house==null){
+            n.putString("Blocker","Waiting for the original kitchen to load.");
+            return false;
+        }
+        var center=HouseCabinets.at(realm.house,43,6,60);
+        BlockPos stove=null;
+        for(var at:BlockPos.betweenClosed(center.offset(-8,0,-8),center.offset(8,2,8))){
+            var id=net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(p.level().getBlockState(at).getBlock());
+            if(id!=null&&kitchenStoveId(id.getPath())){stove=at.immutable();break;}
+        }
+        if(stove==null){
+            n.putString("Blocker","The existing kitchen stove must be loaded before continuing.");
+            return false;
+        }
+        n.putLong("Kitchen",center.asLong());
+        n.putLong("Stove",stove.asLong());
+        n.putLong("KitchenTable",center.asLong());
+        var gift=FirstEscapeScene.ensure(p,s,"KitchenGift",CinematicPropEntity.BUTTON_GIFT,0,p.serverLevel(),Vec3.atBottomCenterOf(center).add(0,.9,0));
+        if(gift!=null)gift.frame(0,0,0);
+        n.remove("Blocker");
+        OtherMotherLoop.changed(p);
+        return true;
+    }
     public static boolean block(ServerPlayer p,BlockPos at){var s=OtherMotherLoop.scene(p);if(!started(s))return false;var n=data(s);
         if(BeldamFinale.lockedDoor(s,at)&&OtherWorld.isOther(p.level())){
             p.displayClientMessage(Component.literal("The door is sealed during the confrontation."),true);
