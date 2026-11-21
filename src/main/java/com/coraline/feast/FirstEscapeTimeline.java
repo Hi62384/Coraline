@@ -16,6 +16,17 @@ public final class FirstEscapeTimeline {
         case MIRROR_A->Phase.MIRROR_RETRACT;case MIRROR_B->Phase.MIRROR_C;case MIRROR_C->Phase.MIRROR_D;case MIRROR_D->Phase.MIRROR_E;case MIRROR_E->Phase.ESCAPE_A;
         case ESCAPE_A->Phase.MASK_REMOVAL;case ESCAPE_B->Phase.STITCH_REMOVAL;case ESCAPE_C->Phase.FOLLOW_WYBIE;case ESCAPE_D->Phase.OPEN_LITTLE_DOOR;case ESCAPE_E->Phase.ESCAPE_F;case ESCAPE_F->Phase.ESCAPE_G;case ESCAPE_G->Phase.ESCAPE_PUSH;
         case MISSING_A->Phase.WYBIE_GAZE;case MISSING_B->Phase.SHOW_DOOR;case MISSING_C->Phase.MISSING_D;case MISSING_D->Phase.THROW_SHOE;case MISSING_E->Phase.MISSING_F;case MISSING_F->Phase.MISSING_G;case MISSING_G->Phase.BICYCLE_DEPARTURE;default->null;};}
+    /** Actor dependencies for both the main chapter tick and its watchdog.
+     * These guards are pure so deterministic simulations exercise production rules. */
+    public static boolean needsOtherMother(Phase p){
+        return p.ordinal()>=Phase.COCOA_A.ordinal()&&p.ordinal()<=Phase.COCOA_G.ordinal();
+    }
+    public static boolean needsOtherWybie(Phase p){
+        return p.ordinal()>=Phase.ESCAPE_A.ordinal()&&p.ordinal()<=Phase.ESCAPE_G.ordinal();
+    }
+    public static boolean needsRealWybie(Phase p){
+        return p.ordinal()>=Phase.MISSING_B.ordinal()&&p.ordinal()<=Phase.BICYCLE_DEPARTURE.ordinal();
+    }
     public static boolean prison(Phase p){return p.ordinal()>=Phase.MIRROR_A.ordinal()&&p.ordinal()<=Phase.MIRROR_E.ordinal();}
     public static boolean overworld(Phase p){return p.ordinal()>=Phase.MISSING_A.ordinal();}
     public static boolean seated(Phase p){return p.ordinal()>=Phase.COCOA_B.ordinal()&&p.ordinal()<=Phase.COCOA_G.ordinal();}
