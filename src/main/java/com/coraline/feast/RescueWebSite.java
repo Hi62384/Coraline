@@ -179,6 +179,40 @@ public final class RescueWebSite {
             }
         }
     }
-    public static void restore(ServerPlayer p,VisitData.Scene s){if(!RescueChapter.owns(p,s))return;var l=p.server.getLevel(ActivityWorld.KEY);if(l==null)return;var n=RescueChapter.data(s);var cells=n.getCompound("WebCells");var lookup=l.holderLookup(net.minecraft.core.registries.Registries.BLOCK);for(String key:cells.getAllKeys()){var pos=BlockPos.of(Long.parseLong(key));l.getChunkAt(pos);var cell=cells.getCompound(key);if(l.getBlockEntity(pos)==null&&l.getBlockState(pos).equals(NbtUtils.readBlockState(lookup,cell.getCompound("Placed"))))l.setBlock(pos,NbtUtils.readBlockState(lookup,cell.getCompound("Original")),2);}n.remove("WebCells");n.remove("WebBuild");n.remove("WebReady");n.remove("WebVerified");n.remove("WebVerify");n.remove("WebEntryRecheck");n.remove("WebDoorRetryRecheck");OtherMotherLoop.changed(p);}
+    /** Original web restoration retains receipts for every obstructed or
+     * unverified block; never forget another player's edit or a refused write. */
+    public static void restore(ServerPlayer p,VisitData.Scene s){
+        if(!RescueChapter.owns(p,s))return;
+        var l=p.server.getLevel(ActivityWorld.KEY);if(l==null)return;
+        var n=RescueChapter.data(s);var cells=n.getCompound("WebCells");
+        var lookup=l.holderLookup(net.minecraft.core.registries.Registries.BLOCK);
+        boolean changed=false;
+        for(String key:new java.util.HashSet<>(cells.getAllKeys())){
+            long packed;try{packed=Long.parseLong(key);}catch(NumberFormatException invalid){continue;}
+            var pos=BlockPos.of(packed);
+            if(l.isOutsideBuildHeight(pos)||!l.getWorldBorder().isWithinBounds(pos))continue;
+            l.getChunkAt(pos);
+            var cell=cells.getCompound(key);
+            if(!cell.contains("Original",Tag.TAG_COMPOUND)||!cell.contains("Placed",Tag.TAG_COMPOUND)
+                    ||l.getBlockEntity(pos)!=null)continue;
+            var original=NbtUtils.readBlockState(lookup,cell.getCompound("Original"));
+            var placed=NbtUtils.readBlockState(lookup,cell.getCompound("Placed"));
+            var previous=cell.contains("PreviousPlaced",Tag.TAG_COMPOUND)
+                    ?NbtUtils.readBlockState(lookup,cell.getCompound("PreviousPlaced")):null;
+            var actual=l.getBlockState(pos);
+            if(!actual.equals(original)){
+                if(!actual.equals(placed)&&(previous==null||!actual.equals(previous)))continue;
+                l.setBlock(pos,original,2);
+                if(!l.getBlockState(pos).equals(original))continue;
+            }
+            cells.remove(key);changed=true;
+        }
+        if(cells.isEmpty()){
+            n.remove("WebCells");n.remove("WebBuild");n.remove("WebReady");
+            n.remove("WebVerified");n.remove("WebVerify");n.remove("WebEntryRecheck");n.remove("WebDoorRetryRecheck");
+            changed=true;
+        }
+        if(changed)OtherMotherLoop.changed(p);
+    }
     private RescueWebSite(){}
 }
