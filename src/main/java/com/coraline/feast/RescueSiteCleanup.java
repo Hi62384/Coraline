@@ -14,7 +14,7 @@ public final class RescueSiteCleanup {
         int remaining=96;
         remaining=drain(player,scene,"WebCells",remaining);
         drain(player,scene,"PassageCells",remaining);
-        if(!data.contains("WebCells")){data.remove("WebReady");data.remove("WebBuild");}
+        if(!data.contains("WebCells")){data.remove("WebReady");data.remove("WebBuild");data.remove("WebVerified");data.remove("WebVerify");data.remove("WebEntryRecheck");data.remove("WebDoorRetryRecheck");}
         if(!data.contains("PassageCells")){data.remove("PassageReady");data.remove("PassageBuild");data.remove("PassageVerified");data.remove("PassageVerify");data.remove("PassageCellsCleanupOffset");}
         // The persistent Hand, original Cat, original Mother and child UUIDs are
         // deliberately absent. Subsequent chapters still own those identities.
@@ -42,10 +42,13 @@ public final class RescueSiteCleanup {
                     ||level.getBlockEntity(at)!=null)continue;
             var placed=NbtUtils.readBlockState(lookup,entry.getCompound("Placed"));
             var original=NbtUtils.readBlockState(lookup,entry.getCompound("Original"));
+            var previous=entry.contains("PreviousPlaced",net.minecraft.nbt.Tag.TAG_COMPOUND)
+                    ?NbtUtils.readBlockState(lookup,entry.getCompound("PreviousPlaced")):null;
             var current=level.getBlockState(at);
-            // Never clear provenance until the original state is read back.
+            // A web-sag crash can leave either of two journalled OWNED states.
+            // Retire both safely, but never overwrite a third-party edit.
             if(!current.equals(original)){
-                if(!current.equals(placed))continue;
+                if(!current.equals(placed)&&(previous==null||!current.equals(previous)))continue;
                 level.setBlock(at,original,2);
                 if(!level.getBlockState(at).equals(original))continue;
             }

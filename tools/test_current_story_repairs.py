@@ -9,6 +9,107 @@ ASSETS=ROOT/'src/main/resources/assets/coraline'
 def source(name):return (JAVA/name).read_text(encoding='utf-8-sig')
 
 class CurrentStoryRepairs(unittest.TestCase):
+    def test_web_journal_recovers_interrupted_placement_and_sag(self):
+        web=source('feast/RescueWebSite.java')
+        floor=web.split('private static boolean floor(ServerLevel l,CompoundTag journal,Vec3 point)',1)[1].split('public static void sag(',1)[0]
+        self.assertIn('receipt.put("PreviousPlaced",NbtUtils.writeBlockState(old))',floor)
+        self.assertIn('if(!l.getBlockState(pos).equals(state))return false',floor)
+        self.assertIn('receipt.remove("PreviousPlaced")',floor)
+        build=web.split('public static boolean prepare(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static java.util.Set<Long> expectedCells(',1)[0]
+        self.assertIn('n.putInt("WebBuild",cursor)',build)
+        self.assertLess(build.index('n.putInt("WebBuild",cursor)'),build.index('OtherMotherLoop.changed(p)'))
+        self.assertIn('if(!recorded&&!old.isAir())return false',floor)
+        self.assertIn('old.equals(NbtUtils.readBlockState(lookup,receipt.getCompound("PreviousPlaced")))',floor)
+        sag=web.split('public static void sag(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static void restore(',1)[0]
+        self.assertIn('cell.put("PreviousPlaced",NbtUtils.writeBlockState(old))',sag)
+        self.assertIn('if(l.getBlockState(at).equals(state))cell.remove("PreviousPlaced")',sag)
+        self.assertIn('if(l.getBlockState(at).equals(saved))cell.remove("PreviousPlaced")',sag)
+        self.assertIn('boolean updated=false',sag)
+        self.assertIn('if(updated)OtherMotherLoop.changed(p)',sag)
+        self.assertLess(sag.index('cell.put("Placed",NbtUtils.writeBlockState(state))'),sag.index('if(updated)OtherMotherLoop.changed(p)'))
+        restore=web.split('public static void restore(ServerPlayer p,VisitData.Scene s)',1)[1].split('private RescueWebSite()',1)[0]
+        self.assertIn('for(String key:new java.util.HashSet<>(cells.getAllKeys()))',restore)
+        self.assertIn('previous==null||!actual.equals(previous)',restore)
+        self.assertLess(restore.index('if(!l.getBlockState(pos).equals(original))continue'),restore.index('cells.remove(key)'))
+        self.assertIn('if(cells.isEmpty())',restore)
+        self.assertLess(restore.index('if(cells.isEmpty())'),restore.index('n.remove("WebCells")'))
+        cleanup=source('feast/RescueSiteCleanup.java')
+        self.assertIn('entry.contains("PreviousPlaced",net.minecraft.nbt.Tag.TAG_COMPOUND)',cleanup)
+        self.assertIn('previous==null||!current.equals(previous)',cleanup)
+        self.assertIn('data.remove("WebVerified");data.remove("WebVerify");data.remove("WebEntryRecheck")',cleanup)
+
+    def test_final_web_entry_revalidates_actual_journal_and_persists_retry(self):
+        web=source('feast/RescueWebSite.java')
+        self.assertIn('static boolean webVerificationRequired(boolean ready,boolean verified,int receipts)',web)
+        self.assertIn('if(n.getBoolean("WebReady"))return verify(p,s)',web)
+        verify=web.split('private static boolean verify(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static boolean blocked(',1)[0]
+        self.assertIn('keys.sort(String::compareTo)',verify)
+        self.assertIn('expectedCells(p,s)',verify)
+        self.assertIn('!cells.contains(Long.toString(packed))',verify)
+        expected=web.split('private static java.util.Set<Long> expectedCells(',1)[1].split('private static boolean verify(',1)[0]
+        self.assertIn('for(int lane=0;lane<RescueWebLayout.LANES;lane++)',expected)
+        self.assertIn('for(int sample=0;sample<=samples;sample++)',expected)
+        self.assertIn('point.lerp(adjacent,i/12.0)',expected)
+        self.assertIn('for(double u:new double[]{0,1})',expected)
+        self.assertIn('int end=Math.min(keys.size(),cursor+96)',verify)
+        self.assertIn('receipt.contains("Original",Tag.TAG_COMPOUND)',verify)
+        self.assertIn('receipt.contains("Placed",Tag.TAG_COMPOUND)',verify)
+        self.assertIn('!actual.equals(placed)',verify)
+        self.assertIn('&&!actual.equals(original)',verify)
+        self.assertIn('if(!actual.equals(placed))',verify)
+        self.assertIn('previous==null||!actual.equals(previous)',verify)
+        self.assertIn('receipt.remove("PreviousPlaced")',verify)
+        self.assertIn('if(!level.getBlockState(pos).equals(placed))',verify)
+        finale=source('feast/BeldamFinale.java')
+        entry=finale.split('static boolean enterWeb(ServerPlayer p,VisitData.Scene s,ParentEntity mother)',1)[1].split('private static void rememberPosition(',1)[0]
+        self.assertLess(entry.index('n.remove("WebVerified")'),entry.index('var landing=webLanding(p,s)'))
+        self.assertIn('n.putBoolean("WebEntryRecheck",true)',entry)
+        self.assertIn('p.position().distanceToSqr(landing)>.25',entry)
+        self.assertIn('n.remove("WebEntryRecheck")',entry)
+        self.assertIn('RescueWebHearing.reset(p)',entry)
+        retry=finale.split('public static void retry(ServerPlayer p,VisitData.Scene s',1)[1]
+        self.assertIn('n.remove("WebEntryReady");n.remove("WebEntered");n.remove("WebEntryRecheck")',retry)
+        self.assertIn('n.remove("WebVerified");n.putInt("WebVerify",0)',retry)
+        self.assertNotIn('RescueChapter.transfer(p,p.server.getLevel(ActivityWorld.KEY)',retry.split('}else if(state==WEB_STEALTH){',1)[1].split('}else if(state==DOOR_STRUGGLE){',1)[0])
+        tests=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('webReadyCannotSkipItsPhysicalReceipts',tests)
+
+    def test_first_escape_cutscene_and_main_tick_require_original_cast(self):
+        rules=source('feast/FirstEscapeTimeline.java')
+        for key in ('needsOtherMother','needsOtherWybie','needsRealWybie'):
+            self.assertIn('public static boolean '+key+'(Phase p)',rules)
+        story=source('feast/FirstEscapeStory.java')
+        tick=story.split('public static boolean tick(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static boolean recording(',1)[0]
+        self.assertLess(tick.index('pauseForMissingActor(p,s,state)'),tick.index('int ticks=n.getInt("Ticks");String sound='))
+        self.assertIn('if(n.getBoolean("AudioStarted"))',story.split('private static boolean pauseForMissingActor(',1)[1].split('public static boolean tick(',1)[0])
+        self.assertIn('ShowPlayback.stop(p,s)',story.split('private static boolean pauseForMissingActor(',1)[1].split('public static boolean tick(',1)[0])
+        safety=story.split('static void cutsceneSafety(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static boolean readyForVoice(',1)[0]
+        self.assertLess(safety.index('pauseForMissingActor(p,s,state)'),safety.index('StoryCutsceneWatchdog.overdue('))
+        self.assertIn('!voice.isEmpty()&&!readyForVoice(p,s,state)',safety)
+        self.assertIn('FirstEscapeTimeline.needsRealWybie(state)',story)
+
+    def test_original_cat_absence_pauses_mirror_watchdog_before_reward(self):
+        cat=source('feast/MissingParentsCat.java')
+        self.assertIn('static boolean catWatchdogReady(boolean started,Phase state,boolean originalPresent)',cat)
+        safety=cat.split('static void cutsceneSafety(ServerPlayer p,VisitData.Scene s)',1)[1].split('static ',1)[0]
+        self.assertIn('!catWatchdogReady(n.getBoolean("Started"),state,cat(p,s)!=null)',safety)
+        self.assertLess(safety.index('!catWatchdogReady('),safety.index('StoryCutsceneWatchdog.overdue('))
+        self.assertLess(safety.index('!catWatchdogReady('),safety.index('ShowPlayback.safetyFinish('))
+        self.assertIn('StoryCutsceneWatchdog.retry(s,"post_escape_cat")',safety)
+        gametest=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('catWatchdogRequiresOriginalActorThroughoutMirrorAndDolls',gametest)
+
+    def test_parent_rescue_watchdog_requires_original_mother_before_completing(self):
+        parent=source('feast/ParentRescueStory.java')
+        self.assertIn('static boolean rescueMotherReadyForWatchdog(Phase state,boolean originalPresent)',parent)
+        safety=parent.split('static void cutsceneSafety(ServerPlayer p,VisitData.Scene s)',1)[1].split('static void prepareReturnRoom(',1)[0]
+        self.assertIn('!rescueMotherReadyForWatchdog(state,mother(p,s)!=null)',safety)
+        self.assertLess(safety.index('!rescueMotherReadyForWatchdog('),safety.index('StoryCutsceneWatchdog.overdue('))
+        self.assertLess(safety.index('!rescueMotherReadyForWatchdog('),safety.index('case N->{release(p,s)'))
+        self.assertIn('StoryCutsceneWatchdog.retry(s,"parent_rescue")',safety)
+        gametest=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('parentRescueWatchdogNeverFinishesMissingMother',gametest)
+
     def test_saved_final_exit_recovers_original_world_and_never_skips_key_or_crawl(self):
         finale=source('feast/BeldamFinale.java')
         recovery=finale.split('static boolean originalExitReady(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static boolean preflight(',1)[0]

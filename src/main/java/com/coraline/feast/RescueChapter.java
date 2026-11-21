@@ -204,6 +204,16 @@ public final class RescueChapter {
             return;
         }
         if(state==Phase.RAT_CHASE){RescueEncounters.retry(p,s,state);return;}
+        if(state==Phase.FINAL_O||state==Phase.FINAL_P||state==Phase.FINAL_Q){
+            // The player can disconnect after web generation but before its
+            // actual landing. A saved WebEntryReady/WebVerified flag is not
+            // fresh proof that the arena or canonical cast survived a reload.
+            var web=data(s);
+            web.remove("WebEntryReady");web.remove("WebEntered");web.remove("WebEntryRecheck");
+            web.remove("WebVerified");web.putInt("WebVerify",0);
+            go(p,s,state);
+            return;
+        }
         if(state==Phase.COLLAPSE){
             var level=p.server.getLevel(OtherWorld.KEY);
             if(p.serverLevel()!=level&&!transfer(p,level,BlockPos.of(data(s).getLong("CollapseStart"))))data(s).putBoolean("Recover",true);
