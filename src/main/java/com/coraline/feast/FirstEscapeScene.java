@@ -121,6 +121,32 @@ public final class FirstEscapeScene {
         for(var prop:l.getEntitiesOfClass(CinematicPropEntity.class,new AABB(c.offset(-5,-2,-5),c.offset(5,7,5)),e->e.owned(s)&&!e.canonicalGhost(s)))prop.discard();
         context(s).remove("PrisonBuilt");OtherMotherLoop.changed(p);
     }
-    public static void restore(ServerPlayer p,VisitData.Scene s){var l=level(p);if(l==null)return;for(var tag:context(s).getList("HiddenSpies",10)){var saved=(CompoundTag)tag;var entity=l.getEntity(saved.getUUID("Id"));if(entity!=null)entity.setInvisible(saved.getBoolean("Invisible"));}var cells=context(s).getCompound("Environment");var lookup=l.holderLookup(Registries.BLOCK);for(String key:cells.getAllKeys()){var at=BlockPos.of(Long.parseLong(key));var cell=cells.getCompound(key);if(l.getBlockEntity(at)==null&&l.getBlockState(at).equals(NbtUtils.readBlockState(lookup,cell.getCompound("Placed"))))l.setBlock(at,NbtUtils.readBlockState(lookup,cell.getCompound("Original")),2);} }
+    public static void restore(ServerPlayer p,VisitData.Scene s){
+        var l=level(p);if(l==null)return;
+        for(var tag:context(s).getList("HiddenSpies",Tag.TAG_COMPOUND)){
+            var saved=(CompoundTag)tag;
+            var entity=l.getEntity(saved.getUUID("Id"));
+            if(entity!=null)entity.setInvisible(saved.getBoolean("Invisible"));
+        }
+        var cells=context(s).getCompound("Environment");
+        var lookup=l.holderLookup(Registries.BLOCK);
+        for(String key:cells.getAllKeys()){
+            long packed;
+            try{packed=Long.parseLong(key);}catch(NumberFormatException invalid){
+                // An interrupted legacy edit must not crash escape-room
+                // restoration or cause an invented world-position write.
+                continue;
+            }
+            var at=BlockPos.of(packed);
+            if(l.isOutsideBuildHeight(at)||!l.getWorldBorder().isWithinBounds(at))continue;
+            var cell=cells.getCompound(key);
+            if(!cell.contains("Original",Tag.TAG_COMPOUND)||!cell.contains("Placed",Tag.TAG_COMPOUND))continue;
+            l.getChunkAt(at);
+            var original=NbtUtils.readBlockState(lookup,cell.getCompound("Original"));
+            var placed=NbtUtils.readBlockState(lookup,cell.getCompound("Placed"));
+            if(l.getBlockEntity(at)==null&&l.getBlockState(at).equals(placed))
+                l.setBlock(at,original,2);
+        }
+    }
     private FirstEscapeScene(){}
 }
