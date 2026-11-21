@@ -90,16 +90,22 @@ public final class RescueWebSite {
             level.getChunkAt(pos);
             var original=NbtUtils.readBlockState(lookup,receipt.getCompound("Original"));
             var placed=NbtUtils.readBlockState(lookup,receipt.getCompound("Placed"));
+            var previous=receipt.contains("PreviousPlaced",Tag.TAG_COMPOUND)
+                    ?NbtUtils.readBlockState(lookup,receipt.getCompound("PreviousPlaced")):null;
             var actual=level.getBlockState(pos);
-            if(level.getBlockEntity(pos)!=null||!actual.equals(placed)&&!actual.equals(original)){
+            if(level.getBlockEntity(pos)!=null||!actual.equals(placed)
+                    &&!actual.equals(original)&&(previous==null||!actual.equals(previous))){
                 n.putString("Blocker","The web at "+pos.toShortString()+" contains an unrelated edit. It was preserved.");return false;
             }
-            if(actual.equals(original)&&!actual.equals(placed)){
+            if(!actual.equals(placed)){
                 level.setBlock(pos,placed,2);
                 if(!level.getBlockState(pos).equals(placed)){
                     n.putString("Blocker","Unable to restore the original web at "+pos.toShortString());return false;
                 }
             }
+            // The new state was read back; the interrupted older-state
+            // receipt no longer needs to be kept alongside the committed one.
+            receipt.remove("PreviousPlaced");
             n.putInt("WebVerify",i+1);
         }
         if(end==keys.size()){n.putBoolean("WebVerified",true);n.remove("WebVerify");n.remove("Blocker");}
@@ -149,9 +155,28 @@ public final class RescueWebSite {
     /** A quiet, bounded weight depression changes the same tops the mesh reads. */
     public static void sag(ServerPlayer p,VisitData.Scene s){
         if(!RescueChapter.owns(p,s)||p.tickCount%4!=0||p.serverLevel()!=p.server.getLevel(ActivityWorld.KEY))return;var n=RescueChapter.data(s);if(!n.getBoolean("WebReady"))return;var l=p.serverLevel();var cells=n.getCompound("WebCells");var lookup=l.holderLookup(net.minecraft.core.registries.Registries.BLOCK);
-        for(String key:cells.getAllKeys()){var at=BlockPos.of(Long.parseLong(key));if(!l.hasChunkAt(at))continue;var cell=cells.getCompound(key);var old=l.getBlockState(at);if(!old.is(ModBlocks.STORY_WEB.get())||!old.equals(NbtUtils.readBlockState(lookup,cell.getCompound("Placed"))))continue;
+        for(String key:cells.getAllKeys()){var at=BlockPos.of(Long.parseLong(key));if(!l.hasChunkAt(at))continue;
+            var cell=cells.getCompound(key);var old=l.getBlockState(at);
+            if(!old.is(ModBlocks.STORY_WEB.get())||!cell.contains("Placed",Tag.TAG_COMPOUND))continue;
+            var saved=NbtUtils.readBlockState(lookup,cell.getCompound("Placed"));
+            if(!old.equals(saved)){
+                // A crash may have saved the intended sag but not its physical
+                // block. Resume only a matching previously-owned web cell.
+                if(cell.contains("PreviousPlaced",Tag.TAG_COMPOUND)
+                        &&old.equals(NbtUtils.readBlockState(lookup,cell.getCompound("PreviousPlaced")))){
+                    l.setBlock(at,saved,2);
+                    if(l.getBlockState(at).equals(saved))cell.remove("PreviousPlaced");
+                }
+                continue;
+            }
             int current=old.getValue(StoryWebBlock.HEIGHT);if(!cell.contains("RestHeight"))cell.putInt("RestHeight",current);int rest=cell.getInt("RestHeight");double top=at.getY()+rest/16.;double distance=Math.hypot(p.getX()-at.getX()-.5,p.getZ()-at.getZ()-.5);boolean bearing=Math.abs(p.getY()-top)<.35&&Math.abs(p.getDeltaMovement().y)<.2;int target=RescueWebLayout.weightedHeight(rest,distance,bearing);int height=current+Integer.signum(target-current);
-            if(height!=current){var state=old.setValue(StoryWebBlock.HEIGHT,height);cell.put("Placed",NbtUtils.writeBlockState(state));l.setBlock(at,state,2);}
+            if(height!=current){
+                var state=old.setValue(StoryWebBlock.HEIGHT,height);
+                cell.put("PreviousPlaced",NbtUtils.writeBlockState(old));
+                cell.put("Placed",NbtUtils.writeBlockState(state));
+                l.setBlock(at,state,2);
+                if(l.getBlockState(at).equals(state))cell.remove("PreviousPlaced");
+            }
         }
     }
     public static void restore(ServerPlayer p,VisitData.Scene s){if(!RescueChapter.owns(p,s))return;var l=p.server.getLevel(ActivityWorld.KEY);if(l==null)return;var n=RescueChapter.data(s);var cells=n.getCompound("WebCells");var lookup=l.holderLookup(net.minecraft.core.registries.Registries.BLOCK);for(String key:cells.getAllKeys()){var pos=BlockPos.of(Long.parseLong(key));l.getChunkAt(pos);var cell=cells.getCompound(key);if(l.getBlockEntity(pos)==null&&l.getBlockState(pos).equals(NbtUtils.readBlockState(lookup,cell.getCompound("Placed"))))l.setBlock(pos,NbtUtils.readBlockState(lookup,cell.getCompound("Original")),2);}n.remove("WebCells");n.remove("WebBuild");n.remove("WebReady");n.remove("WebVerified");n.remove("WebVerify");n.remove("WebEntryRecheck");OtherMotherLoop.changed(p);}
