@@ -44,20 +44,50 @@ public final class StoryTunnel {
         block.refreshStoryPassageBlock();block.setChanged();source.sendBlockUpdated(d.pos,source.getBlockState(d.pos),source.getBlockState(d.pos),3);
         OtherMotherLoop.changed(p);return true;
     }
-    public static void retireCrawl(ServerPlayer p,VisitData.Scene s){
-        var original=FirstEscapeStory.data(s);if(!original.contains("EscapeTunnel"))return;
-        var level=p.server.getLevel(OtherWorld.KEY);if(level==null)return;
+    /** A later rescue scene can place a new block on top of the original escape
+     * tunnel. Restore its overlay first, then the First Escape layer underneath.
+     * Never discard a receipt until the native world confirms the original block. */
+    static boolean retireCrawlCell(net.minecraft.server.level.ServerLevel level,CompoundTag cells,BlockPos at){
+        String key=Long.toString(at.asLong());
+        if(!cells.contains(key))return true;
+        if(!cells.contains(key,Tag.TAG_COMPOUND)||level.isOutsideBuildHeight(at)
+                ||!level.getWorldBorder().isWithinBounds(at))return false;
+        level.getChunkAt(at);
+        var saved=cells.getCompound(key);
+        if(!saved.contains("Original",Tag.TAG_COMPOUND)||!saved.contains("Placed",Tag.TAG_COMPOUND)
+                ||level.getBlockEntity(at)!=null)return false;
         var lookup=level.holderLookup(net.minecraft.core.registries.Registries.BLOCK);
-        for(var scope:java.util.List.of(original,ParentRescueStory.scenery(s))){
-            var cells=scope.getCompound("Environment");
-            for(int z=0;z<=22;z++)for(int x=-2;x<=2;x++)for(int y=-1;y<=3;y++){
-                var at=FirstEscapeStory.tunnelCell(s,x,y,z);String key=Long.toString(at.asLong());if(!cells.contains(key))continue;
-                level.getChunkAt(at);var saved=cells.getCompound(key);
-                if(level.getBlockEntity(at)==null&&level.getBlockState(at).equals(NbtUtils.readBlockState(lookup,saved.getCompound("Placed"))))level.setBlock(at,NbtUtils.readBlockState(lookup,saved.getCompound("Original")),2);
-                cells.remove(key);
-            }
+        var original=NbtUtils.readBlockState(lookup,saved.getCompound("Original"));
+        var placed=NbtUtils.readBlockState(lookup,saved.getCompound("Placed"));
+        var current=level.getBlockState(at);
+        if(!current.equals(original)){
+            // A third-party block is neither of the states owned by this scene.
+            // Preserve it AND its unresolved restoration receipt.
+            if(!current.equals(placed))return false;
+            level.setBlock(at,original,2);
+            if(!level.getBlockState(at).equals(original))return false;
         }
-        original.putBoolean("EscapeTunnelBuilt",false);OtherMotherLoop.changed(p);
+        cells.remove(key);
+        return true;
+    }
+    public static void retireCrawl(ServerPlayer p,VisitData.Scene s){
+        var original=FirstEscapeStory.data(s);
+        if(!original.contains("EscapeTunnel",Tag.TAG_LONG)||!s.owner.equals(p.getUUID()))return;
+        var level=p.server.getLevel(OtherWorld.KEY);if(level==null)return;
+        var first=original.getCompound("Environment");
+        var rescue=ParentRescueStory.scenery(s).getCompound("Environment");
+        boolean pending=false;
+        for(int z=0;z<=22;z++)for(int x=-2;x<=2;x++)for(int y=-1;y<=3;y++){
+            var at=FirstEscapeStory.tunnelCell(s,x,y,z);
+            // A failed upper-layer restore must never be hidden by deleting
+            // the lower-layer original, even if its saved 'Placed' looks stale.
+            if(!retireCrawlCell(level,rescue,at)){pending=true;continue;}
+            if(!retireCrawlCell(level,first,at))pending=true;
+        }
+        original.putBoolean("EscapeTunnelBuilt",false);
+        if(pending)original.putBoolean("EscapeTunnelCleanupPending",true);
+        else original.remove("EscapeTunnelCleanupPending");
+        OtherMotherLoop.changed(p);
     }
     public static boolean enter(ServerPlayer p,DoorBlockEntity door){
         var scene=OtherMotherLoop.scene(p);
