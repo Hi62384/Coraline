@@ -215,4 +215,27 @@ public final class RescueSoftlockGameTests {
             "Player within the original door checkpoint can view the reunion");
         helper.succeed();
     }
+
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void postBossScenesMustPreserveOriginalWorldAndCast(GameTestHelper helper) {
+        for(var phase:new RescueChapter.Phase[]{RescueChapter.Phase.REUNION_A,
+                RescueChapter.Phase.REUNION_B,RescueChapter.Phase.CAT_NOTICE,
+                RescueChapter.Phase.FAREWELL_A,RescueChapter.Phase.FAREWELL_B})
+            helper.assertTrue(RescueEpilogue.requiresEpilogueStage(phase),
+                "Post-boss stage or original Cat readiness was skipped: "+phase);
+        for(var phase:new RescueChapter.Phase[]{RescueChapter.Phase.EYES_CLOSE,
+                RescueChapter.Phase.CELESTIAL_OPEN,RescueChapter.Phase.ORBS,
+                RescueChapter.Phase.FAREWELL_C,RescueChapter.Phase.COMPLETE})
+            helper.assertFalse(RescueEpilogue.requiresEpilogueStage(phase),
+                "Dream recovery was incorrectly gated on the Overworld stage: "+phase);
+        helper.assertTrue(RescueEncounters.restoreHouseEntry(true,false,true),
+            "Reloaded HOUSE_SAFE checkpoint would leave its first door shut");
+        helper.assertTrue(RescueEncounters.restoreHouseEntry(true,true,false),
+            "Reloaded HOUSE_SAFE checkpoint would leave its second door shut");
+        helper.assertTrue(RescueEncounters.restoreHouseEntry(false,true,true),
+            "Initial HOUSE_SAFE preparation must open the real entry doors");
+        helper.assertFalse(RescueEncounters.restoreHouseEntry(true,true,true),
+            "Already-open original doors should not be rewritten every tick");
+        helper.succeed();
+    }
 }
