@@ -55,3 +55,11 @@ jobs:
           ./gradlew --no-daemon --max-workers=2 \
             '-Dorg.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=768m' \
             -PgameTests compileJava
+
+      - name: Run native Forge GameTest server
+        shell: bash
+        timeout-minutes: 35
+        run: |
+          ./gradlew --no-daemon --max-workers=2 \
+            '-Dorg.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=768m' \
+            -PgameTests -PfreshGameTests runGameTestServer
