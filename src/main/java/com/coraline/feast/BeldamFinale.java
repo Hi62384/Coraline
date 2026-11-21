@@ -506,6 +506,13 @@ public final class BeldamFinale {
                 &&mother.getUUID().equals(s.mom))return true;
         n.remove("WebEntryReady");
         n.remove("WebEntered");
+        // A new entry/retry is a physical checkpoint, not just an old
+        // WebReady boolean. Verify the journalled web in bounded batches.
+        if(!n.getBoolean("WebEntryRecheck")){
+            n.putBoolean("WebEntryRecheck",true);
+            n.remove("WebVerified");
+            n.putInt("WebVerify",0);
+        }
         if(mother==null||!mother.getUUID().equals(s.mom)||!mother.isAlive()){
             n.putString("Blocker","Waiting for the original Other Mother before entering the web.");
             return false;
@@ -514,12 +521,19 @@ public final class BeldamFinale {
         var motherAt=Vec3.atBottomCenterOf(RescueWebSite.center(p,s));
         LoopProps.hold(level,BlockPos.containing(motherAt));
         var motherBody=mother.getDimensions(Pose.STANDING).makeBoundingBox(motherAt);
-        if(landing==null||level.getBlockCollisions(mother,motherBody).iterator().hasNext()||level.containsAnyLiquid(motherBody)){
-            n.putString("Blocker","The player or Other Mother web landing is obstructed.");
+        if(landing==null){
+            if(n.getString("Blocker").isEmpty())
+                n.putString("Blocker","Waiting for the complete original web and safe player landing.");
+            return false;
+        }
+        if(level.getBlockCollisions(mother,motherBody).iterator().hasNext()||level.containsAnyLiquid(motherBody)){
+            n.putString("Blocker","The original Other Mother web landing is obstructed.");
             return false;
         }
         n.putUUID("WebEntryMother",mother.getUUID());
-        if(p.serverLevel()!=level){
+        if(p.serverLevel()!=level||p.position().distanceToSqr(landing)>.25){
+            // Same-world retries can leave the player far below or beyond the
+            // start. Restore only the real verified web entrance, not midair.
             p.stopRiding();
             p.setForcedPose(null);
             p.setPose(Pose.STANDING);
@@ -542,6 +556,14 @@ public final class BeldamFinale {
         n.putLong("BeldamAt",mother.blockPosition().asLong());
         n.putBoolean("WebEntered",true);
         n.putBoolean("WebEntryReady",true);
+        n.remove("WebEntryRecheck");
+        if(RescueChapter.phase(s)==WEB_STEALTH){
+            // A recovery teleport is not a player footstep. Do not let the
+            // hearing AI interpret it as a deafening first movement packet.
+            n.remove("NoiseX");
+            rememberPosition(p,n);
+            RescueWebHearing.reset(p);
+        }
         n.remove("Blocker");
         OtherMotherLoop.changed(p);
         return true;
@@ -601,8 +623,12 @@ public final class BeldamFinale {
             if(!RescueChapter.transfer(p,p.server.getLevel(OtherWorld.KEY),FirstEscapeScene.room(s)))return;
             n.remove("CatFlying");n.remove("CatHeld");n.remove("CatMantel");var mother=ParentRescueStory.mother(p,s);if(mother!=null)motherAt(mother,Vec3.atBottomCenterOf(FirstEscapeScene.room(s).west(3)),p,67);catAtMantel(p,s);
         }else if(state==WEB_STEALTH){
-            var at=RescueWebSite.at(p,s,1,0);if(!RescueChapter.transfer(p,p.server.getLevel(ActivityWorld.KEY),BlockPos.containing(at).above()))return;
-            var mother=ParentRescueStory.mother(p,s);if(mother!=null)mother.setPos(Vec3.atBottomCenterOf(RescueWebSite.center(p,s)));n.remove("NoiseX");rememberPosition(p,n);
+            // Avoid teleporting directly onto an unverified, possibly missing
+            // web after a saved-world interruption. The next preflight checks
+            // the actual journal, then enterWeb places both original actors.
+            n.remove("WebEntryReady");n.remove("WebEntered");n.remove("WebEntryRecheck");
+            n.remove("NoiseX");n.remove("WebVerified");n.putInt("WebVerify",0);
+            RescueWebHearing.reset(p);
         }else if(state==DOOR_STRUGGLE){
             var at=RescueWebSite.at(p,s,1,1);if(!RescueChapter.transfer(p,p.server.getLevel(ActivityWorld.KEY),BlockPos.containing(at).above()))return;if(!n.getBoolean("HandCutPending"))n.putFloat("Struggle",0);n.remove("PressUntil");
         }else if(state==TUNNEL_CHASE){n.remove("PassageEntered");if(!RescuePassage.enter(p,s))return;}
