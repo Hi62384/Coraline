@@ -67,6 +67,12 @@ public final class MissingParentsCatGameTests {
                     "An unloaded Cat was skipped by the follow-bed watchdog");
             h.assertFalse(n.getBoolean("DollsRetrieved")||s.loop.story.getBoolean("ParentDollsDiscovered"),
                     "Unloaded Cat granted unearned parent dolls");
+            n.putString("Phase","E");
+            for(int tick=0;tick<50;tick++)MissingParentsCat.cutsceneSafety(p,s);
+            h.assertTrue(MissingParentsCat.phase(s)==MissingParentsCat.Phase.E,
+                    "Cat was missing but the dolls performance was completed");
+            h.assertFalse(n.getBoolean("DollsRetrieved")||s.loop.story.getBoolean("ParentDollsDiscovered"),
+                    "Voice watchdog awarded dolls without the original Cat");
             n.putString("Phase","F");
             MissingParentsCat.cutsceneSafety(p,s);
             h.assertTrue(MissingParentsCat.phase(s)==MissingParentsCat.Phase.F,
