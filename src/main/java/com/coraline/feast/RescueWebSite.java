@@ -108,12 +108,43 @@ public final class RescueWebSite {
     }
     private static boolean blocked(ServerPlayer p,VisitData.Scene s,int cursor){var n=RescueChapter.data(s);n.putInt("WebBuild",cursor);n.putString("Blocker","The owner-allocated web route is obstructed; existing blocks were preserved.");OtherMotherLoop.changed(p);return false;}
     private static boolean floor(ServerLevel l,CompoundTag journal,Vec3 point){
-        var pos=BlockPos.containing(point.x,point.y-.001,point.z);l.getChunkAt(pos);var old=l.getBlockState(pos);String key=Long.toString(pos.asLong());if(!journal.contains(key)&&!old.isAir())return false;
-        if(journal.contains(key)&&!old.equals(NbtUtils.readBlockState(l.holderLookup(net.minecraft.core.registries.Registries.BLOCK),journal.getCompound(key).getCompound("Placed"))))return false;
+        var pos=BlockPos.containing(point.x,point.y-.001,point.z);
+        l.getChunkAt(pos);
+        var old=l.getBlockState(pos);
+        String key=Long.toString(pos.asLong());
+        boolean recorded=journal.contains(key);
+        if(!recorded&&!old.isAir())return false; // Do not claim someone else's web/block.
+        var receipt=journal.getCompound(key);
+        var lookup=l.holderLookup(net.minecraft.core.registries.Registries.BLOCK);
+        if(recorded){
+            if(!receipt.contains("Original",Tag.TAG_COMPOUND))return false;
+            var original=NbtUtils.readBlockState(lookup,receipt.getCompound("Original"));
+            boolean match=old.equals(original);
+            if(receipt.contains("Placed",Tag.TAG_COMPOUND))
+                match|=old.equals(NbtUtils.readBlockState(lookup,receipt.getCompound("Placed")));
+            if(receipt.contains("PreviousPlaced",Tag.TAG_COMPOUND))
+                match|=old.equals(NbtUtils.readBlockState(lookup,receipt.getCompound("PreviousPlaced")));
+            if(!match||l.getBlockEntity(pos)!=null)return false;
+        }
         int height=Math.max(1,Math.min(16,(int)Math.ceil((point.y-pos.getY())*16)));
         if(old.is(ModBlocks.STORY_WEB.get()))height=Math.max(height,old.getValue(StoryWebBlock.HEIGHT));
-        if(!journal.contains(key)){var cell=new CompoundTag();cell.put("Original",NbtUtils.writeBlockState(old));journal.put(key,cell);}
-        var state=ModBlocks.STORY_WEB.get().defaultBlockState().setValue(StoryWebBlock.HEIGHT,height);journal.getCompound(key).putInt("RestHeight",height);journal.getCompound(key).put("Placed",NbtUtils.writeBlockState(state));l.setBlock(pos,state,2);LoopProps.hold(l,pos);return true;
+        if(!recorded){
+            var cell=new CompoundTag();
+            cell.put("Original",NbtUtils.writeBlockState(old));
+            journal.put(key,cell);
+            receipt=cell;
+        }
+        var state=ModBlocks.STORY_WEB.get().defaultBlockState().setValue(StoryWebBlock.HEIGHT,height);
+        // The previous owned state is recoverable if saving interrupts after
+        // a new placement intent but before the block change is committed.
+        receipt.put("PreviousPlaced",NbtUtils.writeBlockState(old));
+        receipt.putInt("RestHeight",height);
+        receipt.put("Placed",NbtUtils.writeBlockState(state));
+        l.setBlock(pos,state,2);
+        if(!l.getBlockState(pos).equals(state))return false;
+        receipt.remove("PreviousPlaced");
+        LoopProps.hold(l,pos);
+        return true;
     }
     /** A quiet, bounded weight depression changes the same tops the mesh reads. */
     public static void sag(ServerPlayer p,VisitData.Scene s){
