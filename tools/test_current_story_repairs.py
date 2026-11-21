@@ -21,6 +21,12 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('cell.put("PreviousPlaced",NbtUtils.writeBlockState(old))',sag)
         self.assertIn('if(l.getBlockState(at).equals(state))cell.remove("PreviousPlaced")',sag)
         self.assertIn('if(l.getBlockState(at).equals(saved))cell.remove("PreviousPlaced")',sag)
+        restore=web.split('public static void restore(ServerPlayer p,VisitData.Scene s)',1)[1].split('private RescueWebSite()',1)[0]
+        self.assertIn('for(String key:new java.util.HashSet<>(cells.getAllKeys()))',restore)
+        self.assertIn('previous==null||!actual.equals(previous)',restore)
+        self.assertLess(restore.index('if(!l.getBlockState(pos).equals(original))continue'),restore.index('cells.remove(key)'))
+        self.assertIn('if(cells.isEmpty())',restore)
+        self.assertLess(restore.index('if(cells.isEmpty())'),restore.index('n.remove("WebCells")'))
         cleanup=source('feast/RescueSiteCleanup.java')
         self.assertIn('entry.contains("PreviousPlaced",net.minecraft.nbt.Tag.TAG_COMPOUND)',cleanup)
         self.assertIn('previous==null||!current.equals(previous)',cleanup)
