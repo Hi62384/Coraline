@@ -470,7 +470,9 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('n.getUUID("Choice").equals(nonce)',retry)
         self.assertIn('!n.getBoolean("ShoeMissed")',retry)
         self.assertIn('return relaunchShoe(p,s,shoe);',retry)
-        self.assertIn('LoopProps.hold(p.serverLevel()',retry)
+        self.assertIn('LoopProps.hold(p.server.overworld(),oldAt)',retry)
+        self.assertIn('LegacyActorRecovery.Result.ABSENT',retry)
+        self.assertIn('recreated.setUUID(id)',retry)
         flight=story.split('private static boolean relaunchShoe(',1)[1].split('private static Vec3 missedShoePosition(',1)[0]
         self.assertIn('prop.kind()!=CinematicPropEntity.STORY_SHOE||prop.cue()!=1',flight)
         self.assertIn('n.getUUID("ShoeFlight").equals(prop.getUUID())',flight)
