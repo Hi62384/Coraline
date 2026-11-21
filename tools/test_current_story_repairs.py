@@ -9,6 +9,50 @@ ASSETS=ROOT/'src/main/resources/assets/coraline'
 def source(name):return (JAVA/name).read_text(encoding='utf-8-sig')
 
 class CurrentStoryRepairs(unittest.TestCase):
+    def test_original_little_door_return_rechecks_physical_web_and_crawl_before_transfers(self):
+        tunnel=source('feast/StoryTunnel.java')
+        return_body=tunnel.split('private static void resumeChapter(ServerPlayer p,VisitData.Scene scene)',1)[1].split('public static boolean controls(',1)[0]
+        self.assertIn('static boolean webReturnPhase(RescueChapter.Phase phase)',tunnel)
+        self.assertIn('phase==RescueChapter.Phase.FINAL_P||phase==RescueChapter.Phase.FINAL_Q',tunnel)
+        self.assertIn('phase.ordinal()>=RescueChapter.Phase.WEB_STEALTH.ordinal()',tunnel)
+        self.assertIn('phase.ordinal()<=RescueChapter.Phase.HAND_FALL.ordinal()',tunnel)
+        self.assertIn('n.remove("PassageEntered");n.remove("PassageEntryRecheck")',return_body)
+        self.assertLess(return_body.index('n.remove("PassageEntered")'),return_body.index('if(!RescuePassage.enter(p,scene))'))
+        self.assertIn('n.remove("WebVerified");n.putInt("WebVerify",0)',return_body)
+        self.assertLess(return_body.index('n.remove("WebVerified")'),return_body.index('if(!RescueWebSite.prepare(p,scene))'))
+        self.assertLess(return_body.index('if(!RescueWebSite.prepare(p,scene))'),return_body.index('if(!RescueChapter.transfer(p,level,landing))'))
+        self.assertIn('n.putBoolean("StoryReturnWebPending",true)',return_body)
+        self.assertIn('n.putBoolean("StoryReturnCrawlPending",true)',return_body)
+        self.assertIn('n.remove("StoryReturnWebPending");n.remove("StoryReturnCrawlPending")',return_body)
+        self.assertIn('n.putBoolean("Recover",true)',return_body)
+        source_tick=tunnel.split('public static void tickReturnSource(ServerPlayer player)',1)[1].split('public static void tickSource(',1)[0]
+        self.assertIn('if(player.tickCount%5==0)resumeChapter(player,scene)',source_tick)
+        self.assertIn('n.remove("StoryReturnWebPending");n.remove("StoryReturnCrawlPending")',source_tick)
+        self.assertLess(source_tick.index('resumeChapter(player,scene)'),source_tick.index('TunnelPassage.tick(player)'))
+        tests=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('littleDoorReentryUsesTheRealFinaleDimensionAndFreshReceipts',tests)
+
+    def test_postboss_dream_return_never_restores_missing_or_nonfinite_vitals(self):
+        rules=source('feast/RescueVisionRules.java')
+        self.assertIn('public static float restoredHealth(boolean hasSaved,float saved,float current,float maximum)',rules)
+        self.assertIn('hasSaved&&Float.isFinite(saved)&&saved>0',rules)
+        self.assertIn('Float.isFinite(current)&&current>0',rules)
+        self.assertIn('public static int restoredFood(',rules)
+        self.assertIn('public static float restoredSaturation(',rules)
+        epilogue=source('feast/RescueEpilogue.java')
+        recovery=epilogue.split('private static boolean restoreVision(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static boolean verifyVisionLanding(',1)[0]
+        self.assertIn('saved.contains("Health",Tag.TAG_ANY_NUMERIC)',recovery)
+        self.assertIn('RescueVisionRules.restoredHealth(healthSaved,savedHealth,p.getHealth(),p.getMaxHealth())',recovery)
+        self.assertIn('RescueVisionRules.restoredFood(',recovery)
+        self.assertIn('RescueVisionRules.restoredSaturation(',recovery)
+        self.assertIn('VisionReturnUsedVitalsFallback',recovery)
+        self.assertIn('Float.isFinite(saved.getFloat("Yaw"))',recovery)
+        self.assertIn('Float.isFinite(saved.getFloat("Pitch"))',recovery)
+        self.assertNotIn('p.setHealth(Math.min(p.getMaxHealth(),saved.getFloat("Health")))',recovery)
+        self.assertLess(recovery.index('p.setHealth(health)'),recovery.index('n.putBoolean("VisionLandingPending",true)'))
+        tests=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('postBossDreamCannotRestoreDeathOrInvalidVitals',tests)
+
     def test_web_journal_recovers_interrupted_placement_and_sag(self):
         web=source('feast/RescueWebSite.java')
         floor=web.split('private static boolean floor(ServerLevel l,CompoundTag journal,Vec3 point)',1)[1].split('public static void sag(',1)[0]
