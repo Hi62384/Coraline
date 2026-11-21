@@ -630,7 +630,21 @@ public final class BeldamFinale {
             n.remove("NoiseX");n.remove("WebVerified");n.putInt("WebVerify",0);
             RescueWebHearing.reset(p);
         }else if(state==DOOR_STRUGGLE){
-            var at=RescueWebSite.at(p,s,1,1);if(!RescueChapter.transfer(p,p.server.getLevel(ActivityWorld.KEY),BlockPos.containing(at).above()))return;if(!n.getBoolean("HandCutPending"))n.putFloat("Struggle",0);n.remove("PressUntil");
+            // An interrupted door struggle must not drop the player onto a
+            // possibly absent web bridge. Keep this retry pending until the
+            // original physical journal has been verified in bounded batches.
+            if(!n.getBoolean("WebDoorRetryRecheck")){
+                n.putBoolean("WebDoorRetryRecheck",true);
+                n.remove("WebVerified");n.putInt("WebVerify",0);
+            }
+            if(!RescueWebSite.prepare(p,s)){n.putBoolean("Recover",true);return;}
+            var at=RescueWebSite.at(p,s,1,1);
+            if(!RescueChapter.transfer(p,p.server.getLevel(ActivityWorld.KEY),BlockPos.containing(at).above())){
+                n.putBoolean("Recover",true);return;
+            }
+            n.remove("WebDoorRetryRecheck");
+            if(!n.getBoolean("HandCutPending"))n.putFloat("Struggle",0);
+            n.remove("PressUntil");
         }else if(state==TUNNEL_CHASE){n.remove("PassageEntered");if(!RescuePassage.enter(p,s))return;}
         RescueChapter.go(p,s,state);
     }
