@@ -27,6 +27,11 @@ public final class MissingParentsTea {
     public static CompoundTag data(VisitData.Scene s){if(!s.loop.story.contains(KEY))s.loop.story.put(KEY,new CompoundTag());return s.loop.story.getCompound(KEY);}
     public static boolean isVisit(CompoundTag v){return v.getBoolean("MissingParentsTea");}
     public static Phase phase(CompoundTag n){try{return Phase.valueOf(n.getString("StoryPhase"));}catch(IllegalArgumentException invalid){return Phase.ELIGIBLE;}}
+    /** No cutscene or watchdog may pass the original visitor actor gate. */
+    static boolean visitorsReadyForScene(Phase state,boolean spinkPresent,boolean forciblePresent){
+        return state.ordinal()<Phase.KNOCKING.ordinal()||state.ordinal()>Phase.WAITING_FOR_EXIT.ordinal()
+                ||spinkPresent&&forciblePresent;
+    }
     public static boolean eligible(VisitData.Scene s){return s!=null&&FirstEscapeStory.engaged(s)&&FirstEscapeStory.phase(s)==FirstEscapeTimeline.Phase.ESCAPE_COMPLETE&&FirstEscapeStory.data(s).getBoolean("Complete")&&FirstEscapeStory.data(s).getBoolean("OtherWorldSealed");}
     public static boolean active(VisitData.Scene s){return s!=null&&!AcceptedButtonEyes.active(s)&&s.loop.story.getCompound(KEY).getBoolean("Active");}
     static boolean invitationReady(CompoundTag n){
@@ -109,7 +114,12 @@ public final class MissingParentsTea {
         var state=phase(n);var spink=actor(p,n,"Spink");var forcible=actor(p,n,"Forcible");
         boolean music=state.ordinal()>=Phase.FOLLOW_SPINK.ordinal()&&BobinskyHouse.bounds(n).contains(p.position());
         if(music!=n.getBoolean("HouseMusicPlaying")){n.putBoolean("HouseMusicPlaying",music);if(music)VisitAudio.play(p,"tea_visit_music",true);else VisitAudio.stopMusic(p,"tea_visit_music");}
-        if(state.ordinal()>=Phase.KNOCKING.ordinal()&&(spink==null||forcible==null)){spawn(p,s);return;}
+        if(!visitorsReadyForScene(state,spink!=null,forcible!=null)){
+            // A missing native actor also invalidates the previous voice run.
+            // Replay the same checkpoint after its original UUID is recovered.
+            if(n.getBoolean("AudioStarted")){ShowPlayback.stop(p,s);n.remove("AudioStarted");n.putInt("Ticks",0);}
+            spawn(p,s);return;
+        }
         int t=n.getInt("Ticks");boolean done=false;String voice=sound(state);
         if(!voice.isEmpty()){
             if(!n.getBoolean("AudioStarted")){if(!ShowPlayback.start(p,s,voice,false)){n.putString("Blocker","Recording could not start: "+voice);return;}n.putBoolean("AudioStarted",true);}
@@ -146,6 +156,15 @@ public final class MissingParentsTea {
         if(p.serverLevel()!=p.server.overworld())return;var n=data(s);var state=phase(n);String voice=sound(state);
         boolean movement=state==Phase.KNOCKING||state==Phase.FORCIBLE_ENTRANCE||state==Phase.FOLLOW_SPINK&&n.getBoolean("Inside");
         if(voice.isEmpty()&&!movement)return;
+        // Unlike the ordinary tick, the independent watchdog formerly skipped
+        // story dialogue and its Seeing Stone reward without either saved actor.
+        if(!visitorsReadyForScene(state,actor(p,n,"Spink")!=null,actor(p,n,"Forcible")!=null)){
+            if(n.getBoolean("AudioStarted")){ShowPlayback.stop(p,s);n.remove("AudioStarted");n.putInt("Ticks",0);}
+            spawn(p,s);
+            if(n.getString("Blocker").isEmpty())n.putString("Blocker","Waiting for the original tea visitors.");
+            StoryCutsceneWatchdog.retry(s,"post_escape_tea");
+            return;
+        }
         if(!StoryCutsceneWatchdog.overdue(p,s,"post_escape_tea",state.name(),voice.isEmpty()?600:StoryCutsceneWatchdog.voiceBudget(voice)))return;
         ShowPlayback.safetyFinish(p,s,"Tea visit actor/recording exceeded its safety window");
         switch(state){

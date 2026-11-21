@@ -102,7 +102,10 @@ public final class RescueChapter {
         if(n.getBoolean("TheatreMusic")){VisitAudio.stopMusic(p,"rescue_theatre_music");n.remove("TheatreMusic");}
         if(state==Phase.COMPLETE){RescueBosses.hideBar(p);RescueEpilogue.departAfterWaking(p,s);if(p.tickCount%20==0)PalaceJourney.afterWake(p,s);return;}
         if(n.getBoolean("Recover")){n.remove("Recover");recover(p,s);if(n.getBoolean("Recover"))return;state=phase(s);}
-        if(!RescueEncounters.presentationReady(p,s,state)){if(p.tickCount%5==0)sync(p,s);return;}
+        if(!RescueEncounters.presentationReady(p,s,state)||!RescueEpilogue.presentationReady(p,s)){
+            if(p.tickCount%5==0)sync(p,s);
+            return;
+        }
         // ROOM_LOCKED is a handoff, not a final fight: let its checkpoint
         // revalidate Cat/eye custody and reopen the real doors on older saves.
         // The actual FINAL_A through FINAL_O confrontation still enforces the
