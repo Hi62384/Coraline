@@ -9,6 +9,80 @@ ASSETS=ROOT/'src/main/resources/assets/coraline'
 def source(name):return (JAVA/name).read_text(encoding='utf-8-sig')
 
 class CurrentStoryRepairs(unittest.TestCase):
+    def test_saved_final_exit_recovers_original_world_and_never_skips_key_or_crawl(self):
+        finale=source('feast/BeldamFinale.java')
+        recovery=finale.split('static boolean originalExitReady(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static boolean preflight(',1)[0]
+        self.assertIn('!s.owner.equals(source.owner)',recovery)
+        self.assertIn('home!=p.server.overworld()',recovery)
+        self.assertIn('state==LOCK_DOOR&&!n.getBoolean("CrawlReachedOverworld")',recovery)
+        self.assertIn('n.getBoolean("HandSevered")&&n.getBoolean("KeyRecovered")',recovery)
+        self.assertIn('RescuePassage.enter(p,s)',recovery)
+        self.assertIn('RescueChapter.go(p,s,TUNNEL_CHASE)',recovery)
+        self.assertIn('p.serverLevel()!=home&&!RescueChapter.transfer(p,home,source.pos)',recovery)
+        self.assertIn('state==BANGING&&!n.getBoolean("PermanentlySealed")',recovery)
+        self.assertIn('RescueChapter.go(p,s,LOCK_DOOR)',recovery)
+        chapter=source('feast/RescueChapter.java')
+        self.assertIn('if(!BeldamFinale.originalExitReady(p,s))',chapter)
+        safety=chapter.split('static void cutsceneSafety(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static void recover(',1)[0]
+        self.assertLess(safety.index('!BeldamFinale.originalExitReady(p,s)'),safety.index('StoryCutsceneWatchdog.overdue('))
+        tests=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('finalDoorAndBangingCannotResumeInTheWebWorld',tests)
+
+    def test_final_tunnel_requires_fresh_bounded_readback_on_reentry(self):
+        passage=source('feast/RescuePassage.java')
+        enter=passage.split('public static boolean enter(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static double progress(',1)[0]
+        self.assertIn('entryRecheckNeeded(n.getBoolean("PassageEntered"),n.getBoolean("PassageEntryRecheck"))',enter)
+        self.assertIn('n.remove("PassageVerified")',enter)
+        self.assertIn('n.putInt("PassageVerify",0)',enter)
+        self.assertLess(enter.index('n.remove("PassageVerified")'),enter.index('if(!prepare(p,s))return false'))
+        self.assertLess(enter.index('if(!prepare(p,s))return false'),enter.index('n.putBoolean("PassageEntered",true)'))
+        self.assertIn('n.remove("PassageEntryRecheck")',enter)
+        verify=passage.split('private static boolean verify(',1)[1].split('public static boolean enter(',1)[0]
+        self.assertIn('missing original or placement receipt',verify)
+        self.assertIn('the physical tunnel differs from the saved layout',verify)
+        game=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('savedEscapeCrawlRechecksEveryNewAttempt',game)
+
+    def test_postboss_reunion_cat_and_watchdog_require_physical_stage(self):
+        chapter=source('feast/RescueChapter.java')
+        safety=chapter.split('static void cutsceneSafety(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static void recover(',1)[0]
+        self.assertIn('!RescueEncounters.presentationReady(p,s,state)||!RescueEpilogue.presentationReady(p,s)',safety)
+        self.assertLess(safety.index('!RescueEpilogue.presentationReady(p,s)'),safety.index('StoryCutsceneWatchdog.overdue('))
+        epilogue=source('feast/RescueEpilogue.java')
+        ready=epilogue.split('static boolean presentationReady(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static boolean begin(',1)[0]
+        self.assertIn('!requiresEpilogueStage(state)',ready)
+        self.assertIn('p.serverLevel()!=world&&!RescueChapter.transfer(p,world,door.pos)',ready)
+        self.assertIn('state==REUNION_A||state==REUNION_B',ready)
+        self.assertIn('stageFarewellCat(p,s,door,world)',ready)
+        self.assertIn('!RescueChapter.data(s).getBoolean("ParentsReturned")',ready)
+        self.assertIn('world!=p.server.overworld()',ready)
+        cat=epilogue.split('private static boolean stageFarewellCat(',1)[1].split('static boolean presentationReady(',1)[0]
+        self.assertIn('ShowActors.recoverCat(p,s,world,candidate)',cat)
+        self.assertIn('cat.setPos(candidate)',cat)
+        self.assertIn('n.putBoolean("FarewellCatPlaced",true)',cat)
+
+    def test_house_safe_requires_real_world_and_reopens_saved_doors(self):
+        encounter=source('feast/RescueEncounters.java')
+        safe=encounter.split('case HOUSE_SAFE->{',1)[1].split('case ROOM_LOCKED->',1)[0]
+        self.assertLess(safe.index('!OtherWorld.isOther(p.level())'),safe.index('greenHouse(p,s)'))
+        self.assertLess(safe.index('!OtherWorld.isOther(p.level())'),safe.index('carryCat(p,s)'))
+        self.assertIn('n.putString("Blocker","Return through your original Little Door',safe)
+        green=encounter.split('private static void greenHouse(',1)[1].split('static void closeRoom(',1)[0]
+        self.assertIn('restoreHouseEntry(n.getBoolean("GreenHouse")',green)
+        self.assertLess(green.index('FirstEscapeStory.setDoor(p,entrance,true)'),green.index('if(n.getBoolean("GreenHouse"))return'))
+        tests=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('postBossScenesMustPreserveOriginalWorldAndCast',tests)
+
+    def test_legacy_offworld_ghost_dream_has_authenticated_return_anchor(self):
+        epilogue=source('feast/RescueEpilogue.java')
+        restore=epilogue.split('private static boolean restoreVision(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static boolean verifyVisionLanding(',1)[0]
+        self.assertIn('originalOverworld&&finiteOriginal',restore)
+        self.assertIn('door.placed&&s.owner.equals(door.owner)',restore)
+        self.assertIn('FamilyData.level(p.server,door.dimension)==l',restore)
+        self.assertIn('VisionReturnUsedDoorFallback',restore)
+        self.assertLess(restore.index('door.placed&&s.owner.equals(door.owner)'),restore.index('n.putBoolean("VisionReturnUsedDoorFallback",true)'))
+        self.assertIn('return verifyVisionLanding(p,n)',restore)
+
     def test_tea_watchdog_does_not_outpace_canonical_visitors(self):
         tea=source('feast/MissingParentsTea.java')
         self.assertIn('static boolean visitorsReadyForScene(',tea)

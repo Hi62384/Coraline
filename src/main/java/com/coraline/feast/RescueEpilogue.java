@@ -70,24 +70,69 @@ public final class RescueEpilogue {
         n.putString("Blocker",reason);
         return false;
     }
-    /** Hold the actual reunion recording until the real player and both
-     * canonical parents are physically at the saved Overworld stage.
-     * Re-stage only the original UUIDs, never replacements. */
+    static boolean requiresEpilogueStage(RescueChapter.Phase phase){
+        return phase==REUNION_A||phase==REUNION_B||phase==CAT_NOTICE
+                ||phase==FAREWELL_A||phase==FAREWELL_B;
+    }
+    /** Return the SAME saved Cat to a safe visible stage after interrupted
+     * dimension travel; never mint a stand-in or advance absent-Cat dialogue. */
+    private static boolean stageFarewellCat(ServerPlayer p,VisitData.Scene s,DoorData.Door door,ServerLevel world){
+        var n=RescueChapter.data(s);
+        var cat=ShowActors.actor(p,s,"cat");
+        boolean staged=n.getBoolean("FarewellCatPlaced")&&cat!=null&&cat.isAlive()
+                &&cat.level()==world&&cat.distanceToSqr(door.pos.getCenter())<=36*36
+                &&world.noCollision(cat,cat.getBoundingBox());
+        if(staged)return true;
+        Vec3 candidate=null;
+        for(var offset:java.util.List.of(door.pos.offset(6,0,5),door.pos.offset(-5,0,4),
+                door.pos.south(4),door.pos.north(4))){
+            var safe=nearReturn(world,p,Pose.STANDING,offset,2);
+            if(safe==null||safe.distanceToSqr(p.position())<2)continue;
+            var hit=world.clip(new net.minecraft.world.level.ClipContext(p.getEyePosition(),safe.add(0,.55,0),
+                    net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,p));
+            if(hit.getType()==net.minecraft.world.phys.HitResult.Type.MISS){candidate=safe;break;}
+        }
+        if(candidate==null){n.putString("Blocker","Clear a visible path near the original Little Door for the Cat.");return false;}
+        cat=ShowActors.recoverCat(p,s,world,candidate);
+        if(cat==null||cat.level()!=world||!cat.isAlive()){
+            n.putString("Blocker","Waiting for the original Cat before the farewell.");
+            return false;
+        }
+        cat.stopRiding();
+        cat.setDeltaMovement(Vec3.ZERO);
+        cat.setPos(candidate);
+        cat.setInvisible(false);
+        n.putInt("Cat",cat.getId());
+        n.putBoolean("FarewellCatPlaced",true);
+        OtherMotherLoop.changed(p);
+        return true;
+    }
+    /** Both ordinary story ticks AND the independent watchdog use this gate.
+     * An offworld farewell must never save an unusable dream-return dimension. */
     static boolean presentationReady(ServerPlayer p,VisitData.Scene s){
         var state=RescueChapter.phase(s);
-        if(state!=REUNION_A&&state!=REUNION_B)return true;
+        if(!requiresEpilogueStage(state))return true;
         if(!reunionReady(s))return pauseReunion(p,s,"Waiting for the original sealed-door and three-eye reunion receipt.");
         var door=source(p,s);var family=ParentAccess.family(p.server,s.owner);
         var world=door==null?null:FamilyData.level(p.server,door.dimension);
-        if(door==null||family==null||world==null)
+        if(door==null||family==null||world==null||world!=p.server.overworld())
             return pauseReunion(p,s,"Waiting for the saved real-world Little Door and family.");
         if(p.serverLevel()!=world&&!RescueChapter.transfer(p,world,door.pos))
             return pauseReunion(p,s,"Your reunion return is blocked. Clear a safe landing near the original Little Door.");
         if(!reunionViewerNear(p.serverLevel()==world,p.distanceToSqr(door.pos.getCenter())))
             return pauseReunion(p,s,"Return near the original Little Door to see your parents.");
-        if(!stageParents(p,s,family,door)){
-            var blocker=RescueChapter.data(s).getString("Blocker");
-            return pauseReunion(p,s,blocker.isEmpty()?"Waiting for both original parents to reach the reunion.":blocker);
+        if(state==REUNION_A||state==REUNION_B){
+            if(!stageParents(p,s,family,door)){
+                var blocker=RescueChapter.data(s).getString("Blocker");
+                return pauseReunion(p,s,blocker.isEmpty()?"Waiting for both original parents to reach the reunion.":blocker);
+            }
+        }else{
+            if(!RescueChapter.data(s).getBoolean("ParentsReturned"))
+                return pauseReunion(p,s,"Waiting for the original parents to finish their reunion.");
+            if(!stageFarewellCat(p,s,door,world)){
+                var blocker=RescueChapter.data(s).getString("Blocker");
+                return pauseReunion(p,s,blocker.isEmpty()?"Waiting for the original Cat to reach the farewell.":blocker);
+            }
         }
         RescueChapter.data(s).remove("Blocker");
         return true;
@@ -334,10 +379,16 @@ public final class RescueEpilogue {
         if(n.getBoolean("VisionLandingPending")&&p.serverLevel()==p.server.overworld())return verifyVisionLanding(p,n);
         var saved=n.getCompound("VisionReturn");
         var l=p.server.overworld();
-        if(!saved.getString("Dimension").equals(l.dimension().location().toString()))return false;
-        var original=new Vec3(saved.getDouble("X"),saved.getDouble("Y"),saved.getDouble("Z"));if(!Double.isFinite(original.x)||!Double.isFinite(original.y)||!Double.isFinite(original.z)){n.putString("Blocker","The saved farewell return anchor is invalid.");return false;}
+        var original=new Vec3(saved.getDouble("X"),saved.getDouble("Y"),saved.getDouble("Z"));
+        boolean originalOverworld=saved.getString("Dimension").equals(l.dimension().location().toString());
+        boolean finiteOriginal=Double.isFinite(original.x)&&Double.isFinite(original.y)&&Double.isFinite(original.z);
         Pose pose;try{pose=Pose.valueOf(saved.getString("Pose"));}catch(IllegalArgumentException bad){pose=Pose.STANDING;}
-        Vec3 target=safeReturn(l,p,pose,original)?original:nearReturn(l,p,pose,BlockPos.containing(original),4);
+        // Older interrupted farewells may have captured their return while in
+        // the wrong dimension. The recorded foreign position is never used as
+        // an Overworld coordinate; only the authentic owned door is a fallback.
+        Vec3 target=originalOverworld&&finiteOriginal
+                ?(safeReturn(l,p,pose,original)?original:nearReturn(l,p,pose,BlockPos.containing(original),4))
+                :null;
         var door=DoorData.get(p.server).doors.get(s.door);
         if(target==null&&door!=null&&door.placed&&s.owner.equals(door.owner)&&FamilyData.level(p.server,door.dimension)==l){
             target=nearReturn(l,p,pose,door.pos,6);
@@ -351,6 +402,7 @@ public final class RescueEpilogue {
             n.putString("Blocker","Clear safe footing and standing space near your original Little Door.");
             return false;
         }
+        if(!originalOverworld||!finiteOriginal)n.putBoolean("VisionReturnUsedDoorFallback",true);
         p.teleportTo(l,target.x,target.y,target.z,saved.getFloat("Yaw"),saved.getFloat("Pitch"));
         if(p.serverLevel()!=l||p.position().distanceToSqr(target)>.25||!safeReturn(l,p,pose,p.position())){
             n.putString("Blocker","Your saved return is still being prepared. Your dream state is preserved and will retry safely.");OtherMotherLoop.changed(p);return false;

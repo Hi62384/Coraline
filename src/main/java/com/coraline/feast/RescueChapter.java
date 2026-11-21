@@ -102,6 +102,7 @@ public final class RescueChapter {
         if(n.getBoolean("TheatreMusic")){VisitAudio.stopMusic(p,"rescue_theatre_music");n.remove("TheatreMusic");}
         if(state==Phase.COMPLETE){RescueBosses.hideBar(p);RescueEpilogue.departAfterWaking(p,s);if(p.tickCount%20==0)PalaceJourney.afterWake(p,s);return;}
         if(n.getBoolean("Recover")){n.remove("Recover");recover(p,s);if(n.getBoolean("Recover"))return;state=phase(s);}
+        if(!BeldamFinale.originalExitReady(p,s)){if(p.tickCount%5==0)sync(p,s);return;}
         if(!RescueEncounters.presentationReady(p,s,state)||!RescueEpilogue.presentationReady(p,s)){
             if(p.tickCount%5==0)sync(p,s);
             return;
@@ -177,6 +178,14 @@ public final class RescueChapter {
         if(RescueBosses.fighting(state)||state==Phase.TUNNEL_CHASE)return;
         boolean motion=java.util.EnumSet.of(Phase.MANTIS_RELEASE,Phase.THEATRE_GRAB,Phase.ATTIC_SEARCH,Phase.FURNACE,Phase.BOB_TENT,Phase.SWARM_TRANSFORM,Phase.WARDROBE_ASIDE,Phase.DOOR_KICK,Phase.HAND_FALL,Phase.BANGING,Phase.EYES_CLOSE,Phase.CELESTIAL_OPEN,Phase.ORBS).contains(state);
         if(voice.isEmpty()&&!motion)return;
+        // This independent watchdog runs even when the chapter tick is paused.
+        // Do not finish reunion/Cat dialogue or Bobinsky beats while their
+        // original actors, viewer and world are missing after reload.
+        if(!BeldamFinale.originalExitReady(p,s)
+                ||!RescueEncounters.presentationReady(p,s,state)||!RescueEpilogue.presentationReady(p,s)){
+            StoryCutsceneWatchdog.retry(s,"rescue_finale");
+            return;
+        }
         // Custodied quest items and a valid destination are real prerequisites,
         // not permission to mint a replacement key or discard a full inventory.
         if(state.ordinal()>=Phase.FINAL_A.ordinal()&&state.ordinal()<=Phase.TUNNEL_CHASE.ordinal()&&!BeldamFinale.preflight(p,s))return;

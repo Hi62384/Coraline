@@ -215,4 +215,54 @@ public final class RescueSoftlockGameTests {
             "Player within the original door checkpoint can view the reunion");
         helper.succeed();
     }
+
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void postBossScenesMustPreserveOriginalWorldAndCast(GameTestHelper helper) {
+        for(var phase:new RescueChapter.Phase[]{RescueChapter.Phase.REUNION_A,
+                RescueChapter.Phase.REUNION_B,RescueChapter.Phase.CAT_NOTICE,
+                RescueChapter.Phase.FAREWELL_A,RescueChapter.Phase.FAREWELL_B})
+            helper.assertTrue(RescueEpilogue.requiresEpilogueStage(phase),
+                "Post-boss stage or original Cat readiness was skipped: "+phase);
+        for(var phase:new RescueChapter.Phase[]{RescueChapter.Phase.EYES_CLOSE,
+                RescueChapter.Phase.CELESTIAL_OPEN,RescueChapter.Phase.ORBS,
+                RescueChapter.Phase.FAREWELL_C,RescueChapter.Phase.COMPLETE})
+            helper.assertFalse(RescueEpilogue.requiresEpilogueStage(phase),
+                "Dream recovery was incorrectly gated on the Overworld stage: "+phase);
+        helper.assertTrue(RescueEncounters.restoreHouseEntry(true,false,true),
+            "Reloaded HOUSE_SAFE checkpoint would leave its first door shut");
+        helper.assertTrue(RescueEncounters.restoreHouseEntry(true,true,false),
+            "Reloaded HOUSE_SAFE checkpoint would leave its second door shut");
+        helper.assertTrue(RescueEncounters.restoreHouseEntry(false,true,true),
+            "Initial HOUSE_SAFE preparation must open the real entry doors");
+        helper.assertFalse(RescueEncounters.restoreHouseEntry(true,true,true),
+            "Already-open original doors should not be rewritten every tick");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void savedEscapeCrawlRechecksEveryNewAttempt(GameTestHelper helper) {
+        helper.assertTrue(RescuePassage.entryRecheckNeeded(false,false),
+            "An old saved PassageVerified flag must not skip physical readback");
+        helper.assertFalse(RescuePassage.entryRecheckNeeded(false,true),
+            "A bounded physical readback must not restart every tick");
+        helper.assertFalse(RescuePassage.entryRecheckNeeded(true,false),
+            "An already entered and verified crawl must keep running");
+        helper.assertFalse(RescuePassage.entryRecheckNeeded(true,true),
+            "The already-entered state must not invalidate the live passage");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void finalDoorAndBangingCannotResumeInTheWebWorld(GameTestHelper helper) {
+        helper.assertTrue(BeldamFinale.requiresOriginalExit(RescueChapter.Phase.LOCK_DOOR),
+            "Saved exit must prove actual Overworld transfer before allowing key interaction");
+        helper.assertTrue(BeldamFinale.requiresOriginalExit(RescueChapter.Phase.BANGING),
+            "Banging reunion handoff must stay at the original physical door");
+        for(var phase:new RescueChapter.Phase[]{RescueChapter.Phase.HAND_FALL,
+                RescueChapter.Phase.TUNNEL_CHASE,RescueChapter.Phase.REUNION_A,
+                RescueChapter.Phase.CAT_NOTICE,RescueChapter.Phase.FAREWELL_C})
+            helper.assertFalse(BeldamFinale.requiresOriginalExit(phase),
+                "A non-door chapter would be transferred away from its real scene: "+phase);
+        helper.succeed();
+    }
 }

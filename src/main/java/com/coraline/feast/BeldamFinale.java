@@ -258,6 +258,43 @@ public final class BeldamFinale {
         n.remove("Blocker");OtherMotherLoop.changed(p);
         return true;
     }
+    static boolean requiresOriginalExit(RescueChapter.Phase state){
+        return state==LOCK_DOOR||state==BANGING;
+    }
+    /** Do not strand a post-crawl save in the Activity World. Check the real
+     * owner-bound Overworld door before lock/banging or resume the real crawl
+     * when an older checkpoint never committed the exit receipt. */
+    static boolean originalExitReady(ServerPlayer p,VisitData.Scene s){
+        var state=RescueChapter.phase(s);
+        if(!requiresOriginalExit(state))return true;
+        var n=RescueChapter.data(s);
+        var source=DoorData.get(p.server).doors.get(s.door);
+        var home=source==null?null:FamilyData.level(p.server,source.dimension);
+        if(source==null||!s.owner.equals(source.owner)||home!=p.server.overworld()){
+            n.putString("Blocker","Waiting for the original owner-bound Overworld Little Door.");
+            return false;
+        }
+        if(state==LOCK_DOOR&&!n.getBoolean("CrawlReachedOverworld")){
+            // A phase marker alone is not proof that the 52-block crawl was
+            // completed. Re-enter its verified physical passage instead.
+            if(n.getBoolean("HandSevered")&&n.getBoolean("KeyRecovered")
+                    &&RescuePassage.enter(p,s))RescueChapter.go(p,s,TUNNEL_CHASE);
+            else n.putString("Blocker","Waiting for the original verified escape crawl and recovered key.");
+            return false;
+        }
+        if(p.serverLevel()!=home&&!RescueChapter.transfer(p,home,source.pos)){
+            n.putString("Blocker","Clear a safe return landing near your original Little Door.");
+            return false;
+        }
+        if(state==BANGING&&!n.getBoolean("PermanentlySealed")){
+            // An interrupted door transaction must be completed by the
+            // original key interaction, not by the dialogue watchdog.
+            RescueChapter.go(p,s,LOCK_DOOR);
+            return false;
+        }
+        n.remove("Blocker");
+        return true;
+    }
     public static boolean preflight(ServerPlayer p,VisitData.Scene s){
         var state=RescueChapter.phase(s);var n=RescueChapter.data(s);
         if(state.ordinal()>=FINAL_I.ordinal()&&state.ordinal()<=FINAL_N.ordinal()&&!n.getBoolean("KeyRecovered")&&!StoryItemCustody.recoverSwallowedKey(p,s)){n.putString("Blocker","The swallowed key cannot be recovered: restore its saved custody record or bring the surviving owner-bound original out of storage.");return false;}

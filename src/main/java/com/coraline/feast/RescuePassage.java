@@ -117,7 +117,20 @@ public final class RescuePassage {
         OtherMotherLoop.changed(p);
         return n.getBoolean("PassageVerified");
     }
+    /** Entry/retry needs fresh block readback: a saved verified flag is not
+     * evidence that the physical crawl has survived changes after construction. */
+    static boolean entryRecheckNeeded(boolean alreadyEntered,boolean recheckStarted){
+        return !alreadyEntered&&!recheckStarted;
+    }
     public static boolean enter(ServerPlayer p,VisitData.Scene s){
+        if(!RescueChapter.owns(p,s))return false;
+        var n=RescueChapter.data(s);
+        if(entryRecheckNeeded(n.getBoolean("PassageEntered"),n.getBoolean("PassageEntryRecheck"))){
+            n.putBoolean("PassageEntryRecheck",true);
+            n.remove("PassageVerified");
+            n.putInt("PassageVerify",0);
+            OtherMotherLoop.changed(p);
+        }
         if(!prepare(p,s))return false;
         var level=p.server.getLevel(ActivityWorld.KEY);
         if(level==null)return false;
@@ -131,7 +144,8 @@ public final class RescuePassage {
         p.teleportTo(level,feet.x,feet.y,feet.z,-90,0);
         if(p.level()!=level||p.position().distanceToSqr(feet)>.25){p.setForcedPose(null);return false;}
         p.setDeltaMovement(Vec3.ZERO);p.fallDistance=0;
-        RescueChapter.data(s).putBoolean("PassageEntered",true);
+        n.putBoolean("PassageEntered",true);
+        n.remove("PassageEntryRecheck");
         OtherMotherLoop.changed(p);
         return true;
     }
@@ -161,7 +175,7 @@ public final class RescuePassage {
         }
         if(cells.isEmpty()){
             n.remove("PassageCells");n.remove("PassageReady");n.remove("PassageBuild");
-            n.remove("PassageVerified");n.remove("PassageVerify");
+            n.remove("PassageVerified");n.remove("PassageVerify");n.remove("PassageEntryRecheck");
         }
         if(changed)OtherMotherLoop.changed(p);
     }
