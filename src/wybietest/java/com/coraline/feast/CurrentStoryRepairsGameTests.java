@@ -161,6 +161,52 @@ public final class CurrentStoryRepairsGameTests {
             h.assertTrue(exit!=null&&Math.abs(exit.y-floor.getY())<.13,"Kitchen dismount selected the basement or furniture instead of its floor");
         }finally{MissingParentsTeaGameTests.remove(p,s);}h.succeed();
     }
+    @GameTest(template="empty") public static void layeredEscapeTunnelRetirementKeepsOriginalAndForeignBlocks(GameTestHelper h){
+        var p=MissingParentsTeaGameTests.fixture(h);var s=OtherMotherLoop.scene(p);
+        var level=p.server.getLevel(OtherWorld.KEY);
+        h.assertTrue(level!=null,"The authentic Other World is not available");
+        int y=Math.max(level.getMinBuildHeight()+10,Math.min(120,level.getMaxBuildHeight()-10));
+        var origin=new BlockPos(492,y,491);var foreign=origin.south();
+        level.getChunkAt(origin);level.getChunkAt(foreign);
+        var originalA=level.getBlockState(origin);var originalB=level.getBlockState(foreign);
+        var escape=FirstEscapeStory.data(s);
+        var first=new CompoundTag();var rescue=new CompoundTag();
+        var baseRow=new CompoundTag();
+        baseRow.put("Original",net.minecraft.nbt.NbtUtils.writeBlockState(originalA));
+        baseRow.put("Placed",net.minecraft.nbt.NbtUtils.writeBlockState(Blocks.STONE.defaultBlockState()));
+        first.put(Long.toString(origin.asLong()),baseRow);
+        var overlayRow=new CompoundTag();
+        overlayRow.put("Original",net.minecraft.nbt.NbtUtils.writeBlockState(Blocks.STONE.defaultBlockState()));
+        overlayRow.put("Placed",net.minecraft.nbt.NbtUtils.writeBlockState(Blocks.MOSS_BLOCK.defaultBlockState()));
+        rescue.put(Long.toString(origin.asLong()),overlayRow);
+        var foreignRow=new CompoundTag();
+        foreignRow.put("Original",net.minecraft.nbt.NbtUtils.writeBlockState(originalB));
+        foreignRow.put("Placed",net.minecraft.nbt.NbtUtils.writeBlockState(Blocks.STONE.defaultBlockState()));
+        first.put(Long.toString(foreign.asLong()),foreignRow);
+        escape.put("Environment",first);escape.putLong("EscapeTunnel",origin.asLong());
+        escape.putString("EscapeDirection","south");escape.putBoolean("EscapeTunnelBuilt",true);
+        ParentRescueStory.scenery(s).put("Environment",rescue);
+        try{
+            level.setBlock(origin,Blocks.MOSS_BLOCK.defaultBlockState(),2);
+            level.setBlock(foreign,Blocks.GOLD_BLOCK.defaultBlockState(),2);
+            StoryTunnel.retireCrawl(p,s);
+            h.assertTrue(level.getBlockState(origin).equals(originalA),"Overlaid tunnel reverted to intermediate stone instead of original terrain");
+            h.assertFalse(first.contains(Long.toString(origin.asLong()))||rescue.contains(Long.toString(origin.asLong())),"Layer restoration did not retire both authentic receipts");
+            h.assertTrue(level.getBlockState(foreign).is(Blocks.GOLD_BLOCK),"Foreign edit was overwritten by tunnel cleanup");
+            h.assertTrue(first.contains(Long.toString(foreign.asLong()))&&escape.getBoolean("EscapeTunnelCleanupPending"),"Unresolved edited cell lost its restoration record");
+            h.assertFalse(escape.getBoolean("EscapeTunnelBuilt"),"Retirement left the old escape passage marked usable");
+            // Once the foreign editor restores the recorded owned state, cleanup
+            // must replay without reconstructing either discarded journal layer.
+            level.setBlock(foreign,Blocks.STONE.defaultBlockState(),2);
+            StoryTunnel.retireCrawl(p,s);
+            h.assertTrue(level.getBlockState(foreign).equals(originalB),"Retry failed to restore the original block");
+            h.assertFalse(first.contains(Long.toString(foreign.asLong()))||escape.getBoolean("EscapeTunnelCleanupPending"),"Successful retry left a permanent phantom pending receipt");
+        }finally{
+            level.setBlock(origin,originalA,2);level.setBlock(foreign,originalB,2);
+            MissingParentsTeaGameTests.remove(p,s);
+        }
+        h.succeed();
+    }
     @GameTest(template="empty") public static void sewingPropsNeverShareTransportOrControlPointKinds(GameTestHelper h){
         var kinds=java.util.Set.of(AcceptedButtonEyesWorld.BUTTONS,AcceptedButtonEyesWorld.NEEDLE,AcceptedButtonEyesWorld.SEWING_TABLE,PalaceTransport.MOVER,PalaceTransport.TRUCK,PalaceTransport.CARRIER,CinematicPropEntity.WORLD_SIGN,RescueProps.CONTROL_POINT);
         h.assertTrue(kinds.size()==8,"Story props alias the truck, mover or control-point renderer");h.succeed();
