@@ -335,6 +335,11 @@ public final class MissingParentsCat {
         // Resolve it before the watchdog announces that it continued the scene.
         if(state==Phase.A||state==Phase.FOLLOW_MIRROR||state==Phase.B||state==Phase.WAIT_BREAK){var family=ParentAccess.family(p.server,s.owner);if(family==null||family.bed==null||!mirror(p,s,family.bed)){int failed=n.getInt("MirrorStageFailures")+1;n.putInt("MirrorStageFailures",failed);if(failed>=200){n.putBoolean("MirrorBroken",true);go(p,s,Phase.D);}else FirstEscapeStory.hint(p,"Preparing the Cat's mirror.");return;}}
         // Resolve destination preparation before announcing a successful recovery.
+        if(state==Phase.F&&cat(p,s)==null){
+            n.putString("Blocker","Waiting for the original Cat before the tunnel can be restored.");
+            FirstEscapeStory.hint(p,n.getString("Blocker"));
+            return;
+        }
         if(state==Phase.F&&!StoryTunnel.restore(p,s)){FirstEscapeStory.hint(p,"Preparing the Little Door passage...");return;}
         int safetyBudget=sound.isEmpty()?600:StoryCutsceneWatchdog.voiceBudget(sound);
         // If the player is following the Cat and its route has made no useful
@@ -352,9 +357,47 @@ public final class MissingParentsCat {
             case C->{shatter(p,s);go(p,s,Phase.SHATTER);}
             case SHATTER->go(p,s,Phase.D);
             case D->go(p,s,Phase.FOLLOW_BED);
-            case FOLLOW_BED->{retireShatteredMirror(p,s);var actor=cat(p,s);var family=ParentAccess.family(p.server,s.owner);if(actor==null||family==null||family.bed==null){n.putBoolean("DollsRetrieved",true);go(p,s,Phase.F);return;}var foot=bedFoot(p,family.bed);var front=bedFront(p,family.bed);var at=bedApproach(p,actor,foot,front);if(at==null){n.putBoolean("DollsRetrieved",true);s.loop.story.putBoolean("ParentDollsDiscovered",true);go(p,s,Phase.F);return;}actor.setPos(Vec3.atBottomCenterOf(at));n.putLong("BedFoot",foot.asLong());n.putString("BedFront",front.getName());go(p,s,Phase.E);}
+            case FOLLOW_BED->{
+                retireShatteredMirror(p,s);
+                var actor=cat(p,s);
+                if(actor==null){
+                    n.putString("Blocker","Waiting for the original Cat before retrieving the parent dolls.");
+                    FirstEscapeStory.hint(p,n.getString("Blocker"));
+                    StoryCutsceneWatchdog.retry(s,"post_escape_cat");
+                    return;
+                }
+                var family=ParentAccess.family(p.server,s.owner);
+                if(family==null||family.bed==null){
+                    n.putBoolean("DollsRetrieved",true);
+                    s.loop.story.putBoolean("ParentDollsDiscovered",true);
+                    go(p,s,Phase.F);
+                    return;
+                }
+                var foot=bedFoot(p,family.bed);
+                var front=bedFront(p,family.bed);
+                var at=bedApproach(p,actor,foot,front);
+                if(at==null){
+                    n.putBoolean("DollsRetrieved",true);
+                    s.loop.story.putBoolean("ParentDollsDiscovered",true);
+                    go(p,s,Phase.F);
+                    return;
+                }
+                actor.setPos(Vec3.atBottomCenterOf(at));
+                n.putLong("BedFoot",foot.asLong());n.putString("BedFront",front.getName());
+                go(p,s,Phase.E);
+            }
             case E->{n.putFloat("DollsPull",1);n.putBoolean("DollsRetrieved",true);s.loop.story.putBoolean("ParentDollsDiscovered",true);go(p,s,Phase.F);}
-            case F->{if(StoryTunnel.restore(p,s)){n.putBoolean("FFinished",true);n.putBoolean("TunnelRestored",true);s.loop.story.putString("MajorStoryPhase","MISSING_PARENTS_CAT_COMPLETE");go(p,s,Phase.DEPART);}else StoryCutsceneWatchdog.retry(s,"post_escape_cat");}
+            case F->{
+                if(cat(p,s)==null){
+                    n.putString("Blocker","Waiting for the original Cat before ending its scene.");
+                    StoryCutsceneWatchdog.retry(s,"post_escape_cat");
+                }else if(StoryTunnel.restore(p,s)){
+                    n.putBoolean("FFinished",true);
+                    n.putBoolean("TunnelRestored",true);
+                    s.loop.story.putString("MajorStoryPhase","MISSING_PARENTS_CAT_COMPLETE");
+                    go(p,s,Phase.DEPART);
+                }else StoryCutsceneWatchdog.retry(s,"post_escape_cat");
+            }
             default->{}
         }
     }
