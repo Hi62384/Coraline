@@ -386,7 +386,17 @@ public final class MissingParentsCat {
                 n.putLong("BedFoot",foot.asLong());n.putString("BedFront",front.getName());
                 go(p,s,Phase.E);
             }
-            case E->{n.putFloat("DollsPull",1);n.putBoolean("DollsRetrieved",true);s.loop.story.putBoolean("ParentDollsDiscovered",true);go(p,s,Phase.F);}
+            case E->{
+                if(cat(p,s)==null){
+                    n.putString("Blocker","Waiting for the original Cat before completing the parent-dolls clue.");
+                    StoryCutsceneWatchdog.retry(s,"post_escape_cat");
+                    return;
+                }
+                n.putFloat("DollsPull",1);
+                n.putBoolean("DollsRetrieved",true);
+                s.loop.story.putBoolean("ParentDollsDiscovered",true);
+                go(p,s,Phase.F);
+            }
             case F->{
                 if(cat(p,s)==null){
                     n.putString("Blocker","Waiting for the original Cat before ending its scene.");
