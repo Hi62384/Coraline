@@ -9,6 +9,25 @@ ASSETS=ROOT/'src/main/resources/assets/coraline'
 def source(name):return (JAVA/name).read_text(encoding='utf-8-sig')
 
 class CurrentStoryRepairs(unittest.TestCase):
+    def test_saved_final_exit_recovers_original_world_and_never_skips_key_or_crawl(self):
+        finale=source('feast/BeldamFinale.java')
+        recovery=finale.split('static boolean originalExitReady(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static boolean preflight(',1)[0]
+        self.assertIn('!s.owner.equals(source.owner)',recovery)
+        self.assertIn('home!=p.server.overworld()',recovery)
+        self.assertIn('state==LOCK_DOOR&&!n.getBoolean("CrawlReachedOverworld")',recovery)
+        self.assertIn('n.getBoolean("HandSevered")&&n.getBoolean("KeyRecovered")',recovery)
+        self.assertIn('RescuePassage.enter(p,s)',recovery)
+        self.assertIn('RescueChapter.go(p,s,TUNNEL_CHASE)',recovery)
+        self.assertIn('p.serverLevel()!=home&&!RescueChapter.transfer(p,home,source.pos)',recovery)
+        self.assertIn('state==BANGING&&!n.getBoolean("PermanentlySealed")',recovery)
+        self.assertIn('RescueChapter.go(p,s,LOCK_DOOR)',recovery)
+        chapter=source('feast/RescueChapter.java')
+        self.assertIn('if(!BeldamFinale.originalExitReady(p,s))',chapter)
+        safety=chapter.split('static void cutsceneSafety(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static void recover(',1)[0]
+        self.assertLess(safety.index('!BeldamFinale.originalExitReady(p,s)'),safety.index('StoryCutsceneWatchdog.overdue('))
+        tests=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('finalDoorAndBangingCannotResumeInTheWebWorld',tests)
+
     def test_final_tunnel_requires_fresh_bounded_readback_on_reentry(self):
         passage=source('feast/RescuePassage.java')
         enter=passage.split('public static boolean enter(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static double progress(',1)[0]
