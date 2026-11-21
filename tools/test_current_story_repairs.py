@@ -243,6 +243,10 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertLess(follow.index('if(actor==null)'),
                         follow.index('n.putBoolean("DollsRetrieved",true)'))
         self.assertIn('StoryCutsceneWatchdog.retry(s,"post_escape_cat")',follow)
+        performance=safety.split('case E->{',1)[1].split('case F->{',1)[0]
+        self.assertIn('if(cat(p,s)==null)',performance)
+        self.assertLess(performance.index('if(cat(p,s)==null)'),
+                        performance.index('n.putBoolean("DollsRetrieved",true)'))
         finish=safety.split('case F->{',1)[1].split('default->{}',1)[0]
         self.assertIn('if(cat(p,s)==null)',finish)
         self.assertLess(finish.index('if(cat(p,s)==null)'),
