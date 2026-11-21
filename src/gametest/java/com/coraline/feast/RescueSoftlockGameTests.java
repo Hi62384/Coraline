@@ -319,4 +319,22 @@ public final class RescueSoftlockGameTests {
             "A missing original Other Mother must not auto-finish the kitchen and start three boss quests");
         helper.succeed();
     }
+
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void webReadyCannotSkipItsPhysicalReceipts(GameTestHelper helper) {
+        for(boolean built:new boolean[]{false,true})
+            for(boolean verified:new boolean[]{false,true})
+                for(int receipts:new int[]{0,1,999}){
+                    boolean expected=built&&(!verified||receipts<=0);
+                    helper.assertTrue(RescueWebSite.webVerificationRequired(built,verified,receipts)==expected,
+                        "Unsafe web ready/verified combination: built="+built+" verified="+verified+" receipts="+receipts);
+                }
+        helper.assertTrue(RescueWebSite.webVerificationRequired(true,true,0),
+            "A missing web journal must never allow entry even when its flag says verified");
+        helper.assertTrue(RescueWebSite.webVerificationRequired(true,false,999),
+            "A new web retry must recheck its physically placed blocks");
+        helper.assertFalse(RescueWebSite.webVerificationRequired(true,true,999),
+            "Verified intact web receipts should not be rebuilt every tick");
+        helper.succeed();
+    }
 }
