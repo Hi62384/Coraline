@@ -316,6 +316,26 @@ class CurrentStoryRepairs(unittest.TestCase):
                         mantel.index('cat.setPos(at)'))
         self.assertNotIn('state==CAT_THROW',mantel)
 
+    def test_collapse_stale_cat_pickup_recovers_only_original_unrescued_actor(self):
+        encounter=source('feast/RescueEncounters.java')
+        collapse=encounter.split('private static void collapse(',1)[1].split('private static void carryCat(',1)[0]
+        self.assertIn('ShowActors.recoverCat(p,s,level,',collapse)
+        self.assertIn('if(cat==null)',collapse)
+        self.assertIn('if(!n.getBoolean("CatRescued"))',collapse)
+        self.assertIn('RescueEpilogue.safeReturn(level,p,Pose.STANDING,',collapse)
+        self.assertIn('!level.noCollision(cat,cat.getBoundingBox())',collapse)
+        self.assertIn('RescueChallengeMath.restageUnrescuedCat(n.getBoolean("CatCollapsePlaced"),false,',collapse)
+        self.assertIn('cat.setPos(at);',collapse)
+        self.assertIn('n.putBoolean("CatCollapsePlaced",true)',collapse)
+        self.assertLess(collapse.index('if(cat==null)'),collapse.index('cat.setPos(at);'))
+        self.assertLess(collapse.index('if(!n.getBoolean("CatRescued"))'),collapse.index('cat.setPos(at);'))
+        self.assertLess(collapse.index('RescueEpilogue.safeReturn('),collapse.index('cat.setPos(at);'))
+        self.assertIn('n.remove("CatCollapsePosition")',encounter)
+        math=source('feast/RescueChallengeMath.java')
+        self.assertIn('!rescued&&(!placed||obstructed||!Double.isFinite(distanceSquared)||distanceSquared>64)',math)
+        gametest=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('savedUnrescuedCatCannotDisappearFromCollapsePickup',gametest)
+
     def test_late_rescue_cutscenes_keep_safety_but_bosses_and_crawl_do_not_autocomplete(self):
         chapter=source('feast/RescueChapter.java')
         safety=chapter.split('static void cutsceneSafety(',1)[1].split('public static void recover(',1)[0]
