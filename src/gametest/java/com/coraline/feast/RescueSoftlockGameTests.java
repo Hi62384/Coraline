@@ -81,6 +81,29 @@ public final class RescueSoftlockGameTests {
     }
 
     @GameTest(template="empty", batch="story_softlocks")
+    public static void interruptedKitchenSaveCannotAdvanceWithMissingStoveOrTable(GameTestHelper helper) {
+        var n=new net.minecraft.nbt.CompoundTag();
+        helper.assertFalse(ParentRescueStory.kitchenCheckpointComplete(n),
+                "Uninitialized kitchen was marked ready");
+        n.putLong("Kitchen",new net.minecraft.core.BlockPos(30,80,30).asLong());
+        helper.assertFalse(ParentRescueStory.kitchenCheckpointComplete(n),
+                "Saved kitchen marker skipped stove/table placement");
+        n.putLong("Stove",new net.minecraft.core.BlockPos(28,80,35).asLong());
+        helper.assertFalse(ParentRescueStory.kitchenCheckpointComplete(n),
+                "Missing kitchen table was treated as complete");
+        n.putLong("KitchenTable",new net.minecraft.core.BlockPos(31,80,30).asLong());
+        helper.assertFalse(ParentRescueStory.kitchenCheckpointComplete(n),
+                "Wrong table anchor was trusted after save/reload");
+        n.putLong("KitchenTable",new net.minecraft.core.BlockPos(30,80,30).asLong());
+        helper.assertTrue(ParentRescueStory.kitchenCheckpointComplete(n),
+                "Complete owner-authored kitchen checkpoint was rejected");
+        n.putString("Stove","invalid-stove-tag");
+        helper.assertFalse(ParentRescueStory.kitchenCheckpointComplete(n),
+                "Corrupt stove data reached the cooking sequence");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
     public static void parentRescueKitchenServingWaitsBeforeRecoveringOriginalActor(GameTestHelper helper) {
         helper.assertFalse(ParentRescueStory.serveRecoveryDue(0),
             "The normal physical kitchen serving approach should get its turn");
