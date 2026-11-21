@@ -40,6 +40,13 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('catch(NumberFormatException invalid)',cleanup)
         self.assertIn('Invalid saved passage cleanup cell reference.',cleanup)
         self.assertIn('continue;',cleanup)
+        self.assertIn('level.isOutsideBuildHeight(at)',cleanup)
+        self.assertIn('!level.getWorldBorder().isWithinBounds(at)',cleanup)
+        postboss=source('feast/RescueSiteCleanup.java')
+        self.assertIn('try{packed=Long.parseLong(position);}',postboss)
+        self.assertIn('catch(NumberFormatException invalid)',postboss)
+        self.assertIn('Invalid saved rescue cleanup receipt.',postboss)
+        self.assertIn('if(level.isOutsideBuildHeight(at)||!level.getWorldBorder().isWithinBounds(at))continue',postboss)
 
     def test_original_little_door_return_rechecks_physical_web_and_crawl_before_transfers(self):
         tunnel=source('feast/StoryTunnel.java')
