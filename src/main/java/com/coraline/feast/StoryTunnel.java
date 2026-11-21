@@ -183,7 +183,9 @@ public final class StoryTunnel {
                     return;
                 }
                 level=p.server.getLevel(ActivityWorld.KEY);
-                landing=BlockPos.containing(RescueWebSite.at(p,scene,1,phase==RescueChapter.Phase.WEB_STEALTH?0:1)).above();
+                boolean atWebEntrance=phase==RescueChapter.Phase.FINAL_P||phase==RescueChapter.Phase.FINAL_Q
+                        ||phase==RescueChapter.Phase.WEB_STEALTH;
+                landing=BlockPos.containing(RescueWebSite.at(p,scene,1,atWebEntrance?0:1)).above();
             }else if(phase.ordinal()>=RescueChapter.Phase.HOUSE_SAFE.ordinal()){
                 landing=FirstEscapeScene.room(scene);
             }
