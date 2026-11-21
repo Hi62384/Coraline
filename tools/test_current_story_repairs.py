@@ -15,6 +15,13 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('if(n.getBoolean("WebReady"))return verify(p,s)',web)
         verify=web.split('private static boolean verify(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static boolean blocked(',1)[0]
         self.assertIn('keys.sort(String::compareTo)',verify)
+        self.assertIn('expectedCells(p,s)',verify)
+        self.assertIn('!cells.contains(Long.toString(packed))',verify)
+        expected=web.split('private static java.util.Set<Long> expectedCells(',1)[1].split('private static boolean verify(',1)[0]
+        self.assertIn('for(int lane=0;lane<RescueWebLayout.LANES;lane++)',expected)
+        self.assertIn('for(int sample=0;sample<=samples;sample++)',expected)
+        self.assertIn('point.lerp(adjacent,i/12.0)',expected)
+        self.assertIn('for(double u:new double[]{0,1})',expected)
         self.assertIn('int end=Math.min(keys.size(),cursor+96)',verify)
         self.assertIn('receipt.contains("Original",Tag.TAG_COMPOUND)',verify)
         self.assertIn('receipt.contains("Placed",Tag.TAG_COMPOUND)',verify)
