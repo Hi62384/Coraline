@@ -9,6 +9,21 @@ ASSETS=ROOT/'src/main/resources/assets/coraline'
 def source(name):return (JAVA/name).read_text(encoding='utf-8-sig')
 
 class CurrentStoryRepairs(unittest.TestCase):
+    def test_final_tunnel_requires_fresh_bounded_readback_on_reentry(self):
+        passage=source('feast/RescuePassage.java')
+        enter=passage.split('public static boolean enter(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static double progress(',1)[0]
+        self.assertIn('entryRecheckNeeded(n.getBoolean("PassageEntered"),n.getBoolean("PassageEntryRecheck"))',enter)
+        self.assertIn('n.remove("PassageVerified")',enter)
+        self.assertIn('n.putInt("PassageVerify",0)',enter)
+        self.assertLess(enter.index('n.remove("PassageVerified")'),enter.index('if(!prepare(p,s))return false'))
+        self.assertLess(enter.index('if(!prepare(p,s))return false'),enter.index('n.putBoolean("PassageEntered",true)'))
+        self.assertIn('n.remove("PassageEntryRecheck")',enter)
+        verify=passage.split('private static boolean verify(',1)[1].split('public static boolean enter(',1)[0]
+        self.assertIn('missing original or placement receipt',verify)
+        self.assertIn('the physical tunnel differs from the saved layout',verify)
+        game=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('savedEscapeCrawlRechecksEveryNewAttempt',game)
+
     def test_postboss_reunion_cat_and_watchdog_require_physical_stage(self):
         chapter=source('feast/RescueChapter.java')
         safety=chapter.split('static void cutsceneSafety(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static void recover(',1)[0]
