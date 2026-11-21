@@ -14,7 +14,7 @@ public final class RescueSiteCleanup {
         int remaining=96;
         remaining=drain(player,scene,"WebCells",remaining);
         drain(player,scene,"PassageCells",remaining);
-        if(!data.contains("WebCells")){data.remove("WebReady");data.remove("WebBuild");data.remove("WebVerified");data.remove("WebVerify");data.remove("WebEntryRecheck");}
+        if(!data.contains("WebCells")){data.remove("WebReady");data.remove("WebBuild");data.remove("WebVerified");data.remove("WebVerify");data.remove("WebEntryRecheck");data.remove("WebDoorRetryRecheck");}
         if(!data.contains("PassageCells")){data.remove("PassageReady");data.remove("PassageBuild");data.remove("PassageVerified");data.remove("PassageVerify");data.remove("PassageCellsCleanupOffset");}
         // The persistent Hand, original Cat, original Mother and child UUIDs are
         // deliberately absent. Subsequent chapters still own those identities.
