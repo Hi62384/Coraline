@@ -58,6 +58,37 @@ public final class FirstEscapeStory {
         OtherMotherLoop.changed(p);sync(p,s);
     }
     static void hint(ServerPlayer p,String message){if(p.tickCount%30==0)p.displayClientMessage(Component.literal(message),true);}
+    /** A timed voice or watchdog cannot present an absent canonical actor.
+     * These are phase prerequisites, never authority to mint replacement actors. */
+    static boolean needsOtherMother(FirstEscapeTimeline.Phase state){
+        return state.ordinal()>=COCOA_A.ordinal()&&state.ordinal()<=COCOA_G.ordinal();
+    }
+    static boolean needsOtherWybie(FirstEscapeTimeline.Phase state){
+        return state.ordinal()>=ESCAPE_A.ordinal()&&state.ordinal()<=ESCAPE_G.ordinal();
+    }
+    static boolean needsRealWybie(FirstEscapeTimeline.Phase state){
+        return state.ordinal()>=MISSING_B.ordinal()&&state.ordinal()<=BICYCLE_DEPARTURE.ordinal();
+    }
+    private static boolean actorsReady(ServerPlayer p,VisitData.Scene s,FirstEscapeTimeline.Phase state){
+        return (!needsOtherMother(state)||mother(p,s)!=null)
+                &&(!needsOtherWybie(state)||wybie(p,s)!=null)
+                &&(!needsRealWybie(state)||realWybie(p,s)!=null);
+    }
+    private static boolean pauseForMissingActor(ServerPlayer p,VisitData.Scene s,FirstEscapeTimeline.Phase state){
+        if(actorsReady(p,s,state)){
+            if(data(s).getString("Blocker").startsWith("Waiting for original First Escape cast"))
+                data(s).remove("Blocker");
+            return false;
+        }
+        var n=data(s);
+        if(n.getBoolean("AudioStarted")){
+            ShowPlayback.stop(p,s);
+            n.remove("AudioStarted");n.remove("AudioDone");n.putInt("Ticks",0);
+        }
+        n.putString("Blocker","Waiting for original First Escape cast at "+state.name()+".");
+        hint(p,n.getString("Blocker"));
+        return true;
+    }
     public static boolean tick(ServerPlayer p,VisitData.Scene s){
         if(AcceptedButtonEyes.active(s))return false;
         if(!engaged(s)||!p.getUUID().equals(s.owner))return false;var n=data(s);if(!p.isAlive())return true;var state=phase(s);p.fallDistance=0;payChaseReward(p,s);
@@ -82,6 +113,7 @@ public final class FirstEscapeStory {
                 return true;
             }
         }
+        if(pauseForMissingActor(p,s,state))return true;
         if(p.tickCount%20==0){BlackIsTraditional.retirePresentation(p,s);FirstEscapeScene.removeHallMirror(p,s);holdActors(p,s);if(state.ordinal()>=ROOM_DARK.ordinal()&&state.ordinal()<=ESCAPE_PUSH.ordinal())repairLittleDoor(p,s);if(state.ordinal()>=ROOM_DARK.ordinal()&&state.ordinal()<OPEN_LITTLE_DOOR.ordinal())openLittleDoor(p,s,state.ordinal()<MIRROR_A.ordinal());if(!FirstEscapeTimeline.overworld(state))LoopProps.hold(p.serverLevel(),FirstEscapeScene.room(s));}
         if(!FirstEscapeTimeline.prison(state)&&state!=ESCAPE_A&&state!=ESCAPE_TUNNEL&&!FirstEscapeTimeline.overworld(state)&&!((state==COCOA_G||state==MIRROR_THROW)&&n.getBoolean("MirrorPrisonEntered"))){
             if(!FirstEscapeScene.inHouseOrPorch(s,p.blockPosition())){verifiedTransfer(p,s,p.serverLevel(),safeHouseAnchor(s));hint(p,"The garden is beyond reach. Return to the house.");}
@@ -188,6 +220,12 @@ public final class FirstEscapeStory {
         var state=phase(s);boolean movement=java.util.EnumSet.of(PRY_DOOR,ROOM_TRANSFORMING,CHAIR_CAPTURE,COCOA_BITE,MIRROR_DRAG,MIRROR_THROW,MIRROR_RETRACT,MASK_ANIMATION,STITCH_ANIMATION,FOLLOW_WYBIE,PUSHING,ESCAPE_PUSH,BICYCLE_DEPARTURE).contains(state);
         String voice=FirstEscapeTimeline.sound(state);if(!movement&&(voice.isEmpty()||state==ESCAPE_A))return;
         if(!FirstEscapeTimeline.overworld(state)&&!OtherWorld.isOther(p.level())||FirstEscapeTimeline.overworld(state)&&OtherWorld.isOther(p.level()))return;
+        // An independent timeout must not skip the same actor gate that
+        // pauses the main tick, including a previously started voice.
+        if(pauseForMissingActor(p,s,state)||!voice.isEmpty()&&!readyForVoice(p,s,state)){
+            StoryCutsceneWatchdog.retry(s,"first_escape");
+            return;
+        }
         int budget=voice.isEmpty()?600:StoryCutsceneWatchdog.voiceBudget(voice);
         if(!StoryCutsceneWatchdog.overdue(p,s,"first_escape",state.name(),budget))return;
         var n=data(s);ShowPlayback.safetyFinish(p,s,"First Escape checkpoint exceeded its safety window");
