@@ -157,6 +157,11 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('state==Phase.SERVE)&&!kitchen(p,s)',tick)
         self.assertLess(tick.index('state==Phase.SERVE)&&!kitchen(p,s)'),
                         tick.index('boolean done=recording(p,s,n,sound)'))
+        paused=tick.split('state==Phase.SERVE)&&!kitchen(p,s)',1)[1].split('if(!StoryTunnel.entryPhase(s)',1)[0]
+        self.assertIn('ShowPlayback.stop(p,s)',paused)
+        self.assertIn('n.remove("ReturnRecording")',paused)
+        self.assertIn('n.putInt("Ticks",0)',paused)
+        self.assertLess(paused.index('ShowPlayback.stop(p,s)'),paused.index('return;'))
         rebuild=story.split('private static boolean kitchen(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static boolean block(',1)[0]
         self.assertIn('if(kitchenCheckpointComplete(n))return true;',rebuild)
         self.assertLess(rebuild.index('if(stove==null)'),rebuild.index('n.putLong("Kitchen",center.asLong())'))
