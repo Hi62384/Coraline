@@ -385,7 +385,7 @@ public final class RescueEncounters {
                 p.server.overworld().getDataStorage().save();
             }
             resetRatSegment(p,s);
-        }else if(state==COLLAPSE){FirstEscapeStory.hint(p,"The Other World swallowed you. Retry the escape.");if(!RescueChapter.transfer(p,p.server.getLevel(OtherWorld.KEY),BlockPos.of(n.getLong("CollapseStart"))))return;n.putBoolean("CatRescued",false);n.putInt("CollapseElapsed",0);n.remove("CatCollapsePlaced");n.remove("CatMantel");RescueChapter.go(p,s,COLLAPSE);}
+        }else if(state==COLLAPSE){FirstEscapeStory.hint(p,"The Other World swallowed you. Retry the escape.");if(!RescueChapter.transfer(p,p.server.getLevel(OtherWorld.KEY),BlockPos.of(n.getLong("CollapseStart"))))return;n.putBoolean("CatRescued",false);n.putInt("CollapseElapsed",0);n.remove("CatCollapsePlaced");n.remove("CatCollapsePosition");n.remove("CatMantel");RescueChapter.go(p,s,COLLAPSE);}
         else RescueBosses.retry(p,s,"Retrying this challenge.");
     }
     private static void clearRatPath(CompoundTag n){
