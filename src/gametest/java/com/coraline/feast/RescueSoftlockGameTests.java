@@ -384,4 +384,32 @@ public final class RescueSoftlockGameTests {
             "Saved saturation must not exceed food capacity");
         helper.succeed();
     }
+
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void entireOriginalStoryRouteHasPlayableMeasuredVoiceRecordings(GameTestHelper helper) {
+        var required=new java.util.LinkedHashSet<String>();
+        for(var phase:FirstEscapeTimeline.Phase.values()) {
+            String sound=FirstEscapeTimeline.sound(phase);
+            if(!sound.isEmpty())required.add(sound);
+        }
+        for(var phase:MissingParentsTea.Phase.values()) {
+            String sound=MissingParentsTea.sound(phase);
+            if(!sound.isEmpty())required.add(sound);
+        }
+        for(var phase:MissingParentsCat.Phase.values()) {
+            String sound=MissingParentsCat.voice(phase);
+            if(!sound.isEmpty())required.add(sound);
+        }
+        for(char c='a';c<='n';c++)required.add("parent_rescue_"+c);
+        for(var phase:RescueChapter.Phase.values()) {
+            String sound=RescueChapter.sound(phase);
+            if(!sound.isEmpty())required.add(sound);
+        }
+        helper.assertTrue(required.size()==88,
+            "The story-route voice set changed without updating full-path acceptance: "+required.size());
+        for(String sound:required)
+            helper.assertTrue(ShowRecordings.duration(sound)>0,
+                "Original route voice unavailable or invalid at runtime: "+sound);
+        helper.succeed();
+    }
 }
