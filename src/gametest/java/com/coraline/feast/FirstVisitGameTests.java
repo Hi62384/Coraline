@@ -130,7 +130,7 @@ public final class FirstVisitGameTests {
         // Missing-item fixtures subtract grace periods from game time; negative values mean "not started".
         level.getServer().getWorldData().overworldData().setGameTime(Math.max(100000,level.getGameTime()));
     }
-    @GameTest(template="empty",batch="realm_story",timeoutTicks=180) public static void welcomeSequenceReleasesPlayerAndClosesPortal(GameTestHelper h){
+    @GameTest(template="empty",batch="realm_story",timeoutTicks=420) public static void welcomeSequenceReleasesPlayerAndClosesPortal(GameTestHelper h){
         var server=h.getLevel().getServer();var level=server.getLevel(OtherWorld.KEY);
         var p=new net.minecraftforge.common.util.FakePlayer(level,new com.mojang.authlib.GameProfile(UUID.randomUUID(),"StoryFlow"));p.tickCount=1;
         var door=new DoorData.Door();door.owner=p.getUUID();door.pos=h.absolutePos(new BlockPos(7,1,7));door.placed=true;door.activeUntil=999999;DoorData.get(server).doors.put(door.id,door);
@@ -146,11 +146,23 @@ public final class FirstVisitGameTests {
         for(boolean mom:new boolean[]{true,false}){var actor=(mom?ModEntities.MOM:ModEntities.DAD).get().create(level);actor.makeOtherParent(0);actor.setNoGravity(true);actor.setPos(r.doorPos.getX()+.5,r.doorPos.getY(),r.doorPos.getZ()+.5);level.getChunkAt(actor.blockPosition());h.assertTrue(level.addFreshEntity(actor),"Fixture actor rejected");actors.add(actor);if(mom){s.mom=actor.getUUID();family.mom=actor.getUUID();}else{s.dad=actor.getUUID();family.dad=actor.getUUID();}}
         // Native non-GameTest-dimension entities may only join the live UUID
         // index after their real cross-chunk entity manager has ticked.
-        h.runAfterDelay(32,()->{
+        // The GameTest clock is in the Overworld, while the actors are
+        // registered by the Other World's asynchronous entity manager.
+        // A fixed 32-tick pause can expire before that separate dimension
+        // indexes their UUIDs on a loaded but otherwise unoccupied chunk.
+        // Retry only the fixture readiness check; NEVER fake actors or skip
+        // the real welcome sequence if canonical parents are absent.
+        int[] lookupRetries={0};
+        Runnable[] whenIndexed=new Runnable[1];
+        whenIndexed[0]=()->{
         LoopProps.hold(level,r.doorPos);
         for(var actor:actors)level.getChunkAt(actor.blockPosition());
         h.assertTrue(level.getBlockState(r.bed).getBlock() instanceof BedBlock,"Fixture bed missing");
-        h.assertTrue(level.getEntity(s.mom)!=null&&level.getEntity(s.dad)!=null,"Fixture parents not loaded: "+actors.stream().map(a->a.blockPosition()+" removed="+a.getRemovalReason()+" alive="+a.isAlive()).toList());
+        if(level.getEntity(s.mom)==null||level.getEntity(s.dad)==null){
+            if(++lookupRetries[0]<24){h.runAfterDelay(10,whenIndexed[0]);return;}
+            h.fail("Fixture parents never indexed after bounded retries: "+actors.stream().map(a->a.blockPosition()+" removed="+a.getRemovalReason()+" alive="+a.isAlive()).toList());
+            return;
+        }
         FirstVisit.start(p,s,MOTHER_INTRO);s.elapsed=VisitAudio.length("other_mother_intro")-1;FirstVisit.tick(tick);h.assertTrue(s.stage==FIND_FATHER,"Mother intro transition failed: "+s.stage);
         FirstVisit.tick(tick);h.assertTrue(s.stage==FATHER_ENTER,"Father proximity transition failed");
         for(var stage:new VisitData.Stage[]{FATHER_ENTER,FATHER_INTRO,SONG,DINNER_READY}){
@@ -188,7 +200,8 @@ public final class FirstVisitGameTests {
         s.elapsed=VisitAudio.length("other_parents_waiting")-1;FirstVisit.tick(tick);h.assertTrue(s.stage==BED&&!p.isPassenger(),"Bedtime did not release chair");
         FirstVisit.slept(p);h.assertTrue(s.stage==DONE&&!FirstVisit.locked(p)&&door.activeUntil==0,"Sleep did not finish visit and close portal");level.setChunkForced(forced.x,forced.z,false);h.succeed();
         });
-        });
+        };
+        h.runAfterDelay(32,whenIndexed[0]);
         });
     }
     @GameTest(template="empty") public static void cakeDropsPreserveEveryBiteState(GameTestHelper h){
