@@ -109,7 +109,17 @@ public final class RescueEncounters {
             case RAT_CHASE->chase(p,s,t);
             case EXTERIOR->{unlockAttic(p,s);RescueChapter.hint(p,"Get outside. Something is happening to the Other World.");if(p.level()==p.server.getLevel(OtherWorld.KEY)&&OtherWorldEstate.outsideHouse(house(s),p.blockPosition())&&RescueEyes.all(s)){n.putLong("CollapseStart",p.blockPosition().asLong());n.putInt("CollapseDuration",1500);n.putInt("CollapseElapsed",0);n.putDouble("CollapseInitialRadius",Math.max(130,p.position().distanceTo(Vec3.atBottomCenterOf(house(s)))+70));RescueChapter.go(p,s,COLLAPSE);}}
             case COLLAPSE->collapse(p,s,t);
-            case HOUSE_SAFE->{RescueChapter.hint(p,"Follow the green light to the Little Door room.");greenHouse(p,s);carryCat(p,s);if(FirstEscapeScene.fullyInRoom(s,p.getBoundingBox())&&!p.getBoundingBox().intersects(new AABB(FirstEscapeScene.entrance(s)).inflate(.1,1,.1))){
+            case HOUSE_SAFE->{
+                // The room geometry has the same coordinates in every realm.
+                // Never move the canonical Cat or lock the room from a stale
+                // Activity/Overworld checkpoint after disconnect or death.
+                if(!OtherWorld.isOther(p.level())){
+                    n.putString("Blocker","Return through your original Little Door to the Other World room.");
+                    RescueChapter.hint(p,n.getString("Blocker"));
+                    return;
+                }
+                n.remove("Blocker");
+                RescueChapter.hint(p,"Follow the green light to the Little Door room.");greenHouse(p,s);carryCat(p,s);if(FirstEscapeScene.fullyInRoom(s,p.getBoundingBox())&&!p.getBoundingBox().intersects(new AABB(FirstEscapeScene.entrance(s)).inflate(.1,1,.1))){
                     // Do not seal the player into the confrontation until the
                     // original Cat has actually reached the mantel. A failed
                     // entity lease/transfer must remain a recoverable handoff.
