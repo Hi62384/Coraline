@@ -234,6 +234,11 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('missingBedBeforeCatStartsPreservesTheMirrorClue',native)
         self.assertIn('missingBedFallbackCannotLoseTheOriginalCatForTheBoss',native)
         self.assertIn('catWatchdogCannotAwardDollsWhileOriginalCatIsUnloaded',native)
+        continuation=(ROOT/'src/wybietest/java/com/coraline/feast/StoryContinuationGameTests.java').read_text()
+        scenario=continuation.split('skippedEscapeQueuesMissingRealmAndResumesBlockedCatClue(',1)[1].split('catDepartureCannotCompleteAnUnrestoredPassage',1)[0]
+        self.assertIn('ShowActors.acquire(p,s,"cat",level,',scenario)
+        self.assertLess(scenario.index('ShowActors.acquire(p,s,"cat",level,'),
+                        scenario.index('MissingParentsCat.cutsceneSafety(p,s);'))
         safety=cat.split('static void cutsceneSafety(ServerPlayer p,VisitData.Scene s)',1)[1].split('static boolean parkInTunnel(',1)[0]
         self.assertIn('if(state==Phase.F&&cat(p,s)==null)',safety)
         self.assertLess(safety.index('if(state==Phase.F&&cat(p,s)==null)'),
