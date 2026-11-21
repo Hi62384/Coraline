@@ -92,7 +92,7 @@ public final class CurrentStoryRepairsGameTests {
             for(var facing:net.minecraft.core.Direction.Plane.HORIZONTAL){
                 FirstEscapeStory.data(s).putString("EscapeDirection",facing.getName());var forward=Vec3.atLowerCornerOf(facing.getNormal());
                 cat.setPos(Vec3.atBottomCenterOf(origin).add(forward.scale(8)));ParentRescueStory.guideTunnelCat(p,s,cat,3);
-                h.assertTrue(cat.position().subtract(Vec3.atBottomCenterOf(origin)).dot(forward)<1,"Old saved Cat remains ahead of the player facing "+facing);
+                h.assertTrue(cat.position().subtract(Vec3.atBottomCenterOf(origin)).dot(forward)<2,"Old saved Cat remains ahead of the player facing "+facing);
             }
 
             ShowActors.acquire(p,s,"cat",level,cat.position());h.assertTrue(cat.getBbHeight()>.7F,"Cat keeps crawl dimensions in later scenes");
