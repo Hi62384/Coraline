@@ -379,10 +379,16 @@ public final class RescueEpilogue {
         if(n.getBoolean("VisionLandingPending")&&p.serverLevel()==p.server.overworld())return verifyVisionLanding(p,n);
         var saved=n.getCompound("VisionReturn");
         var l=p.server.overworld();
-        if(!saved.getString("Dimension").equals(l.dimension().location().toString()))return false;
-        var original=new Vec3(saved.getDouble("X"),saved.getDouble("Y"),saved.getDouble("Z"));if(!Double.isFinite(original.x)||!Double.isFinite(original.y)||!Double.isFinite(original.z)){n.putString("Blocker","The saved farewell return anchor is invalid.");return false;}
+        var original=new Vec3(saved.getDouble("X"),saved.getDouble("Y"),saved.getDouble("Z"));
+        boolean originalOverworld=saved.getString("Dimension").equals(l.dimension().location().toString());
+        boolean finiteOriginal=Double.isFinite(original.x)&&Double.isFinite(original.y)&&Double.isFinite(original.z);
         Pose pose;try{pose=Pose.valueOf(saved.getString("Pose"));}catch(IllegalArgumentException bad){pose=Pose.STANDING;}
-        Vec3 target=safeReturn(l,p,pose,original)?original:nearReturn(l,p,pose,BlockPos.containing(original),4);
+        // Older interrupted farewells may have captured their return while in
+        // the wrong dimension. The recorded foreign position is never used as
+        // an Overworld coordinate; only the authentic owned door is a fallback.
+        Vec3 target=originalOverworld&&finiteOriginal
+                ?(safeReturn(l,p,pose,original)?original:nearReturn(l,p,pose,BlockPos.containing(original),4))
+                :null;
         var door=DoorData.get(p.server).doors.get(s.door);
         if(target==null&&door!=null&&door.placed&&s.owner.equals(door.owner)&&FamilyData.level(p.server,door.dimension)==l){
             target=nearReturn(l,p,pose,door.pos,6);
@@ -396,6 +402,7 @@ public final class RescueEpilogue {
             n.putString("Blocker","Clear safe footing and standing space near your original Little Door.");
             return false;
         }
+        if(!originalOverworld||!finiteOriginal)n.putBoolean("VisionReturnUsedDoorFallback",true);
         p.teleportTo(l,target.x,target.y,target.z,saved.getFloat("Yaw"),saved.getFloat("Pitch"));
         if(p.serverLevel()!=l||p.position().distanceToSqr(target)>.25||!safeReturn(l,p,pose,p.position())){
             n.putString("Blocker","Your saved return is still being prepared. Your dream state is preserved and will retry safely.");OtherMotherLoop.changed(p);return false;
