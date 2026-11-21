@@ -205,6 +205,14 @@ public final class RescueSoftlockGameTests {
             "Both genuine parent actors within the safe checkpoint may resume");
         helper.assertTrue(RescueEpilogue.parentsOnReunionStage(true,true,true,4,4),
             "Normal two-actor physical stage must not be reset during dialogue");
+        helper.assertFalse(RescueEpilogue.reunionViewerNear(false,0),
+            "Post-boss reunion must not play with Coraline stranded in another dimension");
+        helper.assertFalse(RescueEpilogue.reunionViewerNear(true,4097),
+            "Offstage player should get a return hint, not silent voiced progression");
+        helper.assertFalse(RescueEpilogue.reunionViewerNear(true,Double.NaN),
+            "A malformed saved viewpoint must not count as present");
+        helper.assertTrue(RescueEpilogue.reunionViewerNear(true,4096),
+            "Player within the original door checkpoint can view the reunion");
         helper.succeed();
     }
 }
