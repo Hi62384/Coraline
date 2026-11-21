@@ -337,4 +337,47 @@ public final class RescueSoftlockGameTests {
             "Verified intact web receipts should not be rebuilt every tick");
         helper.succeed();
     }
+
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void littleDoorReentryUsesTheRealFinaleDimensionAndFreshReceipts(GameTestHelper helper) {
+        for(var state:RescueChapter.Phase.values()) {
+            boolean web=state==RescueChapter.Phase.FINAL_P||state==RescueChapter.Phase.FINAL_Q
+                    ||state.ordinal()>=RescueChapter.Phase.WEB_STEALTH.ordinal()
+                    &&state.ordinal()<=RescueChapter.Phase.HAND_FALL.ordinal();
+            helper.assertTrue(StoryTunnel.webReturnPhase(state)==web,
+                "Return through original Little Door chose wrong world at "+state);
+        }
+        helper.assertTrue(StoryTunnel.webReturnPhase(RescueChapter.Phase.DOOR_STRUGGLE),
+                "Interrupted door struggle must not bypass the verified web");
+        helper.assertFalse(StoryTunnel.webReturnPhase(RescueChapter.Phase.TUNNEL_CHASE),
+                "Final 52-block crawl must use its own verification journal");
+        helper.assertFalse(StoryTunnel.webReturnPhase(RescueChapter.Phase.FINAL_O),
+                "The stage-floor collapse still starts in the original Other World");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void postBossDreamCannotRestoreDeathOrInvalidVitals(GameTestHelper helper) {
+        helper.assertTrue(RescueVisionRules.restoredHealth(true,13,20,20)==13,
+            "Valid saved health was changed on wake-up");
+        helper.assertTrue(RescueVisionRules.restoredHealth(true,0,12,20)==12,
+            "Corrupted zero health would kill the player during the farewell");
+        helper.assertTrue(RescueVisionRules.restoredHealth(true,Float.NaN,8,20)==8,
+            "NaN health would corrupt player data on dream return");
+        helper.assertTrue(RescueVisionRules.restoredHealth(false,0,0,20)==1,
+            "Missing saved health and invalid current health must not cause death");
+        helper.assertTrue(RescueVisionRules.restoredHealth(true,300,4,20)==20,
+            "Excess saved health must respect the player's maximum");
+        helper.assertTrue(RescueVisionRules.restoredFood(true,9,20)==9,
+            "Normal original hunger did not survive the dream");
+        helper.assertTrue(RescueVisionRules.restoredFood(false,0,14)==14,
+            "Missing saved hunger should preserve current survival state");
+        helper.assertTrue(RescueVisionRules.restoredSaturation(true,3,8,9)==3,
+            "Normal original saturation did not survive the dream");
+        helper.assertTrue(RescueVisionRules.restoredSaturation(true,Float.NaN,3,9)==3,
+            "Corrupt saved saturation must not reach player data");
+        helper.assertTrue(RescueVisionRules.restoredSaturation(true,50,3,9)==9,
+            "Saved saturation must not exceed food capacity");
+        helper.succeed();
+    }
 }
