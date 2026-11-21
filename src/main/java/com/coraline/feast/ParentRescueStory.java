@@ -398,13 +398,25 @@ public final class ParentRescueStory {
     static boolean kitchenStoveId(String id){return id!=null&&(id.contains("furnace")||id.contains("oven")||id.contains("stove")||id.contains("smoker"));}
     /** A saved KITCHEN marker alone is not an atomic oven/table checkpoint. */
     static boolean kitchenCheckpointComplete(CompoundTag n){
-        return n.contains("Kitchen",Tag.TAG_LONG)&&n.contains("Stove",Tag.TAG_LONG)
-                &&n.contains("KitchenTable",Tag.TAG_LONG)
-                &&n.getLong("Kitchen")==n.getLong("KitchenTable");
+        if(!n.contains("Kitchen",Tag.TAG_LONG)||!n.contains("Stove",Tag.TAG_LONG)
+                ||!n.contains("KitchenTable",Tag.TAG_LONG)
+                ||n.getLong("Kitchen")!=n.getLong("KitchenTable"))return false;
+        var center=BlockPos.of(n.getLong("Kitchen"));
+        var stove=BlockPos.of(n.getLong("Stove"));
+        // An old or corrupt save must not load an arbitrary distant chunk or
+        // animate the meal at (0,0,0).
+        return Math.abs(stove.getX()-center.getX())<=8
+                &&Math.abs(stove.getZ()-center.getZ())<=8
+                &&stove.getY()>=center.getY()&&stove.getY()<=center.getY()+2;
     }
     private static boolean kitchen(ServerPlayer p,VisitData.Scene s){
         var n=data(s);
-        if(kitchenCheckpointComplete(n))return true;
+        if(kitchenCheckpointComplete(n)){
+            var saved=BlockPos.of(n.getLong("Stove"));
+            p.serverLevel().getChunkAt(saved);
+            var savedId=net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(p.level().getBlockState(saved).getBlock());
+            if(savedId!=null&&kitchenStoveId(savedId.getPath()))return true;
+        }
         // Rebuild the owner-authored checkpoint rather than trusting incomplete
         // coordinates left by an interrupted save or earlier code version.
         var realm=RealmData.get(p.server).realms.get(s.door);
