@@ -11,6 +11,15 @@ public final class RescueSiteCleanup {
         if(!RescueChapter.owns(player,scene))return;
         var data=RescueChapter.data(scene);
         if(!data.getBoolean("CrawlReachedOverworld")||player.serverLevel()==player.server.getLevel(ActivityWorld.KEY))return;
+        // Physical exit is already confirmed. Retire eligibility immediately,
+        // even if an unrelated edited block prevents journal cleanup. Keep
+        // unresolved receipts for safe future retry; never rebuild the arena.
+        if(data.getBoolean("WebReady")||data.getBoolean("PassageReady")
+                ||data.getBoolean("WebVerified")||data.getBoolean("PassageVerified")){
+            data.remove("WebReady");data.remove("PassageReady");
+            data.remove("WebVerified");data.remove("PassageVerified");
+            OtherMotherLoop.changed(player);
+        }
         int remaining=96;
         remaining=drain(player,scene,"WebCells",remaining);
         drain(player,scene,"PassageCells",remaining);
