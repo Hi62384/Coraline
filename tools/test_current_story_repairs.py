@@ -9,6 +9,20 @@ ASSETS=ROOT/'src/main/resources/assets/coraline'
 def source(name):return (JAVA/name).read_text(encoding='utf-8-sig')
 
 class CurrentStoryRepairs(unittest.TestCase):
+    def test_first_escape_environment_restoration_rejects_corrupt_journal_rows(self):
+        room=source('feast/FirstEscapeScene.java')
+        cleanup=room.split('public static void restore(ServerPlayer p,VisitData.Scene s)',1)[1].split('private FirstEscapeScene()',1)[0]
+        self.assertIn('try{packed=Long.parseLong(key);}',cleanup)
+        self.assertIn('catch(NumberFormatException invalid)',cleanup)
+        self.assertIn('l.isOutsideBuildHeight(at)',cleanup)
+        self.assertIn('!l.getWorldBorder().isWithinBounds(at)',cleanup)
+        self.assertIn('!cell.contains("Original",Tag.TAG_COMPOUND)',cleanup)
+        self.assertIn('!cell.contains("Placed",Tag.TAG_COMPOUND)',cleanup)
+        self.assertIn('l.getBlockState(at).equals(placed)',cleanup)
+        self.assertIn('l.getBlockEntity(at)==null',cleanup)
+        native=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('invalidEscapeRoomCleanupJournalCannotCrashOrEraseUnownedBlocks',native)
+
     def test_partial_collapse_checkpoint_must_restart_the_real_exterior_gate(self):
         encounter=source('feast/RescueEncounters.java')
         validation=encounter.split('static boolean collapseCheckpointValid(CompoundTag n)',1)[1].split('static boolean restoreIncompleteCollapse(',1)[0]
