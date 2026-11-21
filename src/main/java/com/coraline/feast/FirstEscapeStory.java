@@ -60,19 +60,10 @@ public final class FirstEscapeStory {
     static void hint(ServerPlayer p,String message){if(p.tickCount%30==0)p.displayClientMessage(Component.literal(message),true);}
     /** A timed voice or watchdog cannot present an absent canonical actor.
      * These are phase prerequisites, never authority to mint replacement actors. */
-    static boolean needsOtherMother(FirstEscapeTimeline.Phase state){
-        return state.ordinal()>=COCOA_A.ordinal()&&state.ordinal()<=COCOA_G.ordinal();
-    }
-    static boolean needsOtherWybie(FirstEscapeTimeline.Phase state){
-        return state.ordinal()>=ESCAPE_A.ordinal()&&state.ordinal()<=ESCAPE_G.ordinal();
-    }
-    static boolean needsRealWybie(FirstEscapeTimeline.Phase state){
-        return state.ordinal()>=MISSING_B.ordinal()&&state.ordinal()<=BICYCLE_DEPARTURE.ordinal();
-    }
     private static boolean actorsReady(ServerPlayer p,VisitData.Scene s,FirstEscapeTimeline.Phase state){
-        return (!needsOtherMother(state)||mother(p,s)!=null)
-                &&(!needsOtherWybie(state)||wybie(p,s)!=null)
-                &&(!needsRealWybie(state)||realWybie(p,s)!=null);
+        return (!FirstEscapeTimeline.needsOtherMother(state)||mother(p,s)!=null)
+                &&(!FirstEscapeTimeline.needsOtherWybie(state)||wybie(p,s)!=null)
+                &&(!FirstEscapeTimeline.needsRealWybie(state)||realWybie(p,s)!=null);
     }
     private static boolean pauseForMissingActor(ServerPlayer p,VisitData.Scene s,FirstEscapeTimeline.Phase state){
         if(actorsReady(p,s,state)){
