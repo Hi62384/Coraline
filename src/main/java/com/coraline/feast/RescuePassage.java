@@ -159,7 +159,21 @@ public final class RescuePassage {
         var lookup=level.holderLookup(net.minecraft.core.registries.Registries.BLOCK);
         boolean changed=false;
         for(String key:new java.util.HashSet<>(cells.getAllKeys())){
-            var at=BlockPos.of(Long.parseLong(key));level.getChunkAt(at);
+            long packed;
+            try{packed=Long.parseLong(key);}catch(NumberFormatException invalid){
+                // Preserve malformed/unowned receipts, but never crash the
+                // cleanup loop or delete the other authentic passage rows.
+                n.putString("Blocker","Invalid saved passage cleanup cell reference.");
+                OtherMotherLoop.changed(p);
+                continue;
+            }
+            var at=BlockPos.of(packed);
+            if(level.isOutsideBuildHeight(at)||!level.getWorldBorder().isWithinBounds(at)){
+                n.putString("Blocker","Saved passage cleanup cell lies outside the original world.");
+                OtherMotherLoop.changed(p);
+                continue;
+            }
+            level.getChunkAt(at);
             var row=cells.getCompound(key);
             if(!row.contains("Placed",Tag.TAG_COMPOUND)||!row.contains("Original",Tag.TAG_COMPOUND)
                     ||level.getBlockEntity(at)!=null)continue;

@@ -159,7 +159,16 @@ public final class RescueWebSite {
     public static void sag(ServerPlayer p,VisitData.Scene s){
         if(!RescueChapter.owns(p,s)||p.tickCount%4!=0||p.serverLevel()!=p.server.getLevel(ActivityWorld.KEY))return;var n=RescueChapter.data(s);if(!n.getBoolean("WebReady"))return;var l=p.serverLevel();var cells=n.getCompound("WebCells");var lookup=l.holderLookup(net.minecraft.core.registries.Registries.BLOCK);
         boolean updated=false;
-        for(String key:cells.getAllKeys()){var at=BlockPos.of(Long.parseLong(key));if(!l.hasChunkAt(at))continue;
+        for(String key:cells.getAllKeys()){
+            long packed;
+            try{packed=Long.parseLong(key);}catch(NumberFormatException invalid){
+                // A damaged legacy web journal must not repeatedly crash the
+                // player tick; leave the bad receipt intact for recovery.
+                n.putString("Blocker","Invalid saved web cell reference.");
+                OtherMotherLoop.changed(p);
+                return;
+            }
+            var at=BlockPos.of(packed);if(!l.hasChunkAt(at))continue;
             var cell=cells.getCompound(key);var old=l.getBlockState(at);
             if(!old.is(ModBlocks.STORY_WEB.get())||!cell.contains("Placed",Tag.TAG_COMPOUND))continue;
             var saved=NbtUtils.readBlockState(lookup,cell.getCompound("Placed"));

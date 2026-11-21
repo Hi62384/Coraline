@@ -87,6 +87,16 @@ public final class StoryTunnel {
                 &&(!RescueChapter.started(scene)||RescueChapter.phase(scene).ordinal()<RescueChapter.Phase.LOCK_DOOR.ordinal());
     }
 
+    /** Only the physical web challenges use the original authored web for
+     * return-door recovery. The final crawl has its own separate journal. */
+    static boolean webReturnPhase(RescueChapter.Phase phase){
+        // FINAL_P/Q already take place in the web dimension. Returning
+        // these to the Other World room can corrupt their saved camera/actor
+        // stage even when the next tick tries to enter the web again.
+        return phase==RescueChapter.Phase.FINAL_P||phase==RescueChapter.Phase.FINAL_Q
+                ||phase.ordinal()>=RescueChapter.Phase.WEB_STEALTH.ordinal()
+                &&phase.ordinal()<=RescueChapter.Phase.HAND_FALL.ordinal();
+    }
     private static void resumeChapter(ServerPlayer p,VisitData.Scene scene){
         if(!resumable(scene)||!scene.owner.equals(p.getUUID())||!p.isAlive()||p.isPassenger()||p.isSpectator())return;
         var realm=RealmData.get(p.server).realms.get(scene.door);
@@ -140,17 +150,48 @@ public final class StoryTunnel {
                 var tent=MouseCircusSite.tent(p,scene);
                 if(tent==null)return;
                 landing=tent.south(4);
-            }else if(phase==RescueChapter.Phase.COLLAPSE&&RescueChapter.data(scene).contains("CollapseStart",Tag.TAG_LONG)){
+            }else if(phase==RescueChapter.Phase.COLLAPSE&&RescueEncounters.collapseCheckpointValid(RescueChapter.data(scene))){
                 landing=BlockPos.of(RescueChapter.data(scene).getLong("CollapseStart"));
             }else if(phase.ordinal()<=RescueChapter.Phase.MANTIS_GONE.ordinal()){
                 landing=RescueEncounters.garden(p,scene);
             }else if(phase==RescueChapter.Phase.TUNNEL_CHASE){
-                if(!RescuePassage.enter(p,scene))FirstEscapeStory.hint(p,"The saved escape passage is obstructed.");
+                var n=RescueChapter.data(scene);
+                // A saved PassageEntered bit belongs to the previous run,
+                // not this real-world door activation. Recheck the authored
+                // passage exactly once per new attempt, in bounded batches.
+                if(!n.getBoolean("StoryReturnCrawlPending")){
+                    n.putBoolean("StoryReturnCrawlPending",true);
+                    n.remove("PassageEntered");n.remove("PassageEntryRecheck");
+                    OtherMotherLoop.changed(p);
+                }
+                if(!RescuePassage.enter(p,scene)){
+                    FirstEscapeStory.hint(p,"Checking the original 52-block crawl before returning.");
+                    return;
+                }
+                n.remove("StoryReturnCrawlPending");
+                // The original player is now physically back at metre zero.
+                // Reset the saved voice/chase clock as one authenticated retry;
+                // otherwise a late prior pursuit timestamp can catch them
+                // immediately despite a successful 52-block entry check.
+                n.remove("Recover");
+                RescueChapter.go(p,scene,RescueChapter.Phase.TUNNEL_CHASE);
+                OtherMotherLoop.changed(p);
                 return;
-            }else if(phase.ordinal()>=RescueChapter.Phase.WEB_STEALTH.ordinal()){
-                if(!RescueWebSite.prepare(p,scene))return;
+            }else if(webReturnPhase(phase)){
+                var n=RescueChapter.data(scene);
+                if(!n.getBoolean("StoryReturnWebPending")){
+                    n.putBoolean("StoryReturnWebPending",true);
+                    n.remove("WebVerified");n.putInt("WebVerify",0);
+                    OtherMotherLoop.changed(p);
+                }
+                if(!RescueWebSite.prepare(p,scene)){
+                    FirstEscapeStory.hint(p,"Checking the original web route before returning.");
+                    return;
+                }
                 level=p.server.getLevel(ActivityWorld.KEY);
-                landing=BlockPos.containing(RescueWebSite.at(p,scene,1,phase==RescueChapter.Phase.WEB_STEALTH?0:1)).above();
+                boolean atWebEntrance=phase==RescueChapter.Phase.FINAL_P||phase==RescueChapter.Phase.FINAL_Q
+                        ||phase==RescueChapter.Phase.WEB_STEALTH;
+                landing=BlockPos.containing(RescueWebSite.at(p,scene,1,atWebEntrance?0:1)).above();
             }else if(phase.ordinal()>=RescueChapter.Phase.HOUSE_SAFE.ordinal()){
                 landing=FirstEscapeScene.room(scene);
             }
@@ -160,7 +201,14 @@ public final class StoryTunnel {
             return;
         }
         ParentRescueStory.data(scene).putBoolean("Recover",true);
-        if(RescueChapter.started(scene)&&RescueBosses.fighting(RescueChapter.phase(scene)))RescueChapter.data(scene).putBoolean("Recover",true);
+        if(RescueChapter.started(scene)){
+            var n=RescueChapter.data(scene);
+            n.remove("StoryReturnWebPending");n.remove("StoryReturnCrawlPending");
+            // A successful return to an interrupted web checkpoint must
+            // re-stage its original actors and safe challenge positions.
+            if(webReturnPhase(RescueChapter.phase(scene))||RescueBosses.fighting(RescueChapter.phase(scene)))
+                n.putBoolean("Recover",true);
+        }
         OtherMotherLoop.changed(p);
     }
 
@@ -179,11 +227,25 @@ public final class StoryTunnel {
         var source=DoorData.get(player.server).doors.get(scene.door);
         if(source==null||!scene.owner.equals(source.owner)||FamilyData.level(player.server,source.dimension)!=player.level()
                 ||player.distanceToSqr(source.pos.getCenter())>36){
+            if(RescueChapter.started(scene)){
+                var n=RescueChapter.data(scene);
+                if(n.getBoolean("StoryReturnWebPending")||n.getBoolean("StoryReturnCrawlPending")){
+                    n.remove("StoryReturnWebPending");n.remove("StoryReturnCrawlPending");
+                    OtherMotherLoop.changed(player);
+                }
+            }
             if(flags.getBoolean("CoralineAutoCrawl")&&player.getForcedPose()==Pose.SWIMMING)player.setForcedPose(null);
             flags.remove("CoralineAutoCrawl");
             return;
         }
         refreshPortal(player,scene,source);
+        if(RescueChapter.started(scene)){
+            var n=RescueChapter.data(scene);
+            if(n.getBoolean("StoryReturnWebPending")||n.getBoolean("StoryReturnCrawlPending")){
+                if(player.tickCount%5==0)resumeChapter(player,scene);
+                return;
+            }
+        }
         TunnelPassage.tick(player);
     }
 

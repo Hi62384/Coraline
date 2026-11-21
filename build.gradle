@@ -292,7 +292,10 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 // Opt-in regression worlds are excluded from release jars.
 if (project.hasProperty('gameTests')) {
     if (project.hasProperty('visitGiftTests')) { sourceSets.main.java.srcDir 'src/visittest/java'; sourceSets.main.java.srcDir 'src/gametest/java/com/coraline/welcome' }
-    sourceSets.main.java.srcDir project.hasProperty('wybieVisitTests') ? 'src/wybietest/java' : project.hasProperty('secretsTests') ? 'src/activitytest/java/com/coraline/secrets' : project.hasProperty('activityFixTests') ? 'src/activitytest/java' : project.hasProperty('welcomeTests') ? 'src/gametest/java/com/coraline/welcome' : project.hasProperty('familyResetTests') ? 'src/gametest/java/com/coraline/reset' : project.hasProperty('clothingTests') ? 'src/gametest/java/com/coraline/clothing' : 'src/gametest/java'
+    // Narrow story-route acceptance to its dedicated native GameTests; the
+    // broader existing suite is audited separately and may fail for unrelated
+    // gameplay systems. Production and ordinary gameTests builds are unchanged.
+    sourceSets.main.java.srcDir project.hasProperty('wybieVisitTests') ? 'src/wybietest/java' : project.hasProperty('storySoftlockTests') ? 'src/gametest/java/com/coraline/feast' : project.hasProperty('secretsTests') ? 'src/activitytest/java/com/coraline/secrets' : project.hasProperty('activityFixTests') ? 'src/activitytest/java' : project.hasProperty('welcomeTests') ? 'src/gametest/java/com/coraline/welcome' : project.hasProperty('familyResetTests') ? 'src/gametest/java/com/coraline/reset' : project.hasProperty('clothingTests') ? 'src/gametest/java/com/coraline/clothing' : 'src/gametest/java'
     sourceSets.main.resources.srcDir 'src/gametest/resources'
     if (project.hasProperty('parentTests')) sourceSets.main.java.srcDir 'src/gametest/java/com/coraline/parents'
     if (project.hasProperty('wybieTestClass')) sourceSets.main.java.exclude { element ->
@@ -792,6 +795,12 @@ if (project.hasProperty('qaCodeOnlyResources')) {
         'importVisitEventAudio','importNumberedOriginalAudio','importBlackIsTraditionalAudio',
         'importFirstEscapeAudio','importMissingParentsTeaAudio','importMissingParentsMusic',
         'importRescueChaptersAudio','importIncidentalDialogueAudio','importAcceptedGhostAudio',
+        // These remaining master-audio importers also run on a normal
+        // processResources task. QA must use pinned, committed runtime OGGs;
+        // an absent or changed source master cannot block a native GameTest.
+        'importGhostVictimAudio','importOtherFatherBossMusic','importLongFaceMusic',
+        'importTheCatMusic','importRescueArrivalMusic','importGameProposalMusic',
+        'importSpinkBossMusic','importGhostEyeMusic',
         'buildStorySubtitles'
     ] }.configureEach { enabled = false }
     gradle.taskGraph.whenReady { graph ->

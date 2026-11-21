@@ -130,7 +130,7 @@ public final class FirstVisitGameTests {
         // Missing-item fixtures subtract grace periods from game time; negative values mean "not started".
         level.getServer().getWorldData().overworldData().setGameTime(Math.max(100000,level.getGameTime()));
     }
-    @GameTest(template="empty",batch="realm_story") public static void welcomeSequenceReleasesPlayerAndClosesPortal(GameTestHelper h){
+    @GameTest(template="empty",batch="realm_story",timeoutTicks=180) public static void welcomeSequenceReleasesPlayerAndClosesPortal(GameTestHelper h){
         var server=h.getLevel().getServer();var level=server.getLevel(OtherWorld.KEY);
         var p=new net.minecraftforge.common.util.FakePlayer(level,new com.mojang.authlib.GameProfile(UUID.randomUUID(),"StoryFlow"));p.tickCount=1;
         var door=new DoorData.Door();door.owner=p.getUUID();door.pos=h.absolutePos(new BlockPos(7,1,7));door.placed=true;door.activeUntil=999999;DoorData.get(server).doors.put(door.id,door);
@@ -144,7 +144,11 @@ public final class FirstVisitGameTests {
         h.runAfterDelay(40,()->{
         var actors=new java.util.ArrayList<com.coraline.parents.ParentEntity>();
         for(boolean mom:new boolean[]{true,false}){var actor=(mom?ModEntities.MOM:ModEntities.DAD).get().create(level);actor.makeOtherParent(0);actor.setNoGravity(true);actor.setPos(r.doorPos.getX()+.5,r.doorPos.getY(),r.doorPos.getZ()+.5);level.getChunkAt(actor.blockPosition());h.assertTrue(level.addFreshEntity(actor),"Fixture actor rejected");actors.add(actor);if(mom){s.mom=actor.getUUID();family.mom=actor.getUUID();}else{s.dad=actor.getUUID();family.dad=actor.getUUID();}}
-        h.runAfterDelay(10,()->{
+        // Native non-GameTest-dimension entities may only join the live UUID
+        // index after their real cross-chunk entity manager has ticked.
+        h.runAfterDelay(32,()->{
+        LoopProps.hold(level,r.doorPos);
+        for(var actor:actors)level.getChunkAt(actor.blockPosition());
         h.assertTrue(level.getBlockState(r.bed).getBlock() instanceof BedBlock,"Fixture bed missing");
         h.assertTrue(level.getEntity(s.mom)!=null&&level.getEntity(s.dad)!=null,"Fixture parents not loaded: "+actors.stream().map(a->a.blockPosition()+" removed="+a.getRemovalReason()+" alive="+a.isAlive()).toList());
         FirstVisit.start(p,s,MOTHER_INTRO);s.elapsed=VisitAudio.length("other_mother_intro")-1;FirstVisit.tick(tick);h.assertTrue(s.stage==FIND_FATHER,"Mother intro transition failed: "+s.stage);
@@ -156,8 +160,22 @@ public final class FirstVisitGameTests {
         // The live scene also reasserts seating every second; exercise that recovery
         // path so this concurrent suite is not sensitive to a delayed entity add.
         p.tickCount=20;FirstVisit.tick(tick);
+        // Newly added entities in a freshly forced cross-chunk GameTest
+        // template may not enter the live lookup until the next world tick.
+        // Exercise the REAL periodic recovery once more after chunk/entity
+        // registration, rather than asserting on the same server tick.
+        h.runAfterDelay(8,()->{
+        p.tickCount=40;FirstVisit.tick(tick);
         var chairs=level.getEntitiesOfClass(ScenePropEntity.class,new net.minecraft.world.phys.AABB(s.table).inflate(5),e->s.owner.equals(e.owner)&&e.kind()==ScenePropEntity.CHAIR);
-        h.assertTrue(chairs.size()==3,"Supper needs three chairs");
+        // The production supper table now seats the player, both parents,
+        // and six additional guests. Check every actual seat instead of
+        // enforcing the obsolete three-chair fixture from the old version.
+        h.assertTrue(chairs.size()==9,"Supper needs all nine chairs; found "+chairs.size());
+        for(int slot=0;slot<9;slot++){
+            final int wanted=slot;
+            h.assertTrue(chairs.stream().filter(e->e.slot==wanted).count()==1,
+                "Supper chair slot "+slot+" is missing or duplicated");
+        }
         var chair=chairs.stream().filter(e->e.slot==0).findFirst().orElseThrow();p.setYRot(42);p.setXRot(-15);
         var result=chair.interactAt(p,new net.minecraft.world.phys.Vec3(0,1.65,-.38),InteractionHand.MAIN_HAND);
         h.assertTrue(result.consumesAction()&&s.stage==SUPPER&&p.getVehicle()==chair,"First backrest click did not immediately start supper");
@@ -169,6 +187,7 @@ public final class FirstVisitGameTests {
         var cake=level.getEntitiesOfClass(ScenePropEntity.class,new net.minecraft.world.phys.AABB(s.table).inflate(5),e->s.owner.equals(e.owner)&&e.kind()==ScenePropEntity.CAKE).get(0);cake.interact(p,InteractionHand.MAIN_HAND);h.assertTrue(s.cakeTaken&&p.getInventory().countItem(ModItems.WELCOME_CAKE.get())==1,"Cake gift failed");
         s.elapsed=VisitAudio.length("other_parents_waiting")-1;FirstVisit.tick(tick);h.assertTrue(s.stage==BED&&!p.isPassenger(),"Bedtime did not release chair");
         FirstVisit.slept(p);h.assertTrue(s.stage==DONE&&!FirstVisit.locked(p)&&door.activeUntil==0,"Sleep did not finish visit and close portal");level.setChunkForced(forced.x,forced.z,false);h.succeed();
+        });
         });
         });
     }

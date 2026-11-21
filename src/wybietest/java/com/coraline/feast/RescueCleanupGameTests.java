@@ -20,7 +20,7 @@ public final class RescueCleanupGameTests {
             RescueSiteCleanup.tick(player,scene);helper.assertTrue(web.size()+passage.size()==120,"Cleanup began before the physical real-world exit");
             data.putBoolean("CrawlReachedOverworld",true);RescueSiteCleanup.tick(player,scene);helper.assertTrue(web.size()+passage.size()==24,"Cleanup exceeded or ignored its 96-cell tick budget");
             var saved=new VisitData.Scene();saved.owner=scene.owner;saved.door=scene.door;saved.loop=OtherMotherLoopState.load(scene.loop.save());
-            RescueSiteCleanup.tick(player,saved);helper.assertFalse(RescueChapter.data(saved).contains("WebCells")||RescueChapter.data(saved).contains("PassageCells"),"Reloaded cleanup did not finish its remaining journal");
+            RescueSiteCleanup.tick(player,saved);helper.assertFalse(RescueChapter.data(saved).contains("WebCells"),"The 119 truly owned cells were not retired");helper.assertTrue(RescueChapter.data(saved).getCompound("PassageCells").size()==1&&RescueChapter.data(saved).getCompound("PassageCells").contains(Long.toString(changed.asLong())),"The foreign-edited cell must keep its unresolved original-owner receipt");
             helper.assertTrue(level.getBlockState(changed).is(Blocks.GOLD_BLOCK),"Cleanup replaced a foreign edit");
             for(int index=0;index<119;index++)helper.assertTrue(level.isEmptyBlock(origin.offset(index%15,0,index/15)),"Temporary block survived journal retirement");
             helper.assertFalse(RescueChapter.data(saved).getBoolean("WebReady")||RescueChapter.data(saved).getBoolean("PassageReady"),"Retired sites stayed eligible for re-entry");

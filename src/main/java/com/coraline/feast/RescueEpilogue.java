@@ -403,11 +403,24 @@ public final class RescueEpilogue {
             return false;
         }
         if(!originalOverworld||!finiteOriginal)n.putBoolean("VisionReturnUsedDoorFallback",true);
-        p.teleportTo(l,target.x,target.y,target.z,saved.getFloat("Yaw"),saved.getFloat("Pitch"));
+        var yaw=Float.isFinite(saved.getFloat("Yaw"))?saved.getFloat("Yaw"):p.getYRot();
+        var pitch=Float.isFinite(saved.getFloat("Pitch"))?saved.getFloat("Pitch"):p.getXRot();
+        p.teleportTo(l,target.x,target.y,target.z,yaw,pitch);
         if(p.serverLevel()!=l||p.position().distanceToSqr(target)>.25||!safeReturn(l,p,pose,p.position())){
             n.putString("Blocker","Your saved return is still being prepared. Your dream state is preserved and will retry safely.");OtherMotherLoop.changed(p);return false;
         }
-        p.setInvulnerable(saved.getBoolean("Invulnerable"));p.setNoGravity(saved.getBoolean("NoGravity"));p.setHealth(Math.min(p.getMaxHealth(),saved.getFloat("Health")));p.getFoodData().setFoodLevel(saved.getInt("Food"));p.getFoodData().setSaturation(saved.getFloat("Saturation"));p.setForcedPose(null);if(saved.contains("ForcedPose"))try{p.setForcedPose(Pose.valueOf(saved.getString("ForcedPose")));}catch(IllegalArgumentException ignored){}p.setPose(pose);p.fallDistance=0;p.setDeltaMovement(Vec3.ZERO);
+        boolean healthSaved=saved.contains("Health",Tag.TAG_ANY_NUMERIC);
+        double rawFood=saved.getDouble("Food");
+        boolean foodSaved=saved.contains("Food",Tag.TAG_ANY_NUMERIC);
+        boolean saturationSaved=saved.contains("Saturation",Tag.TAG_ANY_NUMERIC);
+        float savedHealth=saved.getFloat("Health");
+        if(!healthSaved||!Float.isFinite(savedHealth)||savedHealth<=0)
+            n.putBoolean("VisionReturnUsedVitalsFallback",true);
+        float health=RescueVisionRules.restoredHealth(healthSaved,savedHealth,p.getHealth(),p.getMaxHealth());
+        int food=RescueVisionRules.restoredFood(foodSaved,rawFood,p.getFoodData().getFoodLevel());
+        float saturation=RescueVisionRules.restoredSaturation(saturationSaved,saved.getFloat("Saturation"),p.getFoodData().getSaturationLevel(),food);
+        p.setInvulnerable(saved.getBoolean("Invulnerable"));p.setNoGravity(saved.getBoolean("NoGravity"));
+        p.setHealth(health);p.getFoodData().setFoodLevel(food);p.getFoodData().setSaturation(saturation);p.setForcedPose(null);if(saved.contains("ForcedPose"))try{p.setForcedPose(Pose.valueOf(saved.getString("ForcedPose")));}catch(IllegalArgumentException ignored){}p.setPose(pose);p.fallDistance=0;p.setDeltaMovement(Vec3.ZERO);
         n.putBoolean("VisionLandingPending",true);
         OtherMotherLoop.changed(p);
         return verifyVisionLanding(p,n);

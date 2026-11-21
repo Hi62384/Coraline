@@ -215,6 +215,7 @@ public final class RescueChapter {
             return;
         }
         if(state==Phase.COLLAPSE){
+            if(RescueEncounters.restoreIncompleteCollapse(p,s))return;
             var level=p.server.getLevel(OtherWorld.KEY);
             if(p.serverLevel()!=level&&!transfer(p,level,BlockPos.of(data(s).getLong("CollapseStart"))))data(s).putBoolean("Recover",true);
             return;

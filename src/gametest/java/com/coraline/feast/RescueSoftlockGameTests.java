@@ -9,6 +9,90 @@ import net.minecraftforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public final class RescueSoftlockGameTests {
     @GameTest(template="empty", batch="story_softlocks")
+    public static void invalidEscapeRoomCleanupJournalCannotCrashOrEraseUnownedBlocks(GameTestHelper helper) {
+        var level=helper.getLevel();
+        helper.assertTrue(level.getServer().getLevel(com.coraline.otherworld.OtherWorld.KEY)!=null,
+            "The original Other World must exist for the escape cleanup test");
+        var player=new net.minecraftforge.common.util.FakePlayer(level,
+            new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(),"EscapeRoomQA"));
+        var scene=new VisitData.Scene();
+        scene.owner=player.getUUID();
+        scene.door=java.util.UUID.randomUUID();
+        var saved=FirstEscapeStory.data(scene);
+        var journal=new net.minecraft.nbt.CompoundTag();
+        journal.put("malformed-escaped-room-position",new net.minecraft.nbt.CompoundTag());
+        journal.put(Long.toString(new net.minecraft.core.BlockPos(0,-512,0).asLong()),
+            new net.minecraft.nbt.CompoundTag());
+        saved.put("Environment",journal);
+        FirstEscapeScene.restore(player,scene);
+        helper.assertTrue(journal.size()==2,
+            "Malformed or unowned cleanup records must remain unresolved, not be deleted");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void malformedCollapseCheckpointRestartsTheRealExteriorObjective(GameTestHelper helper) {
+        var saved=new net.minecraft.nbt.CompoundTag();
+        helper.assertFalse(RescueEncounters.collapseCheckpointValid(saved),
+            "A saved phase marker without physical collapse data cannot retry");
+        saved.putLong("CollapseStart",new net.minecraft.core.BlockPos(30,74,40).asLong());
+        helper.assertFalse(RescueEncounters.collapseCheckpointValid(saved),
+            "A collapse position alone cannot substitute for its clock and radius");
+        saved.putInt("CollapseDuration",1500);
+        helper.assertFalse(RescueEncounters.collapseCheckpointValid(saved),
+            "A missing initial collapse radius must not cause an instant defeat loop");
+        saved.putDouble("CollapseInitialRadius",Double.NaN);
+        helper.assertFalse(RescueEncounters.collapseCheckpointValid(saved),
+            "An invalid saved radius cannot reach the collapse retry");
+        saved.putDouble("CollapseInitialRadius",180);
+        helper.assertTrue(RescueEncounters.collapseCheckpointValid(saved),
+            "The original fully committed exterior checkpoint must remain valid");
+        saved.putInt("CollapseDuration",0);
+        helper.assertFalse(RescueEncounters.collapseCheckpointValid(saved),
+            "A zero-duration collapse must roll back to the real exterior gate");
+        saved.putInt("CollapseDuration",1500);
+        saved.putLong("CollapseStart",0);
+        helper.assertFalse(RescueEncounters.collapseCheckpointValid(saved),
+            "An absent/default origin must not teleport the owner to (0,0,0)");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void interruptedWybieShoeMissKeepsSameActorAndNeverAutoCompletes(GameTestHelper helper) {
+        helper.assertTrue(FirstEscapeTimeline.after(FirstEscapeTimeline.Phase.THROW_SHOE)==null,
+            "The shoe scene must never time-advance after an ordinary miss");
+        var level=helper.getLevel();
+        var player=new net.minecraftforge.common.util.FakePlayer(level,
+            new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(),"ShoeMissQA"));
+        var scene=new VisitData.Scene();
+        scene.owner=player.getUUID();
+        scene.door=java.util.UUID.randomUUID();
+        scene.loop.event.putInt("Serial",731);
+        var saved=FirstEscapeStory.data(scene);
+        saved.putBoolean("Started",true);
+        saved.putString("Phase",FirstEscapeTimeline.Phase.THROW_SHOE.name());
+        var shoe=CinematicPropEntity.TYPE.get().create(level);
+        helper.assertTrue(shoe!=null,"The original shoe entity type is missing");
+        shoe.configure(scene,CinematicPropEntity.STORY_SHOE,0);
+        shoe.setPos(helper.absolutePos(new net.minecraft.core.BlockPos(1,2,1)).getCenter());
+        shoe.frame(1,0,0); // Physical miss survived; retry flag did not.
+        helper.assertTrue(level.addFreshEntity(shoe),"Could not create original saved shoe");
+        saved.putUUID("ShoeFlight",shoe.getUUID());
+        saved.putLong("ShoeFlightPosition",shoe.blockPosition().asLong());
+        VisitData.get(level.getServer()).scenes.put(scene.owner,scene);
+        FirstEscapeStory.shoe(player,scene);
+        helper.assertTrue(saved.getBoolean("ShoeMissed"),
+            "A partially saved missed shoe must re-enable the player's Use retry");
+        helper.assertTrue(FirstEscapeStory.phase(scene)==FirstEscapeTimeline.Phase.THROW_SHOE,
+            "A missed shoe incorrectly advanced Wybie's scene");
+        helper.assertTrue(shoe.isAlive()&&shoe.cue()==1&&shoe.getUUID().equals(saved.getUUID("ShoeFlight")),
+            "Retry recovery must retain the same canonical projectile and identity");
+        shoe.discard();
+        VisitData.get(level.getServer()).scenes.remove(scene.owner);
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
     public static void ratEyeCannotBeClaimedBeforeReturnFromCircus(GameTestHelper helper) {
         helper.assertFalse(RescueEncounters.canClaimRatEye(0), "A rat still in the circus cannot award the final eye");
         helper.assertFalse(RescueEncounters.canClaimRatEye(1), "A rat whose owner has not returned to the attic cannot award the final eye");
@@ -335,6 +419,81 @@ public final class RescueSoftlockGameTests {
             "A new web retry must recheck its physically placed blocks");
         helper.assertFalse(RescueWebSite.webVerificationRequired(true,true,999),
             "Verified intact web receipts should not be rebuilt every tick");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void littleDoorReentryUsesTheRealFinaleDimensionAndFreshReceipts(GameTestHelper helper) {
+        for(var state:RescueChapter.Phase.values()) {
+            boolean web=state==RescueChapter.Phase.FINAL_P||state==RescueChapter.Phase.FINAL_Q
+                    ||state.ordinal()>=RescueChapter.Phase.WEB_STEALTH.ordinal()
+                    &&state.ordinal()<=RescueChapter.Phase.HAND_FALL.ordinal();
+            helper.assertTrue(StoryTunnel.webReturnPhase(state)==web,
+                "Return through original Little Door chose wrong world at "+state);
+        }
+        helper.assertTrue(StoryTunnel.webReturnPhase(RescueChapter.Phase.DOOR_STRUGGLE),
+                "Interrupted door struggle must not bypass the verified web");
+        helper.assertFalse(StoryTunnel.webReturnPhase(RescueChapter.Phase.TUNNEL_CHASE),
+                "Final 52-block crawl must use its own verification journal");
+        helper.assertFalse(StoryTunnel.webReturnPhase(RescueChapter.Phase.FINAL_O),
+                "The stage-floor collapse still starts in the original Other World");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void postBossDreamCannotRestoreDeathOrInvalidVitals(GameTestHelper helper) {
+        helper.assertTrue(RescueVisionRules.restoredHealth(true,13,20,20)==13,
+            "Valid saved health was changed on wake-up");
+        helper.assertTrue(RescueVisionRules.restoredHealth(true,0,12,20)==12,
+            "Corrupted zero health would kill the player during the farewell");
+        helper.assertTrue(RescueVisionRules.restoredHealth(true,Float.NaN,8,20)==8,
+            "NaN health would corrupt player data on dream return");
+        helper.assertTrue(RescueVisionRules.restoredHealth(false,0,0,20)==1,
+            "Missing saved health and invalid current health must not cause death");
+        helper.assertTrue(RescueVisionRules.restoredHealth(true,300,4,20)==20,
+            "Excess saved health must respect the player's maximum");
+        helper.assertTrue(RescueVisionRules.restoredFood(true,9,20)==9,
+            "Normal original hunger did not survive the dream");
+        helper.assertTrue(RescueVisionRules.restoredFood(false,0,14)==14,
+            "Missing saved hunger should preserve current survival state");
+        helper.assertTrue(RescueVisionRules.restoredFood(true,Double.NaN,14)==14,
+            "Non-finite saved hunger must not be read as zero");
+        helper.assertTrue(RescueVisionRules.restoredFood(true,9.5,14)==14,
+            "Fractional saved hunger must not be truncated into a fake value");
+        helper.assertTrue(RescueVisionRules.restoredSaturation(true,3,8,9)==3,
+            "Normal original saturation did not survive the dream");
+        helper.assertTrue(RescueVisionRules.restoredSaturation(true,Float.NaN,3,9)==3,
+            "Corrupt saved saturation must not reach player data");
+        helper.assertTrue(RescueVisionRules.restoredSaturation(true,50,3,9)==9,
+            "Saved saturation must not exceed food capacity");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void entireOriginalStoryRouteHasPlayableMeasuredVoiceRecordings(GameTestHelper helper) {
+        var required=new java.util.LinkedHashSet<String>();
+        for(var phase:FirstEscapeTimeline.Phase.values()) {
+            String sound=FirstEscapeTimeline.sound(phase);
+            if(!sound.isEmpty())required.add(sound);
+        }
+        for(var phase:MissingParentsTea.Phase.values()) {
+            String sound=MissingParentsTea.sound(phase);
+            if(!sound.isEmpty())required.add(sound);
+        }
+        for(var phase:MissingParentsCat.Phase.values()) {
+            String sound=MissingParentsCat.voice(phase);
+            if(!sound.isEmpty())required.add(sound);
+        }
+        for(char c='a';c<='n';c++)required.add("parent_rescue_"+c);
+        for(var phase:RescueChapter.Phase.values()) {
+            String sound=RescueChapter.sound(phase);
+            if(!sound.isEmpty())required.add(sound);
+        }
+        helper.assertTrue(required.size()==88,
+            "The story-route voice set changed without updating full-path acceptance: "+required.size());
+        for(String sound:required)
+            helper.assertTrue(ShowRecordings.duration(sound)>0,
+                "Original route voice unavailable or invalid at runtime: "+sound);
         helper.succeed();
     }
 }

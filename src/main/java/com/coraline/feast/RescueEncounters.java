@@ -15,6 +15,27 @@ import net.minecraft.world.level.block.*;
 /** Rescue encounters using the existing owner-allocated venues and canonical cast leases. */
 public final class RescueEncounters {
     public static BlockPos house(VisitData.Scene s){return BlockPos.of(ParentRescueStory.scenery(s).getLong("House"));}
+    /** An interrupted collapse may save the phase without its original
+     * physically reached start and timing. Requiring all three prevents a
+     * phantom (0,0,0) respawn or an endless zero-duration death loop. */
+    static boolean collapseCheckpointValid(CompoundTag n){
+        double radius=n.getDouble("CollapseInitialRadius");
+        return n.contains("CollapseStart",Tag.TAG_LONG)&&n.getLong("CollapseStart")!=0L
+                &&n.getInt("CollapseDuration")>0&&Double.isFinite(radius)&&radius>48;
+    }
+    static boolean restoreIncompleteCollapse(ServerPlayer p,VisitData.Scene s){
+        var n=RescueChapter.data(s);
+        if(collapseCheckpointValid(n))return false;
+        // Replay the REAL exterior objective. Never grant an eye, Cat rescue,
+        // exit receipt or boss completion in lieu of the missing proof.
+        RescueChapter.go(p,s,EXTERIOR);
+        n.putBoolean("CatRescued",false);
+        n.remove("CatCollapsePlaced");n.remove("CatCollapsePosition");
+        n.remove("HouseSafe");
+        n.putString("Blocker","The collapse checkpoint was incomplete. Go outside to restart the escape.");
+        OtherMotherLoop.changed(p);
+        return true;
+    }
     public static BlockPos garden(ServerPlayer p,VisitData.Scene s){var n=RescueChapter.data(s);if(n.contains("Garden"))return BlockPos.of(n.getLong("Garden"));var at=OtherWorldEstate.rescueGarden(house(s));var l=p.server.getLevel(OtherWorld.KEY);if(l!=null){l.getChunkAt(at);var safe=OtherWorld.safePlayer(l,at);if(safe!=null)at=safe;}n.putLong("Garden",at.asLong());return at;}
     static Vec3 center(ServerPlayer p,VisitData.Scene s){return Vec3.atBottomCenterOf(switch(RescueChapter.phase(s)){case THEATRE_SEARCH,WRAPPER_REACH,THEATRE_GRAB,THEATRE_FIGHT,THEATRE_EYE->TheatreSite.center(p,s).north(28).above();case BOB_E,SWARM_TRANSFORM,SWARM_FIGHT->MouseCircusSite.center(p,s);default->garden(p,s);});}
     static boolean seeing(ServerPlayer p){var s=OtherMotherLoop.scene(p);return s!=null&&p.isUsingItem()&&p.getUseItem().is(com.coraline.registry.ModItems.SEEING_STONE.get());}
@@ -283,6 +304,7 @@ public final class RescueEncounters {
         }return new Vec3(node.getX()+.5,top,node.getZ()+.5);
     }
     private static void collapse(ServerPlayer p,VisitData.Scene s,int t){
+        if(restoreIncompleteCollapse(p,s))return;
         var n=RescueChapter.data(s);
         var level=p.server.getLevel(OtherWorld.KEY);
         if(level==null||p.serverLevel()!=level)return;
@@ -419,7 +441,7 @@ public final class RescueEncounters {
                 p.server.overworld().getDataStorage().save();
             }
             resetRatSegment(p,s);
-        }else if(state==COLLAPSE){FirstEscapeStory.hint(p,"The Other World swallowed you. Retry the escape.");if(!RescueChapter.transfer(p,p.server.getLevel(OtherWorld.KEY),BlockPos.of(n.getLong("CollapseStart"))))return;n.putBoolean("CatRescued",false);n.putInt("CollapseElapsed",0);n.remove("CatCollapsePlaced");n.remove("CatCollapsePosition");n.remove("CatMantel");RescueChapter.go(p,s,COLLAPSE);}
+        }else if(state==COLLAPSE){if(restoreIncompleteCollapse(p,s))return;FirstEscapeStory.hint(p,"The Other World swallowed you. Retry the escape.");if(!RescueChapter.transfer(p,p.server.getLevel(OtherWorld.KEY),BlockPos.of(n.getLong("CollapseStart"))))return;n.putBoolean("CatRescued",false);n.putInt("CollapseElapsed",0);n.remove("CatCollapsePlaced");n.remove("CatCollapsePosition");n.remove("CatMantel");RescueChapter.go(p,s,COLLAPSE);}
         else RescueBosses.retry(p,s,"Retrying this challenge.");
     }
     private static void clearRatPath(CompoundTag n){

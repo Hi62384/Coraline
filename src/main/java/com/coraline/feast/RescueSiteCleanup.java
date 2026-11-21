@@ -11,6 +11,15 @@ public final class RescueSiteCleanup {
         if(!RescueChapter.owns(player,scene))return;
         var data=RescueChapter.data(scene);
         if(!data.getBoolean("CrawlReachedOverworld")||player.serverLevel()==player.server.getLevel(ActivityWorld.KEY))return;
+        // Physical exit is already confirmed. Retire eligibility immediately,
+        // even if an unrelated edited block prevents journal cleanup. Keep
+        // unresolved receipts for safe future retry; never rebuild the arena.
+        if(data.getBoolean("WebReady")||data.getBoolean("PassageReady")
+                ||data.getBoolean("WebVerified")||data.getBoolean("PassageVerified")){
+            data.remove("WebReady");data.remove("PassageReady");
+            data.remove("WebVerified");data.remove("PassageVerified");
+            OtherMotherLoop.changed(player);
+        }
         int remaining=96;
         remaining=drain(player,scene,"WebCells",remaining);
         drain(player,scene,"PassageCells",remaining);
@@ -35,7 +44,19 @@ public final class RescueSiteCleanup {
         data.putInt(key+"CleanupOffset",(offset+work.size())%Math.max(1,total));
         boolean changed=false;
         for(String position:work){
-            var at=BlockPos.of(Long.parseLong(position));level.getChunkAt(at);
+            long packed;
+            try{packed=Long.parseLong(position);}catch(NumberFormatException invalid){
+                // Corrupted/legacy saved receipts must never take down the
+                // post-boss cleanup tick. Preserve their unresolved custody.
+                if(!data.getString("Blocker").equals("Invalid saved rescue cleanup receipt.")){
+                    data.putString("Blocker","Invalid saved rescue cleanup receipt.");
+                    OtherMotherLoop.changed(player);
+                }
+                continue;
+            }
+            var at=BlockPos.of(packed);
+            if(level.isOutsideBuildHeight(at)||!level.getWorldBorder().isWithinBounds(at))continue;
+            level.getChunkAt(at);
             var entry=cells.getCompound(position);
             if(!entry.contains("Placed",net.minecraft.nbt.Tag.TAG_COMPOUND)
                     ||!entry.contains("Original",net.minecraft.nbt.Tag.TAG_COMPOUND)

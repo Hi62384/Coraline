@@ -9,6 +9,135 @@ ASSETS=ROOT/'src/main/resources/assets/coraline'
 def source(name):return (JAVA/name).read_text(encoding='utf-8-sig')
 
 class CurrentStoryRepairs(unittest.TestCase):
+    def test_saved_supper_table_reconciles_missing_seats_and_live_entity_ticks(self):
+        visit=source('feast/FirstVisit.java')
+        table=visit.split('static void table(ServerPlayer p,VisitData.Scene s)',1)[1].split('static void ensureChairs(',1)[0]
+        self.assertIn('if(existingTable!=null){',table)
+        self.assertIn('existingTable.longDining(true);',table)
+        self.assertIn('ensureChairs(p,s);',table)
+        self.assertLess(table.index('existingTable.longDining(true);'),table.index('ensureChairs(p,s);'))
+        native=(ROOT/'src/gametest/java/com/coraline/feast/FirstVisitGameTests.java').read_text()
+        self.assertIn('h.runAfterDelay(8,()->{',native)
+        self.assertIn('p.tickCount=40;FirstVisit.tick(tick);',native)
+        self.assertIn('Supper needs all nine chairs',native)
+
+    def test_first_escape_environment_restoration_rejects_corrupt_journal_rows(self):
+        room=source('feast/FirstEscapeScene.java')
+        cleanup=room.split('public static void restore(ServerPlayer p,VisitData.Scene s)',1)[1].split('private FirstEscapeScene()',1)[0]
+        self.assertIn('try{packed=Long.parseLong(key);}',cleanup)
+        self.assertIn('catch(NumberFormatException invalid)',cleanup)
+        self.assertIn('l.isOutsideBuildHeight(at)',cleanup)
+        self.assertIn('!l.getWorldBorder().isWithinBounds(at)',cleanup)
+        self.assertIn('!cell.contains("Original",Tag.TAG_COMPOUND)',cleanup)
+        self.assertIn('!cell.contains("Placed",Tag.TAG_COMPOUND)',cleanup)
+        self.assertIn('l.getBlockState(at).equals(placed)',cleanup)
+        self.assertIn('l.getBlockEntity(at)==null',cleanup)
+        native=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('invalidEscapeRoomCleanupJournalCannotCrashOrEraseUnownedBlocks',native)
+
+    def test_partial_collapse_checkpoint_must_restart_the_real_exterior_gate(self):
+        encounter=source('feast/RescueEncounters.java')
+        validation=encounter.split('static boolean collapseCheckpointValid(CompoundTag n)',1)[1].split('static boolean restoreIncompleteCollapse(',1)[0]
+        self.assertIn('n.contains("CollapseStart",Tag.TAG_LONG)',validation)
+        self.assertIn('n.getLong("CollapseStart")!=0L',validation)
+        self.assertIn('n.getInt("CollapseDuration")>0',validation)
+        self.assertIn('Double.isFinite(radius)',validation)
+        rollback=encounter.split('static boolean restoreIncompleteCollapse(',1)[1].split('public static BlockPos garden(',1)[0]
+        self.assertIn('RescueChapter.go(p,s,EXTERIOR)',rollback)
+        self.assertIn('n.putBoolean("CatRescued",false)',rollback)
+        self.assertIn('n.remove("HouseSafe")',rollback)
+        self.assertIn('if(restoreIncompleteCollapse(p,s))return;',encounter)
+        self.assertIn('if(RescueEncounters.restoreIncompleteCollapse(p,s))return;',source('feast/RescueChapter.java'))
+        self.assertIn('RescueEncounters.collapseCheckpointValid(RescueChapter.data(scene))',source('feast/StoryTunnel.java'))
+        native=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('malformedCollapseCheckpointRestartsTheRealExteriorObjective',native)
+
+    def test_interrupted_wybie_shoe_miss_recovers_saved_cue_without_an_automatic_hit(self):
+        story=source('feast/FirstEscapeStory.java')
+        shoe=story.split('static void shoe(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static void finishShoeThrow(',1)[0]
+        missed=shoe.split('if(e.cue()==1){',1)[1].split('if(e.time()>=80',1)[0]
+        self.assertIn('if(!n.getBoolean("ShoeMissed"))',missed)
+        self.assertIn('n.putBoolean("ShoeMissed",true)',missed)
+        self.assertNotIn('finishShoeThrow(p,s,e)',missed)
+        self.assertIn('if(n.hasUUID("ShoeFlight")){',shoe)
+        self.assertIn('if(n.contains("ShoeFlightPosition",Tag.TAG_LONG))',shoe)
+        lost=story.split('private static CinematicPropEntity recoverMissingShoe(',1)[1].split('private static boolean relaunchShoe(',1)[0]
+        self.assertNotIn('||!n.contains("ShoeFlightPosition",Tag.TAG_LONG)',lost)
+        self.assertIn('LoopProps.hold(p.server.overworld(),p.blockPosition())',lost)
+        self.assertLess(lost.index('LegacyActorRecovery.Result.ABSENT'),lost.index('recreated.setUUID(id)'))
+        timeline=source('feast/FirstEscapeTimeline.java')
+        self.assertIn('case MISSING_D->Phase.THROW_SHOE',timeline)
+        self.assertNotIn('case THROW_SHOE->',timeline)
+        gametests=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('interruptedWybieShoeMissKeepsSameActorAndNeverAutoCompletes',gametests)
+
+    def test_malformed_web_and_crawl_receipts_never_crash_cinematic_tick(self):
+        web=source('feast/RescueWebSite.java')
+        sag=web.split('public static void sag(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static void restore(',1)[0]
+        self.assertIn('try{packed=Long.parseLong(key);}',sag)
+        self.assertIn('catch(NumberFormatException invalid)',sag)
+        self.assertIn('Invalid saved web cell reference.',sag)
+        passage=source('feast/RescuePassage.java')
+        cleanup=passage.split('public static void restore(ServerPlayer p,VisitData.Scene s)',1)[1]
+        self.assertIn('try{packed=Long.parseLong(key);}',cleanup)
+        self.assertIn('catch(NumberFormatException invalid)',cleanup)
+        self.assertIn('Invalid saved passage cleanup cell reference.',cleanup)
+        self.assertIn('continue;',cleanup)
+        self.assertIn('level.isOutsideBuildHeight(at)',cleanup)
+        self.assertIn('!level.getWorldBorder().isWithinBounds(at)',cleanup)
+        postboss=source('feast/RescueSiteCleanup.java')
+        self.assertIn('try{packed=Long.parseLong(position);}',postboss)
+        self.assertIn('catch(NumberFormatException invalid)',postboss)
+        self.assertIn('Invalid saved rescue cleanup receipt.',postboss)
+        self.assertIn('if(level.isOutsideBuildHeight(at)||!level.getWorldBorder().isWithinBounds(at))continue',postboss)
+
+    def test_original_little_door_return_rechecks_physical_web_and_crawl_before_transfers(self):
+        tunnel=source('feast/StoryTunnel.java')
+        return_body=tunnel.split('private static void resumeChapter(ServerPlayer p,VisitData.Scene scene)',1)[1].split('public static boolean controls(',1)[0]
+        self.assertIn('static boolean webReturnPhase(RescueChapter.Phase phase)',tunnel)
+        self.assertIn('phase==RescueChapter.Phase.FINAL_P||phase==RescueChapter.Phase.FINAL_Q',tunnel)
+        self.assertIn('phase.ordinal()>=RescueChapter.Phase.WEB_STEALTH.ordinal()',tunnel)
+        self.assertIn('phase.ordinal()<=RescueChapter.Phase.HAND_FALL.ordinal()',tunnel)
+        self.assertIn('n.remove("PassageEntered");n.remove("PassageEntryRecheck")',return_body)
+        self.assertLess(return_body.index('n.remove("PassageEntered")'),return_body.index('if(!RescuePassage.enter(p,scene))'))
+        self.assertIn('RescueChapter.go(p,scene,RescueChapter.Phase.TUNNEL_CHASE)',return_body)
+        self.assertLess(return_body.index('if(!RescuePassage.enter(p,scene))'),return_body.index('RescueChapter.go(p,scene,RescueChapter.Phase.TUNNEL_CHASE)'))
+        self.assertIn('n.remove("Recover")',return_body)
+        self.assertIn('n.remove("WebVerified");n.putInt("WebVerify",0)',return_body)
+        self.assertLess(return_body.index('n.remove("WebVerified")'),return_body.index('if(!RescueWebSite.prepare(p,scene))'))
+        self.assertLess(return_body.index('if(!RescueWebSite.prepare(p,scene))'),return_body.index('if(!RescueChapter.transfer(p,level,landing))'))
+        self.assertIn('n.putBoolean("StoryReturnWebPending",true)',return_body)
+        self.assertIn('n.putBoolean("StoryReturnCrawlPending",true)',return_body)
+        self.assertIn('n.remove("StoryReturnWebPending");n.remove("StoryReturnCrawlPending")',return_body)
+        self.assertIn('n.putBoolean("Recover",true)',return_body)
+        source_tick=tunnel.split('public static void tickReturnSource(ServerPlayer player)',1)[1].split('public static void tickSource(',1)[0]
+        self.assertIn('if(player.tickCount%5==0)resumeChapter(player,scene)',source_tick)
+        self.assertIn('n.remove("StoryReturnWebPending");n.remove("StoryReturnCrawlPending")',source_tick)
+        self.assertLess(source_tick.index('resumeChapter(player,scene)'),source_tick.index('TunnelPassage.tick(player)'))
+        tests=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('littleDoorReentryUsesTheRealFinaleDimensionAndFreshReceipts',tests)
+
+    def test_postboss_dream_return_never_restores_missing_or_nonfinite_vitals(self):
+        rules=source('feast/RescueVisionRules.java')
+        self.assertIn('public static float restoredHealth(boolean hasSaved,float saved,float current,float maximum)',rules)
+        self.assertIn('hasSaved&&Float.isFinite(saved)&&saved>0',rules)
+        self.assertIn('Float.isFinite(current)&&current>0',rules)
+        self.assertIn('public static int restoredFood(',rules)
+        self.assertIn('public static float restoredSaturation(',rules)
+        epilogue=source('feast/RescueEpilogue.java')
+        recovery=epilogue.split('private static boolean restoreVision(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static boolean verifyVisionLanding(',1)[0]
+        self.assertIn('saved.contains("Health",Tag.TAG_ANY_NUMERIC)',recovery)
+        self.assertIn('RescueVisionRules.restoredHealth(healthSaved,savedHealth,p.getHealth(),p.getMaxHealth())',recovery)
+        self.assertIn('RescueVisionRules.restoredFood(',recovery)
+        self.assertIn('RescueVisionRules.restoredSaturation(',recovery)
+        self.assertIn('VisionReturnUsedVitalsFallback',recovery)
+        self.assertIn('Float.isFinite(saved.getFloat("Yaw"))',recovery)
+        self.assertIn('Float.isFinite(saved.getFloat("Pitch"))',recovery)
+        self.assertNotIn('p.setHealth(Math.min(p.getMaxHealth(),saved.getFloat("Health")))',recovery)
+        self.assertLess(recovery.index('p.setHealth(health)'),recovery.index('n.putBoolean("VisionLandingPending",true)'))
+        tests=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('postBossDreamCannotRestoreDeathOrInvalidVitals',tests)
+
     def test_web_journal_recovers_interrupted_placement_and_sag(self):
         web=source('feast/RescueWebSite.java')
         floor=web.split('private static boolean floor(ServerLevel l,CompoundTag journal,Vec3 point)',1)[1].split('public static void sag(',1)[0]
@@ -426,7 +555,9 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('n.getUUID("Choice").equals(nonce)',retry)
         self.assertIn('!n.getBoolean("ShoeMissed")',retry)
         self.assertIn('return relaunchShoe(p,s,shoe);',retry)
-        self.assertIn('LoopProps.hold(p.serverLevel()',retry)
+        self.assertIn('LoopProps.hold(p.server.overworld(),oldAt)',retry)
+        self.assertIn('LegacyActorRecovery.Result.ABSENT',retry)
+        self.assertIn('recreated.setUUID(id)',retry)
         flight=story.split('private static boolean relaunchShoe(',1)[1].split('private static Vec3 missedShoePosition(',1)[0]
         self.assertIn('prop.kind()!=CinematicPropEntity.STORY_SHOE||prop.cue()!=1',flight)
         self.assertIn('n.getUUID("ShoeFlight").equals(prop.getUUID())',flight)
