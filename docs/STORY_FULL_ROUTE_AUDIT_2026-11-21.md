@@ -23,7 +23,7 @@ No changes were made to encounter wins, eye receipts, key identity, canonical ac
 
 - Parsed **52** First Escape/Wybie phases and simulated the rejected-button route through every ordered checkpoint with explicit player/actor interaction gates.
 - Validated **88** expected voiced route keys against `sounds.json` and the **88 corresponding packaged .ogg assets**. Missing: **0**.
-- Compiled dependency-free `FirstEscapeTimeline`, `RescueChallengeMath`, and `RescueWebLayout` using Java 17 and ran **253,127** deterministic assertions. This model covers boss health/openings, Cat placement rules, collapse timing, web-noise rules, door struggle and crawl-pursuit timing. It **does not execute** Minecraft pathfinding, entity-lease persistence, audio acknowledgements, dimension transfers or the actual full game.
+- Compiled dependency-free `FirstEscapeTimeline`, `RescueChallengeMath`, and `RescueWebLayout` using Java 17 and ran **253,131** deterministic assertions. This model covers boss health/openings, Cat placement rules, collapse timing, web-noise rules, door struggle and crawl-pursuit timing. It **does not execute** Minecraft pathfinding, entity-lease persistence, audio acknowledgements, dimension transfers or the actual full game.
 - Added two `RescueSoftlockGameTests` for the actor/parent gates and two source-level regression tests in `tools/test_current_story_repairs.py`; the native GameTests were **not executable** in the current environment.
 
 ## In-game acceptance still required
