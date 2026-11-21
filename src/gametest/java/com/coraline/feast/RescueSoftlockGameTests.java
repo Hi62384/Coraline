@@ -265,4 +265,58 @@ public final class RescueSoftlockGameTests {
                 "A non-door chapter would be transferred away from its real scene: "+phase);
         helper.succeed();
     }
+
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void firstEscapeOriginalCastGatesEveryCheckpoint(GameTestHelper helper) {
+        for(var state:FirstEscapeTimeline.Phase.values()){
+            boolean mother=state.ordinal()>=FirstEscapeTimeline.Phase.COCOA_A.ordinal()
+                    &&state.ordinal()<=FirstEscapeTimeline.Phase.COCOA_G.ordinal();
+            boolean otherWybie=state.ordinal()>=FirstEscapeTimeline.Phase.ESCAPE_A.ordinal()
+                    &&state.ordinal()<=FirstEscapeTimeline.Phase.ESCAPE_G.ordinal();
+            boolean realWybie=state.ordinal()>=FirstEscapeTimeline.Phase.MISSING_B.ordinal()
+                    &&state.ordinal()<=FirstEscapeTimeline.Phase.BICYCLE_DEPARTURE.ordinal();
+            helper.assertTrue(FirstEscapeTimeline.needsOtherMother(state)==mother,
+                "Other Mother became optional at "+state);
+            helper.assertTrue(FirstEscapeTimeline.needsOtherWybie(state)==otherWybie,
+                "Masked Wybie became optional at "+state);
+            helper.assertTrue(FirstEscapeTimeline.needsRealWybie(state)==realWybie,
+                "Original Wybie became optional at "+state);
+        }
+        helper.assertTrue(FirstEscapeTimeline.needsRealWybie(FirstEscapeTimeline.Phase.THROW_SHOE),
+            "A missed original shoe should never time-advance without its canonical target");
+        helper.assertFalse(FirstEscapeTimeline.needsRealWybie(FirstEscapeTimeline.Phase.ESCAPE_TUNNEL),
+            "The original rescue tunnel cannot depend on an Overworld Wybie");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void catWatchdogRequiresOriginalActorThroughoutMirrorAndDolls(GameTestHelper helper) {
+        for(var state:MissingParentsCat.Phase.values()){
+            for(boolean started:new boolean[]{false,true})for(boolean present:new boolean[]{false,true}){
+                boolean expected=!started||state.ordinal()<MissingParentsCat.Phase.NOTICE.ordinal()
+                        ||state==MissingParentsCat.Phase.COMPLETE||present;
+                helper.assertTrue(MissingParentsCat.catWatchdogReady(started,state,present)==expected,
+                    "Original Cat omitted or needlessly required at "+state+" started="+started);
+            }
+        }
+        helper.assertFalse(MissingParentsCat.catWatchdogReady(true,MissingParentsCat.Phase.E,false),
+            "The Cat's doll retrieval cannot be awarded while the canonical Cat is unloaded");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void parentRescueWatchdogNeverFinishesMissingMother(GameTestHelper helper) {
+        for(var state:ParentRescueStory.Phase.values()){
+            for(boolean present:new boolean[]{false,true}){
+                boolean expected=state.ordinal()<ParentRescueStory.Phase.B.ordinal()
+                    ||state.ordinal()>=ParentRescueStory.Phase.PARENT_RESCUE_KITCHEN_MOTHER_DISAPPEARED.ordinal()
+                    ||present;
+                helper.assertTrue(ParentRescueStory.rescueMotherReadyForWatchdog(state,present)==expected,
+                    "Saved Other Mother omitted from parent-rescue voice "+state);
+            }
+        }
+        helper.assertFalse(ParentRescueStory.rescueMotherReadyForWatchdog(ParentRescueStory.Phase.N,false),
+            "A missing original Other Mother must not auto-finish the kitchen and start three boss quests");
+        helper.succeed();
+    }
 }
