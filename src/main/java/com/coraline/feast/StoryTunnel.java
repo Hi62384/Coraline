@@ -90,7 +90,11 @@ public final class StoryTunnel {
     /** Only the physical web challenges use the original authored web for
      * return-door recovery. The final crawl has its own separate journal. */
     static boolean webReturnPhase(RescueChapter.Phase phase){
-        return phase.ordinal()>=RescueChapter.Phase.WEB_STEALTH.ordinal()
+        // FINAL_P/Q already take place in the web dimension. Returning
+        // these to the Other World room can corrupt their saved camera/actor
+        // stage even when the next tick tries to enter the web again.
+        return phase==RescueChapter.Phase.FINAL_P||phase==RescueChapter.Phase.FINAL_Q
+                ||phase.ordinal()>=RescueChapter.Phase.WEB_STEALTH.ordinal()
                 &&phase.ordinal()<=RescueChapter.Phase.HAND_FALL.ordinal();
     }
     private static void resumeChapter(ServerPlayer p,VisitData.Scene scene){
