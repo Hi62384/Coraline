@@ -163,16 +163,58 @@ public final class MissingParentsCat {
         if(!audio.getString("Sound").isEmpty()&&!audio.getBoolean("Finished")&&!audio.getString("Sound").startsWith("missing_parents_cat_")&&!audio.getString("Sound").equals(INTRO_MUSIC))return false;
         return true;
     }
+    /** A vanished bed may retire a started clue only while its original Cat still exists.
+     * An unstarted clue needs the original family bed for its physical mirror scene. */
+    static boolean missingBedRecoveryReady(boolean started,boolean originalCatPresent,int missingTicks){
+        return started&&originalCatPresent&&missingTicks>=200;
+    }
     public static void tick(ServerPlayer p,VisitData.Scene s){
         if(!eligible(s)||!owns(p,s)||!p.isAlive()||p.serverLevel()!=p.server.overworld()||!available(p,s))return;
         var n=data(s);var family=ParentAccess.family(p.server,s.owner);
         if(family==null||!family.storyMissing)return;
         if(family.bed==null){
-            if(n.getBoolean("Started")){int missing=n.getInt("MissingBedTicks")+1;n.putInt("MissingBedTicks",missing);
-                if(missing>=200){n.putBoolean("DollsRetrieved",true);s.loop.story.putBoolean("ParentDollsDiscovered",true);if(StoryTunnel.restore(p,s)){n.putBoolean("Complete",true);n.putBoolean("TunnelRestored",true);n.putString("Phase",Phase.COMPLETE.name());ShowPlayback.stop(p,s);ShowActors.releaseHidden(p,s,"cat");props(p,s);OtherMotherLoop.changed(p);FirstEscapeStory.hint(p,"The Cat reveals the way back. Investigate the Little Door.");}}
-            }return;
+            if(!n.getBoolean("Started")){
+                n.putString("Blocker","Place your family's original parents' bed to begin the Cat's mirror scene.");
+                FirstEscapeStory.hint(p,n.getString("Blocker"));
+                return;
+            }
+            int missing=Math.min(200,n.getInt("MissingBedTicks")+1);
+            n.putInt("MissingBedTicks",missing);
+            // Without the original Cat, an apparently successful tunnel handoff
+            // would strand the later collapse, final fight and farewell.
+            var originalCat=cat(p,s);
+            if(originalCat==null){
+                n.putString("Blocker","Waiting for the original Cat to load before restoring the missing-bed passage.");
+                FirstEscapeStory.hint(p,n.getString("Blocker"));
+                return;
+            }
+            if(missingBedRecoveryReady(true,true,missing)){
+                if(!StoryTunnel.restore(p,s)){
+                    FirstEscapeStory.hint(p,"Restoring the original Little Door passage...");
+                    return;
+                }
+                n.putBoolean("DollsRetrieved",true);
+                s.loop.story.putBoolean("ParentDollsDiscovered",true);
+                n.putBoolean("Complete",true);
+                n.putBoolean("TunnelRestored",true);
+                n.putString("Phase",Phase.COMPLETE.name());
+                n.remove("Blocker");
+                ShowPlayback.stop(p,s);
+                ShowActors.releaseHidden(p,s,"cat");
+                props(p,s);
+                OtherMotherLoop.changed(p);
+                FirstEscapeStory.hint(p,"The Cat reveals the way back. Investigate the Little Door.");
+            }
+            return;
         }
-        if(phase(s)==Phase.PENDING&&p.distanceToSqr(family.bed.getCenter())>64)return;
+        if(n.contains("MissingBedTicks"))n.remove("MissingBedTicks");
+        if(n.getString("Blocker").startsWith("Place your family's original parents' bed")
+                ||n.getString("Blocker").startsWith("Waiting for the original Cat to load before restoring"))
+            n.remove("Blocker");
+        if(phase(s)==Phase.PENDING&&p.distanceToSqr(family.bed.getCenter())>64){
+            FirstEscapeStory.hint(p,"Return to your parents' bed for the Cat's mirror scene.");
+            return;
+        }
         if(!n.contains("BedFoot")&&phase(s).ordinal()>=Phase.E.ordinal()){
             n.putLong("BedFoot",bedFoot(p,family.bed).asLong());n.putString("BedFront",bedFront(p,family.bed).getName());
         }
