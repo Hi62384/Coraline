@@ -410,7 +410,9 @@ public final class RescueEpilogue {
             n.putString("Blocker","Your saved return is still being prepared. Your dream state is preserved and will retry safely.");OtherMotherLoop.changed(p);return false;
         }
         boolean healthSaved=saved.contains("Health",Tag.TAG_ANY_NUMERIC);
-        boolean foodSaved=saved.contains("Food",Tag.TAG_ANY_NUMERIC);
+        double rawFood=saved.getDouble("Food");
+        boolean foodSaved=saved.contains("Food",Tag.TAG_ANY_NUMERIC)
+                &&Double.isFinite(rawFood)&&rawFood>=0&&rawFood<=20&&rawFood==Math.floor(rawFood);
         boolean saturationSaved=saved.contains("Saturation",Tag.TAG_ANY_NUMERIC);
         float savedHealth=saved.getFloat("Health");
         if(!healthSaved||!Float.isFinite(savedHealth)||savedHealth<=0)
