@@ -14,6 +14,12 @@ on:
 permissions:
   contents: read
 
+# A route audit can make several quick corrective commits. Run only the
+# newest complete candidate, never let obsolete revisions monopolize runners.
+concurrency:
+  group: coraline-story-route-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   source-and-forge-compile:
     runs-on: ubuntu-latest
