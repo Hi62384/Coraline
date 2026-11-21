@@ -9,6 +9,42 @@ ASSETS=ROOT/'src/main/resources/assets/coraline'
 def source(name):return (JAVA/name).read_text(encoding='utf-8-sig')
 
 class CurrentStoryRepairs(unittest.TestCase):
+    def test_first_escape_cutscene_and_main_tick_require_original_cast(self):
+        rules=source('feast/FirstEscapeTimeline.java')
+        for key in ('needsOtherMother','needsOtherWybie','needsRealWybie'):
+            self.assertIn('public static boolean '+key+'(Phase p)',rules)
+        story=source('feast/FirstEscapeStory.java')
+        tick=story.split('public static boolean tick(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static boolean recording(',1)[0]
+        self.assertLess(tick.index('pauseForMissingActor(p,s,state)'),tick.index('int ticks=n.getInt("Ticks");String sound='))
+        self.assertIn('if(n.getBoolean("AudioStarted"))',story.split('private static boolean pauseForMissingActor(',1)[1].split('public static boolean tick(',1)[0])
+        self.assertIn('ShowPlayback.stop(p,s)',story.split('private static boolean pauseForMissingActor(',1)[1].split('public static boolean tick(',1)[0])
+        safety=story.split('static void cutsceneSafety(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static boolean readyForVoice(',1)[0]
+        self.assertLess(safety.index('pauseForMissingActor(p,s,state)'),safety.index('StoryCutsceneWatchdog.overdue('))
+        self.assertIn('!voice.isEmpty()&&!readyForVoice(p,s,state)',safety)
+        self.assertIn('FirstEscapeTimeline.needsRealWybie(state)',story)
+
+    def test_original_cat_absence_pauses_mirror_watchdog_before_reward(self):
+        cat=source('feast/MissingParentsCat.java')
+        self.assertIn('static boolean catWatchdogReady(boolean started,Phase state,boolean originalPresent)',cat)
+        safety=cat.split('static void cutsceneSafety(ServerPlayer p,VisitData.Scene s)',1)[1].split('static ',1)[0]
+        self.assertIn('!catWatchdogReady(n.getBoolean("Started"),state,cat(p,s)!=null)',safety)
+        self.assertLess(safety.index('!catWatchdogReady('),safety.index('StoryCutsceneWatchdog.overdue('))
+        self.assertLess(safety.index('!catWatchdogReady('),safety.index('ShowPlayback.safetyFinish('))
+        self.assertIn('StoryCutsceneWatchdog.retry(s,"post_escape_cat")',safety)
+        gametest=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('catWatchdogRequiresOriginalActorThroughoutMirrorAndDolls',gametest)
+
+    def test_parent_rescue_watchdog_requires_original_mother_before_completing(self):
+        parent=source('feast/ParentRescueStory.java')
+        self.assertIn('static boolean rescueMotherReadyForWatchdog(Phase state,boolean originalPresent)',parent)
+        safety=parent.split('static void cutsceneSafety(ServerPlayer p,VisitData.Scene s)',1)[1].split('static void prepareReturnRoom(',1)[0]
+        self.assertIn('!rescueMotherReadyForWatchdog(state,mother(p,s)!=null)',safety)
+        self.assertLess(safety.index('!rescueMotherReadyForWatchdog('),safety.index('StoryCutsceneWatchdog.overdue('))
+        self.assertLess(safety.index('!rescueMotherReadyForWatchdog('),safety.index('case N->{release(p,s)'))
+        self.assertIn('StoryCutsceneWatchdog.retry(s,"parent_rescue")',safety)
+        gametest=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('parentRescueWatchdogNeverFinishesMissingMother',gametest)
+
     def test_saved_final_exit_recovers_original_world_and_never_skips_key_or_crawl(self):
         finale=source('feast/BeldamFinale.java')
         recovery=finale.split('static boolean originalExitReady(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static boolean preflight(',1)[0]
