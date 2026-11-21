@@ -57,6 +57,24 @@ public final class MissingParentsCatGameTests {
             h.assertTrue(MissingParentsCat.missingBedRecoveryReady(true,true,200),"Loaded Cat could not resume a blocked scene");
         }finally{remove(p);}h.succeed();
     }
+    @GameTest(template="empty") public static void catWatchdogCannotAwardDollsWhileOriginalCatIsUnloaded(GameTestHelper h){
+        var p=fixture(h);var s=OtherMotherLoop.scene(p);var n=MissingParentsCat.data(s);
+        try{
+            n.putBoolean("Started",true);n.putString("Phase","FOLLOW_BED");
+            n.putLong("Bed",p.blockPosition().asLong());n.putInt("StuckTicks",200);
+            for(int tick=0;tick<22;tick++)MissingParentsCat.cutsceneSafety(p,s);
+            h.assertTrue(MissingParentsCat.phase(s)==MissingParentsCat.Phase.FOLLOW_BED,
+                    "An unloaded Cat was skipped by the follow-bed watchdog");
+            h.assertFalse(n.getBoolean("DollsRetrieved")||s.loop.story.getBoolean("ParentDollsDiscovered"),
+                    "Unloaded Cat granted unearned parent dolls");
+            n.putString("Phase","F");
+            MissingParentsCat.cutsceneSafety(p,s);
+            h.assertTrue(MissingParentsCat.phase(s)==MissingParentsCat.Phase.F,
+                    "Cat's finale voice skipped past an absent original actor");
+            h.assertFalse(n.getBoolean("FFinished")||n.getBoolean("TunnelRestored"),
+                    "Tunnel opened without the original Cat");
+        }finally{remove(p);}h.succeed();
+    }
     @GameTest(template="empty",batch="open-air-cat-mirror") public static void openingLineCanResolveAMirrorWithoutAnExistingHouseWall(GameTestHelper h){
         var p=fixture(h);var s=OtherMotherLoop.scene(p);var l=p.serverLevel();var bed=new BlockPos(130600,180,130600);var n=MissingParentsCat.data(s);
         try{
