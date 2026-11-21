@@ -1,0 +1,57 @@
+name: Coraline story route QA
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/main/java/com/coraline/feast/**'
+      - 'src/gametest/java/com/coraline/feast/**'
+      - 'src/wybietest/java/com/coraline/feast/**'
+      - 'tools/test_current_story_repairs.py'
+      - '.github/workflows/coraline-story-route-qa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-and-forge-compile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - name: Checkout exact PR revision
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+          fetch-depth: 1
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Source-level story regressions
+        run: python3 tools/test_current_story_repairs.py
+
+      - name: Compile and execute actual dependency-free story rules
+        shell: bash
+        run: |
+          mkdir -p build/story-route-qa
+          javac --release 17 -d build/story-route-qa \
+            src/main/java/com/coraline/feast/FirstEscapeTimeline.java \
+            src/main/java/com/coraline/feast/RescueChallengeMath.java \
+            src/main/java/com/coraline/feast/RescueWebLayout.java \
+            src/main/java/com/coraline/feast/RescueVisionRules.java \
+            src/wybietest/java/com/coraline/feast/RescueWebRulesSmoke.java \
+            src/wybietest/java/com/coraline/feast/RescueVisionRulesSmoke.java
+          java -cp build/story-route-qa com.coraline.feast.RescueWebRulesSmoke
+          java -cp build/story-route-qa com.coraline.feast.RescueVisionRulesSmoke
+
+      - name: Compile Forge mod including source GameTests
+        shell: bash
+        run: |
+          chmod +x ./gradlew
+          ./gradlew --no-daemon --max-workers=2 \
+            '-Dorg.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=768m' \
+            -PgameTests compileJava
