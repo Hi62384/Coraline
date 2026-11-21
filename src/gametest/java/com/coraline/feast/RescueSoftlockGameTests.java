@@ -97,6 +97,12 @@ public final class RescueSoftlockGameTests {
         n.putLong("KitchenTable",new net.minecraft.core.BlockPos(30,80,30).asLong());
         helper.assertTrue(ParentRescueStory.kitchenCheckpointComplete(n),
                 "Complete owner-authored kitchen checkpoint was rejected");
+        n.putLong("Stove",new net.minecraft.core.BlockPos(80,80,30).asLong());
+        helper.assertFalse(ParentRescueStory.kitchenCheckpointComplete(n),
+                "Corrupt distant saved stove would load an unrelated world chunk");
+        n.putLong("Stove",new net.minecraft.core.BlockPos(28,90,35).asLong());
+        helper.assertFalse(ParentRescueStory.kitchenCheckpointComplete(n),
+                "Wrong-floor oven was treated as the original kitchen stove");
         n.putString("Stove","invalid-stove-tag");
         helper.assertFalse(ParentRescueStory.kitchenCheckpointComplete(n),
                 "Corrupt stove data reached the cooking sequence");
