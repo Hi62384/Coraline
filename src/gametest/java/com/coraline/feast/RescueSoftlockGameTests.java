@@ -81,6 +81,35 @@ public final class RescueSoftlockGameTests {
     }
 
     @GameTest(template="empty", batch="story_softlocks")
+    public static void interruptedKitchenSaveCannotAdvanceWithMissingStoveOrTable(GameTestHelper helper) {
+        var n=new net.minecraft.nbt.CompoundTag();
+        helper.assertFalse(ParentRescueStory.kitchenCheckpointComplete(n),
+                "Uninitialized kitchen was marked ready");
+        n.putLong("Kitchen",new net.minecraft.core.BlockPos(30,80,30).asLong());
+        helper.assertFalse(ParentRescueStory.kitchenCheckpointComplete(n),
+                "Saved kitchen marker skipped stove/table placement");
+        n.putLong("Stove",new net.minecraft.core.BlockPos(28,80,35).asLong());
+        helper.assertFalse(ParentRescueStory.kitchenCheckpointComplete(n),
+                "Missing kitchen table was treated as complete");
+        n.putLong("KitchenTable",new net.minecraft.core.BlockPos(31,80,30).asLong());
+        helper.assertFalse(ParentRescueStory.kitchenCheckpointComplete(n),
+                "Wrong table anchor was trusted after save/reload");
+        n.putLong("KitchenTable",new net.minecraft.core.BlockPos(30,80,30).asLong());
+        helper.assertTrue(ParentRescueStory.kitchenCheckpointComplete(n),
+                "Complete owner-authored kitchen checkpoint was rejected");
+        n.putLong("Stove",new net.minecraft.core.BlockPos(80,80,30).asLong());
+        helper.assertFalse(ParentRescueStory.kitchenCheckpointComplete(n),
+                "Corrupt distant saved stove would load an unrelated world chunk");
+        n.putLong("Stove",new net.minecraft.core.BlockPos(28,90,35).asLong());
+        helper.assertFalse(ParentRescueStory.kitchenCheckpointComplete(n),
+                "Wrong-floor oven was treated as the original kitchen stove");
+        n.putString("Stove","invalid-stove-tag");
+        helper.assertFalse(ParentRescueStory.kitchenCheckpointComplete(n),
+                "Corrupt stove data reached the cooking sequence");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
     public static void parentRescueKitchenServingWaitsBeforeRecoveringOriginalActor(GameTestHelper helper) {
         helper.assertFalse(ParentRescueStory.serveRecoveryDue(0),
             "The normal physical kitchen serving approach should get its turn");
@@ -106,6 +135,25 @@ public final class RescueSoftlockGameTests {
             "Standing on the surviving rim could stall the final fall permanently");
         helper.assertFalse(BeldamFinale.openedFloorFallRecoveryDue(100,1000),
             "A much longer valid recording would be truncated by fallback timing");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void savedUnrescuedCatCannotDisappearFromCollapsePickup(GameTestHelper helper) {
+        helper.assertTrue(RescueChallengeMath.restageUnrescuedCat(false,false,0,false),
+                "An unplaced original Cat was incorrectly accepted as ready");
+        helper.assertFalse(RescueChallengeMath.restageUnrescuedCat(true,false,64,false),
+                "A Cat near its saved physical pickup anchor was moved");
+        helper.assertTrue(RescueChallengeMath.restageUnrescuedCat(true,false,65,false),
+                "A stranded saved Cat was not restored to its checkpoint");
+        helper.assertTrue(RescueChallengeMath.restageUnrescuedCat(true,false,1,true),
+                "A Cat trapped inside a changed block was left unreachable");
+        helper.assertTrue(RescueChallengeMath.restageUnrescuedCat(true,false,Double.NaN,false),
+                "An invalid Cat distance was mistaken for a safe checkpoint");
+        helper.assertFalse(RescueChallengeMath.restageUnrescuedCat(false,true,Double.POSITIVE_INFINITY,true),
+                "The original Cat was teleported after being rescued");
+        helper.assertFalse(RescueChallengeMath.restageUnrescuedCat(true,true,99999,true),
+                "A rescued Cat was reset by a stale pickup location");
         helper.succeed();
     }
 

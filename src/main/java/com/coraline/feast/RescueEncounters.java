@@ -284,14 +284,24 @@ public final class RescueEncounters {
             return;
         }
         if(!n.getBoolean("CatRescued")){
-            if(!n.getBoolean("CatCollapsePlaced")){
-                var safe=OtherWorld.safePlayer(level,porch.south(12));
-                if(safe==null||!RescueEpilogue.safeReturn(level,p,Pose.STANDING,Vec3.atBottomCenterOf(safe))){
-                    n.putString("Blocker","Clear the Cat's escape checkpoint outside the porch.");
-                    return;
-                }
-                cat.setPos(Vec3.atBottomCenterOf(safe));
+            var safe=OtherWorld.safePlayer(level,porch.south(12));
+            if(safe==null||!RescueEpilogue.safeReturn(level,p,Pose.STANDING,Vec3.atBottomCenterOf(safe))){
+                n.putString("Blocker","Clear the Cat's escape checkpoint outside the porch.");
+                return;
+            }
+            var at=Vec3.atBottomCenterOf(safe);
+            // A saved CatCollapsePlaced flag can outlive the Cat's actual
+            // position after a chunk/reload transfer. Re-stage that SAME
+            // original actor only when lost or obstructed, never after pickup.
+            boolean obstructed=!level.noCollision(cat,cat.getBoundingBox());
+            if(RescueChallengeMath.restageUnrescuedCat(n.getBoolean("CatCollapsePlaced"),false,
+                    cat.distanceToSqr(at),obstructed)){
+                cat.stopRiding();
+                cat.setDeltaMovement(Vec3.ZERO);
+                cat.setPos(at);
                 n.putBoolean("CatCollapsePlaced",true);
+                n.putLong("CatCollapsePosition",cat.blockPosition().asLong());
+                OtherMotherLoop.changed(p);
             }
             cat.setInvisible(false);
             cat.setNoAi(true);
@@ -375,7 +385,7 @@ public final class RescueEncounters {
                 p.server.overworld().getDataStorage().save();
             }
             resetRatSegment(p,s);
-        }else if(state==COLLAPSE){FirstEscapeStory.hint(p,"The Other World swallowed you. Retry the escape.");if(!RescueChapter.transfer(p,p.server.getLevel(OtherWorld.KEY),BlockPos.of(n.getLong("CollapseStart"))))return;n.putBoolean("CatRescued",false);n.putInt("CollapseElapsed",0);n.remove("CatCollapsePlaced");n.remove("CatMantel");RescueChapter.go(p,s,COLLAPSE);}
+        }else if(state==COLLAPSE){FirstEscapeStory.hint(p,"The Other World swallowed you. Retry the escape.");if(!RescueChapter.transfer(p,p.server.getLevel(OtherWorld.KEY),BlockPos.of(n.getLong("CollapseStart"))))return;n.putBoolean("CatRescued",false);n.putInt("CollapseElapsed",0);n.remove("CatCollapsePlaced");n.remove("CatCollapsePosition");n.remove("CatMantel");RescueChapter.go(p,s,COLLAPSE);}
         else RescueBosses.retry(p,s,"Retrying this challenge.");
     }
     private static void clearRatPath(CompoundTag n){

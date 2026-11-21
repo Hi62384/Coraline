@@ -143,6 +143,35 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('canonicalKitchenSmokerCanStartParentRescueDinner',game)
         self.assertIn('blast_furnace',game)
 
+    def test_kitchen_partial_save_waits_for_rebuilt_original_appliance_before_audio(self):
+        story=source('feast/ParentRescueStory.java')
+        readiness=story.split('static boolean kitchenCheckpointComplete(CompoundTag n)',1)[1].split('private static boolean kitchen(',1)[0]
+        for key in ('n.contains("Kitchen",Tag.TAG_LONG)',
+                    'n.contains("Stove",Tag.TAG_LONG)',
+                    'n.contains("KitchenTable",Tag.TAG_LONG)',
+                    'n.getLong("Kitchen")!=n.getLong("KitchenTable")'):
+            self.assertIn(key,readiness)
+        tick=story.split('public static void tick(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static boolean recording(',1)[0]
+        self.assertIn('state==Phase.WAIT_KITCHEN_SEAT',tick)
+        self.assertIn('state==Phase.H||state==Phase.I||state==Phase.J||state==Phase.K',tick)
+        self.assertIn('state==Phase.SERVE)&&!kitchen(p,s)',tick)
+        self.assertLess(tick.index('state==Phase.SERVE)&&!kitchen(p,s)'),
+                        tick.index('boolean done=recording(p,s,n,sound)'))
+        paused=tick.split('state==Phase.SERVE)&&!kitchen(p,s)',1)[1].split('if(!StoryTunnel.entryPhase(s)',1)[0]
+        self.assertIn('ShowPlayback.stop(p,s)',paused)
+        self.assertIn('n.remove("ReturnRecording")',paused)
+        self.assertIn('n.putInt("Ticks",0)',paused)
+        self.assertLess(paused.index('ShowPlayback.stop(p,s)'),paused.index('return;'))
+        rebuild=story.split('private static boolean kitchen(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static boolean block(',1)[0]
+        self.assertIn('if(kitchenCheckpointComplete(n)){',rebuild)
+        self.assertIn('if(savedId!=null&&kitchenStoveId(savedId.getPath()))return true;',rebuild)
+        self.assertLess(rebuild.index('if(kitchenCheckpointComplete(n)){'),
+                        rebuild.index('var realm=RealmData.get(p.server)'))
+        self.assertLess(rebuild.index('if(stove==null)'),rebuild.index('n.putLong("Kitchen",center.asLong())'))
+        self.assertLess(rebuild.index('n.putLong("Stove",stove.asLong())'),rebuild.rindex('return true;'))
+        game=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('interruptedKitchenSaveCannotAdvanceWithMissingStoveOrTable',game)
+
     def test_parent_rescue_kitchen_cannot_stall_forever_on_actor_navigation(self):
         story=source('feast/ParentRescueStory.java')
         serve=story.split('case SERVE->{',1)[1].split('case L->{',1)[0]
@@ -315,6 +344,26 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertLess(mantel.index('var cat=ShowActors.recoverCat('),
                         mantel.index('cat.setPos(at)'))
         self.assertNotIn('state==CAT_THROW',mantel)
+
+    def test_collapse_stale_cat_pickup_recovers_only_original_unrescued_actor(self):
+        encounter=source('feast/RescueEncounters.java')
+        collapse=encounter.split('private static void collapse(',1)[1].split('private static void carryCat(',1)[0]
+        self.assertIn('ShowActors.recoverCat(p,s,level,',collapse)
+        self.assertIn('if(cat==null)',collapse)
+        self.assertIn('if(!n.getBoolean("CatRescued"))',collapse)
+        self.assertIn('RescueEpilogue.safeReturn(level,p,Pose.STANDING,',collapse)
+        self.assertIn('!level.noCollision(cat,cat.getBoundingBox())',collapse)
+        self.assertIn('RescueChallengeMath.restageUnrescuedCat(n.getBoolean("CatCollapsePlaced"),false,',collapse)
+        self.assertIn('cat.setPos(at);',collapse)
+        self.assertIn('n.putBoolean("CatCollapsePlaced",true)',collapse)
+        self.assertLess(collapse.index('if(cat==null)'),collapse.index('cat.setPos(at);'))
+        self.assertLess(collapse.index('if(!n.getBoolean("CatRescued"))'),collapse.index('cat.setPos(at);'))
+        self.assertLess(collapse.index('RescueEpilogue.safeReturn('),collapse.index('cat.setPos(at);'))
+        self.assertIn('n.remove("CatCollapsePosition")',encounter)
+        math=source('feast/RescueChallengeMath.java')
+        self.assertIn('!rescued&&(!placed||obstructed||!Double.isFinite(distanceSquared)||distanceSquared>64)',math)
+        gametest=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('savedUnrescuedCatCannotDisappearFromCollapsePickup',gametest)
 
     def test_late_rescue_cutscenes_keep_safety_but_bosses_and_crawl_do_not_autocomplete(self):
         chapter=source('feast/RescueChapter.java')

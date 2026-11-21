@@ -99,12 +99,33 @@ public final class CurrentStoryRepairsGameTests {
         }finally{cat.discard();MissingParentsTeaGameTests.remove(p,s);}h.succeed();
     }
     @GameTest(template="empty") public static void kitchenArrivalDoesNotWaitForMotherAndClickDoesNotReplayProposal(GameTestHelper h){
-        var p=MissingParentsTeaGameTests.fixture(h);var s=OtherMotherLoop.scene(p);var n=ParentRescueStory.data(s);var mother=ModEntities.MOM.get().create(p.serverLevel());mother.makeOtherParent(0);s.mom=mother.getUUID();
-        try{n.putBoolean("Started",true);n.putString("Phase","KITCHEN");n.putLong("Kitchen",p.blockPosition().asLong());n.putLong("KitchenTable",p.blockPosition().asLong());n.putLong("Stove",p.blockPosition().east(12).asLong());mother.setPos(p.position().add(20,0,0));
-            ParentRescueStory.tickKitchenArrival(p,s,mother);h.assertTrue(ParentRescueStory.phase(s)==ParentRescueStory.Phase.WAIT_KITCHEN_SEAT,"Kitchen prompt waits for Mother at the stove");
+        var p=MissingParentsTeaGameTests.fixture(h);
+        var s=OtherMotherLoop.scene(p);var n=ParentRescueStory.data(s);
+        var mother=ModEntities.MOM.get().create(p.serverLevel());
+        mother.makeOtherParent(0);s.mom=mother.getUUID();
+        // This is a saved/complete kitchen fixture; it needs a real nearby
+        // appliance now that the story checks cached block identity.
+        var stove=p.blockPosition().east(4);
+        p.serverLevel().getChunkAt(stove);
+        var original=p.serverLevel().getBlockState(stove);
+        try{
+            p.serverLevel().setBlock(stove,Blocks.SMOKER.defaultBlockState(),2);
+            n.putBoolean("Started",true);n.putString("Phase","KITCHEN");
+            n.putLong("Kitchen",p.blockPosition().asLong());
+            n.putLong("KitchenTable",p.blockPosition().asLong());
+            n.putLong("Stove",stove.asLong());
+            mother.setPos(p.position().add(20,0,0));
+            ParentRescueStory.tickKitchenArrival(p,s,mother);
+            h.assertTrue(ParentRescueStory.phase(s)==ParentRescueStory.Phase.WAIT_KITCHEN_SEAT,
+                    "Kitchen prompt waits for Mother at the stove");
             BlackIsTraditional.data(s).putBoolean("Started",true);BlackIsTraditional.data(s).putBoolean("Dark",true);
-            h.assertTrue(VisitEvents.interact(p,mother),"Kitchen Mother falls through to old proposal interaction");h.assertTrue(ParentRescueStory.phase(s)==ParentRescueStory.Phase.WAIT_KITCHEN_SEAT,"Click restarts kitchen dialogue");
-        }finally{mother.discard();MissingParentsTeaGameTests.remove(p,s);}h.succeed();
+            h.assertTrue(VisitEvents.interact(p,mother),"Kitchen Mother falls through to old proposal interaction");
+            h.assertTrue(ParentRescueStory.phase(s)==ParentRescueStory.Phase.WAIT_KITCHEN_SEAT,
+                    "Click restarts kitchen dialogue");
+        }finally{
+            p.serverLevel().setBlock(stove,original,2);
+            mother.discard();MissingParentsTeaGameTests.remove(p,s);
+        }h.succeed();
     }
     @GameTest(template="empty",batch="actual-bike-controller",timeoutTicks=110) public static void mountedDepartureControllerMovesImmediatelyAndKeepsMoving(GameTestHelper h){
         var p=MissingParentsTeaGameTests.fixture(h);var s=OtherMotherLoop.scene(p);var level=p.serverLevel();var base=h.absolutePos(new BlockPos(8,5,8));var forced=new HashSet<net.minecraft.world.level.ChunkPos>();
