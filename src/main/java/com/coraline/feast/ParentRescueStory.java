@@ -195,10 +195,24 @@ public final class ParentRescueStory {
             FirstEscapeStory.hint(p,"The recording is unavailable. The scene can continue through its required actions.");
         return false;
     }
+    /** Do not finish the original mother's disappearance or any preceding
+     * dialogue when that same saved Other Mother is unloaded. */
+    static boolean rescueMotherReadyForWatchdog(Phase state,boolean originalPresent){
+        return state.ordinal()<Phase.B.ordinal()
+                ||state.ordinal()>=Phase.PARENT_RESCUE_KITCHEN_MOTHER_DISAPPEARED.ordinal()
+                ||originalPresent;
+    }
     static void cutsceneSafety(ServerPlayer p,VisitData.Scene s){
         if(!OtherWorld.isOther(p.level()))return;var state=phase(s);var n=data(s);String sound=voice(state);
         boolean motion=state==Phase.FATHER_ENTRY||state==Phase.KEY_SCENE||state==Phase.SERVE;
         if(sound.isEmpty()&&!motion)return;
+        if(!rescueMotherReadyForWatchdog(state,mother(p,s)!=null)){
+            if(n.getBoolean("Audio")){ShowPlayback.stop(p,s);n.remove("Audio");n.remove("ReturnRecording");n.putInt("Ticks",0);}
+            n.putString("Blocker","Waiting for the original Other Mother before this rescue dialogue.");
+            FirstEscapeStory.hint(p,n.getString("Blocker"));
+            StoryCutsceneWatchdog.retry(s,"parent_rescue");
+            return;
+        }
         // Fetching a key from storage is a player objective, not a failed animation.
         if(state==Phase.KEY_SCENE&&n.getInt("KeyStep")==0&&!java.util.stream.IntStream.range(0,p.getInventory().getContainerSize()).anyMatch(i->key(p.getInventory().getItem(i),s)))return;
         if(!StoryCutsceneWatchdog.overdue(p,s,"parent_rescue",state.name()+":"+n.getInt("KeyStep"),sound.isEmpty()?600:StoryCutsceneWatchdog.voiceBudget(sound)))return;
