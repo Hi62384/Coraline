@@ -166,4 +166,45 @@ public final class RescueSoftlockGameTests {
             "A new run must retire the completed alternative route's active state");
         helper.succeed();
     }
+
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void teaCutsceneNeverSkipsUnloadedOriginalVisitors(GameTestHelper helper) {
+        helper.assertTrue(MissingParentsTea.visitorsReadyForScene(MissingParentsTea.Phase.WAITING_FOR_KNOCK,false,false),
+            "Invitation must not require actors before the visit begins");
+        for(var phase:new MissingParentsTea.Phase[]{MissingParentsTea.Phase.KNOCKING,
+                MissingParentsTea.Phase.GREETING,MissingParentsTea.Phase.FORCIBLE_ENTRANCE,
+                MissingParentsTea.Phase.STORY_H,MissingParentsTea.Phase.STORY_I,
+                MissingParentsTea.Phase.WAITING_FOR_EXIT}) {
+            helper.assertFalse(MissingParentsTea.visitorsReadyForScene(phase,false,true),
+                "Without authentic Spink the tea scene could advance: "+phase);
+            helper.assertFalse(MissingParentsTea.visitorsReadyForScene(phase,true,false),
+                "Without authentic Forcible the tea scene could advance: "+phase);
+            helper.assertTrue(MissingParentsTea.visitorsReadyForScene(phase,true,true),
+                "Both authenticated native visitors should resume: "+phase);
+        }
+        helper.assertTrue(MissingParentsTea.visitorsReadyForScene(MissingParentsTea.Phase.COMPLETED,false,false),
+            "Finished tea visit must not be reopened for retired actors");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void reunionAudioWaitsForOriginalParentsAtSavedStage(GameTestHelper helper) {
+        helper.assertFalse(RescueEpilogue.parentsOnReunionStage(false,true,true,0,0),
+            "A missing parent-placement receipt cannot be treated as staged");
+        helper.assertFalse(RescueEpilogue.parentsOnReunionStage(true,false,true,0,0),
+            "A real mother in another world cannot play the Overworld reunion");
+        helper.assertFalse(RescueEpilogue.parentsOnReunionStage(true,true,false,0,0),
+            "A real father in another world cannot play the Overworld reunion");
+        helper.assertFalse(RescueEpilogue.parentsOnReunionStage(true,true,true,Double.NaN,0),
+            "A corrupt mother position must not be trusted");
+        helper.assertFalse(RescueEpilogue.parentsOnReunionStage(true,true,true,0,Double.POSITIVE_INFINITY),
+            "An unbounded father position must not be trusted");
+        helper.assertFalse(RescueEpilogue.parentsOnReunionStage(true,true,true,1297,0),
+            "A stranded real parent beyond the reunion stage must be re-staged");
+        helper.assertTrue(RescueEpilogue.parentsOnReunionStage(true,true,true,1296,1296),
+            "Both genuine parent actors within the safe checkpoint may resume");
+        helper.assertTrue(RescueEpilogue.parentsOnReunionStage(true,true,true,4,4),
+            "Normal two-actor physical stage must not be reset during dialogue");
+        helper.succeed();
+    }
 }
