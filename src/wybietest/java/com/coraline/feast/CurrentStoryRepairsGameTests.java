@@ -2,6 +2,7 @@ package com.coraline.feast;
 
 import java.util.*;
 import com.coraline.entity.CharacterEntity;
+import com.coraline.otherworld.OtherWorld;
 import com.coraline.registry.*;
 import net.minecraft.core.*;
 import net.minecraft.gametest.framework.*;
