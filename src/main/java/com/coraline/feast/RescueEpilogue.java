@@ -411,14 +411,13 @@ public final class RescueEpilogue {
         }
         boolean healthSaved=saved.contains("Health",Tag.TAG_ANY_NUMERIC);
         double rawFood=saved.getDouble("Food");
-        boolean foodSaved=saved.contains("Food",Tag.TAG_ANY_NUMERIC)
-                &&Double.isFinite(rawFood)&&rawFood>=0&&rawFood<=20&&rawFood==Math.floor(rawFood);
+        boolean foodSaved=saved.contains("Food",Tag.TAG_ANY_NUMERIC);
         boolean saturationSaved=saved.contains("Saturation",Tag.TAG_ANY_NUMERIC);
         float savedHealth=saved.getFloat("Health");
         if(!healthSaved||!Float.isFinite(savedHealth)||savedHealth<=0)
             n.putBoolean("VisionReturnUsedVitalsFallback",true);
         float health=RescueVisionRules.restoredHealth(healthSaved,savedHealth,p.getHealth(),p.getMaxHealth());
-        int food=RescueVisionRules.restoredFood(foodSaved,saved.getInt("Food"),p.getFoodData().getFoodLevel());
+        int food=RescueVisionRules.restoredFood(foodSaved,rawFood,p.getFoodData().getFoodLevel());
         float saturation=RescueVisionRules.restoredSaturation(saturationSaved,saved.getFloat("Saturation"),p.getFoodData().getSaturationLevel(),food);
         p.setInvulnerable(saved.getBoolean("Invulnerable"));p.setNoGravity(saved.getBoolean("NoGravity"));
         p.setHealth(health);p.getFoodData().setFoodLevel(food);p.getFoodData().setSaturation(saturation);p.setForcedPose(null);if(saved.contains("ForcedPose"))try{p.setForcedPose(Pose.valueOf(saved.getString("ForcedPose")));}catch(IllegalArgumentException ignored){}p.setPose(pose);p.fallDistance=0;p.setDeltaMovement(Vec3.ZERO);
