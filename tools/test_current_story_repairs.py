@@ -9,6 +9,18 @@ ASSETS=ROOT/'src/main/resources/assets/coraline'
 def source(name):return (JAVA/name).read_text(encoding='utf-8-sig')
 
 class CurrentStoryRepairs(unittest.TestCase):
+    def test_saved_supper_table_reconciles_missing_seats_and_live_entity_ticks(self):
+        visit=source('feast/FirstVisit.java')
+        table=visit.split('static void table(ServerPlayer p,VisitData.Scene s)',1)[1].split('static void ensureChairs(',1)[0]
+        self.assertIn('if(existingTable!=null){',table)
+        self.assertIn('existingTable.longDining(true);',table)
+        self.assertIn('ensureChairs(p,s);',table)
+        self.assertLess(table.index('existingTable.longDining(true);'),table.index('ensureChairs(p,s);'))
+        native=(ROOT/'src/gametest/java/com/coraline/feast/FirstVisitGameTests.java').read_text()
+        self.assertIn('h.runAfterDelay(8,()->{',native)
+        self.assertIn('p.tickCount=40;FirstVisit.tick(tick);',native)
+        self.assertIn('Supper needs all nine chairs',native)
+
     def test_first_escape_environment_restoration_rejects_corrupt_journal_rows(self):
         room=source('feast/FirstEscapeScene.java')
         cleanup=room.split('public static void restore(ServerPlayer p,VisitData.Scene s)',1)[1].split('private FirstEscapeScene()',1)[0]
