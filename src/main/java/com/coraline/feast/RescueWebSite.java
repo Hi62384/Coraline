@@ -20,6 +20,9 @@ public final class RescueWebSite {
             if(sample%(RescueWebLayout.SAMPLES/6)==0&&sample>0&&sample<RescueWebLayout.SAMPLES&&lane<2){var other=at(p,s,lane+1,sample/(double)RescueWebLayout.SAMPLES);for(int i=0;i<=12;i++)if(!floor(l,journal,point.lerp(other,i/12.0)))return blocked(p,s,cursor);}
         }
         n.put("WebCells",journal);n.putInt("WebBuild",cursor);
+        // Every bounded batch changes both the blocks and their recovery
+        // receipts. Persist the cursor/journal even before the final ready flag.
+        OtherMotherLoop.changed(p);
         if(cursor==3*(RescueWebLayout.SAMPLES+1)){for(double u:new double[]{0,1}){var v=at(p,s,1,u);for(int x=-1;x<=1;x++)for(int z=-1;z<=1;z++)if(!floor(l,journal,v.add(x,0,z)))return blocked(p,s,cursor);}n.remove("Blocker");n.putBoolean("WebReady",true);n.remove("WebVerified");n.putInt("WebVerify",0);OtherMotherLoop.changed(p);}
         return n.getBoolean("WebReady")&&verify(p,s);
     }
@@ -155,6 +158,7 @@ public final class RescueWebSite {
     /** A quiet, bounded weight depression changes the same tops the mesh reads. */
     public static void sag(ServerPlayer p,VisitData.Scene s){
         if(!RescueChapter.owns(p,s)||p.tickCount%4!=0||p.serverLevel()!=p.server.getLevel(ActivityWorld.KEY))return;var n=RescueChapter.data(s);if(!n.getBoolean("WebReady"))return;var l=p.serverLevel();var cells=n.getCompound("WebCells");var lookup=l.holderLookup(net.minecraft.core.registries.Registries.BLOCK);
+        boolean updated=false;
         for(String key:cells.getAllKeys()){var at=BlockPos.of(Long.parseLong(key));if(!l.hasChunkAt(at))continue;
             var cell=cells.getCompound(key);var old=l.getBlockState(at);
             if(!old.is(ModBlocks.STORY_WEB.get())||!cell.contains("Placed",Tag.TAG_COMPOUND))continue;
@@ -166,18 +170,21 @@ public final class RescueWebSite {
                         &&old.equals(NbtUtils.readBlockState(lookup,cell.getCompound("PreviousPlaced")))){
                     l.setBlock(at,saved,2);
                     if(l.getBlockState(at).equals(saved))cell.remove("PreviousPlaced");
+                    updated=true;
                 }
                 continue;
             }
-            int current=old.getValue(StoryWebBlock.HEIGHT);if(!cell.contains("RestHeight"))cell.putInt("RestHeight",current);int rest=cell.getInt("RestHeight");double top=at.getY()+rest/16.;double distance=Math.hypot(p.getX()-at.getX()-.5,p.getZ()-at.getZ()-.5);boolean bearing=Math.abs(p.getY()-top)<.35&&Math.abs(p.getDeltaMovement().y)<.2;int target=RescueWebLayout.weightedHeight(rest,distance,bearing);int height=current+Integer.signum(target-current);
+            int current=old.getValue(StoryWebBlock.HEIGHT);if(!cell.contains("RestHeight")){cell.putInt("RestHeight",current);updated=true;}int rest=cell.getInt("RestHeight");double top=at.getY()+rest/16.;double distance=Math.hypot(p.getX()-at.getX()-.5,p.getZ()-at.getZ()-.5);boolean bearing=Math.abs(p.getY()-top)<.35&&Math.abs(p.getDeltaMovement().y)<.2;int target=RescueWebLayout.weightedHeight(rest,distance,bearing);int height=current+Integer.signum(target-current);
             if(height!=current){
                 var state=old.setValue(StoryWebBlock.HEIGHT,height);
                 cell.put("PreviousPlaced",NbtUtils.writeBlockState(old));
                 cell.put("Placed",NbtUtils.writeBlockState(state));
                 l.setBlock(at,state,2);
                 if(l.getBlockState(at).equals(state))cell.remove("PreviousPlaced");
+                updated=true;
             }
         }
+        if(updated)OtherMotherLoop.changed(p);
     }
     /** Original web restoration retains receipts for every obstructed or
      * unverified block; never forget another player's edit or a refused write. */
