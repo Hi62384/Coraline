@@ -216,6 +216,24 @@ class CurrentStoryRepairs(unittest.TestCase):
         native=(ROOT/'src/wybietest/java/com/coraline/feast/FirstEscapeStoryGameTests.java').read_text()
         self.assertIn('shoeCanBeRetriedWithoutClickingTinyGroundHitbox',native)
 
+    def test_missing_bed_cat_handoff_requires_the_original_actor_before_completion(self):
+        cat=source('feast/MissingParentsCat.java')
+        recovery=cat.split('if(family.bed==null){',1)[1].split('if(n.contains("MissingBedTicks"))',1)[0]
+        self.assertIn('if(!n.getBoolean("Started"))',recovery)
+        self.assertIn('Place your family',recovery)
+        self.assertIn('var originalCat=cat(p,s);',recovery)
+        self.assertIn('if(originalCat==null)',recovery)
+        self.assertIn('missingBedRecoveryReady(n.getBoolean("Started"),originalCat!=null,missing)',recovery)
+        self.assertIn('if(!StoryTunnel.restore(p,s))',recovery)
+        self.assertLess(recovery.index('if(originalCat==null)'),
+                        recovery.index('n.putBoolean("DollsRetrieved",true)'))
+        self.assertLess(recovery.index('if(!StoryTunnel.restore(p,s))'),
+                        recovery.index('n.putBoolean("Complete",true)'))
+        self.assertIn('n.remove("MissingBedTicks")',cat)
+        native=(ROOT/'src/wybietest/java/com/coraline/feast/MissingParentsCatGameTests.java').read_text()
+        self.assertIn('missingBedBeforeCatStartsPreservesTheMirrorClue',native)
+        self.assertIn('missingBedFallbackCannotLoseTheOriginalCatForTheBoss',native)
+
     def test_first_escape_wybie_tea_cat_and_return_tunnel_handoffs(self):
         # Source dispatch checks supplement, but do not replace, an in-game run.
         escape=source('feast/FirstEscapeStory.java')
