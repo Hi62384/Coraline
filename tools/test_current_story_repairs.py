@@ -9,6 +9,31 @@ ASSETS=ROOT/'src/main/resources/assets/coraline'
 def source(name):return (JAVA/name).read_text(encoding='utf-8-sig')
 
 class CurrentStoryRepairs(unittest.TestCase):
+    def test_tea_watchdog_does_not_outpace_canonical_visitors(self):
+        tea=source('feast/MissingParentsTea.java')
+        self.assertIn('static boolean visitorsReadyForScene(',tea)
+        self.assertIn('if(!visitorsReadyForScene(state,spink!=null,forcible!=null))',tea)
+        watchdog=tea.split('static void cutsceneSafety(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static float crush(',1)[0]
+        self.assertIn('visitorsReadyForScene(state,actor(p,n,"Spink")!=null,actor(p,n,"Forcible")!=null)',watchdog)
+        self.assertIn('StoryCutsceneWatchdog.retry(s,"post_escape_tea")',watchdog)
+        self.assertLess(watchdog.index('visitorsReadyForScene('),watchdog.index('StoryCutsceneWatchdog.overdue('))
+        self.assertLess(watchdog.index('ShowPlayback.stop(p,s)'),watchdog.index('StoryCutsceneWatchdog.overdue('))
+        tests=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('teaCutsceneNeverSkipsUnloadedOriginalVisitors',tests)
+
+    def test_reunion_actor_lease_gates_recording_after_reload(self):
+        epilogue=source('feast/RescueEpilogue.java')
+        self.assertIn('static boolean parentsOnReunionStage(',epilogue)
+        self.assertIn('static boolean presentationReady(ServerPlayer p,VisitData.Scene s)',epilogue)
+        self.assertIn('parentsOnReunionStage(n.getBoolean("ParentsStaged")',epilogue)
+        self.assertIn('n.remove("ParentsStaged")',epilogue)
+        self.assertIn('if(n.getBoolean("Audio")){ShowPlayback.stop(p,s)',epilogue)
+        chapter=source('feast/RescueChapter.java')
+        self.assertIn('!RescueEpilogue.presentationReady(p,s)',chapter)
+        self.assertLess(chapter.index('!RescueEpilogue.presentationReady(p,s)'),chapter.index('String recording=sound(state);boolean done=false;'))
+        tests=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('reunionAudioWaitsForOriginalParentsAtSavedStage',tests)
+
     def test_proposal_dismount_is_stopped_on_server_and_before_client_prediction(self):
         text=source('feast/BlackIsTraditional.java')
         self.assertIn('EntityMountEvent event',text);self.assertIn('ClientboundSetPassengersPacket(chair)',text)
