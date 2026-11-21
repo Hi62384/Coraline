@@ -48,13 +48,13 @@ jobs:
           java -cp build/story-route-qa com.coraline.feast.RescueWebRulesSmoke
           java -cp build/story-route-qa com.coraline.feast.RescueVisionRulesSmoke
 
-      - name: Compile Forge mod including source GameTests
+      - name: Compile Forge mod including story-softlock GameTests
         shell: bash
         run: |
           chmod +x ./gradlew
           ./gradlew --no-daemon --max-workers=2 \
             '-Dorg.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=768m' \
-            -PgameTests compileJava
+            -PgameTests -PstorySoftlockTests compileJava
 
       - name: Install native game/audio build dependencies
         shell: bash
@@ -71,7 +71,7 @@ jobs:
           # Gradle emits its authentic launch spec, then exits successfully.
           ./gradlew --no-daemon --max-workers=2 \
             '-Dorg.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=768m' \
-            -PgameTests -PfreshGameTests -PqaCodeOnlyResources -PexportNativeLaunch runGameTestServer
+            -PgameTests -PstorySoftlockTests -PfreshGameTests -PqaCodeOnlyResources -PexportNativeLaunch runGameTestServer
           test -s build/qa-launch-runGameTestServer.json
           python3 - <<'PY'
           import json
