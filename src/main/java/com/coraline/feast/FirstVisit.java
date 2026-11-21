@@ -138,7 +138,14 @@ public final class FirstVisit {
     }
     static void table(ServerPlayer p,VisitData.Scene s){
         var existingTable=props(p,s).stream().filter(e->e.kind()==ScenePropEntity.TABLE).findFirst().orElse(null);
-        if(existingTable!=null){existingTable.longDining(true);return;}
+        if(existingTable!=null){
+            existingTable.longDining(true);
+            // An interrupted supper table can survive a save before all nine
+            // chairs are registered. Reconcile missing physical seats instead
+            // of treating the mere table entity as a completed scene.
+            ensureChairs(p,s);
+            return;
+        }
         spawn(p,s,ScenePropEntity.TABLE,s.table.getX()+.5,s.table.getY(),s.table.getZ()+.5,0).longDining(true);
         ensureChairs(p,s);
         for(int theme=0;theme<4;theme++){
