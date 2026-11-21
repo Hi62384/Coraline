@@ -9,6 +9,23 @@ ASSETS=ROOT/'src/main/resources/assets/coraline'
 def source(name):return (JAVA/name).read_text(encoding='utf-8-sig')
 
 class CurrentStoryRepairs(unittest.TestCase):
+    def test_web_journal_recovers_interrupted_placement_and_sag(self):
+        web=source('feast/RescueWebSite.java')
+        floor=web.split('private static boolean floor(ServerLevel l,CompoundTag journal,Vec3 point)',1)[1].split('public static void sag(',1)[0]
+        self.assertIn('receipt.put("PreviousPlaced",NbtUtils.writeBlockState(old))',floor)
+        self.assertIn('if(!l.getBlockState(pos).equals(state))return false',floor)
+        self.assertIn('receipt.remove("PreviousPlaced")',floor)
+        self.assertIn('if(!recorded&&!old.isAir())return false',floor)
+        self.assertIn('old.equals(NbtUtils.readBlockState(lookup,receipt.getCompound("PreviousPlaced")))',floor)
+        sag=web.split('public static void sag(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static void restore(',1)[0]
+        self.assertIn('cell.put("PreviousPlaced",NbtUtils.writeBlockState(old))',sag)
+        self.assertIn('if(l.getBlockState(at).equals(state))cell.remove("PreviousPlaced")',sag)
+        self.assertIn('if(l.getBlockState(at).equals(saved))cell.remove("PreviousPlaced")',sag)
+        cleanup=source('feast/RescueSiteCleanup.java')
+        self.assertIn('entry.contains("PreviousPlaced",net.minecraft.nbt.Tag.TAG_COMPOUND)',cleanup)
+        self.assertIn('previous==null||!current.equals(previous)',cleanup)
+        self.assertIn('data.remove("WebVerified");data.remove("WebVerify");data.remove("WebEntryRecheck")',cleanup)
+
     def test_final_web_entry_revalidates_actual_journal_and_persists_retry(self):
         web=source('feast/RescueWebSite.java')
         self.assertIn('static boolean webVerificationRequired(boolean ready,boolean verified,int receipts)',web)
@@ -26,7 +43,9 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('receipt.contains("Original",Tag.TAG_COMPOUND)',verify)
         self.assertIn('receipt.contains("Placed",Tag.TAG_COMPOUND)',verify)
         self.assertIn('!actual.equals(placed)&&!actual.equals(original)',verify)
-        self.assertIn('if(actual.equals(original)&&!actual.equals(placed))',verify)
+        self.assertIn('if(!actual.equals(placed))',verify)
+        self.assertIn('previous==null||!actual.equals(previous)',verify)
+        self.assertIn('receipt.remove("PreviousPlaced")',verify)
         self.assertIn('if(!level.getBlockState(pos).equals(placed))',verify)
         finale=source('feast/BeldamFinale.java')
         entry=finale.split('static boolean enterWeb(ServerPlayer p,VisitData.Scene s,ParentEntity mother)',1)[1].split('private static void rememberPosition(',1)[0]
