@@ -84,6 +84,17 @@ public final class ParentRescueStory {
         if((state==Phase.KITCHEN||state==Phase.WAIT_KITCHEN_SEAT
                 ||state==Phase.H||state==Phase.I||state==Phase.J||state==Phase.K
                 ||state==Phase.SERVE)&&!kitchen(p,s)){
+            // If the save lost its kitchen coordinates midway through voiced
+            // cooking, stop that playback. Once the real appliance returns,
+            // replay this same checkpoint instead of advancing on stale audio.
+            if((state==Phase.H||state==Phase.I||state==Phase.J||state==Phase.K)
+                    &&(n.getBoolean("Audio")||n.contains("ReturnRecording"))){
+                ShowPlayback.stop(p,s);
+                n.remove("Audio");
+                n.remove("ReturnRecording");
+                n.putInt("Ticks",0);
+                OtherMotherLoop.changed(p);
+            }
             if(n.getString("Blocker").isEmpty())n.putString("Blocker","Waiting for the original kitchen stove and table checkpoint.");
             FirstEscapeStory.hint(p,n.getString("Blocker"));
             return;
