@@ -96,3 +96,50 @@ jobs:
                       print('\n'.join(logfile.read_text(encoding='utf-8',errors='replace').splitlines()[-160:]),flush=True)
           sys.exit(status)
           PY
+
+      # The 39-case story_softlocks suite checks checkpoint safety. This second
+      # independently compiled native suite exercises the actual scene-level
+      # First Escape, shoe, tea, Cat, boss and finale interactions and geometry.
+      # Exclude the 100+ unrelated Wybie/game-economy suites to keep QA bounded.
+      - name: Compile native scene-specific First Escape through dream acceptance tests
+        shell: bash
+        run: |
+          ./gradlew --no-daemon --max-workers=2 \
+            '-Dorg.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=768m' \
+            -PgameTests -PwybieVisitTests \
+            '-PwybieTestClasses=FirstEscapeStoryGameTests.java,MissingParentsTeaGameTests.java,MissingParentsCatGameTests.java,StoryContinuationGameTests.java,RescueBossGameTests.java,RescueCatThrowGameTests.java,RescueTraversalGameTests.java,RescueReunionGameTests.java,RescueVisionGameTests.java,MantisTerrainGameTests.java,RescueAuthoredRatRouteGameTests.java,RescueRatGameTests.java,RescueFinaleInputGameTests.java,ReturnSceneRepairsGameTests.java,RescueHearingGameTests.java,RescueFarewellGateGameTests.java,TheatreLandingRegressionGameTests.java,RescueFoundationsGameTests.java,RescueGhostContinuityGameTests.java,RescuePlaybackGameTests.java,RescueCleanupGameTests.java,RescueKeyMigrationGameTests.java,CurrentStoryRepairsGameTests.java' compileJava
+
+      - name: Run detailed native scene-specific Forge GameTests
+        shell: bash
+        timeout-minutes: 35
+        run: |
+          ./gradlew --no-daemon --max-workers=2 \
+            '-Dorg.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=768m' \
+            -PgameTests -PwybieVisitTests \
+            '-PwybieTestClasses=FirstEscapeStoryGameTests.java,MissingParentsTeaGameTests.java,MissingParentsCatGameTests.java,StoryContinuationGameTests.java,RescueBossGameTests.java,RescueCatThrowGameTests.java,RescueTraversalGameTests.java,RescueReunionGameTests.java,RescueVisionGameTests.java,MantisTerrainGameTests.java,RescueAuthoredRatRouteGameTests.java,RescueRatGameTests.java,RescueFinaleInputGameTests.java,ReturnSceneRepairsGameTests.java,RescueHearingGameTests.java,RescueFarewellGateGameTests.java,TheatreLandingRegressionGameTests.java,RescueFoundationsGameTests.java,RescueGhostContinuityGameTests.java,RescuePlaybackGameTests.java,RescueCleanupGameTests.java,RescueKeyMigrationGameTests.java,CurrentStoryRepairsGameTests.java' \
+            -PfreshGameTests -PqaCodeOnlyResources -PexportNativeLaunch runGameTestServer
+          test -s build/qa-launch-runGameTestServer.json
+          python3 - <<'PY'
+          import json
+          import os
+          import subprocess
+          import sys
+          from pathlib import Path
+          config=json.loads(Path('build/qa-launch-runGameTestServer.json').read_text())
+          command=config['command']
+          environment={**os.environ,**config.get('environment',{})}
+          working=Path(config['cwd'])
+          try:
+              outcome=subprocess.run(command,cwd=working,env=environment,timeout=600,check=False)
+              status=outcome.returncode
+          except subprocess.TimeoutExpired:
+              print('Detailed story GameTest exceeded its bounded 600-second window',flush=True)
+              status=124
+          finally:
+              for logfile in (working/'logs/latest.log',working/'logs/debug.log'):
+                  if logfile.exists():
+                      print('--- Detailed GameTest log: '+str(logfile)+' ---',flush=True)
+                      lines=logfile.read_text(encoding='utf-8',errors='replace').splitlines()
+                      print('\n'.join(lines[-240:]),flush=True)
+          sys.exit(status)
+          PY
