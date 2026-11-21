@@ -27,6 +27,8 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('static boolean presentationReady(ServerPlayer p,VisitData.Scene s)',epilogue)
         self.assertIn('parentsOnReunionStage(n.getBoolean("ParentsStaged")',epilogue)
         self.assertIn('n.remove("ParentsStaged")',epilogue)
+        self.assertIn('if(!reunionViewerNear(p.serverLevel()==world,p.distanceToSqr(door.pos.getCenter())))',epilogue)
+        self.assertIn('RescueChapter.transfer(p,world,door.pos)',epilogue)
         self.assertIn('if(n.getBoolean("Audio")){ShowPlayback.stop(p,s)',epilogue)
         chapter=source('feast/RescueChapter.java')
         self.assertIn('!RescueEpilogue.presentationReady(p,s)',chapter)
