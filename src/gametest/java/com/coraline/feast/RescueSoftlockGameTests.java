@@ -372,6 +372,10 @@ public final class RescueSoftlockGameTests {
             "Normal original hunger did not survive the dream");
         helper.assertTrue(RescueVisionRules.restoredFood(false,0,14)==14,
             "Missing saved hunger should preserve current survival state");
+        helper.assertTrue(RescueVisionRules.restoredFood(true,Double.NaN,14)==14,
+            "Non-finite saved hunger must not be read as zero");
+        helper.assertTrue(RescueVisionRules.restoredFood(true,9.5,14)==14,
+            "Fractional saved hunger must not be truncated into a fake value");
         helper.assertTrue(RescueVisionRules.restoredSaturation(true,3,8,9)==3,
             "Normal original saturation did not survive the dream");
         helper.assertTrue(RescueVisionRules.restoredSaturation(true,Float.NaN,3,9)==3,
