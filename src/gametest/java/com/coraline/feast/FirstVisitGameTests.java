@@ -157,7 +157,15 @@ public final class FirstVisitGameTests {
         // path so this concurrent suite is not sensitive to a delayed entity add.
         p.tickCount=20;FirstVisit.tick(tick);
         var chairs=level.getEntitiesOfClass(ScenePropEntity.class,new net.minecraft.world.phys.AABB(s.table).inflate(5),e->s.owner.equals(e.owner)&&e.kind()==ScenePropEntity.CHAIR);
-        h.assertTrue(chairs.size()==3,"Supper needs three chairs");
+        // The production supper table now seats the player, both parents,
+        // and six additional guests. Check every actual seat instead of
+        // enforcing the obsolete three-chair fixture from the old version.
+        h.assertTrue(chairs.size()==9,"Supper needs all nine chairs; found "+chairs.size());
+        for(int slot=0;slot<9;slot++){
+            final int wanted=slot;
+            h.assertTrue(chairs.stream().filter(e->e.slot==wanted).count()==1,
+                "Supper chair slot "+slot+" is missing or duplicated");
+        }
         var chair=chairs.stream().filter(e->e.slot==0).findFirst().orElseThrow();p.setYRot(42);p.setXRot(-15);
         var result=chair.interactAt(p,new net.minecraft.world.phys.Vec3(0,1.65,-.38),InteractionHand.MAIN_HAND);
         h.assertTrue(result.consumesAction()&&s.stage==SUPPER&&p.getVehicle()==chair,"First backrest click did not immediately start supper");
