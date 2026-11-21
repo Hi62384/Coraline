@@ -9,6 +9,23 @@ ASSETS=ROOT/'src/main/resources/assets/coraline'
 def source(name):return (JAVA/name).read_text(encoding='utf-8-sig')
 
 class CurrentStoryRepairs(unittest.TestCase):
+    def test_partial_collapse_checkpoint_must_restart_the_real_exterior_gate(self):
+        encounter=source('feast/RescueEncounters.java')
+        validation=encounter.split('static boolean collapseCheckpointValid(CompoundTag n)',1)[1].split('static boolean restoreIncompleteCollapse(',1)[0]
+        self.assertIn('n.contains("CollapseStart",Tag.TAG_LONG)',validation)
+        self.assertIn('n.getLong("CollapseStart")!=0L',validation)
+        self.assertIn('n.getInt("CollapseDuration")>0',validation)
+        self.assertIn('Double.isFinite(radius)',validation)
+        rollback=encounter.split('static boolean restoreIncompleteCollapse(',1)[1].split('public static BlockPos garden(',1)[0]
+        self.assertIn('RescueChapter.go(p,s,EXTERIOR)',rollback)
+        self.assertIn('n.putBoolean("CatRescued",false)',rollback)
+        self.assertIn('n.remove("HouseSafe")',rollback)
+        self.assertIn('if(restoreIncompleteCollapse(p,s))return;',encounter)
+        self.assertIn('if(RescueEncounters.restoreIncompleteCollapse(p,s))return;',source('feast/RescueChapter.java'))
+        self.assertIn('RescueEncounters.collapseCheckpointValid(RescueChapter.data(scene))',source('feast/StoryTunnel.java'))
+        native=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('malformedCollapseCheckpointRestartsTheRealExteriorObjective',native)
+
     def test_interrupted_wybie_shoe_miss_recovers_saved_cue_without_an_automatic_hit(self):
         story=source('feast/FirstEscapeStory.java')
         shoe=story.split('static void shoe(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static void finishShoeThrow(',1)[0]
