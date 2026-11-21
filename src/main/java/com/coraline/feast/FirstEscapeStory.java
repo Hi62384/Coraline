@@ -666,13 +666,20 @@ private static boolean openLittleDoor(ServerPlayer p,VisitData.Scene s,boolean o
     private static CinematicPropEntity recoverMissingShoe(ServerPlayer p,VisitData.Scene s){
         var n=data(s);
         if(!s.owner.equals(p.getUUID())||phase(s)!=THROW_SHOE||!n.getBoolean("ShoeMissed")
-                ||!n.hasUUID("ShoeFlight")||!n.contains("ShoeFlightPosition",Tag.TAG_LONG)
-                ||p.serverLevel()!=p.server.overworld())return null;
+                ||!n.hasUUID("ShoeFlight")||p.serverLevel()!=p.server.overworld())return null;
         var id=n.getUUID("ShoeFlight");
         var original=FirstEscapeScene.prop(p,s,"ShoeFlight");
         if(original!=null)return original;
-        var oldAt=BlockPos.of(n.getLong("ShoeFlightPosition"));
-        LoopProps.hold(p.server.overworld(),oldAt);
+        if(n.contains("ShoeFlightPosition",Tag.TAG_LONG)){
+            var oldAt=BlockPos.of(n.getLong("ShoeFlightPosition"));
+            LoopProps.hold(p.server.overworld(),oldAt);
+        }else{
+            // A legacy interrupted throw may have saved the original UUID
+            // before recording its position. Do not use (0,0,0), and never
+            // fabricate a second shoe: the native UUID-absence check below
+            // must authenticate recovery across every dimension first.
+            LoopProps.hold(p.server.overworld(),p.blockPosition());
+        }
         // A UUID occupied by a foreign or incompatible entity is a hard
         // identity conflict, not permission to replace that entity.
         for(var level:p.server.getAllLevels())if(level.getEntity(id)!=null){
@@ -735,10 +742,12 @@ private static boolean openLittleDoor(ServerPlayer p,VisitData.Scene s,boolean o
         var n=data(s);
         var e=FirstEscapeScene.prop(p,s,"ShoeFlight");
         if(e==null){
-            if(n.hasUUID("ShoeFlight")&&n.contains("ShoeFlightPosition",Tag.TAG_LONG)){
+            if(n.hasUUID("ShoeFlight")){
                 // Allow time for an ordinary chunk reload before attempting
-                // the disk-verified missing-entity recovery.
-                LoopProps.hold(p.server.overworld(),BlockPos.of(n.getLong("ShoeFlightPosition")));
+                // the disk-verified missing-entity recovery. Older interrupted
+                // throws can have a valid UUID without a saved position.
+                if(n.contains("ShoeFlightPosition",Tag.TAG_LONG))
+                    LoopProps.hold(p.server.overworld(),BlockPos.of(n.getLong("ShoeFlightPosition")));
                 int missing=Math.min(240,n.getInt("ShoeMissingTicks")+1);
                 n.putInt("ShoeMissingTicks",missing);
                 if(missing>=60){
@@ -750,6 +759,13 @@ private static boolean openLittleDoor(ServerPlayer p,VisitData.Scene s,boolean o
         }
         n.remove("ShoeMissingTicks");
         if(e.cue()==1){
+            // A crash can save the authentic missed-projectile cue before
+            // the separate saved retry flag. Restore the flag, not a hit:
+            // only a real collision with Wybie may complete this checkpoint.
+            if(!n.getBoolean("ShoeMissed")){
+                n.putBoolean("ShoeMissed",true);
+                OtherMotherLoop.changed(p);
+            }
             // The original projectile remains in the world and is the ONLY
             // reusable shoe. Pull an unreachable miss back within reach after
             // a bounded delay; never invent a second bound inventory item.
