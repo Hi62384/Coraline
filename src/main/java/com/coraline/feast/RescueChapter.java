@@ -94,7 +94,11 @@ public final class RescueChapter {
             var result=BeldamFinale.debugSkipFight(p,s);if(phase(s)==Phase.LOCK_DOOR){p.sendSystemMessage(net.minecraft.network.chat.Component.literal(result));return;}
         }
         RescueSiteCleanup.tick(p,s);
-        if(ParentRescueStory.data(s).getBoolean("EmergedAtDoor")&&FirstEscapeStory.data(s).getBoolean("EscapeTunnelBuilt"))StoryTunnel.retireCrawl(p,s);
+        var escapeTunnel=FirstEscapeStory.data(s);
+        if(ParentRescueStory.data(s).getBoolean("EmergedAtDoor")
+                &&(escapeTunnel.getBoolean("EscapeTunnelBuilt")
+                        ||escapeTunnel.getBoolean("EscapeTunnelCleanupPending")&&p.tickCount%40==0))
+            StoryTunnel.retireCrawl(p,s);
         boolean mantis=state.ordinal()>=Phase.MANTIS_INTRO.ordinal()&&state.ordinal()<=Phase.MANTIS_SINK.ordinal()&&OtherWorld.isOther(p.level());
         if(mantis){long now=p.serverLevel().getGameTime();if(!n.getBoolean("MantisMusic")||now>=n.getLong("MantisMusicUntil")){VisitAudio.play(p,"other_father_boss_music",true);n.putBoolean("MantisMusic",true);n.putLong("MantisMusicUntil",now+Math.max(20,ShowRecordings.duration("other_father_boss_music")));}}
         else if(n.getBoolean("MantisMusic")){VisitAudio.stopMusic(p,"other_father_boss_music");n.remove("MantisMusic");}
