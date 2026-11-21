@@ -56,6 +56,12 @@ jobs:
             '-Dorg.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=768m' \
             -PgameTests compileJava
 
+      - name: Install native game/audio build dependencies
+        shell: bash
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends ffmpeg
+
       - name: Run native Forge GameTest server
         shell: bash
         timeout-minutes: 35
