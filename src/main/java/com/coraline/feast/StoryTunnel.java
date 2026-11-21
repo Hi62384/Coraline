@@ -150,7 +150,7 @@ public final class StoryTunnel {
                 var tent=MouseCircusSite.tent(p,scene);
                 if(tent==null)return;
                 landing=tent.south(4);
-            }else if(phase==RescueChapter.Phase.COLLAPSE&&RescueChapter.data(scene).contains("CollapseStart",Tag.TAG_LONG)){
+            }else if(phase==RescueChapter.Phase.COLLAPSE&&RescueEncounters.collapseCheckpointValid(RescueChapter.data(scene))){
                 landing=BlockPos.of(RescueChapter.data(scene).getLong("CollapseStart"));
             }else if(phase.ordinal()<=RescueChapter.Phase.MANTIS_GONE.ordinal()){
                 landing=RescueEncounters.garden(p,scene);
