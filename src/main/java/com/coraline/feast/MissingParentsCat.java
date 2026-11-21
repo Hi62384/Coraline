@@ -188,7 +188,7 @@ public final class MissingParentsCat {
                 FirstEscapeStory.hint(p,n.getString("Blocker"));
                 return;
             }
-            if(missingBedRecoveryReady(true,true,missing)){
+            if(missingBedRecoveryReady(n.getBoolean("Started"),originalCat!=null,missing)){
                 if(!StoryTunnel.restore(p,s)){
                     FirstEscapeStory.hint(p,"Restoring the original Little Door passage...");
                     return;
