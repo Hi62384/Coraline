@@ -76,10 +76,23 @@ jobs:
           python3 - <<'PY'
           import json
           import os
+          import subprocess
+          import sys
           from pathlib import Path
           config=json.loads(Path('build/qa-launch-runGameTestServer.json').read_text())
           command=config['command']
           environment={**os.environ,**config.get('environment',{})}
-          os.chdir(config['cwd'])
-          os.execvpe(command[0],command,environment)
+          working=Path(config['cwd'])
+          try:
+              outcome=subprocess.run(command,cwd=working,env=environment,timeout=480,check=False)
+              status=outcome.returncode
+          except subprocess.TimeoutExpired:
+              print('Native GameTest server exceeded the bounded 480-second execution window',flush=True)
+              status=124
+          finally:
+              for logfile in (working/'logs/latest.log',working/'logs/debug.log'):
+                  if logfile.exists():
+                      print('--- Native GameTest log: '+str(logfile)+' ---',flush=True)
+                      print('\n'.join(logfile.read_text(encoding='utf-8',errors='replace').splitlines()[-160:]),flush=True)
+          sys.exit(status)
           PY
