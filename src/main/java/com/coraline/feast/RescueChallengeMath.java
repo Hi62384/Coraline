@@ -9,6 +9,12 @@ public final class RescueChallengeMath {
     public static float struggle(float progress,int clicks,boolean accessible){return Math.max(0,Math.min(1,progress+Math.max(0,Math.min(1,clicks))*(accessible?.045F:.034F)-.0015F));}
     public static double pursuit(int clock,int duration,double length){return length*Math.max(0,Math.min(1,clock/(double)Math.max(1,duration)));}
     public static double collapse(int clock,int duration,double start,double refuge){return start+(refuge-start)*Math.max(0,Math.min(1,clock/(double)Math.max(1,duration)));}
+    /** A saved pickup placement is not evidence that the original Cat is still reachable.
+     * Only re-stage before the player has rescued it; callers still verify the
+     * actor UUID, target footing and collision before moving the SAME Cat. */
+    public static boolean restageUnrescuedCat(boolean placed,boolean rescued,double distanceSquared,boolean obstructed){
+        return !rescued&&(!placed||obstructed||!Double.isFinite(distanceSquared)||distanceSquared>64);
+    }
     public static boolean hears(double moved,boolean crouching,boolean sprinting,boolean landing,boolean sticky){return landing||sticky&&moved>.005||moved>(sprinting?.025:crouching?.18:.075);}
     /** Facial emotion follows the heard farewell, even while the server's cue packet is late. */
     public static boolean farewellSad(int cue,boolean farewell,int recordingTick){return cue>=3&&(cue==5||farewell&&recordingTick>=240);}
