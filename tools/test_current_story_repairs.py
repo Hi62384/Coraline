@@ -9,6 +9,38 @@ ASSETS=ROOT/'src/main/resources/assets/coraline'
 def source(name):return (JAVA/name).read_text(encoding='utf-8-sig')
 
 class CurrentStoryRepairs(unittest.TestCase):
+    def test_interrupted_wybie_shoe_miss_recovers_saved_cue_without_an_automatic_hit(self):
+        story=source('feast/FirstEscapeStory.java')
+        shoe=story.split('static void shoe(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static void finishShoeThrow(',1)[0]
+        missed=shoe.split('if(e.cue()==1){',1)[1].split('if(e.time()>=80',1)[0]
+        self.assertIn('if(!n.getBoolean("ShoeMissed"))',missed)
+        self.assertIn('n.putBoolean("ShoeMissed",true)',missed)
+        self.assertNotIn('finishShoeThrow(p,s,e)',missed)
+        self.assertIn('if(n.hasUUID("ShoeFlight")){',shoe)
+        self.assertIn('if(n.contains("ShoeFlightPosition",Tag.TAG_LONG))',shoe)
+        lost=story.split('private static CinematicPropEntity recoverMissingShoe(',1)[1].split('private static boolean relaunchShoe(',1)[0]
+        self.assertNotIn('||!n.contains("ShoeFlightPosition",Tag.TAG_LONG)',lost)
+        self.assertIn('LoopProps.hold(p.server.overworld(),p.blockPosition())',lost)
+        self.assertLess(lost.index('LegacyActorRecovery.Result.ABSENT'),lost.index('recreated.setUUID(id)'))
+        timeline=source('feast/FirstEscapeTimeline.java')
+        self.assertIn('case MISSING_D->Phase.THROW_SHOE',timeline)
+        self.assertNotIn('case THROW_SHOE->',timeline)
+        gametests=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('interruptedWybieShoeMissKeepsSameActorAndNeverAutoCompletes',gametests)
+
+    def test_malformed_web_and_crawl_receipts_never_crash_cinematic_tick(self):
+        web=source('feast/RescueWebSite.java')
+        sag=web.split('public static void sag(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static void restore(',1)[0]
+        self.assertIn('try{packed=Long.parseLong(key);}',sag)
+        self.assertIn('catch(NumberFormatException invalid)',sag)
+        self.assertIn('Invalid saved web cell reference.',sag)
+        passage=source('feast/RescuePassage.java')
+        cleanup=passage.split('public static void restore(ServerPlayer p,VisitData.Scene s)',1)[1]
+        self.assertIn('try{packed=Long.parseLong(key);}',cleanup)
+        self.assertIn('catch(NumberFormatException invalid)',cleanup)
+        self.assertIn('Invalid saved passage cleanup cell reference.',cleanup)
+        self.assertIn('continue;',cleanup)
+
     def test_original_little_door_return_rechecks_physical_web_and_crawl_before_transfers(self):
         tunnel=source('feast/StoryTunnel.java')
         return_body=tunnel.split('private static void resumeChapter(ServerPlayer p,VisitData.Scene scene)',1)[1].split('public static boolean controls(',1)[0]
