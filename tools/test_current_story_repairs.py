@@ -143,6 +143,27 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('canonicalKitchenSmokerCanStartParentRescueDinner',game)
         self.assertIn('blast_furnace',game)
 
+    def test_kitchen_partial_save_waits_for_rebuilt_original_appliance_before_audio(self):
+        story=source('feast/ParentRescueStory.java')
+        readiness=story.split('static boolean kitchenCheckpointComplete(CompoundTag n)',1)[1].split('private static boolean kitchen(',1)[0]
+        for key in ('n.contains("Kitchen",Tag.TAG_LONG)',
+                    'n.contains("Stove",Tag.TAG_LONG)',
+                    'n.contains("KitchenTable",Tag.TAG_LONG)',
+                    'n.getLong("Kitchen")==n.getLong("KitchenTable")'):
+            self.assertIn(key,readiness)
+        tick=story.split('public static void tick(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static boolean recording(',1)[0]
+        self.assertIn('state==Phase.WAIT_KITCHEN_SEAT',tick)
+        self.assertIn('state==Phase.H||state==Phase.I||state==Phase.J||state==Phase.K',tick)
+        self.assertIn('state==Phase.SERVE)&&!kitchen(p,s)',tick)
+        self.assertLess(tick.index('state==Phase.SERVE)&&!kitchen(p,s)'),
+                        tick.index('boolean done=recording(p,s,n,sound)'))
+        rebuild=story.split('private static boolean kitchen(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static boolean block(',1)[0]
+        self.assertIn('if(kitchenCheckpointComplete(n))return true;',rebuild)
+        self.assertLess(rebuild.index('if(stove==null)'),rebuild.index('n.putLong("Kitchen",center.asLong())'))
+        self.assertLess(rebuild.index('n.putLong("Stove",stove.asLong())'),rebuild.index('return true;'))
+        game=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('interruptedKitchenSaveCannotAdvanceWithMissingStoveOrTable',game)
+
     def test_parent_rescue_kitchen_cannot_stall_forever_on_actor_navigation(self):
         story=source('feast/ParentRescueStory.java')
         serve=story.split('case SERVE->{',1)[1].split('case L->{',1)[0]
