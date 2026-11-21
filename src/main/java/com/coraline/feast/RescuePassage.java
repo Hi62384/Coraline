@@ -167,7 +167,13 @@ public final class RescuePassage {
                 OtherMotherLoop.changed(p);
                 continue;
             }
-            var at=BlockPos.of(packed);level.getChunkAt(at);
+            var at=BlockPos.of(packed);
+            if(level.isOutsideBuildHeight(at)||!level.getWorldBorder().isWithinBounds(at)){
+                n.putString("Blocker","Saved passage cleanup cell lies outside the original world.");
+                OtherMotherLoop.changed(p);
+                continue;
+            }
+            level.getChunkAt(at);
             var row=cells.getCompound(key);
             if(!row.contains("Placed",Tag.TAG_COMPOUND)||!row.contains("Original",Tag.TAG_COMPOUND)
                     ||level.getBlockEntity(at)!=null)continue;
