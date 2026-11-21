@@ -9,6 +9,41 @@ import net.minecraftforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public final class RescueSoftlockGameTests {
     @GameTest(template="empty", batch="story_softlocks")
+    public static void interruptedWybieShoeMissKeepsSameActorAndNeverAutoCompletes(GameTestHelper helper) {
+        helper.assertTrue(FirstEscapeTimeline.after(FirstEscapeTimeline.Phase.THROW_SHOE)==null,
+            "The shoe scene must never time-advance after an ordinary miss");
+        var level=helper.getLevel();
+        var player=new net.minecraftforge.common.util.FakePlayer(level,
+            new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(),"ShoeMissQA"));
+        var scene=new VisitData.Scene();
+        scene.owner=player.getUUID();
+        scene.door=java.util.UUID.randomUUID();
+        scene.loop.event.putInt("Serial",731);
+        var saved=FirstEscapeStory.data(scene);
+        saved.putBoolean("Started",true);
+        saved.putString("Phase",FirstEscapeTimeline.Phase.THROW_SHOE.name());
+        var shoe=CinematicPropEntity.TYPE.get().create(level);
+        helper.assertTrue(shoe!=null,"The original shoe entity type is missing");
+        shoe.configure(scene,CinematicPropEntity.STORY_SHOE,0);
+        shoe.setPos(helper.absolutePos(new net.minecraft.core.BlockPos(1,2,1)).getCenter());
+        shoe.frame(1,0,0); // Physical miss survived; retry flag did not.
+        helper.assertTrue(level.addFreshEntity(shoe),"Could not create original saved shoe");
+        saved.putUUID("ShoeFlight",shoe.getUUID());
+        saved.putLong("ShoeFlightPosition",shoe.blockPosition().asLong());
+        VisitData.get(level.getServer()).scenes.put(scene.owner,scene);
+        FirstEscapeStory.shoe(player,scene);
+        helper.assertTrue(saved.getBoolean("ShoeMissed"),
+            "A partially saved missed shoe must re-enable the player's Use retry");
+        helper.assertTrue(FirstEscapeStory.phase(scene)==FirstEscapeTimeline.Phase.THROW_SHOE,
+            "A missed shoe incorrectly advanced Wybie's scene");
+        helper.assertTrue(shoe.isAlive()&&shoe.cue()==1&&shoe.getUUID().equals(saved.getUUID("ShoeFlight")),
+            "Retry recovery must retain the same canonical projectile and identity");
+        shoe.discard();
+        VisitData.get(level.getServer()).scenes.remove(scene.owner);
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
     public static void ratEyeCannotBeClaimedBeforeReturnFromCircus(GameTestHelper helper) {
         helper.assertFalse(RescueEncounters.canClaimRatEye(0), "A rat still in the circus cannot award the final eye");
         helper.assertFalse(RescueEncounters.canClaimRatEye(1), "A rat whose owner has not returned to the attic cannot award the final eye");
