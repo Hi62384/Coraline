@@ -169,6 +169,12 @@ public final class StoryTunnel {
                     return;
                 }
                 n.remove("StoryReturnCrawlPending");
+                // The original player is now physically back at metre zero.
+                // Reset the saved voice/chase clock as one authenticated retry;
+                // otherwise a late prior pursuit timestamp can catch them
+                // immediately despite a successful 52-block entry check.
+                n.remove("Recover");
+                RescueChapter.go(p,scene,RescueChapter.Phase.TUNNEL_CHASE);
                 OtherMotherLoop.changed(p);
                 return;
             }else if(webReturnPhase(phase)){
