@@ -110,6 +110,25 @@ public final class RescueSoftlockGameTests {
     }
 
     @GameTest(template="empty", batch="story_softlocks")
+    public static void savedUnrescuedCatCannotDisappearFromCollapsePickup(GameTestHelper helper) {
+        helper.assertTrue(RescueChallengeMath.restageUnrescuedCat(false,false,0,false),
+                "An unplaced original Cat was incorrectly accepted as ready");
+        helper.assertFalse(RescueChallengeMath.restageUnrescuedCat(true,false,64,false),
+                "A Cat near its saved physical pickup anchor was moved");
+        helper.assertTrue(RescueChallengeMath.restageUnrescuedCat(true,false,65,false),
+                "A stranded saved Cat was not restored to its checkpoint");
+        helper.assertTrue(RescueChallengeMath.restageUnrescuedCat(true,false,1,true),
+                "A Cat trapped inside a changed block was left unreachable");
+        helper.assertTrue(RescueChallengeMath.restageUnrescuedCat(true,false,Double.NaN,false),
+                "An invalid Cat distance was mistaken for a safe checkpoint");
+        helper.assertFalse(RescueChallengeMath.restageUnrescuedCat(false,true,Double.POSITIVE_INFINITY,true),
+                "The original Cat was teleported after being rescued");
+        helper.assertFalse(RescueChallengeMath.restageUnrescuedCat(true,true,99999,true),
+                "A rescued Cat was reset by a stale pickup location");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
     public static void rebirthResetsTheTeaModuleOwnedKey(GameTestHelper helper) {
         helper.assertTrue(MainStoryRebirth.STORY_KEYS.contains(MissingParentsTea.KEY),
             "A new run must retire the tea module's actual saved story state");
