@@ -13,15 +13,64 @@ public final class RescueWebSite {
     public static Vec3 at(ServerPlayer p,VisitData.Scene s,int lane,double u){var c=center(p,s);var v=RescueWebLayout.point(lane,u);return new Vec3(c.getX()+v.x(),c.getY()+v.y(),c.getZ()+v.z());}
     public static boolean prepare(ServerPlayer p,VisitData.Scene s){
         if(!RescueChapter.owns(p,s))return false;
-        var n=RescueChapter.data(s);if(n.getBoolean("WebReady"))return true;var l=p.server.getLevel(ActivityWorld.KEY);if(l==null)return false;
+        var n=RescueChapter.data(s);if(n.getBoolean("WebReady"))return verify(p,s);var l=p.server.getLevel(ActivityWorld.KEY);if(l==null)return false;
         int cursor=n.getInt("WebBuild"),end=Math.min(3*(RescueWebLayout.SAMPLES+1),cursor+54);
         var journal=n.getCompound("WebCells");n.put("WebCells",journal);
         for(;cursor<end;cursor++){int lane=cursor/(RescueWebLayout.SAMPLES+1),sample=cursor%(RescueWebLayout.SAMPLES+1);var point=at(p,s,lane,sample/(double)RescueWebLayout.SAMPLES);if(!floor(l,journal,point))return blocked(p,s,cursor);
             if(sample%(RescueWebLayout.SAMPLES/6)==0&&sample>0&&sample<RescueWebLayout.SAMPLES&&lane<2){var other=at(p,s,lane+1,sample/(double)RescueWebLayout.SAMPLES);for(int i=0;i<=12;i++)if(!floor(l,journal,point.lerp(other,i/12.0)))return blocked(p,s,cursor);}
         }
         n.put("WebCells",journal);n.putInt("WebBuild",cursor);
-        if(cursor==3*(RescueWebLayout.SAMPLES+1)){for(double u:new double[]{0,1}){var v=at(p,s,1,u);for(int x=-1;x<=1;x++)for(int z=-1;z<=1;z++)if(!floor(l,journal,v.add(x,0,z)))return blocked(p,s,cursor);}n.remove("Blocker");n.putBoolean("WebReady",true);OtherMotherLoop.changed(p);}
-        return n.getBoolean("WebReady");
+        if(cursor==3*(RescueWebLayout.SAMPLES+1)){for(double u:new double[]{0,1}){var v=at(p,s,1,u);for(int x=-1;x<=1;x++)for(int z=-1;z<=1;z++)if(!floor(l,journal,v.add(x,0,z)))return blocked(p,s,cursor);}n.remove("Blocker");n.putBoolean("WebReady",true);n.remove("WebVerified");n.putInt("WebVerify",0);OtherMotherLoop.changed(p);}
+        return n.getBoolean("WebReady")&&verify(p,s);
+    }
+    /** A saved WebReady flag is not proof that its physical journalled blocks
+     * survived a reload, an interrupted build or an unrelated later edit.
+     * Verification runs in small bounded batches before any fresh web entry. */
+    static boolean webVerificationRequired(boolean ready,boolean verified,int receipts){
+        return ready&&(!verified||receipts<=0);
+    }
+    private static boolean verify(ServerPlayer p,VisitData.Scene s){
+        var n=RescueChapter.data(s);var cells=n.getCompound("WebCells");
+        var keys=new java.util.ArrayList<>(cells.getAllKeys());
+        if(!webVerificationRequired(n.getBoolean("WebReady"),n.getBoolean("WebVerified"),keys.size()))return true;
+        if(keys.isEmpty()){n.putString("Blocker","The original web receipts are missing; cannot trust its saved ready flag.");return false;}
+        var level=p.server.getLevel(ActivityWorld.KEY);if(level==null)return false;
+        keys.sort(String::compareTo);
+        int cursor=n.getInt("WebVerify");
+        if(cursor<0||cursor>keys.size()){n.putString("Blocker","The saved web verification cursor is invalid.");return false;}
+        int end=Math.min(keys.size(),cursor+96);
+        var lookup=level.holderLookup(net.minecraft.core.registries.Registries.BLOCK);
+        for(int i=cursor;i<end;i++){
+            String key=keys.get(i);long packed;
+            try{packed=Long.parseLong(key);}catch(NumberFormatException invalid){
+                n.putString("Blocker","Invalid saved web cell reference.");return false;
+            }
+            var pos=BlockPos.of(packed);
+            if(level.isOutsideBuildHeight(pos)||!level.getWorldBorder().isWithinBounds(pos)){
+                n.putString("Blocker","A saved web cell is outside the permitted world.");return false;
+            }
+            var receipt=cells.getCompound(key);
+            if(!receipt.contains("Original",Tag.TAG_COMPOUND)||!receipt.contains("Placed",Tag.TAG_COMPOUND)){
+                n.putString("Blocker","The original web cell journal is incomplete at "+pos.toShortString());return false;
+            }
+            level.getChunkAt(pos);
+            var original=NbtUtils.readBlockState(lookup,receipt.getCompound("Original"));
+            var placed=NbtUtils.readBlockState(lookup,receipt.getCompound("Placed"));
+            var actual=level.getBlockState(pos);
+            if(level.getBlockEntity(pos)!=null||!actual.equals(placed)&&!actual.equals(original)){
+                n.putString("Blocker","The web at "+pos.toShortString()+" contains an unrelated edit. It was preserved.");return false;
+            }
+            if(actual.equals(original)&&!actual.equals(placed)){
+                level.setBlock(pos,placed,2);
+                if(!level.getBlockState(pos).equals(placed)){
+                    n.putString("Blocker","Unable to restore the original web at "+pos.toShortString());return false;
+                }
+            }
+            n.putInt("WebVerify",i+1);
+        }
+        if(end==keys.size()){n.putBoolean("WebVerified",true);n.remove("WebVerify");n.remove("Blocker");}
+        OtherMotherLoop.changed(p);
+        return n.getBoolean("WebVerified");
     }
     private static boolean blocked(ServerPlayer p,VisitData.Scene s,int cursor){var n=RescueChapter.data(s);n.putInt("WebBuild",cursor);n.putString("Blocker","The owner-allocated web route is obstructed; existing blocks were preserved.");OtherMotherLoop.changed(p);return false;}
     private static boolean floor(ServerLevel l,CompoundTag journal,Vec3 point){
@@ -40,6 +89,6 @@ public final class RescueWebSite {
             if(height!=current){var state=old.setValue(StoryWebBlock.HEIGHT,height);cell.put("Placed",NbtUtils.writeBlockState(state));l.setBlock(at,state,2);}
         }
     }
-    public static void restore(ServerPlayer p,VisitData.Scene s){if(!RescueChapter.owns(p,s))return;var l=p.server.getLevel(ActivityWorld.KEY);if(l==null)return;var n=RescueChapter.data(s);var cells=n.getCompound("WebCells");var lookup=l.holderLookup(net.minecraft.core.registries.Registries.BLOCK);for(String key:cells.getAllKeys()){var pos=BlockPos.of(Long.parseLong(key));l.getChunkAt(pos);var cell=cells.getCompound(key);if(l.getBlockEntity(pos)==null&&l.getBlockState(pos).equals(NbtUtils.readBlockState(lookup,cell.getCompound("Placed"))))l.setBlock(pos,NbtUtils.readBlockState(lookup,cell.getCompound("Original")),2);}n.remove("WebCells");n.remove("WebBuild");n.remove("WebReady");OtherMotherLoop.changed(p);}
+    public static void restore(ServerPlayer p,VisitData.Scene s){if(!RescueChapter.owns(p,s))return;var l=p.server.getLevel(ActivityWorld.KEY);if(l==null)return;var n=RescueChapter.data(s);var cells=n.getCompound("WebCells");var lookup=l.holderLookup(net.minecraft.core.registries.Registries.BLOCK);for(String key:cells.getAllKeys()){var pos=BlockPos.of(Long.parseLong(key));l.getChunkAt(pos);var cell=cells.getCompound(key);if(l.getBlockEntity(pos)==null&&l.getBlockState(pos).equals(NbtUtils.readBlockState(lookup,cell.getCompound("Placed"))))l.setBlock(pos,NbtUtils.readBlockState(lookup,cell.getCompound("Original")),2);}n.remove("WebCells");n.remove("WebBuild");n.remove("WebReady");n.remove("WebVerified");n.remove("WebVerify");n.remove("WebEntryRecheck");OtherMotherLoop.changed(p);}
     private RescueWebSite(){}
 }
