@@ -160,7 +160,7 @@ class CurrentStoryRepairs(unittest.TestCase):
         rebuild=story.split('private static boolean kitchen(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static boolean block(',1)[0]
         self.assertIn('if(kitchenCheckpointComplete(n))return true;',rebuild)
         self.assertLess(rebuild.index('if(stove==null)'),rebuild.index('n.putLong("Kitchen",center.asLong())'))
-        self.assertLess(rebuild.index('n.putLong("Stove",stove.asLong())'),rebuild.index('return true;'))
+        self.assertLess(rebuild.index('n.putLong("Stove",stove.asLong())'),rebuild.rindex('return true;'))
         game=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
         self.assertIn('interruptedKitchenSaveCannotAdvanceWithMissingStoveOrTable',game)
 
