@@ -156,6 +156,12 @@ public final class FirstVisitGameTests {
         // The live scene also reasserts seating every second; exercise that recovery
         // path so this concurrent suite is not sensitive to a delayed entity add.
         p.tickCount=20;FirstVisit.tick(tick);
+        // Newly added entities in a freshly forced cross-chunk GameTest
+        // template may not enter the live lookup until the next world tick.
+        // Exercise the REAL periodic recovery once more after chunk/entity
+        // registration, rather than asserting on the same server tick.
+        h.runAfterDelay(8,()->{
+        p.tickCount=40;FirstVisit.tick(tick);
         var chairs=level.getEntitiesOfClass(ScenePropEntity.class,new net.minecraft.world.phys.AABB(s.table).inflate(5),e->s.owner.equals(e.owner)&&e.kind()==ScenePropEntity.CHAIR);
         // The production supper table now seats the player, both parents,
         // and six additional guests. Check every actual seat instead of
@@ -177,6 +183,7 @@ public final class FirstVisitGameTests {
         var cake=level.getEntitiesOfClass(ScenePropEntity.class,new net.minecraft.world.phys.AABB(s.table).inflate(5),e->s.owner.equals(e.owner)&&e.kind()==ScenePropEntity.CAKE).get(0);cake.interact(p,InteractionHand.MAIN_HAND);h.assertTrue(s.cakeTaken&&p.getInventory().countItem(ModItems.WELCOME_CAKE.get())==1,"Cake gift failed");
         s.elapsed=VisitAudio.length("other_parents_waiting")-1;FirstVisit.tick(tick);h.assertTrue(s.stage==BED&&!p.isPassenger(),"Bedtime did not release chair");
         FirstVisit.slept(p);h.assertTrue(s.stage==DONE&&!FirstVisit.locked(p)&&door.activeUntil==0,"Sleep did not finish visit and close portal");level.setChunkForced(forced.x,forced.z,false);h.succeed();
+        });
         });
         });
     }
