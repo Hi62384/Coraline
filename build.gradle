@@ -792,6 +792,12 @@ if (project.hasProperty('qaCodeOnlyResources')) {
         'importVisitEventAudio','importNumberedOriginalAudio','importBlackIsTraditionalAudio',
         'importFirstEscapeAudio','importMissingParentsTeaAudio','importMissingParentsMusic',
         'importRescueChaptersAudio','importIncidentalDialogueAudio','importAcceptedGhostAudio',
+        // These remaining master-audio importers also run on a normal
+        // processResources task. QA must use pinned, committed runtime OGGs;
+        // an absent or changed source master cannot block a native GameTest.
+        'importGhostVictimAudio','importOtherFatherBossMusic','importLongFaceMusic',
+        'importTheCatMusic','importRescueArrivalMusic','importGameProposalMusic',
+        'importSpinkBossMusic','importGhostEyeMusic',
         'buildStorySubtitles'
     ] }.configureEach { enabled = false }
     gradle.taskGraph.whenReady { graph ->
