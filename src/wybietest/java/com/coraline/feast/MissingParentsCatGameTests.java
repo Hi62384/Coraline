@@ -28,6 +28,35 @@ public final class MissingParentsCatGameTests {
         var actor=ShowActors.actor(p,s,"cat");if(actor!=null)actor.discard();
         MissingParentsTeaGameTests.remove(p,s);
     }
+    @GameTest(template="empty") public static void missingBedBeforeCatStartsPreservesTheMirrorClue(GameTestHelper h){
+        var p=fixture(h);var s=OtherMotherLoop.scene(p);var n=MissingParentsCat.data(s);
+        var family=new FamilyData.Family();family.owner=s.owner;family.storyMissing=true;
+        FamilyData.get(p.server).families.put(family.id,family);
+        try{
+            MissingParentsCat.tick(p,s);
+            h.assertFalse(n.getBoolean("Started")||n.getBoolean("Complete"),"Absent original bed completed an unstarted Cat story");
+            h.assertFalse(n.getBoolean("DollsRetrieved")||s.loop.story.getBoolean("ParentDollsDiscovered"),"Missing original bed granted the mirror clue for free");
+            h.assertTrue(n.getString("Blocker").contains("original parents' bed"),"Player was not told how to restore the Cat encounter");
+        }finally{remove(p);}h.succeed();
+    }
+    @GameTest(template="empty") public static void missingBedFallbackCannotLoseTheOriginalCatForTheBoss(GameTestHelper h){
+        var p=fixture(h);var s=OtherMotherLoop.scene(p);var n=MissingParentsCat.data(s);
+        var family=new FamilyData.Family();family.owner=s.owner;family.storyMissing=true;
+        FamilyData.get(p.server).families.put(family.id,family);
+        try{
+            n.putBoolean("Started",true);n.putString("Phase","A");n.putUUID("Owner",s.owner);n.putUUID("Door",s.door);
+            n.putInt("MissingBedTicks",199);
+            MissingParentsCat.tick(p,s);
+            h.assertTrue(n.getInt("MissingBedTicks")==200,"Interrupted missing-bed timer did not resume");
+            h.assertFalse(n.getBoolean("Complete")||n.getBoolean("TunnelRestored"),"Lost Cat advanced toward an impossible later fight");
+            h.assertFalse(n.getBoolean("DollsRetrieved")||s.loop.story.getBoolean("ParentDollsDiscovered"),"Original Cat was missing but the clue was marked collected");
+            h.assertTrue(n.getString("Blocker").contains("original Cat"),"Missing canonical Cat produced no actionable blocker");
+            h.assertFalse(MissingParentsCat.missingBedRecoveryReady(false,true,200),"Unstarted Cat scene completed");
+            h.assertFalse(MissingParentsCat.missingBedRecoveryReady(true,false,200),"Missing original Cat completed");
+            h.assertFalse(MissingParentsCat.missingBedRecoveryReady(true,true,199),"Scene completed before its recovery grace");
+            h.assertTrue(MissingParentsCat.missingBedRecoveryReady(true,true,200),"Loaded Cat could not resume a blocked scene");
+        }finally{remove(p);}h.succeed();
+    }
     @GameTest(template="empty",batch="open-air-cat-mirror") public static void openingLineCanResolveAMirrorWithoutAnExistingHouseWall(GameTestHelper h){
         var p=fixture(h);var s=OtherMotherLoop.scene(p);var l=p.serverLevel();var bed=new BlockPos(130600,180,130600);var n=MissingParentsCat.data(s);
         try{
