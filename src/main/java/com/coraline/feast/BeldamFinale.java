@@ -343,7 +343,7 @@ public final class BeldamFinale {
         // A legacy checkpoint may lose RoomLocked while its player is in an
         // activity realm. Simply setting Recover would loop forever because
         // ordinary dialogue recovery resets its voice but does not teleport.
-        if(p.serverLevel()!=world||!FirstEscapeScene.fullyInRoom(s,p.getBoundingBox())){
+        if(p.serverLevel()!=world){
             if(!RescueChapter.transfer(p,world,FirstEscapeScene.room(s))
                     ||!FirstEscapeScene.fullyInRoom(s,p.getBoundingBox())){
                 n.putBoolean("Recover",true);
