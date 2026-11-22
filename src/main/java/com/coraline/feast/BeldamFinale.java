@@ -355,7 +355,7 @@ public final class BeldamFinale {
         // On interrupted world transfers bring back ONLY the recorded Mother,
         // never spawn a replacement or allow a cast actor in another dimension.
         if(mother!=null&&mother.isAlive()&&mother.level()!=world&&s.mom.equals(mother.getUUID())){
-            var returned=ShowTravel.guest(mother,p,s,world,Vec3.atBottomCenterOf(FirstEscapeScene.room(s).west(3)),true,"BeldamFinaleReturn");
+            var returned=ShowTravel.guest(mother,p,s,world,Vec3.atBottomCenterOf(FirstEscapeScene.room(s).west(3)),false,"BeldamFinaleReturn");
             if(returned instanceof ParentEntity original&&original.getUUID().equals(s.mom))mother=original;
         }
         boolean motherReady=mother!=null&&mother.isAlive()&&mother.level()==world&&s.mom.equals(mother.getUUID());
@@ -363,8 +363,13 @@ public final class BeldamFinale {
         if(state==FINAL_N&&!n.getBoolean("CatEscaped")){
             var cat=ShowActors.actor(p,s,"cat");
             if(cat==null||cat.level()!=world){
+                var anchor=Vec3.atBottomCenterOf(FirstEscapeScene.room(s));
                 Vec3 at=n.contains("CatSwatX")?new Vec3(n.getDouble("CatSwatX"),n.getDouble("CatSwatY"),n.getDouble("CatSwatZ"))
-                        :motherReady?facePoint(mother):Vec3.atBottomCenterOf(FirstEscapeScene.room(s));
+                        :motherReady?facePoint(mother):anchor;
+                // A partial/corrupted saved flight cannot teleport the unique
+                // Cat to NaN coordinates or outside the authored confrontation.
+                if(!Double.isFinite(at.x)||!Double.isFinite(at.y)||!Double.isFinite(at.z)
+                        ||at.distanceToSqr(anchor)>32*32)at=motherReady?facePoint(mother):anchor;
                 // Recovering a lease can move the SAME UUID between dimensions;
                 // a missing or foreign Cat never licenses a newly-created one.
                 cat=ShowActors.recoverCat(p,s,world,at);
