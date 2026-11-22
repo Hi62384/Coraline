@@ -115,6 +115,15 @@ public final class RescueChapter {
             if(p.tickCount%5==0)sync(p,s);
             return;
         }
+        // A reload into matching coordinates in the wrong dimension must
+        // not spawn props or consume dialogue from that foreign world.
+        if(state.ordinal()<=Phase.ROOM_LOCKED.ordinal()&&!RescueEncounters.stageDimensionReady(p,s,state)){
+            if(OtherWorld.isOther(p.level())||ActivityWorld.isActivity(p.level()))
+                RescueEncounters.retry(p,s,state);
+            else n.putString("Blocker","Return through your original Little Door to resume the saved rescue scene.");
+            if(p.tickCount%5==0)sync(p,s);
+            return;
+        }
         if(!BeldamFinale.originalExitReady(p,s)){if(p.tickCount%5==0)sync(p,s);return;}
         if(!RescueEncounters.presentationReady(p,s,state)||!RescueEpilogue.presentationReady(p,s)){
             if(p.tickCount%5==0)sync(p,s);

@@ -9,6 +9,35 @@ import net.minecraftforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public final class RescueSoftlockGameTests {
     @GameTest(template="empty", batch="story_softlocks")
+    public static void noncombatStageRecoveryDoesNotUseBossOrWrongDimension(GameTestHelper helper) {
+        for(var phase:java.util.List.of(RescueChapter.Phase.GARDEN_SEARCH,
+                RescueChapter.Phase.MANTIS_TAKE,RescueChapter.Phase.ATTIC_SEARCH,
+                RescueChapter.Phase.HOUSE_SAFE,RescueChapter.Phase.ROOM_LOCKED)) {
+            helper.assertFalse(RescueEncounters.activityCheckpoint(phase,0),
+                "Other World checkpoint would recover into the activity stage: "+phase);
+            helper.assertFalse(RescueBosses.fighting(phase),
+                "Noncombat checkpoint was incorrectly classified as a boss: "+phase);
+        }
+        for(var phase:java.util.List.of(RescueChapter.Phase.THEATRE_SEARCH,
+                RescueChapter.Phase.THEATRE_EYE,RescueChapter.Phase.BOB_E,
+                RescueChapter.Phase.SWARM_TRANSFORM)) {
+            helper.assertTrue(RescueEncounters.activityCheckpoint(phase,0),
+                "Theatre/circus checkpoint must recover into its original activity stage: "+phase);
+            helper.assertFalse(RescueBosses.fighting(phase),
+                "Noncombat activity checkpoint was treated as a boss: "+phase);
+        }
+        helper.assertTrue(RescueEncounters.activityCheckpoint(RescueChapter.Phase.RAT_CHASE,0),
+            "The first rat segment is still in the circus");
+        helper.assertFalse(RescueEncounters.activityCheckpoint(RescueChapter.Phase.RAT_CHASE,2),
+            "The returned rat must not reset to the original circus");
+        helper.assertTrue(RescueBosses.fighting(RescueChapter.Phase.MANTIS_FIGHT)
+                &&RescueBosses.fighting(RescueChapter.Phase.THEATRE_FIGHT)
+                &&RescueBosses.fighting(RescueChapter.Phase.SWARM_FIGHT),
+            "Actual boss retries must keep their own combat checkpoints");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
     public static void invalidEscapeRoomCleanupJournalCannotCrashOrEraseUnownedBlocks(GameTestHelper helper) {
         var level=helper.getLevel();
         helper.assertTrue(level.getServer().getLevel(com.coraline.otherworld.OtherWorld.KEY)!=null,

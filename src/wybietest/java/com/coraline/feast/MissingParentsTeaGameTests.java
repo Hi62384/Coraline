@@ -18,6 +18,31 @@ import java.util.*;
 @GameTestHolder("coraline")
 @net.minecraftforge.gametest.PrefixGameTestTemplate(false)
 public final class MissingParentsTeaGameTests {
+    @GameTest(template="empty") public static void savedTeaChairRejectsUnrelatedEntityWithoutLosingIdentity(GameTestHelper h){
+        var p=fixture(h);var s=OtherMotherLoop.scene(p);var n=MissingParentsTea.data(s);
+        com.coraline.tea.TeaSeatEntity original=null;
+        try{
+            owner(p,s);n.putBoolean("MissingParentsTea",true);n.putBoolean("Active",true);
+            BobinskyVisitData.get(p.server).teaVisits.put(s.owner,n);
+            var at=p.position().add(1,0,0);
+            original=MissingParentsTea.seat(p,n,"Seat",at);
+            h.assertTrue(original!=null&&MissingParentsTea.authenticSeat(original,p,n),
+                "The owner-bound original visitor chair was not staged");
+            var originalId=original.getUUID();
+            h.assertTrue(MissingParentsTea.seat(p,n,"Seat",at)==original,
+                "The saved chair must reuse the same actor, never generate a duplicate");
+            original.getPersistentData().putUUID("TeaToken",UUID.randomUUID());
+            h.assertTrue(MissingParentsTea.seat(p,n,"Seat",at)==null,
+                "A same-UUID chair with a foreign visit token was accepted");
+            h.assertTrue(n.getUUID("Seat").equals(originalId),
+                "Invalid saved chair identity was silently replaced");
+        }finally{
+            if(original!=null)original.discard();
+            remove(p,s);
+        }
+        h.succeed();
+    }
+
     static ServerPlayer fixture(GameTestHelper h){var l=h.getLevel().getServer().overworld();var p=new ServerPlayer(l.getServer(),l,new com.mojang.authlib.GameProfile(UUID.randomUUID(),"SeeingStoneQA"));p.connection=new net.minecraft.server.network.ServerGamePacketListenerImpl(p.server,new net.minecraft.network.Connection(net.minecraft.network.protocol.PacketFlow.SERVERBOUND),p);var s=new VisitData.Scene();s.owner=p.getUUID();s.door=UUID.randomUUID();s.stage=VisitData.Stage.DONE;s.loop.event.putInt("Serial",3);s.table=new BlockPos(108000,180,108000);s.piano=s.table;p.setPos(s.table.getCenter());VisitData.get(p.server).scenes.put(s.owner,s);return p;}
     static void ready(ServerPlayer p,VisitData.Scene s){var n=FirstEscapeStory.data(s);n.putBoolean("Started",true);n.putBoolean("Complete",true);n.putBoolean("OtherWorldSealed",true);n.putString("Phase","ESCAPE_COMPLETE");}
     static void owner(ServerPlayer p,VisitData.Scene s){var n=MissingParentsTea.data(s);n.putUUID("Owner",p.getUUID());n.putUUID("Door",s.door);n.putUUID("Token",UUID.randomUUID());}

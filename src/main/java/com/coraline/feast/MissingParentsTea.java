@@ -268,7 +268,51 @@ public final class MissingParentsTea {
         return target;
     }
     private static void gaze(TeaVisitorEntity e,Vec3 target){if(e==null)return;e.getLookControl().setLookAt(target.x,target.y,target.z,12,10);{float yaw=(float)Math.toDegrees(Math.atan2(-(target.x-e.getX()),target.z-e.getZ()));e.setYRot(net.minecraft.util.Mth.approachDegrees(e.getYRot(),yaw,9));e.setYBodyRot(e.getYRot());e.setYHeadRot(e.getYRot());e.setXRot((float)-Math.toDegrees(Math.atan2(target.y-e.getEyeY(),Math.hypot(target.x-e.getX(),target.z-e.getZ()))));}}
-    private static TeaSeatEntity seat(ServerPlayer p,CompoundTag n,String key,Vec3 at){if(n.hasUUID(key)){p.serverLevel().getChunkAt(BlockPos.containing(at));return p.serverLevel().getEntity(n.getUUID(key)) instanceof TeaSeatEntity seat?seat:null;}var seat=ModEntities.TEA_SEAT.get().create(p.serverLevel());if(seat==null)return null;seat.setPos(at);seat.getPersistentData().putUUID("TeaOwner",p.getUUID());seat.getPersistentData().putUUID("TeaToken",n.getUUID("Token"));if(!p.serverLevel().addFreshEntity(seat))return null;n.putUUID(key,seat.getUUID());return seat;}
+    static boolean authenticSeat(TeaSeatEntity seat,ServerPlayer p,CompoundTag n){
+        return seat!=null&&seat.level()==p.server.overworld()&&n.hasUUID("Token")
+                &&seat.getPersistentData().hasUUID("TeaOwner")&&p.getUUID().equals(seat.getPersistentData().getUUID("TeaOwner"))
+                &&seat.getPersistentData().hasUUID("TeaToken")&&n.getUUID("Token").equals(seat.getPersistentData().getUUID("TeaToken"));
+    }
+    static TeaSeatEntity seat(ServerPlayer p,CompoundTag n,String key,Vec3 at){
+        var scene=OtherMotherLoop.scene(p);
+        if(scene==null||!owns(p,scene,n)||!List.of("Seat","SpinkSeat").contains(key))return null;
+        var level=p.server.overworld();level.getChunkAt(BlockPos.containing(at));
+        if(n.hasUUID(key)){
+            var id=n.getUUID(key);
+            if(n.contains(key+"Position",Tag.TAG_LONG))level.getChunkAt(BlockPos.of(n.getLong(key+"Position")));
+            for(var world:p.server.getAllLevels()){
+                var entity=world.getEntity(id);
+                if(entity==null)continue;
+                if(entity instanceof TeaSeatEntity original&&authenticSeat(original,p,n))return original;
+                n.putString("Blocker","The saved "+key+" identity is occupied by an unrelated seat or actor.");
+                return null;
+            }
+            // Never replace an unloaded chair. Only proven native-region
+            // absence permits reconstructing the SAME UUID on a relog.
+            if(p.tickCount%20!=0)return null;
+            var proof=com.coraline.rebirth.LegacyActorRecovery.check(p.server,id);
+            if(!teaActorMissingProof(proof)){
+                n.putString("Blocker","Waiting to verify the original "+key+" chair: "+proof);
+                return null;
+            }
+            var restored=ModEntities.TEA_SEAT.get().create(level);
+            if(restored==null)return null;
+            restored.setUUID(id);restored.setPos(at);
+            restored.getPersistentData().putUUID("TeaOwner",p.getUUID());
+            restored.getPersistentData().putUUID("TeaToken",n.getUUID("Token"));
+            if(!level.addFreshEntity(restored))return null;
+            n.putLong(key+"Position",restored.blockPosition().asLong());
+            n.remove("Blocker");save(p,scene,true);
+            return restored;
+        }
+        var created=ModEntities.TEA_SEAT.get().create(level);if(created==null)return null;
+        created.setPos(at);created.getPersistentData().putUUID("TeaOwner",p.getUUID());
+        created.getPersistentData().putUUID("TeaToken",n.getUUID("Token"));
+        if(!level.addFreshEntity(created))return null;
+        n.putUUID(key,created.getUUID());n.putLong(key+"Position",created.blockPosition().asLong());
+        save(p,scene,true);
+        return created;
+    }
     static boolean seatSpink(ServerPlayer p,CompoundTag n){var spink=actor(p,n,"Spink");if(spink==null)return false;spink.getNavigation().stop();spink.setJumping(false);spink.setDeltaMovement(Vec3.ZERO);var seat=seat(p,n,"SpinkSeat",point(n,-2.5,.6,1.5));if(seat==null)return false;if(spink.getVehicle()!=seat){spink.stopRiding();if(!spink.startRiding(seat,true))return false;}spink.setNoAi(true);spink.setYBodyRot(-90);spink.setYRot(-90);return true;}
     private static void seatPlayer(ServerPlayer p,CompoundTag n){var seat=seat(p,n,"Seat",point(n,1.5,.6,1.5));if(seat!=null){seat.policy(true,false);if(p.getVehicle()!=seat)p.startRiding(seat,true);}}
     public static void release(ServerPlayer p,CompoundTag n){n.putBoolean("Seated",false);if(p.getVehicle() instanceof TeaSeatEntity actual&&p.getUUID().equals(actual.getPersistentData().getUUID("TeaOwner"))){actual.policy(false,false);p.stopRiding();}if(n.hasUUID("Seat")&&p.server.overworld().getEntity(n.getUUID("Seat")) instanceof TeaSeatEntity seat){seat.policy(false,false);if(p.getVehicle()==seat)p.stopRiding();}n.putBoolean("Seated",false);p.setForcedPose(null);}
@@ -294,7 +338,7 @@ public final class MissingParentsTea {
         var placed=n.getCompound("Placed");var level=p.server.overworld();var lookup=level.holderLookup(net.minecraft.core.registries.Registries.BLOCK);boolean unloaded=false;
         for(String key:placed.getAllKeys()){BlockPos at;try{at=BlockPos.of(Long.parseLong(key));}catch(NumberFormatException invalid){continue;}
             if(!level.hasChunkAt(at)){unloaded=true;continue;}var state=level.getBlockState(at);var expected=NbtUtils.readBlockState(lookup,placed.getCompound(key));
-            if(state.getBlock()!=expected.getBlock()||level.getBlockEntity(at)!=null)continue;
+            if(!state.equals(expected)||level.getBlockEntity(at)!=null)continue;
             if(state.getBlock() instanceof net.minecraft.world.level.block.StairBlock||state.getBlock() instanceof net.minecraft.world.level.block.TrapDoorBlock||state.getBlock() instanceof net.minecraft.world.level.block.SlabBlock){
                 var below=level.getBlockState(at.below());level.setBlock(at,com.coraline.bobinsky.BobinskyHouse.natural(below)&&below.isFaceSturdy(level,at.below(),net.minecraft.core.Direction.UP)?net.minecraft.world.level.block.Blocks.GRASS_BLOCK.defaultBlockState():net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(),3);
             }
@@ -304,7 +348,7 @@ public final class MissingParentsTea {
     private static void cleanup(ServerPlayer p,VisitData.Scene s){var n=data(s);if(!n.getBoolean("Granted")||!n.getBoolean("PlayerExited")||!safeToRemove(p,n)||!BobinskyHouse.unseen(p,n))return;stopHouseMusic(p,n);n.putBoolean("Cleaning",true);save(p,s,true);release(p,n);ShowPlayback.stop(p,s);
         for(String key:List.of("Spink","Forcible","Seat","SpinkSeat","BowlProp"))if(n.hasUUID(key)){var e=p.server.overworld().getEntity(n.getUUID(key));if(e!=null){e.ejectPassengers();e.discard();}}
         // Preserve any independently changed cell rather than overwriting a player's edit.
-        var safe=new ListTag();var lookup=p.serverLevel().holderLookup(net.minecraft.core.registries.Registries.BLOCK);for(var raw:n.getList("Originals",10)){var cell=(CompoundTag)raw;var at=BlockPos.of(cell.getLong("Pos"));String key=Long.toString(at.asLong());if(n.getCompound("Placed").contains(key)&&p.serverLevel().getBlockState(at).getBlock()==NbtUtils.readBlockState(lookup,n.getCompound("Placed").getCompound(key)).getBlock())safe.add(cell.copy());}n.put("Originals",safe);save(p,s,true);BobinskyHouse.restore(p.server.overworld(),n);n.putBoolean("Completed",true);n.putBoolean("Active",false);n.putBoolean("Built",false);n.putString("StoryPhase",Phase.COMPLETED.name());s.loop.story.putString("MajorStoryPhase","MISSING_PARENTS_SPINK_AND_FORCIBLE_COMPLETE");save(p,s,true);
+        var safe=new ListTag();var lookup=p.serverLevel().holderLookup(net.minecraft.core.registries.Registries.BLOCK);for(var raw:n.getList("Originals",10)){var cell=(CompoundTag)raw;var at=BlockPos.of(cell.getLong("Pos"));String key=Long.toString(at.asLong());if(n.getCompound("Placed").contains(key)&&p.serverLevel().getBlockState(at).equals(NbtUtils.readBlockState(lookup,n.getCompound("Placed").getCompound(key)))&&p.serverLevel().getBlockEntity(at)==null)safe.add(cell.copy());}n.put("Originals",safe);save(p,s,true);BobinskyHouse.restore(p.server.overworld(),n);n.putBoolean("Completed",true);n.putBoolean("Active",false);n.putBoolean("Built",false);n.putString("StoryPhase",Phase.COMPLETED.name());s.loop.story.putString("MajorStoryPhase","MISSING_PARENTS_SPINK_AND_FORCIBLE_COMPLETE");save(p,s,true);
     }
     private static void recover(ServerPlayer p,VisitData.Scene s){var n=data(s);stopHouseMusic(p,n);BobinskyHouse.hold(p.serverLevel(),center(n));n.remove("Recover");ShowPlayback.stop(p,s);n.remove("AudioStarted");n.putInt("Ticks",0);spawn(p,s);if(phase(n).ordinal()>=Phase.FORCIBLE_ENTRANCE.ordinal()&&phase(n).ordinal()<=Phase.STORY_I.ordinal()&&!n.getBoolean("ExitUnlocked")){n.putBoolean("Seated",true);seatPlayer(p,n);seatSpink(p,n);open(p,n,false);}save(p,s,true);}
     @SubscribeEvent public static void login(net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent e){if(e.getEntity() instanceof ServerPlayer p){var s=OtherMotherLoop.scene(p);if(active(s))data(s).putBoolean("Recover",true);}}
