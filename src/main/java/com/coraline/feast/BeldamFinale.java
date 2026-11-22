@@ -344,7 +344,7 @@ public final class BeldamFinale {
         // On interrupted world transfers bring back ONLY the recorded Mother,
         // never spawn a replacement or allow a cast actor in another dimension.
         if(mother!=null&&mother.isAlive()&&mother.level()!=world&&s.mom.equals(mother.getUUID())){
-            var returned=ShowTravel.guest(mother,p,s,world,Vec3.atBottomCenterOf(FirstEscapeScene.room(s)).west(3),true,"BeldamFinaleReturn");
+            var returned=ShowTravel.guest(mother,p,s,world,Vec3.atBottomCenterOf(FirstEscapeScene.room(s).west(3)),true,"BeldamFinaleReturn");
             if(returned instanceof ParentEntity original&&original.getUUID().equals(s.mom))mother=original;
         }
         boolean motherReady=mother!=null&&mother.isAlive()&&mother.level()==world&&s.mom.equals(mother.getUUID());
