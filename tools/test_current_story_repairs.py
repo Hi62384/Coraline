@@ -21,6 +21,24 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('p.tickCount=40;FirstVisit.tick(tick);',native)
         self.assertIn('Supper needs all nine chairs',native)
 
+    def test_mantis_native_hit_fixture_runs_in_original_arena(self):
+        native=(ROOT/'src/wybietest/java/com/coraline/feast/RescueBossGameTests.java').read_text()
+        fixture=native.split('public static void onlyCurrentOwnersRevealedExposedWeakPointAcceptsDamageAndCooldown(',1)[1].split('public static void offeredEyeCanBeCollected',1)[0]
+        self.assertIn('var p=player(h,com.coraline.otherworld.OtherWorld.KEY)',fixture)
+        self.assertIn('var foreign=player(h,com.coraline.otherworld.OtherWorld.KEY)',fixture)
+        self.assertIn('RescueBosses.inArena(p,RescueChapter.Phase.MANTIS_FIGHT)',fixture)
+        self.assertIn('RescueBosses.hit(p,point)',fixture)
+        self.assertIn('A missed body strike left the opening active',fixture)
+
+    def test_orphaned_original_little_door_fails_closed_without_story_scene(self):
+        tunnel=source('feast/StoryTunnel.java')
+        sealed=tunnel.split('public static boolean sealed(MinecraftServer server,java.util.UUID owner)',1)[1].split('public static boolean permanent(',1)[0]
+        self.assertIn('if(server==null||owner==null)return true',sealed)
+        self.assertIn('return s==null||ParentRescueStory.data(s)',sealed)
+        self.assertIn('if(server==null||owner==null)return false',tunnel)
+        native=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('staleDoorOwnerWithoutOriginalSceneCannotCrashOrReopenPassage',native)
+
     def test_first_escape_environment_restoration_rejects_corrupt_journal_rows(self):
         room=source('feast/FirstEscapeScene.java')
         cleanup=room.split('public static void restore(ServerPlayer p,VisitData.Scene s)',1)[1].split('private FirstEscapeScene()',1)[0]

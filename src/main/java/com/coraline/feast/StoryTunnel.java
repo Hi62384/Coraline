@@ -15,8 +15,18 @@ import net.minecraft.world.phys.Vec3;
 
 /** The permanent decayed entrance reuses the saved First Escape corridor, never the friendly loop. */
 public final class StoryTunnel {
-    public static boolean sealed(MinecraftServer server,java.util.UUID owner){var s=VisitData.get(server).scenes.get(owner);return ParentRescueStory.data(s).getCompound("Continuation").getBoolean("PermanentlySealed");}
-    public static boolean permanent(MinecraftServer server,java.util.UUID owner){var s=VisitData.get(server).scenes.get(owner);return MissingParentsCat.tunnelRestored(s)&&(!ParentRescueStory.started(s)||resumable(s))&&!sealed(server,owner);}
+    public static boolean sealed(MinecraftServer server,java.util.UUID owner){
+        // Orphaned doors must fail closed. Their old UUID is not a reason to
+        // manufacture a scene or throw while a world/owner is being reset.
+        if(server==null||owner==null)return true;
+        var s=VisitData.get(server).scenes.get(owner);
+        return s==null||ParentRescueStory.data(s).getCompound("Continuation").getBoolean("PermanentlySealed");
+    }
+    public static boolean permanent(MinecraftServer server,java.util.UUID owner){
+        if(server==null||owner==null)return false;
+        var s=VisitData.get(server).scenes.get(owner);
+        return MissingParentsCat.tunnelRestored(s)&&(!ParentRescueStory.started(s)||resumable(s))&&!sealed(server,owner);
+    }
     public static boolean restore(ServerPlayer p,VisitData.Scene s){
         if(s==null||!s.owner.equals(p.getUUID()))return false;
         var d=DoorData.get(p.server).doors.get(s.door);if(d==null||!s.owner.equals(d.owner))return false;
