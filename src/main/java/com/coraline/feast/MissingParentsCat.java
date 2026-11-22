@@ -484,6 +484,7 @@ public final class MissingParentsCat {
 
     static void shatter(ServerPlayer p,VisitData.Scene s){
         var n=data(s);if(n.getBoolean("MirrorBroken")||!n.contains("Mirror"))return;n.putBoolean("MirrorBroken",true);n.putInt("ShatterAge",0);
+        var at=BlockPos.of(n.getLong("Mirror"));
         // The presentation may use a pre-existing Rosewood Mirror in the player's
         // home. Shatter the story prop, not an unrelated permanent block.
         p.serverLevel().playSound(null,at,net.minecraft.sounds.SoundEvents.GLASS_BREAK,net.minecraft.sounds.SoundSource.BLOCKS,.7F,.8F);
