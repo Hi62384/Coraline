@@ -38,21 +38,37 @@ public final class RescueRatGameTests {
             if(ticks[0]>225){String detail=RescueChapter.data(s).getString("Blocker")+" at "+rat.position();RescueProps.retire(p,s,"RatBall2");rat.discard();VisitData.get(p.server).scenes.remove(s.owner);h.fail("Physical rat-ball movement stalled: "+detail);}
         });
     }
-    @GameTest(template="empty",timeoutTicks=160) public static void ratReturnPersistsTransferredOriginalAndRecoversLegacyCircusCheckpoint(GameTestHelper h){
+    @GameTest(template="empty",timeoutTicks=200) public static void ratReturnPersistsTransferredOriginalAndRecoversLegacyCircusCheckpoint(GameTestHelper h){
         var p=player(h);var s=OtherMotherLoop.scene(p);
+        var fixture=h.getLevel();
         var circus=p.server.getLevel(ActivityWorld.KEY);var house=p.server.getLevel(com.coraline.otherworld.OtherWorld.KEY);
         h.assertTrue(circus!=null&&house!=null,"Rat return worlds are unavailable");
-        var oldAt=new BlockPos(24000,180,24000);var returnedAt=new BlockPos(24500,180,24500);
-        circus.getChunkAt(oldAt);house.getChunkAt(returnedAt);
-        var rat=ModEntities.MOUSE.get().create(circus);
+        // The native GameTest structure is the known spawn fixture. Move the
+        // same authentic actor into the owner's leased circus as a guest, rather
+        // than attempting to spawn it in an arbitrary inactive activity region.
+        var fixtureAt=h.absolutePos(new BlockPos(2,3,2));
+        var oldAt=MouseCircusSite.center(p,s).south(10);
+        var returnedAt=new BlockPos(24500,180,24500);
+        ShowStageLease.hold(p,s,true);
+        fixture.getChunkAt(fixtureAt);circus.getChunkAt(oldAt);house.getChunkAt(returnedAt);
+        var rat=ModEntities.MOUSE.get().create(fixture);
         h.assertTrue(rat!=null,"The original mouse type is unavailable");
-        rat.getPersistentData().putUUID("RescueOwner",s.owner);rat.setPos(Vec3.atBottomCenterOf(oldAt));
-        h.assertTrue(circus.addFreshEntity(rat),"Could not spawn the original saved rat");
-        var id=rat.getUUID();var chapter=RescueChapter.data(s);
-        chapter.putUUID("ChaseRat",id);chapter.putInt("RatLeg",1);
-        RescueEncounters.recordChaseRat(chapter,rat);
-        var oldRat=rat;
+        rat.doorId=s.door;rat.circusStyle(6);rat.catPose(0,1);rat.spying(true);rat.setInvulnerable(true);
+        rat.getPersistentData().putBoolean("CoralineDecoration",true);
+        rat.getPersistentData().putUUID("RescueOwner",s.owner);
+        rat.setPos(Vec3.atBottomCenterOf(fixtureAt));
+        h.assertTrue(fixture.addFreshEntity(rat),"Could not register the original rat in the native GameTest spawn world");
+        var original=rat;
         try{
+            var entered=ShowTravel.guest(rat,p,s,circus,Vec3.atBottomCenterOf(oldAt),true,"RatTestCircusEntry");
+            h.assertTrue(entered instanceof com.coraline.otherworld.MouseEntity
+                    &&original.getUUID().equals(entered.getUUID())&&entered.level()==circus,
+                    "Moving the original rat into its authored circus lost its saved native identity");
+            rat=(com.coraline.otherworld.MouseEntity)entered;
+            var id=rat.getUUID();var chapter=RescueChapter.data(s);
+            chapter.putString("Phase","RAT_CHASE");
+            chapter.putUUID("ChaseRat",id);chapter.putInt("RatLeg",1);
+            RescueEncounters.recordChaseRat(chapter,rat);
             var moved=ShowTravel.guest(rat,p,s,house,Vec3.atBottomCenterOf(returnedAt),true,"RescueRatReturn");
             h.assertTrue(moved instanceof com.coraline.otherworld.MouseEntity&&id.equals(moved.getUUID())
                     &&moved.level()==house,"Native circus-to-attic transfer lost the original rat identity");
@@ -67,7 +83,8 @@ public final class RescueRatGameTests {
                     &&id.equals(reloaded.getUUID("ChaseRat")),
                     "Ratmaster reload will look for a transferred rat in the old circus world");
         }finally{
-            rat.discard();oldRat.discard();VisitData.get(p.server).scenes.remove(s.owner);
+            rat.discard();original.discard();ShowStageLease.release(p,s,true);
+            VisitData.get(p.server).scenes.remove(s.owner);
         }
         h.succeed();
     }
