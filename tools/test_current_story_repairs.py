@@ -17,7 +17,9 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('ensureChairs(p,s);',table)
         self.assertLess(table.index('existingTable.longDining(true);'),table.index('ensureChairs(p,s);'))
         native=(ROOT/'src/gametest/java/com/coraline/feast/FirstVisitGameTests.java').read_text()
-        self.assertIn('h.runAfterDelay(8,()->{',native)
+        self.assertIn('h.succeedWhen(()->{',native)
+        self.assertIn('chairVerifyAt[0]=h.getTick()+8',native)
+        self.assertIn('h.getTick()>=chairVerifyAt[0]',native)
         self.assertIn('p.tickCount=40;FirstVisit.tick(tick);',native)
         self.assertIn('Supper needs all nine chairs',native)
 
