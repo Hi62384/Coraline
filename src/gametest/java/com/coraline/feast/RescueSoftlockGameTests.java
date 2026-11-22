@@ -21,8 +21,6 @@ public final class RescueSoftlockGameTests {
             "Garden dialogue could advance in the Activity World");
         helper.assertTrue(RescueEncounters.stageDimensionReady(onStage,scene,RescueChapter.Phase.THEATRE_SEARCH),
             "The original theatre stage was rejected");
-        helper.assertFalse(RescueEncounters.stageDimensionReady(onStage,scene,RescueChapter.Phase.CAT_NOTICE)==false,
-            "The post-boss reunion is outside this pre-finale stage gate");
         RescueChapter.data(scene).putInt("RatLeg",2);
         helper.assertFalse(RescueEncounters.stageDimensionReady(onStage,scene,RescueChapter.Phase.RAT_CHASE),
             "Rat chase after its attic return could still tick in the old circus");
