@@ -264,6 +264,15 @@ public final class BeldamFinale {
     /** Do not strand a post-crawl save in the Activity World. Check the real
      * owner-bound Overworld door before lock/banging or resume the real crawl
      * when an older checkpoint never committed the exit receipt. */
+    /** A saved seal alone is not enough: the owner's original door must still
+     * physically exist with its own block entity and closed, inactive portal. */
+    static boolean originalDoorSealed(ServerLevel home,DoorData.Door source,java.util.UUID doorId){
+        var block=home.getBlockState(source.pos);
+        return block.is(ModBlocks.TINY_DOOR.get())
+                &&!block.getValue(TinyDoorBlock.OPEN)&&!block.getValue(TinyDoorBlock.PORTAL)
+                &&home.getBlockEntity(source.pos) instanceof DoorBlockEntity tile
+                &&doorId.equals(tile.doorId);
+    }
     static boolean originalExitReady(ServerPlayer p,VisitData.Scene s){
         var state=RescueChapter.phase(s);
         if(!requiresOriginalExit(state))return true;
@@ -273,6 +282,25 @@ public final class BeldamFinale {
         if(source==null||!s.owner.equals(source.owner)||home!=p.server.overworld()){
             n.putString("Blocker","Waiting for the original owner-bound Overworld Little Door.");
             return false;
+        }
+        if(state==BANGING){
+            home.getChunkAt(source.pos);
+            if(!originalDoorSealed(home,source,s.door)){
+                var block=home.getBlockState(source.pos);
+                if(!block.is(ModBlocks.TINY_DOOR.get())
+                        ||!(home.getBlockEntity(source.pos) instanceof DoorBlockEntity tile)
+                        ||!s.door.equals(tile.doorId)){
+                    n.putString("Blocker","Restore the original owner-bound Little Door before the post-boss reunion.");
+                    return false;
+                }
+                // Reloading a saved seal after the real portal reopened must
+                // resume the *manual* key lock, not silently complete the ending.
+                n.putBoolean("PermanentlySealed",false);
+                n.putBoolean("BangingDone",false);
+                ParentRescueStory.data(s).putBoolean("DoorLocked",false);
+                RescueChapter.go(p,s,LOCK_DOOR);
+                return false;
+            }
         }
         if(state==LOCK_DOOR&&!n.getBoolean("CrawlReachedOverworld")){
             // A phase marker alone is not proof that the 52-block crawl was

@@ -738,6 +738,32 @@ class CurrentStoryRepairs(unittest.TestCase):
         generic=prop.split('InteractionResult interact(Player actor,InteractionHand hand)',1)[1].split('AABB getBoundingBoxForCulling()',1)[0]
         self.assertIn('if(RescueChapter.interact(p,this))return InteractionResult.CONSUME;',generic)
 
+    def test_boss_retry_never_uses_wrong_player_dimension_after_reload(self):
+        bosses=source('feast/RescueBosses.java')
+        retry=bosses.split('public static void retry(ServerPlayer p,VisitData.Scene s,String reason)',1)[1].split('private RescueBosses()',1)[0]
+        self.assertIn('var level=fighting(state)?arena(p,state):p.serverLevel();',retry)
+        self.assertIn('RescueChapter.transfer(p,level,at)',retry)
+        self.assertNotIn('RescueChapter.transfer(p,p.serverLevel(),at)',retry)
+        self.assertIn('bossRetryUsesOriginalArenaDimensionEvenWhenPlayerWasStrandedElsewhere',
+                      (ROOT/'src/wybietest/java/com/coraline/feast/RescueBossGameTests.java').read_text())
+
+    def test_rat_return_and_postboss_seal_recheck_after_reload(self):
+        encounter=source('feast/RescueEncounters.java')
+        handoff=encounter.split('else if(leg==1)',1)[1].split('else {ShowHouseAccess',1)[0]
+        self.assertIn('rat=returnedRat;',handoff)
+        self.assertIn('recordChaseRat(n,rat);',encounter)
+        self.assertIn('n.getInt("RatLeg")>=2',encounter)
+        self.assertIn('for(var waypoint:chaseHouseRoute(s))LoopProps.hold(savedWorld,waypoint)',encounter)
+        self.assertIn('ratReturnPersistsTransferredOriginalAndRecoversLegacyCircusCheckpoint',
+                      (ROOT/'src/wybietest/java/com/coraline/feast/RescueRatGameTests.java').read_text())
+        finale=source('feast/BeldamFinale.java')
+        recovery=finale.split('static boolean originalExitReady(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static boolean preflight(',1)[0]
+        self.assertIn('!originalDoorSealed(home,source,s.door)',recovery)
+        self.assertIn('n.putBoolean("PermanentlySealed",false);',recovery)
+        self.assertIn('RescueChapter.go(p,s,LOCK_DOOR);',recovery)
+        self.assertIn('originalExitReady(p,s),"A reopened saved door',
+                      (ROOT/'src/wybietest/java/com/coraline/feast/RescueFinaleInputGameTests.java').read_text())
+
     def test_ratmaster_clickable_ball_reaches_exact_saved_rat_and_eye_gate(self):
         prop=source('feast/CinematicPropEntity.java')
         # The pick box covers the tiny canonical passenger. Direct rat clicks

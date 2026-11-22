@@ -23,6 +23,17 @@ public final class RescueFinaleInputGameTests {
             p.getInventory().add(ParentRescueStory.boundKey(foreign));n.putBoolean("CrawlReachedOverworld",true);n.putBoolean("KeyRecovered",true);BeldamFinale.block(p,at);h.assertFalse(n.getBoolean("PermanentlySealed"),"Unrelated key satisfied the owner's lock");p.getInventory().clearContent();p.getInventory().add(key.copy());n.remove("CrawlReachedOverworld");BeldamFinale.block(p,at);h.assertTrue(RescueChapter.phase(s)==RescueChapter.Phase.LOCK_DOOR&&!n.getBoolean("PermanentlySealed"),"Key click bypassed actual crawl exit");n.putBoolean("CrawlReachedOverworld",true);n.remove("KeyRecovered");BeldamFinale.block(p,at);h.assertFalse(n.getBoolean("PermanentlySealed"),"Unrecovered key satisfied the finale");
             n.putBoolean("KeyRecovered",true);h.assertFalse(BeldamFinale.block(p,at.east()),"Clicking an unrelated block operated the door");h.assertTrue(BeldamFinale.block(p,at)&&n.getBoolean("PermanentlySealed")&&RescueChapter.phase(s)==RescueChapter.Phase.BANGING,"Actual owner key click did not seal and start banging");h.assertTrue(!h.getLevel().getBlockState(at).getValue(com.coraline.block.TinyDoorBlock.OPEN)&&!h.getLevel().getBlockState(at).getValue(com.coraline.block.TinyDoorBlock.PORTAL),"Manual lock left the passage open");
             s.loop=OtherMotherLoopState.load(s.loop.save());h.assertTrue(RescueChapter.data(s).getBoolean("PermanentlySealed")&&ParentRescueStory.data(s).getBoolean("DoorLocked")&&RescueChapter.phase(s)==RescueChapter.Phase.BANGING,"Seal/checkpoint lost on reload");h.assertFalse(BeldamFinale.block(p,at),"Repeated click replayed the seal transaction");h.assertTrue(p.getInventory().getItem(0).getTag().getString("Keepsake").equals("Original key metadata"),"Manual lock destroyed or replaced the recovered original key");
+            h.assertTrue(BeldamFinale.originalExitReady(p,s),"An unchanged real sealed door was not accepted after reload");
+            var reOpened=h.getLevel().getBlockState(at).setValue(com.coraline.block.TinyDoorBlock.OPEN,true);
+            h.getLevel().setBlock(at,reOpened,2);
+            h.assertFalse(BeldamFinale.originalExitReady(p,s),"A reopened saved door was incorrectly accepted as permanently sealed");
+            h.assertTrue(RescueChapter.phase(s)==RescueChapter.Phase.LOCK_DOOR
+                    &&!RescueChapter.data(s).getBoolean("PermanentlySealed")
+                    &&!ParentRescueStory.data(s).getBoolean("DoorLocked"),
+                    "Stale seal did not restore the manual original key interaction");
+            h.assertTrue(BeldamFinale.block(p,at)&&BeldamFinale.originalExitReady(p,s)
+                    &&RescueChapter.phase(s)==RescueChapter.Phase.BANGING,
+                    "Re-locking the original door after a stale seal failed to resume the ending");
         }finally{h.getLevel().setBlock(at,original,2);clean(p);clean(other);}h.succeed();
     }
     @GameTest(template="empty") public static void eyeChoiceNeedsPhysicalAuthenticEyesAndFreshOwnersNonceAcrossReload(GameTestHelper h){

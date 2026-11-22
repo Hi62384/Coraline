@@ -18,6 +18,18 @@ public final class RescueBossGameTests {
         }catch(ReflectiveOperationException error){throw new IllegalStateException("Native owner lookup fixture unavailable",error);}
     }
     private static ServerPlayer player(GameTestHelper h){var l=h.getLevel().getServer().getLevel(ActivityWorld.KEY);var p=new ServerPlayer(l.getServer(),l,new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(),"BossDirectorQA"));p.connection=new net.minecraft.server.network.ServerGamePacketListenerImpl(p.server,new net.minecraft.network.Connection(net.minecraft.network.protocol.PacketFlow.SERVERBOUND),p);p.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);var s=new VisitData.Scene();s.owner=p.getUUID();s.door=java.util.UUID.randomUUID();s.stage=VisitData.Stage.DONE;VisitData.get(p.server).scenes.put(s.owner,s);ParentRescueStory.data(s).putBoolean("Started",true);ParentRescueStory.data(s).put("Scenery",new net.minecraft.nbt.CompoundTag());RescueChapter.data(s).putBoolean("Started",true);RescueChapter.data(s).putLong("Garden",TheatreSite.center(p,s).asLong());return p;}
+    @GameTest(template="empty") public static void bossRetryUsesOriginalArenaDimensionEvenWhenPlayerWasStrandedElsewhere(GameTestHelper h){
+        var p=player(h);
+        try{
+            h.assertTrue(RescueBosses.arena(p,RescueChapter.Phase.MANTIS_FIGHT)==p.server.getLevel(com.coraline.otherworld.OtherWorld.KEY),
+                    "Mantis retry must return to the original Other World arena");
+            h.assertTrue(RescueBosses.arena(p,RescueChapter.Phase.THEATRE_FIGHT)==p.server.getLevel(ActivityWorld.KEY),
+                    "Other actresses retry must return to their actual theatre dimension");
+            h.assertTrue(RescueBosses.arena(p,RescueChapter.Phase.SWARM_FIGHT)==p.server.getLevel(ActivityWorld.KEY),
+                    "Ratmaster retry must return to its actual circus dimension");
+        }finally{clean(p);}
+        h.succeed();
+    }
     private static void clean(ServerPlayer p){var s=OtherMotherLoop.scene(p);RescueBosses.hideBar(p);for(var l:p.server.getAllLevels())for(var e:l.getAllEntities())if(e instanceof CinematicPropEntity prop&&prop.owned(s))prop.discard();for(String id:java.util.List.of("evil_other_father","other_miss_spink","other_miss_forcible")){var actor=ShowActors.actor(p,s,id);if(actor!=null)actor.discard();}VisitData.get(p.server).scenes.remove(s.owner);}
     @GameTest(template="empty") public static void everyBossPatternAndHealthTierStartsWithItsOwnTelegraphAndSurvivesReload(GameTestHelper h){var p=player(h);var s=OtherMotherLoop.scene(p);p.setInvulnerable(true);var changed=new java.util.ArrayList<BlockPos>();
         var states=java.util.List.of(RescueChapter.Phase.MANTIS_FIGHT,RescueChapter.Phase.THEATRE_FIGHT,RescueChapter.Phase.SWARM_FIGHT);
