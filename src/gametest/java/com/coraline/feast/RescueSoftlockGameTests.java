@@ -9,6 +9,22 @@ import net.minecraftforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public final class RescueSoftlockGameTests {
     @GameTest(template="empty", batch="story_softlocks")
+    public static void staleDoorOwnerWithoutOriginalSceneCannotCrashOrReopenPassage(GameTestHelper helper) {
+        var server=helper.getLevel().getServer();
+        var missing=java.util.UUID.randomUUID();
+        helper.assertFalse(VisitData.get(server).scenes.containsKey(missing),
+            "Missing-scene fixture unexpectedly reused a live owner");
+        helper.assertTrue(StoryTunnel.sealed(server,missing),
+            "An orphaned Little Door must fail closed instead of dereferencing a deleted story scene");
+        helper.assertFalse(StoryTunnel.permanent(server,missing),
+            "An orphaned Little Door must not expose a return tunnel");
+        helper.assertTrue(StoryTunnel.sealed(null,missing),
+            "A missing server cannot authenticate an original Little Door");
+        helper.assertFalse(StoryTunnel.permanent(null,missing),
+            "A missing server must not advertise an active story passage");
+        helper.succeed();
+    }
+    @GameTest(template="empty", batch="story_softlocks")
     public static void dreamCutsceneCannotAdvanceFromWrongRealmOrWithoutRealArrival(GameTestHelper helper) {
         var server=helper.getLevel().getServer();var stage=server.getLevel(ActivityWorld.KEY);
         helper.assertTrue(stage!=null,"The authentic dream Activity World must exist");
