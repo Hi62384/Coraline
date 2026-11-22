@@ -22,6 +22,11 @@ public final class FirstVisit {
     private static final Set<UUID> listening=new HashSet<>();
     private static final Map<UUID,Long> startupNext=new HashMap<>();
     private static final Map<UUID,String> startupProblems=new HashMap<>();
+    // First-visit chairs may be queued in the Other World's entity manager
+    // before a spatial entity query can see them. Keep the issued instance
+    // until registration or a bounded retry, not one spawn per tick/reentry.
+    private record PendingChair(ScenePropEntity chair,long issuedAt){}
+    private static final Map<VisitData.Scene,Map<Integer,PendingChair>> supperChairsPending=new WeakHashMap<>();
     public static VisitData.Scene active(ServerPlayer p){var s=OtherMotherLoop.scene(p);var tag=p.getPersistentData();return s!=null&&(!com.coraline.multiplayer.StoryCoop.guest(p)||com.coraline.multiplayer.StorySessionData.get(p.server).admittedOwner(p.getUUID()).isPresent())&&s.stage!=DONE&&OtherWorld.isOther(p.level())&&!tag.getBoolean("CoralineInTunnel")&&tag.hasUUID("CoralineVisitDoor")&&s.door.equals(tag.getUUID("CoralineVisitDoor"))?s:null;}
     public static boolean locked(ServerPlayer p){return active(p)!=null;}
     public static boolean bedAllowed(ServerPlayer p){var s=active(p);return s==null||s.stage==BED;}
@@ -160,12 +165,35 @@ public final class FirstVisit {
     }
     static void ensureChairs(ServerPlayer p,VisitData.Scene s){
         var existing=props(p,s);
+        var pending=supperChairsPending.computeIfAbsent(s,ignored->new HashMap<Integer,PendingChair>());
+        long now=p.serverLevel().getGameTime();
         for(int slot=0;slot<9;slot++){
             final int wanted=slot;
             var at=SupperSeating.position(s.table,slot);
-            var chair=existing.stream().filter(e->e.kind()==ScenePropEntity.CHAIR&&e.slot==wanted).findFirst().orElse(null);
-            if(chair==null)chair=spawn(p,s,ScenePropEntity.CHAIR,at.x,at.y,at.z,slot);
-            else if(chair.position().distanceToSqr(at)>.001)chair.setPos(at);
+            var matches=existing.stream().filter(e->e.kind()==ScenePropEntity.CHAIR&&e.slot==wanted&&!e.isRemoved()).toList();
+            var queued=pending.get(slot);
+            ScenePropEntity chair;
+            if(!matches.isEmpty()){
+                // A saved scene can already contain duplicate seats from an older
+                // delayed entity registration. Keep occupied seats in preference
+                // to empty duplicates, so sitting players never lose their chair.
+                chair=matches.stream().filter(Entity::isVehicle).findFirst().orElse(
+                    queued!=null&&matches.contains(queued.chair())?queued.chair():matches.get(0));
+                for(var extra:matches)if(extra!=chair){extra.ejectPassengers();extra.discard();}
+                if(queued!=null&&queued.chair()!=chair&&!matches.contains(queued.chair())
+                    &&!queued.chair().isRemoved()&&!queued.chair().isVehicle())queued.chair().discard();
+            }else if(queued!=null&&!queued.chair().isRemoved()
+                &&queued.chair().level()==p.serverLevel()
+                &&now>=queued.issuedAt()&&now-queued.issuedAt()<120){
+                // The first spawn was accepted but is not in the live UUID/spatial
+                // index yet. Reuse it rather than manufacturing another chair.
+                chair=queued.chair();
+            }else{
+                if(queued!=null&&!queued.chair().isRemoved()&&!queued.chair().isVehicle())queued.chair().discard();
+                chair=spawn(p,s,ScenePropEntity.CHAIR,at.x,at.y,at.z,slot);
+            }
+            pending.put(slot,new PendingChair(chair,now));
+            if(chair.position().distanceToSqr(at)>.001)chair.setPos(at);
             chair.setYRot(SupperSeating.facing(slot));
         }
     }
@@ -293,6 +321,7 @@ public final class FirstVisit {
     }
     static void forgetRuntime(UUID owner){listening.remove(owner);startupNext.remove(owner);startupProblems.remove(owner);}
     private static void cleanup(ServerPlayer p,VisitData.Scene s){
+        supperChairsPending.remove(s);
         var realm=RealmData.get(p.server).realms.get(s.door);
         if(OtherWorld.isOther(p.level())&&realm!=null)OtherWorldEstate.lockStudy(p.serverLevel(),realm.house,false);
         p.stopRiding();for(var prop:props(p,s)){prop.ejectPassengers();prop.discard();}for(var parent:new ParentEntity[]{parent(p,s.mom),parent(p,s.dad)})if(parent!=null){parent.stopRiding();parent.setGlowingTag(false);parent.getPersistentData().remove("VisitOwner");}
@@ -302,5 +331,5 @@ public final class FirstVisit {
     @SubscribeEvent public static void mount(net.minecraftforge.event.entity.EntityMountEvent e){if(e.isDismounting()&&e.getEntityMounting() instanceof ServerPlayer p&&!p.getPersistentData().getBoolean("CoralineRecovering")){var s=active(p);if(s!=null&&(s.stage==SUPPER||s.stage==CAKE||s.stage==WAITING)&&p.isAlive()&&p.getVehicle() instanceof ScenePropEntity seat&&seat.kind()==ScenePropEntity.CHAIR&&seat.slot==0&&p.getUUID().equals(seat.owner))e.setCanceled(true);}}
     @SubscribeEvent public static void logout(net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent e){listening.remove(e.getEntity().getUUID());startupNext.remove(e.getEntity().getUUID());startupProblems.remove(e.getEntity().getUUID());}
     @SubscribeEvent public static void respawn(net.minecraftforge.event.entity.player.PlayerEvent.PlayerRespawnEvent e){listening.remove(e.getEntity().getUUID());}
-    @SubscribeEvent public static void stopped(net.minecraftforge.event.server.ServerStoppedEvent e){listening.clear();startupNext.clear();startupProblems.clear();}
+    @SubscribeEvent public static void stopped(net.minecraftforge.event.server.ServerStoppedEvent e){listening.clear();startupNext.clear();startupProblems.clear();supperChairsPending.clear();}
 }

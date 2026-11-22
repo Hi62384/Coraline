@@ -176,6 +176,9 @@ public final class FirstVisitGameTests {
         // The live scene also reasserts seating every second; exercise that recovery
         // path so this concurrent suite is not sensitive to a delayed entity add.
         p.tickCount=20;FirstVisit.tick(tick);
+        // Deliberately reconcile repeatedly before the entity manager indexes
+        // every freshly spawned seat; it must not issue extra physical chairs.
+        FirstVisit.ensureChairs(p,s);FirstVisit.ensureChairs(p,s);
         // Newly added entities in a freshly forced cross-chunk GameTest
         // template may not enter the live lookup until the next world tick.
         // Exercise the REAL periodic recovery once more after chunk/entity

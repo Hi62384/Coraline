@@ -34,6 +34,16 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('Mantis body miss did not spend the exposed opening',fixture)
         self.assertGreaterEqual(fixture.count('n.putBoolean("MantisAttemptSpent",false)'),4)
 
+    def test_supper_chair_reconciliation_ignores_pending_entities_and_prunes_duplicates(self):
+        visit=source('feast/FirstVisit.java')
+        chairs=visit.split('static void ensureChairs(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static void scheduleRefill(',1)[0]
+        self.assertIn('supperChairsPending.computeIfAbsent(s',chairs)
+        self.assertIn('now-queued.issuedAt()<120',chairs)
+        self.assertIn('extra.ejectPassengers();extra.discard();',chairs)
+        self.assertIn('pending.put(slot,new PendingChair(chair,now))',chairs)
+        native=(ROOT/'src/gametest/java/com/coraline/feast/FirstVisitGameTests.java').read_text()
+        self.assertIn('FirstVisit.ensureChairs(p,s);FirstVisit.ensureChairs(p,s);',native)
+
     def test_cross_dimension_welcome_fixture_polls_real_progress_instead_of_silently_timing_out(self):
         native=(ROOT/'src/gametest/java/com/coraline/feast/FirstVisitGameTests.java').read_text()
         fixture=native.split('public static void welcomeSequenceReleasesPlayerAndClosesPortal(',1)[1].split('public static void cakeDropsPreserveEveryBiteState(',1)[0]
