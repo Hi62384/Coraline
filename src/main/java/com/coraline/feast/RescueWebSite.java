@@ -9,7 +9,15 @@ import net.minecraft.world.phys.Vec3;
 
 /** Journalled incremental owner-allocated web; never edits a neighbour's venue. */
 public final class RescueWebSite {
-    public static BlockPos center(ServerPlayer p,VisitData.Scene s){return ShowSiteData.get(p.server).center(s.owner,false).offset(150,-40,100);}
+    // Alternative placements stay inside this owner's 512-block allocation.
+    // A recorded original web is restored before its anchor may change.
+    private static final int[][] SITE_OFFSETS={{0,0},{0,96},{-96,0},{0,-96},{96,0},
+            {-96,96},{96,96},{-96,-96},{96,-96}};
+    static int siteAttempt(int saved){return Math.max(0,Math.min(SITE_OFFSETS.length-1,saved));}
+    public static BlockPos center(ServerPlayer p,VisitData.Scene s){
+        int[] shift=SITE_OFFSETS[siteAttempt(RescueChapter.data(s).getInt("WebSiteAttempt"))];
+        return ShowSiteData.get(p.server).center(s.owner,false).offset(150+shift[0],-40,100+shift[1]);
+    }
     public static Vec3 at(ServerPlayer p,VisitData.Scene s,int lane,double u){var c=center(p,s);var v=RescueWebLayout.point(lane,u);return new Vec3(c.getX()+v.x(),c.getY()+v.y(),c.getZ()+v.z());}
     public static boolean prepare(ServerPlayer p,VisitData.Scene s){
         if(!RescueChapter.owns(p,s))return false;
@@ -98,7 +106,7 @@ public final class RescueWebSite {
             var actual=level.getBlockState(pos);
             if(level.getBlockEntity(pos)!=null||!actual.equals(placed)
                     &&!actual.equals(original)&&(previous==null||!actual.equals(previous))){
-                n.putString("Blocker","The web at "+pos.toShortString()+" contains an unrelated edit. It was preserved.");return false;
+                n.putString("Blocker","The web at "+pos.toShortString()+" contains an unrelated edit. It was preserved.");return blocked(p,s,n.getInt("WebBuild"));
             }
             if(!actual.equals(placed)){
                 level.setBlock(pos,placed,2);
@@ -115,7 +123,34 @@ public final class RescueWebSite {
         OtherMotherLoop.changed(p);
         return n.getBoolean("WebVerified");
     }
-    private static boolean blocked(ServerPlayer p,VisitData.Scene s,int cursor){var n=RescueChapter.data(s);n.putInt("WebBuild",cursor);n.putString("Blocker","The owner-allocated web route is obstructed; existing blocks were preserved.");OtherMotherLoop.changed(p);return false;}
+    private static boolean blocked(ServerPlayer p,VisitData.Scene s,int cursor){
+        var n=RescueChapter.data(s);
+        n.putInt("WebBuild",cursor);
+        int attempt=siteAttempt(n.getInt("WebSiteAttempt"));
+        var activity=p.server.getLevel(ActivityWorld.KEY);
+        boolean occupiedByOwner=activity!=null&&p.serverLevel()==activity
+                &&p.distanceToSqr(Vec3.atBottomCenterOf(center(p,s)))<75*75;
+        // Never move an arena beneath its occupant. When safe, undo only our
+        // own receipted partial placements, retaining foreign edits and any
+        // unresolved receipts instead of abandoning another player's blocks.
+        if(!n.getBoolean("WebEntered")&&!n.getBoolean("WebEntryReady")
+                &&!occupiedByOwner&&attempt+1<SITE_OFFSETS.length){
+            restore(p,s);
+            if(n.getCompound("WebCells").isEmpty()){
+                n.putInt("WebSiteAttempt",attempt+1);
+                n.remove("WebReady");
+                n.remove("WebVerified");
+                n.putInt("WebBuild",0);
+                n.putInt("WebVerify",0);
+                n.putString("Blocker","Original web footprint obstructed; preparing an alternate site within your own allocation.");
+                OtherMotherLoop.changed(p);
+                return false;
+            }
+        }
+        n.putString("Blocker","The original web cannot be moved until its own placed cells are safely restored.");
+        OtherMotherLoop.changed(p);
+        return false;
+    }
     private static boolean floor(ServerLevel l,CompoundTag journal,Vec3 point){
         var pos=BlockPos.containing(point.x,point.y-.001,point.z);
         l.getChunkAt(pos);

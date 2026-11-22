@@ -11,7 +11,14 @@ import net.minecraft.world.phys.Vec3;
 /** Journalled physical 52 m crawl, preloaded before S. No exit before the actual end. */
 public final class RescuePassage {
     public static final int LENGTH=52;
-    public static BlockPos origin(ServerPlayer p,VisitData.Scene s){return ShowSiteData.get(p.server).center(s.owner,false).offset(120,-65,68);}
+    // The crawl is 52 blocks long. Moving only its narrow Z offset keeps
+    // alternate physical tunnels separate and inside the owner's site.
+    private static final int[] SITE_Z={0,16,-16,32,-32,48,-48,64,-64};
+    static int siteAttempt(int saved){return Math.max(0,Math.min(SITE_Z.length-1,saved));}
+    public static BlockPos origin(ServerPlayer p,VisitData.Scene s){
+        return ShowSiteData.get(p.server).center(s.owner,false)
+                .offset(120,-65,68+SITE_Z[siteAttempt(RescueChapter.data(s).getInt("PassageSiteAttempt"))]);
+    }
     private static final int CELL_COUNT=(LENGTH+5)*5*4,BUILD_BUDGET=96;
 
     private static BlockPos cell(BlockPos origin,int index){
@@ -25,7 +32,29 @@ public final class RescuePassage {
         return (shell?ModBlocks.TUNNEL_FABRIC.get():Blocks.AIR).defaultBlockState();
     }
     private static boolean blocked(ServerPlayer p,CompoundTag n,int index,String reason){
-        n.putString("Blocker","Rescue passage cell "+index+": "+reason);
+        int attempt=siteAttempt(n.getInt("PassageSiteAttempt"));
+        var activity=p.server.getLevel(ActivityWorld.KEY);
+        boolean occupiedByOwner=activity!=null&&p.serverLevel()==activity
+                &&p.distanceToSqr(Vec3.atBottomCenterOf(origin(p,OtherMotherLoop.scene(p))))<80*80;
+        // A blocked venue is not a permanent story loss. Move the *unentered*
+        // route to another owner-local strip, but only after all authentic
+        // original block receipts were successfully restored.
+        if(!n.getBoolean("PassageEntered")&&!occupiedByOwner&&attempt+1<SITE_Z.length){
+            var scene=OtherMotherLoop.scene(p);
+            if(scene!=null&&RescueChapter.owns(p,scene)){
+                restore(p,scene);
+                if(n.getCompound("PassageCells").isEmpty()){
+                    n.putInt("PassageSiteAttempt",attempt+1);
+                    n.remove("PassageReady");n.remove("PassageVerified");
+                    n.putInt("PassageBuild",0);n.putInt("PassageVerify",0);
+                    n.putString("Blocker","Original crawl obstructed; preparing the next owner-bound corridor.");
+                    OtherMotherLoop.changed(p);
+                    return false;
+                }
+            }
+        }
+        n.putString("Blocker","Rescue passage cell "+index+": "+reason+
+                " Clear the foreign block or retry after restoring owned tunnel cells.");
         OtherMotherLoop.changed(p);
         return false;
     }
