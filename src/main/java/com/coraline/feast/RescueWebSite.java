@@ -131,13 +131,15 @@ public final class RescueWebSite {
         n.putInt("WebBuild",cursor);
         int attempt=siteAttempt(n.getInt("WebSiteAttempt"));
         var activity=p.server.getLevel(ActivityWorld.KEY);
-        boolean occupiedByOwner=activity!=null&&p.serverLevel()==activity
-                &&p.distanceToSqr(Vec3.atBottomCenterOf(center(p,s)))<75*75;
+        var arenaCenter=Vec3.atBottomCenterOf(center(p,s));
+        boolean occupiedByPlayer=activity!=null&&p.server.getPlayerList().getPlayers().stream()
+                .anyMatch(visitor->visitor.serverLevel()==activity
+                        &&visitor.distanceToSqr(arenaCenter)<75*75);
         // Never move an arena beneath its occupant. When safe, undo only our
         // own receipted partial placements, retaining foreign edits and any
         // unresolved receipts instead of abandoning another player's blocks.
         if(!n.getBoolean("WebEntered")&&!n.getBoolean("WebEntryReady")
-                &&!occupiedByOwner&&attempt+1<SITE_OFFSETS.length){
+                &&!occupiedByPlayer&&attempt+1<SITE_OFFSETS.length){
             restore(p,s);
             if(n.getCompound("WebCells").isEmpty()){
                 n.putInt("WebSiteAttempt",attempt+1);

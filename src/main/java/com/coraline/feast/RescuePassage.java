@@ -33,14 +33,17 @@ public final class RescuePassage {
     }
     private static boolean blocked(ServerPlayer p,CompoundTag n,int index,String reason){
         int attempt=siteAttempt(n.getInt("PassageSiteAttempt"));
+        var scene=OtherMotherLoop.scene(p);
         var activity=p.server.getLevel(ActivityWorld.KEY);
-        boolean occupiedByOwner=activity!=null&&p.serverLevel()==activity
-                &&p.distanceToSqr(Vec3.atBottomCenterOf(origin(p,OtherMotherLoop.scene(p))))<80*80;
+        var start=scene==null?null:Vec3.atBottomCenterOf(origin(p,scene));
+        boolean occupiedByPlayer=activity!=null&&start!=null
+                &&p.server.getPlayerList().getPlayers().stream()
+                .anyMatch(visitor->visitor.serverLevel()==activity
+                        &&visitor.distanceToSqr(start)<80*80);
         // A blocked venue is not a permanent story loss. Move the *unentered*
         // route to another owner-local strip, but only after all authentic
         // original block receipts were successfully restored.
-        if(!n.getBoolean("PassageEntered")&&!occupiedByOwner&&attempt+1<SITE_Z.length){
-            var scene=OtherMotherLoop.scene(p);
+        if(!n.getBoolean("PassageEntered")&&!occupiedByPlayer&&attempt+1<SITE_Z.length){
             if(scene!=null&&RescueChapter.owns(p,scene)){
                 restore(p,scene);
                 if(n.getCompound("PassageCells").isEmpty()){
