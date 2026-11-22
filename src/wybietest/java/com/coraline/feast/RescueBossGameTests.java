@@ -181,4 +181,39 @@ public final class RescueBossGameTests {
         }finally{clean(p);}
         h.succeed();
     }
+    @GameTest(template="empty") public static void bossCannotAdvanceAcrossMatchingCoordinatesInWrongDimension(GameTestHelper h){
+        var p=player(h);var s=OtherMotherLoop.scene(p);var n=RescueChapter.data(s);
+        try{
+            n.putString("Phase",RescueChapter.Phase.MANTIS_FIGHT.name());
+            n.putInt("Ticks",41);
+            p.setPos(RescueEncounters.center(p,s));
+            h.assertFalse(RescueBosses.inArena(p,RescueChapter.Phase.MANTIS_FIGHT),"Offworld director was accepted into the Mantis arena");
+            h.assertFalse(RescueBosses.nearArena(p,s),"Matching coordinates in the Activity World became a Mantis boss location");
+            RescueChapter.tick(p,s);
+            h.assertTrue(n.getBoolean("Recover")&&n.getInt("Ticks")==41,"Offworld Mantis fight spent its attack clock instead of requesting recovery");
+            h.assertTrue(RescueBosses.inArena(p,RescueChapter.Phase.THEATRE_FIGHT)
+                    &&RescueBosses.inArena(p,RescueChapter.Phase.SWARM_FIGHT),"Theatre and Ratmaster arenas lost their Activity World identity");
+        }finally{clean(p);}
+        h.succeed();
+    }
+    @GameTest(template="empty") public static void finaleSwatWaitsForOriginalActorsAndRestartsInterruptedVoice(GameTestHelper h){
+        var p=player(h);var s=OtherMotherLoop.scene(p);var n=RescueChapter.data(s);
+        var other=p.server.getLevel(com.coraline.otherworld.OtherWorld.KEY);
+        var viewer=new ServerPlayer(p.server,other,p.getGameProfile());viewer.connection=p.connection;
+        try{
+            h.assertFalse(BeldamFinale.finaleCastReady(RescueChapter.Phase.FINAL_N,true,false,false),"Missing Cat allowed the swat");
+            h.assertTrue(BeldamFinale.finaleCastReady(RescueChapter.Phase.FINAL_N,true,false,true),"Already-escaped Cat blocked a genuine saved completion");
+            h.assertFalse(BeldamFinale.finaleCastReady(RescueChapter.Phase.FINAL_N,false,true,false),"Missing canonical Mother allowed the finale");
+            h.assertTrue(BeldamFinale.finaleCastReady(RescueChapter.Phase.FINAL_O,false,false,false),"Web entrance inherited the unrelated finale-cast gate");
+            n.putString("Phase",RescueChapter.Phase.FINAL_N.name());
+            n.putBoolean("Audio",true);
+            n.putInt("Ticks",360);
+            h.assertFalse(BeldamFinale.originalFinaleCastReady(viewer,s,RescueChapter.Phase.FINAL_N),"Absent original finale cast was treated as present");
+            h.assertTrue(!n.getBoolean("Audio")&&n.getInt("Ticks")==0&&!n.getString("Blocker").isEmpty(),
+                    "Missing original cast silently spent the recording rather than preserving the cutscene");
+            h.assertFalse(n.getBoolean("CatEscaped"),"A missing Cat was awarded an escape receipt");
+        }finally{clean(p);}
+        h.succeed();
+    }
+
 }

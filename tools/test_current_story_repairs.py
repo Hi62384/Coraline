@@ -1026,4 +1026,37 @@ class CurrentStoryRepairs(unittest.TestCase):
         track=source('client/MissingParentsMusic.java');self.assertIn('looping=false',track);self.assertIn('ShowPlaybackClient.observed',track)
         self.assertIn('return 45*20',source('feast/MissingParentsCat.java'))
 
+    def test_all_rescue_bosses_are_dimension_bound_and_offworld_fights_pause(self):
+        bosses=source('feast/RescueBosses.java')
+        chapter=source('feast/RescueChapter.java')
+        self.assertIn('static boolean inArena(ServerPlayer p,RescueChapter.Phase phase)',bosses)
+        self.assertIn('inArena(p,RescueChapter.phase(scene))',bosses)
+        self.assertIn('||!inArena(p,RescueChapter.phase(s)))return false',bosses)
+        self.assertIn('if(RescueBosses.fighting(state)&&!RescueBosses.inArena(p,state))',chapter)
+        self.assertIn('n.putBoolean("Recover",true)',chapter)
+        native=(ROOT/'src/wybietest/java/com/coraline/feast/RescueBossGameTests.java').read_text()
+        self.assertIn('bossCannotAdvanceAcrossMatchingCoordinatesInWrongDimension',native)
+
+    def test_finale_actor_absence_pauses_voice_without_faking_the_cat_swat(self):
+        finale=source('feast/BeldamFinale.java')
+        self.assertIn('static boolean finaleCastReady(',finale)
+        self.assertIn('state!=FINAL_N||catEscaped||catPresent',finale)
+        self.assertIn('ShowActors.recoverCat(p,s,world,at)',finale)
+        self.assertIn('Vec3.atBottomCenterOf(FirstEscapeScene.room(s).west(3)),false,"BeldamFinaleReturn"',finale)
+        self.assertIn('!Double.isFinite(at.x)||!Double.isFinite(at.y)||!Double.isFinite(at.z)',finale)
+        self.assertIn('at.distanceToSqr(anchor)>32*32',finale)
+        self.assertIn('ShowActors.storyCat(original)',finale)
+        self.assertIn('if(!keepPlayerInRoom(p,s)||!originalFinaleCastReady(p,s,state))return false',finale)
+        self.assertIn('n.remove("Audio");n.remove("AudioTail");n.putInt("Ticks",0)',finale)
+        self.assertIn('if(done&&n.getBoolean("CatEscaped")&&n.getBoolean("KeyRecovered"))',finale)
+        native=(ROOT/'src/wybietest/java/com/coraline/feast/RescueBossGameTests.java').read_text()
+        self.assertIn('finaleSwatWaitsForOriginalActorsAndRestartsInterruptedVoice',native)
+
+    def test_wybie_bicycle_chase_handles_a_completely_obstructed_navigation_search(self):
+        story=source('feast/FirstEscapeStory.java')
+        chase=story.split('private static Vec3 escapeTarget(ServerPlayer p,VisitData.Scene s,CharacterEntity w)',1)[1].split('private static void chase(',1)[0]
+        self.assertIn('var at=OtherWorld.safePlayer(',chase)
+        self.assertIn('if(at==null)continue;var path=w.getNavigation().createPath(at,0)',chase)
+        self.assertIn('return w.position()',chase)
+
 if __name__=='__main__':unittest.main()
