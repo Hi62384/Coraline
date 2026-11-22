@@ -69,6 +69,9 @@ public final class RescueWebSite {
     }
     private static boolean verify(ServerPlayer p,VisitData.Scene s){
         var n=RescueChapter.data(s);var cells=n.getCompound("WebCells");
+        // Verified geometry has no reason to allocate/sort thousands of NBT
+        // keys on each active fight tick. New entries explicitly clear this bit.
+        if(n.getBoolean("WebVerified")&&!cells.isEmpty())return true;
         var keys=new java.util.ArrayList<>(cells.getAllKeys());
         if(!webVerificationRequired(n.getBoolean("WebReady"),n.getBoolean("WebVerified"),keys.size()))return true;
         if(keys.isEmpty()){n.putString("Blocker","The original web receipts are missing; cannot trust its saved ready flag.");return false;}
@@ -190,43 +193,96 @@ public final class RescueWebSite {
         LoopProps.hold(l,pos);
         return true;
     }
-    /** A quiet, bounded weight depression changes the same tops the mesh reads. */
+    /** Only nearby strands and previously deformed cells need weight updates.
+     * The old per-four-tick full-journal scan was O(thousands of blocks). */
     public static void sag(ServerPlayer p,VisitData.Scene s){
-        if(!RescueChapter.owns(p,s)||p.tickCount%4!=0||p.serverLevel()!=p.server.getLevel(ActivityWorld.KEY))return;var n=RescueChapter.data(s);if(!n.getBoolean("WebReady"))return;var l=p.serverLevel();var cells=n.getCompound("WebCells");var lookup=l.holderLookup(net.minecraft.core.registries.Registries.BLOCK);
+        if(!RescueChapter.owns(p,s)||p.tickCount%4!=0
+                ||p.serverLevel()!=p.server.getLevel(ActivityWorld.KEY))return;
+        var n=RescueChapter.data(s);
+        if(!n.getBoolean("WebReady"))return;
+        var level=p.serverLevel();
+        var cells=n.getCompound("WebCells");
+        var lookup=level.holderLookup(net.minecraft.core.registries.Registries.BLOCK);
+        var tracked=new java.util.HashSet<Long>();
+        for(long packed:n.getLongArray("WebSagged"))tracked.add(packed);
         boolean updated=false;
-        for(String key:cells.getAllKeys()){
-            long packed;
-            try{packed=Long.parseLong(key);}catch(NumberFormatException invalid){
-                // A damaged legacy web journal must not repeatedly crash the
-                // player tick; leave the bad receipt intact for recovery.
-                n.putString("Blocker","Invalid saved web cell reference.");
-                OtherMotherLoop.changed(p);
-                return;
+
+        // One-time migration finds sagged or interrupted legacy writes. Later
+        // ticks touch only local blocks and tracked deformations.
+        if(!n.getBoolean("WebSagIndexReady")){
+            for(String key:cells.getAllKeys()){
+                long packed;
+                try{packed=Long.parseLong(key);}catch(NumberFormatException invalid){continue;}
+                var receipt=cells.getCompound(key);
+                if(receipt.contains("PreviousPlaced",Tag.TAG_COMPOUND)){tracked.add(packed);continue;}
+                if(!receipt.contains("Placed",Tag.TAG_COMPOUND)||!receipt.contains("RestHeight"))continue;
+                var block=NbtUtils.readBlockState(lookup,receipt.getCompound("Placed"));
+                if(block.is(ModBlocks.STORY_WEB.get())
+                        &&block.getValue(StoryWebBlock.HEIGHT)!=receipt.getInt("RestHeight"))
+                    tracked.add(packed);
             }
-            var at=BlockPos.of(packed);if(!l.hasChunkAt(at))continue;
-            var cell=cells.getCompound(key);var old=l.getBlockState(at);
-            if(!old.is(ModBlocks.STORY_WEB.get())||!cell.contains("Placed",Tag.TAG_COMPOUND))continue;
-            var saved=NbtUtils.readBlockState(lookup,cell.getCompound("Placed"));
+            n.putBoolean("WebSagIndexReady",true);
+            updated=true;
+        }
+        var candidates=new java.util.HashSet<Long>(tracked);
+        // Four-block horizontal reach covers the 2.5-metre weight kernel;
+        // a three-block Y window covers web slabs beneath the player's feet.
+        int px=net.minecraft.util.Mth.floor(p.getX()),py=net.minecraft.util.Mth.floor(p.getY()),
+                pz=net.minecraft.util.Mth.floor(p.getZ());
+        for(int dx=-3;dx<=3;dx++)for(int dz=-3;dz<=3;dz++)for(int dy=-3;dy<=1;dy++){
+            long packed=new BlockPos(px+dx,py+dy,pz+dz).asLong();
+            if(cells.contains(Long.toString(packed)))candidates.add(packed);
+        }
+        for(long packed:candidates){
+            String key=Long.toString(packed);
+            if(!cells.contains(key)){tracked.remove(packed);continue;}
+            var at=BlockPos.of(packed);
+            if(!level.hasChunkAt(at))continue;
+            var receipt=cells.getCompound(key);
+            var old=level.getBlockState(at);
+            if(!old.is(ModBlocks.STORY_WEB.get())
+                    ||!receipt.contains("Placed",Tag.TAG_COMPOUND))continue;
+            var saved=NbtUtils.readBlockState(lookup,receipt.getCompound("Placed"));
             if(!old.equals(saved)){
-                // A crash may have saved the intended sag but not its physical
-                // block. Resume only a matching previously-owned web cell.
-                if(cell.contains("PreviousPlaced",Tag.TAG_COMPOUND)
-                        &&old.equals(NbtUtils.readBlockState(lookup,cell.getCompound("PreviousPlaced")))){
-                    l.setBlock(at,saved,2);
-                    if(l.getBlockState(at).equals(saved))cell.remove("PreviousPlaced");
-                    updated=true;
+                // Interrupted writes may be replayed only from their recorded
+                // previous state; foreign edits remain untouched.
+                if(receipt.contains("PreviousPlaced",Tag.TAG_COMPOUND)
+                        &&old.equals(NbtUtils.readBlockState(lookup,receipt.getCompound("PreviousPlaced")))){
+                    level.setBlock(at,saved,2);
+                    if(level.getBlockState(at).equals(saved)){
+                        receipt.remove("PreviousPlaced");
+                        old=saved;
+                        updated=true;
+                    }
                 }
-                continue;
+                if(!old.equals(saved)){tracked.add(packed);continue;}
             }
-            int current=old.getValue(StoryWebBlock.HEIGHT);if(!cell.contains("RestHeight")){cell.putInt("RestHeight",current);updated=true;}int rest=cell.getInt("RestHeight");double top=at.getY()+rest/16.;double distance=Math.hypot(p.getX()-at.getX()-.5,p.getZ()-at.getZ()-.5);boolean bearing=Math.abs(p.getY()-top)<.35&&Math.abs(p.getDeltaMovement().y)<.2;int target=RescueWebLayout.weightedHeight(rest,distance,bearing);int height=current+Integer.signum(target-current);
+            int current=old.getValue(StoryWebBlock.HEIGHT);
+            if(!receipt.contains("RestHeight")){receipt.putInt("RestHeight",current);updated=true;}
+            int rest=receipt.getInt("RestHeight");
+            double top=at.getY()+rest/16.0;
+            double distance=Math.hypot(p.getX()-at.getX()-.5,p.getZ()-at.getZ()-.5);
+            boolean bearing=Math.abs(p.getY()-top)<.35&&Math.abs(p.getDeltaMovement().y)<.2;
+            int target=RescueWebLayout.weightedHeight(rest,distance,bearing);
+            int height=current+Integer.signum(target-current);
             if(height!=current){
                 var state=old.setValue(StoryWebBlock.HEIGHT,height);
-                cell.put("PreviousPlaced",NbtUtils.writeBlockState(old));
-                cell.put("Placed",NbtUtils.writeBlockState(state));
-                l.setBlock(at,state,2);
-                if(l.getBlockState(at).equals(state))cell.remove("PreviousPlaced");
+                receipt.put("PreviousPlaced",NbtUtils.writeBlockState(old));
+                receipt.put("Placed",NbtUtils.writeBlockState(state));
+                level.setBlock(at,state,2);
+                if(level.getBlockState(at).equals(state))receipt.remove("PreviousPlaced");
+                else{tracked.add(packed);updated=true;continue;}
                 updated=true;
             }
+            if(height!=rest||receipt.contains("PreviousPlaced",Tag.TAG_COMPOUND))
+                tracked.add(packed);
+            else tracked.remove(packed);
+        }
+        var indexed=n.getLongArray("WebSagged");
+        if(indexed.length!=tracked.size()||updated
+                ||java.util.Arrays.stream(indexed).anyMatch(x->!tracked.contains(x))){
+            n.putLongArray("WebSagged",tracked.stream().mapToLong(Long::longValue).sorted().toArray());
+            updated=true;
         }
         if(updated)OtherMotherLoop.changed(p);
     }
@@ -261,6 +317,7 @@ public final class RescueWebSite {
         if(cells.isEmpty()){
             n.remove("WebCells");n.remove("WebBuild");n.remove("WebReady");
             n.remove("WebVerified");n.remove("WebVerify");n.remove("WebEntryRecheck");n.remove("WebDoorRetryRecheck");
+            n.remove("WebSagged");n.remove("WebSagIndexReady");
             changed=true;
         }
         if(changed)OtherMotherLoop.changed(p);
