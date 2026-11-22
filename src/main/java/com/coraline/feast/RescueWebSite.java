@@ -212,7 +212,11 @@ public final class RescueWebSite {
         if(!n.getBoolean("WebSagIndexReady")){
             for(String key:cells.getAllKeys()){
                 long packed;
-                try{packed=Long.parseLong(key);}catch(NumberFormatException invalid){continue;}
+                try{packed=Long.parseLong(key);}catch(NumberFormatException invalid){
+                    n.putString("Blocker","Invalid saved web cell reference.");
+                    OtherMotherLoop.changed(p);
+                    return;
+                }
                 var receipt=cells.getCompound(key);
                 if(receipt.contains("PreviousPlaced",Tag.TAG_COMPOUND)){tracked.add(packed);continue;}
                 if(!receipt.contains("Placed",Tag.TAG_COMPOUND)||!receipt.contains("RestHeight"))continue;

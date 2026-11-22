@@ -27,7 +27,9 @@ public final class QuestRecovery {
             double moved=pos.distanceTo(last);if(moved>.01)travel+=Math.min(moved,1);last=pos;
             // Moving out of this small area is real progress/exploration, not a softlock.
             if(pos.distanceToSqr(origin)>9){resetMovement(pos,now);return false;}
-            return now-since>=STALL_TICKS&&travel>=8;
+            // Motionless owners are also detected, but the main tick offers an
+            // explicit opt-in rescue instead of relocating an AFK player.
+            return now-since>=STALL_TICKS&&(travel>=8||travel<.05);
         }
     }
     private static final Map<UUID,Watch> watching=new HashMap<>();
