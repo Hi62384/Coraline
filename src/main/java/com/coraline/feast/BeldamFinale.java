@@ -387,6 +387,22 @@ public final class BeldamFinale {
     }
     public static boolean preflight(ServerPlayer p,VisitData.Scene s){
         var state=RescueChapter.phase(s);var n=RescueChapter.data(s);
+        // Legacy rooms can already be sealed with an authentic eye left in
+        // storage. Never make SHOW_EYES an inescapable inventory dead end.
+        if(state.ordinal()>=FINAL_A.ordinal()&&state.ordinal()<=SHOW_EYES.ordinal()
+                &&!RescueEyes.carriedByOwner(p,s)){
+            if(p.tickCount%40==0)recoverPresentationEyes(p,s);
+            if(!RescueEyes.carriedByOwner(p,s)){
+                n.putBoolean("RoomLocked",false);
+                if(p.serverLevel()==p.server.getLevel(OtherWorld.KEY)){
+                    FirstEscapeStory.setDoor(p,FirstEscapeScene.entrance(s),true);
+                    FirstEscapeStory.setDoor(p,FirstEscapeScene.entrance(s).south(),true);
+                }
+                RescueChapter.go(p,s,HOUSE_SAFE);
+                n.putString("Blocker","Retrieve the three original ghost eyes from storage before sealing the room again.");
+                return false;
+            }
+        }
         if(state.ordinal()>=FINAL_I.ordinal()&&state.ordinal()<=FINAL_N.ordinal()&&!n.getBoolean("KeyRecovered")&&!StoryItemCustody.recoverSwallowedKey(p,s)){n.putString("Blocker","The swallowed key cannot be recovered: restore its saved custody record or bring the surviving owner-bound original out of storage.");return false;}
         if(state==FINAL_E&&!n.getBoolean("StoneTaken")){if(!StoryItemCustody.capture(p,s,"Stone",stack->StoryItemCustody.stone(stack,s))){n.putString("Blocker","Bring your original Seeing Stone out of storage. Unrelated stones are not substitutes.");return false;}p.stopUsingItem();n.putBoolean("StoneTaken",true);}
         if(!keepPlayerInRoom(p,s)||!originalFinaleCastReady(p,s,state))return false;
@@ -409,6 +425,12 @@ public final class BeldamFinale {
             case FINAL_E->{m.familyGesture(64,5);m.setItemSlot(EquipmentSlot.MAINHAND,StoryItemCustody.held(s,"Stone"));if(done)RescueChapter.go(p,s,FINAL_F);}
             case FINAL_F->{
                 m.setItemSlot(EquipmentSlot.MAINHAND,ItemStack.EMPTY);var target=hearth(s);var start=m.position().add(0,1.65,-.4);double u=Math.min(1,t/40.0);var point=start.lerp(target,u).add(0,Math.sin(u*Math.PI)*1.3,0);var stone=RescueProps.ensure(p,s,"ThrownStone",RescueProps.STONE,0,point);if(stone!=null){stone.setPos(point);stone.frame(0,t,1);}
+                if(stone==null||stone.level()!=p.level()){
+                    n.putInt("Ticks",Math.max(0,t-1));
+                    n.putString("Blocker","Waiting for the original thrown Seeing Stone prop; the stone is not yet destroyed.");
+                    return;
+                }
+                n.remove("Blocker");
                 if(u>=1&&!n.getBoolean("StoneDestroyed")){StoryItemCustody.destroy(s,"Stone");n.putBoolean("StoneDestroyed",true);RescueProps.hide(p,s,"ThrownStone");p.serverLevel().sendParticles(net.minecraft.core.particles.ParticleTypes.SOUL_FIRE_FLAME,target.x,target.y,target.z,18,.2,.3,.2,.025);OtherMotherLoop.changed(p);}
                 if(done&&n.getBoolean("StoneDestroyed"))RescueChapter.go(p,s,FINAL_G);
             }

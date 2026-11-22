@@ -76,9 +76,27 @@ public final class RescueBosses {
         n.putInt("BossTier",tier);n.putInt("BossBeat",beat);n.putInt("BossPattern",pattern);n.putBoolean("Vulnerable",state==MANTIS_FIGHT?n.contains("WeakUntil")&&n.getLong("WeakUntil")>=p.serverLevel().getGameTime():state==THEATRE_FIGHT?beat>=200:ratOpening(tier,beat));
         String name=state==MANTIS_FIGHT?"The Mechanical Mantis":state==THEATRE_FIGHT?"The Other Actresses":"The Ratmaster";
         var bar=BARS.computeIfAbsent(p.getUUID(),id->{var b=new ServerBossEvent(Component.literal(name),BossEvent.BossBarColor.PURPLE,BossEvent.BossBarOverlay.PROGRESS);b.addPlayer(p);return b;});bar.setName(Component.literal(name+" · "+(tier+1)+"/3"));bar.setProgress(Math.max(0,Math.min(1,hp/maximum)));
-        Vec3 center=RescueEncounters.center(p,s);boolean group=com.coraline.multiplayer.StorySessionData.get(p.server).hasGuests(s.owner);
-        for(var member:players(p,s)){bar.addPlayer(member);var delta=member.position().subtract(center);if(delta.horizontalDistanceSqr()>40*40||member.getY()<center.y-8){if(group)com.coraline.multiplayer.StoryCombatSafety.eliminate(member);else{lose(p,s);return;}}}
-        var participants=players(p,s);if(participants.isEmpty()){com.coraline.multiplayer.StoryCombatSafety.restoreGroup(p,s);lose(p,s);return;}
+        Vec3 center=RescueEncounters.center(p,s);
+        var participants=players(p,s);
+        // Pending/offline guests do not turn a solo boss attempt into a group
+        // fight; never silently ignore a failed spectator conversion.
+        boolean group=participants.size()>1;
+        for(var member:participants){
+            bar.addPlayer(member);
+            var delta=member.position().subtract(center);
+            if(delta.horizontalDistanceSqr()>40*40||member.getY()<center.y-8){
+                if(group&&!s.owner.equals(member.getUUID())){
+                    if(!com.coraline.multiplayer.StoryCombatSafety.eliminate(member)){
+                        n.putInt("Ticks",Math.max(0,time-1));
+                        n.putString("Blocker","Waiting to safely remove an out-of-bounds teammate before continuing combat.");
+                        return;
+                    }
+                }else{lose(p,s);return;}
+            }
+        }
+        participants=players(p,s);
+        // A disconnected or eliminated participant must not keep a stale boss bar.
+        for(var viewer:new ArrayList<>(bar.getPlayers()))if(!participants.contains(viewer))bar.removePlayer(viewer);if(participants.isEmpty()){com.coraline.multiplayer.StoryCombatSafety.restoreGroup(p,s);lose(p,s);return;}
         var aim=participants.get(Math.floorMod(cycle,participants.size()));var toPlayer=aim.position().subtract(center);
         boolean newRatAttack=state==SWARM_FIGHT&&(!n.contains("RatAttackCycle")||n.getInt("RatAttackCycle")!=cycle);
         if(newRatAttack||state!=SWARM_FIGHT&&(beat<=1||state==MANTIS_FIGHT&&beat==35)){
@@ -96,13 +114,20 @@ public final class RescueBosses {
         }
         var locked=new Vec3(n.getDouble("AttackX"),aim.getY(),n.getDouble("AttackZ"));
         Vec3 weak=state==MANTIS_FIGHT?mantis(p,s,time,3):state==THEATRE_FIGHT?actresses(p,s,time,false):swarm(p,s,time,pattern,beat,tier);
-        if(state==SWARM_FIGHT&&weak==null){
+        if(weak==null){
             n.putInt("Ticks",Math.max(0,time-1));
-            n.putString("Blocker","Waiting for a required Ratmaster attack prop.");
+            n.putString("Blocker",state==MANTIS_FIGHT?"Waiting for the original Mechanical Mantis and its weak point."
+                    :state==THEATRE_FIGHT?"Waiting for the original Other Actress and her weak point."
+                    :"Waiting for a required Ratmaster attack prop.");
             return;
         }
         if(weak!=null){n.putDouble("WeakX",weak.x);n.putDouble("WeakY",weak.y);n.putDouble("WeakZ",weak.z);
-            var eye=RescueEncounters.prop(p,s,"WeakPoint",state==MANTIS_FIGHT||state==THEATRE_FIGHT?RescueProps.CONTROL_POINT:RescueProps.EYE,state==MANTIS_FIGHT?0:state==THEATRE_FIGHT?1:2,weak);if(eye!=null){eye.setPos(weak);eye.frame(state==SWARM_FIGHT&&pattern==4||n.getBoolean("Vulnerable")&&n.getLong("WeakUntil")>=p.serverLevel().getGameTime()?1:0,time,0);}
+            var eye=RescueEncounters.prop(p,s,"WeakPoint",state==MANTIS_FIGHT||state==THEATRE_FIGHT?RescueProps.CONTROL_POINT:RescueProps.EYE,state==MANTIS_FIGHT?0:state==THEATRE_FIGHT?1:2,weak);if(eye==null||eye.level()!=p.level()){
+                n.putInt("Ticks",Math.max(0,time-1));
+                n.putString("Blocker","Waiting for the original boss weak-point prop.");
+                return;
+            }
+            eye.setPos(weak);eye.frame(state==SWARM_FIGHT&&pattern==4||n.getBoolean("Vulnerable")&&n.getLong("WeakUntil")>=p.serverLevel().getGameTime()?1:0,time,0);n.remove("Blocker");
             for(var member:participants)if(state==SWARM_FIGHT&&n.getBoolean("Vulnerable")&&!n.getBoolean("RatStrikeSpent")&&RescueEncounters.seeing(member)&&RescueEncounters.gaze(member,weak,30,.975)){n.putLong("WeakUntil",p.serverLevel().getGameTime()+180);n.putInt("WeakCycle",cycle);}
         }
         if(state==MANTIS_FIGHT&&(beat==0||beat==40||beat==60)&&(!n.contains("MantisSoundClock")||n.getInt("MantisSoundClock")!=clock)){

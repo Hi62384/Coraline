@@ -19,6 +19,17 @@ public final class RescueEyes {
         var stack=new ItemStack(ModItems.GHOST_EYE.get());var tag=stack.getOrCreateTag();tag.putInt("GhostEye",index);tag.putUUID("EyeOwner",s.owner);tag.putUUID("EyeRealm",s.door);tag.putUUID("EyeIdentity",n.getUUID("Identity"));
         if(!p.getInventory().add(stack))return false;n.putBoolean("Claimed",true);n.putBoolean("Awarded",true);if(com.coraline.otherworld.OtherWorld.isOther(p.level())){n.putLong("DrainOrigin",p.blockPosition().asLong());if(index!=0)n.putLong("DrainStarted",p.serverLevel().getGameTime());n.putString("DrainDimension",p.level().dimension().location().toString());}p.getInventory().setChanged();OtherMotherLoop.changed(p);return true;
     }
+    /** Inventory gate for the actual locked confrontation; saved eye claims alone are not physical items. */
+    public static boolean carriedByOwner(ServerPlayer p,VisitData.Scene s){
+        if(s==null||!s.owner.equals(p.getUUID())||!all(s)||ledger(s).getBoolean("Released"))return false;
+        for(int i=0;i<3;i++){
+            boolean found=false;
+            for(int slot=0;slot<p.getInventory().getContainerSize();slot++)
+                if(authentic(p.getInventory().getItem(slot),s,i)){found=true;break;}
+            if(!found)return false;
+        }
+        return true;
+    }
     public static void startDrain(ServerPlayer p,VisitData.Scene s,int index){var n=eye(s,index);if(n.getBoolean("Claimed")&&n.contains("DrainOrigin")&&!n.contains("DrainStarted")&&com.coraline.otherworld.OtherWorld.isOther(p.level())){n.putLong("DrainStarted",p.serverLevel().getGameTime());OtherMotherLoop.changed(p);}}
     public static boolean release(ServerPlayer p,VisitData.Scene s){if(!p.getUUID().equals(s.owner)||!all(s))return false;if(ledger(s).getBoolean("Released"))return true;
         // Retire the actual capabilities, including a recorded storage location; never unrelated green items.
