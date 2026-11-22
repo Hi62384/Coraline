@@ -38,6 +38,65 @@ public final class RescueEncounters {
     }
     public static BlockPos garden(ServerPlayer p,VisitData.Scene s){var n=RescueChapter.data(s);if(n.contains("Garden"))return BlockPos.of(n.getLong("Garden"));var at=OtherWorldEstate.rescueGarden(house(s));var l=p.server.getLevel(OtherWorld.KEY);if(l!=null){l.getChunkAt(at);var safe=OtherWorld.safePlayer(l,at);if(safe!=null)at=safe;}n.putLong("Garden",at.asLong());return at;}
     static Vec3 center(ServerPlayer p,VisitData.Scene s){return Vec3.atBottomCenterOf(switch(RescueChapter.phase(s)){case THEATRE_SEARCH,WRAPPER_REACH,THEATRE_GRAB,THEATRE_FIGHT,THEATRE_EYE->TheatreSite.center(p,s).north(28).above();case BOB_E,SWARM_TRANSFORM,SWARM_FIGHT->MouseCircusSite.center(p,s);default->garden(p,s);});}
+    /** Match each pre-finale checkpoint to its own dimension, not an identical
+     * coordinate in another world. Rat leg 1 is a two-world handoff. */
+    static boolean activityCheckpoint(RescueChapter.Phase state,int ratLeg){
+        return switch(state){
+            case THEATRE_SEARCH,WRAPPER_REACH,THEATRE_GRAB,THEATRE_FIGHT,THEATRE_EYE,
+                 BOB_E,SWARM_TRANSFORM,SWARM_FIGHT -> true;
+            case RAT_CHASE -> ratLeg<2;
+            default -> false;
+        };
+    }
+    static boolean stageDimensionReady(ServerPlayer p,VisitData.Scene s,RescueChapter.Phase state){
+        if(state==THEATRE_TRAVEL||state==CIRCUS_TRAVEL)return true;
+        if(state==RAT_CHASE&&RescueChapter.data(s).getInt("RatLeg")==1)
+            return OtherWorld.isOther(p.level())||ActivityWorld.isActivity(p.level());
+        var expected=p.server.getLevel(activityCheckpoint(state,RescueChapter.data(s).getInt("RatLeg"))
+                ?ActivityWorld.KEY:OtherWorld.KEY);
+        return expected!=null&&p.serverLevel()==expected;
+    }
+    /** A noncombat fall or offworld reload must not refill boss health.
+     * Restore the authentic stage without touching eyes, Cat, rat or actor IDs. */
+    static boolean recoverNonCombat(ServerPlayer p,VisitData.Scene s,RescueChapter.Phase state){
+        if(!RescueChapter.owns(p,s)||RescueBosses.fighting(state)||state==RAT_CHASE||state==COLLAPSE)return false;
+        var n=RescueChapter.data(s);
+        var level=p.server.getLevel(activityCheckpoint(state,n.getInt("RatLeg"))?ActivityWorld.KEY:OtherWorld.KEY);
+        if(level==null){n.putString("Blocker","Waiting for the original rescue stage to load.");return false;}
+        BlockPos anchor;
+        switch(state){
+            case THEATRE_SEARCH,WRAPPER_REACH,THEATRE_GRAB,THEATRE_EYE -> {
+                if(!TheatreSite.prepare(p,s))return false;
+                anchor=TheatreSite.entrance(p,s);
+            }
+            case BOB_E,SWARM_TRANSFORM -> {
+                if(!MouseCircusSite.prepare(p,s))return false;
+                anchor=MouseCircusSite.audience(p,s);
+            }
+            case ATTIC_SEARCH,BOB_A,BOB_B,BOB_C,FURNACE,BOB_D,BOB_TENT,CIRCUS_TRAVEL -> {
+                if(!MouseCircusSite.prepareAttic(p,s))return false;
+                var tent=MouseCircusSite.tent(p,s);
+                if(tent==null){n.putString("Blocker","Waiting for the original attic tent.");return false;}
+                anchor=tent.south(4);
+            }
+            case ATTIC_TRAVEL,CLOTHES -> {
+                anchor=MouseCircusSite.atticDoor(p,s);
+                if(anchor==null){n.putString("Blocker","Waiting for the original attic doorway.");return false;}
+            }
+            case EXTERIOR -> anchor=FirstEscapeScene.porch(s).south(8);
+            case HOUSE_SAFE -> anchor=FirstEscapeScene.porch(s);
+            case ROOM_LOCKED -> anchor=FirstEscapeScene.room(s);
+            default -> anchor=garden(p,s);
+        }
+        if(!RescueChapter.transfer(p,level,anchor)){
+            n.putString("Blocker","Clear a safe landing at the original rescue checkpoint; no boss or quest progress was reset.");
+            return false;
+        }
+        p.setHealth(p.getMaxHealth());p.clearFire();p.fallDistance=0;
+        n.remove("Blocker");
+        RescueChapter.go(p,s,state);
+        return true;
+    }
     static boolean seeing(ServerPlayer p){var s=OtherMotherLoop.scene(p);return s!=null&&p.isUsingItem()&&p.getUseItem().is(com.coraline.registry.ModItems.SEEING_STONE.get());}
     static boolean gaze(ServerPlayer p,Vec3 at,double range,double dot){var delta=at.subtract(p.getEyePosition());return delta.lengthSqr()<range*range&&delta.lengthSqr()>.01&&p.getLookAngle().dot(delta.normalize())>dot&&p.serverLevel().clip(new net.minecraft.world.level.ClipContext(p.getEyePosition(),at,net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,p)).getType()==HitResult.Type.MISS;}
     static boolean reveal(ServerPlayer p,VisitData.Scene s,int index,Vec3 at){if(seeing(p)&&gaze(p,at,48,.985)){RescueEyes.eye(s,index).putBoolean("Discovered",true);return true;}return false;}
@@ -79,7 +138,17 @@ public final class RescueEncounters {
                 if(claimed&&sink>=80){RescueProps.hide(p,s,"Mantis");RescueProps.hide(p,s,"GardenEye");var dad=ShowActors.actor(p,s,"evil_other_father");if(dad!=null)dad.setInvisible(true);RescueEyes.startDrain(p,s,0);RescueChapter.go(p,s,MANTIS_GONE);}
             }
             case MANTIS_GONE->{if(t>=20){n.putBoolean("GardenDead",true);}if(done){RescueChapter.go(p,s,THEATRE_TRAVEL);}}
-            case THEATRE_TRAVEL->{RescueChapter.hint(p,"Find the next ghost eye in the basement theatre.");ShowHouseAccess.open(p,s,"basement");if(TheatreSite.atEntrance(p,s)&&TheatreSite.enter(p,s)){abandonTheatre(p,s);RescueChapter.go(p,s,THEATRE_SEARCH);}}
+            case THEATRE_TRAVEL->{
+                RescueChapter.hint(p,"Find the next ghost eye in the basement theatre.");
+                ShowHouseAccess.open(p,s,"basement");
+                // A completed physical transfer can be saved one tick BEFORE
+                // the scene phase. Resume inside the original venue instead of
+                // requiring the owner to re-enter from a different dimension.
+                if((TheatreSite.inside(p,s)||TheatreSite.atEntrance(p,s))&&TheatreSite.enter(p,s)){
+                    abandonTheatre(p,s);RescueChapter.go(p,s,THEATRE_SEARCH);
+                }else if(ActivityWorld.isActivity(p.level())&&!TheatreSite.inside(p,s))
+                    recoverNonCombat(p,s,THEATRE_TRAVEL);
+            }
             case THEATRE_SEARCH->{Vec3 at=Vec3.atBottomCenterOf(TheatreSite.center(p,s).north(28).above());var wrapper=prop(p,s,"Wrapper",RescueProps.WRAPPER,0,at);RescueProps.frame(wrapper,0,t,0);var eye=prop(p,s,"TheatreEye",RescueProps.EYE,1,at.add(0,.7,0));RescueProps.frame(eye,0,t,1.65F);reveal(p,s,1,at.add(0,.7,0));RescueChapter.hint(p,RescueEyes.eye(s,1).getBoolean("Discovered")?"Eye found! Lower the stone and right-click the wrapper to pull it open.":"Use the Seeing Stone to search the empty stage.");}
             case WRAPPER_REACH->{var wrapper=RescueProps.find(p,s,"Wrapper");RescueProps.frame(wrapper,1,t,Math.min(1,t/30F));RescueChapter.hint(p,"Right-click the eye again to pull it free.");}
             case THEATRE_GRAB->{RescueBosses.actresses(p,s,t,true);if(done){p.setDeltaMovement(Vec3.ZERO);RescueBosses.begin(p,s,THEATRE_FIGHT);}}
@@ -92,6 +161,10 @@ public final class RescueEncounters {
             case ATTIC_SEARCH->{RescueChapter.hint(p,"Search the attic for the final ghost eye.");if(t>40)RescueChapter.go(p,s,BOB_A);}
             case BOB_A,BOB_B,BOB_C,FURNACE,BOB_D,BOB_TENT->{if(!bobinsky(p,s,state,t))return;if(state==FURNACE&&t>=60)RescueChapter.go(p,s,BOB_D);else if(state==BOB_TENT&&t>=60)RescueChapter.go(p,s,CIRCUS_TRAVEL);else if(done)RescueChapter.go(p,s,switch(state){case BOB_A->BOB_B;case BOB_B->BOB_C;case BOB_C->FURNACE;case BOB_D->BOB_TENT;default->CIRCUS_TRAVEL;});}
             case CIRCUS_TRAVEL->{RescueChapter.hint(p,"Follow Bobinsky into the circus tent.");var tent=MouseCircusSite.tent(p,s);var activity=p.server.getLevel(ActivityWorld.KEY);boolean alreadyInside=MouseCircusSite.inside(p,s);
+                // Interrupted player transfer without a committed circus
+                // arrival: recover to the ORIGINAL attic tent, not a bogus
+                // forever-pending Activity World checkpoint.
+                if(ActivityWorld.isActivity(p.level())&&!alreadyInside){recoverNonCombat(p,s,CIRCUS_TRAVEL);return;}
                 if(tent!=null&&activity!=null&&(alreadyInside||MouseCircusSite.inAttic(p,s)&&p.distanceToSqr(tent.getCenter())<9)){
                     // Prepare Bobinsky first. His original actor lease and the
                     // player's dimension entry can then independently retry;
@@ -480,7 +553,8 @@ private static BlockPos[] chaseHouseRoute(VisitData.Scene s){
             }
             resetRatSegment(p,s);
         }else if(state==COLLAPSE){if(restoreIncompleteCollapse(p,s))return;FirstEscapeStory.hint(p,"The Other World swallowed you. Retry the escape.");if(!RescueChapter.transfer(p,p.server.getLevel(OtherWorld.KEY),BlockPos.of(n.getLong("CollapseStart"))))return;n.putBoolean("CatRescued",false);n.putInt("CollapseElapsed",0);n.remove("CatCollapsePlaced");n.remove("CatCollapsePosition");n.remove("CatMantel");RescueChapter.go(p,s,COLLAPSE);}
-        else RescueBosses.retry(p,s,"Retrying this challenge.");
+        else if(RescueBosses.fighting(state))RescueBosses.retry(p,s,"Retrying this challenge.");
+        else recoverNonCombat(p,s,state);
     }
     private static void clearRatPath(CompoundTag n){
         n.remove("RatPathTarget");

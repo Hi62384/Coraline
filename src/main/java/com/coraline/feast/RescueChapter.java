@@ -115,8 +115,23 @@ public final class RescueChapter {
             if(p.tickCount%5==0)sync(p,s);
             return;
         }
+        // A reload into matching coordinates in the wrong dimension must
+        // not spawn props or consume dialogue from that foreign world.
+        if(state.ordinal()<=Phase.ROOM_LOCKED.ordinal()&&!RescueEncounters.stageDimensionReady(p,s,state)){
+            if(OtherWorld.isOther(p.level())||ActivityWorld.isActivity(p.level()))
+                RescueEncounters.retry(p,s,state);
+            else n.putString("Blocker","Return through your original Little Door to resume the saved rescue scene.");
+            if(p.tickCount%5==0)sync(p,s);
+            return;
+        }
         if(!BeldamFinale.originalExitReady(p,s)){if(p.tickCount%5==0)sync(p,s);return;}
         if(!RescueEncounters.presentationReady(p,s,state)||!RescueEpilogue.presentationReady(p,s)){
+            if(p.tickCount%5==0)sync(p,s);
+            return;
+        }
+        if(!RescueEpilogue.visionStageReady(p,s,state)){
+            if(n.getBoolean("Audio")){ShowPlayback.stop(p,s);n.remove("Audio");n.remove("AudioTail");n.putInt("Ticks",0);}
+            RescueEpilogue.recoverVision(p,s);
             if(p.tickCount%5==0)sync(p,s);
             return;
         }
@@ -194,6 +209,18 @@ public final class RescueChapter {
         // This independent watchdog runs even when the chapter tick is paused.
         // Do not finish reunion/Cat dialogue or Bobinsky beats while their
         // original actors, viewer and world are missing after reload.
+        if(state.ordinal()<=Phase.ROOM_LOCKED.ordinal()
+                &&!RescueEncounters.stageDimensionReady(p,s,state)){
+            // The independent watchdog must obey the same real-world stage
+            // gate as the chapter tick. A timed voice is not permission to
+            // complete theatre, Cat or rescue beats in the wrong realm.
+            StoryCutsceneWatchdog.retry(s,"rescue_finale");
+            return;
+        }
+        if(!RescueEpilogue.visionStageReady(p,s,state)){
+            StoryCutsceneWatchdog.retry(s,"rescue_finale");
+            return;
+        }
         if(!BeldamFinale.originalExitReady(p,s)
                 ||!RescueEncounters.presentationReady(p,s,state)||!RescueEpilogue.presentationReady(p,s)){
             StoryCutsceneWatchdog.retry(s,"rescue_finale");

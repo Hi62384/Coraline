@@ -55,6 +55,7 @@ jobs:
           java -cp build/story-route-qa com.coraline.feast.RescueVisionRulesSmoke
 
       - name: Compile Forge mod including story-softlock GameTests
+        id: forge_compile
         shell: bash
         run: |
           chmod +x ./gradlew
@@ -108,6 +109,11 @@ jobs:
       # First Escape, shoe, tea, Cat, boss and finale interactions and geometry.
       # Exclude the 100+ unrelated Wybie/game-economy suites to keep QA bounded.
       - name: Compile native scene-specific First Escape through dream acceptance tests
+        # Continue to the route-specific tests even when an unrelated legacy
+        # GameTest (e.g. welcome sequence) fails in the softlock suite.
+        # Preserve that earlier failure in the final workflow conclusion.
+        if: ${{ !cancelled() && steps.forge_compile.outcome == 'success' }}
+        id: scene_compile
         shell: bash
         run: |
           ./gradlew --no-daemon --max-workers=2 \
@@ -116,6 +122,7 @@ jobs:
             '-PwybieTestClasses=FirstEscapeStoryGameTests.java,MissingParentsTeaGameTests.java,MissingParentsCatGameTests.java,StoryContinuationGameTests.java,RescueBossGameTests.java,RescueCatThrowGameTests.java,RescueTraversalGameTests.java,RescueReunionGameTests.java,RescueVisionGameTests.java,MantisTerrainGameTests.java,RescueAuthoredRatRouteGameTests.java,RescueRatGameTests.java,RescueFinaleInputGameTests.java,ReturnSceneRepairsGameTests.java,RescueHearingGameTests.java,RescueFarewellGateGameTests.java,TheatreLandingRegressionGameTests.java,RescueFoundationsGameTests.java,RescueGhostContinuityGameTests.java,RescuePlaybackGameTests.java,RescueCleanupGameTests.java,RescueKeyMigrationGameTests.java,CurrentStoryRepairsGameTests.java' compileJava
 
       - name: Run detailed native scene-specific Forge GameTests
+        if: ${{ !cancelled() && steps.scene_compile.outcome == 'success' }}
         shell: bash
         timeout-minutes: 35
         run: |

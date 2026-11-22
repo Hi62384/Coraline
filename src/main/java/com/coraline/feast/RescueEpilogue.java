@@ -188,6 +188,10 @@ public final class RescueEpilogue {
                 return;
             }
         }
+        if(!visionStageReady(p,s,state)){
+            recoverVision(p,s);
+            return;
+        }
         switch(state){
             case REUNION_A,REUNION_B->{
                 if(!reunionReady(s))return;
@@ -478,13 +482,35 @@ public final class RescueEpilogue {
         var support=new AABB(body.minX,body.minY-.10,body.minZ,body.maxX,body.minY,body.maxZ);
         return level.getBlockCollisions(player,support).iterator().hasNext();
     }
+    /** The dream is a real physical stage. Never let ordinary ticking or an
+     * independent voice watchdog finish it from a different dimension, before
+     * the authentic portal arrival, or with missing original ghost actors. */
+    static boolean visionStageReady(ServerPlayer p,VisitData.Scene s,RescueChapter.Phase phase){
+        if(phase.ordinal()<CELESTIAL_OPEN.ordinal()||phase.ordinal()>FAREWELL_C.ordinal())return true;
+        var n=RescueChapter.data(s);
+        if(n.getBoolean("DreamDialogueComplete")||n.getBoolean("VisionRestored"))return true;
+        var level=p.server.getLevel(ActivityWorld.KEY);
+        if(level==null||p.serverLevel()!=level||!n.contains("VisionAt",net.minecraft.nbt.Tag.TAG_LONG)
+                ||p.distanceToSqr(Vec3.atBottomCenterOf(BlockPos.of(n.getLong("VisionAt"))))>4){
+            n.putString("Blocker","Waiting for the original celestial dream stage and player landing.");
+            return false;
+        }
+        if((phase==ORBS||phase==FAREWELL_C)&&visionActors(p,s)==null){
+            n.putString("Blocker","Waiting for the three original farewell ghost projections.");
+            return false;
+        }
+        n.remove("Blocker");
+        return true;
+    }
     public static void recoverVision(ServerPlayer p,VisitData.Scene s){
         var n=RescueChapter.data(s);
         if(!RescueChapter.owns(p,s)||!n.contains("VisionReturn")||n.getBoolean("VisionRestored")||n.getBoolean("DreamDialogueComplete"))return;
         holdVision(p,s);
         n.remove("Audio");
         n.remove("AudioTail");
-        if(RescueChapter.phase(s)!=EYES_CLOSE&&p.serverLevel()!=p.server.getLevel(ActivityWorld.KEY))enterVision(p,s);
+        if(RescueChapter.phase(s)!=EYES_CLOSE
+                &&(p.serverLevel()!=p.server.getLevel(ActivityWorld.KEY)||!n.contains("VisionAt")))
+            enterVision(p,s);
     }
     private RescueEpilogue(){}
 }

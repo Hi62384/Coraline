@@ -9,6 +9,89 @@ import net.minecraftforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public final class RescueSoftlockGameTests {
     @GameTest(template="empty", batch="story_softlocks")
+    public static void dreamCutsceneCannotAdvanceFromWrongRealmOrWithoutRealArrival(GameTestHelper helper) {
+        var server=helper.getLevel().getServer();var stage=server.getLevel(ActivityWorld.KEY);
+        helper.assertTrue(stage!=null,"The authentic dream Activity World must exist");
+        var profile=new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(),"DreamGateQA");
+        var p=new net.minecraftforge.common.util.FakePlayer(stage,profile);
+        var s=new VisitData.Scene();s.owner=profile.getId();s.door=java.util.UUID.randomUUID();
+        var saved=RescueChapter.data(s);
+        var pos=new net.minecraft.core.BlockPos(20,100,20);
+        p.setPos(net.minecraft.world.phys.Vec3.atBottomCenterOf(pos));
+        helper.assertFalse(RescueEpilogue.visionStageReady(p,s,RescueChapter.Phase.CELESTIAL_OPEN),
+            "A celestial scene without its recorded physical arrival was allowed to advance");
+        saved.putLong("VisionAt",pos.asLong());
+        helper.assertTrue(RescueEpilogue.visionStageReady(p,s,RescueChapter.Phase.CELESTIAL_OPEN),
+            "A physically reached saved dream checkpoint was rejected");
+        p.setPos(net.minecraft.world.phys.Vec3.atBottomCenterOf(pos.offset(9,0,0)));
+        helper.assertFalse(RescueEpilogue.visionStageReady(p,s,RescueChapter.Phase.CELESTIAL_OPEN),
+            "The dream watchdog could run while the player was outside the authentic scene");
+        var outside=new net.minecraftforge.common.util.FakePlayer(server.overworld(),
+            new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(),"DreamWrongQA"));
+        outside.setPos(net.minecraft.world.phys.Vec3.atBottomCenterOf(pos));
+        helper.assertFalse(RescueEpilogue.visionStageReady(outside,s,RescueChapter.Phase.FAREWELL_C),
+            "Farewell dialogue could finish in the real world rather than the dream");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void theIndependentCutsceneStageGateSeesActualServerRealm(GameTestHelper helper) {
+        var server=helper.getLevel().getServer();
+        var activity=server.getLevel(ActivityWorld.KEY);
+        var other=server.getLevel(com.coraline.otherworld.OtherWorld.KEY);
+        helper.assertTrue(activity!=null&&other!=null,"Both original stage dimensions must be registered");
+        var profile=new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(),"RealmGateQA");
+        var onStage=new net.minecraftforge.common.util.FakePlayer(activity,profile);
+        var scene=new VisitData.Scene();scene.owner=profile.getId();scene.door=java.util.UUID.randomUUID();
+        helper.assertFalse(RescueEncounters.stageDimensionReady(onStage,scene,RescueChapter.Phase.GARDEN_SEARCH),
+            "Garden dialogue could advance in the Activity World");
+        helper.assertTrue(RescueEncounters.stageDimensionReady(onStage,scene,RescueChapter.Phase.THEATRE_SEARCH),
+            "The original theatre stage was rejected");
+        RescueChapter.data(scene).putInt("RatLeg",2);
+        helper.assertFalse(RescueEncounters.stageDimensionReady(onStage,scene,RescueChapter.Phase.RAT_CHASE),
+            "Rat chase after its attic return could still tick in the old circus");
+        RescueChapter.data(scene).putInt("RatLeg",1);
+        helper.assertTrue(RescueEncounters.stageDimensionReady(onStage,scene,RescueChapter.Phase.RAT_CHASE),
+            "The rat handoff did not allow the original circus");
+        var inHouse=new net.minecraftforge.common.util.FakePlayer(other,
+            new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(),"HouseStageQA"));
+        helper.assertTrue(RescueEncounters.stageDimensionReady(inHouse,scene,RescueChapter.Phase.GARDEN_SEARCH),
+            "The correct garden world was rejected");
+        helper.assertTrue(RescueEncounters.stageDimensionReady(inHouse,scene,RescueChapter.Phase.RAT_CHASE),
+            "The rat return was blocked while the two-world handoff was in progress");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void noncombatStageRecoveryDoesNotUseBossOrWrongDimension(GameTestHelper helper) {
+        for(var phase:java.util.List.of(RescueChapter.Phase.GARDEN_SEARCH,
+                RescueChapter.Phase.MANTIS_TAKE,RescueChapter.Phase.ATTIC_SEARCH,
+                RescueChapter.Phase.HOUSE_SAFE,RescueChapter.Phase.ROOM_LOCKED)) {
+            helper.assertFalse(RescueEncounters.activityCheckpoint(phase,0),
+                "Other World checkpoint would recover into the activity stage: "+phase);
+            helper.assertFalse(RescueBosses.fighting(phase),
+                "Noncombat checkpoint was incorrectly classified as a boss: "+phase);
+        }
+        for(var phase:java.util.List.of(RescueChapter.Phase.THEATRE_SEARCH,
+                RescueChapter.Phase.THEATRE_EYE,RescueChapter.Phase.BOB_E,
+                RescueChapter.Phase.SWARM_TRANSFORM)) {
+            helper.assertTrue(RescueEncounters.activityCheckpoint(phase,0),
+                "Theatre/circus checkpoint must recover into its original activity stage: "+phase);
+            helper.assertFalse(RescueBosses.fighting(phase),
+                "Noncombat activity checkpoint was treated as a boss: "+phase);
+        }
+        helper.assertTrue(RescueEncounters.activityCheckpoint(RescueChapter.Phase.RAT_CHASE,0),
+            "The first rat segment is still in the circus");
+        helper.assertFalse(RescueEncounters.activityCheckpoint(RescueChapter.Phase.RAT_CHASE,2),
+            "The returned rat must not reset to the original circus");
+        helper.assertTrue(RescueBosses.fighting(RescueChapter.Phase.MANTIS_FIGHT)
+                &&RescueBosses.fighting(RescueChapter.Phase.THEATRE_FIGHT)
+                &&RescueBosses.fighting(RescueChapter.Phase.SWARM_FIGHT),
+            "Actual boss retries must keep their own combat checkpoints");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
     public static void invalidEscapeRoomCleanupJournalCannotCrashOrEraseUnownedBlocks(GameTestHelper helper) {
         var level=helper.getLevel();
         helper.assertTrue(level.getServer().getLevel(com.coraline.otherworld.OtherWorld.KEY)!=null,
