@@ -83,8 +83,8 @@ public final class ShowActors {
         var position=net.minecraft.core.BlockPos.containing(at);
         if(level.isOutsideBuildHeight(position)||!level.getWorldBorder().isWithinBounds(position))return null;
         level.getChunkAt(position);
-        var created=CharacterCast.ENTITIES.get("evil_other_bobinsky").get().create(level);
-        if(!(created instanceof CharacterEntity actor)||!actor.characterId().equals("evil_other_bobinsky"))return null;
+        var actor=CharacterCast.ENTITIES.get("evil_other_bobinsky").get().create(level);
+        if(actor==null||!actor.characterId().equals("evil_other_bobinsky"))return null;
         actor.setUUID(id);actor.setPos(at);
         var tag=actor.getPersistentData();tag.putBoolean("CoralineDecoration",true);
         tag.putUUID("ShowActorOwner",s.owner);tag.putInt("ShowActorSerial",s.loop.event.getInt("Serial"));
