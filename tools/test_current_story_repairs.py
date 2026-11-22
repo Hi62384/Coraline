@@ -29,6 +29,8 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('RescueBosses.inArena(p,RescueChapter.Phase.MANTIS_FIGHT)',fixture)
         self.assertIn('RescueBosses.hit(p,point)',fixture)
         self.assertIn('A missed body strike left the opening active',fixture)
+        self.assertIn('Mantis body miss did not spend the exposed opening',fixture)
+        self.assertGreaterEqual(fixture.count('n.putBoolean("MantisAttemptSpent",false)'),4)
 
     def test_orphaned_original_little_door_fails_closed_without_story_scene(self):
         tunnel=source('feast/StoryTunnel.java')
