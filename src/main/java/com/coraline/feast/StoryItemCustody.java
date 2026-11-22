@@ -66,6 +66,14 @@ public final class StoryItemCustody {
         var item=held(s,key);if(item.isEmpty()||p.getInventory().getFreeSlot()<0)return false;
         if(!p.getInventory().add(item))return false;record.putBoolean("Returned",true);p.getInventory().setChanged();OtherMotherLoop.changed(p);return true;
     }
+    /** A returned authentic key remains a saved custody receipt even if the
+     * physical inventory item was later destroyed. This grants no new item. */
+    public static boolean returnedOriginalKey(VisitData.Scene s){
+        if(s==null)return false;
+        var record=ParentRescueStory.data(s).getCompound("Custody").getCompound("Key");
+        return record.getBoolean("Returned")&&!record.getBoolean("Destroyed")
+                &&ParentRescueStory.key(ItemStack.of(record.getCompound("Stack")),s);
+    }
     public static void destroy(VisitData.Scene s,String key){var record=ParentRescueStory.data(s).getCompound("Custody").getCompound(key);if(record.contains("Stack")&&!record.getBoolean("Returned"))record.putBoolean("Destroyed",true);}
     @net.minecraftforge.eventbus.api.SubscribeEvent public static void stored(net.minecraftforge.event.entity.player.PlayerContainerEvent.Close event){if(!(event.getEntity() instanceof ServerPlayer player))return;var visited=java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<Container,Boolean>());for(var slot:event.getContainer().slots)trackContainer(player,slot.container,visited,0);}
     private static void trackContainer(ServerPlayer player,Container container,java.util.Set<Container> visited,int depth){if(depth>8||!visited.add(container))return;if(container instanceof PartyStorageGuard.CompoundParts pair){trackContainer(player,pair.coraline$first(),visited,depth+1);trackContainer(player,pair.coraline$second(),visited,depth+1);}else if(container instanceof net.minecraft.world.level.block.entity.BlockEntity block)for(int i=0;i<container.getContainerSize();i++)track(player,container.getItem(i),block,0);}
