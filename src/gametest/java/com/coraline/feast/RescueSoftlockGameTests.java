@@ -9,6 +9,36 @@ import net.minecraftforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public final class RescueSoftlockGameTests {
     @GameTest(template="empty", batch="story_softlocks")
+    public static void theIndependentCutsceneStageGateSeesActualServerRealm(GameTestHelper helper) {
+        var server=helper.getLevel().getServer();
+        var activity=server.getLevel(ActivityWorld.KEY);
+        var other=server.getLevel(com.coraline.otherworld.OtherWorld.KEY);
+        helper.assertTrue(activity!=null&&other!=null,"Both original stage dimensions must be registered");
+        var profile=new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(),"RealmGateQA");
+        var onStage=new net.minecraftforge.common.util.FakePlayer(activity,profile);
+        var scene=new VisitData.Scene();scene.owner=profile.getId();scene.door=java.util.UUID.randomUUID();
+        helper.assertFalse(RescueEncounters.stageDimensionReady(onStage,scene,RescueChapter.Phase.GARDEN_SEARCH),
+            "Garden dialogue could advance in the Activity World");
+        helper.assertTrue(RescueEncounters.stageDimensionReady(onStage,scene,RescueChapter.Phase.THEATRE_SEARCH),
+            "The original theatre stage was rejected");
+        helper.assertFalse(RescueEncounters.stageDimensionReady(onStage,scene,RescueChapter.Phase.CAT_NOTICE)==false,
+            "The post-boss reunion is outside this pre-finale stage gate");
+        RescueChapter.data(scene).putInt("RatLeg",2);
+        helper.assertFalse(RescueEncounters.stageDimensionReady(onStage,scene,RescueChapter.Phase.RAT_CHASE),
+            "Rat chase after its attic return could still tick in the old circus");
+        RescueChapter.data(scene).putInt("RatLeg",1);
+        helper.assertTrue(RescueEncounters.stageDimensionReady(onStage,scene,RescueChapter.Phase.RAT_CHASE),
+            "The rat handoff did not allow the original circus");
+        var inHouse=new net.minecraftforge.common.util.FakePlayer(other,
+            new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(),"HouseStageQA"));
+        helper.assertTrue(RescueEncounters.stageDimensionReady(inHouse,scene,RescueChapter.Phase.GARDEN_SEARCH),
+            "The correct garden world was rejected");
+        helper.assertTrue(RescueEncounters.stageDimensionReady(inHouse,scene,RescueChapter.Phase.RAT_CHASE),
+            "The rat return was blocked while the two-world handoff was in progress");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
     public static void noncombatStageRecoveryDoesNotUseBossOrWrongDimension(GameTestHelper helper) {
         for(var phase:java.util.List.of(RescueChapter.Phase.GARDEN_SEARCH,
                 RescueChapter.Phase.MANTIS_TAKE,RescueChapter.Phase.ATTIC_SEARCH,

@@ -203,6 +203,14 @@ public final class RescueChapter {
         // This independent watchdog runs even when the chapter tick is paused.
         // Do not finish reunion/Cat dialogue or Bobinsky beats while their
         // original actors, viewer and world are missing after reload.
+        if(state.ordinal()<=Phase.ROOM_LOCKED.ordinal()
+                &&!RescueEncounters.stageDimensionReady(p,s,state)){
+            // The independent watchdog must obey the same real-world stage
+            // gate as the chapter tick. A timed voice is not permission to
+            // complete theatre, Cat or rescue beats in the wrong realm.
+            StoryCutsceneWatchdog.retry(s,"rescue_finale");
+            return;
+        }
         if(!BeldamFinale.originalExitReady(p,s)
                 ||!RescueEncounters.presentationReady(p,s,state)||!RescueEpilogue.presentationReady(p,s)){
             StoryCutsceneWatchdog.retry(s,"rescue_finale");
