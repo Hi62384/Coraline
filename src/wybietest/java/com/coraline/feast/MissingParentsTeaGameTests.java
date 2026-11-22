@@ -32,6 +32,8 @@ public final class MissingParentsTeaGameTests {
             h.assertTrue(MissingParentsTea.seat(p,n,"Seat",at)==original,
                 "The saved chair must reuse the same actor, never generate a duplicate");
             original.getPersistentData().putUUID("TeaToken",UUID.randomUUID());
+            h.assertFalse(MissingParentsTea.seatPlayer(p,n),
+                "Missing or unauthorized saved seat incorrectly allowed the next cutscene");
             h.assertTrue(MissingParentsTea.seat(p,n,"Seat",at)==null,
                 "A same-UUID chair with a foreign visit token was accepted");
             h.assertTrue(n.getUUID("Seat").equals(originalId),
