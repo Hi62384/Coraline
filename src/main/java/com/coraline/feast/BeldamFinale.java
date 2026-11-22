@@ -335,10 +335,21 @@ public final class BeldamFinale {
         if(state.ordinal()<FINAL_A.ordinal()||state.ordinal()>FINAL_N.ordinal())return true;
         var n=RescueChapter.data(s);
         var world=p.server.getLevel(OtherWorld.KEY);
-        if(world==null||p.serverLevel()!=world){
+        if(world==null){
             n.putBoolean("Recover",true);
-            n.putString("Blocker","Return to the original Other World confrontation room before continuing the finale.");
+            n.putString("Blocker","Waiting for the original Other World confrontation room.");
             return false;
+        }
+        // A legacy checkpoint may lose RoomLocked while its player is in an
+        // activity realm. Simply setting Recover would loop forever because
+        // ordinary dialogue recovery resets its voice but does not teleport.
+        if(p.serverLevel()!=world||!FirstEscapeScene.fullyInRoom(s,p.getBoundingBox())){
+            if(!RescueChapter.transfer(p,world,FirstEscapeScene.room(s))
+                    ||!FirstEscapeScene.fullyInRoom(s,p.getBoundingBox())){
+                n.putBoolean("Recover",true);
+                n.putString("Blocker","Clear the saved confrontation room so the original finale can resume.");
+                return false;
+            }
         }
         var mother=ParentRescueStory.mother(p,s);
         // On interrupted world transfers bring back ONLY the recorded Mother,
