@@ -129,6 +129,12 @@ public final class RescueChapter {
             if(p.tickCount%5==0)sync(p,s);
             return;
         }
+        if(!RescueEpilogue.visionStageReady(p,s,state)){
+            if(n.getBoolean("Audio")){ShowPlayback.stop(p,s);n.remove("Audio");n.remove("AudioTail");n.putInt("Ticks",0);}
+            RescueEpilogue.recoverVision(p,s);
+            if(p.tickCount%5==0)sync(p,s);
+            return;
+        }
         // ROOM_LOCKED is a handoff, not a final fight: let its checkpoint
         // revalidate Cat/eye custody and reopen the real doors on older saves.
         // The actual FINAL_A through FINAL_O confrontation still enforces the
@@ -208,6 +214,10 @@ public final class RescueChapter {
             // The independent watchdog must obey the same real-world stage
             // gate as the chapter tick. A timed voice is not permission to
             // complete theatre, Cat or rescue beats in the wrong realm.
+            StoryCutsceneWatchdog.retry(s,"rescue_finale");
+            return;
+        }
+        if(!RescueEpilogue.visionStageReady(p,s,state)){
             StoryCutsceneWatchdog.retry(s,"rescue_finale");
             return;
         }

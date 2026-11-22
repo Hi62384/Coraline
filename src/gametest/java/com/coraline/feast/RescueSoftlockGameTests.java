@@ -9,6 +9,32 @@ import net.minecraftforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public final class RescueSoftlockGameTests {
     @GameTest(template="empty", batch="story_softlocks")
+    public static void dreamCutsceneCannotAdvanceFromWrongRealmOrWithoutRealArrival(GameTestHelper helper) {
+        var server=helper.getLevel().getServer();var stage=server.getLevel(ActivityWorld.KEY);
+        helper.assertTrue(stage!=null,"The authentic dream Activity World must exist");
+        var profile=new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(),"DreamGateQA");
+        var p=new net.minecraftforge.common.util.FakePlayer(stage,profile);
+        var s=new VisitData.Scene();s.owner=profile.getId();s.door=java.util.UUID.randomUUID();
+        var saved=RescueChapter.data(s);
+        var pos=new net.minecraft.core.BlockPos(20,100,20);
+        p.setPos(net.minecraft.world.phys.Vec3.atBottomCenterOf(pos));
+        helper.assertFalse(RescueEpilogue.visionStageReady(p,s,RescueChapter.Phase.CELESTIAL_OPEN),
+            "A celestial scene without its recorded physical arrival was allowed to advance");
+        saved.putLong("VisionAt",pos.asLong());
+        helper.assertTrue(RescueEpilogue.visionStageReady(p,s,RescueChapter.Phase.CELESTIAL_OPEN),
+            "A physically reached saved dream checkpoint was rejected");
+        p.setPos(net.minecraft.world.phys.Vec3.atBottomCenterOf(pos.offset(9,0,0)));
+        helper.assertFalse(RescueEpilogue.visionStageReady(p,s,RescueChapter.Phase.CELESTIAL_OPEN),
+            "The dream watchdog could run while the player was outside the authentic scene");
+        var outside=new net.minecraftforge.common.util.FakePlayer(server.overworld(),
+            new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(),"DreamWrongQA"));
+        outside.setPos(net.minecraft.world.phys.Vec3.atBottomCenterOf(pos));
+        helper.assertFalse(RescueEpilogue.visionStageReady(outside,s,RescueChapter.Phase.FAREWELL_C),
+            "Farewell dialogue could finish in the real world rather than the dream");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="story_softlocks")
     public static void theIndependentCutsceneStageGateSeesActualServerRealm(GameTestHelper helper) {
         var server=helper.getLevel().getServer();
         var activity=server.getLevel(ActivityWorld.KEY);
