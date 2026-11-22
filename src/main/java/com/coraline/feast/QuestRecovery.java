@@ -18,7 +18,7 @@ public final class QuestRecovery {
     static final class Watch {
         final BlockPos goal;
         Vec3 origin,last;
-        long since,nextCheck;
+        long since,nextCheck,lastIdleHint;
         double travel;
         int failed;
         Watch(BlockPos goal,Vec3 pos,long now){this.goal=goal;origin=last=pos;since=now;nextCheck=now+CHECK_TICKS;}
@@ -52,6 +52,17 @@ public final class QuestRecovery {
         if(!p.onGround()||!p.serverLevel().hasChunkAt(goal))return;
         var path=VisitGuide.route(p,goal);
         if(path!=null&&path.canReach())watch.failed=0;else watch.failed++;
+        // A completely motionless player may be AFK rather than trapped.
+        // Offer the existing safe, explicit rescue instead of silently teleporting
+        // someone who intentionally stopped moving along a viable path.
+        if(now-watch.since>=STALL_TICKS&&watch.travel<.05&&watch.failed<FAILED_CHECKS){
+            if(now>=watch.lastIdleHint+STALL_TICKS){
+                p.displayClientMessage(net.minecraft.network.chat.Component.literal(
+                        "Not moving? Use /coraline recover for a safe route to the next objective."),true);
+                watch.lastIdleHint=now;
+            }
+            return;
+        }
         if(watch.failed<FAILED_CHECKS&&!stalled)return;
         if(VisitGuide.relocate(p,goal))watching.remove(p.getUUID());
         else{
