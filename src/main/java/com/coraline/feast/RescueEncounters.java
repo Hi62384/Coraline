@@ -79,7 +79,10 @@ public final class RescueEncounters {
                 if(tent==null){n.putString("Blocker","Waiting for the original attic tent.");return false;}
                 anchor=tent.south(4);
             }
-            case ATTIC_TRAVEL,CLOTHES -> anchor=FirstEscapeScene.at(s,8,16,51);
+            case ATTIC_TRAVEL,CLOTHES -> {
+                anchor=MouseCircusSite.atticDoor(p,s);
+                if(anchor==null){n.putString("Blocker","Waiting for the original attic doorway.");return false;}
+            }
             case EXTERIOR -> anchor=FirstEscapeScene.porch(s).south(8);
             case HOUSE_SAFE -> anchor=FirstEscapeScene.porch(s);
             case ROOM_LOCKED -> anchor=FirstEscapeScene.room(s);
