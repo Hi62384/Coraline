@@ -32,6 +32,17 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('Mantis body miss did not spend the exposed opening',fixture)
         self.assertGreaterEqual(fixture.count('n.putBoolean("MantisAttemptSpent",false)'),4)
 
+    def test_cross_dimension_welcome_fixture_polls_real_progress_instead_of_silently_timing_out(self):
+        native=(ROOT/'src/gametest/java/com/coraline/feast/FirstVisitGameTests.java').read_text()
+        fixture=native.split('public static void welcomeSequenceReleasesPlayerAndClosesPortal(',1)[1].split('public static void cakeDropsPreserveEveryBiteState(',1)[0]
+        self.assertIn('h.succeedWhen(()->{',fixture)
+        self.assertIn('h.getTick()>=40',fixture)
+        self.assertIn('checkStep[0]=2',fixture)
+        self.assertIn('chairVerifyAt[0]=h.getTick()+8',fixture)
+        self.assertIn('level.getEntity(s.mom)!=null&&level.getEntity(s.dad)!=null',fixture)
+        self.assertIn('FirstVisit.slept(p)',fixture)
+        self.assertNotIn('whenIndexed[0]',fixture)
+
     def test_orphaned_original_little_door_fails_closed_without_story_scene(self):
         tunnel=source('feast/StoryTunnel.java')
         sealed=tunnel.split('public static boolean sealed(MinecraftServer server,java.util.UUID owner)',1)[1].split('public static boolean permanent(',1)[0]
