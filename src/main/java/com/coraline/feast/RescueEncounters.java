@@ -344,6 +344,48 @@ private static BlockPos[] chaseHouseRoute(VisitData.Scene s){
                         &&rat.getPersistentData().hasUUID("RescueOwner")
                         &&s.owner.equals(rat.getPersistentData().getUUID("RescueOwner")))
                     return rat;
+            // A genuinely lost native rat can be reconstructed with its saved
+            // UUID, not a newly generated chase identity or a free ghost eye.
+            var id=n.getUUID("ChaseRat");
+            for(var world:p.server.getAllLevels())if(world.getEntity(id)!=null)return null;
+            if(com.coraline.rebirth.LegacyActorRecovery.check(p.server,id)
+                    !=com.coraline.rebirth.LegacyActorRecovery.Result.ABSENT)return null;
+            int leg=n.getInt("RatLeg");
+            var level=p.server.getLevel(leg>=2?OtherWorld.KEY:ActivityWorld.KEY);
+            if(level==null)return null;
+            var target=leg>=2?MouseCircusSite.tent(p,s):MouseCircusSite.center(p,s);
+            if(target==null)return null;
+            var at=leg>=2?target.south(3):target.south(10);
+            if(level.isOutsideBuildHeight(at)||!level.getWorldBorder().isWithinBounds(at))return null;
+            level.getChunkAt(at);
+            var restored=ModEntities.MOUSE.get().create(level);
+            if(restored==null)return null;
+            restored.setUUID(id);
+            restored.doorId=s.door;
+            restored.circusStyle(6);
+            restored.catPose(0,1);
+            restored.spying(true);
+            restored.setInvulnerable(true);
+            restored.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.FOLLOW_RANGE).setBaseValue(80);
+            restored.getPersistentData().putBoolean("CoralineDecoration",true);
+            restored.getPersistentData().putUUID("RescueOwner",s.owner);
+            restored.setPos(Vec3.atBottomCenterOf(at));
+            if(!level.addFreshEntity(restored))return null;
+            recordChaseRat(n,restored);
+            clearRatPath(n);
+            // A saved circus ball may still be far down the old route. Mounting
+            // the resurrected rat on that displaced ball could falsely satisfy
+            // RatHouseMoved and allow collecting the third eye immediately.
+            // Retry the SAME physical segment before allowing any new chase
+            // movement or item interaction. resetRatSegment() retires the
+            // original ball receipts and positions the original rat safely.
+            n.putBoolean("RatResetPending",true);
+            n.putInt("RatNode",0);
+            n.putLong("RatHouseStart",restored.blockPosition().asLong());
+            n.remove("RatHouseMoved");
+            n.remove("RatExitWait");
+            n.putString("Blocker","Restoring the original rat and retiring its old circus ball.");
+            OtherMotherLoop.changed(p);
             return null;
         }
         var rat=ModEntities.MOUSE.get().create(p.serverLevel());if(rat==null)return null;rat.doorId=s.door;rat.circusStyle(6);rat.catPose(0,1);rat.spying(true);rat.setInvulnerable(true);rat.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.FOLLOW_RANGE).setBaseValue(80);rat.getPersistentData().putBoolean("CoralineDecoration",true);rat.getPersistentData().putUUID("RescueOwner",s.owner);rat.setPos(Vec3.atBottomCenterOf(MouseCircusSite.center(p,s).south(10)));if(!p.serverLevel().addFreshEntity(rat))return null;n.putUUID("ChaseRat",rat.getUUID());return rat;}

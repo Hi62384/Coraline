@@ -31,5 +31,11 @@ public final class FirstEscapeTimeline {
     public static boolean overworld(Phase p){return p.ordinal()>=Phase.MISSING_A.ordinal();}
     public static boolean seated(Phase p){return p.ordinal()>=Phase.COCOA_B.ordinal()&&p.ordinal()<=Phase.COCOA_G.ordinal();}
     public static boolean wardrobeBlocksPassage(Phase p){return p.ordinal()>=Phase.ROOM_DARK.ordinal()&&p.ordinal()<Phase.OPEN_LITTLE_DOOR.ordinal();}
+    /** Prevent an off-corridor command/teleport from falsely completing the physical exit. */
+    public static boolean tunnelExitValid(double progress,double sideways,double rise){
+        return Double.isFinite(progress)&&progress>=20&&progress<=23
+                &&Double.isFinite(sideways)&&Math.abs(sideways)<=1.35
+                &&Double.isFinite(rise)&&rise>=-.5&&rise<=1.45;
+    }
     private FirstEscapeTimeline(){}
 }

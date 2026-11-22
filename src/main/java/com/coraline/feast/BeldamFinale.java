@@ -702,10 +702,17 @@ public final class BeldamFinale {
         }
     }
     public static boolean interact(ServerPlayer p,VisitData.Scene s,Entity target){var n=RescueChapter.data(s);if(RescueChapter.phase(s)==CAT_THROW&&target==ShowActors.actor(p,s,"cat")&&!n.getBoolean("CatFlying")){n.putBoolean("CatHeld",true);return true;}return false;}
-    public static boolean block(ServerPlayer p,BlockPos at){var s=OtherMotherLoop.scene(p);if(!RescueChapter.owns(p,s)||RescueChapter.phase(s)!=LOCK_DOOR)return false;var n=RescueChapter.data(s);var d=DoorData.get(p.server).doors.get(s.door);if(d==null||!s.owner.equals(d.owner)||p.serverLevel()!=FamilyData.level(p.server,d.dimension)||!at.equals(d.pos)||p.distanceToSqr(at.getCenter())>16)return false;boolean key=false;for(int i=0;i<p.getInventory().getContainerSize();i++)key|=ParentRescueStory.key(p.getInventory().getItem(i),s);if(!key||!n.getBoolean("CrawlReachedOverworld")||!n.getBoolean("KeyRecovered"))return true;var frame=p.serverLevel().getBlockState(at);if(!frame.is(ModBlocks.TINY_DOOR.get())||!(p.serverLevel().getBlockEntity(at) instanceof DoorBlockEntity tile)||!s.door.equals(tile.doorId))return true;
+    public static boolean block(ServerPlayer p,BlockPos at){var s=OtherMotherLoop.scene(p);if(!RescueChapter.owns(p,s)||RescueChapter.phase(s)!=LOCK_DOOR)return false;var n=RescueChapter.data(s);var d=DoorData.get(p.server).doors.get(s.door);if(d==null||!s.owner.equals(d.owner)||p.serverLevel()!=FamilyData.level(p.server,d.dimension)||!at.equals(d.pos)||p.distanceToSqr(at.getCenter())>16)return false;boolean key=false;for(int i=0;i<p.getInventory().getContainerSize();i++)key|=ParentRescueStory.key(p.getInventory().getItem(i),s);boolean savedLock=!key&&p.getMainHandItem().isEmpty()
+                &&StoryItemCustody.returnedOriginalKey(s);
+        if((!key&&!savedLock)||!n.getBoolean("CrawlReachedOverworld")||!n.getBoolean("KeyRecovered")){
+            RescueChapter.hint(p,"Use your original key, or an empty hand if its saved return receipt survives.");
+            return true;
+        }
+        var frame=p.serverLevel().getBlockState(at);if(!frame.is(ModBlocks.TINY_DOOR.get())||!(p.serverLevel().getBlockEntity(at) instanceof DoorBlockEntity tile)||!s.door.equals(tile.doorId))return true;
         var closed=frame.setValue(TinyDoorBlock.OPEN,false).setValue(TinyDoorBlock.PORTAL,false);
         p.serverLevel().setBlock(at,closed,3);
         if(!p.serverLevel().getBlockState(at).equals(closed))return true;
+        if(savedLock)n.putBoolean("LockUsedOriginalKeyReceipt",true);
         n.putBoolean("PermanentlySealed",true);ParentRescueStory.data(s).putBoolean("DoorLocked",true);d.activeUntil=0;DoorData.get(p.server).setDirty();RescueChapter.go(p,s,BANGING);return true;}
     public static void retry(ServerPlayer p,VisitData.Scene s,RescueChapter.Phase state,String reason){
         var n=RescueChapter.data(s);n.putString("LastRetryReason",reason);n.putString("LastRetryPhase",state.name());n.putInt("RetryCount",n.getInt("RetryCount")+1);org.slf4j.LoggerFactory.getLogger(BeldamFinale.class).debug("Rescue retry phase={} reason={} feet={} crouching={} moved={} sticky={} landed={} noiseAge={} lastNoise={} lastNoiseMoved={}",state,reason,p.position(),p.isCrouching(),n.getDouble("LastWebMoved"),n.getBoolean("LastWebSticky"),n.getBoolean("LastWebLanded"),n.getInt("NoiseAge"),n.getString("LastNoiseReason"),n.getDouble("LastNoiseMoved"));RescueChapter.hint(p,reason);p.setHealth(p.getMaxHealth());p.clearFire();p.fallDistance=0;p.setDeltaMovement(Vec3.ZERO);

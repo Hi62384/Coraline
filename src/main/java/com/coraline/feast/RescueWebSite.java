@@ -9,7 +9,15 @@ import net.minecraft.world.phys.Vec3;
 
 /** Journalled incremental owner-allocated web; never edits a neighbour's venue. */
 public final class RescueWebSite {
-    public static BlockPos center(ServerPlayer p,VisitData.Scene s){return ShowSiteData.get(p.server).center(s.owner,false).offset(150,-40,100);}
+    // Alternative placements stay inside this owner's 512-block allocation.
+    // A recorded original web is restored before its anchor may change.
+    private static final int[][] SITE_OFFSETS={{0,0},{0,96},{-96,0},{0,-96},{96,0},
+            {-96,96},{96,96},{-96,-96},{96,-96}};
+    static int siteAttempt(int saved){return Math.max(0,Math.min(SITE_OFFSETS.length-1,saved));}
+    public static BlockPos center(ServerPlayer p,VisitData.Scene s){
+        int[] shift=SITE_OFFSETS[siteAttempt(RescueChapter.data(s).getInt("WebSiteAttempt"))];
+        return ShowSiteData.get(p.server).center(s.owner,false).offset(150+shift[0],-40,100+shift[1]);
+    }
     public static Vec3 at(ServerPlayer p,VisitData.Scene s,int lane,double u){var c=center(p,s);var v=RescueWebLayout.point(lane,u);return new Vec3(c.getX()+v.x(),c.getY()+v.y(),c.getZ()+v.z());}
     public static boolean prepare(ServerPlayer p,VisitData.Scene s){
         if(!RescueChapter.owns(p,s))return false;
@@ -61,6 +69,9 @@ public final class RescueWebSite {
     }
     private static boolean verify(ServerPlayer p,VisitData.Scene s){
         var n=RescueChapter.data(s);var cells=n.getCompound("WebCells");
+        // Verified geometry has no reason to allocate/sort thousands of NBT
+        // keys on each active fight tick. New entries explicitly clear this bit.
+        if(n.getBoolean("WebVerified")&&!cells.isEmpty())return true;
         var keys=new java.util.ArrayList<>(cells.getAllKeys());
         if(!webVerificationRequired(n.getBoolean("WebReady"),n.getBoolean("WebVerified"),keys.size()))return true;
         if(keys.isEmpty()){n.putString("Blocker","The original web receipts are missing; cannot trust its saved ready flag.");return false;}
@@ -98,7 +109,7 @@ public final class RescueWebSite {
             var actual=level.getBlockState(pos);
             if(level.getBlockEntity(pos)!=null||!actual.equals(placed)
                     &&!actual.equals(original)&&(previous==null||!actual.equals(previous))){
-                n.putString("Blocker","The web at "+pos.toShortString()+" contains an unrelated edit. It was preserved.");return false;
+                n.putString("Blocker","The web at "+pos.toShortString()+" contains an unrelated edit. It was preserved.");return blocked(p,s,n.getInt("WebBuild"));
             }
             if(!actual.equals(placed)){
                 level.setBlock(pos,placed,2);
@@ -115,7 +126,49 @@ public final class RescueWebSite {
         OtherMotherLoop.changed(p);
         return n.getBoolean("WebVerified");
     }
-    private static boolean blocked(ServerPlayer p,VisitData.Scene s,int cursor){var n=RescueChapter.data(s);n.putInt("WebBuild",cursor);n.putString("Blocker","The owner-allocated web route is obstructed; existing blocks were preserved.");OtherMotherLoop.changed(p);return false;}
+    private static boolean blocked(ServerPlayer p,VisitData.Scene s,int cursor){
+        var n=RescueChapter.data(s);
+        n.putInt("WebBuild",cursor);
+        int attempt=siteAttempt(n.getInt("WebSiteAttempt"));
+        var activity=p.server.getLevel(ActivityWorld.KEY);
+        var arenaCenter=Vec3.atBottomCenterOf(center(p,s));
+        boolean occupiedByPlayer=activity!=null&&p.server.getPlayerList().getPlayers().stream()
+                .anyMatch(visitor->visitor.serverLevel()==activity
+                        &&visitor.distanceToSqr(arenaCenter)<75*75);
+        // Never move an arena beneath its occupant. When safe, undo only our
+        // own receipted partial placements, retaining foreign edits and any
+        // unresolved receipts instead of abandoning another player's blocks.
+        if(!n.getBoolean("WebEntered")&&!n.getBoolean("WebEntryReady")
+                &&!occupiedByPlayer&&attempt+1<SITE_OFFSETS.length){
+            restore(p,s);
+            // A foreign edit can prevent retiring its old receipt. Keep that
+            // unresolved original in a separate cleanup ledger, so changing
+            // sites never loses proof of what belongs to the old layout.
+            var residual=n.getCompound("WebCells");
+            if(!residual.isEmpty()){
+                var abandoned=n.getCompound("AbandonedWebCells");
+                for(String key:residual.getAllKeys())if(!abandoned.contains(key))
+                    abandoned.put(key,residual.get(key).copy());
+                n.put("AbandonedWebCells",abandoned);
+                n.remove("WebCells");
+            }
+            if(n.getCompound("WebCells").isEmpty()){
+                n.putInt("WebSiteAttempt",attempt+1);
+                n.remove("WebReady");
+                n.remove("WebVerified");
+                n.remove("WebSagged");
+                n.remove("WebSagIndexReady");
+                n.putInt("WebBuild",0);
+                n.putInt("WebVerify",0);
+                n.putString("Blocker","Original web footprint obstructed; preparing an alternate site within your own allocation.");
+                OtherMotherLoop.changed(p);
+                return false;
+            }
+        }
+        n.putString("Blocker","All available owner-bound web sites are occupied or an actor is still using this one.");
+        OtherMotherLoop.changed(p);
+        return false;
+    }
     private static boolean floor(ServerLevel l,CompoundTag journal,Vec3 point){
         var pos=BlockPos.containing(point.x,point.y-.001,point.z);
         l.getChunkAt(pos);
@@ -155,43 +208,100 @@ public final class RescueWebSite {
         LoopProps.hold(l,pos);
         return true;
     }
-    /** A quiet, bounded weight depression changes the same tops the mesh reads. */
+    /** Only nearby strands and previously deformed cells need weight updates.
+     * The old per-four-tick full-journal scan was O(thousands of blocks). */
     public static void sag(ServerPlayer p,VisitData.Scene s){
-        if(!RescueChapter.owns(p,s)||p.tickCount%4!=0||p.serverLevel()!=p.server.getLevel(ActivityWorld.KEY))return;var n=RescueChapter.data(s);if(!n.getBoolean("WebReady"))return;var l=p.serverLevel();var cells=n.getCompound("WebCells");var lookup=l.holderLookup(net.minecraft.core.registries.Registries.BLOCK);
+        if(!RescueChapter.owns(p,s)||p.tickCount%4!=0
+                ||p.serverLevel()!=p.server.getLevel(ActivityWorld.KEY))return;
+        var n=RescueChapter.data(s);
+        if(!n.getBoolean("WebReady"))return;
+        var level=p.serverLevel();
+        var cells=n.getCompound("WebCells");
+        var lookup=level.holderLookup(net.minecraft.core.registries.Registries.BLOCK);
+        var tracked=new java.util.HashSet<Long>();
+        for(long packed:n.getLongArray("WebSagged"))tracked.add(packed);
         boolean updated=false;
-        for(String key:cells.getAllKeys()){
-            long packed;
-            try{packed=Long.parseLong(key);}catch(NumberFormatException invalid){
-                // A damaged legacy web journal must not repeatedly crash the
-                // player tick; leave the bad receipt intact for recovery.
-                n.putString("Blocker","Invalid saved web cell reference.");
-                OtherMotherLoop.changed(p);
-                return;
-            }
-            var at=BlockPos.of(packed);if(!l.hasChunkAt(at))continue;
-            var cell=cells.getCompound(key);var old=l.getBlockState(at);
-            if(!old.is(ModBlocks.STORY_WEB.get())||!cell.contains("Placed",Tag.TAG_COMPOUND))continue;
-            var saved=NbtUtils.readBlockState(lookup,cell.getCompound("Placed"));
-            if(!old.equals(saved)){
-                // A crash may have saved the intended sag but not its physical
-                // block. Resume only a matching previously-owned web cell.
-                if(cell.contains("PreviousPlaced",Tag.TAG_COMPOUND)
-                        &&old.equals(NbtUtils.readBlockState(lookup,cell.getCompound("PreviousPlaced")))){
-                    l.setBlock(at,saved,2);
-                    if(l.getBlockState(at).equals(saved))cell.remove("PreviousPlaced");
-                    updated=true;
+
+        // One-time migration finds sagged or interrupted legacy writes. Later
+        // ticks touch only local blocks and tracked deformations.
+        if(!n.getBoolean("WebSagIndexReady")){
+            for(String key:cells.getAllKeys()){
+                long packed;
+                try{packed=Long.parseLong(key);}catch(NumberFormatException invalid){
+                    n.putString("Blocker","Invalid saved web cell reference.");
+                    OtherMotherLoop.changed(p);
+                    return;
                 }
-                continue;
+                var receipt=cells.getCompound(key);
+                if(receipt.contains("PreviousPlaced",Tag.TAG_COMPOUND)){tracked.add(packed);continue;}
+                if(!receipt.contains("Placed",Tag.TAG_COMPOUND)||!receipt.contains("RestHeight"))continue;
+                var block=NbtUtils.readBlockState(lookup,receipt.getCompound("Placed"));
+                if(block.is(ModBlocks.STORY_WEB.get())
+                        &&block.getValue(StoryWebBlock.HEIGHT)!=receipt.getInt("RestHeight"))
+                    tracked.add(packed);
             }
-            int current=old.getValue(StoryWebBlock.HEIGHT);if(!cell.contains("RestHeight")){cell.putInt("RestHeight",current);updated=true;}int rest=cell.getInt("RestHeight");double top=at.getY()+rest/16.;double distance=Math.hypot(p.getX()-at.getX()-.5,p.getZ()-at.getZ()-.5);boolean bearing=Math.abs(p.getY()-top)<.35&&Math.abs(p.getDeltaMovement().y)<.2;int target=RescueWebLayout.weightedHeight(rest,distance,bearing);int height=current+Integer.signum(target-current);
+            n.putBoolean("WebSagIndexReady",true);
+            updated=true;
+        }
+        var candidates=new java.util.HashSet<Long>(tracked);
+        // Four-block horizontal reach covers the 2.5-metre weight kernel;
+        // a three-block Y window covers web slabs beneath the player's feet.
+        int px=net.minecraft.util.Mth.floor(p.getX()),py=net.minecraft.util.Mth.floor(p.getY()),
+                pz=net.minecraft.util.Mth.floor(p.getZ());
+        for(int dx=-3;dx<=3;dx++)for(int dz=-3;dz<=3;dz++)for(int dy=-3;dy<=1;dy++){
+            long packed=new BlockPos(px+dx,py+dy,pz+dz).asLong();
+            if(cells.contains(Long.toString(packed)))candidates.add(packed);
+        }
+        for(long packed:candidates){
+            String key=Long.toString(packed);
+            if(!cells.contains(key)){tracked.remove(packed);continue;}
+            var at=BlockPos.of(packed);
+            if(!level.hasChunkAt(at))continue;
+            var receipt=cells.getCompound(key);
+            var old=level.getBlockState(at);
+            if(!old.is(ModBlocks.STORY_WEB.get())
+                    ||!receipt.contains("Placed",Tag.TAG_COMPOUND))continue;
+            var saved=NbtUtils.readBlockState(lookup,receipt.getCompound("Placed"));
+            if(!old.equals(saved)){
+                // Interrupted writes may be replayed only from their recorded
+                // previous state; foreign edits remain untouched.
+                if(receipt.contains("PreviousPlaced",Tag.TAG_COMPOUND)
+                        &&old.equals(NbtUtils.readBlockState(lookup,receipt.getCompound("PreviousPlaced")))){
+                    level.setBlock(at,saved,2);
+                    if(level.getBlockState(at).equals(saved)){
+                        receipt.remove("PreviousPlaced");
+                        old=saved;
+                        updated=true;
+                    }
+                }
+                if(!old.equals(saved)){tracked.add(packed);continue;}
+            }
+            int current=old.getValue(StoryWebBlock.HEIGHT);
+            if(!receipt.contains("RestHeight")){receipt.putInt("RestHeight",current);updated=true;}
+            int rest=receipt.getInt("RestHeight");
+            double top=at.getY()+rest/16.0;
+            double distance=Math.hypot(p.getX()-at.getX()-.5,p.getZ()-at.getZ()-.5);
+            boolean bearing=Math.abs(p.getY()-top)<.35&&Math.abs(p.getDeltaMovement().y)<.2;
+            int target=RescueWebLayout.weightedHeight(rest,distance,bearing);
+            int height=current+Integer.signum(target-current);
             if(height!=current){
                 var state=old.setValue(StoryWebBlock.HEIGHT,height);
-                cell.put("PreviousPlaced",NbtUtils.writeBlockState(old));
-                cell.put("Placed",NbtUtils.writeBlockState(state));
-                l.setBlock(at,state,2);
-                if(l.getBlockState(at).equals(state))cell.remove("PreviousPlaced");
+                receipt.put("PreviousPlaced",NbtUtils.writeBlockState(old));
+                receipt.put("Placed",NbtUtils.writeBlockState(state));
+                level.setBlock(at,state,2);
+                if(level.getBlockState(at).equals(state))receipt.remove("PreviousPlaced");
+                else{tracked.add(packed);updated=true;continue;}
                 updated=true;
             }
+            if(height!=rest||receipt.contains("PreviousPlaced",Tag.TAG_COMPOUND))
+                tracked.add(packed);
+            else tracked.remove(packed);
+        }
+        var indexed=n.getLongArray("WebSagged");
+        if(indexed.length!=tracked.size()||updated
+                ||java.util.Arrays.stream(indexed).anyMatch(x->!tracked.contains(x))){
+            n.putLongArray("WebSagged",tracked.stream().mapToLong(Long::longValue).sorted().toArray());
+            updated=true;
         }
         if(updated)OtherMotherLoop.changed(p);
     }
@@ -226,6 +336,7 @@ public final class RescueWebSite {
         if(cells.isEmpty()){
             n.remove("WebCells");n.remove("WebBuild");n.remove("WebReady");
             n.remove("WebVerified");n.remove("WebVerify");n.remove("WebEntryRecheck");n.remove("WebDoorRetryRecheck");
+            n.remove("WebSagged");n.remove("WebSagIndexReady");
             changed=true;
         }
         if(changed)OtherMotherLoop.changed(p);

@@ -18,7 +18,7 @@ public final class QuestRecovery {
     static final class Watch {
         final BlockPos goal;
         Vec3 origin,last;
-        long since,nextCheck;
+        long since,nextCheck,lastIdleHint;
         double travel;
         int failed;
         Watch(BlockPos goal,Vec3 pos,long now){this.goal=goal;origin=last=pos;since=now;nextCheck=now+CHECK_TICKS;}
@@ -27,7 +27,9 @@ public final class QuestRecovery {
             double moved=pos.distanceTo(last);if(moved>.01)travel+=Math.min(moved,1);last=pos;
             // Moving out of this small area is real progress/exploration, not a softlock.
             if(pos.distanceToSqr(origin)>9){resetMovement(pos,now);return false;}
-            return now-since>=STALL_TICKS&&travel>=8;
+            // Motionless owners are also detected, but the main tick offers an
+            // explicit opt-in rescue instead of relocating an AFK player.
+            return now-since>=STALL_TICKS&&(travel>=8||travel<.05);
         }
     }
     private static final Map<UUID,Watch> watching=new HashMap<>();
@@ -52,6 +54,17 @@ public final class QuestRecovery {
         if(!p.onGround()||!p.serverLevel().hasChunkAt(goal))return;
         var path=VisitGuide.route(p,goal);
         if(path!=null&&path.canReach())watch.failed=0;else watch.failed++;
+        // A completely motionless player may be AFK rather than trapped.
+        // Offer the existing safe, explicit rescue instead of silently teleporting
+        // someone who intentionally stopped moving along a viable path.
+        if(now-watch.since>=STALL_TICKS&&watch.travel<.05&&watch.failed<FAILED_CHECKS){
+            if(now>=watch.lastIdleHint+STALL_TICKS){
+                p.displayClientMessage(net.minecraft.network.chat.Component.literal(
+                        "Not moving? Use /coraline recover for a safe route to the next objective."),true);
+                watch.lastIdleHint=now;
+            }
+            return;
+        }
         if(watch.failed<FAILED_CHECKS&&!stalled)return;
         if(VisitGuide.relocate(p,goal))watching.remove(p.getUUID());
         else{

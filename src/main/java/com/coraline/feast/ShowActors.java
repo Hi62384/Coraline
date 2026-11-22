@@ -36,15 +36,49 @@ public final class ShowActors {
         tag.putUUID("ShowActorOwner",s.owner);tag.putInt("ShowActorSerial",s.loop.event.getInt("Serial"));tag.putUUID("RealmDoor",s.door);
         var moved=ShowTravel.guest(actor,p,s,level,at,true,"ShowActorReturn");if(moved!=null){n.putUUID("Entity",moved.getUUID());remember(n,moved);control(moved);}OtherMotherLoop.changed(p);return moved;
     }
+    /** Restore the SAME canonical Cat UUID only after a server-wide native
+     * entity-region absence proof. An unloaded actor is never a missing actor. */
+    private static Mob restoreVerifiedCat(ServerPlayer p,VisitData.Scene s,ServerLevel level,Vec3 at){
+        var lease=root(s).getCompound("cat");
+        var canonical=canonicalCat(s);
+        if(level==null||!lease.hasUUID("Entity")&&!canonical.hasUUID("Entity")||canonical.getBoolean("FarewellDeparted")
+                ||canonical.hasUUID("Entity")&&lease.hasUUID("Entity")&&!canonical.getUUID("Entity").equals(lease.getUUID("Entity"))
+                ||!Double.isFinite(at.x)||!Double.isFinite(at.y)||!Double.isFinite(at.z))return null;
+        var id=lease.hasUUID("Entity")?lease.getUUID("Entity"):canonical.getUUID("Entity");
+        for(var world:p.server.getAllLevels())if(world.getEntity(id)!=null)return null;
+        if(com.coraline.rebirth.LegacyActorRecovery.check(p.server,id)
+                !=com.coraline.rebirth.LegacyActorRecovery.Result.ABSENT)return null;
+        var position=net.minecraft.core.BlockPos.containing(at);
+        if(level.isOutsideBuildHeight(position)||!level.getWorldBorder().isWithinBounds(position))return null;
+        level.getChunkAt(position);
+        var actor=com.coraline.registry.CharacterCast.ENTITIES.get("cat").get().create(level);
+        if(actor==null)return null;
+        actor.setUUID(id);
+        actor.setPos(at);
+        var tag=actor.getPersistentData();
+        tag.putBoolean("CoralineDecoration",true);
+        if(lease.hasUUID("Entity")){
+            tag.putUUID("ShowActorOwner",s.owner);
+            tag.putInt("ShowActorSerial",s.loop.event.getInt("Serial"));
+        }
+        tag.putUUID("RealmDoor",s.door);
+        tag.putUUID("CanonicalStoryCatOwner",s.owner);
+        if(!level.addFreshEntity(actor))return null;
+        if(lease.hasUUID("Entity"))remember(lease,actor);
+        rememberCat(s,actor);
+        if(lease.hasUUID("Entity"))control(actor);
+        OtherMotherLoop.changed(p);
+        return actor;
+    }
     static Mob recoverCat(ServerPlayer p,VisitData.Scene s,ServerLevel level,Vec3 at){
         if(!root(s).getCompound("cat").hasUUID("Entity")&&!canonicalCat(s).hasUUID("Entity"))return null;
         var actor=acquire(p,s,"cat",level,at);
         return actor instanceof CharacterEntity cat&&cat.characterId().equals("cat")&&cat.isAlive()?cat:null;
     }
     public static Mob acquire(ServerPlayer p,VisitData.Scene s,String id,ServerLevel level,Vec3 at){
-        if(!s.owner.equals(p.getUUID()))return null;var all=root(s);if(all.contains(id)){var bound=actor(p,s,id);if(bound==null||!owned(bound,s))return null;if(bound.level()!=level){bound=ShowTravel.guest(bound,p,s,level,at,true,"ShowActorReturn");if(bound==null)return null;all.getCompound(id).putUUID("Entity",bound.getUUID());}remember(all.getCompound(id),bound);if(id.equals("cat"))rememberCat(s,bound);control(bound);return bound;}
+        if(!s.owner.equals(p.getUUID()))return null;var all=root(s);if(all.contains(id)){var bound=actor(p,s,id);if(bound==null&&id.equals("cat"))bound=restoreVerifiedCat(p,s,level,at);if(bound==null||!owned(bound,s))return null;if(bound.level()!=level){bound=ShowTravel.guest(bound,p,s,level,at,true,"ShowActorReturn");if(bound==null)return null;all.getCompound(id).putUUID("Entity",bound.getUUID());}remember(all.getCompound(id),bound);if(id.equals("cat"))rememberCat(s,bound);control(bound);return bound;}
         if(!CharacterCast.ENTITIES.containsKey(id))return null;Mob chosen=null;
-        if(id.equals("cat")&&canonicalCat(s).hasUUID("Entity")){var record=canonicalCat(s);var savedLevel=com.coraline.parents.FamilyData.level(p.server,record.getString("Dimension"));if(savedLevel!=null)LoopProps.hold(savedLevel,net.minecraft.core.BlockPos.of(record.getLong("Position")));for(var world:p.server.getAllLevels())if(world.getEntity(record.getUUID("Entity")) instanceof CharacterEntity cat&&cat.characterId().equals("cat")&&cat.getPersistentData().hasUUID("CanonicalStoryCatOwner")&&s.owner.equals(cat.getPersistentData().getUUID("CanonicalStoryCatOwner"))){chosen=cat;break;}if(chosen==null)return null;chosen.getPersistentData().remove("CanonicalStoryCatEndingArchive");chosen.setInvisible(false);chosen.setSilent(false);ShowPlaybackNetwork.pose(chosen,0,0,1);}
+        if(id.equals("cat")&&canonicalCat(s).hasUUID("Entity")){var record=canonicalCat(s);var savedLevel=com.coraline.parents.FamilyData.level(p.server,record.getString("Dimension"));if(savedLevel!=null)LoopProps.hold(savedLevel,net.minecraft.core.BlockPos.of(record.getLong("Position")));for(var world:p.server.getAllLevels())if(world.getEntity(record.getUUID("Entity")) instanceof CharacterEntity cat&&cat.characterId().equals("cat")&&cat.getPersistentData().hasUUID("CanonicalStoryCatOwner")&&s.owner.equals(cat.getPersistentData().getUUID("CanonicalStoryCatOwner"))){chosen=cat;break;}if(chosen==null)chosen=restoreVerifiedCat(p,s,level,at);if(chosen==null)return null;chosen.getPersistentData().remove("CanonicalStoryCatEndingArchive");chosen.setInvisible(false);chosen.setSilent(false);ShowPlaybackNetwork.pose(chosen,0,0,1);}
         if(id.equals("wybie")&&CanonicalRealWybie.recorded(s)){try{CanonicalRealWybie.rebindTimeline(p,s,com.coraline.rebirth.StoryRunStore.get(p.server,p.getUUID()));}catch(java.io.IOException bad){return null;}var original=CanonicalRealWybie.find(p,s);if(original==null||!CanonicalRealWybie.bind(p,s,original))return null;chosen=original;}
         for(var l:p.server.getAllLevels())for(var entity:l.getAllEntities())if(entity instanceof CharacterEntity candidate&&candidate.characterId().equals(id)&&candidate.getPersistentData().hasUUID("RealmDoor")&&s.door.equals(candidate.getPersistentData().getUUID("RealmDoor"))){
             if(candidate.getPersistentData().hasUUID("CanonicalRealWybieOwner")&&!s.owner.equals(candidate.getPersistentData().getUUID("CanonicalRealWybieOwner")))continue;

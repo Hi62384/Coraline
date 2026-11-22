@@ -17,9 +17,53 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('ensureChairs(p,s);',table)
         self.assertLess(table.index('existingTable.longDining(true);'),table.index('ensureChairs(p,s);'))
         native=(ROOT/'src/gametest/java/com/coraline/feast/FirstVisitGameTests.java').read_text()
-        self.assertIn('h.runAfterDelay(8,()->{',native)
+        self.assertIn('h.succeedWhen(()->{',native)
+        self.assertIn('chairVerifyAt[0]=h.getTick()+8',native)
+        self.assertIn('h.getTick()>=chairVerifyAt[0]',native)
         self.assertIn('p.tickCount=40;FirstVisit.tick(tick);',native)
         self.assertIn('Supper needs all nine chairs',native)
+
+    def test_mantis_native_hit_fixture_runs_in_original_arena(self):
+        native=(ROOT/'src/wybietest/java/com/coraline/feast/RescueBossGameTests.java').read_text()
+        fixture=native.split('public static void onlyCurrentOwnersRevealedExposedWeakPointAcceptsDamageAndCooldown(',1)[1].split('public static void offeredEyeCanBeCollected',1)[0]
+        self.assertIn('var p=player(h,com.coraline.otherworld.OtherWorld.KEY)',fixture)
+        self.assertIn('var foreign=player(h,com.coraline.otherworld.OtherWorld.KEY)',fixture)
+        self.assertIn('RescueBosses.inArena(p,RescueChapter.Phase.MANTIS_FIGHT)',fixture)
+        self.assertIn('RescueBosses.hit(p,point)',fixture)
+        self.assertIn('A missed body strike left the opening active',fixture)
+        self.assertIn('Mantis body miss did not spend the exposed opening',fixture)
+        self.assertGreaterEqual(fixture.count('n.putBoolean("MantisAttemptSpent",false)'),4)
+
+    def test_supper_chair_reconciliation_ignores_pending_entities_and_prunes_duplicates(self):
+        visit=source('feast/FirstVisit.java')
+        chairs=visit.split('static void ensureChairs(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static void scheduleRefill(',1)[0]
+        self.assertIn('supperChairsPending.computeIfAbsent(s',chairs)
+        self.assertIn('now-queued.issuedAt()<120',chairs)
+        self.assertIn('extra.ejectPassengers();extra.discard();',chairs)
+        self.assertIn('queued!=null&&queued.chair()==chair?queued.issuedAt():now',chairs)
+        self.assertNotIn('pending.put(slot,new PendingChair(chair,now))',chairs)
+        native=(ROOT/'src/gametest/java/com/coraline/feast/FirstVisitGameTests.java').read_text()
+        self.assertIn('FirstVisit.ensureChairs(p,s);FirstVisit.ensureChairs(p,s);',native)
+
+    def test_cross_dimension_welcome_fixture_polls_real_progress_instead_of_silently_timing_out(self):
+        native=(ROOT/'src/gametest/java/com/coraline/feast/FirstVisitGameTests.java').read_text()
+        fixture=native.split('public static void welcomeSequenceReleasesPlayerAndClosesPortal(',1)[1].split('public static void cakeDropsPreserveEveryBiteState(',1)[0]
+        self.assertIn('h.succeedWhen(()->{',fixture)
+        self.assertIn('h.getTick()>=40',fixture)
+        self.assertIn('checkStep[0]=2',fixture)
+        self.assertIn('chairVerifyAt[0]=h.getTick()+8',fixture)
+        self.assertIn('level.getEntity(s.mom)!=null&&level.getEntity(s.dad)!=null',fixture)
+        self.assertIn('FirstVisit.slept(p)',fixture)
+        self.assertNotIn('whenIndexed[0]',fixture)
+
+    def test_orphaned_original_little_door_fails_closed_without_story_scene(self):
+        tunnel=source('feast/StoryTunnel.java')
+        sealed=tunnel.split('public static boolean sealed(MinecraftServer server,java.util.UUID owner)',1)[1].split('public static boolean permanent(',1)[0]
+        self.assertIn('if(server==null||owner==null)return true',sealed)
+        self.assertIn('return s==null||ParentRescueStory.data(s)',sealed)
+        self.assertIn('if(server==null||owner==null)return false',tunnel)
+        native=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
+        self.assertIn('staleDoorOwnerWithoutOriginalSceneCannotCrashOrReopenPassage',native)
 
     def test_first_escape_environment_restoration_rejects_corrupt_journal_rows(self):
         room=source('feast/FirstEscapeScene.java')
@@ -150,12 +194,14 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('if(!recorded&&!old.isAir())return false',floor)
         self.assertIn('old.equals(NbtUtils.readBlockState(lookup,receipt.getCompound("PreviousPlaced")))',floor)
         sag=web.split('public static void sag(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static void restore(',1)[0]
-        self.assertIn('cell.put("PreviousPlaced",NbtUtils.writeBlockState(old))',sag)
-        self.assertIn('if(l.getBlockState(at).equals(state))cell.remove("PreviousPlaced")',sag)
-        self.assertIn('if(l.getBlockState(at).equals(saved))cell.remove("PreviousPlaced")',sag)
+        self.assertIn('receipt.put("PreviousPlaced",NbtUtils.writeBlockState(old))',sag)
+        self.assertIn('if(level.getBlockState(at).equals(state))receipt.remove("PreviousPlaced")',sag)
+        self.assertIn('if(level.getBlockState(at).equals(saved))',sag)
         self.assertIn('boolean updated=false',sag)
+        self.assertIn('WebSagIndexReady',sag)
+        self.assertIn('for(long packed:candidates)',sag)
         self.assertIn('if(updated)OtherMotherLoop.changed(p)',sag)
-        self.assertLess(sag.index('cell.put("Placed",NbtUtils.writeBlockState(state))'),sag.index('if(updated)OtherMotherLoop.changed(p)'))
+        self.assertLess(sag.index('receipt.put("Placed",NbtUtils.writeBlockState(state))'),sag.index('if(updated)OtherMotherLoop.changed(p)'))
         restore=web.split('public static void restore(ServerPlayer p,VisitData.Scene s)',1)[1].split('private RescueWebSite()',1)[0]
         self.assertIn('for(String key:new java.util.HashSet<>(cells.getAllKeys()))',restore)
         self.assertIn('previous==null||!actual.equals(previous)',restore)

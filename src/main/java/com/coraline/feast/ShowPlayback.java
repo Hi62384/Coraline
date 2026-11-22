@@ -3,9 +3,13 @@ package com.coraline.feast;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import java.util.UUID;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 
 /** Normal playback uses real acknowledgements; bounded safety recovery can
  * skip a failed recording without granting rewards or offline progress. */
+@Mod.EventBusSubscriber(modid="coraline")
 public final class ShowPlayback {
     private static final java.util.Map<UUID,Long> AUDIBLE_START=new java.util.HashMap<>();
     private static final java.util.Map<UUID,Long> REQUESTED_AT=new java.util.HashMap<>();
@@ -80,5 +84,22 @@ public final class ShowPlayback {
     public static void stop(ServerPlayer p,VisitData.Scene s){if(!s.owner.equals(p.getUUID()))return;ShowAudioSeek.stopping(p,s);var n=data(s);String sound=n.getString("Sound");if(!sound.isEmpty()){if(n.getBoolean("Music"))VisitAudio.stopMusic(p,sound);else VisitAudio.stopVoice(p,sound);}if(n.hasUUID("Nonce")){AUDIBLE_START.remove(n.getUUID("Nonce"));REQUESTED_AT.remove(n.getUUID("Nonce"));}n.remove("Sound");n.remove("Nonce");n.putBoolean("Started",false);}
     /** Recovery deliberately restarts only the current safe recording checkpoint, never skips it. */
     public static void recover(ServerPlayer p,VisitData.Scene s){if(!s.owner.equals(p.getUUID()))return;var n=data(s);String sound=n.getString("Sound");boolean music=n.getBoolean("Music"),done=n.getBoolean("Finished");stop(p,s);if(!sound.isEmpty()&&!done)start(p,s,sound,music);}
+    /** A logged-out listener cannot acknowledge an old nonce. Retain saved
+     * dialogue state so the normal rebind path restarts the exact checkpoint. */
+    @SubscribeEvent public static void logout(PlayerEvent.PlayerLoggedOutEvent event){
+        if(!(event.getEntity() instanceof ServerPlayer player))return;
+        var scene=VisitData.get(player.server).scenes.get(player.getUUID());
+        if(scene==null)return;
+        var state=data(scene);
+        if(state.hasUUID("Nonce")){
+            var nonce=state.getUUID("Nonce");
+            AUDIBLE_START.remove(nonce);
+            REQUESTED_AT.remove(nonce);
+        }
+    }
+    @SubscribeEvent public static void serverStopped(net.minecraftforge.event.server.ServerStoppedEvent event){
+        AUDIBLE_START.clear();
+        REQUESTED_AT.clear();
+    }
     private ShowPlayback(){}
 }

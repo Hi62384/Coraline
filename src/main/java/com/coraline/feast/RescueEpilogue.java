@@ -402,8 +402,29 @@ public final class RescueEpilogue {
                         &&family.bed.distSqr(door.pos)<=32*32)target=nearReturn(l,p,pose,family.bed,6);
             }
         }
+        // In a singleplayer save the protected dream prevents the player
+        // removing blocks that obstruct their own return. After a bounded
+        // retry, use verified standing space near the real Overworld spawn.
+        // This never fabricates a door, parent, quest item, or foreign realm.
+        if(target==null&&door!=null&&door.placed&&s.owner.equals(door.owner)
+                &&FamilyData.level(p.server,door.dimension)==l){
+            int attempts=Math.min(1200,n.getInt("VisionLandingFailures")+1);
+            n.putInt("VisionLandingFailures",attempts);
+            long now=l.getGameTime();
+            if(attempts>=40&&now>=n.getLong("VisionSpawnRecheckAt")){
+                n.putLong("VisionSpawnRecheckAt",now+20);
+                var spawn=l.getSharedSpawnPos();
+                l.getChunkAt(spawn);
+                // Never place a reunited player in a one-block crouch cavity.
+                target=nearReturn(l,p,Pose.STANDING,spawn,attempts>=200?24:12);
+                if(target!=null){
+                    pose=Pose.STANDING;
+                    n.putBoolean("VisionReturnUsedSpawnFallback",true);
+                }
+            }
+        }
         if(target==null){
-            n.putString("Blocker","Clear safe footing and standing space near your original Little Door.");
+            n.putString("Blocker","Waiting for a safe original-door or Overworld-spawn return landing.");
             return false;
         }
         if(!originalOverworld||!finiteOriginal)n.putBoolean("VisionReturnUsedDoorFallback",true);
@@ -447,6 +468,8 @@ public final class RescueEpilogue {
             return false;
         }
         n.remove("VisionAt");
+        n.remove("VisionLandingFailures");
+        n.remove("VisionSpawnRecheckAt");
         n.remove("VisionSaveAfter");
         n.remove("VisionLandingPending");
         n.remove("Blocker");
