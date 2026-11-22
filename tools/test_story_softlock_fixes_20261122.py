@@ -72,8 +72,13 @@ class StorySoftlockFixesSourceTests(unittest.TestCase):
             self.assertIn("LegacyActorRecovery",src("feast/RescueProps.java"))
         web=src("feast/RescueWebSite.java")
         self.assertIn("!recorded&&!old.isAir()",web)
+        self.assertIn('n.put("AbandonedWebCells",abandoned)',web)
+        self.assertIn('n.remove("WebSagIndexReady")',web)
         passage=src("feast/RescuePassage.java")
         self.assertIn("unowned block obstructs the original crawl",passage)
+        self.assertIn('n.put("AbandonedPassageCells",abandoned)',passage)
+        self.assertIn('drain(player,scene,"AbandonedWebCells"',src("feast/RescueSiteCleanup.java"))
+        self.assertIn('drain(player,scene,"AbandonedPassageCells"',src("feast/RescueSiteCleanup.java"))
 
     def test_web_sag_uses_locality_after_one_time_migration(self):
         web=src("feast/RescueWebSite.java")

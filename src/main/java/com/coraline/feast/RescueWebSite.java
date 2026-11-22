@@ -156,6 +156,8 @@ public final class RescueWebSite {
                 n.putInt("WebSiteAttempt",attempt+1);
                 n.remove("WebReady");
                 n.remove("WebVerified");
+                n.remove("WebSagged");
+                n.remove("WebSagIndexReady");
                 n.putInt("WebBuild",0);
                 n.putInt("WebVerify",0);
                 n.putString("Blocker","Original web footprint obstructed; preparing an alternate site within your own allocation.");
