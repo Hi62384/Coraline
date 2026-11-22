@@ -373,6 +373,14 @@ private static BlockPos[] chaseHouseRoute(VisitData.Scene s){
             if(!level.addFreshEntity(restored))return null;
             recordChaseRat(n,restored);
             clearRatPath(n);
+            // Reconstituting a missing rat does not certify that its ball
+            // already travelled the authentic house route.
+            if(leg>=2){
+                n.putInt("RatNode",0);
+                n.putLong("RatHouseStart",restored.blockPosition().asLong());
+                n.remove("RatHouseMoved");
+                n.remove("RatExitWait");
+            }
             n.remove("Blocker");
             OtherMotherLoop.changed(p);
             return restored;

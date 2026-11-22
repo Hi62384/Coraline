@@ -141,6 +141,17 @@ public final class RescueWebSite {
         if(!n.getBoolean("WebEntered")&&!n.getBoolean("WebEntryReady")
                 &&!occupiedByPlayer&&attempt+1<SITE_OFFSETS.length){
             restore(p,s);
+            // A foreign edit can prevent retiring its old receipt. Keep that
+            // unresolved original in a separate cleanup ledger, so changing
+            // sites never loses proof of what belongs to the old layout.
+            var residual=n.getCompound("WebCells");
+            if(!residual.isEmpty()){
+                var abandoned=n.getCompound("AbandonedWebCells");
+                for(String key:residual.getAllKeys())if(!abandoned.contains(key))
+                    abandoned.put(key,residual.get(key).copy());
+                n.put("AbandonedWebCells",abandoned);
+                n.remove("WebCells");
+            }
             if(n.getCompound("WebCells").isEmpty()){
                 n.putInt("WebSiteAttempt",attempt+1);
                 n.remove("WebReady");
@@ -152,7 +163,7 @@ public final class RescueWebSite {
                 return false;
             }
         }
-        n.putString("Blocker","The original web cannot be moved until its own placed cells are safely restored.");
+        n.putString("Blocker","All available owner-bound web sites are occupied or an actor is still using this one.");
         OtherMotherLoop.changed(p);
         return false;
     }

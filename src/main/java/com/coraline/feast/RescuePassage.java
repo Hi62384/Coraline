@@ -46,6 +46,14 @@ public final class RescuePassage {
         if(!n.getBoolean("PassageEntered")&&!occupiedByPlayer&&attempt+1<SITE_Z.length){
             if(scene!=null&&RescueChapter.owns(p,scene)){
                 restore(p,scene);
+                var residual=n.getCompound("PassageCells");
+                if(!residual.isEmpty()){
+                    var abandoned=n.getCompound("AbandonedPassageCells");
+                    for(String key:residual.getAllKeys())if(!abandoned.contains(key))
+                        abandoned.put(key,residual.get(key).copy());
+                    n.put("AbandonedPassageCells",abandoned);
+                    n.remove("PassageCells");
+                }
                 if(n.getCompound("PassageCells").isEmpty()){
                     n.putInt("PassageSiteAttempt",attempt+1);
                     n.remove("PassageReady");n.remove("PassageVerified");
