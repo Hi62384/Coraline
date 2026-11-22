@@ -738,6 +738,15 @@ class CurrentStoryRepairs(unittest.TestCase):
         generic=prop.split('InteractionResult interact(Player actor,InteractionHand hand)',1)[1].split('AABB getBoundingBoxForCulling()',1)[0]
         self.assertIn('if(RescueChapter.interact(p,this))return InteractionResult.CONSUME;',generic)
 
+    def test_boss_retry_never_uses_wrong_player_dimension_after_reload(self):
+        bosses=source('feast/RescueBosses.java')
+        retry=bosses.split('public static void retry(ServerPlayer p,VisitData.Scene s,String reason)',1)[1].split('private RescueBosses()',1)[0]
+        self.assertIn('var level=fighting(state)?arena(p,state):p.serverLevel();',retry)
+        self.assertIn('RescueChapter.transfer(p,level,at)',retry)
+        self.assertNotIn('RescueChapter.transfer(p,p.serverLevel(),at)',retry)
+        self.assertIn('bossRetryUsesOriginalArenaDimensionEvenWhenPlayerWasStrandedElsewhere',
+                      (ROOT/'src/wybietest/java/com/coraline/feast/RescueBossGameTests.java').read_text())
+
     def test_rat_return_and_postboss_seal_recheck_after_reload(self):
         encounter=source('feast/RescueEncounters.java')
         handoff=encounter.split('else if(leg==1)',1)[1].split('else {ShowHouseAccess',1)[0]

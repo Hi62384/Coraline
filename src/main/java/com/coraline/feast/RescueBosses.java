@@ -276,9 +276,12 @@ public final class RescueBosses {
             FirstEscapeStory.hint(p,"Other Mother is preparing the button-eye procedure.");
         }else RescueChapter.data(s).remove("BossLossPending");
     }
+    static net.minecraft.server.level.ServerLevel arena(ServerPlayer p,RescueChapter.Phase phase){
+        return p.server.getLevel(phase==MANTIS_FIGHT?OtherWorld.KEY:ActivityWorld.KEY);
+    }
     static boolean resume(ServerPlayer p,VisitData.Scene s){
         var phase=RescueChapter.phase(s);
-        var level=p.server.getLevel(phase==MANTIS_FIGHT?OtherWorld.KEY:ActivityWorld.KEY);
+        var level=arena(p,phase);
         var center=RescueEncounters.center(p,s);
         if(level==null)return false;
         if((p.serverLevel()!=level||p.distanceToSqr(center)>38*38)&&!RescueChapter.transfer(p,level,BlockPos.containing(center).south(10)))return false;
@@ -289,6 +292,6 @@ public final class RescueBosses {
         OtherMotherLoop.changed(p);
         return true;
     }
-    public static void retry(ServerPlayer p,VisitData.Scene s,String reason){hideBar(p);FirstEscapeStory.hint(p,reason);var state=RescueChapter.phase(s);p.setHealth(p.getMaxHealth());p.getFoodData().setFoodLevel(20);p.clearFire();var at=BlockPos.containing(RescueEncounters.center(p,s)).south(10);if(RescueChapter.transfer(p,p.serverLevel(),at))begin(p,s,state);}
+    public static void retry(ServerPlayer p,VisitData.Scene s,String reason){hideBar(p);FirstEscapeStory.hint(p,reason);var state=RescueChapter.phase(s);p.setHealth(p.getMaxHealth());p.getFoodData().setFoodLevel(20);p.clearFire();var at=BlockPos.containing(RescueEncounters.center(p,s)).south(10);var level=fighting(state)?arena(p,state):p.serverLevel();if(level!=null&&RescueChapter.transfer(p,level,at))begin(p,s,state);}
     private RescueBosses(){}
 }
