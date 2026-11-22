@@ -38,5 +38,38 @@ public final class RescueRatGameTests {
             if(ticks[0]>225){String detail=RescueChapter.data(s).getString("Blocker")+" at "+rat.position();RescueProps.retire(p,s,"RatBall2");rat.discard();VisitData.get(p.server).scenes.remove(s.owner);h.fail("Physical rat-ball movement stalled: "+detail);}
         });
     }
+    @GameTest(template="empty",timeoutTicks=160) public static void ratReturnPersistsTransferredOriginalAndRecoversLegacyCircusCheckpoint(GameTestHelper h){
+        var p=player(h);var s=OtherMotherLoop.scene(p);
+        var circus=p.server.getLevel(ActivityWorld.KEY);var house=p.server.getLevel(com.coraline.otherworld.OtherWorld.KEY);
+        h.assertTrue(circus!=null&&house!=null,"Rat return worlds are unavailable");
+        var oldAt=new BlockPos(24000,180,24000);var returnedAt=new BlockPos(24500,180,24500);
+        circus.getChunkAt(oldAt);house.getChunkAt(returnedAt);
+        var rat=ModEntities.MOUSE.get().create(circus);
+        h.assertTrue(rat!=null,"The original mouse type is unavailable");
+        rat.getPersistentData().putUUID("RescueOwner",s.owner);rat.setPos(Vec3.atBottomCenterOf(oldAt));
+        h.assertTrue(circus.addFreshEntity(rat),"Could not spawn the original saved rat");
+        var id=rat.getUUID();var chapter=RescueChapter.data(s);
+        chapter.putUUID("ChaseRat",id);chapter.putInt("RatLeg",1);
+        RescueEncounters.recordChaseRat(chapter,rat);
+        var oldRat=rat;
+        try{
+            var moved=ShowTravel.guest(rat,p,s,house,Vec3.atBottomCenterOf(returnedAt),true,"RescueRatReturn");
+            h.assertTrue(moved instanceof com.coraline.otherworld.MouseEntity&&id.equals(moved.getUUID())
+                    &&moved.level()==house,"Native circus-to-attic transfer lost the original rat identity");
+            rat=(com.coraline.otherworld.MouseEntity)moved;
+            chapter.putInt("RatLeg",2);
+            chapter.putLong("RatAt",oldAt.asLong());chapter.putString("RatDimension",circus.dimension().location().toString());
+            h.assertTrue(RescueEncounters.chaseRat(p,s)==rat,"A legacy stale circus checkpoint must resolve the existing returned rat");
+            RescueEncounters.recordChaseRat(chapter,rat);
+            var reloaded=chapter.copy();
+            h.assertTrue(reloaded.getLong("RatAt")==rat.blockPosition().asLong()
+                    &&reloaded.getString("RatDimension").equals(house.dimension().location().toString())
+                    &&id.equals(reloaded.getUUID("ChaseRat")),
+                    "Ratmaster reload will look for a transferred rat in the old circus world");
+        }finally{
+            rat.discard();oldRat.discard();VisitData.get(p.server).scenes.remove(s.owner);
+        }
+        h.succeed();
+    }
     private RescueRatGameTests(){}
 }

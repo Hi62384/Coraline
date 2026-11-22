@@ -239,7 +239,45 @@ public final class RescueEncounters {
         return true;
     }
     static void startChase(ServerPlayer p,VisitData.Scene s){var n=RescueChapter.data(s);n.putInt("RatLeg",0);n.putInt("RatNode",0);n.putInt("RatStuck",0);n.remove("RatPathTarget");n.remove("RatPath");n.remove("RatPathNode");n.remove("RatExitWait");RescueChapter.go(p,s,RAT_CHASE);}
-    private static com.coraline.otherworld.MouseEntity chaseRat(ServerPlayer p,VisitData.Scene s){var n=RescueChapter.data(s);if(n.hasUUID("ChaseRat")){if(n.contains("RatAt")){var l=com.coraline.parents.FamilyData.level(p.server,n.getString("RatDimension"));if(l!=null)l.getChunkAt(BlockPos.of(n.getLong("RatAt")));}for(var l:p.server.getAllLevels())if(l.getEntity(n.getUUID("ChaseRat")) instanceof com.coraline.otherworld.MouseEntity rat&&rat.getPersistentData().hasUUID("RescueOwner")&&s.owner.equals(rat.getPersistentData().getUUID("RescueOwner")))return rat;return null;}var rat=ModEntities.MOUSE.get().create(p.serverLevel());if(rat==null)return null;rat.doorId=s.door;rat.circusStyle(6);rat.catPose(0,1);rat.spying(true);rat.setInvulnerable(true);rat.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.FOLLOW_RANGE).setBaseValue(80);rat.getPersistentData().putBoolean("CoralineDecoration",true);rat.getPersistentData().putUUID("RescueOwner",s.owner);rat.setPos(Vec3.atBottomCenterOf(MouseCircusSite.center(p,s).south(10)));if(!p.serverLevel().addFreshEntity(rat))return null;n.putUUID("ChaseRat",rat.getUUID());return rat;}
+private static BlockPos[] chaseHouseRoute(VisitData.Scene s){
+        return new BlockPos[]{FirstEscapeScene.at(s,7,24,60),FirstEscapeScene.at(s,7,15,52),
+                FirstEscapeScene.at(s,7,15,18),FirstEscapeScene.at(s,20,15,10),
+                FirstEscapeScene.at(s,26,6,10),FirstEscapeScene.at(s,26,4,8),
+                FirstEscapeScene.at(s,26,2,4),FirstEscapeScene.at(s,26,0,0),
+                FirstEscapeScene.at(s,26,-1,11)};
+    }
+    /** Recover the same saved rat even when older builds saved its pre-transfer
+     * circus coordinates after committing the attic return. Only original
+     * route chunks are loaded, and an absent UUID is never replaced. */
+    static com.coraline.otherworld.MouseEntity chaseRat(ServerPlayer p,VisitData.Scene s){
+        var n=RescueChapter.data(s);
+        if(n.hasUUID("ChaseRat")){
+            if(n.contains("RatAt")){
+                var savedWorld=com.coraline.parents.FamilyData.level(p.server,n.getString("RatDimension"));
+                if(savedWorld!=null)savedWorld.getChunkAt(BlockPos.of(n.getLong("RatAt")));
+            }
+            if(n.getInt("RatLeg")>=2
+                    &&!OtherWorld.KEY.location().toString().equals(n.getString("RatDimension"))
+                    &&p.tickCount%40==0){
+                var savedWorld=p.server.getLevel(OtherWorld.KEY);
+                if(savedWorld!=null&&ParentRescueStory.scenery(s).contains("House",net.minecraft.nbt.Tag.TAG_LONG)){
+                    var tent=MouseCircusSite.tent(p,s);
+                    if(tent!=null)LoopProps.hold(savedWorld,tent.south(3));
+                    for(var waypoint:chaseHouseRoute(s))LoopProps.hold(savedWorld,waypoint);
+                }
+            }
+            for(var level:p.server.getAllLevels())
+                if(level.getEntity(n.getUUID("ChaseRat")) instanceof com.coraline.otherworld.MouseEntity rat
+                        &&rat.getPersistentData().hasUUID("RescueOwner")
+                        &&s.owner.equals(rat.getPersistentData().getUUID("RescueOwner")))
+                    return rat;
+            return null;
+        }
+        var rat=ModEntities.MOUSE.get().create(p.serverLevel());if(rat==null)return null;rat.doorId=s.door;rat.circusStyle(6);rat.catPose(0,1);rat.spying(true);rat.setInvulnerable(true);rat.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.FOLLOW_RANGE).setBaseValue(80);rat.getPersistentData().putBoolean("CoralineDecoration",true);rat.getPersistentData().putUUID("RescueOwner",s.owner);rat.setPos(Vec3.atBottomCenterOf(MouseCircusSite.center(p,s).south(10)));if(!p.serverLevel().addFreshEntity(rat))return null;n.putUUID("ChaseRat",rat.getUUID());return rat;}
+    static void recordChaseRat(net.minecraft.nbt.CompoundTag state,com.coraline.otherworld.MouseEntity rat){
+        state.putLong("RatAt",rat.blockPosition().asLong());
+        state.putString("RatDimension",rat.level().dimension().location().toString());
+    }
     private static void chase(ServerPlayer p,VisitData.Scene s,int t){
         var n=RescueChapter.data(s);
         if(n.getBoolean("RatResetPending")){resetRatSegment(p,s);return;}
@@ -253,15 +291,15 @@ public final class RescueEncounters {
             boolean returned=MouseCircusSite.inAttic(p,s);
             if(!returned&&MouseCircusSite.inside(p,s)&&p.distanceToSqr(MouseCircusSite.exit(p,s).getCenter())<16)
                 returned=MouseCircusSite.returnToAttic(p,s);
-            if(returned){var tent=MouseCircusSite.tent(p,s);if(tent!=null){var moved=ShowTravel.guest(rat,p,s,p.serverLevel(),Vec3.atBottomCenterOf(tent.south(3)),true,"RescueRatReturn");if(moved!=null&&rat.getUUID().equals(moved.getUUID())&&moved.level()==p.level()){
+            if(returned){var tent=MouseCircusSite.tent(p,s);if(tent!=null){var moved=ShowTravel.guest(rat,p,s,p.serverLevel(),Vec3.atBottomCenterOf(tent.south(3)),true,"RescueRatReturn");if(moved instanceof com.coraline.otherworld.MouseEntity returnedRat&&rat.getUUID().equals(returnedRat.getUUID())&&returnedRat.level()==p.level()){rat=returnedRat;
                     n.putInt("RatLeg",2);
                     n.putLong("RatHouseStart",moved.blockPosition().asLong());
                     n.remove("RatHouseMoved");n.remove("RatPathTarget");n.remove("Blocker");retireRatBall(p,s,0);unlockAttic(p,s);}else n.putString("Blocker","Rat return is pending; stay in the attic and the transfer will retry.");}}
         }
-        else {ShowHouseAccess.open(p,s,"basement");BlockPos[] route={FirstEscapeScene.at(s,7,24,60),FirstEscapeScene.at(s,7,15,52),FirstEscapeScene.at(s,7,15,18),FirstEscapeScene.at(s,20,15,10),FirstEscapeScene.at(s,26,6,10),FirstEscapeScene.at(s,26,4,8),FirstEscapeScene.at(s,26,2,4),FirstEscapeScene.at(s,26,0,0),FirstEscapeScene.at(s,26,-1,11)};int index=Math.min(route.length-1,n.getInt("RatNode"));rollRat(p,s,rat,route[index],t,leg);if(rat.distanceToSqr(route[index].getCenter())<5){if(index<route.length-1)n.putInt("RatNode",index+1);else{if(rat.getVehicle()!=null)rat.getVehicle().setDeltaMovement(Vec3.ZERO);n.putInt("RatExitWait",n.getInt("RatExitWait")+1);if(n.getInt("RatExitWait")>100){retry(p,s,RAT_CHASE);return;}}}
+        else {ShowHouseAccess.open(p,s,"basement");BlockPos[] route=chaseHouseRoute(s);int index=Math.min(route.length-1,n.getInt("RatNode"));rollRat(p,s,rat,route[index],t,leg);if(rat.distanceToSqr(route[index].getCenter())<5){if(index<route.length-1)n.putInt("RatNode",index+1);else{if(rat.getVehicle()!=null)rat.getVehicle().setDeltaMovement(Vec3.ZERO);n.putInt("RatExitWait",n.getInt("RatExitWait")+1);if(n.getInt("RatExitWait")>100){retry(p,s,RAT_CHASE);return;}}}
             if(index<3){var at=Vec3.atBottomCenterOf(route[index]).add(0,0,2);var obstacles=prop(p,s,"ChaseObstacles",RescueProps.SWARM,0,at);if(obstacles!=null){obstacles.setPos(at);obstacles.frame(6,t,1);}if(p.distanceToSqr(at)<4)p.makeStuckInBlock(Blocks.COBWEB.defaultBlockState(),new Vec3(.75,1,.75));}else RescueProps.hide(p,s,"ChaseObstacles");
         }
-        n.putLong("RatAt",rat.blockPosition().asLong());n.putString("RatDimension",rat.level().dimension().location().toString());LoopProps.hold((ServerLevel)rat.level(),rat.blockPosition());
+        recordChaseRat(n,rat);LoopProps.hold((ServerLevel)rat.level(),rat.blockPosition());
         if(leg>=2&&rat.getVehicle() instanceof CinematicPropEntity ball&&ball.kind()==RescueProps.RAT_BALL){
             if(!n.contains("RatHouseStart"))n.putLong("RatHouseStart",ball.blockPosition().asLong());
             if(ball.blockPosition().distSqr(BlockPos.of(n.getLong("RatHouseStart")))>=9)n.putBoolean("RatHouseMoved",true);
