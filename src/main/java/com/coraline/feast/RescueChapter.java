@@ -106,6 +106,15 @@ public final class RescueChapter {
         if(n.getBoolean("TheatreMusic")){VisitAudio.stopMusic(p,"rescue_theatre_music");n.remove("TheatreMusic");}
         if(state==Phase.COMPLETE){RescueBosses.hideBar(p);RescueEpilogue.departAfterWaking(p,s);if(p.tickCount%20==0)PalaceJourney.afterWake(p,s);return;}
         if(n.getBoolean("Recover")){n.remove("Recover");recover(p,s);if(n.getBoolean("Recover"))return;state=phase(s);}
+        // A disconnect, command or third-party transfer can leave a boss director
+        // at matching coordinates in the WRONG dimension. Do not spend the
+        // attack clock or damage players there: recover to the saved arena.
+        if(RescueBosses.fighting(state)&&!RescueBosses.inArena(p,state)){
+            n.putBoolean("Recover",true);
+            n.putString("Blocker","Returning to the original boss arena before combat resumes.");
+            if(p.tickCount%5==0)sync(p,s);
+            return;
+        }
         if(!BeldamFinale.originalExitReady(p,s)){if(p.tickCount%5==0)sync(p,s);return;}
         if(!RescueEncounters.presentationReady(p,s,state)||!RescueEpilogue.presentationReady(p,s)){
             if(p.tickCount%5==0)sync(p,s);

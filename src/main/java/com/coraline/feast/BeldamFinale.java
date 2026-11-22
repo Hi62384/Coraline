@@ -2,6 +2,7 @@ package com.coraline.feast;
 
 import static com.coraline.feast.RescueChapter.Phase.*;
 import com.coraline.block.TinyDoorBlock;
+import com.coraline.entity.CharacterEntity;
 import com.coraline.otherworld.*;
 import com.coraline.parents.*;
 import com.coraline.registry.ModBlocks;
@@ -323,11 +324,56 @@ public final class BeldamFinale {
         n.remove("Blocker");
         return true;
     }
+    /** All voiced final-room scenes need the SAME canonical Other Mother.
+     * The Cat swat also needs the original leased Cat until its actual escape
+     * receipt is committed; recording timeouts must never substitute for it. */
+    static boolean finaleCastReady(RescueChapter.Phase state,boolean motherPresent,boolean catPresent,boolean catEscaped){
+        return state.ordinal()<FINAL_A.ordinal()||state.ordinal()>FINAL_N.ordinal()
+                ||motherPresent&&(state!=FINAL_N||catEscaped||catPresent);
+    }
+    static boolean originalFinaleCastReady(ServerPlayer p,VisitData.Scene s,RescueChapter.Phase state){
+        if(state.ordinal()<FINAL_A.ordinal()||state.ordinal()>FINAL_N.ordinal())return true;
+        var n=RescueChapter.data(s);
+        var world=p.server.getLevel(OtherWorld.KEY);
+        if(world==null||p.serverLevel()!=world){
+            n.putBoolean("Recover",true);
+            n.putString("Blocker","Return to the original Other World confrontation room before continuing the finale.");
+            return false;
+        }
+        var mother=ParentRescueStory.mother(p,s);
+        // On interrupted world transfers bring back ONLY the recorded Mother,
+        // never spawn a replacement or allow a cast actor in another dimension.
+        if(mother!=null&&mother.isAlive()&&mother.level()!=world&&s.mom.equals(mother.getUUID())){
+            var returned=ShowTravel.guest(mother,p,s,world,Vec3.atBottomCenterOf(FirstEscapeScene.room(s)).west(3),true,"BeldamFinaleReturn");
+            if(returned instanceof ParentEntity original&&original.getUUID().equals(s.mom))mother=original;
+        }
+        boolean motherReady=mother!=null&&mother.isAlive()&&mother.level()==world&&s.mom.equals(mother.getUUID());
+        boolean catReady=false;
+        if(state==FINAL_N&&!n.getBoolean("CatEscaped")){
+            var cat=ShowActors.actor(p,s,"cat");
+            if(cat==null||cat.level()!=world){
+                Vec3 at=n.contains("CatSwatX")?new Vec3(n.getDouble("CatSwatX"),n.getDouble("CatSwatY"),n.getDouble("CatSwatZ"))
+                        :motherReady?facePoint(mother):Vec3.atBottomCenterOf(FirstEscapeScene.room(s));
+                // Recovering a lease can move the SAME UUID between dimensions;
+                // a missing or foreign Cat never licenses a newly-created one.
+                cat=ShowActors.recoverCat(p,s,world,at);
+            }
+            catReady=cat instanceof CharacterEntity original&&original.isAlive()&&original.level()==world&&ShowActors.storyCat(original);
+        }
+        if(finaleCastReady(state,motherReady,catReady,n.getBoolean("CatEscaped")))return true;
+        if(n.getBoolean("Audio")){
+            ShowPlayback.stop(p,s);
+            n.remove("Audio");n.remove("AudioTail");n.putInt("Ticks",0);
+        }
+        n.putString("Blocker",!motherReady?"Waiting for the original Other Mother to return to the finale."
+                :"Waiting for the original Cat before the final escape cutscene.");
+        return false;
+    }
     public static boolean preflight(ServerPlayer p,VisitData.Scene s){
         var state=RescueChapter.phase(s);var n=RescueChapter.data(s);
         if(state.ordinal()>=FINAL_I.ordinal()&&state.ordinal()<=FINAL_N.ordinal()&&!n.getBoolean("KeyRecovered")&&!StoryItemCustody.recoverSwallowedKey(p,s)){n.putString("Blocker","The swallowed key cannot be recovered: restore its saved custody record or bring the surviving owner-bound original out of storage.");return false;}
         if(state==FINAL_E&&!n.getBoolean("StoneTaken")){if(!StoryItemCustody.capture(p,s,"Stone",stack->StoryItemCustody.stone(stack,s))){n.putString("Blocker","Bring your original Seeing Stone out of storage. Unrelated stones are not substitutes.");return false;}p.stopUsingItem();n.putBoolean("StoneTaken",true);}
-        if(!keepPlayerInRoom(p,s))return false;
+        if(!keepPlayerInRoom(p,s)||!originalFinaleCastReady(p,s,state))return false;
         if(state.ordinal()>=FINAL_P.ordinal()&&state.ordinal()<=WEB_STEALTH.ordinal()
                 &&!enterWeb(p,s,ParentRescueStory.mother(p,s)))return false;
         if(state==TUNNEL_CHASE&&!n.getBoolean("PassageEntered")&&!RescuePassage.enter(p,s))return false;
