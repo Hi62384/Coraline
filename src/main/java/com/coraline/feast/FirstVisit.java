@@ -192,7 +192,10 @@ public final class FirstVisit {
                 if(queued!=null&&!queued.chair().isRemoved()&&!queued.chair().isVehicle())queued.chair().discard();
                 chair=spawn(p,s,ScenePropEntity.CHAIR,at.x,at.y,at.z,slot);
             }
-            pending.put(slot,new PendingChair(chair,now));
+            // Preserve the original issuance timestamp while this is still
+            // the same unregistered chair. Otherwise an every-tick reconcile
+            // resets the retry clock and a rejected spawn can block forever.
+            pending.put(slot,new PendingChair(chair,queued!=null&&queued.chair()==chair?queued.issuedAt():now));
             if(chair.position().distanceToSqr(at)>.001)chair.setPos(at);
             chair.setYRot(SupperSeating.facing(slot));
         }

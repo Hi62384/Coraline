@@ -40,7 +40,8 @@ class CurrentStoryRepairs(unittest.TestCase):
         self.assertIn('supperChairsPending.computeIfAbsent(s',chairs)
         self.assertIn('now-queued.issuedAt()<120',chairs)
         self.assertIn('extra.ejectPassengers();extra.discard();',chairs)
-        self.assertIn('pending.put(slot,new PendingChair(chair,now))',chairs)
+        self.assertIn('queued!=null&&queued.chair()==chair?queued.issuedAt():now',chairs)
+        self.assertNotIn('pending.put(slot,new PendingChair(chair,now))',chairs)
         native=(ROOT/'src/gametest/java/com/coraline/feast/FirstVisitGameTests.java').read_text()
         self.assertIn('FirstVisit.ensureChairs(p,s);FirstVisit.ensureChairs(p,s);',native)
 
