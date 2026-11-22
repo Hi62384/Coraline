@@ -373,17 +373,20 @@ private static BlockPos[] chaseHouseRoute(VisitData.Scene s){
             if(!level.addFreshEntity(restored))return null;
             recordChaseRat(n,restored);
             clearRatPath(n);
-            // Reconstituting a missing rat does not certify that its ball
-            // already travelled the authentic house route.
-            if(leg>=2){
-                n.putInt("RatNode",0);
-                n.putLong("RatHouseStart",restored.blockPosition().asLong());
-                n.remove("RatHouseMoved");
-                n.remove("RatExitWait");
-            }
-            n.remove("Blocker");
+            // A saved circus ball may still be far down the old route. Mounting
+            // the resurrected rat on that displaced ball could falsely satisfy
+            // RatHouseMoved and allow collecting the third eye immediately.
+            // Retry the SAME physical segment before allowing any new chase
+            // movement or item interaction. resetRatSegment() retires the
+            // original ball receipts and positions the original rat safely.
+            n.putBoolean("RatResetPending",true);
+            n.putInt("RatNode",0);
+            n.putLong("RatHouseStart",restored.blockPosition().asLong());
+            n.remove("RatHouseMoved");
+            n.remove("RatExitWait");
+            n.putString("Blocker","Restoring the original rat and retiring its old circus ball.");
             OtherMotherLoop.changed(p);
-            return restored;
+            return null;
         }
         var rat=ModEntities.MOUSE.get().create(p.serverLevel());if(rat==null)return null;rat.doorId=s.door;rat.circusStyle(6);rat.catPose(0,1);rat.spying(true);rat.setInvulnerable(true);rat.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.FOLLOW_RANGE).setBaseValue(80);rat.getPersistentData().putBoolean("CoralineDecoration",true);rat.getPersistentData().putUUID("RescueOwner",s.owner);rat.setPos(Vec3.atBottomCenterOf(MouseCircusSite.center(p,s).south(10)));if(!p.serverLevel().addFreshEntity(rat))return null;n.putUUID("ChaseRat",rat.getUUID());return rat;}
     static void recordChaseRat(net.minecraft.nbt.CompoundTag state,com.coraline.otherworld.MouseEntity rat){

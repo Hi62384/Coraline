@@ -46,6 +46,11 @@ class StorySoftlockFixesSourceTests(unittest.TestCase):
         s=src("feast/ShowActors.java")
         self.assertIn("canonical.getBoolean(\"FarewellDeparted\")",s)
         self.assertIn("canonical.getUUID(\"Entity\")",s)
+        chase=src("feast/RescueEncounters.java").split("static com.coraline.otherworld.MouseEntity chaseRat(",1)[1].split("static void recordChaseRat(",1)[0]
+        restored=chase.split("recordChaseRat(n,restored);",1)[1]
+        self.assertIn('n.putBoolean("RatResetPending",true)',restored)
+        self.assertIn('n.remove("RatHouseMoved")',restored)
+        self.assertLess(restored.index('n.putBoolean("RatResetPending",true)'),restored.index('return null;'))
 
     def test_post_boss_return_and_key_custody_fail_safely(self):
         s=src("feast/RescueEpilogue.java")
