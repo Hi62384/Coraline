@@ -70,13 +70,40 @@ public final class ShowActors {
         OtherMotherLoop.changed(p);
         return actor;
     }
+    /** Recover only story-created, actor-critical stage characters, using their
+     * exact saved UUID after native absence proof. Adopted/real actors cannot be
+     * fabricated, and any loaded original always takes precedence. */
+    private static final Set<String> RECOVERABLE_CAST=Set.of(
+            "evil_other_bobinsky","evil_other_father","other_miss_spink","other_miss_forcible");
+    private static Mob restoreVerifiedCreatedActor(ServerPlayer p,VisitData.Scene s,String id,ServerLevel level,Vec3 at){
+        if(!RECOVERABLE_CAST.contains(id))return null;
+        var record=root(s).getCompound(id);
+        if(level==null||!record.getBoolean("Created")||!record.hasUUID("Entity")
+                ||!Double.isFinite(at.x)||!Double.isFinite(at.y)||!Double.isFinite(at.z))return null;
+        var original=record.getUUID("Entity");
+        for(var world:p.server.getAllLevels())if(world.getEntity(original)!=null)return null;
+        if(com.coraline.rebirth.LegacyActorRecovery.check(p.server,original)
+                !=com.coraline.rebirth.LegacyActorRecovery.Result.ABSENT)return null;
+        var position=net.minecraft.core.BlockPos.containing(at);
+        if(level.isOutsideBuildHeight(position)||!level.getWorldBorder().isWithinBounds(position))return null;
+        level.getChunkAt(position);
+        var actor=CharacterCast.ENTITIES.get(id).get().create(level);
+        if(actor==null||!actor.characterId().equals(id))return null;
+        actor.setUUID(original);actor.setPos(at);
+        var tag=actor.getPersistentData();tag.putBoolean("CoralineDecoration",true);
+        tag.putUUID("ShowActorOwner",s.owner);tag.putInt("ShowActorSerial",s.loop.event.getInt("Serial"));
+        tag.putUUID("RealmDoor",s.door);
+        if(!level.addFreshEntity(actor))return null;
+        remember(record,actor);control(actor);OtherMotherLoop.changed(p);
+        return actor;
+    }
     static Mob recoverCat(ServerPlayer p,VisitData.Scene s,ServerLevel level,Vec3 at){
         if(!root(s).getCompound("cat").hasUUID("Entity")&&!canonicalCat(s).hasUUID("Entity"))return null;
         var actor=acquire(p,s,"cat",level,at);
         return actor instanceof CharacterEntity cat&&cat.characterId().equals("cat")&&cat.isAlive()?cat:null;
     }
     public static Mob acquire(ServerPlayer p,VisitData.Scene s,String id,ServerLevel level,Vec3 at){
-        if(!s.owner.equals(p.getUUID()))return null;var all=root(s);if(all.contains(id)){var bound=actor(p,s,id);if(bound==null&&id.equals("cat"))bound=restoreVerifiedCat(p,s,level,at);if(bound==null||!owned(bound,s))return null;if(bound.level()!=level){bound=ShowTravel.guest(bound,p,s,level,at,true,"ShowActorReturn");if(bound==null)return null;all.getCompound(id).putUUID("Entity",bound.getUUID());}remember(all.getCompound(id),bound);if(id.equals("cat"))rememberCat(s,bound);control(bound);return bound;}
+        if(!s.owner.equals(p.getUUID()))return null;var all=root(s);if(all.contains(id)){var bound=actor(p,s,id);if(bound==null&&id.equals("cat"))bound=restoreVerifiedCat(p,s,level,at);if(bound==null&&RECOVERABLE_CAST.contains(id))bound=restoreVerifiedCreatedActor(p,s,id,level,at);if(bound==null||!owned(bound,s))return null;if(bound.level()!=level){bound=ShowTravel.guest(bound,p,s,level,at,true,"ShowActorReturn");if(bound==null)return null;all.getCompound(id).putUUID("Entity",bound.getUUID());}remember(all.getCompound(id),bound);if(id.equals("cat"))rememberCat(s,bound);control(bound);return bound;}
         if(!CharacterCast.ENTITIES.containsKey(id))return null;Mob chosen=null;
         if(id.equals("cat")&&canonicalCat(s).hasUUID("Entity")){var record=canonicalCat(s);var savedLevel=com.coraline.parents.FamilyData.level(p.server,record.getString("Dimension"));if(savedLevel!=null)LoopProps.hold(savedLevel,net.minecraft.core.BlockPos.of(record.getLong("Position")));for(var world:p.server.getAllLevels())if(world.getEntity(record.getUUID("Entity")) instanceof CharacterEntity cat&&cat.characterId().equals("cat")&&cat.getPersistentData().hasUUID("CanonicalStoryCatOwner")&&s.owner.equals(cat.getPersistentData().getUUID("CanonicalStoryCatOwner"))){chosen=cat;break;}if(chosen==null)chosen=restoreVerifiedCat(p,s,level,at);if(chosen==null)return null;chosen.getPersistentData().remove("CanonicalStoryCatEndingArchive");chosen.setInvisible(false);chosen.setSilent(false);ShowPlaybackNetwork.pose(chosen,0,0,1);}
         if(id.equals("wybie")&&CanonicalRealWybie.recorded(s)){try{CanonicalRealWybie.rebindTimeline(p,s,com.coraline.rebirth.StoryRunStore.get(p.server,p.getUUID()));}catch(java.io.IOException bad){return null;}var original=CanonicalRealWybie.find(p,s);if(original==null||!CanonicalRealWybie.bind(p,s,original))return null;chosen=original;}

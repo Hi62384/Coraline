@@ -31,6 +31,21 @@ public final class RescueBossGameTests {
         }finally{clean(p);}
         h.succeed();
     }
+    @GameTest(template="empty") public static void defeatedActressesCannotLoseVictoryWhenBothSocketsAreGone(GameTestHelper h){
+        var p=player(h);var s=OtherMotherLoop.scene(p);
+        try{
+            var n=RescueChapter.data(s);
+            RescueChapter.go(p,s,RescueChapter.Phase.THEATRE_FIGHT);
+            n.putFloat("BossMaximum",240);n.putFloat("BossHealth",0);
+            n.putFloat("SpinkHealth",0);n.putFloat("ForcibleHealth",0);
+            RescueBosses.tick(p,s,400);
+            h.assertTrue(RescueChapter.phase(s)==RescueChapter.Phase.THEATRE_EYE,
+                    "Both defeated actresses left their fight stuck without an exposed weak point");
+            h.assertTrue(RescueEyes.eye(s,1).getBoolean("Defeated"),
+                    "The second authentic ghost eye was not unlocked after victory");
+        }finally{clean(p);}
+        h.succeed();
+    }
     private static void clean(ServerPlayer p){var s=OtherMotherLoop.scene(p);RescueBosses.hideBar(p);for(var l:p.server.getAllLevels())for(var e:l.getAllEntities())if(e instanceof CinematicPropEntity prop&&prop.owned(s))prop.discard();for(String id:java.util.List.of("evil_other_father","other_miss_spink","other_miss_forcible")){var actor=ShowActors.actor(p,s,id);if(actor!=null)actor.discard();}VisitData.get(p.server).scenes.remove(s.owner);}
     @GameTest(template="empty") public static void everyBossPatternAndHealthTierStartsWithItsOwnTelegraphAndSurvivesReload(GameTestHelper h){var p=player(h);var s=OtherMotherLoop.scene(p);p.setInvulnerable(true);var changed=new java.util.ArrayList<BlockPos>();
         var states=java.util.List.of(RescueChapter.Phase.MANTIS_FIGHT,RescueChapter.Phase.THEATRE_FIGHT,RescueChapter.Phase.SWARM_FIGHT);

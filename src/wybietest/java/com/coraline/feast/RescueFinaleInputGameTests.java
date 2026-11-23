@@ -42,5 +42,32 @@ public final class RescueFinaleInputGameTests {
         for(int i=0;i<3;i++){var eye=RescueEyes.eye(s,i);eye.putBoolean("Defeated",true);eye.putBoolean("Discovered",true);h.assertTrue(RescueEyes.claim(p,s,i),"Could not award actual owned eye fixture");}
         s.loop=OtherMotherLoopState.load(s.loop.save());h.runAfterDelay(4,()->{try{RescueChapter.input(p,nonce,"show_eyes");h.assertTrue(RescueChapter.phase(s)==RescueChapter.Phase.FINAL_D&&!RescueChapter.data(s).getUUID("Input").equals(nonce),"Reloaded authentic presentation failed or retained its old nonce");RescueChapter.input(p,nonce,"behind_little_door");h.assertTrue(RescueChapter.phase(s)==RescueChapter.Phase.FINAL_D,"Replayed eye nonce skipped recording D");}finally{clean(p);clean(other);}h.succeed();});
     }
+    @GameTest(template="empty") public static void storedOriginalEyeReopensLegacyLockedConfrontation(GameTestHelper h){
+        var p=player(h);var s=OtherMotherLoop.scene(p);
+        try{
+            for(int i=0;i<3;i++){
+                var eye=RescueEyes.eye(s,i);eye.putBoolean("Defeated",true);
+                eye.putBoolean("Discovered",true);
+                h.assertTrue(RescueEyes.claim(p,s,i),"Unable to issue original eye fixture");
+            }
+            h.assertTrue(RescueEyes.carriedByOwner(p,s),"All three original eyes should allow the sealed-room objective");
+            var stored=p.getInventory().getItem(0).copy();
+            p.getEnderChestInventory().setItem(0,stored);
+            p.getInventory().setItem(0,ItemStack.EMPTY);
+            h.assertTrue(RescueEyes.all(s)&&!RescueEyes.carriedByOwner(p,s),
+                    "Saved eye claims bypassed the physical-inventory gate");
+            var n=RescueChapter.data(s);n.putBoolean("RoomLocked",true);
+            RescueChapter.go(p,s,RescueChapter.Phase.SHOW_EYES);
+            s.loop=OtherMotherLoopState.load(s.loop.save());
+            h.assertFalse(BeldamFinale.preflight(p,s),"A missing original eye was accepted inside the locked finale");
+            h.assertTrue(RescueChapter.phase(s)==RescueChapter.Phase.HOUSE_SAFE
+                            &&!RescueChapter.data(s).getBoolean("RoomLocked"),
+                    "An older save could not reopen its sealed room to retrieve the original eye");
+            p.getInventory().setItem(0,p.getEnderChestInventory().getItem(0).copy());
+            p.getEnderChestInventory().setItem(0,ItemStack.EMPTY);
+            h.assertTrue(RescueEyes.carriedByOwner(p,s),"Returning the actual stored eye did not restore the gate");
+        }finally{clean(p);}
+        h.succeed();
+    }
     private RescueFinaleInputGameTests(){}
 }

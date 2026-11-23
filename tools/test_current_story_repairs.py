@@ -245,7 +245,7 @@ class CurrentStoryRepairs(unittest.TestCase):
         retry=finale.split('public static void retry(ServerPlayer p,VisitData.Scene s',1)[1]
         self.assertIn('n.remove("WebEntryReady");n.remove("WebEntered");n.remove("WebEntryRecheck")',retry)
         self.assertIn('n.remove("WebVerified");n.putInt("WebVerify",0)',retry)
-        self.assertNotIn('RescueChapter.transfer(p,p.server.getLevel(ActivityWorld.KEY)',retry.split('}else if(state==WEB_STEALTH){',1)[1].split('}else if(state==DOOR_STRUGGLE){',1)[0])
+        self.assertNotIn('RescueChapter.transfer(p,p.server.getLevel(ActivityWorld.KEY)',retry.split('}else if(state==WEB_STEALTH){',1)[1].split('}else if(state==DOOR_STRUGGLE',1)[0])
         tests=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
         self.assertIn('webReadyCannotSkipItsPhysicalReceipts',tests)
 

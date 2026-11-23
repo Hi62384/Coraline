@@ -43,14 +43,20 @@ public final class MouseCircusSite {
         if(!s.owner.equals(p.getUUID()))return false;
         var l=p.server.getLevel(ActivityWorld.KEY);if(l==null)return false;var c=center(p,s);var data=ShowSiteData.get(p.server);var n=data.owner(s.owner);
         if(!n.getBoolean("CircusBuilt")){
-            for(var at:BlockPos.betweenClosed(c.offset(-41,-1,-41),c.offset(41,44,41)))if(!l.getBlockState(at).isAir())return false;
+            if(!VenueBuildRecovery.begin(p,l,data,n,"Circus",
+                    c.offset(-41,-1,-41),c.offset(41,44,41),
+                    Set.of(Blocks.SMOOTH_SANDSTONE,Blocks.CUT_RED_SANDSTONE,
+                            Blocks.RED_TERRACOTTA,Blocks.WHITE_TERRACOTTA,Blocks.DARK_OAK_PLANKS,
+                            Blocks.RED_WOOL,Blocks.WHITE_WOOL,Blocks.DARK_OAK_FENCE,
+                            Blocks.CHISELED_RED_SANDSTONE,Blocks.SHROOMLIGHT,
+                            Blocks.REDSTONE_LAMP)))return false;
             for(int x=-41;x<=41;x++)for(int z=-41;z<=41;z++){double r=Math.hypot(x,z);if(r>41)continue;double angle=Math.atan2(z,x);put(l,c.offset(x,-1,z),r<19?Blocks.SMOOTH_SANDSTONE:r>38?Blocks.CUT_RED_SANDSTONE:Math.abs(x)<3&&z>18?Blocks.RED_TERRACOTTA:Blocks.DARK_OAK_PLANKS);
                 if(r>39)for(int y=0;y<17;y++)if(!(z>38&&Math.abs(x)<3&&y<5))put(l,c.offset(x,y,z),(int)Math.floor((angle+Math.PI)*8/Math.PI)%2==0?Blocks.RED_TERRACOTTA:Blocks.WHITE_TERRACOTTA);
                 int roof=17+(int)((41-r)*.64);put(l,c.offset(x,roof,z),(int)Math.floor((angle+Math.PI)*8/Math.PI)%2==0?Blocks.RED_WOOL:Blocks.WHITE_WOOL);
                 if(r>18&&r<19.5&&! (z>0&&Math.abs(x)<3))put(l,c.offset(x,0,z),Blocks.DARK_OAK_FENCE);
             }
             for(int i=0;i<16;i++){double a=i*Math.PI/8;var column=c.offset((int)(Math.cos(a)*35),0,(int)(Math.sin(a)*35));for(int y=0;y<26;y++)put(l,column.above(y),y%6==0?Blocks.CHISELED_RED_SANDSTONE:Blocks.CUT_RED_SANDSTONE);put(l,column.above(26),Blocks.SHROOMLIGHT);}
-            for(int i=0;i<24;i++){double a=i*Math.PI/12;put(l,c.offset((int)(Math.cos(a)*20),0,(int)(Math.sin(a)*20)),Blocks.REDSTONE_LAMP);}n.putBoolean("CircusBuilt",true);data.setDirty();
+            for(int i=0;i<24;i++){double a=i*Math.PI/12;put(l,c.offset((int)(Math.cos(a)*20),0,(int)(Math.sin(a)*20)),Blocks.REDSTONE_LAMP);}VenueBuildRecovery.complete(data,n,"Circus");p.server.overworld().getDataStorage().save();
         }
         ShowStageLease.hold(p,s,true);
         // The rear wall is a real wall. Exit is the carpet trigger inside it, not a tiny tent/void hole.

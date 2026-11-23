@@ -102,6 +102,31 @@ public final class RescueEncounters {
     static boolean reveal(ServerPlayer p,VisitData.Scene s,int index,Vec3 at){if(seeing(p)&&gaze(p,at,48,.985)){RescueEyes.eye(s,index).putBoolean("Discovered",true);return true;}return false;}
     static CinematicPropEntity prop(ServerPlayer p,VisitData.Scene s,String key,int kind,int slot,Vec3 at){var e=RescueProps.ensure(p,s,key,kind,slot,at);if(e!=null){e.setInvisible(false);LoopProps.hold(p.serverLevel(),e.blockPosition());}return e;}
     static boolean presentationReady(ServerPlayer p,VisitData.Scene s,RescueChapter.Phase phase){
+        if(phase==MANTIS_INTRO||phase==MANTIS_RELEASE||phase==MANTIS_TAKE||phase==MANTIS_SINK){
+            var level=p.server.getLevel(OtherWorld.KEY);
+            if(level==null||p.serverLevel()!=level)return false;
+            var father=ShowActors.acquire(p,s,"evil_other_father",level,
+                    Vec3.atBottomCenterOf(garden(p,s)).add(0,1.1,0));
+            if(father!=null&&father.level()==level)return true;
+            var n=RescueChapter.data(s);
+            if(n.getBoolean("Audio")){ShowPlayback.stop(p,s);n.remove("Audio");n.remove("AudioTail");n.putInt("Ticks",0);}
+            n.putString("Blocker","Waiting for the original Other Father before resuming the Mantis scene.");
+            return false;
+        }
+        if(phase==THEATRE_GRAB||phase==THEATRE_EYE){
+            var level=p.server.getLevel(ActivityWorld.KEY);
+            if(level==null||p.serverLevel()!=level)return false;
+            for(var id:java.util.List.of("other_miss_spink","other_miss_forcible")){
+                var actor=ShowActors.acquire(p,s,id,level,center(p,s));
+                if(actor==null||actor.level()!=level){
+                    var n=RescueChapter.data(s);
+                    if(n.getBoolean("Audio")){ShowPlayback.stop(p,s);n.remove("Audio");n.remove("AudioTail");n.putInt("Ticks",0);}
+                    n.putString("Blocker","Waiting for the original Other Actresses before resuming their scene.");
+                    return false;
+                }
+            }
+            return true;
+        }
         if(phase!=BOB_A&&phase!=BOB_B&&phase!=BOB_C&&phase!=BOB_D&&phase!=BOB_E)return true;
         var level=p.server.getLevel(phase==BOB_E?ActivityWorld.KEY:OtherWorld.KEY);
         if(level==null||p.serverLevel()!=level)return false;
@@ -222,6 +247,12 @@ public final class RescueEncounters {
                         RescueChapter.hint(p,n.getString("Blocker"));
                         return;
                     }
+                    // Do not seal the only exit while a claimed, original eye is in a chest.
+                    if(!RescueEyes.carriedByOwner(p,s)){
+                        n.putString("Blocker","Retrieve all three original ghost eyes before the confrontation room closes.");
+                        RescueChapter.hint(p,n.getString("Blocker"));
+                        return;
+                    }
                     n.remove("Blocker");
                     closeRoom(p,s);n.putBoolean("RoomLocked",true);RescueChapter.go(p,s,ROOM_LOCKED);
                 }}
@@ -230,6 +261,17 @@ public final class RescueEncounters {
                 // original Cat was staged. Never advance that checkpoint blind.
                 if(!OtherWorld.isOther(p.level())){
                     n.putString("Blocker","Return to the original Other World confrontation room.");
+                    RescueChapter.hint(p,n.getString("Blocker"));
+                    return;
+                }
+                // Reopen old saved rooms too: the earlier versions let the owner
+                // enter without inventory access to an authentic stored eye.
+                if(!RescueEyes.carriedByOwner(p,s)){
+                    n.putBoolean("RoomLocked",false);
+                    FirstEscapeStory.setDoor(p,FirstEscapeScene.entrance(s),true);
+                    FirstEscapeStory.setDoor(p,FirstEscapeScene.entrance(s).south(),true);
+                    RescueChapter.go(p,s,HOUSE_SAFE);
+                    n.putString("Blocker","Retrieve your three original ghost eyes, then return to the confrontation room.");
                     RescueChapter.hint(p,n.getString("Blocker"));
                     return;
                 }

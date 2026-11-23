@@ -33,8 +33,15 @@ public final class TheatreSite {
         var level=p.server.getLevel(ActivityWorld.KEY);if(level==null||houseDoor(p,s)==null)return false;var c=center(p,s);var data=ShowSiteData.get(p.server);var n=data.owner(s.owner);level.getChunkAt(c);
         boolean newlyBuilt=!n.getBoolean("TheatreBuilt");
         if(newlyBuilt){
-            // Allocation is unique; still refuse existing blocks rather than carving anyone's build.
-            for(var at:BlockPos.betweenClosed(c.offset(-30,-2,-44),c.offset(30,38,44)))if(!level.getBlockState(at).isAir())return false;
+            // Persist an ownership marker before placing anything. A server
+            // restart may replay only a partially built, owner-authored venue.
+            if(!VenueBuildRecovery.begin(p,level,data,n,"Theatre",
+                    c.offset(-30,-2,-44),c.offset(30,38,44),
+                    Set.of(Blocks.RED_TERRACOTTA,Blocks.DARK_OAK_PLANKS,Blocks.BLACK_TERRACOTTA,
+                            Blocks.GOLD_BLOCK,Blocks.CHISELED_RED_SANDSTONE,Blocks.CUT_RED_SANDSTONE,
+                            Blocks.DARK_OAK_FENCE,Blocks.SHROOMLIGHT,Blocks.REDSTONE_LAMP,
+                            Blocks.WAXED_CUT_COPPER,Blocks.RED_WOOL,
+                            Blocks.RED_NETHER_BRICK_STAIRS)))return false;
             for(int x=-30;x<=30;x++)for(int z=-44;z<=44;z++){
                 put(level,c.offset(x,-1,z),Math.abs(x)<3?Blocks.RED_TERRACOTTA:Blocks.DARK_OAK_PLANKS);put(level,c.offset(x,38,z),Blocks.BLACK_TERRACOTTA);
                 if(Math.abs(x)==30||Math.abs(z)==44)for(int y=0;y<38;y++)if(!(z==44&&Math.abs(x)<3&&y<5))put(level,c.offset(x,y,z),y%9==0?Blocks.GOLD_BLOCK:Blocks.RED_TERRACOTTA);
@@ -49,7 +56,10 @@ public final class TheatreSite {
             for(int x=-20;x<=20;x+=4)put(level,c.offset(x,0,-15),Blocks.REDSTONE_LAMP);
             for(int x:new int[]{-28,28})for(int z=-8;z<=35;z+=7)put(level,c.offset(x,5,z),Blocks.SHROOMLIGHT);
             referenceDetails(level,c);
-            n.putBoolean("TheatreBuilt",true);data.setDirty();
+            VenueBuildRecovery.complete(data,n,"Theatre");
+            // Commit the built marker before the optional stepped seating pass,
+            // whose stairs are saved in a subsequent world-write phase.
+            p.server.overworld().getDataStorage().save();
         }
         // Existing occupied saves retain their old coordinates until an empty, unobstructed venue
         // can receive the risers. Never build new flooring through a returning player or actor.
