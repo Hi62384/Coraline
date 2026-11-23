@@ -83,7 +83,43 @@ public final class RescueFoundationsGameTests {
     }
     @GameTest(template="empty") public static void storyCatLeaseDepartureKeepsTheSameCanonicalEntity(GameTestHelper h){var p=player(h,false);var s=OtherMotherLoop.scene(p);var l=p.serverLevel();var at=h.absolutePos(new BlockPos(2,2,2));try{l.setBlock(at.below(),net.minecraft.world.level.block.Blocks.STONE.defaultBlockState(),2);l.setBlock(at,net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(),2);l.setBlock(at.above(),net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(),2);p.setPos(at.getX()+200,at.getY(),at.getZ());var first=ShowActors.acquire(p,s,"cat",l,Vec3.atBottomCenterOf(at));h.assertTrue(first!=null,"No initial story Cat");var id=first.getUUID();h.assertTrue(ShowActors.releaseHidden(p,s,"cat"),"Hidden Cat could not finish its lease");h.assertFalse(first.isRemoved(),"Cast cleanup deleted the canonical Cat");var second=ShowActors.acquire(p,s,"cat",l,Vec3.atBottomCenterOf(at));h.assertTrue(second==first&&second.getUUID().equals(id),"A later chapter spawned another Cat");var saved=new VisitData.Scene();saved.loop=OtherMotherLoopState.load(s.loop.save());h.assertTrue(saved.loop.story.getCompound("CanonicalStoryCat").getUUID("Entity").equals(id),"Canonical Cat identity was lost on save/reload");first.discard();}finally{clean(p);}h.succeed();}
     @GameTest(template="empty") public static void continuationInputsRequireCurrentOwnerNonceAndValidChoice(GameTestHelper h){var p=player(h,false);var s=OtherMotherLoop.scene(p);try{var n=RescueChapter.data(s);n.putBoolean("Started",true);RescueChapter.go(p,s,RescueChapter.Phase.HIDING_CHOICE);var nonce=n.getUUID("Input");RescueChapter.input(p,UUID.randomUUID(),"behind_little_door");h.assertTrue(RescueChapter.phase(s)==RescueChapter.Phase.HIDING_CHOICE,"Stale nonce advanced the finale");RescueChapter.input(p,nonce,"garden");h.assertTrue(RescueChapter.phase(s)==RescueChapter.Phase.HIDING_CHOICE,"Disabled choice advanced the finale");n.remove("LastInput");RescueChapter.input(p,nonce,"behind_little_door");h.assertTrue(RescueChapter.phase(s)==RescueChapter.Phase.FINAL_H,"Valid current-owner choice was ignored");RescueChapter.input(p,nonce,"fight");h.assertTrue(RescueChapter.phase(s)==RescueChapter.Phase.FINAL_H,"Prior-phase nonce was replayed");var other=player(h,false);try{RescueChapter.input(other,n.getUUID("Input"),"fight");h.assertTrue(RescueChapter.phase(s)==RescueChapter.Phase.FINAL_H,"Another owner changed this finale");}finally{clean(other);}}finally{clean(p);}h.succeed();}
-    @GameTest(template="empty") public static void motherLookupLoadsCanonicalActivityWorldBeldam(GameTestHelper h){var p=player(h,false);var s=OtherMotherLoop.scene(p);var l=p.server.getLevel(ActivityWorld.KEY);var at=ShowSiteData.get(p.server).center(s.owner,false).offset(150,-40,100);LoopProps.hold(l,at);var mother=ModEntities.MOM.get().create(l);mother.makeOtherParent(0);mother.setPos(Vec3.atBottomCenterOf(at));s.mom=mother.getUUID();l.addFreshEntity(mother);RescueChapter.data(s).putLong("BeldamAt",at.asLong());h.runAfterDelay(10,()->{try{h.assertTrue(ParentRescueStory.mother(p,s)==mother,"Lookup still only searched OtherWorld after the web transfer");h.assertTrue(mother.getUUID().equals(s.mom),"Canonical mother identity changed");}finally{mother.discard();clean(p);}h.succeed();});}
+    @GameTest(template="empty",timeoutTicks=180) public static void motherLookupLoadsCanonicalActivityWorldBeldam(GameTestHelper h){
+        var p=player(h,false);
+        var s=OtherMotherLoop.scene(p);
+        var l=p.server.getLevel(ActivityWorld.KEY);
+        h.assertTrue(l!=null,"The original Activity World was not registered");
+        var at=ShowSiteData.get(p.server).center(s.owner,false).offset(150,-40,100);
+        var chunk=new net.minecraft.world.level.ChunkPos(at);
+        boolean alreadyForced=l.getForcedChunks().contains(chunk.toLong());
+        // Fake players do not hold a normal player-list chunk ticket. Verify the
+        // production lookup with the saved Beldam in an actually ticking chunk.
+        l.setChunkForced(chunk.x,chunk.z,true);
+        l.getChunkAt(at);
+        var mother=ModEntities.MOM.get().create(l);
+        h.assertTrue(mother!=null,"Canonical Other Mother entity type was not registered");
+        mother.makeOtherParent(0);
+        mother.setNoAi(true);
+        mother.setNoGravity(true);
+        mother.setPos(Vec3.atBottomCenterOf(at));
+        s.mom=mother.getUUID();
+        h.assertTrue(l.addFreshEntity(mother),"Original Activity World Beldam was not registered with the native server");
+        RescueChapter.data(s).putLong("BeldamAt",at.asLong());
+        h.runAfterDelay(40,()->{
+            try{
+                h.assertTrue(l.getEntity(s.mom)==mother,
+                        "The authentic UUID was not available in the Activity World entity manager");
+                h.assertTrue(ParentRescueStory.mother(p,s)==mother,
+                        "The original Mother lookup did not find its saved Activity World Beldam");
+                h.assertTrue(mother.getUUID().equals(s.mom)&&mother.isOtherParent(),
+                        "The original Mother UUID or role changed during the saved scene");
+            }finally{
+                mother.discard();
+                if(!alreadyForced)l.setChunkForced(chunk.x,chunk.z,false);
+                clean(p);
+            }
+            h.succeed();
+        });
+    }
     @GameTest(template="empty") public static void weightedWebChangesActualCollisionAndRecoversItsRestHeight(GameTestHelper h){var p=player(h,false);var s=OtherMotherLoop.scene(p);var l=p.server.getLevel(ActivityWorld.KEY);var at=RescueWebSite.center(p,s).above(8);var q=new ServerPlayer(p.server,l,p.getGameProfile());q.connection=new net.minecraft.server.network.ServerGamePacketListenerImpl(q.server,new net.minecraft.network.Connection(net.minecraft.network.protocol.PacketFlow.SERVERBOUND),q);var n=RescueChapter.data(s);n.putBoolean("Started",true);n.putBoolean("WebReady",true);var cell=new CompoundTag();cell.put("Original",NbtUtils.writeBlockState(net.minecraft.world.level.block.Blocks.AIR.defaultBlockState()));var rest=ModBlocks.STORY_WEB.get().defaultBlockState().setValue(com.coraline.block.StoryWebBlock.HEIGHT,16);cell.put("Placed",NbtUtils.writeBlockState(rest));cell.putInt("RestHeight",16);var journal=new CompoundTag();journal.put(Long.toString(at.asLong()),cell);n.put("WebCells",journal);try{l.getChunkAt(at);l.setBlock(at,rest,2);q.setPos(at.getX()+.5,at.getY()+1,at.getZ()+.5);q.setDeltaMovement(Vec3.ZERO);RescueWebSite.sag(q,s);var loaded=l.getBlockState(at);h.assertTrue(loaded.getValue(com.coraline.block.StoryWebBlock.HEIGHT)==15,"Player weight changed only a decorative mesh");h.assertTrue(Math.abs(loaded.getCollisionShape(l,at).bounds().maxY-15/16.)<.00001,"Sagged mesh and actual support height diverged");q.setPos(q.position().add(6,0,0));RescueWebSite.sag(q,s);h.assertTrue(l.getBlockState(at).getValue(com.coraline.block.StoryWebBlock.HEIGHT)==16,"Unweighted support did not recover");l.setBlock(at,net.minecraft.world.level.block.Blocks.GOLD_BLOCK.defaultBlockState(),2);RescueWebSite.sag(q,s);RescueWebSite.restore(q,s);h.assertTrue(l.getBlockState(at).is(net.minecraft.world.level.block.Blocks.GOLD_BLOCK),"Weight/cleanup overwrote a changed foreign cell");}finally{l.setBlock(at,net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(),2);clean(p);}h.succeed();}
     @GameTest(template="empty") public static void authoredVenueBuildRecoveryRejectsUnrelatedBlocks(GameTestHelper h){
         var authored=java.util.Set.of(net.minecraft.world.level.block.Blocks.RED_TERRACOTTA,
