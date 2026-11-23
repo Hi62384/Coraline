@@ -23,6 +23,9 @@ public final class RescueWebLayout {
     }
     /** Five-to-ten seconds, even with accessibility gain or forged click floods. */
     public static boolean struggleFinished(int ticks,float progress){return ticks>=100&&ticks<=240&&progress>=1;}
+    /** A missing recording must not disable the Cat swat or strand FINAL_N.
+     * Keep the real cue duration unmodified when packaged audio exists. */
+    static int catSwatDuration(int recordedTicks){return Math.max(120,recordedTicks);}
     /** N offsets are from the real end, never from guessed voice timestamps. */
     public static boolean blindAt(int time,int duration){return duration>=80&&time>=duration-80;}
     public static boolean swatAt(int time,int duration){return duration>=40&&time>=duration-40;}

@@ -9,6 +9,33 @@ import net.minecraftforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public final class RescueSoftlockGameTests {
     @GameTest(template="empty", batch="story_softlocks")
+    public static void finalCatSwatRetainsACompleteFallbackWhenAudioIsMissing(GameTestHelper helper) {
+        int fallback=RescueWebLayout.catSwatDuration(0);
+        helper.assertTrue(fallback>=120,"Missing original audio shortened the physical Cat-swat window");
+        helper.assertFalse(RescueWebLayout.swatAt(fallback-41,fallback),"Cat swat began before the fallback cue");
+        helper.assertTrue(RescueWebLayout.swatAt(105,fallback),"Cat swat never starts during the audio-failure recovery");
+        helper.assertTrue((105-(fallback-40))/25.0>=1,"Cat cannot complete its saved swat after dialogue fallback");
+        helper.assertTrue(RescueWebLayout.catSwatDuration(341)==341,"Healthy packaged Cat audio timing was altered");
+        helper.succeed();
+    }
+    @GameTest(template="empty", batch="story_softlocks")
+    public static void finalWebDoorActionsRejectWrongRealmAndDistantPlayer(GameTestHelper helper) {
+        for(var state:new RescueChapter.Phase[]{RescueChapter.Phase.DOOR_KICK,
+                RescueChapter.Phase.DOOR_STRUGGLE,RescueChapter.Phase.HAND_FALL}){
+            helper.assertTrue(BeldamFinale.webDoorStageNeedsRecovery(state,false,0),
+                    "Final web action could advance in another dimension: "+state);
+            helper.assertTrue(BeldamFinale.webDoorStageNeedsRecovery(state,true,225),
+                    "Final web action could advance far from its door: "+state);
+            helper.assertTrue(BeldamFinale.webDoorStageNeedsRecovery(state,true,Double.NaN),
+                    "Invalid saved coordinates bypassed the final web stage: "+state);
+            helper.assertFalse(BeldamFinale.webDoorStageNeedsRecovery(state,true,4),
+                    "A player at the authentic web door was rejected: "+state);
+        }
+        helper.assertFalse(BeldamFinale.webDoorStageNeedsRecovery(RescueChapter.Phase.CAT_THROW,false,999),
+                "The web-only gate changed the earlier Beldam room scene");
+        helper.succeed();
+    }
+    @GameTest(template="empty", batch="story_softlocks")
     public static void staleDoorOwnerWithoutOriginalSceneCannotCrashOrReopenPassage(GameTestHelper helper) {
         var server=helper.getLevel().getServer();
         var missing=java.util.UUID.randomUUID();

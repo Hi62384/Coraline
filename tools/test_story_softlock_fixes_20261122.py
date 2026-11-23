@@ -97,6 +97,24 @@ class StorySoftlockFixesSourceTests(unittest.TestCase):
         self.assertLess(verify.index("if(n.getBoolean(\"WebVerified\")&&!cells.isEmpty())return true;"),
                         verify.index("var keys=new java.util.ArrayList<>(cells.getAllKeys())"))
 
+    def test_missing_final_swat_audio_and_last_web_stage_recover_without_skips(self):
+        finale=src("feast/BeldamFinale.java")
+        layout=src("feast/RescueWebLayout.java")
+        self.assertIn('RescueWebLayout.catSwatDuration(ShowRecordings.duration("finale_n"))',finale)
+        self.assertIn('Math.max(120,recordedTicks)',layout)
+        self.assertIn('webDoorStageNeedsRecovery(state,p.serverLevel()==p.server.getLevel(ActivityWorld.KEY)',finale)
+        self.assertIn('state==DOOR_STRUGGLE||state==DOOR_KICK||state==HAND_FALL',finale)
+        self.assertIn('if(state==DOOR_STRUGGLE&&!n.getBoolean("HandCutPending"))',finale)
+
+    def test_real_boss_zero_health_finishes_before_missing_weakpoint_gates(self):
+        bosses=src("feast/RescueBosses.java")
+        self.assertLess(bosses.index('finishDefeatedBoss(p,s,state,time)'),bosses.index('if(state==SWARM_FIGHT){'))
+        self.assertIn('return castReady?weak:null;',bosses)
+        self.assertIn('if(father==null||father.level()!=p.level())return null;',bosses)
+        encounters=src("feast/RescueEncounters.java")
+        self.assertIn('phase==MANTIS_INTRO||phase==MANTIS_RELEASE',encounters)
+        self.assertIn('phase==THEATRE_GRAB||phase==THEATRE_EYE',encounters)
+
     def test_audio_logout_and_server_stop_clear_tracking(self):
         s=src("feast/ShowPlayback.java")
         self.assertIn("PlayerLoggedOutEvent",s)

@@ -102,6 +102,31 @@ public final class RescueEncounters {
     static boolean reveal(ServerPlayer p,VisitData.Scene s,int index,Vec3 at){if(seeing(p)&&gaze(p,at,48,.985)){RescueEyes.eye(s,index).putBoolean("Discovered",true);return true;}return false;}
     static CinematicPropEntity prop(ServerPlayer p,VisitData.Scene s,String key,int kind,int slot,Vec3 at){var e=RescueProps.ensure(p,s,key,kind,slot,at);if(e!=null){e.setInvisible(false);LoopProps.hold(p.serverLevel(),e.blockPosition());}return e;}
     static boolean presentationReady(ServerPlayer p,VisitData.Scene s,RescueChapter.Phase phase){
+        if(phase==MANTIS_INTRO||phase==MANTIS_RELEASE||phase==MANTIS_TAKE||phase==MANTIS_SINK){
+            var level=p.server.getLevel(OtherWorld.KEY);
+            if(level==null||p.serverLevel()!=level)return false;
+            var father=ShowActors.acquire(p,s,"evil_other_father",level,
+                    Vec3.atBottomCenterOf(garden(p,s)).add(0,1.1,0));
+            if(father!=null&&father.level()==level)return true;
+            var n=RescueChapter.data(s);
+            if(n.getBoolean("Audio")){ShowPlayback.stop(p,s);n.remove("Audio");n.remove("AudioTail");n.putInt("Ticks",0);}
+            n.putString("Blocker","Waiting for the original Other Father before resuming the Mantis scene.");
+            return false;
+        }
+        if(phase==THEATRE_GRAB||phase==THEATRE_EYE){
+            var level=p.server.getLevel(ActivityWorld.KEY);
+            if(level==null||p.serverLevel()!=level)return false;
+            for(var id:java.util.List.of("other_miss_spink","other_miss_forcible")){
+                var actor=ShowActors.acquire(p,s,id,level,center(p,s));
+                if(actor==null||actor.level()!=level){
+                    var n=RescueChapter.data(s);
+                    if(n.getBoolean("Audio")){ShowPlayback.stop(p,s);n.remove("Audio");n.remove("AudioTail");n.putInt("Ticks",0);}
+                    n.putString("Blocker","Waiting for the original Other Actresses before resuming their scene.");
+                    return false;
+                }
+            }
+            return true;
+        }
         if(phase!=BOB_A&&phase!=BOB_B&&phase!=BOB_C&&phase!=BOB_D&&phase!=BOB_E)return true;
         var level=p.server.getLevel(phase==BOB_E?ActivityWorld.KEY:OtherWorld.KEY);
         if(level==null||p.serverLevel()!=level)return false;

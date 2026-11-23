@@ -385,6 +385,11 @@ public final class BeldamFinale {
                 :"Waiting for the original Cat before the final escape cutscene.");
         return false;
     }
+    /** The last web actions happen only at their authentic Activity World door. */
+    static boolean webDoorStageNeedsRecovery(RescueChapter.Phase state,boolean inActivityWorld,double distanceSquared){
+        return (state==DOOR_KICK||state==DOOR_STRUGGLE||state==HAND_FALL)
+                &&(!inActivityWorld||!Double.isFinite(distanceSquared)||distanceSquared>100);
+    }
     public static boolean preflight(ServerPlayer p,VisitData.Scene s){
         var state=RescueChapter.phase(s);var n=RescueChapter.data(s);
         // Legacy rooms can already be sealed with an authentic eye left in
@@ -406,6 +411,11 @@ public final class BeldamFinale {
         if(state.ordinal()>=FINAL_I.ordinal()&&state.ordinal()<=FINAL_N.ordinal()&&!n.getBoolean("KeyRecovered")&&!StoryItemCustody.recoverSwallowedKey(p,s)){n.putString("Blocker","The swallowed key cannot be recovered: restore its saved custody record or bring the surviving owner-bound original out of storage.");return false;}
         if(state==FINAL_E&&!n.getBoolean("StoneTaken")){if(!StoryItemCustody.capture(p,s,"Stone",stack->StoryItemCustody.stone(stack,s))){n.putString("Blocker","Bring your original Seeing Stone out of storage. Unrelated stones are not substitutes.");return false;}p.stopUsingItem();n.putBoolean("StoneTaken",true);}
         if(!keepPlayerInRoom(p,s)||!originalFinaleCastReady(p,s,state))return false;
+        if(webDoorStageNeedsRecovery(state,p.serverLevel()==p.server.getLevel(ActivityWorld.KEY),
+                p.position().distanceToSqr(RescueWebSite.at(p,s,1,1)))){
+            retry(p,s,state,"Restoring the authenticated web-door stage before resuming.");
+            return false;
+        }
         if(state.ordinal()>=FINAL_P.ordinal()&&state.ordinal()<=WEB_STEALTH.ordinal()
                 &&!enterWeb(p,s,ParentRescueStory.mother(p,s)))return false;
         if(state==TUNNEL_CHASE&&!n.getBoolean("PassageEntered")&&!RescuePassage.enter(p,s))return false;
@@ -467,7 +477,7 @@ public final class BeldamFinale {
                     AcceptedButtonEyes.begin(p,s,AcceptedButtonEyesProgress.Route.FINAL_BOSS_LOSS);
             }
             case FINAL_N->{
-                int duration=ShowRecordings.duration("finale_n");m.familyGesture(67,5);var cat=ShowActors.actor(p,s,"cat");
+                int duration=RescueWebLayout.catSwatDuration(ShowRecordings.duration("finale_n"));m.familyGesture(67,5);var cat=ShowActors.actor(p,s,"cat");
                 if(RescueWebLayout.blindAt(t,duration))n.putBoolean("BeldamBlind",true);
                 if(RescueWebLayout.swatAt(t,duration)&&cat!=null){if(!n.contains("CatSwatX")){n.putDouble("CatSwatX",cat.getX());n.putDouble("CatSwatY",cat.getY());n.putDouble("CatSwatZ",cat.getZ());}double u=Math.min(1,(t-(duration-40))/25.0);var from=new Vec3(n.getDouble("CatSwatX"),n.getDouble("CatSwatY"),n.getDouble("CatSwatZ"));var land=Vec3.atBottomCenterOf(FirstEscapeScene.entrance(s).west(3));cat.setPos(from.lerp(land,u).add(0,Math.sin(u*Math.PI)*1.3,0));ShowPlaybackNetwork.pose(cat,34,t,1);if(u>=1)n.putBoolean("CatEscaped",true);}
                 if(t>=duration-50&&!n.getBoolean("KeyRecovered")){m.setItemSlot(EquipmentSlot.MAINHAND,ItemStack.EMPTY);if(StoryItemCustody.giveBack(p,s,"Key")){n.putBoolean("KeyRecovered",true);s.loop.story.putString("LittleDoorKeyHolder","PLAYER");}else RescueChapter.hint(p,"Make an inventory space to recover your original key.");}
@@ -748,8 +758,8 @@ public final class BeldamFinale {
             n.remove("WebEntryReady");n.remove("WebEntered");n.remove("WebEntryRecheck");
             n.remove("NoiseX");n.remove("WebVerified");n.putInt("WebVerify",0);
             RescueWebHearing.reset(p);
-        }else if(state==DOOR_STRUGGLE){
-            // An interrupted door struggle must not drop the player onto a
+        }else if(state==DOOR_STRUGGLE||state==DOOR_KICK||state==HAND_FALL){
+            // An interrupted web-door action must not drop the player onto a
             // possibly absent web bridge. Keep this retry pending until the
             // original physical journal has been verified in bounded batches.
             if(!n.getBoolean("WebDoorRetryRecheck")){
@@ -762,7 +772,7 @@ public final class BeldamFinale {
                 n.putBoolean("Recover",true);return;
             }
             n.remove("WebDoorRetryRecheck");
-            if(!n.getBoolean("HandCutPending"))n.putFloat("Struggle",0);
+            if(state==DOOR_STRUGGLE&&!n.getBoolean("HandCutPending"))n.putFloat("Struggle",0);
             n.remove("PressUntil");
         }else if(state==TUNNEL_CHASE){n.remove("PassageEntered");if(!RescuePassage.enter(p,s))return;}
         RescueChapter.go(p,s,state);

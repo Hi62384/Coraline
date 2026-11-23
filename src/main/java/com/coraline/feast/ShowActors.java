@@ -80,16 +80,16 @@ public final class ShowActors {
         var record=root(s).getCompound(id);
         if(level==null||!record.getBoolean("Created")||!record.hasUUID("Entity")
                 ||!Double.isFinite(at.x)||!Double.isFinite(at.y)||!Double.isFinite(at.z))return null;
-        var id=record.getUUID("Entity");
-        for(var world:p.server.getAllLevels())if(world.getEntity(id)!=null)return null;
-        if(com.coraline.rebirth.LegacyActorRecovery.check(p.server,id)
+        var original=record.getUUID("Entity");
+        for(var world:p.server.getAllLevels())if(world.getEntity(original)!=null)return null;
+        if(com.coraline.rebirth.LegacyActorRecovery.check(p.server,original)
                 !=com.coraline.rebirth.LegacyActorRecovery.Result.ABSENT)return null;
         var position=net.minecraft.core.BlockPos.containing(at);
         if(level.isOutsideBuildHeight(position)||!level.getWorldBorder().isWithinBounds(position))return null;
         level.getChunkAt(position);
         var actor=CharacterCast.ENTITIES.get(id).get().create(level);
         if(actor==null||!actor.characterId().equals(id))return null;
-        actor.setUUID(id);actor.setPos(at);
+        actor.setUUID(original);actor.setPos(at);
         var tag=actor.getPersistentData();tag.putBoolean("CoralineDecoration",true);
         tag.putUUID("ShowActorOwner",s.owner);tag.putInt("ShowActorSerial",s.loop.event.getInt("Serial"));
         tag.putUUID("RealmDoor",s.door);

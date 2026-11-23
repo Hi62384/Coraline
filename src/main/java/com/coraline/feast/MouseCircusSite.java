@@ -56,7 +56,7 @@ public final class MouseCircusSite {
                 if(r>18&&r<19.5&&! (z>0&&Math.abs(x)<3))put(l,c.offset(x,0,z),Blocks.DARK_OAK_FENCE);
             }
             for(int i=0;i<16;i++){double a=i*Math.PI/8;var column=c.offset((int)(Math.cos(a)*35),0,(int)(Math.sin(a)*35));for(int y=0;y<26;y++)put(l,column.above(y),y%6==0?Blocks.CHISELED_RED_SANDSTONE:Blocks.CUT_RED_SANDSTONE);put(l,column.above(26),Blocks.SHROOMLIGHT);}
-            for(int i=0;i<24;i++){double a=i*Math.PI/12;put(l,c.offset((int)(Math.cos(a)*20),0,(int)(Math.sin(a)*20)),Blocks.REDSTONE_LAMP);}VenueBuildRecovery.complete(data,n,"Circus");
+            for(int i=0;i<24;i++){double a=i*Math.PI/12;put(l,c.offset((int)(Math.cos(a)*20),0,(int)(Math.sin(a)*20)),Blocks.REDSTONE_LAMP);}VenueBuildRecovery.complete(data,n,"Circus");p.server.overworld().getDataStorage().save();
         }
         ShowStageLease.hold(p,s,true);
         // The rear wall is a real wall. Exit is the carpet trigger inside it, not a tiny tent/void hole.

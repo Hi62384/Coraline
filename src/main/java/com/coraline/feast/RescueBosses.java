@@ -27,8 +27,15 @@ public final class RescueBosses {
     public static boolean fighting(RescueChapter.Phase state){return state==MANTIS_FIGHT||state==THEATRE_FIGHT||state==SWARM_FIGHT;}
     public static void hideBar(ServerPlayer p){var bar=BARS.remove(p.getUUID());if(bar!=null)bar.removeAllPlayers();}
     public static void begin(ServerPlayer p,VisitData.Scene s,RescueChapter.Phase state){var n=RescueChapter.data(s);n.putFloat("BossHealth",state==MANTIS_FIGHT?48:state==THEATRE_FIGHT?240:72);n.putFloat("BossMaximum",state==MANTIS_FIGHT?48:state==THEATRE_FIGHT?240:72);n.putFloat("SpinkHealth",120);n.putFloat("ForcibleHealth",120);n.remove("WeakUntil");n.remove("HitAt");n.remove("SocketCycle");n.remove("SocketTier");n.remove("MantisAttemptSpent");n.remove("TheatreCycle");n.remove("RatAttackCycle");n.remove("RatStrikeSpent");n.putInt("BossCycleStart",0);n.putInt("BossLastTier",0);n.putInt("WeakCycle",-1);RescueChapter.go(p,s,state);}
+    private static void finishDefeatedBoss(ServerPlayer p,VisitData.Scene s,RescueChapter.Phase state,int time){
+        com.coraline.multiplayer.StoryCombatSafety.restoreGroup(p,s);hideBar(p);RescueProps.hide(p,s,"WeakPoint");if(state==MANTIS_FIGHT){RescueEyes.eye(s,0).putBoolean("Defeated",true);RescueChapter.go(p,s,MANTIS_RELEASE);}else if(state==THEATRE_FIGHT){RescueEyes.eye(s,1).putBoolean("Defeated",true);n.putBoolean("TheatreDead",true);actresses(p,s,time,true);RescueChapter.go(p,s,THEATRE_EYE);}else{RescueEyes.eye(s,2).putBoolean("Defeated",true);RescueProps.hide(p,s,"Swarm");for(int i=0;i<4;i++)RescueProps.hide(p,s,"RatDecoy"+i);for(int i=0;i<3;i++)RescueProps.hide(p,s,"RatmasterBall"+i);RescueEncounters.startChase(p,s);}
+    }
     public static void tick(ServerPlayer p,VisitData.Scene s,int time){
         var n=RescueChapter.data(s);var state=RescueChapter.phase(s);
+        if(n.getFloat("BossMaximum")>0&&n.getFloat("BossHealth")<=0){
+            finishDefeatedBoss(p,s,state,time);
+            return;
+        }
         if(state==MANTIS_FIGHT&&n.getFloat("BossMaximum")>48){float fraction=n.getFloat("BossHealth")/n.getFloat("BossMaximum");n.putFloat("BossMaximum",48);n.putFloat("BossHealth",48*fraction);}
         if(state==SWARM_FIGHT){
             var swarm=RescueEncounters.prop(p,s,"Swarm",RescueProps.SWARM,0,RescueEncounters.center(p,s));
@@ -155,7 +162,6 @@ public final class RescueBosses {
         }
         if(state==MANTIS_FIGHT&&beat>=100)RescueChapter.hint(p,n.getBoolean("Vulnerable")?"ATTACK NOW — one weapon strike! Find the yellow socket with the Seeing Stone.":"Opening closed. Dodge the next attack, then try the yellow socket again.");
         else if(beat>=100)RescueChapter.hint(p,n.getLong("WeakUntil")>=p.serverLevel().getGameTime()?"Strike the revealed weak point while it is exposed!":"Raise the Seeing Stone to find the exposed control point.");
-        if(hp<=0){com.coraline.multiplayer.StoryCombatSafety.restoreGroup(p,s);hideBar(p);RescueProps.hide(p,s,"WeakPoint");if(state==MANTIS_FIGHT){RescueEyes.eye(s,0).putBoolean("Defeated",true);RescueChapter.go(p,s,MANTIS_RELEASE);}else if(state==THEATRE_FIGHT){RescueEyes.eye(s,1).putBoolean("Defeated",true);n.putBoolean("TheatreDead",true);actresses(p,s,time,true);RescueChapter.go(p,s,THEATRE_EYE);}else{RescueEyes.eye(s,2).putBoolean("Defeated",true);RescueProps.hide(p,s,"Swarm");for(int i=0;i<4;i++)RescueProps.hide(p,s,"RatDecoy"+i);for(int i=0;i<3;i++)RescueProps.hide(p,s,"RatmasterBall"+i);RescueEncounters.startChase(p,s);}}
     }
     private static String warning(RescueChapter.Phase phase,int attack){if(phase==MANTIS_FIGHT)return new String[]{"Forearm rising — dodge sideways!","Mantis lowering — clear its charge!","Legs rising — jump the shockwave!","Restraints reaching — move away from the marked spot!"}[attack];if(phase==THEATRE_FIGHT)return new String[]{"Spink reaches — dodge the long hands!","Wrapper opening beneath you — move!","Both actresses rush — find the open side!","Illusions gathering — inspect with the Seeing Stone!","Stage lights converge — leave the marked spot!"}[attack];return new String[]{"Rat wave — jump or move aside!","Rat tower tilting — clear its fall!","Circus balls incoming — dodge!","Swarm closing — find the spectral gap!","False eye carriers — use the Seeing Stone!"}[attack];}
     private static boolean hazard(ServerPlayer p,RescueChapter.Phase phase,int attack,Vec3 c,Vec3 locked,double angle){double distance=p.position().distanceTo(locked),r=p.position().subtract(c).horizontalDistance();double current=Math.atan2(p.getZ()-c.z,p.getX()-c.x),difference=Math.atan2(Math.sin(current-angle),Math.cos(current-angle));return switch(attack){case 0->phase==SWARM_FIGHT?p.onGround()&&Math.abs(p.getZ()-locked.z)<1.8:distance<3.4;case 1->Math.abs(difference)<.30&&r<24;case 2->phase==MANTIS_FIGHT?p.onGround()&&r<20:distance<2.1;case 3->phase==SWARM_FIGHT?r<7&&Math.abs(difference)>.5:distance<3.2;default->distance<3.2;};}
@@ -227,16 +233,19 @@ public final class RescueBosses {
         if(action==2)machine.setPos(machine.getX(),base.y-Math.max(0,time-ShowRecordings.duration("rescue_mantis_take"))/(double)Math.max(1,n.getInt("RetrievalLimit")-ShowRecordings.duration("rescue_mantis_take"))*4,machine.getZ());
         if(action==0||action==3&&!n.getBoolean("Vulnerable")){n.remove("OfferYaw");machine.setYRot((float)Math.toDegrees(Math.atan2(p.getX()-machine.getX(),machine.getZ()-p.getZ())));}
         else{if(!n.contains("OfferYaw"))n.putFloat("OfferYaw",machine.getYRot());machine.setYRot(n.getFloat("OfferYaw"));}RescueProps.frame(machine,action,time,n.getFloat("BossHealth")/Math.max(1,n.getFloat("BossMaximum")));
-        var father=ShowActors.acquire(p,s,"evil_other_father",p.serverLevel(),machine.position().add(0,1.1,0));if(father!=null){father.setInvisible(action==2&&time>n.getInt("RetrievalLimit")-20);ShowActors.position(father,machine.position().add(0,1.1,0),machine.getYRot()+180,action==2?81:80,time,1);}
+        var father=ShowActors.acquire(p,s,"evil_other_father",p.serverLevel(),machine.position().add(0,1.1,0));
+        if(father==null||father.level()!=p.level())return null;
+        father.setInvisible(action==2&&time>n.getInt("RetrievalLimit")-20);
+        ShowActors.position(father,machine.position().add(0,1.1,0),machine.getYRot()+180,action==2?81:80,time,1);
         double yaw=Math.toRadians(machine.getYRot());int socket=n.getInt("WeakSocket");
         double angle=yaw+(socket-1.5)*.8;
         Vec3 weak=action==2?machine.position().add(Math.sin(yaw)*1.15,1.8,-Math.cos(yaw)*1.15):machine.position().add(Math.sin(angle)*1.65,1.25+(socket%2)*.35,-Math.cos(angle)*1.65);if(action==2){var eye=RescueEncounters.prop(p,s,"GardenEye",RescueProps.EYE,0,weak);if(eye!=null){eye.setPos(weak);eye.frame(1,time,1);eye.setInvisible(RescueEyes.eye(s,0).getBoolean("Claimed"));}}return weak;
     }
     public static Vec3 actresses(ServerPlayer p,VisitData.Scene s,int time,boolean scripted){
-        var n=RescueChapter.data(s);var center=RescueEncounters.center(p,s);Vec3 weak=null;int pattern=n.getInt("BossPattern");
+        var n=RescueChapter.data(s);var center=RescueEncounters.center(p,s);Vec3 weak=null;boolean castReady=true;int pattern=n.getInt("BossPattern");
         for(int side:new int[]{-1,1}){
             String id=side<0?"other_miss_spink":"other_miss_forcible",hp=side<0?"SpinkHealth":"ForcibleHealth";
-            var actor=ShowActors.acquire(p,s,id,p.serverLevel(),center.add(side*4,0,0));if(actor==null)continue;
+            var actor=ShowActors.acquire(p,s,id,p.serverLevel(),center.add(side*4,0,0));if(actor==null||actor.level()!=p.level()){castReady=false;continue;}
             boolean exposed=n.getBoolean("Vulnerable");
             double angle=time*(exposed?.24:.13)+side*Math.PI+Math.sin(time*.031+side)*.8,radius=exposed?3.2:4+Math.sin(time*.061+side)*2.5;
             var target=p.position().subtract(center).multiply(1,0,1);if(target.length()>16)target=target.normalize().scale(16);
@@ -250,7 +259,7 @@ public final class RescueBosses {
             if(!down&&n.getInt("WeakActress")== (side<0?0:1)){double socketAngle=Math.toRadians(actor.getYRot())+n.getInt("TheatreSocket")*Math.PI/2;weak=at.add(Math.sin(socketAngle)*.65,1.1,-Math.cos(socketAngle)*.65);}
         }
         if(scripted&&RescueChapter.phase(s)==THEATRE_GRAB&&time<35){var delta=center.subtract(p.position()).multiply(1,0,1);if(delta.lengthSqr()>4){p.setDeltaMovement(delta.normalize().scale(.06));p.hurtMarked=true;}}
-        return weak;
+        return castReady?weak:null;
     }
     private static boolean actressContact(ServerPlayer director,VisitData.Scene s,ServerPlayer target){
         for(String id:new String[]{"other_miss_spink","other_miss_forcible"}){var actor=ShowActors.actor(director,s,id);String hp=id.equals("other_miss_spink")?"SpinkHealth":"ForcibleHealth";if(actor!=null&&RescueChapter.data(s).getFloat(hp)>0&&actor.position().distanceToSqr(target.position())<2.8*2.8)return true;}return false;
