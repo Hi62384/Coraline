@@ -529,16 +529,19 @@ class CurrentStoryRepairs(unittest.TestCase):
                     'n.getLong("Kitchen")!=n.getLong("KitchenTable")'):
             self.assertIn(key,readiness)
         tick=story.split('public static void tick(ServerPlayer p,VisitData.Scene s)',1)[1].split('private static boolean recording(',1)[0]
-        self.assertIn('state==Phase.WAIT_KITCHEN_SEAT',tick)
-        self.assertIn('state==Phase.H||state==Phase.I||state==Phase.J||state==Phase.K',tick)
-        self.assertIn('state==Phase.SERVE)&&!kitchen(p,s)',tick)
-        self.assertLess(tick.index('state==Phase.SERVE)&&!kitchen(p,s)'),
+        gate=story.split('private static boolean kitchenReadyForPhase(',1)[1].split('static void cutsceneSafety(',1)[0]
+        self.assertIn('state==Phase.WAIT_KITCHEN_SEAT',gate)
+        self.assertIn('state==Phase.H||state==Phase.I||state==Phase.J||state==Phase.K',gate)
+        self.assertIn('state==Phase.SERVE)&&!kitchen(p,s)',gate)
+        self.assertLess(tick.index('if(!kitchenReadyForPhase(p,s,state))return;'),
                         tick.index('boolean done=recording(p,s,n,sound)'))
-        paused=tick.split('state==Phase.SERVE)&&!kitchen(p,s)',1)[1].split('if(!StoryTunnel.entryPhase(s)',1)[0]
+        watchdog=story.split('static void cutsceneSafety(',1)[1].split('StoryCutsceneWatchdog.overdue(',1)[0]
+        self.assertIn('if(!kitchenReadyForPhase(p,s,state))',watchdog)
+        paused=gate.split('state==Phase.SERVE)&&!kitchen(p,s)',1)[1]
         self.assertIn('ShowPlayback.stop(p,s)',paused)
         self.assertIn('n.remove("ReturnRecording")',paused)
         self.assertIn('n.putInt("Ticks",0)',paused)
-        self.assertLess(paused.index('ShowPlayback.stop(p,s)'),paused.index('return;'))
+        self.assertLess(paused.index('ShowPlayback.stop(p,s)'),paused.index('return false;'))
         rebuild=story.split('private static boolean kitchen(ServerPlayer p,VisitData.Scene s)',1)[1].split('public static boolean block(',1)[0]
         self.assertIn('if(kitchenCheckpointComplete(n)){',rebuild)
         self.assertIn('if(savedId!=null&&kitchenStoveId(savedId.getPath()))return true;',rebuild)

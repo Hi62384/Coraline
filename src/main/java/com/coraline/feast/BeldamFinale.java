@@ -306,6 +306,7 @@ public final class BeldamFinale {
         if(state==LOCK_DOOR&&!n.getBoolean("CrawlReachedOverworld")){
             // A phase marker alone is not proof that the 52-block crawl was
             // completed. Re-enter its verified physical passage instead.
+            n.remove("PassageEntered");
             if(n.getBoolean("HandSevered")&&n.getBoolean("KeyRecovered")
                     &&RescuePassage.enter(p,s))RescueChapter.go(p,s,TUNNEL_CHASE);
             else n.putString("Blocker","Waiting for the original verified escape crawl and recovered key.");
@@ -418,7 +419,19 @@ public final class BeldamFinale {
         }
         if(state.ordinal()>=FINAL_P.ordinal()&&state.ordinal()<=WEB_STEALTH.ordinal()
                 &&!enterWeb(p,s,ParentRescueStory.mother(p,s)))return false;
-        if(state==TUNNEL_CHASE&&!n.getBoolean("PassageEntered")&&!RescuePassage.enter(p,s))return false;
+        if(state==TUNNEL_CHASE){
+            if(!n.getBoolean("PassageEntered")){
+                if(!RescuePassage.enter(p,s))return false;
+                // Old saves may still have a late chase/audio cursor. A verified
+                // arrival at metre zero always starts a fresh challenge.
+                RescueChapter.go(p,s,TUNNEL_CHASE);
+                return false;
+            }
+            if(!RescuePassage.inside(p,s)){
+                retry(p,s,TUNNEL_CHASE,"Return to the original escape crawl.");
+                return false;
+            }
+        }
         n.remove("Blocker");return true;
     }
     public static void tick(ServerPlayer p,VisitData.Scene s,RescueChapter.Phase state,int t,boolean done){
@@ -543,7 +556,7 @@ public final class BeldamFinale {
     }
     private static void showEyes(ServerPlayer p,VisitData.Scene s,int t){for(int i=0;i<3;i++){var at=p.position().add(p.getLookAngle().multiply(.8,0,.8)).add((i-1)*.45,1.1,0);var e=RescueProps.ensure(p,s,"PresentedEye"+i,RescueProps.EYE,i,at);if(e!=null){e.setPos(at);e.frame(1,t,1);}}}
     private static boolean physicalEyes(ServerPlayer p,VisitData.Scene s){for(int i=0;i<3;i++){boolean found=false;for(int slot=0;slot<p.getInventory().getContainerSize();slot++)found|=RescueEyes.authentic(p.getInventory().getItem(slot),s,i);if(!found)return false;}return RescueEyes.all(s);}
-    private static boolean recoverPresentationEyes(ServerPlayer p,VisitData.Scene s){
+    static boolean recoverPresentationEyes(ServerPlayer p,VisitData.Scene s){
         for(int i=0;i<3;i++){boolean found=false;for(int slot=0;slot<p.getInventory().getContainerSize();slot++)found|=RescueEyes.authentic(p.getInventory().getItem(slot),s,i);
             if(!found&&!com.coraline.multiplayer.QuestItemRecovery.recall(p,s,"eye_"+i))return false;}
         return physicalEyes(p,s);
@@ -705,15 +718,25 @@ public final class BeldamFinale {
         rememberPosition(p,n);var end=RescueWebSite.at(p,s,1,1);var door=RescueProps.ensure(p,s,"WebDoor",RescueProps.PURSUING_DOOR,0,end.add(0,0,-1));if(door!=null)door.frame(0,t,1);RescueChapter.hint(p,sticky?"Sticky strand — keep still to stop making noise.":"Crouch and follow the thick strands. She follows sound, not sight.");if(p.distanceToSqr(end)<4&&p.getY()>end.y-.6)RescueChapter.go(p,s,DOOR_KICK);
     }
     private static void tunnel(ServerPlayer p,VisitData.Scene s,int t,boolean done){
-        var n=RescueChapter.data(s);p.setForcedPose(Pose.SWIMMING);p.setPose(Pose.SWIMMING);p.fallDistance=0;
+        var n=RescueChapter.data(s);
+        if(!RescuePassage.inside(p,s)){retry(p,s,TUNNEL_CHASE,"Return to the original escape crawl.");return;}
+        p.setForcedPose(Pose.SWIMMING);p.setPose(Pose.SWIMMING);p.fallDistance=0;
         double progress=RescuePassage.progress(p,s),pursuit=RescueWebLayout.crawlPursuit(t);var origin=RescuePassage.origin(p,s);
         var door=RescueProps.ensure(p,s,"PursuingDoor",RescueProps.PURSUING_DOOR,0,Vec3.atBottomCenterOf(origin).add(pursuit,0,0));
         if(door!=null){door.setPos(Vec3.atBottomCenterOf(origin).add(pursuit,0,0));door.setYRot(90);door.frame(2,t,1);}
         RescueChapter.hint(p,"CRAWL! Dodge the rubble and reach the real door.");
-        if(progress<pursuit+1.1||progress<-.5||Math.abs(p.getZ()-origin.getZ()-.5)>2){retry(p,s,TUNNEL_CHASE,"The door caught up. Retry the crawl with your recovered key.");return;}
+        if(progress<pursuit+1.1){retry(p,s,TUNNEL_CHASE,"The door caught up. Retry the crawl with your recovered key.");return;}
         if(progress<RescuePassage.LENGTH||!done)return;
         var source=DoorData.get(p.server).doors.get(s.door);if(source==null||!s.owner.equals(source.owner))return;
-        var level=FamilyData.level(p.server,source.dimension);if(level==null||level==p.server.getLevel(ActivityWorld.KEY))return;
+        var level=FamilyData.level(p.server,source.dimension);
+        if(level!=p.server.overworld()){
+            n.putString("Blocker","Waiting for the original Overworld escape door.");
+            return;
+        }
+        // The authenticated source record provides the return location. Do not
+        // trap a singleplayer owner in the crawl if the physical door was
+        // broken; the existing LOCK_DOOR/BANGING gates require the real tile
+        // and let the owner repair it from the Overworld.
         if(!RescueChapter.transfer(p,level,source.pos))return;
         n.putBoolean("CrawlReachedOverworld",true);RescueChapter.go(p,s,LOCK_DOOR);
     }
@@ -774,7 +797,14 @@ public final class BeldamFinale {
             n.remove("WebDoorRetryRecheck");
             if(state==DOOR_STRUGGLE&&!n.getBoolean("HandCutPending"))n.putFloat("Struggle",0);
             n.remove("PressUntil");
-        }else if(state==TUNNEL_CHASE){n.remove("PassageEntered");if(!RescuePassage.enter(p,s))return;}
+        }else if(state==TUNNEL_CHASE){
+            // Entry rechecks the 1,140 cells in bounded batches. Do not
+            // preserve the expired clock if the first entry call is pending.
+            // Preflight will finish verification before any pursuit advances.
+            n.remove("PassageEntered");
+            n.remove("PassageEntryRecheck");
+            n.remove("CrawlReachedOverworld");
+        }
         RescueChapter.go(p,s,state);
     }
     private BeldamFinale(){}

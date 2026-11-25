@@ -76,5 +76,19 @@ public final class StorySoftlockFixesGameTests {
                 "Completely idle movement was never classified as stalled");
         h.succeed();
     }
+    @GameTest(template="empty",batch="story_softlocks")
+    public static void finalCrawlRejectsForeignCoordinatesButAllowsRubble(GameTestHelper h){
+        int length=RescuePassage.LENGTH;
+        h.assertTrue(RescueWebLayout.crawlPositionValid(true,0,0,0,length),"Entrance rejected");
+        h.assertTrue(RescueWebLayout.crawlPositionValid(true,18,1,1,length),"Authored rubble rejected");
+        h.assertTrue(RescueWebLayout.crawlPositionValid(true,length,0,0,length),"Real exit rejected");
+        h.assertFalse(RescueWebLayout.crawlPositionValid(false,length,0,0,length),"Foreign dimension accepted");
+        for(double[] bad:new double[][]{{length,1.36,0},{length,0,1.46},
+                {length,0,-.51},{length+1.36,0,0},{-.51,0,0},
+                {Double.NaN,0,0},{length,Double.POSITIVE_INFINITY,0},{length,0,Double.NaN}})
+            h.assertFalse(RescueWebLayout.crawlPositionValid(true,bad[0],bad[1],bad[2],length),
+                    "Off-corridor player accepted");
+        h.succeed();
+    }
     private StorySoftlockFixesGameTests(){}
 }

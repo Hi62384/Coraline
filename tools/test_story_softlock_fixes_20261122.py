@@ -115,6 +115,41 @@ class StorySoftlockFixesSourceTests(unittest.TestCase):
         self.assertIn('phase==MANTIS_INTRO||phase==MANTIS_RELEASE',encounters)
         self.assertIn('phase==THEATRE_GRAB||phase==THEATRE_EYE',encounters)
 
+    def test_final_crawl_retry_resets_clock_before_batched_entry(self):
+        finale=src("feast/BeldamFinale.java")
+        retry=finale.split("public static void retry(",1)[1].split("private BeldamFinale()",1)[0]
+        crawl=retry.split("else if(state==TUNNEL_CHASE){",1)[1]
+        self.assertIn('n.remove("PassageEntered")',crawl)
+        self.assertIn('n.remove("PassageEntryRecheck")',crawl)
+        self.assertIn('n.remove("CrawlReachedOverworld")',crawl)
+        self.assertNotIn("RescuePassage.enter(",crawl)
+        self.assertIn("RescueChapter.go(p,s,state)",crawl)
+        preflight=finale.split("public static boolean preflight(",1)[1].split("public static void tick(",1)[0]
+        self.assertLess(preflight.index("if(!RescuePassage.enter(p,s))return false;"),
+                        preflight.index("RescueChapter.go(p,s,TUNNEL_CHASE)"))
+        self.assertIn("if(!RescuePassage.inside(p,s))",preflight)
+        physical=finale.split("private static void tunnel(",1)[1].split("public static void input(",1)[0]
+        self.assertLess(physical.index("if(!RescuePassage.inside(p,s))"),
+                        physical.index('n.putBoolean("CrawlReachedOverworld",true)'))
+        self.assertIn("level!=p.server.overworld()",physical)
+        self.assertIn("!s.door.equals(tile.doorId)",finale.split("static boolean originalExitReady(",1)[1].split("static boolean webDoorStageNeedsRecovery(",1)[0])
+        self.assertNotIn("getBlockEntity(source.pos)",physical,
+                         "A broken home door must be repairable after the physical escape")
+
+    def test_web_door_reload_retries_all_three_physical_stages(self):
+        chapter=src("feast/RescueChapter.java")
+        recover=chapter.split("public static void recover(",1)[1].split("public static void input(",1)[0]
+        for phase in ("DOOR_KICK","DOOR_STRUGGLE","HAND_FALL"):
+            self.assertIn("state==Phase."+phase,recover)
+        self.assertIn('BeldamFinale.retry(p,s,state,"Retrying this challenge.")',recover)
+
+    def test_helper_eye_recall_is_available_before_lock(self):
+        encounters=src("feast/RescueEncounters.java")
+        for marker in ("case HOUSE_SAFE->","case ROOM_LOCKED->"):
+            stage=encounters.split(marker,1)[1].split("case ",1)[0]
+            self.assertIn("BeldamFinale.recoverPresentationEyes(p,s)",stage)
+            self.assertIn("!RescueEyes.carriedByOwner(p,s)",stage)
+
     def test_audio_logout_and_server_stop_clear_tracking(self):
         s=src("feast/ShowPlayback.java")
         self.assertIn("PlayerLoggedOutEvent",s)

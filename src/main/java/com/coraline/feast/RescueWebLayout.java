@@ -6,6 +6,12 @@ public final class RescueWebLayout {
     public static boolean audibleLanding(double previousY,double currentY,boolean landed){return landed&&previousY-currentY>.18;}
     /** Vanilla land-crawl is about 0.065 m/tick; pursuit must be slower, not an unavoidable catch. */
     public static double crawlPursuit(int ticks){return -8+Math.max(0,ticks)*.05;}
+    /** The three-wide, two-high interior; allow climbing over the authored rubble. */
+    static boolean crawlPositionValid(boolean activity,double progress,double sideways,double rise,int length){
+        return activity&&Double.isFinite(progress)&&progress>=-.5&&progress<=length+1.35
+                &&Double.isFinite(sideways)&&Math.abs(sideways)<=1.35
+                &&Double.isFinite(rise)&&rise>=-.5&&rise<=1.45;
+    }
     public record Point(double x,double y,double z){}
     public static final int LANES=3,SAMPLES=900;
     public static Point point(int lane,double progress){
