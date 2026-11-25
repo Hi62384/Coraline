@@ -247,6 +247,10 @@ public final class RescueEncounters {
                         RescueChapter.hint(p,n.getString("Blocker"));
                         return;
                     }
+                    // Recall authenticated helper-held eyes before sealing the
+                    // room; a chest-stored eye still requires player retrieval.
+                    if(!RescueEyes.carriedByOwner(p,s)&&p.tickCount%40==0)
+                        BeldamFinale.recoverPresentationEyes(p,s);
                     // Do not seal the only exit while a claimed, original eye is in a chest.
                     if(!RescueEyes.carriedByOwner(p,s)){
                         n.putString("Blocker","Retrieve all three original ghost eyes before the confrontation room closes.");
@@ -266,6 +270,8 @@ public final class RescueEncounters {
                 }
                 // Reopen old saved rooms too: the earlier versions let the owner
                 // enter without inventory access to an authentic stored eye.
+                if(!RescueEyes.carriedByOwner(p,s)&&p.tickCount%40==0)
+                    BeldamFinale.recoverPresentationEyes(p,s);
                 if(!RescueEyes.carriedByOwner(p,s)){
                     n.putBoolean("RoomLocked",false);
                     FirstEscapeStory.setDoor(p,FirstEscapeScene.entrance(s),true);

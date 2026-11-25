@@ -260,7 +260,10 @@ public final class RescueChapter {
             if(p.serverLevel()!=level&&!transfer(p,level,BlockPos.of(data(s).getLong("CollapseStart"))))data(s).putBoolean("Recover",true);
             return;
         }
-        if(state==Phase.CAT_THROW||state==Phase.WEB_STEALTH||state==Phase.DOOR_STRUGGLE||state==Phase.TUNNEL_CHASE){BeldamFinale.retry(p,s,state,"Retrying this challenge.");return;}
+        if(state==Phase.CAT_THROW||state==Phase.WEB_STEALTH||state==Phase.DOOR_KICK
+                ||state==Phase.DOOR_STRUGGLE||state==Phase.HAND_FALL||state==Phase.TUNNEL_CHASE){
+            BeldamFinale.retry(p,s,state,"Retrying this challenge.");return;
+        }
         if(state.ordinal()>=Phase.EYES_CLOSE.ordinal()&&state!=Phase.RELEASED_SPIRITS&&state!=Phase.COMPLETE){RescueEpilogue.recoverVision(p,s);return;}
         go(p,s,state);
     }

@@ -190,6 +190,11 @@ public final class RescuePassage {
         return true;
     }
     public static double progress(ServerPlayer p,VisitData.Scene s){return p.getX()-origin(p,s).getX()-.5;}
+    static boolean inside(ServerPlayer p,VisitData.Scene s){
+        var at=origin(p,s);
+        return RescueWebLayout.crawlPositionValid(p.serverLevel()==p.server.getLevel(ActivityWorld.KEY),
+                p.getX()-at.getX()-.5,p.getZ()-at.getZ()-.5,p.getY()-at.getY(),LENGTH);
+    }
     /** Direct restoration uses the same exact-state receipts as the bounded
      * post-exit cleanup and never forgets an unresolved original block. */
     public static void restore(ServerPlayer p,VisitData.Scene s){

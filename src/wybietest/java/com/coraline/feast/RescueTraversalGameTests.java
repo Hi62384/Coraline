@@ -15,6 +15,28 @@ public final class RescueTraversalGameTests {
         var p=player(h);var s=OtherMotherLoop.scene(p);boolean entered=false;for(int i=0;i<96&&!entered;i++)entered=RescuePassage.enter(p,s);h.assertTrue(entered,"Actual fabric passage did not finish physical build and fresh re-entry verification: "+RescueChapter.data(s).getString("Blocker"));int[] ticks={0};var l=p.serverLevel();
         h.onEachTick(()->{LoopProps.hold(l,p.blockPosition());p.move(MoverType.SELF,new Vec3(.065,-.08,0));h.assertFalse(l.getBlockCollisions(p,p.getBoundingBox().deflate(.001)).iterator().hasNext(),"Crawling body/head entered the actual passage shell: "+p.position()+" / "+p.getBoundingBox()+" / "+p.getPose()+" noclip="+p.noPhysics);h.assertTrue(p.getForcedPose()==Pose.SWIMMING,"Passage lost its low pose");if(RescuePassage.progress(p,s)>=RescuePassage.LENGTH){RescuePassage.restore(p,s);VisitData.get(p.server).scenes.remove(s.owner);h.succeed();}else if(++ticks[0]>1300){var at=p.position();RescuePassage.restore(p,s);VisitData.get(p.server).scenes.remove(s.owner);h.fail("Actual crawl stalled at "+at);}});
     }
+    @GameTest(template="empty",timeoutTicks=1500)
+    public static void finalCrawlRetryRestartsExpiredClockBeforePhysicalReentry(GameTestHelper h){
+        var p=player(h);var s=OtherMotherLoop.scene(p);var n=RescueChapter.data(s);
+        n.putString("Phase",RescueChapter.Phase.TUNNEL_CHASE.name());
+        boolean entered=false;
+        for(int i=0;i<96&&!entered;i++)entered=RescuePassage.enter(p,s);
+        h.assertTrue(entered,"Initial crawl construction did not finish");
+        n.putInt("Ticks",900);n.putBoolean("Audio",true);
+        n.putInt("AudioTail",700);n.putInt("RecordingFallbackTicks",900);
+        BeldamFinale.retry(p,s,RescueChapter.Phase.TUNNEL_CHASE,"Regression: expired pursuit");
+        h.assertTrue(n.getInt("Ticks")==0&&!n.getBoolean("Audio")&&!n.contains("AudioTail")
+                &&!n.contains("RecordingFallbackTicks"),"Expired chase clock survived retry");
+        h.assertFalse(n.getBoolean("PassageEntered"),"Retry reused stale physical entry receipt");
+        h.assertFalse(BeldamFinale.preflight(p,s),"Batched passage verification completed in one tick");
+        h.assertTrue(n.getInt("Ticks")==0,"Pursuit advanced while physical re-entry was pending");
+        for(int i=0;i<96&&!n.getBoolean("PassageEntered");i++)BeldamFinale.preflight(p,s);
+        h.assertTrue(n.getBoolean("PassageEntered")&&RescuePassage.inside(p,s),"Verified retry could not re-enter");
+        h.assertTrue(n.getInt("Ticks")==0&&RescuePassage.progress(p,s)<.1
+                &&RescueWebLayout.crawlPursuit(n.getInt("Ticks"))+1.1<RescuePassage.progress(p,s),
+                "The newly re-entered player was already caught");
+        RescuePassage.restore(p,s);VisitData.get(p.server).scenes.remove(s.owner);h.succeed();
+    }
     @GameTest(template="empty",timeoutTicks=20000) public static void allThreeSpiralLanesSupportContinuousCrouchedWalking(GameTestHelper h){var p=player(h);var s=OtherMotherLoop.scene(p);for(int i=0;i<65&&!RescueWebSite.prepare(p,s);i++);h.assertTrue(RescueChapter.data(s).getBoolean("WebReady"),"Actual strand build remained incomplete");p.setForcedPose(Pose.CROUCHING);p.setPose(Pose.CROUCHING);p.setShiftKeyDown(true);p.setMaxUpStep(.6F);var l=p.serverLevel();int[] lane={0},sample={1},ticks={0};var start=RescueWebSite.at(p,s,0,0);p.setPos(start.x,top(l,start),start.z);p.setOnGround(true);
         h.onEachTick(()->{LoopProps.hold(l,p.blockPosition());var target=RescueWebSite.at(p,s,lane[0],sample[0]/(double)RescueWebLayout.SAMPLES);var delta=target.subtract(p.position()).multiply(1,0,1);if(delta.horizontalDistanceSqr()<.018){if(++sample[0]>RescueWebLayout.SAMPLES){if(++lane[0]==3){RescueWebSite.restore(p,s);VisitData.get(p.server).scenes.remove(s.owner);h.succeed();return;}sample[0]=1;var next=RescueWebSite.at(p,s,lane[0],0);p.setPos(next.x,top(l,next),next.z);p.setOnGround(true);return;}}
             var step=delta.normalize().scale(Math.min(.065,delta.length()));p.move(MoverType.SELF,step.add(0,-.08,0));p.tickCount++;RescueWebSite.sag(p,s);var support=RescueWebSite.at(p,s,lane[0],Math.max(0,sample[0]-1)/(double)RescueWebLayout.SAMPLES);

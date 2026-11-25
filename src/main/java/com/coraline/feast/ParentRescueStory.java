@@ -78,27 +78,7 @@ public final class ParentRescueStory {
             VisitAudio.play(p,"parents_rescue_arrival_music",true);n.putBoolean("ArrivalMusicStarted",true);n.remove("ArrivalMusicAt");
         }
         var state=phase(s);
-        // A crash or old save can retain Kitchen without Stove/KitchenTable.
-        // Do not play the cooking dialogue or advance the meal against (0,0,0).
-        // Rebuild the original kitchen checkpoint first; never invent a stove.
-        if((state==Phase.KITCHEN||state==Phase.WAIT_KITCHEN_SEAT
-                ||state==Phase.H||state==Phase.I||state==Phase.J||state==Phase.K
-                ||state==Phase.SERVE)&&!kitchen(p,s)){
-            // If the save lost its kitchen coordinates midway through voiced
-            // cooking, stop that playback. Once the real appliance returns,
-            // replay this same checkpoint instead of advancing on stale audio.
-            if((state==Phase.H||state==Phase.I||state==Phase.J||state==Phase.K)
-                    &&(n.getBoolean("Audio")||n.contains("ReturnRecording"))){
-                ShowPlayback.stop(p,s);
-                n.remove("Audio");
-                n.remove("ReturnRecording");
-                n.putInt("Ticks",0);
-                OtherMotherLoop.changed(p);
-            }
-            if(n.getString("Blocker").isEmpty())n.putString("Blocker","Waiting for the original kitchen stove and table checkpoint.");
-            FirstEscapeStory.hint(p,n.getString("Blocker"));
-            return;
-        }
+        if(!kitchenReadyForPhase(p,s,state))return;
         if(!StoryTunnel.entryPhase(s)&&p.tickCount%20==0&&p.onGround()&&!p.isPassenger()
                 &&FirstEscapeScene.inHouseOrPorch(s,p.blockPosition())
                 &&com.coraline.tycoon.TycoonWorld.safeFeet(p.serverLevel(),p.blockPosition())){
@@ -202,6 +182,31 @@ public final class ParentRescueStory {
                 ||state.ordinal()>=Phase.PARENT_RESCUE_KITCHEN_MOTHER_DISAPPEARED.ordinal()
                 ||originalPresent;
     }
+    private static boolean kitchenReadyForPhase(ServerPlayer p,VisitData.Scene s,Phase state){
+        var n=data(s);
+        // A crash or old save can retain Kitchen without Stove/KitchenTable.
+        // Do not play the cooking dialogue or advance the meal against (0,0,0).
+        // Rebuild the original kitchen checkpoint first; never invent a stove.
+        if((state==Phase.KITCHEN||state==Phase.WAIT_KITCHEN_SEAT
+                ||state==Phase.H||state==Phase.I||state==Phase.J||state==Phase.K
+                ||state==Phase.SERVE)&&!kitchen(p,s)){
+            // If the save lost its kitchen coordinates midway through voiced
+            // cooking, stop that playback. Once the real appliance returns,
+            // replay this same checkpoint instead of advancing on stale audio.
+            if((state==Phase.H||state==Phase.I||state==Phase.J||state==Phase.K)
+                    &&(n.getBoolean("Audio")||n.contains("ReturnRecording"))){
+                ShowPlayback.stop(p,s);
+                n.remove("Audio");
+                n.remove("ReturnRecording");
+                n.putInt("Ticks",0);
+                OtherMotherLoop.changed(p);
+            }
+            if(n.getString("Blocker").isEmpty())n.putString("Blocker","Waiting for the original kitchen stove and table checkpoint.");
+            FirstEscapeStory.hint(p,n.getString("Blocker"));
+            return false;
+        }
+        return true;
+    }
     static void cutsceneSafety(ServerPlayer p,VisitData.Scene s){
         if(!OtherWorld.isOther(p.level()))return;var state=phase(s);var n=data(s);String sound=voice(state);
         boolean motion=state==Phase.FATHER_ENTRY||state==Phase.KEY_SCENE||state==Phase.SERVE;
@@ -210,6 +215,12 @@ public final class ParentRescueStory {
             if(n.getBoolean("Audio")){ShowPlayback.stop(p,s);n.remove("Audio");n.remove("ReturnRecording");n.putInt("Ticks",0);}
             n.putString("Blocker","Waiting for the original Other Mother before this rescue dialogue.");
             FirstEscapeStory.hint(p,n.getString("Blocker"));
+            StoryCutsceneWatchdog.retry(s,"parent_rescue");
+            return;
+        }
+        // The independent watchdog must honor the same physical kitchen gate
+        // as the main tick, even after its voice timeout has elapsed.
+        if(!kitchenReadyForPhase(p,s,state)){
             StoryCutsceneWatchdog.retry(s,"parent_rescue");
             return;
         }
