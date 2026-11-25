@@ -41,6 +41,7 @@ public final class RescueBosses {
         if(state==SWARM_FIGHT){
             var swarm=RescueEncounters.prop(p,s,"Swarm",RescueProps.SWARM,0,RescueEncounters.center(p,s));
             if(swarm==null||swarm.level()!=p.level()){
+                n.putBoolean("Vulnerable",false);
                 n.putInt("Ticks",Math.max(0,time-1));
                 n.putString("Blocker","Waiting for the original Ratmaster swarm.");
                 return;
@@ -123,6 +124,7 @@ public final class RescueBosses {
         var locked=new Vec3(n.getDouble("AttackX"),aim.getY(),n.getDouble("AttackZ"));
         Vec3 weak=state==MANTIS_FIGHT?mantis(p,s,time,3):state==THEATRE_FIGHT?actresses(p,s,time,false):swarm(p,s,time,pattern,beat,tier);
         if(weak==null){
+            n.putBoolean("Vulnerable",false);
             n.putInt("Ticks",Math.max(0,time-1));
             n.putString("Blocker",state==MANTIS_FIGHT?"Waiting for the original Mechanical Mantis and its weak point."
                     :state==THEATRE_FIGHT?"Waiting for the original Other Actress and her weak point."
@@ -131,6 +133,7 @@ public final class RescueBosses {
         }
         if(weak!=null){n.putDouble("WeakX",weak.x);n.putDouble("WeakY",weak.y);n.putDouble("WeakZ",weak.z);
             var eye=RescueEncounters.prop(p,s,"WeakPoint",state==MANTIS_FIGHT||state==THEATRE_FIGHT?RescueProps.CONTROL_POINT:RescueProps.EYE,state==MANTIS_FIGHT?0:state==THEATRE_FIGHT?1:2,weak);if(eye==null||eye.level()!=p.level()){
+                n.putBoolean("Vulnerable",false);
                 n.putInt("Ticks",Math.max(0,time-1));
                 n.putString("Blocker","Waiting for the original boss weak-point prop.");
                 return;

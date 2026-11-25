@@ -278,9 +278,10 @@ class CurrentStoryRepairs(unittest.TestCase):
         parent=source('feast/ParentRescueStory.java')
         self.assertIn('static boolean rescueMotherReadyForWatchdog(Phase state,boolean originalPresent)',parent)
         safety=parent.split('static void cutsceneSafety(ServerPlayer p,VisitData.Scene s)',1)[1].split('static void prepareReturnRoom(',1)[0]
-        self.assertIn('!rescueMotherReadyForWatchdog(state,mother(p,s)!=null)',safety)
-        self.assertLess(safety.index('!rescueMotherReadyForWatchdog('),safety.index('StoryCutsceneWatchdog.overdue('))
-        self.assertLess(safety.index('!rescueMotherReadyForWatchdog('),safety.index('case N->{release(p,s)'))
+        self.assertIn('!returnCastReady(p,s,state,returnMother(p,s))',safety)
+        self.assertIn('!rescueMotherReadyForWatchdog(state,mother!=null)',parent)
+        self.assertLess(safety.index('!returnCastReady('),safety.index('StoryCutsceneWatchdog.overdue('))
+        self.assertLess(safety.index('!returnCastReady('),safety.index('case N->{release(p,s)'))
         self.assertIn('StoryCutsceneWatchdog.retry(s,"parent_rescue")',safety)
         gametest=(ROOT/'src/gametest/java/com/coraline/feast/RescueSoftlockGameTests.java').read_text()
         self.assertIn('parentRescueWatchdogNeverFinishesMissingMother',gametest)

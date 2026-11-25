@@ -150,6 +150,60 @@ class StorySoftlockFixesSourceTests(unittest.TestCase):
             self.assertIn("BeldamFinale.recoverPresentationEyes(p,s)",stage)
             self.assertIn("!RescueEyes.carriedByOwner(p,s)",stage)
 
+    def test_missing_intro_and_tea_audio_do_not_block_required_visits(self):
+        cat=src("feast/MissingParentsCat.java")
+        intro=cat.split("static boolean arrivalMusic(",1)[1].split("public enum Phase",1)[0]
+        self.assertIn("if(duration<=0)",intro)
+        self.assertIn('n.putInt("ArrivalFallbackTicks",elapsed)',intro)
+        self.assertIn("if(elapsed<spawnCue(duration))return false",intro)
+        tea=src("feast/MissingParentsTea.java")
+        prepare=tea.split("private static boolean prepare(",1)[1].split("private static void finishBuild(",1)[0]
+        self.assertNotIn("ShowRecordings.duration(",prepare)
+        tick=tea.split("public static void tick(",1)[1].split("static void cutsceneSafety(",1)[0]
+        self.assertIn("RecordingRecovery.exhausted(recovery)",tick)
+        self.assertIn("RecordingRecovery.dialogueWindowEnded",tick)
+        self.assertIn("if(done&&!n.getBoolean(\"BowlPlaced\"))done=false",tick)
+
+    def test_cat_watchdog_does_not_open_portal_before_timeout(self):
+        cat=src("feast/MissingParentsCat.java")
+        guard=cat.split("static void cutsceneSafety(",1)[1].split("static boolean parkInTunnel(",1)[0]
+        self.assertLess(guard.index("StoryCutsceneWatchdog.overdue("),
+                        guard.index("if(state==Phase.F&&!StoryTunnel.restore(p,s))"))
+        self.assertIn("ShowActors.recoverCat(p,s,p.server.overworld()",cat)
+        self.assertIn('RescueProps.restoreVerified(p,s,kind,slot,at,n.getUUID(key),p.serverLevel())',cat)
+
+    def test_required_story_props_recover_exact_identity_without_recreating_shoe_or_ghosts(self):
+        scene=src("feast/FirstEscapeScene.java")
+        allow=scene.split("static boolean recoverableRequiredProp(",1)[1].split("public static void roomProps(",1)[0]
+        for key in ("Wardrobe","BugCouch","BugChair","KitchenSeat","Meal","Cane"):
+            self.assertIn('case "'+key+'"',allow)
+        self.assertNotIn("ShoeFlight",allow)
+        self.assertNotIn("Ghost",allow)
+        self.assertIn("RescueProps.restoreVerified(p,s,kind,slot,at,n.getUUID(key),l)",scene)
+        props=src("feast/RescueProps.java")
+        self.assertLess(props.index("LegacyActorRecovery.Result.ABSENT"),props.index("restored.setUUID(original)"))
+        self.assertIn("!s.owner.equals(p.getUUID())||level==null||original==null",props)
+
+    def test_parent_return_requires_original_cast_and_corridor(self):
+        parent=src("feast/ParentRescueStory.java")
+        self.assertIn("needsReturnFather(state)&&father(p,s)==null",parent)
+        self.assertIn("StoryTunnel.entryPhase(s)&&cat(p,s)==null",parent)
+        self.assertIn("if(!returnCastReady(p,s,state,m))return;",parent)
+        guard=parent.split("static void cutsceneSafety(",1)[1].split("static void prepareReturnRoom(",1)[0]
+        self.assertLess(guard.index("!returnCastReady("),guard.index("StoryCutsceneWatchdog.overdue("))
+        self.assertIn("StoryTunnel.entryPhase(s)&&!StoryTunnel.insideCrawl(p,s)",guard)
+
+    def test_finale_critical_props_and_cat_retry_can_recover(self):
+        finale=src("feast/BeldamFinale.java")
+        hand=finale.split("case HAND_FALL->{",1)[1].split("case TUNNEL_CHASE",1)[0]
+        self.assertIn('RescueProps.ensure(p,s,"SeveredHand",RescueProps.HAND',hand)
+        self.assertIn('FirstEscapeScene.ensure(p,s,"Wardrobe",CinematicPropEntity.ROACH_WARDROBE',finale)
+        retry=finale.split("public static void retry(",1)[1].split("else if(state==WEB_STEALTH)",1)[0]
+        self.assertIn('n.putBoolean("Recover",true);return;',retry)
+        boss=src("feast/RescueBosses.java")
+        for marker in ("if(weak==null){","if(eye==null||eye.level()!=p.level()){","if(swarm==null||swarm.level()!=p.level()){"):
+            self.assertIn('n.putBoolean("Vulnerable",false)',boss.split(marker,1)[1].split("return;",1)[0])
+
     def test_audio_logout_and_server_stop_clear_tracking(self):
         s=src("feast/ShowPlayback.java")
         self.assertIn("PlayerLoggedOutEvent",s)

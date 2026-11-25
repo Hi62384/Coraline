@@ -37,8 +37,12 @@ public final class RescueProps {
      * identity; never bypass an unverified native-save or an occupied UUID. */
     private static CinematicPropEntity restoreVerified(ServerPlayer p,VisitData.Scene s,int kind,int slot,
                                                         Vec3 at,java.util.UUID original){
-        if(original==null||!Double.isFinite(at.x)||!Double.isFinite(at.y)||!Double.isFinite(at.z))return null;
-        var level=p.serverLevel();
+        return restoreVerified(p,s,kind,slot,at,original,p.serverLevel());
+    }
+    static CinematicPropEntity restoreVerified(ServerPlayer p,VisitData.Scene s,int kind,int slot,
+                                               Vec3 at,java.util.UUID original,net.minecraft.server.level.ServerLevel level){
+        if(!s.owner.equals(p.getUUID())||level==null||original==null
+                ||!Double.isFinite(at.x)||!Double.isFinite(at.y)||!Double.isFinite(at.z))return null;
         var position=net.minecraft.core.BlockPos.containing(at);
         if(level.isOutsideBuildHeight(position)||!level.getWorldBorder().isWithinBounds(position))return null;
         for(var world:p.server.getAllLevels())if(world.getEntity(original)!=null)return null;

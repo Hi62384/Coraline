@@ -24,6 +24,17 @@ public final class MissingParentsCat {
     static int spawnCue(int duration){return 45*20;}
     static boolean arrivalMusic(ServerPlayer p,VisitData.Scene s){
         var n=data(s);if(n.getBoolean("ArrivalMusicComplete"))return true;
+        int duration=ShowRecordings.duration(INTRO_MUSIC);
+        if(duration<=0){
+            // No playback nonce can exist for a missing recording. PENDING
+            // has no started-scene watchdog, so retain the normal 45s cue
+            // using active owner ticks instead of blocking the plot forever.
+            int elapsed=Math.min(spawnCue(duration),Math.max(0,n.getInt("ArrivalFallbackTicks"))+1);
+            n.putInt("ArrivalFallbackTicks",elapsed);
+            if(p.tickCount%20==0)OtherMotherLoop.changed(p);
+            if(elapsed<spawnCue(duration))return false;
+            n.putBoolean("ArrivalMusicComplete",true);OtherMotherLoop.changed(p);return true;
+        }
         if(!ShowPlayback.data(s).getString("Sound").equals(INTRO_MUSIC)&&!ShowPlayback.start(p,s,INTRO_MUSIC,true))return false;
         ShowPlayback.tick(p,s);
         if(ShowPlayback.started(s)&&ShowPlayback.audibleElapsedTicks(s)>=spawnCue(ShowRecordings.duration(INTRO_MUSIC))||ShowPlayback.finished(s)&&ShowPlayback.data(s).getBoolean("SafetySkipped")){
@@ -52,7 +63,17 @@ public final class MissingParentsCat {
     static boolean owns(ServerPlayer p,VisitData.Scene s){var n=data(s);return s!=null&&!AcceptedButtonEyes.active(s)&&s.owner.equals(p.getUUID())&&(!n.hasUUID("Owner")||s.owner.equals(n.getUUID("Owner")))&&(!n.hasUUID("Door")||s.door.equals(n.getUUID("Door")));}
     private static CharacterEntity cat(ServerPlayer p,VisitData.Scene s){
         var n=data(s);if(n.contains("CatAt"))LoopProps.hold(p.server.overworld(),BlockPos.of(n.getLong("CatAt")));
-        return ShowActors.actor(p,s,"cat") instanceof CharacterEntity c?c:null;
+        var actor=ShowActors.actor(p,s,"cat");
+        if((actor==null||actor.level()!=p.server.overworld())&&n.getBoolean("Started")
+                &&!n.getBoolean("Complete")&&n.contains("CatAt",Tag.TAG_LONG)){
+            var at=BlockPos.of(n.getLong("CatAt"));
+            if(walkable(p,at))actor=ShowActors.recoverCat(p,s,p.server.overworld(),Vec3.atBottomCenterOf(at));
+            else{
+                var safe=nearby(p,false);
+                if(safe!=null)actor=ShowActors.recoverCat(p,s,p.server.overworld(),Vec3.atBottomCenterOf(safe));
+            }
+        }
+        return actor instanceof CharacterEntity c&&c.isAlive()&&c.level()==p.server.overworld()?c:null;
     }
     static boolean walk(Mob actor,Vec3 destination,double speed){
         if(actor==null)return false;actor.setNoAi(false);actor.setNoGravity(false);actor.noPhysics=false;actor.setMaxUpStep(1.05F);
@@ -279,7 +300,7 @@ public final class MissingParentsCat {
                     if(n.getInt("ReadTicks")>=MissingParentsCatTimeline.READ_TICKS){n.putBoolean("HelpUsComplete",true);go(p,s,Phase.WAIT_BREAK);}
                 }
             }
-            case WAIT_BREAK->{props(p,s);if(!n.hasUUID("MirrorActor")||!(p.serverLevel().getEntity(n.getUUID("MirrorActor")) instanceof CinematicPropEntity)){if(t>=100){n.putBoolean("MirrorBroken",true);go(p,s,Phase.D);}break;}look(cat,BlockPos.of(n.getLong("Mirror")).getCenter());FirstEscapeStory.hint(p,"Break the mirror. Right-click it.");}
+            case WAIT_BREAK->{props(p,s);if(!n.hasUUID("MirrorActor")||!(p.serverLevel().getEntity(n.getUUID("MirrorActor")) instanceof CinematicPropEntity mirror&&mirror.owned(s)&&mirror.kind()==CinematicPropEntity.PARENT_MIRROR)){if(t>=600){n.putBoolean("MirrorBroken",true);go(p,s,Phase.D);}else FirstEscapeStory.hint(p,"Waiting for the original mirror to load.");break;}look(cat,BlockPos.of(n.getLong("Mirror")).getCenter());FirstEscapeStory.hint(p,"Break the mirror. Right-click it.");}
             case C->{look(cat,BlockPos.of(n.getLong("Mirror")).getCenter());if(Math.max(t,ShowPlayback.audiblePosition(s))>=MissingParentsCatTimeline.shatterCue(ShowRecordings.duration(sound)))shatter(p,s);if(done){shatter(p,s);go(p,s,Phase.SHATTER);}}
             case SHATTER->{look(cat,BlockPos.of(n.getLong("Mirror")).getCenter());cat.gameGesture(34,10);if(n.getInt("ShatterAge")>=MissingParentsCatTimeline.SHATTER_TICKS)go(p,s,Phase.D);}
             case D->{look(cat,p.getEyePosition());if(done)go(p,s,Phase.FOLLOW_BED);}
@@ -356,7 +377,6 @@ public final class MissingParentsCat {
             FirstEscapeStory.hint(p,n.getString("Blocker"));
             return;
         }
-        if(state==Phase.F&&!StoryTunnel.restore(p,s)){FirstEscapeStory.hint(p,"Preparing the Little Door passage...");return;}
         int safetyBudget=sound.isEmpty()?600:StoryCutsceneWatchdog.voiceBudget(sound);
         // If the player is following the Cat and its route has made no useful
         // progress for eight seconds, recover that action promptly instead of
@@ -364,11 +384,15 @@ public final class MissingParentsCat {
         // movement still keeps the longer, authored pacing window.
         if((state==Phase.FOLLOW_BED||state==Phase.FOLLOW_MIRROR)&&n.getInt("StuckTicks")>=160)safetyBudget=160;
         if(!StoryCutsceneWatchdog.overdue(p,s,"post_escape_cat",state.name(),safetyBudget))return;
+        if(state==Phase.F&&!StoryTunnel.restore(p,s)){
+            FirstEscapeStory.hint(p,"Preparing the Little Door passage...");
+            StoryCutsceneWatchdog.retry(s,"post_escape_cat");return;
+        }
         ShowPlayback.safetyFinish(p,s,"Cat visit action exceeded its safety window");
         switch(state){
             case APPROACH->go(p,s,Phase.A);
             case A->go(p,s,Phase.FOLLOW_MIRROR);
-            case FOLLOW_MIRROR->{props(p,s);if(!n.hasUUID("MirrorActor")||!(p.serverLevel().getEntity(n.getUUID("MirrorActor")) instanceof CinematicPropEntity)){n.putString("LastSafetySkip","Unavailable mirror presentation");go(p,s,Phase.D);}else go(p,s,Phase.B);}
+            case FOLLOW_MIRROR->{props(p,s);if(!n.hasUUID("MirrorActor")||!(p.serverLevel().getEntity(n.getUUID("MirrorActor")) instanceof CinematicPropEntity)){n.putString("LastSafetySkip","Unavailable mirror presentation");n.putBoolean("MirrorBroken",true);go(p,s,Phase.D);}else go(p,s,Phase.B);}
             case B->{n.putInt("Writing",MissingParentsCatTimeline.WRITE_TICKS);n.putBoolean("HelpUsComplete",true);go(p,s,Phase.WAIT_BREAK);}
             case C->{shatter(p,s);go(p,s,Phase.SHATTER);}
             case SHATTER->go(p,s,Phase.D);
@@ -492,8 +516,17 @@ public final class MissingParentsCat {
         OtherMotherLoop.changed(p);
     }
     private static CinematicPropEntity prop(ServerPlayer p,VisitData.Scene s,String key,int kind,Vec3 at){
-        var n=data(s);if(n.hasUUID(key)){if(n.contains(key+"At"))LoopProps.hold(p.serverLevel(),BlockPos.of(n.getLong(key+"At")));return p.serverLevel().getEntity(n.getUUID(key)) instanceof CinematicPropEntity e&&e.owned(s)?e:null;}
-        var e=CinematicPropEntity.TYPE.get().create(p.serverLevel());if(e==null)return null;e.configure(s,kind,(n.getInt("MomSkin")&127)|((n.getInt("DadSkin")&127)<<7));e.setPos(at);
+        var n=data(s);int slot=(n.getInt("MomSkin")&127)|((n.getInt("DadSkin")&127)<<7);
+        if(n.hasUUID(key)){
+            if(n.contains(key+"At"))LoopProps.hold(p.serverLevel(),BlockPos.of(n.getLong(key+"At")));
+            var saved=p.serverLevel().getEntity(n.getUUID(key));
+            if(saved instanceof CinematicPropEntity e&&e.owned(s)&&e.kind()==kind&&e.slot()==slot)return e;
+            if(saved!=null)return null;
+            var recovered=RescueProps.restoreVerified(p,s,kind,slot,at,n.getUUID(key),p.serverLevel());
+            if(recovered!=null){n.putLong(key+"At",recovered.blockPosition().asLong());OtherMotherLoop.changed(p);}
+            return recovered;
+        }
+        var e=CinematicPropEntity.TYPE.get().create(p.serverLevel());if(e==null)return null;e.configure(s,kind,slot);e.setPos(at);
         if(!p.serverLevel().addFreshEntity(e))return null;n.putUUID(key,e.getUUID());n.putLong(key+"At",e.blockPosition().asLong());OtherMotherLoop.changed(p);return e;
     }
     static void props(ServerPlayer p,VisitData.Scene s){
@@ -508,7 +541,7 @@ public final class MissingParentsCat {
         }
         if(!dollsFinished(s)&&phase(s).ordinal()<=Phase.SHATTER.ordinal()&&n.contains("Mirror")){
             var mirror=prop(p,s,"MirrorActor",CinematicPropEntity.PARENT_MIRROR,Vec3.atBottomCenterOf(BlockPos.of(n.getLong("Mirror"))));
-            if(mirror!=null){var face=Direction.byName(n.getString("MirrorFacing"));mirror.setYRot(180+(face==null?Direction.SOUTH:face).toYRot());
+            if(mirror!=null){n.putLong("MirrorActorAt",BlockPos.of(n.getLong("Mirror")).asLong());var face=Direction.byName(n.getString("MirrorFacing"));mirror.setYRot(180+(face==null?Direction.SOUTH:face).toYRot());
                 mirror.setPos(Vec3.atBottomCenterOf(BlockPos.of(n.getLong("Mirror")))); // Same entity follows a safely re-resolved checkpoint.
                 int cue=n.getBoolean("MirrorBroken")?3:phase(s)==Phase.C?2:phase(s).ordinal()>=Phase.B.ordinal()?1:0;
                 mirror.frame(cue,cue==3?n.getInt("ShatterAge"):n.getInt("Ticks"),cue==2?MissingParentsCatTimeline.progress(n.getInt("Ticks"),ShowRecordings.duration(voice(Phase.C))):n.getInt("Writing")/(float)MissingParentsCatTimeline.WRITE_TICKS);
@@ -518,7 +551,7 @@ public final class MissingParentsCat {
             var foot=BlockPos.of(n.getLong("BedFoot"));var face=Direction.byName(n.getString("BedFront"));if(face==null)face=Direction.SOUTH;
             var base=Vec3.atBottomCenterOf(foot).add(face.getStepX()*.95,.12,face.getStepZ()*.95);
             var dolls=prop(p,s,"ParentDolls",CinematicPropEntity.PARENT_DOLLS,base);
-            if(dolls!=null){dolls.setPos(base);dolls.setYRot(face.toYRot());dolls.frame(0,n.getInt("Ticks"),n.getBoolean("DollsRetrieved")?1:n.getFloat("DollsPull"));}
+            if(dolls!=null){n.putLong("ParentDollsAt",BlockPos.containing(base).asLong());dolls.setPos(base);dolls.setYRot(face.toYRot());dolls.frame(0,n.getInt("Ticks"),n.getBoolean("DollsRetrieved")?1:n.getFloat("DollsPull"));}
         }
     }
     private static boolean dollsFinished(VisitData.Scene s){return data(s).getBoolean("Complete")||phase(s).ordinal()>=Phase.DEPART.ordinal();}

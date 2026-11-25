@@ -84,8 +84,24 @@ public final class FirstEscapeScene {
             }
         }
         var e=prop(p,s,key);if(e!=null){n.putLong(key+"Position",e.blockPosition().asLong());return e;}if(n.hasUUID(key)){if(n.contains(key+"Position"))l.getChunkAt(BlockPos.of(n.getLong(key+"Position")));// An unloaded UUID is not permission to clone.
+            if(recoverableRequiredProp(key,kind)){
+                e=RescueProps.restoreVerified(p,s,kind,slot,at,n.getUUID(key),l);
+                if(e!=null){n.putLong(key+"Position",e.blockPosition().asLong());OtherMotherLoop.changed(p);}
+                return e;
+            }
             return null;}
         l.getChunkAt(BlockPos.containing(at));e=CinematicPropEntity.TYPE.get().create(l);if(e==null)return null;e.configure(s,kind,slot);e.setPos(at);if(!l.addFreshEntity(e))return null;n.putUUID(key,e.getUUID());n.putLong(key+"Position",e.blockPosition().asLong());OtherMotherLoop.changed(p);return e;}
+    static boolean recoverableRequiredProp(String key,int kind){
+        return switch(key){
+            case "Wardrobe" -> kind==CinematicPropEntity.ROACH_WARDROBE;
+            case "BugCouch" -> kind==CinematicPropEntity.BUG_COUCH;
+            case "BugChair" -> kind==CinematicPropEntity.BUG_CHAIR;
+            case "KitchenSeat" -> kind==CinematicPropEntity.STUNT_CARRIER;
+            case "Meal" -> kind==CinematicPropEntity.RESCUE_MEAL;
+            case "Cane" -> kind==CinematicPropEntity.STORY_CANE;
+            default -> false;
+        };
+    }
     public static void roomProps(ServerPlayer p,VisitData.Scene s){var l=level(p);var c=Vec3.atBottomCenterOf(room(s));var n=context(s);
         if(n.getBoolean("RoomBuilt")&&n.getInt("WallpaperRevision")<2){
             // The authored room has inset returns, not four straight walls. Its

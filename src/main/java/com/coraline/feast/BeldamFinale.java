@@ -537,7 +537,7 @@ public final class BeldamFinale {
             }
             case HAND_FALL->{
                 RescuePassage.prepare(p,s);
-                var hand=RescueProps.find(p,s,"SeveredHand");
+                var hand=RescueProps.ensure(p,s,"SeveredHand",RescueProps.HAND,0,RescueWebSite.at(p,s,1,1).add(0,.15,-.7));
                 if(hand==null||hand.kind()!=RescueProps.HAND||hand.level()!=p.level()){
                     n.putInt("Ticks",Math.max(0,t-1));
                     n.putString("Blocker","Waiting for the original severed Hand.");
@@ -563,7 +563,9 @@ public final class BeldamFinale {
     }
     private static void moveMother(ParentEntity m,Vec3 target,double speed,ServerPlayer p,int gesture){if(m==null)return;var delta=target.subtract(m.position()).multiply(1,0,1);var next=m.position().add(delta.length()<=speed?delta:delta.normalize().scale(speed));motherAt(m,next,p,gesture);}
     private static void moveWardrobe(ServerPlayer p,VisitData.Scene s,ParentEntity m){
-        var n=RescueChapter.data(s);var wardrobe=FirstEscapeScene.prop(p,s,"Wardrobe");if(wardrobe==null)return;var door=little(s);var goal=Vec3.atBottomCenterOf(door).add(0,0,4);moveMother(m,wardrobe.position().add(1.5,0,0),.04,p,64);if(m.distanceToSqr(wardrobe)>12)return;
+        var n=RescueChapter.data(s);var wardrobe=FirstEscapeScene.prop(p,s,"Wardrobe");var door=little(s);
+        if(wardrobe==null)wardrobe=FirstEscapeScene.ensure(p,s,"Wardrobe",CinematicPropEntity.ROACH_WARDROBE,0,p.serverLevel(),Vec3.atBottomCenterOf(door).add(1.1,0,0));
+        if(wardrobe==null||wardrobe.level()!=p.level())return;var goal=Vec3.atBottomCenterOf(door).add(0,0,4);moveMother(m,wardrobe.position().add(1.5,0,0),.04,p,64);if(m.distanceToSqr(wardrobe)>12)return;
         var delta=goal.subtract(wardrobe.position());wardrobe.setPos(wardrobe.position().add(delta.length()<.055?delta:delta.normalize().scale(.055)));wardrobe.frame(1,n.getInt("Ticks"),1);
         var portal=new AABB(door).inflate(.3,.1,.3);if(!wardrobe.getBoundingBox().intersects(portal)&&wardrobe.distanceToSqr(goal)<.1){n.putBoolean("WardrobeClear",true);ParentRescueStory.data(s).putBoolean("WardrobeBlocking",false);}
     }
@@ -772,7 +774,9 @@ public final class BeldamFinale {
     public static void retry(ServerPlayer p,VisitData.Scene s,RescueChapter.Phase state,String reason){
         var n=RescueChapter.data(s);n.putString("LastRetryReason",reason);n.putString("LastRetryPhase",state.name());n.putInt("RetryCount",n.getInt("RetryCount")+1);org.slf4j.LoggerFactory.getLogger(BeldamFinale.class).debug("Rescue retry phase={} reason={} feet={} crouching={} moved={} sticky={} landed={} noiseAge={} lastNoise={} lastNoiseMoved={}",state,reason,p.position(),p.isCrouching(),n.getDouble("LastWebMoved"),n.getBoolean("LastWebSticky"),n.getBoolean("LastWebLanded"),n.getInt("NoiseAge"),n.getString("LastNoiseReason"),n.getDouble("LastNoiseMoved"));RescueChapter.hint(p,reason);p.setHealth(p.getMaxHealth());p.clearFire();p.fallDistance=0;p.setDeltaMovement(Vec3.ZERO);
         if(state==CAT_THROW){
-            if(!RescueChapter.transfer(p,p.server.getLevel(OtherWorld.KEY),FirstEscapeScene.room(s)))return;
+            if(!RescueChapter.transfer(p,p.server.getLevel(OtherWorld.KEY),FirstEscapeScene.room(s))){
+                n.putBoolean("Recover",true);return;
+            }
             n.remove("CatFlying");n.remove("CatHeld");n.remove("CatMantel");var mother=ParentRescueStory.mother(p,s);if(mother!=null)motherAt(mother,Vec3.atBottomCenterOf(FirstEscapeScene.room(s).west(3)),p,67);catAtMantel(p,s);
         }else if(state==WEB_STEALTH){
             // Avoid teleporting directly onto an unverified, possibly missing

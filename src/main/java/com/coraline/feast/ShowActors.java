@@ -74,7 +74,7 @@ public final class ShowActors {
      * exact saved UUID after native absence proof. Adopted/real actors cannot be
      * fabricated, and any loaded original always takes precedence. */
     private static final Set<String> RECOVERABLE_CAST=Set.of(
-            "evil_other_bobinsky","evil_other_father","other_miss_spink","other_miss_forcible");
+            "evil_other_bobinsky","evil_other_father","other_miss_spink","other_miss_forcible","other_wybie");
     private static Mob restoreVerifiedCreatedActor(ServerPlayer p,VisitData.Scene s,String id,ServerLevel level,Vec3 at){
         if(!RECOVERABLE_CAST.contains(id))return null;
         var record=root(s).getCompound(id);

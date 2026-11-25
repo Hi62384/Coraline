@@ -149,7 +149,12 @@ public final class FirstEscapeStory {
             case STITCH_ANIMATION->{if(ticks>=35){n.putBoolean("StitchesRemoved",true);go(p,s,ESCAPE_C);}}
             case ESCAPE_C->{var w=wybie(p,s);if(w!=null){w.gameGesture(ticks<20?44:45,5);if(ticks>=20)guide(p,s);}}
             case FOLLOW_WYBIE->{guide(p,s);var w=wybie(p,s);if(w!=null&&FirstEscapeGuide.arrived(p,s,w))go(p,s,PUSH_WARDROBE);}
-            case PUSH_WARDROBE->hint(p,"Help Wybie push the wardrobe.");
+            case PUSH_WARDROBE->{
+                if(FirstEscapeScene.prop(p,s,"Wardrobe")==null)
+                    FirstEscapeScene.ensure(p,s,"Wardrobe",CinematicPropEntity.ROACH_WARDROBE,0,p.serverLevel(),
+                            Vec3.atBottomCenterOf(BlockPos.of(n.getLong("LittleDoor"))).add(1.1,0,0));
+                hint(p,"Help Wybie push the wardrobe.");
+            }
             case PUSHING->{var w=wybie(p,s);if(w!=null)w.gameGesture(46,5);p.swing(InteractionHand.MAIN_HAND,true);if(ticks>=40)go(p,s,ESCAPE_D);}
             case ESCAPE_D->{var wardrobe=FirstEscapeScene.prop(p,s,"Wardrobe");if(wardrobe!=null)wardrobe.frame(3,ticks,Math.min(1,ticks/20F));var w=wybie(p,s);if(w!=null&&ticks>=40)lookEntrance(w,s);if(ticks==20){n.putBoolean("WardrobeFallen",true);sfx(p,BlockPos.of(n.getLong("LittleDoor")),SoundEvents.ZOMBIE_BREAK_WOODEN_DOOR,.8F,.65F);} }
             case OPEN_LITTLE_DOOR->hint(p,"Open the Little Door");
@@ -247,7 +252,7 @@ public final class FirstEscapeStory {
             default->{var next=FirstEscapeTimeline.after(state);if(next!=null)go(p,s,next);}
         }
     }
-    private static boolean readyForVoice(ServerPlayer p,VisitData.Scene s,FirstEscapeTimeline.Phase state){if(state==ESCAPE_A)return wybie(p,s)!=null;if(state==COCOA_A){animateRoom(p,s,180);var m=mother(p,s);var couch=FirstEscapeScene.prop(p,s,"BugCouch");return m!=null&&couch!=null&&m.getVehicle()==couch;}if(state==MISSING_B||state==MISSING_C||state==MISSING_D||state==MISSING_E||state==MISSING_F||state==MISSING_G)return realWybie(p,s)!=null;return true;}
+    private static boolean readyForVoice(ServerPlayer p,VisitData.Scene s,FirstEscapeTimeline.Phase state){if(state==ESCAPE_A)return wybie(p,s)!=null;if(state==COCOA_A){if(FirstEscapeScene.prop(p,s,"BugCouch")==null)FirstEscapeScene.roomProps(p,s);animateRoom(p,s,180);var m=mother(p,s);var couch=FirstEscapeScene.prop(p,s,"BugCouch");return m!=null&&couch!=null&&m.getVehicle()==couch;}if(state==MISSING_B||state==MISSING_C||state==MISSING_D||state==MISSING_E||state==MISSING_F||state==MISSING_G)return realWybie(p,s)!=null;return true;}
     private static ParentEntity mother(ServerPlayer p,VisitData.Scene s){return s.mom!=null&&p.server.getLevel(OtherWorld.KEY).getEntity(s.mom) instanceof ParentEntity m?m:null;}
     private static void walk(Mob m,Vec3 at,double speed){m.setNoAi(false);m.setNoGravity(false);m.noPhysics=false;if(m instanceof ParentEntity parent)ScenePlacement.prepareWalker(parent);else m.setMaxUpStep(1.05F);if(m.getNavigation() instanceof net.minecraft.world.entity.ai.navigation.GroundPathNavigation nav){nav.setCanOpenDoors(true);nav.setCanPassDoors(true);}if(m.tickCount%10==0||m.getNavigation().isDone())m.getNavigation().moveTo(at.x,at.y,at.z,speed);}
     private static void sfx(ServerPlayer p,BlockPos at,SoundEvent sound,float volume,float pitch){p.serverLevel().playSound(null,at,sound,SoundSource.BLOCKS,volume,pitch);}
@@ -509,7 +514,7 @@ private static boolean openLittleDoor(ServerPlayer p,VisitData.Scene s,boolean o
         for(int i=0;i<3;i++){var ghost=FirstEscapeScene.ensure(p,s,"Ghost"+i,CinematicPropEntity.GHOST_CHILD,i,l,Vec3.atBottomCenterOf(c.south(2)));if(ghost==null)continue;double reveal=state==MIRROR_C?Math.max(0,Math.min(1,(ticks-(ShowRecordings.duration("mirror_prison_c")-60)-i*8)/30.)):state==MIRROR_D?Math.min(1,(ShowRecordings.duration("mirror_prison_d")-ticks)/100.):state==MIRROR_E?.24:0;reveal=Math.max(0,reveal);double a=ticks*.006+i*2.1,radius=state==MIRROR_D?1.3*reveal:0;Vec3 target=Vec3.atBottomCenterOf(c.south(2)).add((i-1)*.65+Math.sin(a)*radius,state==MIRROR_E?-.6:-1.6+reveal*2.2,Math.cos(a)*radius);ghost.setPos(ghost.position().lerp(target,.1));ghost.frame(state==MIRROR_E?2:1,ticks,(float)reveal);}
         if(p.distanceToSqr(c.getCenter())>100)safeTransfer(p,l,c);
     }
-    private static CharacterEntity wybie(ServerPlayer p,VisitData.Scene s){var w=ShowActors.actor(p,s,"other_wybie");if(w==null){var n=data(s);w=ShowActors.acquire(p,s,"other_wybie",p.server.getLevel(OtherWorld.KEY),Vec3.atBottomCenterOf(FirstEscapeScene.mirror(s).north(2)));}if(w instanceof CharacterEntity actor){if(phase(s)!=ESCAPE_C&&phase(s)!=FOLLOW_WYBIE){actor.setNoGravity(false);actor.setNoAi(false);}actor.noPhysics=false;data(s).putInt("OtherWybieId",actor.getId());data(s).putLong("OtherWybiePosition",actor.blockPosition().asLong());return actor;}return null;}
+    private static CharacterEntity wybie(ServerPlayer p,VisitData.Scene s){var w=ShowActors.actor(p,s,"other_wybie");if(w==null||w.level()!=p.server.getLevel(OtherWorld.KEY)){var n=data(s);w=ShowActors.acquire(p,s,"other_wybie",p.server.getLevel(OtherWorld.KEY),Vec3.atBottomCenterOf(FirstEscapeScene.mirror(s).north(2)));}if(w instanceof CharacterEntity actor){if(phase(s)!=ESCAPE_C&&phase(s)!=FOLLOW_WYBIE){actor.setNoGravity(false);actor.setNoAi(false);}actor.noPhysics=false;data(s).putInt("OtherWybieId",actor.getId());data(s).putLong("OtherWybiePosition",actor.blockPosition().asLong());return actor;}return null;}
     static boolean rescueToHall(ServerPlayer p,VisitData.Scene s,CharacterEntity w){
         var n=data(s);var owner=FirstEscapeScene.hallLanding(p,s,null);var helper=owner==null?null:FirstEscapeScene.hallLanding(p,s,owner);
         if(owner==null||helper==null){n.putString("Blocker","The hallway beside the mirror needs clear floor for the rescue. Use /coraline recover after clearing it.");hint(p,"The hallway beside the mirror is obstructed.");return false;}

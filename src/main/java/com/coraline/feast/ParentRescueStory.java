@@ -41,8 +41,23 @@ public final class ParentRescueStory {
         for(var level:p.server.getAllLevels())if(level.getEntity(s.mom) instanceof ParentEntity mother&&mother.isOtherParent()){LoopProps.hold(level,mother.blockPosition());return mother;}
         return null; // An unloaded canonical UUID is never permission to spawn another mother.
     }
-    private static CharacterEntity father(ServerPlayer p,VisitData.Scene s){if(data(s).contains("FatherAt"))p.serverLevel().getChunkAt(BlockPos.of(data(s).getLong("FatherAt")));var raw=ShowActors.actor(p,s,"evil_other_father");return raw instanceof CharacterEntity c?c:null;}
-    private static CharacterEntity cat(ServerPlayer p,VisitData.Scene s){var n=data(s);var c=ShowActors.actor(p,s,"cat");if((c==null||c.level()!=p.level())&&!n.getBoolean("CatLeft")){var at=FirstEscapeStory.tunnelCell(s,0,0,1);c=ShowActors.acquire(p,s,"cat",p.server.getLevel(OtherWorld.KEY),Vec3.atBottomCenterOf(at));}return c instanceof CharacterEntity e?e:null;}
+    private static boolean needsReturnFather(Phase state){
+        return state.ordinal()>=Phase.KEY_SCENE.ordinal()&&state.ordinal()<=Phase.G.ordinal();
+    }
+    private static CharacterEntity father(ServerPlayer p,VisitData.Scene s){
+        var n=data(s);var level=p.server.getLevel(OtherWorld.KEY);
+        if(level==null)return null;
+        if(n.contains("FatherAt",Tag.TAG_LONG))LoopProps.hold(level,BlockPos.of(n.getLong("FatherAt")));
+        var raw=ShowActors.actor(p,s,"evil_other_father");
+        if((raw==null||raw.level()!=level)&&needsReturnFather(phase(s))
+                &&s.loop.event.getCompound("ShowActors").getCompound("evil_other_father").hasUUID("Entity")){
+            var at=n.contains("FatherAt",Tag.TAG_LONG)?BlockPos.of(n.getLong("FatherAt")):FirstEscapeScene.entrance(s).east(2);
+            if(!FirstEscapeScene.inHouseOrPorch(s,at))at=FirstEscapeScene.entrance(s).east(2);
+            raw=ShowActors.acquire(p,s,"evil_other_father",level,Vec3.atBottomCenterOf(at));
+        }
+        return raw instanceof CharacterEntity c&&c.isAlive()&&c.level()==level?c:null;
+    }
+    private static CharacterEntity cat(ServerPlayer p,VisitData.Scene s){var n=data(s);var c=ShowActors.actor(p,s,"cat");if((c==null||c.level()!=p.level())&&!n.getBoolean("CatLeft")){var at=FirstEscapeStory.tunnelCell(s,0,0,1);c=ShowActors.recoverCat(p,s,p.server.getLevel(OtherWorld.KEY),Vec3.atBottomCenterOf(at));}return c instanceof CharacterEntity e&&e.isAlive()&&e.level()==p.level()?e:null;}
     static void guideTunnelCat(ServerPlayer p,VisitData.Scene s,CharacterEntity cat,double playerProgress){
         if(cat.level()!=p.level())return;cat.setInvisible(false);cat.setInvulnerable(true);cat.storyCatCrawl(true);cat.getNavigation().stop();cat.setNoAi(true);cat.setNoGravity(true);cat.noPhysics=false;cat.setDeltaMovement(Vec3.ZERO);
         var origin=Vec3.atBottomCenterOf(BlockPos.of(FirstEscapeStory.data(s).getLong("EscapeTunnel")));var forward=Vec3.atLowerCornerOf(FirstEscapeStory.escapeDirection(s).getNormal());
@@ -85,7 +100,8 @@ public final class ParentRescueStory {
             n.putString("SafeReturnPhase",state.name());
             n.putLong("SafeReturnPosition",p.blockPosition().asLong());
         }
-        var m=mother(p,s);if(m==null&&state!=Phase.A&&state!=Phase.TUNNEL_EXIT){n.putString("Blocker","Waiting for the canonical Other Mother to load; no duplicate created.");return;}
+        var m=returnMother(p,s);
+        if(!returnCastReady(p,s,state,m))return;
         var family=ParentAccess.family(p.server,s.owner);if(m!=null){if(family!=null){m.makeOtherParent(Math.max(0,family.momSkin));if(!family.storyMissing){family.storyMissing=true;FamilyData.get(p.server).setDirty();}}n.putLong("MotherAt",m.blockPosition().asLong());LoopProps.hold(p.serverLevel(),m.blockPosition());}
         var savedFather=father(p,s);if(savedFather!=null){n.putLong("FatherAt",savedFather.blockPosition().asLong());LoopProps.hold(p.serverLevel(),savedFather.blockPosition());}for(String key:scenery(s).getAllKeys())if(key.endsWith("Position"))LoopProps.hold(p.serverLevel(),BlockPos.of(scenery(s).getLong(key)));
         String sound=voice(state);
@@ -175,6 +191,29 @@ public final class ParentRescueStory {
             FirstEscapeStory.hint(p,"The recording is unavailable. The scene can continue through its required actions.");
         return false;
     }
+    private static ParentEntity returnMother(ServerPlayer p,VisitData.Scene s){
+        var actor=mother(p,s);
+        var level=p.server.getLevel(OtherWorld.KEY);
+        if(actor==null||!actor.isAlive()||level==null)return null;
+        if(actor.level()!=level){
+            var moved=ShowTravel.guest(actor,p,s,level,Vec3.atBottomCenterOf(FirstEscapeScene.room(s).west(3)),false,"ParentRescueReturn");
+            if(!(moved instanceof ParentEntity original)||!s.mom.equals(original.getUUID())||original.level()!=level)return null;
+            actor=original;
+        }
+        return actor;
+    }
+    private static boolean returnCastReady(ServerPlayer p,VisitData.Scene s,Phase state,ParentEntity mother){
+        String reason="";
+        if(!rescueMotherReadyForWatchdog(state,mother!=null))reason="Waiting for the original Other Mother before this rescue dialogue.";
+        else if(needsReturnFather(state)&&father(p,s)==null)reason="Waiting for the original Other Father to return.";
+        else if(StoryTunnel.entryPhase(s)&&cat(p,s)==null)reason="Waiting for the original Cat inside the return crawl.";
+        var n=data(s);
+        if(reason.isEmpty())return true;
+        if(n.getBoolean("Audio")||n.contains("ReturnRecording")){
+            ShowPlayback.stop(p,s);n.remove("Audio");n.remove("ReturnRecording");n.putInt("Ticks",0);
+        }
+        n.putString("Blocker",reason);FirstEscapeStory.hint(p,reason);OtherMotherLoop.changed(p);return false;
+    }
     /** Do not finish the original mother's disappearance or any preceding
      * dialogue when that same saved Other Mother is unloaded. */
     static boolean rescueMotherReadyForWatchdog(Phase state,boolean originalPresent){
@@ -211,12 +250,12 @@ public final class ParentRescueStory {
         if(!OtherWorld.isOther(p.level()))return;var state=phase(s);var n=data(s);String sound=voice(state);
         boolean motion=state==Phase.FATHER_ENTRY||state==Phase.KEY_SCENE||state==Phase.SERVE;
         if(sound.isEmpty()&&!motion)return;
-        if(!rescueMotherReadyForWatchdog(state,mother(p,s)!=null)){
-            if(n.getBoolean("Audio")){ShowPlayback.stop(p,s);n.remove("Audio");n.remove("ReturnRecording");n.putInt("Ticks",0);}
-            n.putString("Blocker","Waiting for the original Other Mother before this rescue dialogue.");
-            FirstEscapeStory.hint(p,n.getString("Blocker"));
+        if(!returnCastReady(p,s,state,returnMother(p,s))){
             StoryCutsceneWatchdog.retry(s,"parent_rescue");
             return;
+        }
+        if(StoryTunnel.entryPhase(s)&&!StoryTunnel.insideCrawl(p,s)){
+            StoryCutsceneWatchdog.retry(s,"parent_rescue");return;
         }
         // The independent watchdog must honor the same physical kitchen gate
         // as the main tick, even after its voice timeout has elapsed.

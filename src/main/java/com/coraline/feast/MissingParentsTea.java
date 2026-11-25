@@ -62,8 +62,8 @@ public final class MissingParentsTea {
                 if(n.getBoolean("Building")){finishBuild(p,s);return true;}
             }else n.put("PreviousTeaVisit",previous.copy());
         }
-        for(char c='a';c<='i';c++)if(ShowRecordings.duration("missing_parents_tea_"+c)<=0){n.putString("Blocker","Missing original story recording "+c);return false;}
-        if(ShowRecordings.duration("tea_visit_a")<=0)return false;
+        // A missing voice is handled by the per-scene recording fallback,
+        // not by refusing to build the only story-critical invitation.
         var at=MissingParentsTeaPlacement.find(p);if(at==null){n.putString("Blocker","Looking for a clear temporary house site; uneven ground is allowed.");return false;}
         var originals=BobinskyHouse.snapshot(p.serverLevel(),at,MissingParentsTeaPlacement.CLEAR_RX,MissingParentsTeaPlacement.CLEAR_RZ);
         n.putBoolean("FloatingLanding",true);n.putBoolean("TerrainClearanceV3",true);
@@ -122,12 +122,28 @@ public final class MissingParentsTea {
         }
         int t=n.getInt("Ticks");boolean done=false;String voice=sound(state);
         if(!voice.isEmpty()){
-            if(!n.getBoolean("AudioStarted")){if(!ShowPlayback.start(p,s,voice,false)){n.putString("Blocker","Recording could not start: "+voice);return;}n.putBoolean("AudioStarted",true);}
-            done=ShowPlayback.tick(p,s);t=ShowPlayback.position(s);n.putInt("Ticks",t);
-            if(!ShowPlayback.data(s).getString("Blocker").isEmpty()){n.putString("Blocker",ShowPlayback.data(s).getString("Blocker"));release(p,n);open(p,n,true);hint(p,"Audio unavailable. Exit safely; reconnect or use Recover to retry this checkpoint.");return;}
+            var recovery=n.getCompound("TeaRecording");n.put("TeaRecording",recovery);
+            if(RescueChapter.RecordingRecovery.exhausted(recovery)){
+                t=RescueChapter.RecordingRecovery.advance(recovery);
+                done=RescueChapter.RecordingRecovery.dialogueWindowEnded(t,ShowRecordings.duration(voice));
+                n.putInt("Ticks",t);
+            }else{
+                if(p.serverLevel().getGameTime()<recovery.getLong("RetryAt"))return;
+                if(!n.getBoolean("AudioStarted")&&ShowPlayback.start(p,s,voice,false))n.putBoolean("AudioStarted",true);
+                if(n.getBoolean("AudioStarted"))done=ShowPlayback.tick(p,s);
+                if(!n.getBoolean("AudioStarted")||ShowPlayback.data(s).getBoolean("SafetySkipped")
+                        ||!ShowPlayback.data(s).getString("Blocker").isEmpty()){
+                    ShowPlayback.stop(p,s);n.remove("AudioStarted");
+                    RescueChapter.RecordingRecovery.failed(recovery);
+                    recovery.putLong("RetryAt",p.serverLevel().getGameTime()+20);
+                    save(p,s,false);return;
+                }
+                t=ShowPlayback.position(s);n.putInt("Ticks",t);
+            }
         }else n.putInt("Ticks",++t);
-        if(spink!=null){spink.pose(100+state.ordinal(),t);spink.storyClock(voice.isEmpty()||ShowPlayback.started(s));}
-        if(forcible!=null){forcible.pose(100+state.ordinal(),t);forcible.storyClock(voice.isEmpty()||ShowPlayback.started(s));forcible.cup(n.getString("Bowl").equals("HAND"));forcible.storyMotion(n.getInt("BowlStep"));}
+        boolean clock=voice.isEmpty()||ShowPlayback.started(s)||RescueChapter.RecordingRecovery.exhausted(n.getCompound("TeaRecording"));
+        if(spink!=null){spink.pose(100+state.ordinal(),t);spink.storyClock(clock);}
+        if(forcible!=null){forcible.pose(100+state.ordinal(),t);forcible.storyClock(clock);forcible.cup(n.getString("Bowl").equals("HAND"));forcible.storyMotion(n.getInt("BowlStep"));}
         if(!n.getBoolean("ExitUnlocked")&&((n.getBoolean("Seated")&&state.ordinal()<Phase.STORY_I.ordinal())||(state==Phase.STORY_I&&t<100)))seatPlayer(p,n);
         if(n.getBoolean("Inside")&&!n.getBoolean("ExitUnlocked")){open(p,n,false);if(!BobinskyHouse.bounds(n).contains(p.position())){var safe=center(n).offset(2,0,-3);p.teleportTo(safe.getX()+.5,safe.getY(),safe.getZ()+.5);}}
         switch(state){
@@ -181,7 +197,7 @@ public final class MissingParentsTea {
         }
     }
     public static float crush(int t,int duration){return Math.max(0,Math.min(1,(t-28F)/Math.max(1,duration-28F)));}
-    static void go(ServerPlayer p,VisitData.Scene s,Phase next){ShowPlayback.transition(p,s,sound(next));var n=data(s);n.putString("StoryPhase",next.name());n.putInt("Ticks",0);n.remove("AudioStarted");n.remove("Blocker");if(next==Phase.WAITING_FOR_EXIT&&n.getBoolean("FloatingLanding"))TeaVisitTravel.inviteReturn(p);save(p,s,true);}
+    static void go(ServerPlayer p,VisitData.Scene s,Phase next){ShowPlayback.transition(p,s,sound(next));var n=data(s);n.putString("StoryPhase",next.name());n.putInt("Ticks",0);n.remove("AudioStarted");n.remove("TeaRecording");n.remove("Blocker");if(next==Phase.WAITING_FOR_EXIT&&n.getBoolean("FloatingLanding"))TeaVisitTravel.inviteReturn(p);save(p,s,true);}
     private static BlockPos center(CompoundTag n){return BlockPos.of(n.getLong("House"));}
     private static Vec3 point(CompoundTag n,double x,double y,double z){var c=center(n);return new Vec3(c.getX()+x,c.getY()+y,c.getZ()+z);}
     private static TeaVisitorEntity actor(ServerPlayer p,CompoundTag n,String key){
@@ -321,8 +337,15 @@ public final class MissingParentsTea {
     public static boolean block(ServerPlayer p,CompoundTag n,BlockPos at){if(!isVisit(n)||!n.getUUID("Owner").equals(p.getUUID()))return false;var s=OtherMotherLoop.scene(p);if(s==null||!owns(p,s,n)||p.getEyePosition().distanceToSqr(at.getCenter())>36)return true;if(BobinskyHouse.isDoor(n,at)&&phase(n)==Phase.WAITING_FOR_KNOCK){spawn(p,s);sfx(p,n,SoundEvents.WOOD_HIT,.8F);go(p,s,Phase.KNOCKING);p.displayClientMessage(Component.literal("You knocked. Miss Spink is coming to the door."),true);}else if(BobinskyHouse.isDoor(n,at)&&phase(n)==Phase.KNOCKING){hint(p,"Miss Spink is coming to the door.");}else if(phase(n)==Phase.WAITING_FOR_SEAT&&at.distSqr(center(n).offset(1,0,1))<=1){if(!seatPlayer(p,n)){hint(p,"Waiting for your original chair to be restored.");return true;}n.putBoolean("Seated",true);p.setYRot(90);p.setXRot(4);go(p,s,Phase.FORCIBLE_ENTRANCE);}return true;}
     private static void open(ServerPlayer p,CompoundTag n,boolean value){var at=BobinskyHouse.door(n);var state=p.serverLevel().getBlockState(at);if(state.hasProperty(DoorBlock.OPEN)&&state.getValue(DoorBlock.OPEN)!=value){BobinskyHouse.open(p.serverLevel(),n,value);sfx(p,n,value?SoundEvents.WOODEN_DOOR_OPEN:SoundEvents.WOODEN_DOOR_CLOSE,.65F);var placed=n.getCompound("Placed");for(var pos:List.of(at,at.above()))placed.put(Long.toString(pos.asLong()),NbtUtils.writeBlockState(p.serverLevel().getBlockState(pos)));}}
     private static void fetchBowl(ServerPlayer p,VisitData.Scene s,TeaVisitorEntity forcible,int t){var n=data(s);var spink=actor(p,n,"Spink");int step=n.getInt("BowlStep");if(step==0){if(walk(forcible,point(n,-5.55,0,3.5),.135)){n.putInt("BowlStep",1);n.putInt("ReachTicks",0);}}else if(step==1){gaze(forcible,point(n,-6.4,1.4,2.5));int reach=n.getInt("ReachTicks")+1;n.putInt("ReachTicks",reach);if(reach>=16){n.putString("Bowl","HAND");n.putInt("BowlStep",2);save(p,s,true);}}else if(step==2){if(walk(forcible,point(n,-2.3,0,3.5),.135)){n.putInt("BowlStep",3);n.putInt("ReachTicks",0);}}else if(step==3){gaze(forcible,spink.getEyePosition());int reach=n.getInt("ReachTicks")+1;n.putInt("ReachTicks",reach);if(reach>=16){n.putString("Bowl","TABLE");n.putBoolean("BowlPlaced",true);n.putInt("BowlStep",4);save(p,s,true);}}}
-    private static void bowl(ServerPlayer p,VisitData.Scene s){var n=data(s);var l=p.server.overworld();CinematicPropEntity prop=null;if(n.hasUUID("BowlProp")){var saved=l.getEntity(n.getUUID("BowlProp"));if(saved instanceof CinematicPropEntity e&&e.kind()==CinematicPropEntity.TAFFY_BOWL)prop=e;else n.remove("BowlProp");}if(prop==null){prop=CinematicPropEntity.TYPE.get().create(l);if(prop==null)return;prop.configure(s,CinematicPropEntity.TAFFY_BOWL,0);prop.setPos(point(n,-6.4,1.55,2.5));if(!l.addFreshEntity(prop))return;n.putUUID("BowlProp",prop.getUUID());}
+    private static void bowl(ServerPlayer p,VisitData.Scene s){var n=data(s);var l=p.server.overworld();CinematicPropEntity prop=null;if(n.hasUUID("BowlProp")){
+            if(n.contains("BowlPropAt",Tag.TAG_LONG))LoopProps.hold(l,BlockPos.of(n.getLong("BowlPropAt")));
+            var saved=l.getEntity(n.getUUID("BowlProp"));
+            if(saved instanceof CinematicPropEntity e&&e.owned(s)&&e.kind()==CinematicPropEntity.TAFFY_BOWL)prop=e;
+            else if(saved==null)prop=RescueProps.restoreVerified(p,s,CinematicPropEntity.TAFFY_BOWL,0,point(n,-6.4,1.55,2.5),n.getUUID("BowlProp"),l);
+            if(prop==null)return;
+        }if(prop==null){prop=CinematicPropEntity.TYPE.get().create(l);if(prop==null)return;prop.configure(s,CinematicPropEntity.TAFFY_BOWL,0);prop.setPos(point(n,-6.4,1.55,2.5));if(!l.addFreshEntity(prop))return;n.putUUID("BowlProp",prop.getUUID());}
         if(n.getString("Bowl").equals("HAND")){var f=actor(p,n,"Forcible");if(f!=null){prop.setPos(f.position().add(f.getLookAngle().multiply(.45,0,.45)).add(0,1.05,0));prop.setInvisible(true);}}else {prop.setInvisible(false);var spink=actor(p,n,"Spink");var target=spink==null?point(n,-.8,1.15,1):new Vec3(spink.getX()+spink.getLookAngle().x*.85,point(n,0,1.15,0).y,spink.getZ()+spink.getLookAngle().z*.85);prop.setPos(n.getBoolean("BowlPlaced")?target:point(n,-6.4,1.55,2.5));}
+        n.putLong("BowlPropAt",prop.blockPosition().asLong());
         int contents=n.getBoolean("Granted")?4:n.getBoolean("Revealed")?3:n.getBoolean("Powder")?2:1;prop.frame(contents,phase(n)==Phase.STORY_G?n.getInt("Ticks"):0,n.getFloat("Crush"));}
     public static void award(ServerPlayer p,VisitData.Scene s){if(!owns(p,s,data(s)))return;var n=data(s);if(s.loop.story.getBoolean("SeeingStoneReceipt")){n.putBoolean("Granted",true);return;}s.loop.story.putBoolean("SeeingStoneReceipt",true);s.loop.story.putBoolean("SeeingStonePending",true);n.putBoolean("Granted",true);save(p,s,true);claim(p,s);p.displayClientMessage(Component.literal("Received Seeing Stone"),true);}
     public static void claim(ServerPlayer p,VisitData.Scene s){if(!s.owner.equals(p.getUUID())||!s.loop.story.getBoolean("SeeingStonePending"))return;if(p.getInventory().getFreeSlot()<0){if(p.tickCount%100==0)hint(p,"Seeing Stone is reserved. Free an inventory slot to claim it.");return;}var stone=new ItemStack(ModItems.SEEING_STONE.get());stone.getOrCreateTag().putUUID("StoryOwner",s.owner);stone.getTag().putUUID("StoryDoor",s.door);SecretTransactions.give(p,stone);if(stone.isEmpty()){s.loop.story.putBoolean("SeeingStonePending",false);p.getInventory().setChanged();save(p,s,true);}else if(p.tickCount%100==0)hint(p,"Seeing Stone is reserved. Free an inventory slot to claim it.");}
