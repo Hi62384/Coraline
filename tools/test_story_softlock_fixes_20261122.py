@@ -132,7 +132,9 @@ class StorySoftlockFixesSourceTests(unittest.TestCase):
         self.assertLess(physical.index("if(!RescuePassage.inside(p,s))"),
                         physical.index('n.putBoolean("CrawlReachedOverworld",true)'))
         self.assertIn("level!=p.server.overworld()",physical)
-        self.assertIn("!s.door.equals(tile.doorId)",physical)
+        self.assertIn("!s.door.equals(tile.doorId)",finale.split("static boolean originalExitReady(",1)[1].split("static boolean webDoorStageNeedsRecovery(",1)[0])
+        self.assertNotIn("getBlockEntity(source.pos)",physical,
+                         "A broken home door must be repairable after the physical escape")
 
     def test_web_door_reload_retries_all_three_physical_stages(self):
         chapter=src("feast/RescueChapter.java")

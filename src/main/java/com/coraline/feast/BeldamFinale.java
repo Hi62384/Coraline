@@ -733,13 +733,10 @@ public final class BeldamFinale {
             n.putString("Blocker","Waiting for the original Overworld escape door.");
             return;
         }
-        level.getChunkAt(source.pos);
-        if(!level.getBlockState(source.pos).is(ModBlocks.TINY_DOOR.get())
-                ||!(level.getBlockEntity(source.pos) instanceof DoorBlockEntity tile)
-                ||!s.door.equals(tile.doorId)){
-            n.putString("Blocker","Restore the original owner-bound Little Door before escaping.");
-            return;
-        }
+        // The authenticated source record provides the return location. Do not
+        // trap a singleplayer owner in the crawl if the physical door was
+        // broken; the existing LOCK_DOOR/BANGING gates require the real tile
+        // and let the owner repair it from the Overworld.
         if(!RescueChapter.transfer(p,level,source.pos))return;
         n.putBoolean("CrawlReachedOverworld",true);RescueChapter.go(p,s,LOCK_DOOR);
     }
